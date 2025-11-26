@@ -239,6 +239,7 @@ export default function NewQuotePage() {
           company_id: companyId,
           description,
           customer_name: customerName,
+          customer_address: customerAddress || null,
         }),
       })
 
@@ -363,6 +364,12 @@ export default function NewQuotePage() {
     try {
       const quoteNumber = `Q-${Date.now().toString().slice(-8)}`
       
+      // Ensure all numeric values are valid
+      const subtotal = Number(generatedQuote.subtotal) || 0
+      const taxRate = Number(generatedQuote.tax_rate) || 0
+      const taxAmount = subtotal * (taxRate / 100)
+      const total = Number(generatedQuote.total) || (subtotal + taxAmount)
+      
       const { data: quote, error: quoteError } = await supabase
         .from('quotes')
         .insert({
@@ -373,10 +380,10 @@ export default function NewQuotePage() {
           customer_phone: customerPhone || null,
           customer_address: customerAddress || null,
           description,
-          subtotal: generatedQuote.subtotal,
-          tax_rate: generatedQuote.tax_rate,
-          tax_amount: generatedQuote.subtotal * (generatedQuote.tax_rate / 100),
-          total: generatedQuote.total,
+          subtotal: subtotal,
+          tax_rate: taxRate,
+          tax_amount: taxAmount,
+          total: total,
           notes: generatedQuote.notes || null,
           photos: photos,
           status: 'draft',
@@ -410,6 +417,75 @@ export default function NewQuotePage() {
       // @ts-ignore
       setSavedQuoteId(quote.id)
       // Don't redirect immediately - allow user to send the quote
+    } catch (error: unknown) {
+      const err = error as { message: string }
+      toast.error(err.message)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  const handleUpdateQuote = async () => {
+    if (!generatedQuote || (!savedQuoteId && !quoteId)) return
+
+    setIsGenerating(true)
+    try {
+      const currentQuoteId = savedQuoteId || quoteId
+      
+      // Ensure all numeric values are valid
+      const subtotal = Number(generatedQuote.subtotal) || 0
+      const taxRate = Number(generatedQuote.tax_rate) || 0
+      const taxAmount = subtotal * (taxRate / 100)
+      const total = Number(generatedQuote.total) || (subtotal + taxAmount)
+      
+      // Update the quote
+      const { error: quoteError } = await supabase
+        .from('quotes')
+        .update({
+          customer_name: customerName,
+          customer_email: customerEmail || null,
+          customer_phone: customerPhone || null,
+          customer_address: customerAddress || null,
+          description,
+          subtotal: subtotal,
+          tax_rate: taxRate,
+          tax_amount: taxAmount,
+          total: total,
+          notes: generatedQuote.notes || null,
+          photos: photos,
+        })
+        .eq('id', currentQuoteId)
+
+      if (quoteError) throw quoteError
+
+      // Delete existing quote items
+      const { error: deleteError } = await supabase
+        .from('quote_items')
+        .delete()
+        .eq('quote_id', currentQuoteId)
+
+      if (deleteError) throw deleteError
+
+      // Insert updated quote items
+      const items = generatedQuote.line_items.map((item, index) => ({
+        quote_id: currentQuoteId,
+        name: item.name,
+        description: item.description || null,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        total: item.total,
+        option_tier: item.option_tier || null,
+        is_upsell: item.is_upsell || false,
+        sort_order: index,
+      }))
+
+      const { error: itemsError } = await supabase
+        .from('quote_items')
+        .insert(items)
+
+      if (itemsError) throw itemsError
+
+      toast.success('Quote updated successfully!')
     } catch (error: unknown) {
       const err = error as { message: string }
       toast.error(err.message)
@@ -662,21 +738,19 @@ export default function NewQuotePage() {
 
         {/* Generated Quote Preview */}
         {generatedQuote && (
-          <Card className="border-accent border-2">
-            <CardHeader className="bg-accent/5">
+          <Card className="border-[#FF6200] border-2">
+            <CardHeader className="bg-[#FF6200]/5">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-accent">Generated Quote</CardTitle>
-                {!savedQuoteId && !quoteId && (
-                  <Button
-                    onClick={handleAddItem}
-                    variant="outline"
-                    size="sm"
-                    className="gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add Item
-                  </Button>
-                )}
+                <CardTitle className="text-[#FF6200]">Generated Quote</CardTitle>
+                <Button
+                  onClick={handleAddItem}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Item
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="pt-6 space-y-4">
@@ -750,26 +824,24 @@ export default function NewQuotePage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="font-semibold">${item.total.toFixed(2)}</div>
-                          {!savedQuoteId && !quoteId && (
-                            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button
-                                onClick={() => handleEditItem(index)}
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0"
-                              >
-                                <Edit2 className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                onClick={() => handleDeleteItem(index)}
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          )}
+                          <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button
+                              onClick={() => handleEditItem(index)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              onClick={() => handleDeleteItem(index)}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     )}
@@ -885,23 +957,33 @@ export default function NewQuotePage() {
                   </>
                 )}
                 
-                {/* After saving, show send button */}
+                {/* After saving, show update and send buttons */}
                 {(savedQuoteId || quoteId) && (
                   <>
-                    <Button
-                      onClick={handleSendQuote}
-                      disabled={isSending || (!customerEmail && !customerPhone)}
-                      className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-semibold text-lg"
-                    >
-                      {isSending ? (
-                        <>
-                          <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        '📤 Send Quote to Customer'
-                      )}
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button
+                        onClick={handleUpdateQuote}
+                        disabled={isGenerating}
+                        className="flex-1 h-12 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+                      >
+                        {isGenerating ? 'Updating...' : 'Update Quote'}
+                      </Button>
+                      
+                      <Button
+                        onClick={handleSendQuote}
+                        disabled={isSending || (!customerEmail && !customerPhone)}
+                        className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        {isSending ? (
+                          <>
+                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          'Send to Customer'
+                        )}
+                      </Button>
+                    </div>
                     
                     {!customerEmail && !customerPhone && (
                       <p className="text-sm text-amber-600 dark:text-amber-400 text-center">

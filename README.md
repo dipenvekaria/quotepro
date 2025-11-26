@@ -1,151 +1,277 @@
-# QuoteBuilder Pro
+# QuotePro
 
 **Win more jobs in seconds, not minutes.**
 
-A production-ready, mobile-first SaaS for U.S. & Canadian home-service contractors (HVAC, plumbing, electrical, roofing, landscaping, pest control, garage door, window installation).
-
-Stop writing quotes in Word/Excel on your phone in driveways. QuoteBuilder Pro helps you look professional, close faster, and never forget upsells.
+AI-powered quote generation for field service contractors (HVAC, plumbing, electrical, roofing, landscaping). Generate professional quotes from simple descriptions using AI, with automatic tax calculation based on customer location.
 
 ---
 
-## 🚀 Features
+## ✨ Key Features
 
-- **AI-Powered Quote Generation**: Groq Llama-3.1-70B converts bullet points into polished quotes
-- **Mobile-First Design**: Built for contractors in the field
-- **Voice Input**: Hold-to-talk for hands-free description entry
-- **Photo Upload**: Live camera integration for job site documentation
-- **Professional PDFs**: Gorgeous templates with Good/Better/Best options
-- **SMS & E-Signatures**: Send quotes via Twilio, sign with Dropbox Sign
-- **Smart Pricing**: 50 pre-filled items for common trades + CSV import
-- **Dashboard Analytics**: Win rate, average job size, monthly metrics
-- **PWA Ready**: Installable on mobile devices
+### 🤖 AI-Powered Quote Generation
+- **Groq AI Integration**: Uses llama-3.3-70b-versatile model
+- **Smart Pricing**: Matches job descriptions to your pricing catalog
+- **Auto-Upsells**: Suggests common add-ons based on industry best practices
+- **Instant Generation**: Professional quotes in seconds, not minutes
+
+### 📍 Address-Based Tax Calculation
+- **All 50 US States**: Automatic tax rate detection from customer address
+- **Smart Parsing**: Handles various address formats
+- **Fallback Protection**: Uses company default if state can't be determined
+- **No Manual Entry**: Tax rates automatically updated and applied
+
+### 👥 Team Management (RBAC)
+- **Admin Role**: Full access (settings, team, quotes)
+- **Sales Role**: Quote creation and viewing only
+- **Row-Level Security**: Database-enforced permissions
+- **Easy Invites**: Add team members by email
+
+### 📊 Professional Features
+- **Quote Editing**: Edit, add, or delete line items after generation
+- **Photo Uploads**: Attach job site photos to quotes
+- **PDF Export**: Download professional-looking PDFs
+- **Status Tracking**: Draft → Sent → Signed workflow
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui
-- **Backend**: Supabase (Auth, PostgreSQL, Storage)
-- **AI**: Groq (primary), OpenRouter (fallback)
-- **Payments**: Lemon Squeezy
-- **SMS**: Twilio
-- **E-Signatures**: Dropbox Sign
-- **PDFs**: @react-pdf/renderer
-- **Deployment**: Vercel
+**Frontend:**
+- Next.js 14 (App Router) + React 18
+- TypeScript
+- Tailwind CSS + Shadcn/ui
+- Supabase Auth & Storage
+
+**Backend:**
+- Python 3.11 + FastAPI
+- Groq AI (llama-3.3-70b-versatile)
+- Supabase PostgreSQL
+- Pydantic validation
+
+**Infrastructure:**
+- Supabase (Database + Auth + Storage)
+- Vercel (Next.js hosting - planned)
+- Railway/Fly.io (Python backend - planned)
 
 ---
 
-## 📦 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
-1. **Supabase Account** ([supabase.com](https://supabase.com))
-   - Create a new project
-   - Run the SQL migration from `supabase/migrations/001_initial_schema.sql`
-   - Create a storage bucket named `logos` (public)
-   - Copy your project URL and anon key
+- **Node.js**: 18+ 
+- **Python**: 3.11+
+- **Supabase Account**: [Create one](https://supabase.com)
+- **Groq API Key**: [Get free key](https://console.groq.com)
 
-2. **Groq API Key** ([console.groq.com](https://console.groq.com))
-   - Sign up for free
-   - Generate an API key
-
-3. **Twilio Account** ([twilio.com](https://twilio.com))
-   - Get Account SID, Auth Token, and a phone number
-
-4. **Dropbox Sign API Key** ([sign.dropbox.com](https://sign.dropbox.com))
-   - Sign up and get API credentials
-
-5. **Lemon Squeezy Account** ([lemonsqueezy.com](https://lemonsqueezy.com))
-   - Create a store
-   - Get API key and Store ID
-
-### Environment Variables
-
-Copy `.env.example` to `.env.local` and fill in your credentials:
+### 1. Clone & Install
 
 ```bash
-cp .env.example .env.local
-```
+git clone <repository-url>
+cd quotepro
 
-### Installation
-
-```bash
-# Install dependencies
+# Frontend
 npm install
 
-# Run development server
+# Backend
+cd python-backend
+./setup.sh
+cd ..
+```
+
+### 2. Configure Environment
+
+**Create `.env.local` in root:**
+```bash
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Python Backend
+PYTHON_BACKEND_URL=http://localhost:8000
+
+# AI
+GROQ_API_KEY=your_groq_api_key
+```
+
+**Create `python-backend/.env`:**
+```bash
+GROQ_API_KEY=your_groq_api_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+SUPABASE_SERVICE_ROLE_KEY=your_anon_key
+```
+
+### 3. Set Up Database
+
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard)
+2. Create a new project
+3. Run migrations from `supabase/migrations/` in order (001 → 005)
+4. Create a storage bucket named `logos` (public access)
+
+### 4. Start Development Servers
+
+```bash
+# Terminal 1: Next.js Frontend
 npm run dev
 
-# Open http://localhost:3000
+# Terminal 2: Python Backend
+cd python-backend && ./start-server.sh
+```
+
+### 5. Open Application
+
+- **Frontend**: http://localhost:3000
+- **Python API**: http://localhost:8000
+- **API Docs**: http://localhost:8000/docs
+
+---
+
+## 📚 Documentation
+
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture & data flow
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development guide & best practices
+- **[QUICK_START.md](./QUICK_START.md)** - Detailed setup instructions
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Production deployment guide
+- **[SUPABASE_SETUP.md](./SUPABASE_SETUP.md)** - Database setup details
+- **[MOBILE_TESTING.md](./MOBILE_TESTING.md)** - Mobile testing guide
+- **[TAX_CALCULATION_FEATURE.md](./TAX_CALCULATION_FEATURE.md)** - Tax feature docs
+- **[python-backend/README.md](./python-backend/README.md)** - Python backend docs
+
+---
+
+## 📱 Key Features Explained
+
+### AI Quote Generation
+
+```
+1. Enter customer info + job description
+   ↓
+2. AI matches description to your pricing catalog
+   ↓
+3. Suggests appropriate items + quantities
+   ↓
+4. Calculates tax based on customer address
+   ↓
+5. Returns professional, editable quote
+```
+
+**Example:**
+- **Input**: "Install new AC unit in 2000 sq ft home in Austin, TX"
+- **Output**: Professional quote with:
+  - 3-ton AC unit
+  - Installation labor
+  - Thermostat upgrade (upsell)
+  - Permit fees
+  - **Tax**: 6.25% (Texas state rate)
+  - **Total**: Calculated automatically
+
+### Address-Based Tax
+
+Supports all 50 US states with automatic detection:
+
+| Address | Detected State | Tax Rate |
+|---------|----------------|----------|
+| "123 Main St, Austin, TX 78701" | TX | 6.25% |
+| "456 Oak Ave, Los Angeles, CA 90001" | CA | 7.25% |
+| "789 Pine Rd, Portland, OR 97201" | OR | 0% (no sales tax) |
+
+### Team Roles
+
+| Role | Permissions |
+|------|-------------|
+| **Admin** | • Manage settings<br>• Add/remove team members<br>• Edit pricing catalog<br>• Create quotes |
+| **Sales** | • Create quotes<br>• View quotes<br>• Edit own quotes |
+
+---
+
+## � Database Schema
+
+```sql
+companies              # Company information
+├── user_id           # Owner (references auth.users)
+├── name, logo_url
+└── tax_rate          # Default tax rate
+
+team_members          # Team members with roles
+├── company_id
+├── user_id
+└── user_role         # 'admin' | 'sales'
+
+quotes                # Generated quotes
+├── company_id
+├── customer_name, email, phone, address
+├── subtotal, tax_rate, tax_amount, total
+└── status            # 'draft' | 'sent' | 'signed'
+
+quote_items           # Line items for quotes
+├── quote_id
+├── name, description
+├── quantity, unit_price, total
+└── is_upsell         # Boolean flag
+
+pricing_items         # Company pricing catalog
+├── company_id
+├── name, price
+└── category, unit
 ```
 
 ---
 
-## 🗄 Database Setup
+## 🔒 Security
 
-1. Go to your Supabase project dashboard
-2. Navigate to **SQL Editor**
-3. Copy and paste the content from `supabase/migrations/001_initial_schema.sql`
-4. Run the query
-5. Go to **Storage** and create a bucket named `logos` with public access
-
----
-
-## 📱 PWA Installation
-
-QuoteBuilder Pro can be installed on mobile devices:
-
-1. Open the app in Safari (iOS) or Chrome (Android)
-2. Tap "Share" → "Add to Home Screen"
-3. Access like a native app with offline support
+- ✅ **Row Level Security (RLS)** on all tables
+- ✅ **Role-based permissions** (Admin/Sales)
+- ✅ **Company data isolation** (users only see own company)
+- ✅ **Supabase Auth** (email + Google OAuth)
+- ✅ **Environment variables** for secrets
+- ✅ **CORS protection**
+- ✅ **SQL injection prevention** (parameterized queries)
 
 ---
 
-## 💰 Pricing Plans
+## � Roadmap
 
-- **Starter**: $129/mo – Up to 300 quotes
-- **Pro**: $199/mo – Unlimited + QuickBooks sync (coming soon)
-- **Enterprise**: $329/mo – White-label + priority support
-- **14-day free trial** – No credit card required
+### In Progress
+- [ ] Google ADK agents integration (Python backend ready)
 
----
-
-## 🎨 Brand Guidelines
-
-- **Primary Color**: Dark Blue (#0F172A)
-- **Accent Color**: Orange (#FF6200)
-- **Tone**: Confident, no-BS, blue-collar professional
-- **Tagline**: "Win more jobs in seconds, not minutes."
+### Planned
+- [ ] Email quote delivery (SendGrid/Resend)
+- [ ] E-signature integration (Dropbox Sign)
+- [ ] SMS notifications (Twilio)
+- [ ] Payment processing (Stripe)
+- [ ] Quote templates
+- [ ] Mobile app (React Native)
+- [ ] QuickBooks integration
 
 ---
 
-## 📄 Key Pages
+## � Contributing
 
-| Route | Description |
-|-------|-------------|
-| `/` | Redirects to login |
-| `/login` | Authentication page |
-| `/onboarding` | 3-step setup wizard |
-| `/dashboard` | Metrics & recent quotes |
-| `/quotes/new` | Mobile-first quote builder |
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for development guidelines.
 
----
-
-## 🚢 Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-1. Push code to GitHub
-2. Import repository in Vercel
-3. Add environment variables
-4. Deploy!
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
 ---
 
-## 📝 License
+## � License
 
 MIT License
 
 ---
 
+## 🙏 Acknowledgments
+
+- **Groq** - Lightning-fast AI inference
+- **Supabase** - Backend infrastructure
+- **Vercel** - Hosting & deployment
+- **Shadcn/ui** - Beautiful component library
+
+---
+
 **Built with ❤️ for hardworking contractors who deserve better tools.**
+
+For questions or support, see [DEVELOPMENT.md](./DEVELOPMENT.md) or create an issue.

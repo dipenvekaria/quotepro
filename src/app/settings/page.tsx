@@ -81,7 +81,7 @@ export default function SettingsPage() {
     }
   }, [role, roleLoading, router])
   
-  // Load user data on mount
+  // Load user data on mount - don't wait for role check
   useEffect(() => {
     const loadUserData = async () => {
       setIsLoading(true)
@@ -147,19 +147,8 @@ export default function SettingsPage() {
     loadUserData()
   }, [])
   
-  // Show loading while checking permissions
-  if (roleLoading) {
-    return (
-      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <div className="text-white">Loading...</div>
-      </div>
-    )
-  }
-  
-  // Don't render anything if user doesn't have permission (will redirect)
-  if (!hasPermission(role, 'VIEW_SETTINGS')) {
-    return null
-  }
+  // Show page immediately - redirect happens in background if needed
+  // Don't block rendering on role check
 
   // Reusable function to reload all user data
   const reloadUserData = async () => {

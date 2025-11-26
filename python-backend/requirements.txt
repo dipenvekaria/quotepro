@@ -1,0 +1,23 @@
+# QuotePro Python Backend Dependencies
+
+# FastAPI and server
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.19
+
+# Environment variables
+python-dotenv==1.0.1
+
+# AI/ML
+groq==0.13.0
+
+# Database
+supabase==2.10.0
+
+# Data validation
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# HTTP requests - Compatible with groq and supabase
+httpx>=0.26,<0.28
+requests==2.32.3

@@ -14,7 +14,7 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createClient()
-  const { role } = useUserRole()
+  const { role, loading } = useUserRole()
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -33,9 +33,10 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
   ]
 
   // Combine nav items based on role
+  // Show settings link optimistically if still loading
   const navItems = [
     ...baseNavItems,
-    ...(hasPermission(role, 'VIEW_SETTINGS') ? adminNavItems : [])
+    ...(loading || hasPermission(role, 'VIEW_SETTINGS') ? adminNavItems : [])
   ]
 
   const isActive = (href: string) => pathname === href
