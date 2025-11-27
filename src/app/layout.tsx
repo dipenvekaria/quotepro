@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -17,12 +17,15 @@ export const metadata: Metadata = {
   title: "QuoteBuilder Pro - Win more jobs in seconds, not minutes",
   description: "Professional quote builder for home service contractors. HVAC, plumbing, electrical, roofing, and more.",
   manifest: "/manifest.json",
-  themeColor: "#0F172A",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "QuoteBuilder Pro",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0F172A",
 };
 
 export default function RootLayout({

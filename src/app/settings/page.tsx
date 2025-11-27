@@ -1,9 +1,9 @@
 // @ts-nocheck - Supabase type generation pending
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useUserRole } from '@/hooks/use-user-role'
 import { hasPermission } from '@/lib/roles'
 import { Button } from '@/components/ui/button'
@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
-import { Wrench, Building2, Package, FileText, User, CreditCard, Users } from 'lucide-react'
+import { Wrench, Building2, Package, FileText, User, CreditCard, Users, Upload, Download, Search, Filter, X } from 'lucide-react'
 import { DashboardNav } from '@/components/dashboard-nav'
 import {
   Dialog,
@@ -28,8 +28,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function SettingsPage() {
+function SettingsPageContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { role, loading: roleLoading } = useUserRole()
   const supabase = createClient()
   
@@ -65,13 +66,46 @@ export default function SettingsPage() {
   const [isInviting, setIsInviting] = useState(false)
   
   // New pricing item
-  const [newPricingItem, setNewPricingItem] = useState({ name: '', price: '', category: 'Labor' })
+  const [newPricingItem, setNewPricingItem] = useState({ name: '', price: '', category: 'Labor', description: '' })
   const [editingItem, setEditingItem] = useState(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [itemToDelete, setItemToDelete] = useState(null)
   
-  // Active tab state
-  const [activeTab, setActiveTab] = useState('company')
+  // Bulk upload state
+  const [uploadFile, setUploadFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadMode, setUploadMode] = useState<'replace' | 'append'>('replace')
+  
+  // Column mapping state
+  const [showMappingDialog, setShowMappingDialog] = useState(false)
+  const [filePreview, setFilePreview] = useState<any>(null)
+  const [columnMapping, setColumnMapping] = useState<any>({})
+  const [isLoadingPreview, setIsLoadingPreview] = useState(false)
+  
+  // Filtering and search state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  
+  // Active tab state - read from URL or default to 'company'
+  const [activeTab, setActiveTab] = useState(() => {
+    return searchParams.get('tab') || 'company'
+  })
+  
+  // Update URL when tab changes
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId)
+    const url = new URL(window.location.href)
+    url.searchParams.set('tab', tabId)
+    window.history.pushState({}, '', url)
+  }
+  
+  // Sync tab from URL on mount and when URL changes
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab && tab !== activeTab) {
+      setActiveTab(tab)
+    }
+  }, [searchParams, activeTab])
   
   // Redirect non-admins to dashboard
   useEffect(() => {
@@ -95,7 +129,7 @@ export default function SettingsPage() {
         setUser(user)
         setEmail(user.email)
 
-        const { data: companyData } = await supabase
+        const { data: companyData, error: companyError } = await supabase
           .from('companies')
           .select('*')
           .eq('user_id', user.id)
@@ -113,7 +147,7 @@ export default function SettingsPage() {
           setDefaultValidDays(companyData.default_valid_days || '30')
         }
 
-        const { data: pricing } = await supabase
+        const { data: pricing, error: pricingError } = await supabase
           .from('pricing_items')
           .select('*')
           .eq('company_id', companyData.id)
@@ -152,10 +186,15 @@ export default function SettingsPage() {
 
   // Reusable function to reload all user data
   const reloadUserData = async () => {
+    console.log('🔄 Starting reloadUserData...')
     setIsLoading(true)
     try {
+      console.log('🔐 Getting user from Supabase auth...')
       const { data: { user } } = await supabase.auth.getUser()
+      console.log('👤 User result:', { hasUser: !!user, userId: user?.id })
+      
       if (!user) {
+        console.log('❌ No user found, redirecting to login')
         router.push('/login')
         return
       }
@@ -163,11 +202,19 @@ export default function SettingsPage() {
       setUser(user)
       setEmail(user.email)
 
-      const { data: companyData } = await supabase
+      console.log('🏢 Querying company data...')
+      const { data: companyData, error: companyError } = await supabase
         .from('companies')
         .select('*')
         .eq('user_id', user.id)
         .single()
+
+      console.log('🏢 Company query:', {
+        userId: user.id,
+        companyId: companyData?.id,
+        hasCompany: !!companyData,
+        error: companyError
+      })
 
       if (companyData) {
         setCompany(companyData)
@@ -181,12 +228,19 @@ export default function SettingsPage() {
         setDefaultValidDays(companyData.default_valid_days || '30')
       }
 
-      const { data: pricing } = await supabase
+      const { data: pricing, error: pricingError } = await supabase
         .from('pricing_items')
         .select('*')
         .eq('company_id', companyData.id)
         .order('category', { ascending: true })
         .order('name', { ascending: true })
+
+      console.log('📊 Pricing items query:', { 
+        companyId: companyData.id, 
+        count: pricing?.length || 0,
+        error: pricingError,
+        sample: pricing?.[0]
+      })
 
       setPricingItems(pricing || [])
       
@@ -329,6 +383,7 @@ export default function SettingsPage() {
         .insert({
           company_id: company.id,
           name: newPricingItem.name,
+          description: newPricingItem.description || null,
           price: parseFloat(newPricingItem.price),
           category: newPricingItem.category,
           is_default: false,
@@ -336,7 +391,7 @@ export default function SettingsPage() {
 
       if (error) throw error
       toast.success('Pricing item added')
-      setNewPricingItem({ name: '', price: '', category: 'Labor' })
+      setNewPricingItem({ name: '', price: '', category: 'Labor', description: '' })
       reloadUserData()
     } catch (error) {
       toast.error(error.message)
@@ -352,6 +407,7 @@ export default function SettingsPage() {
         .from('pricing_items')
         .update({
           name: item.name,
+          description: item.description || null,
           price: parseFloat(item.price),
           category: item.category,
         })
@@ -456,14 +512,191 @@ export default function SettingsPage() {
     await supabase.auth.signOut()
     router.push('/login')
   }
+  
+  // Bulk upload handlers
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type
+      const validTypes = [
+        'text/csv',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ]
+      if (!validTypes.includes(file.type) && !file.name.match(/\.(csv|xlsx|xls)$/i)) {
+        toast.error('Please upload a CSV or Excel file (.csv, .xlsx, .xls)')
+        return
+      }
+      setUploadFile(file)
+      
+      // Automatically preview the file
+      await handlePreviewFile(file)
+    }
+  }
+  
+  const handlePreviewFile = async (file: File) => {
+    setIsLoadingPreview(true)
+    try {
+      console.log('📁 Previewing file:', file.name, file.type, file.size)
+      
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      console.log('🚀 Sending preview request via Next.js API...')
+      const response = await fetch('/api/pricing/preview', {
+        method: 'POST',
+        body: formData,
+      })
+      
+      console.log('📊 Response status:', response.status, response.statusText)
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('❌ Backend error response:', errorText)
+        
+        let errorMessage = 'Failed to preview file'
+        try {
+          const errorData = JSON.parse(errorText)
+          errorMessage = errorData.detail || errorMessage
+        } catch {
+          errorMessage = errorText || errorMessage
+        }
+        throw new Error(errorMessage)
+      }
+      
+      const data = await response.json()
+      console.log('✅ Preview data received:', data)
+      
+      // Set preview data and suggested mapping
+      setFilePreview(data)
+      setColumnMapping(data.suggested_mapping)
+      setShowMappingDialog(true)
+      
+    } catch (error: any) {
+      console.error('❌ Preview error:', error)
+      
+      // Better error messages
+      let errorMessage = 'Failed to preview file'
+      if (error.message === 'Failed to fetch') {
+        errorMessage = 'Cannot connect to backend server. Is it running on port 8000?'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
+      toast.error(errorMessage)
+    } finally {
+      setIsLoadingPreview(false)
+    }
+  }
+  
+  const handleBulkUpload = async () => {
+    if (!uploadFile) {
+      toast.error('Please select a file to upload')
+      return
+    }
+    
+    if (!company?.id) {
+      toast.error('Company ID not found')
+      return
+    }
+    
+    // Validate required mappings
+    if (!columnMapping.name || !columnMapping.price) {
+      toast.error('Please map at least Name and Price columns')
+      return
+    }
+    
+    setIsUploading(true)
+    setShowMappingDialog(false)
+    
+    try {
+      const formData = new FormData()
+      formData.append('file', uploadFile)
+      formData.append('company_id', company.id)
+      formData.append('column_mapping', JSON.stringify(columnMapping))
+      
+      const endpoint = uploadMode === 'replace' 
+        ? '/api/pricing/bulk-upload'
+        : '/api/pricing/bulk-append'
+      
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.detail?.message || data.detail || 'Upload failed')
+      }
+      
+      toast.success(`Successfully uploaded ${data.items_count} items!`)
+      setUploadFile(null)
+      setFilePreview(null)
+      setColumnMapping({})
+      
+      // Reload pricing items
+      await reloadUserData()
+      
+      // Force a small delay to ensure UI updates
+      setTimeout(() => {
+        toast.success(`${data.items_count} items now visible in catalog below`)
+      }, 500)
+      
+    } catch (error: any) {
+      console.error('Upload error:', error)
+      toast.error(error.message || 'Failed to upload pricing items')
+    } finally {
+      setIsUploading(false)
+    }
+  }
+  
+  const handleDownloadTemplate = async (format: 'csv' | 'excel') => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/pricing/download-template?format=${format}`)
+      
+      if (!response.ok) {
+        throw new Error('Failed to download template')
+      }
+      
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = format === 'csv' ? 'pricing_template.csv' : 'pricing_template.xlsx'
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      toast.success(`Template downloaded successfully`)
+    } catch (error: any) {
+      console.error('Download error:', error)
+      toast.error('Failed to download template')
+    }
+  }
 
-  const groupedPricingItems = pricingItems.reduce((acc, item) => {
+  // Filter pricing items based on search and category
+  const filteredPricingItems = pricingItems.filter(item => {
+    const matchesSearch = searchQuery === '' || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+    
+    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory
+    
+    return matchesSearch && matchesCategory
+  })
+
+  const groupedPricingItems = filteredPricingItems.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = []
     }
     acc[item.category].push(item)
     return acc
   }, {})
+  
+  // Get unique categories for filter dropdown
+  const allCategories = [...new Set(pricingItems.map(item => item.category))].sort()
 
   if (isLoading) {
     return (
@@ -517,7 +750,7 @@ export default function SettingsPage() {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveTab(item.id)}
+                    onClick={() => handleTabChange(item.id)}
                     className={`
                       flex items-center justify-center gap-1.5 px-3 sm:px-4 py-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors flex-shrink-0
                       ${isActive 
@@ -685,6 +918,17 @@ export default function SettingsPage() {
                       </select>
                     </div>
                   </div>
+                  <div className="mt-4">
+                    <Label htmlFor="itemDescription">Description (optional)</Label>
+                    <Textarea
+                      id="itemDescription"
+                      value={newPricingItem.description}
+                      onChange={(e) => setNewPricingItem({ ...newPricingItem, description: e.target.value })}
+                      placeholder="Add details to help AI generate better quotes..."
+                      className="w-full resize-none"
+                      rows={2}
+                    />
+                  </div>
                   <Button
                     onClick={handleAddPricingItem}
                     disabled={isSaving}
@@ -695,23 +939,231 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
+              {/* Bulk Upload Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Your Pricing Catalog ({pricingItems.length} items)</CardTitle>
+                  <CardTitle>Bulk Upload Pricing Items</CardTitle>
                   <CardDescription>
-                    Manage your pricing items by category
+                    Upload CSV or Excel files with any column names - we'll help you map them!
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  {Object.keys(groupedPricingItems).length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
-                      No pricing items yet. Add your first item above.
+                <CardContent className="space-y-4">
+                  {/* Upload Mode Selection */}
+                  <div className="space-y-2">
+                    <Label>Upload Mode</Label>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant={uploadMode === 'replace' ? 'default' : 'outline'}
+                        onClick={() => setUploadMode('replace')}
+                        className={uploadMode === 'replace' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
+                      >
+                        � Replace All
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={uploadMode === 'append' ? 'default' : 'outline'}
+                        onClick={() => setUploadMode('append')}
+                        className={uploadMode === 'append' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
+                      >
+                        ➕ Add to Existing
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {uploadMode === 'replace' 
+                        ? '⚠️ Replace All: Deletes all existing items and uploads new ones'
+                        : '✅ Add to Existing: Keeps current items and adds new ones from file'}
                     </p>
+                  </div>
+
+                  {/* File Upload */}
+                  <div className="space-y-2">
+                    <Label htmlFor="bulkUpload">Select Your File</Label>
+                    <div className="flex items-center gap-4">
+                      <label
+                        htmlFor="bulkUpload"
+                        className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-[#FF6200] transition-colors flex-1 bg-gray-50 dark:bg-gray-800"
+                      >
+                        {uploadFile ? (
+                          <span className="text-sm font-medium">
+                            📎 {uploadFile.name} ({(uploadFile.size / 1024).toFixed(1)} KB)
+                          </span>
+                        ) : (
+                          <span className="text-sm">📁 Click to select CSV or Excel file</span>
+                        )}
+                      </label>
+                      <input
+                        id="bulkUpload"
+                        type="file"
+                        accept=".csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
+                        onChange={handleFileSelect}
+                        className="hidden"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Supports: CSV (.csv), Excel (.xlsx, .xls) • Any column names work!
+                    </p>
+                  </div>
+
+                  {/* Loading State */}
+                  {isLoadingPreview && (
+                    <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg text-center">
+                      <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">📊 Analyzing your file...</p>
+                    </div>
+                  )}
+
+                  {/* Uploading State */}
+                  {isUploading && (
+                    <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg text-center">
+                      <p className="text-sm text-green-700 dark:text-green-300 font-medium">⬆️ Uploading items...</p>
+                    </div>
+                  )}
+
+                  {/* Feature Highlights */}
+                  <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
+                      <span className="text-lg">✨</span> Smart Column Mapping
+                    </h4>
+                    <ul className="text-xs space-y-2 text-muted-foreground">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                        <span><strong>Upload any file</strong> - Works with QuickBooks, ServiceTitan, Excel, Google Sheets exports</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                        <span><strong>Auto-detection</strong> - We automatically detect your column headers and suggest mappings</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                        <span><strong>Visual preview</strong> - See first 5 rows before uploading to verify your data</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                        <span><strong>Map your columns</strong> - Simply match your columns to: Name, Price, Category, Description</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600 dark:text-blue-400 font-bold">→</span>
+                        <span className="italic">No templates needed - use your existing files!</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Optional: Templates for those who want them */}
+                  <details className="mt-4">
+                    <summary className="text-sm text-muted-foreground cursor-pointer hover:text-foreground">
+                      📥 Need a sample file? Download template (optional)
+                    </summary>
+                    <div className="mt-3 flex gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownloadTemplate('csv')}
+                        className="flex-1"
+                      >
+                        📄 CSV Template
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownloadTemplate('excel')}
+                        className="flex-1"
+                      >
+                        📊 Excel Template
+                      </Button>
+                    </div>
+                  </details>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          Your Pricing Catalog
+                          <Badge variant="secondary">{pricingItems.length} total</Badge>
+                          {filteredPricingItems.length !== pricingItems.length && (
+                            <Badge variant="outline">{filteredPricingItems.length} shown</Badge>
+                          )}
+                        </CardTitle>
+                        <CardDescription className="mt-1">
+                          Search and manage your pricing items by category
+                        </CardDescription>
+                      </div>
+                    </div>
+                    
+                    {/* Search and Filter Bar */}
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Search by name or description..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="pl-10 pr-10"
+                        />
+                        {searchQuery && (
+                          <button
+                            onClick={() => setSearchQuery('')}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+                      
+                      <div className="sm:w-64">
+                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                          <SelectTrigger>
+                            <div className="flex items-center gap-2">
+                              <Filter className="h-4 w-4" />
+                              <SelectValue placeholder="All Categories" />
+                            </div>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All Categories</SelectItem>
+                            {allCategories.map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                </CardHeader>
+                
+                <CardContent>
+                  {pricingItems.length === 0 ? (
+                    <div className="text-center py-12 border-2 border-dashed rounded-lg">
+                      <Package className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                      <p className="text-muted-foreground mb-2">No pricing items yet</p>
+                      <p className="text-sm text-muted-foreground">Add items manually below or bulk upload from a file</p>
+                    </div>
+                  ) : filteredPricingItems.length === 0 ? (
+                    <div className="text-center py-12 border-2 border-dashed rounded-lg">
+                      <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                      <p className="text-muted-foreground mb-2">No items match your filters</p>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          setSearchQuery('')
+                          setSelectedCategory('all')
+                        }}
+                      >
+                        Clear Filters
+                      </Button>
+                    </div>
                   ) : (
-                    <div className="space-y-6">
+                    <div className="max-h-[600px] overflow-y-auto pr-2 space-y-6">
                       {Object.entries(groupedPricingItems).map(([category, items]) => (
                         <div key={category}>
-                          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
                             {category}
                             <Badge variant="secondary">{items.length}</Badge>
                           </h3>
@@ -722,20 +1174,29 @@ export default function SettingsPage() {
                                 className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors gap-4"
                               >
                                 {editingItem?.id === item.id ? (
-                                  <div className="flex-1 space-y-3 md:space-y-0 md:grid md:grid-cols-3 md:gap-4">
-                                    <Input
-                                      value={editingItem.name}
-                                      onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                                      placeholder="Item name"
-                                      className="w-full"
-                                    />
-                                    <Input
-                                      type="number"
-                                      step="0.01"
-                                      value={editingItem.price}
-                                      onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
-                                      placeholder="Price"
-                                      className="w-full"
+                                  <div className="flex-1 space-y-3">
+                                    <div className="grid md:grid-cols-2 gap-3">
+                                      <Input
+                                        value={editingItem.name}
+                                        onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+                                        placeholder="Item name"
+                                        className="w-full"
+                                      />
+                                      <Input
+                                        type="number"
+                                        step="0.01"
+                                        value={editingItem.price}
+                                        onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
+                                        placeholder="Price"
+                                        className="w-full"
+                                      />
+                                    </div>
+                                    <Textarea
+                                      value={editingItem.description || ''}
+                                      onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
+                                      placeholder="Description (optional) - helps AI generate better quotes"
+                                      className="w-full resize-none"
+                                      rows={2}
                                     />
                                     <div className="flex gap-2">
                                       <Button
@@ -1165,7 +1626,182 @@ export default function SettingsPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Column Mapping Dialog */}
+        <Dialog open={showMappingDialog} onOpenChange={setShowMappingDialog}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Map Your Columns</DialogTitle>
+              <DialogDescription>
+                {filePreview && (
+                  <>
+                    Found {filePreview.total_rows} rows in "{filePreview.filename}". 
+                    Map your file columns to our database fields below.
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+
+            {filePreview && (
+              <div className="space-y-6">
+                {/* Column Mapping */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-sm">Column Mapping</h3>
+                  
+                  {/* Name Mapping */}
+                  <div className="grid grid-cols-2 gap-4 items-center">
+                    <Label>Item Name (Required)</Label>
+                    <Select 
+                      value={columnMapping.name || ''} 
+                      onValueChange={(value) => setColumnMapping({...columnMapping, name: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select column for name..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filePreview.columns.map((col: string) => (
+                          <SelectItem key={col} value={col}>{col}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Price Mapping */}
+                  <div className="grid grid-cols-2 gap-4 items-center">
+                    <Label>Price (Required)</Label>
+                    <Select 
+                      value={columnMapping.price || ''} 
+                      onValueChange={(value) => setColumnMapping({...columnMapping, price: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select column for price..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {filePreview.columns.map((col: string) => (
+                          <SelectItem key={col} value={col}>{col}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Category Mapping */}
+                  <div className="grid grid-cols-2 gap-4 items-center">
+                    <Label>Category (Optional)</Label>
+                    <Select 
+                      value={columnMapping.category || '__none__'} 
+                      onValueChange={(value) => setColumnMapping({...columnMapping, category: value === '__none__' ? null : value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select column for category..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__none__">-- Skip this field --</SelectItem>
+                        {filePreview.columns.map((col: string) => (
+                          <SelectItem key={col} value={col}>{col}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Description Mapping */}
+                  <div className="grid grid-cols-2 gap-4 items-center">
+                    <Label>Description (Optional)</Label>
+                    <Select 
+                      value={columnMapping.description || '__none__'} 
+                      onValueChange={(value) => setColumnMapping({...columnMapping, description: value === '__none__' ? null : value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select column for description..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="__none__">-- Skip this field --</SelectItem>
+                        {filePreview.columns.map((col: string) => (
+                          <SelectItem key={col} value={col}>{col}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Data Preview */}
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-sm">Data Preview (first 5 rows)</h3>
+                  <div className="overflow-x-auto border rounded-lg">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-100 dark:bg-gray-800">
+                        <tr>
+                          {filePreview.columns.map((col: string) => (
+                            <th key={col} className="px-3 py-2 text-left font-medium">
+                              {col}
+                              {col === columnMapping.name && ' → Name'}
+                              {col === columnMapping.price && ' → Price'}
+                              {col === columnMapping.category && ' → Category'}
+                              {col === columnMapping.description && ' → Description'}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filePreview.preview_data.map((row: any, idx: number) => (
+                          <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800">
+                            {filePreview.columns.map((col: string) => (
+                              <td key={col} className="px-3 py-2">
+                                {String(row[col] || '')}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Validation Warning */}
+                {(!columnMapping.name || !columnMapping.price) && (
+                  <div className="p-3 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                      ⚠️ Please map at least the <strong>Name</strong> and <strong>Price</strong> columns to continue.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <DialogFooter className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowMappingDialog(false)
+                  setUploadFile(null)
+                  setFilePreview(null)
+                  setColumnMapping({})
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleBulkUpload}
+                disabled={!columnMapping.name || !columnMapping.price || isUploading}
+                className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+              >
+                {isUploading ? 'Uploading...' : `Upload ${filePreview?.total_rows || 0} Items`}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
+  )
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <p className="text-muted-foreground">Loading settings...</p>
+      </div>
+    }>
+      <SettingsPageContent />
+    </Suspense>
   )
 }

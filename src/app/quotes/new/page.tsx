@@ -8,11 +8,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X } from 'lucide-react'
+import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X, Bot } from 'lucide-react'
 import Link from 'next/link'
 import { DashboardNav } from '@/components/dashboard-nav'
+import { AuditTrail } from '@/components/audit-trail'
 
 interface QuoteItem {
   name: string
@@ -64,6 +65,9 @@ export default function NewQuotePage() {
     unit_price: 0,
     total: 0,
   })
+  const [auditLogs, setAuditLogs] = useState<any[]>([])
+  const [aiUpdatePrompt, setAiUpdatePrompt] = useState('')
+  const [isUpdatingWithAI, setIsUpdatingWithAI] = useState(false)
   const router = useRouter()
   const supabase = createClient()
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -73,6 +77,7 @@ export default function NewQuotePage() {
     loadCompany()
     if (quoteId) {
       loadExistingQuote(quoteId)
+      loadAuditLogs(quoteId)
     }
   }, [quoteId])
   
@@ -108,9 +113,11 @@ export default function NewQuotePage() {
               is_upsell: item.is_upsell
             })),
             options: [],
-            subtotal: quote.subtotal,
-            tax_amount: quote.tax_amount,
-            total: quote.total
+            subtotal: quote.subtotal || 0,
+            tax_rate: quote.tax_rate || 0,
+            tax_amount: quote.tax_amount || 0,
+            total: quote.total || 0,
+            notes: quote.notes || ''
           })
         }
       }
@@ -119,6 +126,178 @@ export default function NewQuotePage() {
       toast.error('Failed to load quote')
     } finally {
       setIsLoadingQuote(false)
+    }
+  }
+
+  const loadAuditLogs = async (id: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('quote_audit_log')
+        .select('*')
+        .eq('quote_id', id)
+        .order('created_at', { ascending: false })
+      
+      if (error) throw error
+      setAuditLogs(data || [])
+    } catch (error) {
+      console.error('Error loading audit logs:', error)
+    }
+  }
+
+  const handleUpdateWithAI = async () => {
+    if (!aiUpdatePrompt.trim()) {
+      toast.error('Please enter a request')
+      return
+    }
+
+    const currentQuoteId = savedQuoteId || quoteId
+    if (!currentQuoteId) {
+      toast.error('Please save the quote first')
+      return
+    }
+
+    setIsUpdatingWithAI(true)
+    try {
+      const response = await fetch('/api/update-quote-with-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          quote_id: currentQuoteId,
+          company_id: companyId,
+          user_prompt: aiUpdatePrompt,
+        })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to update quote')
+      }
+
+      const data = await response.json()
+      
+      // Update quote items with new data - preserve tax_rate
+      const updatedQuote = {
+        ...generatedQuote,
+        line_items: data.line_items,
+        subtotal: data.subtotal,
+        tax_rate: data.tax_rate || generatedQuote.tax_rate || 0,
+        total: data.total,
+      }
+      
+      setGeneratedQuote(updatedQuote)
+
+      // Save updated items to database
+      const subtotal = Number(updatedQuote.subtotal) || 0
+      const taxRate = Number(updatedQuote.tax_rate) || 0
+      const taxAmount = subtotal * (taxRate / 100)
+      const total = Number(updatedQuote.total) || (subtotal + taxAmount)
+      
+      // Update the quote in database
+      const { error: quoteError } = await supabase
+        .from('quotes')
+        .update({
+          customer_name: customerName,
+          customer_email: customerEmail || null,
+          customer_phone: customerPhone || null,
+          customer_address: customerAddress || null,
+          subtotal: subtotal,
+          tax_rate: taxRate,
+          tax_amount: taxAmount,
+          total: total,
+          notes: updatedQuote.notes || null,
+        })
+        .eq('id', currentQuoteId)
+
+      if (quoteError) throw quoteError
+
+      // Delete existing quote items
+      await supabase
+        .from('quote_items')
+        .delete()
+        .eq('quote_id', currentQuoteId)
+
+      // Insert updated quote items
+      const items = updatedQuote.line_items.map((item, index) => ({
+        quote_id: currentQuoteId,
+        name: item.name,
+        description: item.description || null,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        total: item.total,
+        option_tier: item.option_tier || null,
+        is_upsell: item.is_upsell || false,
+        sort_order: index,
+      }))
+
+      await supabase
+        .from('quote_items')
+        .insert(items)
+      
+      // Reload audit logs
+      await loadAuditLogs(currentQuoteId)
+      
+      setAiUpdatePrompt('')
+      toast.success('Quote updated')
+    } catch (error) {
+      console.error('AI update error:', error)
+      toast.error(error instanceof Error ? error.message : 'Failed to update quote')
+    } finally {
+      setIsUpdatingWithAI(false)
+    }
+  }
+
+  // Recalculate quote totals when customer address changes
+  const recalculateQuoteForAddress = async (newAddress: string) => {
+    if (!generatedQuote || !companyId || !newAddress) return
+
+    try {
+      // Call Python backend to get new tax rate
+      const response = await fetch('http://localhost:8001/api/calculate-tax-rate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_id: companyId,
+          customer_address: newAddress,
+        }),
+      })
+
+      if (!response.ok) {
+        console.error('Failed to fetch new tax rate')
+        return
+      }
+
+      const { tax_rate } = await response.json()
+      
+      // Recalculate totals with new tax rate
+      const subtotal = generatedQuote.line_items.reduce((sum, item) => sum + item.total, 0)
+      const total = subtotal + (subtotal * (tax_rate / 100))
+      
+      setGeneratedQuote({
+        ...generatedQuote,
+        tax_rate,
+        subtotal,
+        total,
+      })
+
+      // If quote is saved, update it in the database
+      if (savedQuoteId || quoteId) {
+        const { error: updateError } = await supabase
+          .from('quotes')
+          .update({
+            customer_address: newAddress,
+            tax_rate,
+            total,
+          })
+          .eq('id', savedQuoteId || quoteId)
+
+        if (updateError) {
+          console.error('Failed to update quote:', updateError)
+        } else {
+          toast.success(`Tax rate updated to ${tax_rate.toFixed(2)}%`)
+        }
+      }
+    } catch (error) {
+      console.error('Error recalculating quote:', error)
     }
   }
 
@@ -261,9 +440,10 @@ export default function NewQuotePage() {
     setEditedItem({ ...generatedQuote.line_items[index] })
   }
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if (!generatedQuote || editingItemIndex === null || !editedItem) return
     
+    const oldItem = generatedQuote.line_items[editingItemIndex]
     const updatedItems = [...generatedQuote.line_items]
     // Recalculate total for the item
     editedItem.total = editedItem.quantity * editedItem.unit_price
@@ -280,6 +460,24 @@ export default function NewQuotePage() {
       total,
     })
     
+    // Log to audit trail
+    if (savedQuoteId || quoteId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: savedQuoteId || quoteId,
+          action_type: 'item_modified',
+          description: `Modified "${editedItem.name}"`,
+          changes_made: {
+            old: oldItem,
+            new: editedItem,
+          },
+          created_by: user.id,
+        })
+        await loadAuditLogs(savedQuoteId || quoteId)
+      }
+    }
+    
     setEditingItemIndex(null)
     setEditedItem(null)
     toast.success('Item updated')
@@ -290,9 +488,10 @@ export default function NewQuotePage() {
     setEditedItem(null)
   }
 
-  const handleDeleteItem = (index: number) => {
+  const handleDeleteItem = async (index: number) => {
     if (!generatedQuote) return
     
+    const deletedItem = generatedQuote.line_items[index]
     const updatedItems = generatedQuote.line_items.filter((_, i) => i !== index)
     
     // Recalculate quote totals
@@ -305,6 +504,23 @@ export default function NewQuotePage() {
       subtotal,
       total,
     })
+    
+    // Log to audit trail
+    if (savedQuoteId || quoteId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: savedQuoteId || quoteId,
+          action_type: 'item_deleted',
+          description: `Deleted "${deletedItem.name}"`,
+          changes_made: {
+            removed_items: [deletedItem],
+          },
+          created_by: user.id,
+        })
+        await loadAuditLogs(savedQuoteId || quoteId)
+      }
+    }
     
     toast.success('Item removed')
   }
@@ -320,7 +536,7 @@ export default function NewQuotePage() {
     })
   }
 
-  const handleSaveNewItem = () => {
+  const handleSaveNewItem = async () => {
     if (!generatedQuote || !newItem.name || newItem.unit_price <= 0) {
       toast.error('Please enter item name and price')
       return
@@ -341,6 +557,23 @@ export default function NewQuotePage() {
       subtotal,
       total,
     })
+    
+    // Log to audit trail
+    if (savedQuoteId || quoteId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: savedQuoteId || quoteId,
+          action_type: 'item_added',
+          description: `Added "${newItem.name}"`,
+          changes_made: {
+            added_items: [newItem],
+          },
+          created_by: user.id,
+        })
+        await loadAuditLogs(savedQuoteId || quoteId)
+      }
+    }
     
     setIsAddingItem(false)
     toast.success('Item added')
@@ -413,9 +646,28 @@ export default function NewQuotePage() {
 
       if (itemsError) throw itemsError
 
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          // @ts-ignore
+          quote_id: quote.id,
+          action_type: 'ai_generation',
+          user_prompt: description,
+          description: `Quote created with ${generatedQuote.line_items.length} items`,
+          changes_made: {
+            added_items: generatedQuote.line_items,
+          },
+          created_by: user.id,
+        })
+      }
+
       toast.success('Quote saved successfully!')
       // @ts-ignore
       setSavedQuoteId(quote.id)
+      // Reload audit logs
+      // @ts-ignore
+      await loadAuditLogs(quote.id)
       // Don't redirect immediately - allow user to send the quote
     } catch (error: unknown) {
       const err = error as { message: string }
@@ -624,6 +876,16 @@ export default function NewQuotePage() {
                   setShowSuggestions(true)
                 }}
                 onFocus={() => setShowSuggestions(true)}
+                onBlur={async (e) => {
+                  // Small delay to allow click on suggestions
+                  setTimeout(async () => {
+                    setShowSuggestions(false)
+                    // Recalculate if editing existing quote and address changed
+                    if (generatedQuote && (savedQuoteId || quoteId) && e.target.value) {
+                      await recalculateQuoteForAddress(e.target.value)
+                    }
+                  }, 200)
+                }}
                 className="h-12"
                 autoComplete="off"
               />
@@ -636,10 +898,16 @@ export default function NewQuotePage() {
                       key={index}
                       type="button"
                       className="w-full text-left px-4 py-3 hover:bg-accent/10 border-b border-border last:border-b-0 transition-colors"
-                      onClick={() => {
-                        setCustomerAddress(suggestion.display_name)
+                      onClick={async () => {
+                        const newAddress = suggestion.display_name
+                        setCustomerAddress(newAddress)
                         setShowSuggestions(false)
                         setAddressSuggestions([])
+                        
+                        // Recalculate quote if we have an existing quote
+                        if (generatedQuote && (savedQuoteId || quoteId)) {
+                          await recalculateQuoteForAddress(newAddress)
+                        }
                       }}
                     >
                       <div className="text-sm font-medium">{suggestion.display_name}</div>
@@ -651,75 +919,77 @@ export default function NewQuotePage() {
           </CardContent>
         </Card>
 
-        {/* Job Description */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Job Description</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="description">What needs to be done? *</Label>
-              <Textarea
-                id="description"
-                placeholder={`Examples:
+        {/* Job Description - Only show when creating new quote */}
+        {!quoteId && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Job Description</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="description">What needs to be done? *</Label>
+                <Textarea
+                  id="description"
+                  placeholder={`Examples:
 • Replace water heater with 50-gal Bradford White
 • Full system tune-up, found bad capacitor
 • Sewer line camera found roots at 42ft, need hydrojet + spot repair`}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="min-h-[150px] text-base"
-              />
-            </div>
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[150px] text-base"
+                />
+              </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                className="flex-1 h-14 text-base"
-                onMouseDown={startRecording}
-                onMouseUp={stopRecording}
-                onTouchStart={startRecording}
-                onTouchEnd={stopRecording}
-              >
-                {isRecording ? 'Recording...' : 'Hold to talk'}
-              </Button>
-
-              <label className="flex-1">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full h-14 text-base"
-                  asChild
+                  className="flex-1 h-14 text-base"
+                  onMouseDown={startRecording}
+                  onMouseUp={stopRecording}
+                  onTouchStart={startRecording}
+                  onTouchEnd={stopRecording}
                 >
-                  <div>
-                    Add Photos ({photos.length})
-                  </div>
+                  {isRecording ? 'Recording...' : 'Hold to talk'}
                 </Button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  capture="environment"
-                  onChange={handlePhotoUpload}
-                  className="hidden"
-                />
-              </label>
-            </div>
 
-            {photos.length > 0 && (
-              <div className="grid grid-cols-3 gap-2">
-                {photos.map((photo, index) => (
-                  <div key={index} className="aspect-square rounded-lg overflow-hidden border">
-                    <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
-                  </div>
-                ))}
+                <label className="flex-1">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full h-14 text-base"
+                    asChild
+                  >
+                    <div>
+                      Add Photos ({photos.length})
+                    </div>
+                  </Button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    capture="environment"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                </label>
               </div>
-            )}
-          </CardContent>
-        </Card>
 
-        {/* Generate Button */}
-        {!generatedQuote && (
+              {photos.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {photos.map((photo, index) => (
+                    <div key={index} className="aspect-square rounded-lg overflow-hidden border">
+                      <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Generate Button - Only show when creating new quote */}
+        {!generatedQuote && !quoteId && (
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !customerName || !description}
@@ -913,12 +1183,12 @@ export default function NewQuotePage() {
                   <span>${generatedQuote.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span>Tax ({generatedQuote.tax_rate}%):</span>
-                  <span>${(generatedQuote.subtotal * (generatedQuote.tax_rate / 100)).toFixed(2)}</span>
+                  <span>Tax ({generatedQuote.tax_rate?.toFixed(2) || '0.00'}%):</span>
+                  <span>${(generatedQuote.subtotal * ((generatedQuote.tax_rate || 0) / 100)).toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-lg font-bold text-accent">
+                <div className="flex justify-between text-lg font-bold border-t pt-2">
                   <span>Total:</span>
-                  <span>${generatedQuote.total.toFixed(2)}</span>
+                  <span className="text-[#FF6200]">${generatedQuote.total.toFixed(2)}</span>
                 </div>
               </div>
 
@@ -1004,6 +1274,58 @@ export default function NewQuotePage() {
             </CardContent>
           </Card>
         )}
+
+        {/* Update Quote */}
+        {(savedQuoteId || quoteId) && generatedQuote && (
+          <Card>
+            <CardContent className="pt-6 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="aiUpdatePrompt" className="text-base font-medium">
+                  Make Changes to Quote
+                </Label>
+                <p className="text-sm text-muted-foreground">
+                  Describe what you'd like to add, remove, or modify
+                </p>
+              </div>
+              <Textarea
+                id="aiUpdatePrompt"
+                placeholder='e.g., "add labor charges for 2 hours", "add HVAC equipment", "remove permit fee", "increase quantity of item X to 5"'
+                value={aiUpdatePrompt}
+                onChange={(e) => setAiUpdatePrompt(e.target.value)}
+                rows={3}
+                className="resize-none"
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleUpdateWithAI}
+                  disabled={isUpdatingWithAI || !aiUpdatePrompt.trim()}
+                  className="flex-1 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white h-11"
+                >
+                  {isUpdatingWithAI ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Bot className="mr-2 h-4 w-4" />
+                      Apply Changes
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Audit Trail */}
+        {(savedQuoteId || quoteId) && (
+          <AuditTrail 
+            quoteId={savedQuoteId || quoteId || ''} 
+            entries={auditLogs} 
+          />
+        )}
+
         </main>
       )}
       </div>

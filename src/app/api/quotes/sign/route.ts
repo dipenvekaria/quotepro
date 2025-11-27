@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { SignatureRequestApi } from '@dropbox/sign'
+import { createSignNowClient } from '@/lib/signnow'
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,30 +33,34 @@ export async function POST(request: NextRequest) {
     // @ts-ignore - Supabase typing
     const quoteData: any = quote
     
-    // Generate PDF URL
+    // Generate PDF 
     const pdfUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/quotes/${quote_id}/pdf`
-
-    // Create signature request with Dropbox Sign
-    const signatureRequestApi = new SignatureRequestApi()
-    signatureRequestApi.username = process.env.DROPBOX_SIGN_API_KEY!
-
-    const data = {
-      title: `Quote ${quoteData.quote_number} - ${quoteData.customer_name}`,
-      subject: `Your quote from ${company.name} is ready`,
-      message: 'Please review and sign this quote to proceed with the work.',
-      signers: [
-        {
-          emailAddress: quoteData.customer_email || 'customer@example.com',
-          name: quoteData.customer_name,
-          order: 0,
-        },
-      ],
-      fileUrl: [pdfUrl],
-      testMode: process.env.NODE_ENV !== 'production',
-    }
-
+    
     try {
-      const result = await signatureRequestApi.signatureRequestSend(data)
+      // Fetch the PDF as a buffer
+      const pdfResponse = await fetch(pdfUrl)
+      if (!pdfResponse.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+      const pdfBuffer = Buffer.from(await pdfResponse.arrayBuffer())
+
+      // Initialize SignNow client
+      const signNowClient = createSignNowClient()
+      
+      // Upload document to SignNow
+      const documentId = await signNowClient.uploadDocument(
+        pdfBuffer,
+        `Quote_${quoteData.quote_number}_${quoteData.customer_name}.pdf`
+      )
+      
+      // Create signing invitation
+      const inviteId = await signNowClient.createInvite(
+        documentId,
+        quoteData.customer_email || 'customer@example.com',
+        quoteData.customer_name,
+        `Quote ${quoteData.quote_number} from ${company.name}`,
+        `Hi ${quoteData.customer_name},\n\nPlease review and sign this quote to proceed with the work.\n\nTotal: $${quoteData.total.toLocaleString()}\n\nThank you,\n${company.name}`
+      )
       
       // Save signature request to database
       await supabase
@@ -64,23 +68,42 @@ export async function POST(request: NextRequest) {
         // @ts-ignore - Supabase typing
         .insert({
           quote_id,
-          // @ts-ignore
-          dropbox_signature_request_id: result.body.signature_request.signature_request_id,
+          signnow_document_id: documentId,
+          signnow_invite_id: inviteId,
           status: 'pending',
         })
 
+      // Update quote status to sent
+      await supabase
+        .from('quotes')
+        .update({
+          status: 'sent',
+          sent_at: new Date().toISOString(),
+        })
+        .eq('id', quote_id)
+
       return NextResponse.json({
         success: true,
-        // @ts-ignore
-        signature_request_id: result.body.signature_request.signature_request_id,
+        document_id: documentId,
+        invite_id: inviteId,
+        message: 'Quote sent for signature via SignNow',
       })
     } catch (signError) {
-      console.error('Dropbox Sign error:', signError)
+      console.error('SignNow error:', signError)
       
       // Fallback: just mark as sent without e-signature
+      await supabase
+        .from('quotes')
+        .update({
+          status: 'sent',
+          sent_at: new Date().toISOString(),
+        })
+        .eq('id', quote_id)
+
       return NextResponse.json({
         success: true,
-        message: 'Quote sent without e-signature (Dropbox Sign not configured)',
+        message: 'Quote sent without e-signature (SignNow not configured)',
+        error: signError instanceof Error ? signError.message : 'Unknown error',
       })
     }
   } catch (error) {

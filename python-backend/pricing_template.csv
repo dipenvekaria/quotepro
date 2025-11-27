@@ -1,0 +1,29 @@
+name,price,category,description
+AC System Tune-up,149.00,HVAC,Complete AC system inspection and tune-up
+Furnace Inspection,129.00,HVAC,Annual furnace inspection and cleaning
+Duct Cleaning,399.00,HVAC,Complete ductwork cleaning and sanitization
+Thermostat Installation,185.00,HVAC,Smart thermostat installation and setup
+AC Repair - Basic,250.00,HVAC,Basic AC repair (parts additional)
+Furnace Repair - Basic,275.00,HVAC,Basic furnace repair (parts additional)
+HVAC System Installation,5500.00,HVAC,Complete HVAC system installation
+Water Heater Installation,1450.00,Plumbing,Standard 50-gallon water heater installation
+Drain Cleaning,195.00,Plumbing,Main drain line cleaning
+Faucet Replacement,225.00,Plumbing,Kitchen or bathroom faucet replacement
+Toilet Repair,165.00,Plumbing,Standard toilet repair
+Pipe Repair,350.00,Plumbing,Pipe repair or replacement (per section)
+Sump Pump Installation,850.00,Plumbing,Sump pump installation with backup
+Electrical Panel Upgrade,2850.00,Electrical,200-amp electrical panel upgrade
+Outlet Installation,125.00,Electrical,New outlet installation
+Light Fixture Installation,195.00,Electrical,Standard light fixture installation
+Ceiling Fan Installation,275.00,Electrical,Ceiling fan installation with wiring
+Circuit Breaker Replacement,185.00,Electrical,Single circuit breaker replacement
+Roof Inspection,299.00,Roofing,Comprehensive roof inspection with report
+Roof Repair - Minor,450.00,Roofing,Minor roof repair (up to 10 sq ft)
+Gutter Cleaning,175.00,Roofing,Complete gutter cleaning and inspection
+Shingle Replacement,850.00,Roofing,Shingle replacement (per 100 sq ft)
+Service Call Fee,95.00,Service Fee,Standard service call fee (waived with repair)
+Emergency Service Fee,195.00,Service Fee,After-hours emergency service fee
+Trip Charge,75.00,Service Fee,Additional trip charge for remote locations
+Diagnostic Fee,125.00,Service Fee,System diagnostic fee
+Labor - Standard,85.00,Labor,Standard labor rate (per hour)
+Labor - Emergency,125.00,Labor,Emergency labor rate (per hour)
