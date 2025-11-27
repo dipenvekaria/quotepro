@@ -21,8 +21,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
           .eq('user_id', user.id)
           .single()
 
-        // Redirect to onboarding if new user, dashboard if returning
-        redirect(company ? '/dashboard' : '/onboarding')
+        // Redirect to onboarding if new user, home if returning
+        redirect(company ? '/home' : '/onboarding')
       }
     }
   }
