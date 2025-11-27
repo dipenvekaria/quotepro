@@ -32,85 +32,119 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient()
 
-    // Find the quote associated with this document
-    const { data: signedDoc, error: findError } = await supabase
-      .from('signed_documents')
-      .select('*, quotes(*)')
+    // Find the quote associated with this SignNow document
+    const { data: quotes, error: findError } = await supabase
+      .from('quotes')
+      .select('*')
       .eq('signnow_document_id', event.data.document_id)
-      .single() as { data: any; error: any }
+      .limit(1)
 
-    if (findError || !signedDoc) {
-      console.error('Document not found in database:', event.data.document_id)
+    if (findError || !quotes || quotes.length === 0) {
+      console.error('Quote not found for SignNow document:', event.data.document_id)
       return NextResponse.json(
-        { error: 'Document not found' },
+        { error: 'Quote not found' },
         { status: 404 }
       )
     }
 
+    const quote = quotes[0]
+
     // Handle different event types
     switch (event.event) {
       case 'document.signed':
-        // Update signed_documents table
+        // Update quote with signed status and timestamp
+        // @ts-ignore
         await supabase
-          .from('signed_documents')
+          .from('quotes')
+          // @ts-ignore
           .update({
             status: 'signed',
             signed_at: event.data.signed_at || new Date().toISOString(),
           })
-          .eq('id', signedDoc.id)
+          // @ts-ignore
+          .eq('id', quote.id)
 
-        // Update quote status
-        await supabase
-          .from('quotes')
-          .update({
-            status: 'signed',
+        // Log to audit trail
+        // @ts-ignore
+        await supabase.from('quote_audit_log').insert({
+          // @ts-ignore
+          quote_id: quote.id,
+          action: 'signed',
+          user_id: null, // Customer action
+          details: {
+            signer_email: event.data.signer_email,
             signed_at: event.data.signed_at || new Date().toISOString(),
-          } as any)
-          .eq('id', signedDoc.quote_id)
+            signnow_document_id: event.data.document_id,
+          },
+        })
 
-        console.log('✅ Quote marked as signed:', signedDoc.quotes.quote_number)
+        // @ts-ignore
+        console.log('✅ Quote marked as signed:', quote.quote_number)
 
-        // Optional: Send notification to sales team
+        // TODO: Send notification to sales team
         // await sendNotification({
         //   type: 'quote_signed',
-        //   quote_number: signedDoc.quotes.quote_number,
-        //   customer: signedDoc.quotes.customer_name,
+        //   quote_number: quote.quote_number,
+        //   customer: quote.customer_name,
         // })
 
         break
 
       case 'document.declined':
-        // Update signed_documents table
+        // Update quote status to declined
+        // @ts-ignore
         await supabase
-          .from('signed_documents')
+          .from('quotes')
+          // @ts-ignore
           .update({
             status: 'declined',
           })
-          .eq('id', signedDoc.id)
+          // @ts-ignore
+          .eq('id', quote.id)
 
-        // Update quote status
-        await supabase
-          .from('quotes')
-          .update({
-            status: 'rejected',
-          } as any)
-          .eq('id', signedDoc.quote_id)
+        // Log to audit trail
+        // @ts-ignore
+        await supabase.from('quote_audit_log').insert({
+          // @ts-ignore
+          quote_id: quote.id,
+          action: 'declined',
+          user_id: null,
+          details: {
+            decliner_email: event.data.signer_email,
+            declined_at: event.data.declined_at || new Date().toISOString(),
+            reason: event.data.reason || 'No reason provided',
+          },
+        })
 
-        console.log('❌ Quote declined:', signedDoc.quotes.quote_number)
+        // @ts-ignore
+        console.log('❌ Quote declined:', quote.quote_number)
 
-        // Optional: Send notification to sales team
+        // TODO: Send notification to sales team
         // await sendNotification({
         //   type: 'quote_declined',
-        //   quote_number: signedDoc.quotes.quote_number,
-        //   customer: signedDoc.quotes.customer_name,
+        //   quote_number: quote.quote_number,
+        //   customer: quote.customer_name,
         //   reason: event.data.reason,
         // })
 
         break
 
       case 'document.viewed':
-        // Optional: Track when customer viewed the document
-        console.log('👀 Quote viewed:', signedDoc.quotes.quote_number)
+        // Track when customer viewed the document in SignNow
+        // @ts-ignore
+        await supabase.from('quote_audit_log').insert({
+          // @ts-ignore
+          quote_id: quote.id,
+          action: 'viewed_signnow',
+          user_id: null,
+          details: {
+            viewer_email: event.data.signer_email,
+            viewed_at: new Date().toISOString(),
+          },
+        })
+        
+        // @ts-ignore
+        console.log('👀 Quote viewed in SignNow:', quote.quote_number)
         break
 
       default:

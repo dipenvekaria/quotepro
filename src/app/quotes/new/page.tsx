@@ -662,6 +662,27 @@ export default function NewQuotePage() {
         })
       }
 
+      // Generate PDF
+      try {
+        // @ts-ignore
+        const pdfResponse = await fetch(`/api/quotes/${quote.id}/generate-pdf`, {
+          method: 'POST',
+        })
+        
+        if (pdfResponse.ok) {
+          const pdfData = await pdfResponse.json()
+          console.log('✅ PDF generated successfully!')
+          console.log('📄 File saved to:', pdfData.pdf_path)
+          console.log('📝 Filename:', pdfData.pdf_filename)
+          console.log('💡 Open this file on your Mac to view the PDF')
+        } else {
+          console.error('PDF generation failed, but continuing...')
+        }
+      } catch (pdfError) {
+        console.error('PDF generation error:', pdfError)
+        // Don't fail the save if PDF generation fails
+      }
+
       toast.success('Quote saved successfully!')
       // @ts-ignore
       setSavedQuoteId(quote.id)
@@ -737,6 +758,26 @@ export default function NewQuotePage() {
 
       if (itemsError) throw itemsError
 
+      // Regenerate PDF after update
+      try {
+        const pdfResponse = await fetch(`/api/quotes/${currentQuoteId}/generate-pdf`, {
+          method: 'POST',
+        })
+        
+        if (pdfResponse.ok) {
+          const pdfData = await pdfResponse.json()
+          console.log('✅ PDF regenerated successfully!')
+          console.log('📄 File saved to:', pdfData.pdf_path)
+          console.log('📝 Filename:', pdfData.pdf_filename)
+          console.log('💡 Open this file on your Mac to view the PDF')
+        } else {
+          console.error('PDF regeneration failed, but continuing...')
+        }
+      } catch (pdfError) {
+        console.error('PDF regeneration error:', pdfError)
+        // Don't fail the update if PDF generation fails
+      }
+
       toast.success('Quote updated successfully!')
     } catch (error: unknown) {
       const err = error as { message: string }
@@ -809,6 +850,11 @@ export default function NewQuotePage() {
               <h1 className="text-xl font-bold text-white truncate">
                 {quoteId ? 'Edit Quote' : 'New Quote'} – {customerName || 'New Customer'}
               </h1>
+              {quoteId && (
+                <p className="text-xs text-gray-400 truncate mt-1">
+                  Quote ID: {quoteId}
+                </p>
+              )}
             </div>
           </div>
         </header>
@@ -825,7 +871,28 @@ export default function NewQuotePage() {
         {/* Customer Info */}
         <Card>
           <CardHeader>
-            <CardTitle>Customer Information</CardTitle>
+            <div className="flex items-center justify-between gap-4">
+              <CardTitle>Customer Information</CardTitle>
+              {quoteId && (
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded border text-muted-foreground">
+                    {quoteId}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      navigator.clipboard.writeText(quoteId)
+                      toast.success('Quote ID copied!')
+                    }}
+                    className="h-8 px-2"
+                  >
+                    <span className="sr-only">Copy Quote ID</span>
+                    📋
+                  </Button>
+                </div>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">

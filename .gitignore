@@ -67,3 +67,7 @@ docs/archive/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated PDFs (local testing)
+/generated-pdfs/
+*.pdf
