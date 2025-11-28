@@ -23,7 +23,6 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
 
   // Base nav items (everyone can see these)
   const baseNavItems = [
-    { icon: Home, label: 'Home', href: '/home' },
     { icon: FileText, label: 'Dashboard', href: '/dashboard' },
     { icon: FileText, label: 'New Quote', href: '/quotes/new' },
   ]

@@ -14,7 +14,8 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronsLeft,
-  ChevronsRight
+  ChevronsRight,
+  BarChart3
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -151,6 +152,11 @@ export function DesktopSidebar({ counts = {
       ]
     },
     {
+      label: 'Analytics',
+      href: '/analytics',
+      icon: BarChart3
+    },
+    {
       label: 'Settings',
       href: '/settings',
       icon: Settings
@@ -262,7 +268,7 @@ export function DesktopSidebar({ counts = {
       {/* Logo */}
       <div className="flex items-center h-16 px-6 border-b border-gray-200 dark:border-gray-700 !bg-white dark:!bg-gray-800 justify-between">
         {!isCollapsed && (
-          <Link href="/leads-and-quotes/leads" className="flex items-center gap-2">
+          <Link href="/home" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">Q</span>
             </div>
@@ -270,9 +276,11 @@ export function DesktopSidebar({ counts = {
           </Link>
         )}
         {isCollapsed && (
-          <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-white font-bold text-lg">Q</span>
-          </div>
+          <Link href="/home">
+            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mx-auto cursor-pointer">
+              <span className="text-white font-bold text-lg">Q</span>
+            </div>
+          </Link>
         )}
       </div>
 
