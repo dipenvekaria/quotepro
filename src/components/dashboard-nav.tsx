@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useUserRole } from '@/hooks/use-user-role'
 import { hasPermission } from '@/lib/roles'
 import { Button } from '@/components/ui/button'
-import { Home, FileText, Settings, LogOut, Menu, X } from 'lucide-react'
+import { Home, FileText, Settings, LogOut, Menu, X, BarChart3 } from 'lucide-react'
 import Link from 'next/link'
 
 export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
@@ -23,12 +23,14 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
 
   // Base nav items (everyone can see these)
   const baseNavItems = [
-    { icon: Home, label: 'Dashboard', href: '/dashboard' },
+    { icon: Home, label: 'Home', href: '/home' },
+    { icon: FileText, label: 'Dashboard', href: '/dashboard' },
     { icon: FileText, label: 'New Quote', href: '/quotes/new' },
   ]
 
   // Admin-only items
   const adminNavItems = [
+    { icon: BarChart3, label: 'Analytics', href: '/analytics' },
     { icon: Settings, label: 'Settings', href: '/settings' },
   ]
 
