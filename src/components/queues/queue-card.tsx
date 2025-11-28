@@ -50,7 +50,7 @@ export function QueueCard({
     }
   }
 
-  const displayDate = data.scheduled_at || data.completed_at || data.paid_at || data.created_at
+  const displayDate = data?.scheduled_at || data?.completed_at || data?.paid_at || data?.created_at
 
   return (
     <Card 

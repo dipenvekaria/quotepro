@@ -193,17 +193,20 @@ export default function HomePage() {
             {stats.todayVisits.map((visit) => (
               <QueueCard
                 key={visit.id}
-                title={visit.customer_name || 'Unknown Customer'}
-                subtitle={visit.customer_address}
+                data={{
+                  id: visit.id,
+                  customer_name: visit.customer_name || 'Unknown Customer',
+                  customer_address: visit.customer_address,
+                  scheduled_at: visit.quote_visit_date,
+                  total: visit.total
+                }}
                 badge={
                   <Badge className="bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
-                    Quote Visit
+                    Quote Visit • {format(new Date(visit.quote_visit_date), 'h:mm a')}
                   </Badge>
                 }
-                metadata={[
-                  { icon: Clock, text: format(new Date(visit.quote_visit_date), 'h:mm a') },
-                  { icon: Phone, text: visit.customer_phone }
-                ]}
+                showAmount={false}
+                dateLabel="Visit"
                 onClick={() => router.push(`/leads/new?id=${visit.id}`)}
               />
             ))}
@@ -211,17 +214,19 @@ export default function HomePage() {
             {stats.todayJobs.map((job) => (
               <QueueCard
                 key={job.id}
-                title={job.customer_name || 'Unknown Customer'}
-                subtitle={job.customer_address}
+                data={{
+                  id: job.id,
+                  customer_name: job.customer_name || 'Unknown Customer',
+                  customer_address: job.customer_address,
+                  scheduled_at: job.scheduled_at,
+                  total: job.total
+                }}
                 badge={
                   <Badge className="bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                    Scheduled Job
+                    Job • {format(new Date(job.scheduled_at), 'h:mm a')}
                   </Badge>
                 }
-                metadata={[
-                  { icon: Clock, text: format(new Date(job.scheduled_at), 'h:mm a') },
-                  { icon: DollarSign, text: `$${job.total?.toLocaleString() || '0'}` }
-                ]}
+                dateLabel="Scheduled"
                 onClick={() => router.push(`/work/scheduled`)}
               />
             ))}
@@ -249,17 +254,19 @@ export default function HomePage() {
             {stats.highPriorityLeads.map((lead) => (
               <QueueCard
                 key={lead.id}
-                title={lead.customer_name || 'Unknown Customer'}
-                subtitle={lead.customer_address}
+                data={{
+                  id: lead.id,
+                  customer_name: lead.customer_name || 'Unknown Customer',
+                  customer_address: lead.customer_address,
+                  created_at: lead.created_at,
+                  total: 0
+                }}
                 badge={
                   <Badge variant="outline" className="border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-400">
-                    {lead.lead_status === 'new' ? 'New' : 'Contacted'}
+                    {lead.lead_status === 'new' ? 'New' : 'Contacted'} • {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true })}
                   </Badge>
                 }
-                metadata={[
-                  { icon: Clock, text: formatDistanceToNow(new Date(lead.created_at), { addSuffix: true }) },
-                  { icon: Phone, text: lead.customer_phone }
-                ]}
+                showAmount={false}
                 onClick={() => router.push(`/leads/new?id=${lead.id}`)}
               />
             ))}
@@ -287,17 +294,19 @@ export default function HomePage() {
             {stats.quotesNeedingFollowup.map((quote) => (
               <QueueCard
                 key={quote.id}
-                title={quote.customer_name || 'Unknown Customer'}
-                subtitle={quote.customer_address}
+                data={{
+                  id: quote.id,
+                  customer_name: quote.customer_name || 'Unknown Customer',
+                  customer_address: quote.customer_address,
+                  created_at: quote.created_at,
+                  total: quote.total
+                }}
                 badge={
                   <Badge className="bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400">
-                    ${quote.total?.toLocaleString() || '0'}
+                    Q-{quote.quote_number || quote.id.slice(0, 6)} • {formatDistanceToNow(new Date(quote.created_at), { addSuffix: true })}
                   </Badge>
                 }
-                metadata={[
-                  { icon: Clock, text: formatDistanceToNow(new Date(quote.created_at), { addSuffix: true }) },
-                  { icon: FileText, text: `Q-${quote.quote_number || quote.id.slice(0, 6)}` }
-                ]}
+                dateLabel="Created"
                 onClick={() => router.push(`/leads/new?id=${quote.id}`)}
               />
             ))}
@@ -325,17 +334,19 @@ export default function HomePage() {
             {stats.jobsToSchedule.map((job) => (
               <QueueCard
                 key={job.id}
-                title={job.customer_name || 'Unknown Customer'}
-                subtitle={job.customer_address}
+                data={{
+                  id: job.id,
+                  customer_name: job.customer_name || 'Unknown Customer',
+                  customer_address: job.customer_address,
+                  created_at: job.accepted_at || job.signed_at,
+                  total: job.total
+                }}
                 badge={
                   <Badge className="bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">
-                    Accepted
+                    Accepted • {formatDistanceToNow(new Date(job.accepted_at || job.signed_at), { addSuffix: true })}
                   </Badge>
                 }
-                metadata={[
-                  { icon: DollarSign, text: `$${job.total?.toLocaleString() || '0'}` },
-                  { icon: Clock, text: formatDistanceToNow(new Date(job.accepted_at || job.signed_at), { addSuffix: true }) }
-                ]}
+                dateLabel="Accepted"
                 onClick={() => router.push('/work/to-be-scheduled')}
               />
             ))}
