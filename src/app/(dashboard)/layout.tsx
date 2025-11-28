@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { DashboardNavigation } from '@/components/dashboard-navigation'
+import { NavigationWrapper } from '@/components/navigation/navigation-wrapper'
 import { DashboardProvider } from '@/lib/dashboard-context'
 
 export default async function DashboardLayout({
@@ -42,15 +42,11 @@ export default async function DashboardLayout({
   return (
     <DashboardProvider company={company} quotes={quotes || []}>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Navigation */}
-        <DashboardNavigation companyId={company.id} />
-
-        {/* Main Content Area */}
-        <div className="lg:pl-64">
-          <main className="pb-20 lg:pb-8">
+        <NavigationWrapper>
+          <main className="py-6 px-4 sm:px-6 lg:px-8">
             {children}
           </main>
-        </div>
+        </NavigationWrapper>
       </div>
     </DashboardProvider>
   )
