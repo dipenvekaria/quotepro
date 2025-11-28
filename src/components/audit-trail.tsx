@@ -47,6 +47,10 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
         return <Badge variant="default">AI Generated</Badge>
       case 'ai_update':
         return <Badge variant="secondary">AI Updated</Badge>
+      case 'lead_created':
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Lead Created</Badge>
+      case 'lead_updated':
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Lead Updated</Badge>
       case 'notes_updated':
         return <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Notes Updated</Badge>
       case 'manual_edit':
@@ -180,6 +184,38 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
                     </div>
                   )}
 
+                  {/* Lead Created/Updated - Show customer details */}
+                  {(entry.action_type === 'lead_created' || entry.action_type === 'lead_updated') && (
+                    <div className="space-y-3">
+                      <div className="grid grid-cols-1 gap-3">
+                        {entry.changes_made.customer_name && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-sm font-semibold text-muted-foreground min-w-[100px]">Customer:</span>
+                            <span className="text-sm">{entry.changes_made.customer_name}</span>
+                          </div>
+                        )}
+                        {entry.changes_made.customer_phone && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-sm font-semibold text-muted-foreground min-w-[100px]">Phone:</span>
+                            <span className="text-sm font-mono">{entry.changes_made.customer_phone}</span>
+                          </div>
+                        )}
+                        {entry.changes_made.customer_address && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-sm font-semibold text-muted-foreground min-w-[100px]">Address:</span>
+                            <span className="text-sm">{entry.changes_made.customer_address}</span>
+                          </div>
+                        )}
+                        {entry.changes_made.description && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-sm font-semibold text-muted-foreground min-w-[100px]">Description:</span>
+                            <span className="text-sm whitespace-pre-wrap flex-1">{entry.changes_made.description}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* AI Update Details */}
                   {entry.action_type === 'ai_update' && (
                     <div className="space-y-3">
@@ -265,9 +301,11 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
                    !entry.changes_made.user_prompt &&
                    !entry.changes_made.added_items && 
                    !entry.changes_made.removed_items && 
-                   !entry.changes_made.modified_items && (
+                   !entry.changes_made.modified_items &&
+                   entry.action_type !== 'lead_created' &&
+                   entry.action_type !== 'lead_updated' && (
                     <div>
-                      <p className="text-sm font-semibold text-muted-foreground mb-2">Raw Data:</p>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Details:</p>
                       <pre className="text-xs bg-muted p-3 rounded-md overflow-auto max-h-40">
                         {JSON.stringify(entry.changes_made, null, 2)}
                       </pre>

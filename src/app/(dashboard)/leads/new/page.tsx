@@ -88,6 +88,17 @@ export default function NewQuotePage() {
       loadAuditLogs(quoteId)
     }
   }, [quoteId])
+
+  // Auto-lookup customer by phone number
+  useEffect(() => {
+    if (!customerPhone || quoteId) return // Don't lookup if editing existing quote
+    
+    const timeoutId = setTimeout(() => {
+      lookupCustomerByPhone(customerPhone)
+    }, 500) // Debounce for 500ms
+
+    return () => clearTimeout(timeoutId)
+  }, [customerPhone, companyId])
   
   const loadExistingQuote = async (id: string) => {
     setIsLoadingQuote(true)
@@ -390,6 +401,47 @@ export default function NewQuotePage() {
     }
   }
 
+  const lookupCustomerByPhone = async (phone: string) => {
+    // Only lookup if phone has at least 10 digits
+    const digitsOnly = phone.replace(/\D/g, '')
+    if (digitsOnly.length < 10 || !companyId) return
+
+    try {
+      // Search for existing customer with this phone number
+      const { data: existingCustomers, error } = await supabase
+        .from('quotes')
+        .select('customer_name, customer_email, customer_phone, customer_address')
+        .eq('company_id', companyId)
+        .ilike('customer_phone', `%${digitsOnly.slice(-10)}%`)
+        .order('created_at', { ascending: false })
+        .limit(1)
+
+      if (error) {
+        console.error('Error looking up customer:', error)
+        return
+      }
+
+      if (existingCustomers && existingCustomers.length > 0) {
+        const customer = existingCustomers[0]
+        
+        // Only auto-fill if fields are empty (don't overwrite existing data)
+        if (!customerName && customer.customer_name) {
+          setCustomerName(customer.customer_name)
+        }
+        if (!customerEmail && customer.customer_email) {
+          setCustomerEmail(customer.customer_email)
+        }
+        if (!customerAddress && customer.customer_address) {
+          setCustomerAddress(customer.customer_address)
+        }
+        
+        toast.success(`Found existing customer: ${customer.customer_name}`)
+      }
+    } catch (error) {
+      console.error('Error in customer lookup:', error)
+    }
+  }
+
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files) return
@@ -640,6 +692,7 @@ export default function NewQuotePage() {
             description: `Lead information updated`,
             changes_made: {
               customer_name: customerName,
+              customer_phone: customerPhone,
               customer_address: customerAddress,
               description: description,
             },
@@ -686,6 +739,7 @@ export default function NewQuotePage() {
           description: `New lead created: ${customerName}`,
           changes_made: {
             customer_name: customerName,
+            customer_phone: customerPhone,
             customer_address: customerAddress,
             description: description,
           },
