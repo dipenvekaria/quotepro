@@ -975,9 +975,13 @@ export default function NewQuotePage() {
             quote_id: quoteId,
             action_type: 'ai_generation',
             user_prompt: description,
-            description: `Quote updated with ${generatedQuote.line_items.length} items`,
+            description: `Quote generated with ${generatedQuote.line_items.length} items`,
             changes_made: {
-              updated_items: generatedQuote.line_items,
+              line_items: generatedQuote.line_items,
+              subtotal: generatedQuote.subtotal,
+              tax_rate: generatedQuote.tax_rate,
+              total: generatedQuote.total,
+              ai_instructions: generatedQuote.notes || '',
             },
             created_by: user.id,
           })
@@ -1066,7 +1070,11 @@ export default function NewQuotePage() {
           user_prompt: description,
           description: `Quote created with ${generatedQuote.line_items.length} items`,
           changes_made: {
-            added_items: generatedQuote.line_items,
+            line_items: generatedQuote.line_items,
+            subtotal: generatedQuote.subtotal,
+            tax_rate: generatedQuote.tax_rate,
+            total: generatedQuote.total,
+            ai_instructions: generatedQuote.notes || '',
           },
           created_by: user.id,
         })

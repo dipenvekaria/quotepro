@@ -39,7 +39,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Call Python backend to update quote
+    // Load conversation history from audit trail
+    const { data: auditHistory } = await supabase
+      .from('quote_audit_log')
+      .select('user_prompt, changes_made, action_type, created_at')
+      .eq('quote_id', quote_id)
+      .in('action_type', ['ai_generation', 'ai_update'])
+      .order('created_at', { ascending: true })
+
+    // Call Python backend to update quote with conversation history
     const response = await fetch(`${PYTHON_BACKEND_URL}/api/update-quote-with-ai`, {
       method: 'POST',
       headers: {
@@ -52,6 +60,7 @@ export async function POST(request: NextRequest) {
         existing_items: quote.quote_items,
         customer_name: quote.customer_name,
         customer_address: quote.customer_address,
+        conversation_history: auditHistory || [],
       }),
     })
 
@@ -66,16 +75,20 @@ export async function POST(request: NextRequest) {
 
     const updatedQuote = await response.json()
 
-    // Log audit trail
+    // Log audit trail with full line items for conversation history
     const { error: auditError } = await supabase.from('quote_audit_log').insert({
       quote_id,
       action_type: 'ai_update',
       user_prompt,
       description: `User requested: "${user_prompt}"`,
       changes_made: {
+        line_items: updatedQuote.line_items || [],
         added_items: updatedQuote.added_items || [],
         modified_items: updatedQuote.modified_items || [],
         removed_items: updatedQuote.removed_items || [],
+        ai_instructions: updatedQuote.notes || '',
+        subtotal: updatedQuote.subtotal || 0,
+        total: updatedQuote.total || 0,
       },
       created_by: user.id,
     } as any)

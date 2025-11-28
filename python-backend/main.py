@@ -81,6 +81,13 @@ def get_supabase() -> Client:
 SYSTEM_PROMPT = """You are an expert field-service admin who has written 15,000 winning quotes for HVAC, plumbing, electrical, roofing, and landscaping companies.
 Convert the contractor's bullet points or voice note into a polished, itemized quote.
 
+🎯 IMPORTANT: This is a MULTI-TURN CONVERSATION
+You are helping the user build their quote through an ongoing conversation. Each request builds on previous requests.
+- When user says "add", "also include", "also need" → ADD to existing items (preserve what's already there)
+- When user says "remove", "delete", "take out" → REMOVE specified items only
+- When user says "replace", "change to" → MODIFY/REPLACE specified items
+- DEFAULT BEHAVIOR: ADD new items while PRESERVING existing ones
+
 🚨 CRITICAL RULES - FOLLOW THESE STRICTLY:
 
 1. ⚠️  USE ONLY THE PROVIDED PRICING CATALOG
@@ -94,14 +101,20 @@ Convert the contractor's bullet points or voice note into a polished, itemized q
    - Example: "Note: Customer requested furnace repair but no furnace items in catalog"
    - DO NOT add items "similar to" catalog items that aren't exactly listed
    
-3. ✅  WHAT YOU CAN DO:
+3. ⚠️  PRESERVE EXISTING ITEMS UNLESS EXPLICITLY ASKED TO REMOVE/CHANGE THEM
+   - If current quote has "Water Heater" and user says "add pipes" → Return BOTH water heater AND pipes
+   - If user says "remove water heater" → Remove only the water heater
+   - If user says "change water heater to tankless" → Replace water heater with tankless
+   - If user says "add labor" → KEEP all existing items and ADD labor item
+   
+4. ✅  WHAT YOU CAN DO:
    - Match job description to closest catalog item by name/synonym
    - Calculate realistic quantities based on job scope
    - Suggest upsells that ARE in the catalog (e.g., surge protectors, water alarms)
    - Include trip charges, permits, fees IF they are in the catalog
    - Offer Good/Better/Best options using catalog combinations
    
-4. 💰 DISCOUNTS - IMPORTANT:
+5. 💰 DISCOUNTS - IMPORTANT:
    - If contractor mentions "no charge for labor", "free installation", "discount", "50% off", etc.
    - Add discount as SEPARATE line item with NEGATIVE unit_price and NEGATIVE total
    - Name format: "Discount: [what's discounted]" or "No Charge: [what's waived]"
@@ -112,13 +125,13 @@ Convert the contractor's bullet points or voice note into a polished, itemized q
    - Discount amounts should be NEGATIVE numbers (e.g., -100, not 100)
    - Discounts can be up to 100% (completely free item/service)
    
-5. ✅  QUALITY REQUIREMENTS:
+6. ✅  QUALITY REQUIREMENTS:
    - Be professional, confident, friendly tone
    - Add helpful notes about work scope
    - Calculate accurate totals (discounts reduce the total)
    - Output ONLY valid JSON structure
 
-6. 📋 OUTPUT FORMAT:
+7. 📋 OUTPUT FORMAT:
    {
      "line_items": [
        {"name": "Water Heater Installation", "quantity": 1, "unit_price": 1200, "total": 1200, "is_upsell": false},
@@ -133,7 +146,8 @@ Convert the contractor's bullet points or voice note into a polished, itemized q
    }
 
 Remember: You are a MATCHER, not a PRICER. You match jobs to the catalog provided. You do NOT create prices.
-For discounts: Use NEGATIVE numbers for unit_price and total."""
+For discounts: Use NEGATIVE numbers for unit_price and total.
+For conversations: PRESERVE existing items unless explicitly asked to change them."""
 
 
 # Request/Response Models
@@ -337,6 +351,7 @@ class UpdateQuoteRequest(BaseModel):
     existing_items: List[dict]
     customer_name: str
     customer_address: Optional[str] = None
+    conversation_history: List[dict] = []
 
 
 @app.post("/api/update-quote-with-ai")
@@ -392,25 +407,63 @@ async def update_quote_with_ai(request: UpdateQuoteRequest):
             for item in pricing_items
         ])
         
-        # Create AI prompt
-        user_prompt = f"""Customer: {request.customer_name}
+        # Build conversation messages with history
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": f"""
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 YOUR PRICING CATALOG (USE ONLY THESE):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{catalog_text}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"""}
+        ]
+        
+        # Add conversation history from audit trail
+        for entry in request.conversation_history:
+            # Add user's previous prompt
+            if entry.get('user_prompt'):
+                messages.append({
+                    "role": "user",
+                    "content": entry['user_prompt']
+                })
+            
+            # Add AI's previous response
+            if entry.get('changes_made'):
+                changes = entry['changes_made']
+                if isinstance(changes, dict) and changes.get('line_items'):
+                    # Format the AI's previous response
+                    ai_response = {
+                        "line_items": changes['line_items'],
+                        "subtotal": changes.get('subtotal', 0),
+                        "tax_rate": changes.get('tax_rate', tax_rate),
+                        "total": changes.get('total', 0),
+                        "notes": changes.get('ai_instructions', ''),
+                    }
+                    messages.append({
+                        "role": "assistant",
+                        "content": json.dumps(ai_response)
+                    })
+        
+        # Format existing items for current context
+        existing_items_text = '\n'.join([
+            f"- {item['name']}: ${item['unit_price']} x {item['quantity']} = ${item['total']}"
+            for item in request.existing_items
+        ])
+        
+        # Add current request
+        current_prompt = f"""Customer: {request.customer_name}
 
 CURRENT QUOTE ITEMS:
 {existing_items_text}
 
 USER REQUEST: {request.user_prompt}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 YOUR PRICING CATALOG (USE ONLY THESE):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{catalog_text}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-⚠️  IMPORTANT: 
-- ONLY use items from the catalog above
-- ONLY use the exact prices shown
-- You can ADD new items, MODIFY quantities, or REMOVE items based on user request
-- Return ALL items that should be in the quote (both existing and new)
+⚠️  REMEMBER: This is a conversation update. The user is asking you to UPDATE the existing quote.
+- If they say "add", KEEP existing items and ADD new ones
+- If they say "remove", REMOVE only specified items  
+- If they say "change/replace", MODIFY only specified items
+- DEFAULT: PRESERVE existing items unless explicitly told otherwise
 
 Return ONLY valid JSON with this exact structure:
 {{
@@ -430,13 +483,15 @@ Return ONLY valid JSON with this exact structure:
   "notes": "What was changed based on user request"
 }}"""
         
-        # Call Groq API
+        messages.append({
+            "role": "user",
+            "content": current_prompt
+        })
+        
+        # Call Groq API with full conversation history
         client = get_groq_client()
         completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_prompt}
-            ],
+            messages=messages,
             model="llama-3.3-70b-versatile",
             temperature=0.7,
             max_tokens=2048,
