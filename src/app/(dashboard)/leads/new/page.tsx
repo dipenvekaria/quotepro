@@ -697,7 +697,7 @@ export default function NewQuotePage() {
       setSavedQuoteId(newLead.id)
       
       // Update URL with new lead ID
-      router.push(`/quotes/new?id=${newLead.id}`)
+      router.push(`/leads/new?id=${newLead.id}`)
       await loadAuditLogs(newLead.id)
     } catch (error) {
       console.error('Error saving lead:', error)
