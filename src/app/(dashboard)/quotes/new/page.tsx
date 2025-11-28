@@ -12,7 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { toast } from 'sonner'
 import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X, Bot } from 'lucide-react'
 import Link from 'next/link'
-import { DashboardNavigation } from '@/components/dashboard-navigation'
 import { AuditTrail } from '@/components/audit-trail'
 
 interface QuoteItem {
@@ -1058,21 +1057,22 @@ export default function NewQuotePage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Main Content */}
       <div className="pb-20 min-w-0">
-        {/* Mobile-First Header */}
-        <header className="bg-[#0F172A] p-4 sticky top-0 z-10">
-          <div className="flex items-center gap-3">
-            <div className="bg-[#FF6200] p-2 rounded-lg">
-              <Wrench className="h-5 w-5 text-white" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-xl font-bold text-white truncate">
-                {quoteId ? 'Edit Quote' : 'New Quote'} – {customerName || 'New Customer'}
-              </h1>
-              {quoteId && (
-                <p className="text-xs text-gray-400 truncate mt-1">
-                  Quote ID: {quoteId}
+        {/* Header - Updated to match new theme */}
+        <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+          <div className="px-6 py-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-orange-500 dark:bg-orange-600 p-2 rounded-lg">
+                <Wrench className="h-5 w-5 text-white" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {quoteId ? 'Edit Quote' : 'New Quote'}
+                </h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  {customerName || 'Enter customer details to get started'}
+                  {quoteId && ` • Quote ID: ${quoteId}`}
                 </p>
-              )}
+              </div>
             </div>
           </div>
         </header>
@@ -1755,9 +1755,6 @@ export default function NewQuotePage() {
         </main>
       )}
       </div>
-      
-      {/* Bottom Navigation */}
-      <DashboardNavigation companyId={companyId} />
     </div>
   )
 }
