@@ -608,6 +608,103 @@ export default function NewQuotePage() {
     }
   }
 
+  const handleSaveLead = async () => {
+    if (!customerName || !description) {
+      toast.error('Please fill in customer name and job description')
+      return
+    }
+
+    try {
+      if (quoteId) {
+        // Update existing lead
+        const { error: updateError } = await supabase
+          .from('quotes')
+          .update({
+            customer_name: customerName,
+            customer_email: customerEmail || null,
+            customer_phone: customerPhone || null,
+            customer_address: customerAddress || null,
+            description: description,
+            lead_status: 'new',
+          })
+          .eq('id', quoteId)
+
+        if (updateError) throw updateError
+
+        // Log to audit trail
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('quote_audit_log').insert({
+            quote_id: quoteId,
+            action_type: 'lead_updated',
+            description: `Lead information updated`,
+            changes_made: {
+              customer_name: customerName,
+              customer_address: customerAddress,
+              description: description,
+            },
+            created_by: user.id,
+          })
+        }
+
+        toast.success('Lead updated successfully!')
+        await loadAuditLogs(quoteId)
+        return
+      }
+
+      // Create new lead
+      const quoteNumber = `L-${Date.now().toString().slice(-8)}`
+      
+      const { data: newLead, error: insertError } = await supabase
+        .from('quotes')
+        .insert({
+          company_id: companyId,
+          quote_number: quoteNumber,
+          customer_name: customerName,
+          customer_email: customerEmail || null,
+          customer_phone: customerPhone || null,
+          customer_address: customerAddress || null,
+          description: description,
+          status: 'draft',
+          lead_status: 'new',
+          subtotal: 0,
+          tax_rate: 0,
+          tax_amount: 0,
+          total: 0,
+        })
+        .select()
+        .single()
+
+      if (insertError) throw insertError
+
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: newLead.id,
+          action_type: 'lead_created',
+          description: `New lead created: ${customerName}`,
+          changes_made: {
+            customer_name: customerName,
+            customer_address: customerAddress,
+            description: description,
+          },
+          created_by: user.id,
+        })
+      }
+
+      toast.success('Lead saved successfully!')
+      setSavedQuoteId(newLead.id)
+      
+      // Update URL with new lead ID
+      router.push(`/quotes/new?id=${newLead.id}`)
+      await loadAuditLogs(newLead.id)
+    } catch (error) {
+      console.error('Error saving lead:', error)
+      toast.error('Failed to save lead')
+    }
+  }
+
   const handleDeleteItem = async (index: number) => {
     if (!generatedQuote) return
     
@@ -1059,18 +1156,18 @@ export default function NewQuotePage() {
       <div className="pb-20 min-w-0">
         {/* Header - Updated to match new theme */}
         <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
-          <div className="px-6 py-6">
+          <div className="px-6 py-4">
             <div className="flex items-center gap-3">
               <div className="bg-orange-500 dark:bg-orange-600 p-2 rounded-lg">
                 <Wrench className="h-5 w-5 text-white" />
               </div>
               <div className="min-w-0 flex-1">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {quoteId ? 'Edit Quote' : 'New Quote'}
+                  {quoteId ? 'Edit Lead' : 'New Lead'}
                 </h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {customerName || 'Enter customer details to get started'}
-                  {quoteId && ` • Quote ID: ${quoteId}`}
+                  {quoteId && ` • Lead ID: ${quoteId}`}
                 </p>
               </div>
             </div>
@@ -1085,7 +1182,7 @@ export default function NewQuotePage() {
           </div>
         </div>
       ) : (
-        <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+        <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
         
         {/* 1. GENERATED QUOTE - Show when quote exists */}
         {generatedQuote && (
@@ -1513,46 +1610,46 @@ export default function NewQuotePage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="customerName">Customer Name *</Label>
+          <CardContent className="space-y-5">
+            <div className="space-y-3">
+              <Label htmlFor="customerName" className="text-base">Customer Name *</Label>
               <Input
                 id="customerName"
                 placeholder="John Smith"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="h-12 text-lg"
+                className="h-14 text-lg"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="customerPhone">Phone</Label>
+              <div className="space-y-3">
+                <Label htmlFor="customerPhone" className="text-base">Phone</Label>
                 <Input
                   id="customerPhone"
                   type="tel"
                   placeholder="(555) 123-4567"
                   value={customerPhone}
                   onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="h-12"
+                  className="h-14 text-lg"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="customerEmail">Email</Label>
+              <div className="space-y-3">
+                <Label htmlFor="customerEmail" className="text-base">Email</Label>
                 <Input
                   id="customerEmail"
                   type="email"
                   placeholder="john@example.com"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
-                  className="h-12"
+                  className="h-14 text-lg"
                 />
               </div>
             </div>
 
-            <div className="space-y-2 relative">
-              <Label htmlFor="customerAddress">Job Address</Label>
+            <div className="space-y-3 relative">
+              <Label htmlFor="customerAddress" className="text-base">Job Address</Label>
               <Input
                 id="customerAddress"
                 name="job-address"
@@ -1573,7 +1670,7 @@ export default function NewQuotePage() {
                     }
                   }, 200)
                 }}
-                className="h-12"
+                className="h-14 text-lg"
                 autoComplete="new-password"
               />
               
@@ -1606,91 +1703,36 @@ export default function NewQuotePage() {
           </CardContent>
         </Card>
 
-        {/* Job Description - Show when no quote generated yet */}
+        {/* Job Description - Simple lead capture */}
         {!generatedQuote && (
           <Card>
             <CardHeader>
               <CardTitle>Job Description</CardTitle>
+              <CardDescription>Briefly describe what needs to be done</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="description">What needs to be done? *</Label>
+            <CardContent className="space-y-5">
+              <div className="space-y-3">
+                <Label htmlFor="description" className="text-base">What needs to be done?</Label>
                 <Textarea
                   id="description"
-                  placeholder={`Examples:
-• Replace water heater with 50-gal Bradford White
-• Full system tune-up, found bad capacitor
-• Sewer line camera found roots at 42ft, need hydrojet + spot repair`}
+                  placeholder="Describe the work needed..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[150px] text-base"
+                  className="min-h-[150px] text-lg p-4"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 h-14 text-base"
-                  onMouseDown={startRecording}
-                  onMouseUp={stopRecording}
-                  onTouchStart={startRecording}
-                  onTouchEnd={stopRecording}
-                >
-                  {isRecording ? 'Recording...' : 'Hold to talk'}
-                </Button>
-
-                <label className="flex-1">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full h-14 text-base"
-                    asChild
-                  >
-                    <div>
-                      Add Photos ({photos.length})
-                    </div>
-                  </Button>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    capture="environment"
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-
-              {photos.length > 0 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {photos.map((photo, index) => (
-                    <div key={index} className="aspect-square rounded-lg overflow-hidden border">
-                      <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* Save Lead Button */}
+              <Button
+                onClick={handleSaveLead}
+                disabled={!customerName || !description}
+                className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                <Save className="h-5 w-5 mr-2" />
+                Save Lead
+              </Button>
             </CardContent>
           </Card>
-        )}
-
-        {/* Generate Button - Show when no quote generated yet */}
-        {!generatedQuote && (
-          <Button
-            onClick={handleGenerate}
-            disabled={isGenerating || !customerName || !description}
-            className="w-full h-16 text-lg font-semibold bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="h-6 w-6 mr-2 animate-spin" />
-                Building your quote...
-              </>
-            ) : (
-              "Generate Quote"
-            )}
-          </Button>
         )}
 
         {/* 4. NOTES - Internal company notes (show when quote is saved) */}
@@ -1744,7 +1786,7 @@ export default function NewQuotePage() {
           </Card>
         )}
 
-        {/* 5. AUDIT TRAIL - Show when quote is saved */}
+        {/* 5. AUDIT TRAIL - Always show if we have a quote/lead ID */}
         {(savedQuoteId || quoteId) && (
           <AuditTrail 
             quoteId={savedQuoteId || quoteId || ''} 

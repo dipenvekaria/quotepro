@@ -75,7 +75,7 @@ export default function LeadsQueuePage() {
   }, [leads, statusFilter, searchTerm])
 
   const handleCreateQuote = (leadId: string) => {
-    router.push(`/quotes/new?id=${leadId}`)
+    router.push(`/leads/new?id=${leadId}`)
   }
 
   const handleScheduleVisit = (leadId: string) => {
@@ -135,7 +135,7 @@ export default function LeadsQueuePage() {
             icon="users"
             action={
               !searchTerm && (
-                <Button onClick={() => router.push('/quotes/new')}>
+                <Button onClick={() => router.push('/leads/new')}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add First Lead
                 </Button>
