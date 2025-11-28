@@ -39,20 +39,45 @@ export default function SignPage({ params }: SignPageProps) {
       })
 
       const data = await response.json()
+      console.log('Sign API response:', data) // Debug log
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to initiate signing')
-      }
-
-      // Redirect to SignNow signing URL
-      if (data.signing_url) {
+      // Check if we got a signing URL from SignNow
+      if (response.ok && data.signing_url) {
+        // SignNow is working - redirect to signing page
+        console.log('Redirecting to SignNow:', data.signing_url)
         window.location.href = data.signing_url
-      } else {
-        throw new Error('No signing URL received')
+        return
       }
+
+      // SignNow failed or not configured - fall back to instant acceptance
+      console.log('SignNow unavailable, falling back to instant acceptance. Response:', response.ok, 'Data:', data)
+      await fallbackToInstantAcceptance(id)
     } catch (err: any) {
       console.error('Signing error:', err)
-      setError(err.message || 'Failed to start signing process')
+      // On any error, fall back to instant acceptance
+      await fallbackToInstantAcceptance(id)
+    }
+  }
+
+  const fallbackToInstantAcceptance = async (id: string) => {
+    try {
+      const response = await fetch('/api/quotes/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quote_id: id }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to accept quote')
+      }
+
+      // Redirect to success page
+      router.push(`/q/${id}/accepted`)
+    } catch (err: any) {
+      console.error('Acceptance error:', err)
+      setError('Unable to accept quote. Please contact the company directly.')
       setIsLoading(false)
     }
   }
@@ -64,15 +89,14 @@ export default function SignPage({ params }: SignPageProps) {
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <Loader2 className="h-12 w-12 animate-spin mx-auto text-[#FF6200]" />
-              <h2 className="text-xl font-semibold">Preparing Your Signature...</h2>
+              <h2 className="text-xl font-semibold">Processing Your Acceptance...</h2>
               <p className="text-sm text-muted-foreground">
-                We're setting up the electronic signing process. You'll be redirected to SignNow in
-                just a moment.
+                Please wait while we process your quote acceptance.
               </p>
               <div className="space-y-2 text-xs text-muted-foreground">
-                <p>✓ Uploading quote document</p>
-                <p>✓ Creating signature fields</p>
-                <p>✓ Generating secure signing link</p>
+                <p>✓ Verifying quote details</p>
+                <p>✓ Recording acceptance</p>
+                <p>✓ Preparing confirmation</p>
               </div>
             </div>
           </CardContent>

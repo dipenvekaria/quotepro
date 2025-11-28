@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { toast } from 'sonner'
 import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X, Bot } from 'lucide-react'
 import Link from 'next/link'
-import { DashboardNav } from '@/components/dashboard-nav'
+import { DashboardNavigation } from '@/components/dashboard-navigation'
 import { AuditTrail } from '@/components/audit-trail'
 
 interface QuoteItem {
@@ -23,6 +23,7 @@ interface QuoteItem {
   total: number
   option_tier?: string | null
   is_upsell?: boolean
+  is_discount?: boolean
 }
 
 interface GeneratedQuote {
@@ -68,12 +69,20 @@ export default function NewQuotePage() {
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [aiUpdatePrompt, setAiUpdatePrompt] = useState('')
   const [isUpdatingWithAI, setIsUpdatingWithAI] = useState(false)
+  const [quoteNotes, setQuoteNotes] = useState('')
+  const [originalNotes, setOriginalNotes] = useState('')
+  const [origin, setOrigin] = useState('')
   const router = useRouter()
   const supabase = createClient()
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
 
   useEffect(() => {
+    // Set origin on client side only
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin)
+    }
+    
     loadCompany()
     if (quoteId) {
       loadExistingQuote(quoteId)
@@ -99,6 +108,8 @@ export default function NewQuotePage() {
         setCustomerAddress(quote.customer_address || '')
         setDescription(quote.description || '')
         setPhotos(quote.photos || [])
+        setQuoteNotes(quote.notes || '')
+        setOriginalNotes(quote.notes || '') // Track original for audit
         
         // Set generated quote data
         if (quote.quote_items && quote.quote_items.length > 0) {
@@ -117,7 +128,9 @@ export default function NewQuotePage() {
             tax_rate: quote.tax_rate || 0,
             tax_amount: quote.tax_amount || 0,
             total: quote.total || 0,
-            notes: quote.notes || ''
+            // AI-generated notes are not stored in database, only in state during session
+            // When loading existing quote, there are no AI notes to show
+            notes: ''
           })
         }
       }
@@ -175,13 +188,14 @@ export default function NewQuotePage() {
 
       const data = await response.json()
       
-      // Update quote items with new data - preserve tax_rate
+      // Update quote items with new data - preserve tax_rate AND update AI notes
       const updatedQuote = {
         ...generatedQuote,
         line_items: data.line_items,
         subtotal: data.subtotal,
         tax_rate: data.tax_rate || generatedQuote.tax_rate || 0,
         total: data.total,
+        notes: data.notes || generatedQuote.notes, // Update AI-generated notes
       }
       
       setGeneratedQuote(updatedQuote)
@@ -204,7 +218,8 @@ export default function NewQuotePage() {
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total: total,
-          notes: updatedQuote.notes || null,
+          // AI notes are stored in generatedQuote state, not in database notes field
+          // Database notes field is for internal company notes only
         })
         .eq('id', currentQuoteId)
 
@@ -232,6 +247,35 @@ export default function NewQuotePage() {
       await supabase
         .from('quote_items')
         .insert(items)
+      
+      // Create audit log entry for AI update
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        // Get user profile for name
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('id', user.id)
+          .single()
+
+        const userName = profile?.full_name || profile?.email || user.email || 'User'
+        
+        // Log the AI update with details about what changed
+        await supabase.from('quote_audit_log').insert({
+          quote_id: currentQuoteId,
+          action_type: 'ai_update',
+          description: `Quote updated with AI by ${userName}: "${aiUpdatePrompt}"`,
+          changes_made: {
+            user_prompt: aiUpdatePrompt,
+            items_changed: data.line_items.length,
+            ai_instructions: data.notes || '(none)',
+            old_total: generatedQuote?.total || 0,
+            new_total: total,
+          },
+          created_by: user.id,
+        })
+      }
       
       // Reload audit logs
       await loadAuditLogs(currentQuoteId)
@@ -488,6 +532,83 @@ export default function NewQuotePage() {
     setEditedItem(null)
   }
 
+  const handleSaveNotes = async () => {
+    const currentQuoteId = savedQuoteId || quoteId
+    if (!currentQuoteId) {
+      toast.error('Please save the quote first')
+      return
+    }
+
+    // Check if notes actually changed
+    if (quoteNotes === originalNotes) {
+      toast.info('No changes to save')
+      return
+    }
+
+    try {
+      // Update notes in database
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ notes: quoteNotes || null })
+        .eq('id', currentQuoteId)
+
+      if (updateError) {
+        console.error('Database update error:', updateError)
+        throw updateError
+      }
+
+      // Log to audit trail
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      
+      if (userError) {
+        console.error('Error getting user:', userError)
+        throw userError
+      }
+
+      if (user) {
+        // Get user profile for name
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('id', user.id)
+          .single()
+
+        if (profileError) {
+          console.error('Error fetching profile:', profileError)
+        }
+
+        const userName = profile?.full_name || profile?.email || user.email || 'User'
+        
+        const { error: auditError } = await supabase.from('quote_audit_log').insert({
+          quote_id: currentQuoteId,
+          action_type: 'notes_updated',
+          description: `Internal notes ${originalNotes ? 'updated' : 'added'} by ${userName}`,
+          changes_made: {
+            old_notes: originalNotes || '(empty)',
+            new_notes: quoteNotes || '(empty)',
+          },
+          created_by: user.id,
+        })
+
+        if (auditError) {
+          console.error('Audit log error:', auditError)
+          // Don't throw - notes were saved successfully
+        }
+
+        // Update original notes to current value
+        setOriginalNotes(quoteNotes)
+        
+        // Reload audit logs to show the new entry
+        await loadAuditLogs(currentQuoteId)
+        
+        toast.success(`Notes saved by ${userName}`)
+      }
+    } catch (error: any) {
+      console.error('Error saving notes:', error)
+      toast.error(`Failed to save notes: ${error.message || 'Unknown error'}`)
+    }
+  }
+
   const handleDeleteItem = async (index: number) => {
     if (!generatedQuote) return
     
@@ -533,12 +654,24 @@ export default function NewQuotePage() {
       quantity: 1,
       unit_price: 0,
       total: 0,
+      is_discount: false,
     })
   }
 
   const handleSaveNewItem = async () => {
-    if (!generatedQuote || !newItem.name || newItem.unit_price <= 0) {
+    if (!generatedQuote || !newItem.name || newItem.unit_price === 0) {
       toast.error('Please enter item name and price')
+      return
+    }
+    
+    // Validate discount logic
+    if (newItem.is_discount && newItem.unit_price > 0) {
+      toast.error('Discount amounts must be negative (e.g., -100)')
+      return
+    }
+    
+    if (!newItem.is_discount && newItem.unit_price < 0) {
+      toast.error('Regular items cannot have negative prices. Check "Discount" checkbox for discounts.')
       return
     }
     
@@ -587,6 +720,7 @@ export default function NewQuotePage() {
       quantity: 1,
       unit_price: 0,
       total: 0,
+      is_discount: false,
     })
   }
 
@@ -595,6 +729,94 @@ export default function NewQuotePage() {
 
     setIsGenerating(true)
     try {
+      // If editing an existing lead/quote, update it instead of inserting
+      if (quoteId) {
+        // Update existing quote
+        const subtotal = Number(generatedQuote.subtotal) || 0
+        const taxRate = Number(generatedQuote.tax_rate) || 0
+        const taxAmount = subtotal * (taxRate / 100)
+        const total = Number(generatedQuote.total) || (subtotal + taxAmount)
+
+        const { error: quoteError } = await supabase
+          .from('quotes')
+          .update({
+            customer_name: customerName,
+            customer_email: customerEmail || null,
+            customer_phone: customerPhone || null,
+            customer_address: customerAddress || null,
+            description,
+            subtotal: subtotal,
+            tax_rate: taxRate,
+            tax_amount: taxAmount,
+            total: total,
+            // notes: handled separately via handleSaveNotes
+            photos: photos,
+            lead_status: 'quoted', // Move from lead to quote status
+          })
+          .eq('id', quoteId)
+
+        if (quoteError) throw quoteError
+
+        // Delete existing items and insert new ones
+        await supabase
+          .from('quote_items')
+          .delete()
+          .eq('quote_id', quoteId)
+
+        const items = generatedQuote.line_items.map((item, index) => ({
+          quote_id: quoteId,
+          name: item.name,
+          description: item.description || null,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total: item.total,
+          option_tier: item.option_tier || null,
+          is_upsell: item.is_upsell || false,
+          sort_order: index,
+        }))
+
+        const { error: itemsError } = await supabase
+          .from('quote_items')
+          .insert(items)
+
+        if (itemsError) throw itemsError
+
+        // Log to audit trail
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('quote_audit_log').insert({
+            quote_id: quoteId,
+            action_type: 'ai_generation',
+            user_prompt: description,
+            description: `Quote updated with ${generatedQuote.line_items.length} items`,
+            changes_made: {
+              updated_items: generatedQuote.line_items,
+            },
+            created_by: user.id,
+          })
+        }
+
+        // Generate PDF
+        try {
+          const pdfResponse = await fetch(`/api/quotes/${quoteId}/generate-pdf`, {
+            method: 'POST',
+          })
+          
+          if (pdfResponse.ok) {
+            const pdfData = await pdfResponse.json()
+            console.log('✅ PDF generated successfully!')
+          }
+        } catch (pdfError) {
+          console.error('PDF generation error:', pdfError)
+        }
+
+        toast.success('Quote saved successfully!')
+        setSavedQuoteId(quoteId)
+        await loadAuditLogs(quoteId)
+        return
+      }
+
+      // Create new quote
       const quoteNumber = `Q-${Date.now().toString().slice(-8)}`
       
       // Ensure all numeric values are valid
@@ -617,9 +839,10 @@ export default function NewQuotePage() {
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total: total,
-          notes: generatedQuote.notes || null,
+          // notes: null initially, can be added later via handleSaveNotes
           photos: photos,
           status: 'draft',
+          lead_status: 'quoted', // Move from lead to quote status
         })
         .select()
         .single()
@@ -724,8 +947,9 @@ export default function NewQuotePage() {
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total: total,
-          notes: generatedQuote.notes || null,
+          // notes are updated separately via handleSaveNotes
           photos: photos,
+          lead_status: 'quoted', // Ensure lead_status is set when updating
         })
         .eq('id', currentQuoteId)
 
@@ -831,18 +1055,12 @@ export default function NewQuotePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 lg:flex overflow-x-hidden">
-      {/* Sidebar Navigation - Desktop only */}
-      <div className="hidden lg:block">
-        <DashboardNav />
-      </div>
-
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Main Content */}
-      <div className="flex-1 pb-20 min-w-0">
+      <div className="pb-20 min-w-0">
         {/* Mobile-First Header */}
         <header className="bg-[#0F172A] p-4 sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <DashboardNav buttonOnly />
             <div className="bg-[#FF6200] p-2 rounded-lg">
               <Wrench className="h-5 w-5 text-white" />
             </div>
@@ -868,222 +1086,18 @@ export default function NewQuotePage() {
         </div>
       ) : (
         <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        {/* Customer Info */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between gap-4">
-              <CardTitle>Customer Information</CardTitle>
-              {quoteId && (
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded border text-muted-foreground">
-                    {quoteId}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      navigator.clipboard.writeText(quoteId)
-                      toast.success('Quote ID copied!')
-                    }}
-                    className="h-8 px-2"
-                  >
-                    <span className="sr-only">Copy Quote ID</span>
-                    📋
-                  </Button>
-                </div>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="customerName">Customer Name *</Label>
-              <Input
-                id="customerName"
-                placeholder="John Smith"
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-                className="h-12 text-lg"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="customerPhone">Phone</Label>
-                <Input
-                  id="customerPhone"
-                  type="tel"
-                  placeholder="(555) 123-4567"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  className="h-12"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="customerEmail">Email</Label>
-                <Input
-                  id="customerEmail"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  className="h-12"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2 relative">
-              <Label htmlFor="customerAddress">Job Address</Label>
-              <Input
-                id="customerAddress"
-                placeholder="Start typing address..."
-                value={customerAddress}
-                onChange={(e) => {
-                  setCustomerAddress(e.target.value)
-                  setShowSuggestions(true)
-                }}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={async (e) => {
-                  // Small delay to allow click on suggestions
-                  setTimeout(async () => {
-                    setShowSuggestions(false)
-                    // Recalculate if editing existing quote and address changed
-                    if (generatedQuote && (savedQuoteId || quoteId) && e.target.value) {
-                      await recalculateQuoteForAddress(e.target.value)
-                    }
-                  }, 200)
-                }}
-                className="h-12"
-                autoComplete="off"
-              />
-              
-              {/* Address Suggestions Dropdown */}
-              {showSuggestions && addressSuggestions.length > 0 && (
-                <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {addressSuggestions.map((suggestion, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      className="w-full text-left px-4 py-3 hover:bg-accent/10 border-b border-border last:border-b-0 transition-colors"
-                      onClick={async () => {
-                        const newAddress = suggestion.display_name
-                        setCustomerAddress(newAddress)
-                        setShowSuggestions(false)
-                        setAddressSuggestions([])
-                        
-                        // Recalculate quote if we have an existing quote
-                        if (generatedQuote && (savedQuoteId || quoteId)) {
-                          await recalculateQuoteForAddress(newAddress)
-                        }
-                      }}
-                    >
-                      <div className="text-sm font-medium">{suggestion.display_name}</div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Job Description - Only show when creating new quote */}
-        {!quoteId && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Job Description</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="description">What needs to be done? *</Label>
-                <Textarea
-                  id="description"
-                  placeholder={`Examples:
-• Replace water heater with 50-gal Bradford White
-• Full system tune-up, found bad capacitor
-• Sewer line camera found roots at 42ft, need hydrojet + spot repair`}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[150px] text-base"
-                />
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="flex-1 h-14 text-base"
-                  onMouseDown={startRecording}
-                  onMouseUp={stopRecording}
-                  onTouchStart={startRecording}
-                  onTouchEnd={stopRecording}
-                >
-                  {isRecording ? 'Recording...' : 'Hold to talk'}
-                </Button>
-
-                <label className="flex-1">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full h-14 text-base"
-                    asChild
-                  >
-                    <div>
-                      Add Photos ({photos.length})
-                    </div>
-                  </Button>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    capture="environment"
-                    onChange={handlePhotoUpload}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-
-              {photos.length > 0 && (
-                <div className="grid grid-cols-3 gap-2">
-                  {photos.map((photo, index) => (
-                    <div key={index} className="aspect-square rounded-lg overflow-hidden border">
-                      <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Generate Button - Only show when creating new quote */}
-        {!generatedQuote && !quoteId && (
-          <Button
-            onClick={handleGenerate}
-            disabled={isGenerating || !customerName || !description}
-            className="w-full h-16 text-lg font-semibold bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-          >
-            {isGenerating ? (
-              <>
-                <Loader2 className="h-6 w-6 mr-2 animate-spin" />
-                Building your quote...
-              </>
-            ) : (
-              "Generate Quote"
-            )}
-          </Button>
-        )}
-
-        {/* Generated Quote Preview */}
+        
+        {/* 1. GENERATED QUOTE - Show when quote exists */}
         {generatedQuote && (
           <Card className="border-[#FF6200] border-2">
-            <CardHeader className="bg-[#FF6200]/5">
+            <CardHeader className="bg-[#FF6200]/5 relative z-10">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-[#FF6200]">Generated Quote</CardTitle>
                 <Button
                   onClick={handleAddItem}
                   variant="outline"
                   size="sm"
-                  className="gap-2"
+                  className="gap-2 relative z-20"
                 >
                   <Plus className="h-4 w-4" />
                   Add Item
@@ -1097,6 +1111,28 @@ export default function NewQuotePage() {
                     {editingItemIndex === index ? (
                       // Edit Mode
                       <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-300 dark:border-blue-700 space-y-3">
+                        {/* Discount Checkbox in Edit Mode */}
+                        <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800">
+                          <input
+                            type="checkbox"
+                            id="edit-is-discount"
+                            checked={editedItem?.is_discount || editedItem?.unit_price < 0 || false}
+                            onChange={(e) => {
+                              if (!editedItem) return
+                              const isDiscount = e.target.checked
+                              setEditedItem({ 
+                                ...editedItem, 
+                                is_discount: isDiscount,
+                                unit_price: isDiscount && editedItem.unit_price > 0 ? -Math.abs(editedItem.unit_price) : editedItem.unit_price,
+                              })
+                            }}
+                            className="h-4 w-4 rounded border-gray-300"
+                          />
+                          <label htmlFor="edit-is-discount" className="text-sm font-medium cursor-pointer select-none">
+                            This is a discount
+                          </label>
+                        </div>
+                        
                         <div className="space-y-2">
                           <Label className="text-xs">Item Name</Label>
                           <Input
@@ -1125,10 +1161,12 @@ export default function NewQuotePage() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label className="text-xs">Unit Price ($)</Label>
+                            <Label className="text-xs">
+                              Unit Price ($)
+                              {(editedItem?.is_discount || editedItem?.unit_price < 0) && <span className="text-red-600 font-semibold"> (negative)</span>}
+                            </Label>
                             <Input
                               type="number"
-                              min="0"
                               step="0.01"
                               value={editedItem?.unit_price || 0}
                               onChange={(e) => setEditedItem(editedItem ? { ...editedItem, unit_price: parseFloat(e.target.value) || 0 } : null)}
@@ -1149,9 +1187,19 @@ export default function NewQuotePage() {
                       </div>
                     ) : (
                       // View Mode
-                      <div className="flex justify-between items-start p-3 bg-gray-50 dark:bg-gray-800 rounded-lg group">
+                      <div className={`flex justify-between items-start p-3 rounded-lg group ${
+                        item.is_discount || item.unit_price < 0 
+                          ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800' 
+                          : 'bg-gray-50 dark:bg-gray-800'
+                      }`}>
                         <div className="flex-1">
-                          <div className="font-semibold">{item.name}</div>
+                          <div className={`font-semibold ${
+                            item.is_discount || item.unit_price < 0 
+                              ? 'text-green-700 dark:text-green-400' 
+                              : ''
+                          }`}>
+                            {item.is_discount || item.unit_price < 0 ? '💰 ' : ''}{item.name}
+                          </div>
                           {item.description && (
                             <div className="text-sm text-muted-foreground">{item.description}</div>
                           )}
@@ -1160,7 +1208,13 @@ export default function NewQuotePage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <div className="font-semibold">${item.total.toFixed(2)}</div>
+                          <div className={`font-semibold ${
+                            item.is_discount || item.unit_price < 0 
+                              ? 'text-green-700 dark:text-green-400' 
+                              : ''
+                          }`}>
+                            ${item.total.toFixed(2)}
+                          </div>
                           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button
                               onClick={() => handleEditItem(index)}
@@ -1184,17 +1238,45 @@ export default function NewQuotePage() {
                     )}
                   </div>
                 ))}
-                
+
                 {/* Add New Item Form */}
                 {isAddingItem && (
                   <div className="p-3 bg-green-50 dark:bg-green-950 rounded-lg border-2 border-green-300 dark:border-green-700 space-y-3">
                     <div className="font-semibold text-green-700 dark:text-green-300 mb-2">Add New Item</div>
+                    
+                    {/* Discount Checkbox */}
+                    <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800">
+                      <input
+                        type="checkbox"
+                        id="is-discount"
+                        checked={newItem.is_discount || false}
+                        onChange={(e) => {
+                          const isDiscount = e.target.checked
+                          setNewItem({ 
+                            ...newItem, 
+                            is_discount: isDiscount,
+                            // If switching to discount mode, make price negative
+                            unit_price: isDiscount && newItem.unit_price > 0 ? -Math.abs(newItem.unit_price) : newItem.unit_price,
+                            // Optionally prefix name with "Discount: " when enabling
+                            name: isDiscount && newItem.name && !newItem.name.startsWith('Discount: ') ? `Discount: ${newItem.name}` : newItem.name.replace('Discount: ', '')
+                          })
+                        }}
+                        className="h-4 w-4 rounded border-gray-300"
+                      />
+                      <label htmlFor="is-discount" className="text-sm font-medium cursor-pointer select-none">
+                        This is a discount
+                        <span className="text-xs text-muted-foreground block">
+                          {newItem.is_discount ? '✓ Enter negative price (e.g., -100)' : 'Check to add discount/no charge items'}
+                        </span>
+                      </label>
+                    </div>
+
                     <div className="space-y-2">
                       <Label className="text-xs">Item Name *</Label>
                       <Input
                         value={newItem.name}
                         onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                        placeholder="e.g., Labor, Materials, Trip charge"
+                        placeholder={newItem.is_discount ? "e.g., Discount: 10% off labor, No Charge: Materials" : "e.g., Labor, Materials, Trip charge"}
                         className="h-9"
                       />
                     </div>
@@ -1219,14 +1301,16 @@ export default function NewQuotePage() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-xs">Unit Price ($) *</Label>
+                        <Label className="text-xs">
+                          Unit Price ($) * {newItem.is_discount && <span className="text-red-600 font-semibold">(negative)</span>}
+                        </Label>
                         <Input
                           type="number"
-                          min="0"
                           step="0.01"
                           value={newItem.unit_price}
                           onChange={(e) => setNewItem({ ...newItem, unit_price: parseFloat(e.target.value) || 0 })}
                           className="h-9"
+                          placeholder={newItem.is_discount ? "-100.00" : "0.00"}
                         />
                       </div>
                     </div>
@@ -1260,9 +1344,14 @@ export default function NewQuotePage() {
               </div>
 
               {generatedQuote.notes && (
-                <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg">
-                  <div className="text-sm font-semibold mb-1">Notes:</div>
-                  <div className="text-sm">{generatedQuote.notes}</div>
+                <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="text-sm font-semibold mb-2 flex items-center gap-2">
+                    📋 Installation Instructions / Job Description
+                  </div>
+                  <div className="text-sm whitespace-pre-wrap">{generatedQuote.notes}</div>
+                  <p className="text-xs text-muted-foreground mt-2 pt-2 border-t border-blue-200 dark:border-blue-800">
+                    Generated by AI - This will be included in customer-facing documents
+                  </p>
                 </div>
               )}
 
@@ -1342,18 +1431,16 @@ export default function NewQuotePage() {
           </Card>
         )}
 
-        {/* Update Quote */}
+        {/* 2. MAKE CHANGES TO QUOTE - Show when quote is saved */}
         {(savedQuoteId || quoteId) && generatedQuote && (
           <Card>
-            <CardContent className="pt-6 space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="aiUpdatePrompt" className="text-base font-medium">
-                  Make Changes to Quote
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  Describe what you'd like to add, remove, or modify
-                </p>
-              </div>
+            <CardHeader>
+              <CardTitle>Make Changes to Quote</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Describe what you'd like to add, remove, or modify
+              </p>
               <Textarea
                 id="aiUpdatePrompt"
                 placeholder='e.g., "add labor charges for 2 hours", "add HVAC equipment", "remove permit fee", "increase quantity of item X to 5"'
@@ -1385,7 +1472,279 @@ export default function NewQuotePage() {
           </Card>
         )}
 
-        {/* Audit Trail */}
+        {/* 3. CUSTOMER INFORMATION */}
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-4">
+                <CardTitle>Customer Information</CardTitle>
+                {quoteId && (
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={origin ? `${origin}/q/${quoteId}` : '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs px-3 py-1.5 rounded border text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950 border-blue-300 dark:border-blue-700 transition-colors"
+                      title="View customer quote (opens in new tab)"
+                    >
+                      {quoteId}
+                    </a>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        if (origin) {
+                          const link = `${origin}/q/${quoteId}`
+                          navigator.clipboard.writeText(link)
+                          toast.success('Customer quote link copied!')
+                        } else {
+                          navigator.clipboard.writeText(quoteId)
+                          toast.success('Quote ID copied!')
+                        }
+                      }}
+                      className="h-8 px-2"
+                      title="Copy customer quote link"
+                    >
+                      <span className="sr-only">Copy Quote Link</span>
+                      📋
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="customerName">Customer Name *</Label>
+              <Input
+                id="customerName"
+                placeholder="John Smith"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                className="h-12 text-lg"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="customerPhone">Phone</Label>
+                <Input
+                  id="customerPhone"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  value={customerPhone}
+                  onChange={(e) => setCustomerPhone(e.target.value)}
+                  className="h-12"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="customerEmail">Email</Label>
+                <Input
+                  id="customerEmail"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  className="h-12"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2 relative">
+              <Label htmlFor="customerAddress">Job Address</Label>
+              <Input
+                id="customerAddress"
+                name="job-address"
+                placeholder="Start typing address..."
+                value={customerAddress}
+                onChange={(e) => {
+                  setCustomerAddress(e.target.value)
+                  setShowSuggestions(true)
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={async (e) => {
+                  // Small delay to allow click on suggestions
+                  setTimeout(async () => {
+                    setShowSuggestions(false)
+                    // Recalculate if editing existing quote and address changed
+                    if (generatedQuote && (savedQuoteId || quoteId) && e.target.value) {
+                      await recalculateQuoteForAddress(e.target.value)
+                    }
+                  }, 200)
+                }}
+                className="h-12"
+                autoComplete="new-password"
+              />
+              
+              {/* Address Suggestions Dropdown */}
+              {showSuggestions && addressSuggestions.length > 0 && (
+                <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                  {addressSuggestions.map((suggestion, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className="w-full text-left px-4 py-3 hover:bg-accent/10 border-b border-border last:border-b-0 transition-colors"
+                      onClick={async () => {
+                        const newAddress = suggestion.display_name
+                        setCustomerAddress(newAddress)
+                        setShowSuggestions(false)
+                        setAddressSuggestions([])
+                        
+                        // Recalculate quote if we have an existing quote
+                        if (generatedQuote && (savedQuoteId || quoteId)) {
+                          await recalculateQuoteForAddress(newAddress)
+                        }
+                      }}
+                    >
+                      <div className="text-sm font-medium">{suggestion.display_name}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Job Description - Show when no quote generated yet */}
+        {!generatedQuote && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Job Description</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="description">What needs to be done? *</Label>
+                <Textarea
+                  id="description"
+                  placeholder={`Examples:
+• Replace water heater with 50-gal Bradford White
+• Full system tune-up, found bad capacitor
+• Sewer line camera found roots at 42ft, need hydrojet + spot repair`}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[150px] text-base"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex-1 h-14 text-base"
+                  onMouseDown={startRecording}
+                  onMouseUp={stopRecording}
+                  onTouchStart={startRecording}
+                  onTouchEnd={stopRecording}
+                >
+                  {isRecording ? 'Recording...' : 'Hold to talk'}
+                </Button>
+
+                <label className="flex-1">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full h-14 text-base"
+                    asChild
+                  >
+                    <div>
+                      Add Photos ({photos.length})
+                    </div>
+                  </Button>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    capture="environment"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+
+              {photos.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {photos.map((photo, index) => (
+                    <div key={index} className="aspect-square rounded-lg overflow-hidden border">
+                      <img src={photo} alt={`Photo ${index + 1}`} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Generate Button - Show when no quote generated yet */}
+        {!generatedQuote && (
+          <Button
+            onClick={handleGenerate}
+            disabled={isGenerating || !customerName || !description}
+            className="w-full h-16 text-lg font-semibold bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+          >
+            {isGenerating ? (
+              <>
+                <Loader2 className="h-6 w-6 mr-2 animate-spin" />
+                Building your quote...
+              </>
+            ) : (
+              "Generate Quote"
+            )}
+          </Button>
+        )}
+
+        {/* 4. NOTES - Internal company notes (show when quote is saved) */}
+        {(savedQuoteId || quoteId) && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                Internal Notes
+                <span className="text-xs font-normal text-muted-foreground bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
+                  Company Only
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="quoteNotes">Notes for Internal Use</Label>
+                <Textarea
+                  id="quoteNotes"
+                  placeholder="Add internal notes for your team (not visible to customer)..."
+                  value={quoteNotes}
+                  onChange={(e) => setQuoteNotes(e.target.value)}
+                  rows={4}
+                  className="resize-none"
+                />
+                <p className="text-xs text-muted-foreground">
+                  💡 These notes are for internal use only and will not appear on customer-facing documents.
+                </p>
+              </div>
+              
+              {/* Save Notes Button */}
+              <div className="flex items-center justify-between pt-2 border-t">
+                <p className="text-xs text-muted-foreground">
+                  {quoteNotes !== originalNotes ? (
+                    <span className="text-amber-600 dark:text-amber-400">● Unsaved changes</span>
+                  ) : (
+                    <span className="text-green-600 dark:text-green-400">✓ All changes saved</span>
+                  )}
+                </p>
+                <Button
+                  onClick={handleSaveNotes}
+                  disabled={quoteNotes === originalNotes}
+                  variant="outline"
+                  size="sm"
+                  className="gap-2"
+                >
+                  <Save className="h-4 w-4" />
+                  Save Notes
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* 5. AUDIT TRAIL - Show when quote is saved */}
         {(savedQuoteId || quoteId) && (
           <AuditTrail 
             quoteId={savedQuoteId || quoteId || ''} 
@@ -1396,6 +1755,9 @@ export default function NewQuotePage() {
         </main>
       )}
       </div>
+      
+      {/* Bottom Navigation */}
+      <DashboardNavigation companyId={companyId} />
     </div>
   )
 }

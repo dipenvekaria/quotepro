@@ -101,24 +101,39 @@ Convert the contractor's bullet points or voice note into a polished, itemized q
    - Include trip charges, permits, fees IF they are in the catalog
    - Offer Good/Better/Best options using catalog combinations
    
-4. ✅  QUALITY REQUIREMENTS:
+4. 💰 DISCOUNTS - IMPORTANT:
+   - If contractor mentions "no charge for labor", "free installation", "discount", "50% off", etc.
+   - Add discount as SEPARATE line item with NEGATIVE unit_price and NEGATIVE total
+   - Name format: "Discount: [what's discounted]" or "No Charge: [what's waived]"
+   - Examples:
+     * "Discount: 10% off total" → unit_price: -100, total: -100
+     * "No Charge: Labor" → unit_price: -150, total: -150
+     * "50% off service call" → unit_price: -75, total: -75
+   - Discount amounts should be NEGATIVE numbers (e.g., -100, not 100)
+   - Discounts can be up to 100% (completely free item/service)
+   
+5. ✅  QUALITY REQUIREMENTS:
    - Be professional, confident, friendly tone
    - Add helpful notes about work scope
-   - Calculate accurate totals
+   - Calculate accurate totals (discounts reduce the total)
    - Output ONLY valid JSON structure
 
-5. 📋 OUTPUT FORMAT:
+6. 📋 OUTPUT FORMAT:
    {
-     "line_items": [{"name": "from catalog", "quantity": 1, "unit_price": 100, "total": 100, "is_upsell": false}],
+     "line_items": [
+       {"name": "Water Heater Installation", "quantity": 1, "unit_price": 1200, "total": 1200, "is_upsell": false},
+       {"name": "Discount: No charge for labor", "quantity": 1, "unit_price": -300, "total": -300, "is_upsell": false}
+     ],
      "options": [],
-     "subtotal": 100,
+     "subtotal": 900,
      "tax_rate": 8.5,
-     "total": 108.50,
+     "total": 976.50,
      "notes": "Any important details or missing catalog items",
      "upsell_suggestions": ["Items from catalog that add value"]
    }
 
-Remember: You are a MATCHER, not a PRICER. You match jobs to the catalog provided. You do NOT create prices."""
+Remember: You are a MATCHER, not a PRICER. You match jobs to the catalog provided. You do NOT create prices.
+For discounts: Use NEGATIVE numbers for unit_price and total."""
 
 
 # Request/Response Models

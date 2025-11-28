@@ -103,128 +103,126 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
     const statusConfig = {
       to_schedule: { label: 'To Schedule', color: 'bg-gray-500' },
       scheduled: { label: 'Scheduled', color: 'bg-blue-500' },
-      in_progress: { label: 'In Progress', color: 'bg-orange-500' },
+      in_progress: { label: 'In Progress', color: 'bg-[#FF6200]' },
       completed: { label: 'Completed', color: 'bg-green-500' },
     }
 
     const config = statusConfig[jobStatus] || statusConfig.to_schedule
 
     return (
-      <a
-        href={`/quotes/new?id=${quote.id}`}
-        className="block p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-      >
-        <div className="flex items-start justify-between gap-4 mb-3">
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-base truncate mb-1">{quote.customer_name}</h3>
-            <p className="text-sm text-muted-foreground font-mono">{quote.quote_number}</p>
-          </div>
-          <Badge className={`${config.color} text-white`}>
-            {config.label}
-          </Badge>
-        </div>
+      <Card className="hover:shadow-md transition-all">
+        <a href={`/quotes/new?id=${quote.id}`} className="block">
+          <CardContent className="pt-6">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-base truncate">{quote.customer_name}</h3>
+                <p className="text-sm text-muted-foreground font-mono mt-1">{quote.quote_number}</p>
+              </div>
+              <Badge className={`${config.color} text-white flex-shrink-0`}>
+                {config.label}
+              </Badge>
+            </div>
 
-        <div className="space-y-2 text-sm text-muted-foreground">
-          {quote.customer_phone && (
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 flex-shrink-0" />
-              <span>{quote.customer_phone}</span>
-            </div>
-          )}
-          
-          {quote.customer_address && (
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{quote.customer_address}</span>
-            </div>
-          )}
+            <div className="space-y-2.5 text-sm">
+              {quote.customer_phone && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  <span>{quote.customer_phone}</span>
+                </div>
+              )}
+              
+              {quote.customer_address && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{quote.customer_address}</span>
+                </div>
+              )}
 
-          {quote.signed_at && (
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 flex-shrink-0" />
-              <span>Signed {formatDistanceToNow(new Date(quote.signed_at), { addSuffix: true })}</span>
+              {quote.signed_at && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4 flex-shrink-0" />
+                  <span>Signed {formatDistanceToNow(new Date(quote.signed_at), { addSuffix: true })}</span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </a>
+          </CardContent>
+        </a>
+      </Card>
     )
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold">Work</h1>
-        <p className="text-muted-foreground mt-1">Manage your jobs and schedules</p>
-      </div>
-
+    <div className="space-y-8">
       {/* Filters Bar */}
-      <div className="flex flex-wrap gap-2 items-center bg-muted/30 p-3 rounded-lg">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search jobs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 h-9 bg-background"
-          />
-        </div>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-wrap gap-4 items-center">
+            {/* Search */}
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search jobs..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
 
-        {/* Status Filter */}
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[160px] h-9 bg-background">
-            <SelectValue placeholder="All Jobs" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Jobs ({statusCounts.all})</SelectItem>
-            <SelectItem value="to_schedule">To Schedule ({statusCounts.to_schedule})</SelectItem>
-            <SelectItem value="scheduled">Scheduled ({statusCounts.scheduled})</SelectItem>
-            <SelectItem value="in_progress">In Progress ({statusCounts.in_progress})</SelectItem>
-            <SelectItem value="completed">Completed ({statusCounts.completed})</SelectItem>
-          </SelectContent>
-        </Select>
+            {/* Status Filter */}
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Jobs" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Jobs ({statusCounts.all})</SelectItem>
+                <SelectItem value="to_schedule">To Schedule ({statusCounts.to_schedule})</SelectItem>
+                <SelectItem value="scheduled">Scheduled ({statusCounts.scheduled})</SelectItem>
+                <SelectItem value="in_progress">In Progress ({statusCounts.in_progress})</SelectItem>
+                <SelectItem value="completed">Completed ({statusCounts.completed})</SelectItem>
+              </SelectContent>
+            </Select>
 
-        {/* Sort */}
-        <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-[140px] h-9 bg-background">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-            <SelectItem value="name">Name (A-Z)</SelectItem>
-          </SelectContent>
-        </Select>
+            {/* Sort */}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[160px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem>
+                <SelectItem value="name">Name (A-Z)</SelectItem>
+              </SelectContent>
+            </Select>
 
-        {/* Clear Filters */}
-        {(searchQuery || sortBy !== 'newest' || statusFilter !== 'all') && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              setSearchQuery('')
-              setSortBy('newest')
-              setStatusFilter('all')
-            }}
-            className="h-9"
-          >
-            Clear
-          </Button>
-        )}
-      </div>
+            {/* Clear Filters */}
+            {(searchQuery || statusFilter !== 'all' || sortBy !== 'newest') && (
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  setSearchQuery('')
+                  setStatusFilter('all')
+                  setSortBy('newest')
+                }}
+              >
+                Clear All
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Jobs List */}
       {filteredJobs.length === 0 ? (
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Clock className="h-12 w-12 text-muted-foreground mb-4" />
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <Clock className="h-16 w-16 text-muted-foreground mb-4 opacity-50" />
             <p className="text-lg font-medium">
               {searchQuery || statusFilter !== 'all' 
                 ? 'No jobs match your filters' 
                 : 'No jobs yet'}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
+            <p className="text-sm text-muted-foreground mt-2">
               {searchQuery || statusFilter !== 'all'
                 ? 'Try adjusting your filters'
                 : 'Jobs will appear here when quotes are signed'}
@@ -232,18 +230,18 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
           </CardContent>
         </Card>
       ) : (
-        <>
-          <div className="flex justify-between items-center mb-2 px-1">
-            <p className="text-xs text-muted-foreground">
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">
               Showing {filteredJobs.length} of {allJobs.length} jobs
             </p>
           </div>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredJobs.map((job) => (
               <JobCard key={job.id} quote={job} />
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   )

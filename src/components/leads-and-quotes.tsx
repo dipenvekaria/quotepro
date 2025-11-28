@@ -1,18 +1,19 @@
 // @ts-nocheck - New lead_status column pending database migration
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import React, { useState, useMemo, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Calendar, FileText, Phone, MapPin, Mail, Clock, CheckCircle2, XCircle, Plus, Search, Filter, TrendingUp, DollarSign, AlertCircle } from 'lucide-react'
+import { CalendarDays, FileText, Phone, MapPin, Mail, Clock, CheckCircle2, XCircle, Plus, Search, Filter, TrendingUp, DollarSign, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import Link from 'next/link'
 import { formatDistanceToNow, isAfter, isBefore, subDays } from 'date-fns'
 import { NewLeadDialog } from './new-lead-dialog'
+import { QuoteStatusBadge, canScheduleQuote, type QuoteFollowupStatus } from './quote-status-badge'
 
 interface LeadsAndQuotesProps {
   leads: any[]
@@ -22,26 +23,51 @@ interface LeadsAndQuotesProps {
 
 export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps) {
   const searchParams = useSearchParams()
-  const [activeTab, setActiveTab] = useState('leads')
+  const router = useRouter()
   const [showNewLeadDialog, setShowNewLeadDialog] = useState(false)
   
-  // Filter states
-  const [searchQuery, setSearchQuery] = useState('')
-  const [leadStatusFilter, setLeadStatusFilter] = useState('all')
-  const [quoteStatusFilter, setQuoteStatusFilter] = useState('all')
-  const [sortBy, setSortBy] = useState('newest')
-  const [urgencyFilter, setUrgencyFilter] = useState('all')
+  // Get initial values from URL params
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'leads')
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
+  const [leadStatusFilter, setLeadStatusFilter] = useState(searchParams.get('leadStatus') || 'all')
+  const [quoteStatusFilter, setQuoteStatusFilter] = useState(searchParams.get('quoteStatus') || 'all')
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'newest')
+  const [urgencyFilter, setUrgencyFilter] = useState(searchParams.get('urgency') || 'all')
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false)
 
-  // Handle URL parameters
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (activeTab !== 'leads') params.set('tab', activeTab)
+    if (searchQuery) params.set('search', searchQuery)
+    if (leadStatusFilter !== 'all') params.set('leadStatus', leadStatusFilter)
+    if (quoteStatusFilter !== 'all') params.set('quoteStatus', quoteStatusFilter)
+    if (sortBy !== 'newest') params.set('sort', sortBy)
+    if (urgencyFilter !== 'all') params.set('urgency', urgencyFilter)
+    
+    const newUrl = params.toString() ? `/leads?${params.toString()}` : '/leads'
+    router.replace(newUrl, { scroll: false })
+  }, [activeTab, searchQuery, leadStatusFilter, quoteStatusFilter, sortBy, urgencyFilter, router])
+
+  // Handle URL parameters for opening dialogs
   useEffect(() => {
     if (searchParams.get('new_lead') === 'true') {
       setShowNewLeadDialog(true)
       setActiveTab('leads')
+      // Clear the new_lead parameter
+      const params = new URLSearchParams(searchParams.toString())
+      params.delete('new_lead')
+      const newUrl = params.toString() ? `/leads?${params.toString()}` : '/leads'
+      router.replace(newUrl)
     }
-    if (searchParams.get('tab') === 'quotes') {
-      setActiveTab('quotes')
-    }
-  }, [searchParams])
+  }, [searchParams, router])
+
+  // Handle floating button click
+  useEffect(() => {
+    const handleOpenDialog = () => setShowNewLeadDialog(true)
+    window.addEventListener('openNewLeadDialog', handleOpenDialog)
+    return () => window.removeEventListener('openNewLeadDialog', handleOpenDialog)
+  }, [])
 
   // Filter and sort leads
   const filteredLeads = useMemo(() => {
@@ -166,194 +192,405 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
     }
   }, [filteredLeads, filteredQuotes, leads, quotes])
 
+  // Check if any filters are active
+  const hasActiveFilters = searchQuery || leadStatusFilter !== 'all' || quoteStatusFilter !== 'all' || urgencyFilter !== 'all' || sortBy !== 'newest'
+
   return (
     <>
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="flex flex-col gap-4 mb-4">
-          <div className="flex items-center justify-between">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="leads">
+      <div className="space-y-3">
+        {/* Main Tabs with Filter Icon */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="flex items-center justify-between gap-3">
+            <TabsList className="grid grid-cols-2 h-10 flex-1">
+              <TabsTrigger value="leads" className="text-sm font-semibold">
                 Leads ({filteredLeads.length})
               </TabsTrigger>
-              <TabsTrigger value="quotes">
+              <TabsTrigger value="quotes" className="text-sm font-semibold">
                 Quotes ({filteredQuotes.length})
               </TabsTrigger>
             </TabsList>
+            
+            {/* Filter Icon Button - Orange when active */}
+            <Button
+              variant={hasActiveFilters ? "default" : "outline"}
+              size="sm"
+              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+              className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#FF6200] hover:bg-[#E55800] text-white' : ''}`}
+            >
+              <Filter className="h-4 w-4" />
+              {hasActiveFilters && (
+                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#FF6200]" />
+              )}
+            </Button>
           </div>
 
-          {/* Filters Bar */}
-          <div className="flex flex-wrap gap-2 items-center bg-muted/30 p-3 rounded-lg">
-            {/* Search */}
-            <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search by name, phone, address..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 h-9 bg-background"
-              />
-            </div>
+          {/* Compact Filter Section - Only shown when expanded */}
+          {isFilterExpanded && (
+            <div className={`mt-3 p-3 border rounded-lg space-y-3 ${hasActiveFilters ? 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800' : 'bg-muted/30'}`}>
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground h-3.5 w-3.5" />
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search..."
+                  className="pl-8 h-8 text-sm"
+                />
+              </div>
 
-            {/* Status Filter */}
-            {activeTab === 'leads' ? (
-              <>
-                <Select value={leadStatusFilter} onValueChange={setLeadStatusFilter}>
-                  <SelectTrigger className="w-[140px] h-9 bg-background">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="new">New</SelectItem>
-                    <SelectItem value="contacted">Contacted</SelectItem>
-                    <SelectItem value="quote_visit_scheduled">Visit Scheduled</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
-                  <SelectTrigger className="w-[120px] h-9 bg-background">
-                    <SelectValue placeholder="Urgency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="hot">🔥 Hot</SelectItem>
-                    <SelectItem value="warm">🌡️ Warm</SelectItem>
-                    <SelectItem value="cold">❄️ Cold</SelectItem>
-                  </SelectContent>
-                </Select>
-              </>
-            ) : (
-              <Select value={quoteStatusFilter} onValueChange={setQuoteStatusFilter}>
-                <SelectTrigger className="w-[140px] h-9 bg-background">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="quoted">Quoted</SelectItem>
-                  <SelectItem value="signed">Signed</SelectItem>
-                  <SelectItem value="lost">Lost</SelectItem>
-                </SelectContent>
-              </Select>
-            )}
-
-            {/* Sort */}
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[140px] h-9 bg-background">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
-                <SelectItem value="name">Name (A-Z)</SelectItem>
-                {activeTab === 'leads' && (
-                  <SelectItem value="visit">Visit Date</SelectItem>
-                )}
-                {activeTab === 'quotes' && (
+              {/* Filter Controls */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {activeTab === 'leads' ? (
                   <>
-                    <SelectItem value="amount-high">Highest Value</SelectItem>
-                    <SelectItem value="amount-low">Lowest Value</SelectItem>
+                    <Select value={leadStatusFilter} onValueChange={setLeadStatusFilter}>
+                      <SelectTrigger className="w-[130px] h-8 text-xs">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="new">New</SelectItem>
+                        <SelectItem value="contacted">Contacted</SelectItem>
+                        <SelectItem value="quote_visit_scheduled">Visit Scheduled</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
+                      <SelectTrigger className="w-[110px] h-8 text-xs">
+                        <SelectValue placeholder="Urgency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="warm">🌡️ Warm</SelectItem>
+                        <SelectItem value="cold">❄️ Cold</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </>
+                ) : (
+                  <Select value={quoteStatusFilter} onValueChange={setQuoteStatusFilter}>
+                    <SelectTrigger className="w-[130px] h-8 text-xs">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="quoted">Quoted</SelectItem>
+                      <SelectItem value="signed">Signed</SelectItem>
+                      <SelectItem value="lost">Lost</SelectItem>
+                    </SelectContent>
+                  </Select>
                 )}
-              </SelectContent>
-            </Select>
 
-            {/* Clear Filters */}
-            {(searchQuery || leadStatusFilter !== 'all' || quoteStatusFilter !== 'all' || urgencyFilter !== 'all' || sortBy !== 'newest') && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setSearchQuery('')
-                  setLeadStatusFilter('all')
-                  setQuoteStatusFilter('all')
-                  setUrgencyFilter('all')
-                  setSortBy('newest')
-                }}
-                className="h-9"
-              >
-                Clear
-              </Button>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-[120px] h-8 text-xs">
+                    <SelectValue placeholder="Sort" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="oldest">Oldest</SelectItem>
+                    <SelectItem value="name">Name</SelectItem>
+                    {activeTab === 'leads' && (
+                      <SelectItem value="visit">Visit Date</SelectItem>
+                    )}
+                    {activeTab === 'quotes' && (
+                      <>
+                        <SelectItem value="amount-high">Highest $</SelectItem>
+                        <SelectItem value="amount-low">Lowest $</SelectItem>
+                      </>
+                    )}
+                  </SelectContent>
+                </Select>
+
+                {/* Reset Filters Button */}
+                {hasActiveFilters && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery('')
+                      setLeadStatusFilter('all')
+                      setQuoteStatusFilter('all')
+                      setUrgencyFilter('all')
+                      setSortBy('newest')
+                    }}
+                    className="h-8 px-3 text-xs border-orange-300 text-orange-600 hover:bg-orange-50 dark:border-orange-700 dark:text-orange-400 dark:hover:bg-orange-950/30"
+                  >
+                    <X className="h-3 w-3 mr-1" />
+                    Reset Filters
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Content Area */}
+          <TabsContent value="leads" className="mt-0">
+            {filteredLeads.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <Phone className="h-12 w-12 text-muted-foreground mb-3 opacity-50" />
+                  <p className="text-base font-medium">
+                    {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all' 
+                      ? 'No leads match your filters' 
+                      : 'No active leads'}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all'
+                      ? 'Try adjusting your filters'
+                      : 'Click the orange + button to add a new lead'}
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-3">
+                {filteredLeads.map((lead) => (
+                  <LeadRow key={lead.id} lead={lead} />
+                ))}
+              </div>
             )}
-          </div>
-        </div>
+          </TabsContent>
 
-      {/* Leads Tab */}
-      <TabsContent value="leads" className="mt-6">
-        {filteredLeads.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Phone className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium">
-                {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all' 
-                  ? 'No leads match your filters' 
-                  : 'No active leads'}
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all'
-                  ? 'Try adjusting your filters'
-                  : 'Click the orange + button to add a new lead'}
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <>
-            <div className="flex justify-between items-center mb-2 px-1">
-              <p className="text-xs text-muted-foreground">
-                Showing {filteredLeads.length} of {leads.length} leads
-              </p>
-            </div>
-            <div className="space-y-2">
-              {filteredLeads.map((lead) => (
-                <LeadCard key={lead.id} lead={lead} />
-              ))}
-            </div>
-          </>
-        )}
-      </TabsContent>
+          {/* Quotes Tab */}
+          <TabsContent value="quotes" className="mt-0">
+            {filteredQuotes.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <FileText className="h-12 w-12 text-muted-foreground mb-3 opacity-50" />
+                  <p className="text-base font-medium">
+                    {searchQuery || quoteStatusFilter !== 'all' 
+                      ? 'No quotes match your filters' 
+                      : 'No quotes yet'}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {searchQuery || quoteStatusFilter !== 'all'
+                      ? 'Try adjusting your filters'
+                      : 'Create quotes from your leads'}
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-3">
+                {filteredQuotes.map((quote) => (
+                  <QuoteRow key={quote.id} quote={quote} />
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
 
-      {/* Quotes Tab */}
-      <TabsContent value="quotes" className="mt-6">
-        {filteredQuotes.length === 0 ? (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-lg font-medium">
-                {searchQuery || quoteStatusFilter !== 'all' 
-                  ? 'No quotes match your filters' 
-                  : 'No quotes yet'}
-              </p>
-              <p className="text-sm text-muted-foreground mt-1">
-                {searchQuery || quoteStatusFilter !== 'all'
-                  ? 'Try adjusting your filters'
-                  : 'Create quotes from your leads'}
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          <>
-            <div className="flex justify-between items-center mb-2 px-1">
-              <p className="text-xs text-muted-foreground">
-                Showing {filteredQuotes.length} of {quotes.length} quotes • Total value: ${filteredQuotes.reduce((sum, q) => sum + (q.total || 0), 0).toLocaleString()}
-              </p>
-            </div>
-            <div className="space-y-2">
-              {filteredQuotes.map((quote) => (
-                <QuoteCard key={quote.id} quote={quote} />
-              ))}
-            </div>
-          </>
-        )}
-      </TabsContent>
-    </Tabs>
-
-    <NewLeadDialog 
-      open={showNewLeadDialog} 
-      onOpenChange={setShowNewLeadDialog}
-      companyId={companyId}
-    />
+      <NewLeadDialog 
+        open={showNewLeadDialog} 
+        onOpenChange={setShowNewLeadDialog}
+        companyId={companyId}
+      />
     </>
   )
 }
 
+// Elegant Lead Card Component
+function LeadRow({ lead }: { lead: any }) {
+  const getStatusBadge = () => {
+    switch (lead.lead_status) {
+      case 'new':
+        return <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300 text-xs font-medium">New Lead</Badge>
+      case 'contacted':
+        return <Badge variant="outline" className="bg-purple-100 text-purple-700 border-purple-300 text-xs font-medium">Contacted</Badge>
+      case 'quote_visit_scheduled':
+        return <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300 text-xs font-medium">Visit Scheduled</Badge>
+      case 'quoted':
+        return <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-xs font-medium">Quoted</Badge>
+      default:
+        return <Badge variant="outline" className="bg-gray-100 text-gray-600 border-gray-300 text-xs font-medium">Active</Badge>
+    }
+  }
+
+  const handlePhoneClick = (e: React.MouseEvent, phone: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.open(`tel:${phone}`, '_self')
+  }
+
+  const handleScheduleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // TODO: Open calendar scheduling modal
+    console.log('Schedule clicked for lead:', lead.id)
+  }
+
+  const jobDetails = lead.description || lead.service_address_city || lead.customer_email || 'No job details'
+
+  return (
+    <Link href={`/quotes/new?id=${lead.id}`}>
+      <Card className="hover:shadow-md transition-all cursor-pointer">
+        <CardContent className="py-0.5 px-2">
+          <div className="flex items-center justify-between gap-2">
+            {/* Left Side - Name and Job Details */}
+            <div className="flex-1 min-w-0 space-y-0">
+              <h3 className="text-sm font-semibold truncate leading-tight">
+                {lead.customer_name}
+              </h3>
+              <p className="text-xs text-muted-foreground truncate leading-tight">
+                {jobDetails}
+              </p>
+              <div className="flex items-center gap-2 flex-wrap leading-tight">
+                {getStatusBadge()}
+                <div className="flex items-center gap-1">
+                  <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <p className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Action Icons */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {lead.customer_phone && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 rounded-full hover:bg-green-50 text-green-600 p-0"
+                  onClick={(e) => handlePhoneClick(e, lead.customer_phone)}
+                  title="Call"
+                >
+                  <Phone className="h-5 w-5" />
+                </Button>
+              )}
+              
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 rounded-full hover:bg-blue-50 text-blue-600 p-0"
+                onClick={handleScheduleClick}
+                title="Schedule"
+              >
+                <CalendarDays className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
+}
+
+// Elegant Quote Card Component
+function QuoteRow({ quote }: { quote: any }) {
+  // Use followup_status if it exists, otherwise fall back to old status mapping
+  const followupStatus: QuoteFollowupStatus = quote.followup_status || 
+    (quote.status === 'sent' ? 'sent' : 
+     quote.status === 'signed' ? 'accepted' : 'draft')
+
+  const canSchedule = canScheduleQuote(followupStatus)
+
+  const handlePhoneClick = (e: React.MouseEvent, phone: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.open(`tel:${phone}`, '_self')
+  }
+
+  const handlePdfClick = (e: React.MouseEvent, pdfUrl: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.open(pdfUrl, '_blank')
+  }
+
+  const handleScheduleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (!canSchedule) {
+      // Don't allow scheduling if quote not accepted
+      return
+    }
+    
+    // TODO: Open calendar scheduling modal
+    console.log('Schedule clicked for quote:', quote.id)
+  }
+
+  const jobDetails = quote.description || quote.service_address_city || quote.customer_email || 'Quote details'
+
+  return (
+    <Link href={`/quotes/new?id=${quote.id}`}>
+      <Card className="hover:shadow-md transition-all cursor-pointer">
+        <CardContent className="py-0.5 px-2">
+          <div className="flex items-center justify-between gap-2">
+            {/* Left Side - Name and Quote Details */}
+            <div className="flex-1 min-w-0 space-y-0">
+              <h3 className="text-sm font-semibold truncate leading-tight">
+                {quote.customer_name}
+              </h3>
+              <p className="text-xs text-muted-foreground truncate leading-tight">
+                {jobDetails}
+              </p>
+              <div className="flex items-center gap-2 flex-wrap leading-tight">
+                {/* Show follow-up status badge with color coding */}
+                <QuoteStatusBadge status={followupStatus} size="sm" />
+                
+                <div className="flex items-center gap-1">
+                  <DollarSign className="h-3 w-3 text-green-600 flex-shrink-0" />
+                  <p className="text-xs font-semibold text-green-600">
+                    ${(quote.total || 0).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <p className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(new Date(quote.created_at), { addSuffix: true })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Action Icons */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {quote.customer_phone && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 rounded-full hover:bg-green-50 text-green-600 p-0"
+                  onClick={(e) => handlePhoneClick(e, quote.customer_phone)}
+                  title="Call Customer"
+                >
+                  <Phone className="h-5 w-5" />
+                </Button>
+              )}
+              
+              {/* Calendar icon - only enabled/highlighted when accepted */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 w-8 rounded-full p-0 transition-all ${
+                  canSchedule 
+                    ? 'hover:bg-blue-50 text-blue-600 hover:scale-110' 
+                    : 'text-gray-300 cursor-not-allowed opacity-50'
+                }`}
+                onClick={handleScheduleClick}
+                title={canSchedule ? 'Schedule Job' : 'Quote must be accepted first'}
+                disabled={!canSchedule}
+              >
+                <CalendarDays className="h-5 w-5" />
+              </Button>
+              
+              {quote.pdf_url && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 rounded-full hover:bg-orange-50 text-orange-600 p-0"
+                  onClick={(e) => handlePdfClick(e, quote.pdf_url)}
+                  title="View PDF"
+                >
+                  <FileText className="h-5 w-5" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
+}
+
+// Keep old card components for backwards compatibility
 function LeadCard({ lead }: { lead: any }) {
   const getStatusBadge = () => {
     switch (lead.lead_status) {
@@ -370,15 +607,6 @@ function LeadCard({ lead }: { lead: any }) {
 
   // Calculate urgency
   const getUrgencyIndicator = () => {
-    const isNew = isAfter(new Date(lead.created_at), subDays(new Date(), 1))
-    const hasUpcomingVisit = lead.quote_visit_date && 
-      isBefore(new Date(lead.quote_visit_date), subDays(new Date(), -2)) &&
-      isAfter(new Date(lead.quote_visit_date), new Date())
-    
-    if (isNew || hasUpcomingVisit) {
-      return <Badge className="bg-red-500 text-white text-xs">🔥 Hot</Badge>
-    }
-    
     const isWarm = isAfter(new Date(lead.created_at), subDays(new Date(), 7))
     if (isWarm) {
       return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 text-xs">🌡️ Warm</Badge>
@@ -570,12 +798,6 @@ function QuoteCard({ quote }: { quote: any }) {
               <div className="text-xl font-bold text-[#FF6200]">
                 ${quote.total.toLocaleString()}
               </div>
-              {quote.lead_status === 'quoted' && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <TrendingUp className="h-3 w-3" />
-                  <span>~{profitMargin}% margin</span>
-                </div>
-              )}
               {quote.lead_status === 'signed' && quote.signed_at && (
                 <div className="flex items-center gap-1 text-xs text-green-600 font-medium">
                   <CheckCircle2 className="h-3 w-3" />

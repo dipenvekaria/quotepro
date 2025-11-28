@@ -50,7 +50,11 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const getStatusInfo = () => {
     // @ts-ignore
     if (quote.signed_at) {
-      return { label: 'Signed', color: 'bg-green-600', icon: CheckCircle }
+      return { label: 'Signed', color: 'bg-emerald-600', icon: CheckCircle }
+    }
+    // @ts-ignore
+    if (quote.accepted_at) {
+      return { label: 'Accepted', color: 'bg-green-600', icon: CheckCircle }
     }
     // @ts-ignore
     if (quote.sent_at) {
@@ -347,7 +351,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
           <CardContent className="pt-6">
             <div className="space-y-4">
               {/* @ts-ignore */}
-              {!quote.signed_at && (
+              {!quote.signed_at && !quote.accepted_at && (
                 <>
                   <Link href={`/q/${id}/sign`}>
                     <Button
@@ -366,14 +370,34 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
 
               {/* @ts-ignore */}
               {quote.signed_at && (
+                <div className="bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4 text-center">
+                  <CheckCircle className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
+                  <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                    Quote Signed!
+                  </h3>
+                  <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+                    {/* @ts-ignore */}
+                    Signed on {new Date(quote.signed_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2">
+                    We'll contact you soon to schedule the work.
+                  </p>
+                </div>
+              )}
+
+              {/* @ts-ignore */}
+              {!quote.signed_at && quote.accepted_at && (
                 <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4 text-center">
                   <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
                   <h3 className="font-semibold text-green-900 dark:text-green-100">
-                    Quote Signed!
+                    Quote Accepted!
                   </h3>
                   <p className="text-sm text-green-700 dark:text-green-300 mt-1">
                     {/* @ts-ignore */}
-                    Signed on {new Date(quote.signed_at).toLocaleDateString()}
+                    Accepted on {new Date(quote.accepted_at).toLocaleDateString()}
+                  </p>
+                  <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                    We'll contact you soon to schedule the work.
                   </p>
                 </div>
               )}

@@ -1,44 +1,31 @@
 // @ts-nocheck - New lead_status column pending database migration
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
 import { LeadsAndQuotes } from '@/components/leads-and-quotes'
+import { useDashboard } from '@/lib/dashboard-context'
+import { Button } from '@/components/ui/button'
+import { Calendar } from 'lucide-react'
+import Link from 'next/link'
 
-export default async function LeadsPage() {
-  const supabase = await createClient()
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    redirect('/login')
-  }
-
-  const { data: company } = await supabase
-    .from('companies')
-    .select('*')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!company) {
-    redirect('/onboarding')
-  }
-
-  // Fetch all quotes/leads for this company
-  const { data: allRecords } = await supabase
-    .from('quotes')
-    .select('*')
-    .eq('company_id', company.id)
-    .order('created_at', { ascending: false })
-
-  const records = allRecords || []
+export default function LeadsPage() {
+  const { company, quotes: allRecords } = useDashboard()
 
   // Split into leads and quotes based on lead_status
-  const leads = records.filter(r => 
+  const leads = allRecords.filter(r => 
     ['new', 'contacted', 'quote_visit_scheduled'].includes(r.lead_status)
   )
   
-  const quotes = records.filter(r => 
-    ['quoted', 'signed', 'lost'].includes(r.lead_status)
-  )
+  // Quotes section: Only show quotes that haven't been accepted/signed yet
+  // Once accepted/signed, they move to Work section
+  const quotes = allRecords.filter(r => {
+    // Must have quote status of 'quoted' or 'lost'
+    const isQuoteLead = ['quoted', 'lost'].includes(r.lead_status)
+    
+    // Exclude if already accepted or signed (they're in Work section now)
+    const notInWorkQueue = !r.accepted_at && !r.signed_at
+    
+    return isQuoteLead && notInWorkQueue
+  })
 
   return (
     <div className="min-h-screen">
@@ -52,13 +39,12 @@ export default async function LeadsPage() {
                 Manage your sales pipeline from first contact to signed quote
               </p>
             </div>
-            {company.logo_url && (
-              <img 
-                src={company.logo_url} 
-                alt={company.name}
-                className="h-12 w-auto object-contain"
-              />
-            )}
+            <Link href="/calendar">
+              <Button className="gap-2 bg-[#FF6200] hover:bg-[#E55800]">
+                <Calendar className="h-4 w-4" />
+                <span className="hidden sm:inline">Calendar</span>
+              </Button>
+            </Link>
           </div>
         </div>
       </header>

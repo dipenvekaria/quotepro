@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { CalendarDays, ClipboardList, Hammer, CheckCircle2, DollarSign, Search, Phone, MapPin, Clock, TrendingUp, AlertCircle } from 'lucide-react'
 import { formatDistanceToNow, differenceInDays } from 'date-fns'
+import { ExpandableSearch } from './expandable-search'
 
 type Quote = {
   id: string
@@ -240,19 +241,21 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
         </TabsTrigger>
       </TabsList>
 
+      {/* Search Bar - Dedicated Row */}
+      {activeTab !== 'calendar' && (
+        <div className="bg-muted/30 p-3 rounded-lg">
+          <ExpandableSearch
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search by name, phone, address..."
+            className="w-full"
+          />
+        </div>
+      )}
+
       {/* Filters Bar */}
       {activeTab !== 'calendar' && (
         <div className="flex flex-wrap gap-2 items-center bg-muted/30 p-3 rounded-lg">
-          {/* Search */}
-          <div className="relative flex-1 min-w-[200px]">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name, phone, address..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 h-9 bg-background"
-            />
-          </div>
 
           {/* Sort */}
           <Select value={sortBy} onValueChange={setSortBy}>

@@ -27,9 +27,9 @@ const navItems = [
   },
   {
     name: 'Pay',
-    href: '/payments',
+    href: '/pay',
     icon: DollarSign,
-    description: 'Track and collect payments'
+    description: 'Invoices and payments'
   },
   {
     name: 'Stats',
@@ -115,9 +115,15 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
         </div>
       </aside>
 
-      {/* Mobile Bottom Navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 pb-safe">
-        <div className="flex items-center justify-around w-full">
+      {/* Mobile Bottom Navigation - Modern Frosted Glass Design */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 pb-safe">
+        {/* Fully opaque backdrop */}
+        <div className="absolute inset-0 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800" />
+        
+        {/* Subtle gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-50/20 to-transparent dark:from-gray-900/20 pointer-events-none" />
+        
+        <div className="relative flex items-center justify-around w-full px-2 py-2">
           {navItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href)
@@ -126,21 +132,32 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={cn(
-                  'flex flex-col items-center justify-center gap-0.5 py-1 px-1 transition-all relative flex-1',
-                  active && 'text-[#FF6200]'
-                )}
+                className="flex flex-col items-center justify-center gap-1 py-2 px-3 transition-all relative flex-1 group"
               >
+                {/* Active indicator - liquid morphing blob */}
                 {active && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-[#FF6200] rounded-b-full" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-orange-600/5 dark:from-orange-500/20 dark:to-orange-600/10 rounded-2xl scale-95 transition-transform" />
                 )}
-                <Icon className={cn(
-                  'h-[13px] w-[13px] flex-shrink-0 transition-all',
-                  active ? 'scale-105' : 'text-gray-500 dark:text-gray-400'
-                )} />
+                
+                {/* Icon container with smooth scaling */}
+                <div className={cn(
+                  'relative rounded-xl p-2 transition-all duration-300',
+                  active 
+                    ? 'bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30 scale-105' 
+                    : 'bg-gray-100/50 dark:bg-gray-800/50 group-hover:bg-gray-200/70 dark:group-hover:bg-gray-700/70 group-hover:scale-105'
+                )}>
+                  <Icon className={cn(
+                    'h-6 w-6 flex-shrink-0 transition-all duration-300',
+                    active ? 'text-white' : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200'
+                  )} />
+                </div>
+                
+                {/* Label with smooth fade */}
                 <span className={cn(
-                  'text-[7px] font-medium mt-0.5 truncate max-w-full text-center leading-tight',
-                  active ? 'text-[#FF6200]' : 'text-gray-500 dark:text-gray-400'
+                  'text-[10px] font-semibold tracking-wide truncate max-w-full text-center leading-tight transition-all duration-300',
+                  active 
+                    ? 'text-orange-600 dark:text-orange-500' 
+                    : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
                 )}>
                   {item.name}
                 </span>
@@ -150,18 +167,20 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
         </div>
       </nav>
 
-      {/* Floating Action Button - New Lead (only on Leads page) */}
+      {/* Floating Action Button - Bottom Right Above Navigation Bar (only on Leads page) */}
       {showFAB && (
         <Link
           href="/leads?new_lead=true"
-          className="lg:hidden fixed bottom-20 right-4 z-50"
+          className="fixed bottom-20 right-4 z-50 lg:bottom-6 lg:right-6"
         >
-          <Button
-            size="lg"
-            className="h-14 w-14 rounded-full shadow-lg bg-[#FF6200] hover:bg-[#E55800] active:scale-95 transition-all"
+          <button
+            className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"
+            style={{ backgroundColor: '#FF6200', border: 'none' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E55800'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF6200'}
           >
-            <Plus className="h-6 w-6" />
-          </Button>
+            <Plus className="h-6 w-6 text-white" />
+          </button>
         </Link>
       )}
     </>

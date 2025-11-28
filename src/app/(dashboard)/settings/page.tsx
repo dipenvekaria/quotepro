@@ -18,6 +18,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Wrench, Building2, Package, FileText, User, CreditCard, Users, Upload, Download, Search, Filter, X } from 'lucide-react'
 import { DashboardNav } from '@/components/dashboard-nav'
+import { ExpandableSearch } from '@/components/expandable-search'
 import {
   Dialog,
   DialogContent,
@@ -1097,23 +1098,12 @@ function SettingsPageContent() {
                     
                     {/* Search and Filter Bar */}
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          placeholder="Search by name or description..."
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="pl-10 pr-10"
-                        />
-                        {searchQuery && (
-                          <button
-                            onClick={() => setSearchQuery('')}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                          >
-                            <X className="h-4 w-4" />
-                          </button>
-                        )}
-                      </div>
+                      <ExpandableSearch
+                        value={searchQuery}
+                        onChange={setSearchQuery}
+                        placeholder="Search by name or description..."
+                        className="flex-1"
+                      />
                       
                       <div className="sm:w-64">
                         <Select value={selectedCategory} onValueChange={setSelectedCategory}>

@@ -1,35 +1,12 @@
 // @ts-nocheck - Supabase type generation pending
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { TrendingUp, DollarSign, Target, Award, BarChart3 } from 'lucide-react'
+import { useDashboard } from '@/lib/dashboard-context'
 
-export default async function AnalyticsPage() {
-  const supabase = await createClient()
-  
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    redirect('/login')
-  }
-
-  const { data: company } = await supabase
-    .from('companies')
-    .select('*')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!company) {
-    redirect('/onboarding')
-  }
-
-  // Fetch all quotes for analytics
-  const { data: allQuotes } = await supabase
-    .from('quotes')
-    .select('*')
-    .eq('company_id', company.id)
-
-  const quotes = allQuotes || []
+export default function AnalyticsPage() {
+  const { quotes } = useDashboard()
 
   // Calculate analytics
   const thisMonth = new Date().getMonth()

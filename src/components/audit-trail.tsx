@@ -47,6 +47,8 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
         return <Badge variant="default">AI Generated</Badge>
       case 'ai_update':
         return <Badge variant="secondary">AI Updated</Badge>
+      case 'notes_updated':
+        return <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Notes Updated</Badge>
       case 'manual_edit':
         return <Badge variant="outline">Manual Edit</Badge>
       case 'item_added':
@@ -145,6 +147,79 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
 
               {expandedEntry === entry.id && entry.changes_made && (
                 <div className="mt-4 pt-4 border-t space-y-3">
+                  {/* Debug: Log the changes_made structure */}
+                  {console.log('Audit Entry:', entry.id, 'Type:', entry.action_type, 'Changes:', entry.changes_made)}
+                  
+                  {/* Notes Updated - Show old and new notes */}
+                  {entry.action_type === 'notes_updated' && (
+                    <div className="space-y-3">
+                      {entry.changes_made.old_notes && (
+                        <div>
+                          <p className="text-sm font-semibold text-muted-foreground mb-1">Previous Notes:</p>
+                          <div className="text-sm bg-muted/50 p-3 rounded-md whitespace-pre-wrap">
+                            {entry.changes_made.old_notes === '(empty)' ? (
+                              <span className="italic text-muted-foreground">No previous notes</span>
+                            ) : (
+                              entry.changes_made.old_notes
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {entry.changes_made.new_notes && (
+                        <div>
+                          <p className="text-sm font-semibold text-foreground mb-1">Updated Notes:</p>
+                          <div className="text-sm bg-accent/10 p-3 rounded-md whitespace-pre-wrap border border-accent">
+                            {entry.changes_made.new_notes === '(empty)' ? (
+                              <span className="italic text-muted-foreground">Notes cleared</span>
+                            ) : (
+                              entry.changes_made.new_notes
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* AI Update Details */}
+                  {entry.action_type === 'ai_update' && (
+                    <div className="space-y-3">
+                      {entry.changes_made.user_prompt && (
+                        <div>
+                          <p className="text-sm font-semibold text-foreground mb-1">AI Instruction:</p>
+                          <div className="text-sm bg-blue-50 dark:bg-blue-950 p-3 rounded-md border border-blue-200 dark:border-blue-800">
+                            "{entry.changes_made.user_prompt}"
+                          </div>
+                        </div>
+                      )}
+                      {entry.changes_made.ai_instructions && entry.changes_made.ai_instructions !== '(none)' && (
+                        <div>
+                          <p className="text-sm font-semibold text-foreground mb-1">AI Generated Instructions:</p>
+                          <div className="text-sm bg-accent/10 p-3 rounded-md whitespace-pre-wrap max-h-40 overflow-y-auto">
+                            {entry.changes_made.ai_instructions}
+                          </div>
+                        </div>
+                      )}
+                      {entry.changes_made.items_changed !== undefined && (
+                        <div className="flex items-center gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Items Changed:</span>
+                            <span className="ml-2 font-semibold">{entry.changes_made.items_changed}</span>
+                          </div>
+                          {entry.changes_made.old_total !== undefined && entry.changes_made.new_total !== undefined && (
+                            <div>
+                              <span className="text-muted-foreground">Price:</span>
+                              <span className="ml-2">
+                                <span className="text-muted-foreground">${Number(entry.changes_made.old_total).toFixed(2)}</span>
+                                <span className="mx-1">→</span>
+                                <span className="font-semibold">${Number(entry.changes_made.new_total).toFixed(2)}</span>
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
                   {entry.changes_made.added_items && entry.changes_made.added_items.length > 0 && (
                     <div>
                       <p className="text-sm font-semibold text-green-700 mb-2">Added Items:</p>
@@ -181,6 +256,21 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  )}
+
+                  {/* Fallback: Show raw JSON for debugging if no specific renderer matched */}
+                  {!entry.changes_made.old_notes && 
+                   !entry.changes_made.new_notes && 
+                   !entry.changes_made.user_prompt &&
+                   !entry.changes_made.added_items && 
+                   !entry.changes_made.removed_items && 
+                   !entry.changes_made.modified_items && (
+                    <div>
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">Raw Data:</p>
+                      <pre className="text-xs bg-muted p-3 rounded-md overflow-auto max-h-40">
+                        {JSON.stringify(entry.changes_made, null, 2)}
+                      </pre>
                     </div>
                   )}
                 </div>
