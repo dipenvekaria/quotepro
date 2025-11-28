@@ -28,7 +28,9 @@ export default function QuotesQueuePage() {
   // Filter quotes (drafted or sent, not yet accepted/signed)
   const quotes = useMemo(() => {
     return allQuotes.filter(q => {
-      const isQuoteLead = ['quoted', 'lost'].includes(q.lead_status)
+      // Quote must have 'quoted' or 'lost' status OR have a total > 0 (has line items)
+      const isQuoteLead = ['quoted', 'lost'].includes(q.lead_status) || (q.total && q.total > 0)
+      // Not yet accepted or signed (still in quote phase)
       const notInWorkQueue = !q.accepted_at && !q.signed_at
       return isQuoteLead && notInWorkQueue
     })

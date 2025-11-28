@@ -15,20 +15,27 @@ import {
 import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
 import { Calendar, FileText, Plus } from 'lucide-react'
+import { ScheduleVisitDialog } from '@/components/schedule-visit-dialog'
 
 type LeadStatus = 'new' | 'contacted' | 'quote_visit_scheduled' | 'all'
 
 export default function LeadsQueuePage() {
-  const { quotes: allQuotes } = useDashboard()
+  const { quotes: allQuotes, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<LeadStatus>('all')
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
+  const [selectedLead, setSelectedLead] = useState<{ id: string; customerName: string } | null>(null)
 
   // Filter leads from all quotes
   const leads = useMemo(() => {
-    return allQuotes.filter(q => 
-      ['new', 'contacted', 'quote_visit_scheduled'].includes(q.lead_status)
-    )
+    return allQuotes.filter(q => {
+      // Must have lead status (not quoted yet)
+      const hasLeadStatus = ['new', 'contacted', 'quote_visit_scheduled'].includes(q.lead_status)
+      // Must not have a quote total (no line items added yet)
+      const hasNoQuote = !q.total || q.total === 0
+      return hasLeadStatus && hasNoQuote
+    })
   }, [allQuotes])
 
   // Calculate counts for filters
@@ -75,12 +82,13 @@ export default function LeadsQueuePage() {
   }, [leads, statusFilter, searchTerm])
 
   const handleCreateQuote = (leadId: string) => {
-    router.push(`/leads/new?id=${leadId}`)
+    // Navigate to quote generation page with the lead data
+    router.push(`/leads/new?id=${leadId}&mode=quote`)
   }
 
-  const handleScheduleVisit = (leadId: string) => {
-    // TODO: Open schedule modal
-    console.log('Schedule visit for lead:', leadId)
+  const handleScheduleVisit = (leadId: string, customerName: string) => {
+    setSelectedLead({ id: leadId, customerName })
+    setScheduleDialogOpen(true)
   }
 
   const getStatusLabel = (status: string) => {
@@ -101,6 +109,12 @@ export default function LeadsQueuePage() {
             title="Leads"
             description="New customer calls and inquiries"
             count={filteredLeads.length}
+            action={
+              <Button onClick={() => router.push('/leads/new')}>
+                <Plus className="w-4 h-4 mr-2" />
+                New Lead
+              </Button>
+            }
           />
         </div>
       </header>
@@ -168,7 +182,7 @@ export default function LeadsQueuePage() {
                         variant="outline"
                         onClick={(e) => {
                           e.stopPropagation()
-                          handleScheduleVisit(lead.id)
+                          handleScheduleVisit(lead.id, lead.customer_name)
                         }}
                       >
                         <Calendar className="w-4 h-4 mr-1.5" />
@@ -196,6 +210,20 @@ export default function LeadsQueuePage() {
           </div>
         )}
       </div>
+
+      {/* Schedule Visit Dialog */}
+      {selectedLead && (
+        <ScheduleVisitDialog
+          leadId={selectedLead.id}
+          customerName={selectedLead.customerName}
+          open={scheduleDialogOpen}
+          onOpenChange={setScheduleDialogOpen}
+          onScheduled={() => {
+            refreshQuotes()
+            setSelectedLead(null)
+          }}
+        />
+      )}
     </div>
   )
 }

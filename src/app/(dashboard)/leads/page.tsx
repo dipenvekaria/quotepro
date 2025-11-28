@@ -1,47 +1,19 @@
-// @ts-nocheck - New lead_status column pending database migration
+// Redirect to new leads page
 'use client'
 
-import { LeadsAndQuotes } from '@/components/leads-and-quotes'
-import { useDashboard } from '@/lib/dashboard-context'
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
-export default function LeadsPage() {
-  const { company, quotes: allRecords } = useDashboard()
-
-  // Split into leads and quotes based on lead_status
-  const leads = allRecords.filter(r => 
-    ['new', 'contacted', 'quote_visit_scheduled'].includes(r.lead_status)
-  )
+export default function LeadsRedirect() {
+  const router = useRouter()
   
-  // Quotes section: Only show quotes that haven't been accepted/signed yet
-  // Once accepted/signed, they move to Work section
-  const quotes = allRecords.filter(r => {
-    // Must have quote status of 'quoted' or 'lost'
-    const isQuoteLead = ['quoted', 'lost'].includes(r.lead_status)
-    
-    // Exclude if already accepted or signed (they're in Work section now)
-    const notInWorkQueue = !r.accepted_at && !r.signed_at
-    
-    return isQuoteLead && notInWorkQueue
-  })
+  useEffect(() => {
+    router.replace('/leads-and-quotes/leads')
+  }, [router])
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
-        <div className="px-6 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Leads & Quotes</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Manage customer inquiries and pending quotes</p>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <LeadsAndQuotes 
-          leads={leads} 
-          quotes={quotes} 
-          companyId={company.id}
-        />
-      </main>
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-muted-foreground">Redirecting...</p>
     </div>
   )
 }

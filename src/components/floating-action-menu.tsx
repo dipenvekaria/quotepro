@@ -24,8 +24,8 @@ export function FloatingActionMenu({
     if (onNewLead) {
       onNewLead()
     } else {
-      // Default: navigate to leads page and trigger new lead modal
-      router.push('/leads-and-quotes/leads?action=new')
+      // Default: navigate to new lead page
+      router.push('/leads/new')
     }
   }
 

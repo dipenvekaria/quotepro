@@ -67,6 +67,7 @@ export default function NewQuotePage() {
   })
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [aiUpdatePrompt, setAiUpdatePrompt] = useState('')
+  const [aiPrompt, setAiPrompt] = useState('')
   const [isUpdatingWithAI, setIsUpdatingWithAI] = useState(false)
   const [quoteNotes, setQuoteNotes] = useState('')
   const [originalNotes, setOriginalNotes] = useState('')
@@ -228,6 +229,7 @@ export default function NewQuotePage() {
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total: total,
+          lead_status: 'quoted', // Ensure status is quoted when items exist
           // AI notes are stored in generatedQuote state, not in database notes field
           // Database notes field is for internal company notes only
         })
@@ -522,6 +524,41 @@ export default function NewQuotePage() {
       const data = await response.json()
       setGeneratedQuote(data)
       toast.success('Quote generated!', { id: loadingToast })
+    } catch (error) {
+      toast.error('Failed to generate quote', { id: loadingToast })
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  // Generate quote from saved lead
+  const handleGenerateQuote = async () => {
+    if (!aiPrompt.trim()) {
+      toast.error('Please describe what should be included in the quote')
+      return
+    }
+
+    setIsGenerating(true)
+    const loadingToast = toast.loading('Building your quote… this beats Word by a mile ;)')
+
+    try {
+      const response = await fetch('/api/generate-quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          company_id: companyId,
+          description: aiPrompt,
+          customer_name: customerName,
+          customer_address: customerAddress || null,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to generate quote')
+
+      const data = await response.json()
+      setGeneratedQuote(data)
+      toast.success('Quote generated!', { id: loadingToast })
+      setAiPrompt('') // Clear the prompt after generation
     } catch (error) {
       toast.error('Failed to generate quote', { id: loadingToast })
     } finally {
@@ -1629,7 +1666,7 @@ export default function NewQuotePage() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between gap-4">
                 <CardTitle>Customer Information</CardTitle>
-                {quoteId && (
+                {quoteId && generatedQuote && (
                   <div className="flex items-center gap-2">
                     <a
                       href={origin ? `${origin}/q/${quoteId}` : '#'}
@@ -1776,14 +1813,64 @@ export default function NewQuotePage() {
                 />
               </div>
 
-              {/* Save Lead Button */}
+              {/* Save Lead Button - Only show if not saved yet */}
+              {!savedQuoteId && !quoteId && (
+                <Button
+                  onClick={handleSaveLead}
+                  disabled={!customerName || !description}
+                  className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  <Save className="h-5 w-5 mr-2" />
+                  Save Lead
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* 3.5 GENERATE QUOTE - Show after lead is saved but before quote is generated */}
+        {(savedQuoteId || quoteId) && !generatedQuote && (
+          <Card className="border-orange-500 border-2">
+            <CardHeader className="bg-orange-500/5">
+              <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                <Bot className="h-5 w-5" />
+                Generate Quote with AI
+              </CardTitle>
+              <CardDescription>
+                Describe what you want to quote for this job and AI will generate line items
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <Label htmlFor="aiPrompt" className="text-base">What should be included in the quote?</Label>
+                <Textarea
+                  id="aiPrompt"
+                  placeholder='e.g., "Install new HVAC system with 3-ton unit, ductwork, thermostat, and labor" or "Roof repair - replace 200 sq ft of shingles, fix flashing around chimney"'
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  className="min-h-[120px] text-lg p-4"
+                />
+                <p className="text-sm text-muted-foreground">
+                  💡 Be specific about materials, quantities, and labor. The AI will break this into individual line items with prices.
+                </p>
+              </div>
+
               <Button
-                onClick={handleSaveLead}
-                disabled={!customerName || !description}
+                onClick={handleGenerateQuote}
+                disabled={!aiPrompt || isGenerating}
                 className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
               >
-                <Save className="h-5 w-5 mr-2" />
-                Save Lead
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                    Generating Quote...
+                  </>
+                ) : (
+                  <>
+                    <Bot className="h-5 w-5 mr-2" />
+                    Generate Quote with AI
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
