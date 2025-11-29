@@ -16,6 +16,7 @@ import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
 import { Calendar, FileText, Plus } from 'lucide-react'
 import { ScheduleVisitDialog } from '@/components/schedule-visit-dialog'
+import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 
 type LeadStatus = 'new' | 'contacted' | 'quote_visit_scheduled' | 'all'
 
@@ -35,6 +36,15 @@ export default function LeadsQueuePage() {
       // Must not have a quote total (no line items added yet)
       const hasNoQuote = !q.total || q.total === 0
       return hasLeadStatus && hasNoQuote
+    })
+  }, [allQuotes])
+
+  // Calculate quotes count for tab
+  const quotes = useMemo(() => {
+    return allQuotes.filter(q => {
+      const isQuoteLead = ['quoted', 'lost'].includes(q.lead_status) || (q.total && q.total > 0)
+      const notInWorkQueue = !q.accepted_at && !q.signed_at
+      return isQuoteLead && notInWorkQueue
     })
   }, [allQuotes])
 
@@ -101,9 +111,17 @@ export default function LeadsQueuePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+    <div className="min-h-screen pb-20 md:pb-0">
+      {/* Mobile Tabs */}
+      <MobileSectionTabs 
+        tabs={[
+          { label: 'Leads', href: '/leads-and-quotes/leads', count: leads.length },
+          { label: 'Quotes', href: '/leads-and-quotes/quotes', count: quotes.length }
+        ]}
+      />
+
+      {/* Header - Hidden on mobile, shown on desktop */}
+      <header className="hidden md:block bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
         <div className="px-6 py-6">
           <QueueHeader
             title="Leads"
@@ -119,10 +137,24 @@ export default function LeadsQueuePage() {
         </div>
       </header>
 
+      {/* Mobile Header - Compact version */}
+      <div className="md:hidden px-4 py-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Leads</h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{filteredLeads.length} total</p>
+          </div>
+          <Button onClick={() => router.push('/leads/new')} size="sm">
+            <Plus className="w-4 h-4 mr-1" />
+            New
+          </Button>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
         {/* Filters & Search */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
           <QueueSearch
             value={searchTerm}
             onChange={setSearchTerm}

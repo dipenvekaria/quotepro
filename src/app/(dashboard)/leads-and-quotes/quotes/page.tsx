@@ -14,8 +14,9 @@ import {
 } from '@/components/queues'
 import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
-import { FileText, Send, Eye, Trash2, Edit, ExternalLink } from 'lucide-react'
+import { FileText, Send, Eye, Trash2, Edit, ExternalLink, Plus } from 'lucide-react'
 import { format } from 'date-fns'
+import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 
 type QuoteStatus = 'all' | 'draft' | 'sent'
 
@@ -33,6 +34,15 @@ export default function QuotesQueuePage() {
       // Not yet accepted or signed (still in quote phase)
       const notInWorkQueue = !q.accepted_at && !q.signed_at
       return isQuoteLead && notInWorkQueue
+    })
+  }, [allQuotes])
+
+  // Calculate leads count for tab
+  const leads = useMemo(() => {
+    return allQuotes.filter(q => {
+      const hasLeadStatus = ['new', 'contacted', 'quote_visit_scheduled'].includes(q.lead_status)
+      const hasNoQuote = !q.total || q.total === 0
+      return hasLeadStatus && hasNoQuote
     })
   }, [allQuotes])
 
@@ -113,9 +123,17 @@ export default function QuotesQueuePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+    <div className="min-h-screen pb-20 md:pb-0">
+      {/* Mobile Tabs */}
+      <MobileSectionTabs 
+        tabs={[
+          { label: 'Leads', href: '/leads-and-quotes/leads', count: leads.length },
+          { label: 'Quotes', href: '/leads-and-quotes/quotes', count: quotes.length }
+        ]}
+      />
+
+      {/* Header - Hidden on mobile, shown on desktop */}
+      <header className="hidden md:block bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
         <div className="px-6 py-6">
           <QueueHeader
             title="Quotes"
@@ -125,10 +143,24 @@ export default function QuotesQueuePage() {
         </div>
       </header>
 
+      {/* Mobile Header - Compact version */}
+      <div className="md:hidden px-4 py-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Quotes</h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{filteredQuotes.length} total</p>
+          </div>
+          <Button onClick={() => router.push('/leads/new')} size="sm">
+            <Plus className="w-4 h-4 mr-1" />
+            New
+          </Button>
+        </div>
+      </div>
+
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
         {/* Filters & Search */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
           <QueueSearch
             value={searchTerm}
             onChange={setSearchTerm}

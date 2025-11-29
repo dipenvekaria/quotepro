@@ -14,7 +14,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: 'Leads & Quotes',
+    label: 'Leads',
     href: '/leads-and-quotes/leads',
     icon: Users,
     matchPaths: ['/leads-and-quotes', '/leads', '/quotes']
@@ -47,7 +47,7 @@ export function MobileBottomNav() {
   }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 safe-area-inset-bottom backdrop-blur-lg bg-opacity-90 dark:bg-opacity-90">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 safe-area-inset-bottom backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95">
       <div className="flex items-center justify-around h-16 px-2">
         {navItems.map((item) => {
           const Icon = item.icon
@@ -58,18 +58,18 @@ export function MobileBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all min-w-[70px]",
+                "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all min-w-[70px] flex-1 max-w-[100px]",
                 active 
                   ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400" 
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+                  : "text-gray-600 dark:text-gray-400 active:bg-gray-100 dark:active:bg-gray-700"
               )}
             >
               <Icon className={cn(
-                "w-5 h-5 transition-colors",
-                active ? "text-orange-600 dark:text-orange-400" : "text-gray-600 dark:text-gray-400"
+                "w-6 h-6 transition-colors",
+                active ? "text-orange-600 dark:text-orange-400" : "text-gray-500 dark:text-gray-400"
               )} />
               <span className={cn(
-                "text-xs font-medium transition-colors",
+                "text-[11px] font-medium transition-colors leading-tight text-center",
                 active ? "text-orange-600 dark:text-orange-400" : "text-gray-600 dark:text-gray-400"
               )}>
                 {item.label}
