@@ -10,9 +10,10 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X, Bot } from 'lucide-react'
+import { Loader2, Wrench, Edit2, Trash2, Plus, Save, X, Bot, Archive } from 'lucide-react'
 import Link from 'next/link'
 import { AuditTrail } from '@/components/audit-trail'
+import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
 interface QuoteItem {
   name: string
@@ -39,6 +40,37 @@ export default function NewQuotePage() {
   const searchParams = useSearchParams()
   const quoteId = searchParams.get('id')
   
+  // Check if we're in quote mode by checking if sessionStorage flag is set
+  // This flag is set by the /quotes/new wrapper component
+  // Use initializer function to read immediately on mount
+  const [isQuoteMode, setIsQuoteMode] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('isQuoteMode') === 'true'
+  })
+  
+  useEffect(() => {
+    const checkQuoteMode = () => {
+      const mode = sessionStorage.getItem('isQuoteMode')
+      setIsQuoteMode(mode === 'true')
+    }
+    
+    // Check immediately on mount
+    checkQuoteMode()
+    
+    // Also check on storage events (in case it changes)
+    window.addEventListener('storage', checkQuoteMode)
+    
+    // Clear flag when component unmounts (going back to leads list, etc.)
+    return () => {
+      window.removeEventListener('storage', checkQuoteMode)
+      // Only clear if we're actually leaving the quotes flow
+      // The /quotes/new wrapper will set it again if needed
+      if (!window.location.pathname.includes('/quotes/new')) {
+        sessionStorage.removeItem('isQuoteMode')
+      }
+    }
+  }, [])
+  
   const [customerName, setCustomerName] = useState('')
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
@@ -46,6 +78,7 @@ export default function NewQuotePage() {
   const [addressSuggestions, setAddressSuggestions] = useState<any[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [description, setDescription] = useState('')
+  const [jobName, setJobName] = useState('')
   const [photos, setPhotos] = useState<string[]>([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
@@ -72,6 +105,7 @@ export default function NewQuotePage() {
   const [quoteNotes, setQuoteNotes] = useState('')
   const [originalNotes, setOriginalNotes] = useState('')
   const [origin, setOrigin] = useState('')
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const router = useRouter()
   const supabase = createClient()
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
@@ -118,6 +152,7 @@ export default function NewQuotePage() {
         setCustomerPhone(quote.customer_phone || '')
         setCustomerAddress(quote.customer_address || '')
         setDescription(quote.description || '')
+        setJobName(quote.job_name || '')
         setPhotos(quote.photos || [])
         setQuoteNotes(quote.notes || '')
         setOriginalNotes(quote.notes || '') // Track original for audit
@@ -550,6 +585,7 @@ export default function NewQuotePage() {
           description: aiPrompt,
           customer_name: customerName,
           customer_address: customerAddress || null,
+          existing_items: generatedQuote?.line_items || [], // Pass existing items for context
         }),
       })
 
@@ -557,12 +593,160 @@ export default function NewQuotePage() {
 
       const data = await response.json()
       setGeneratedQuote(data)
-      toast.success('Quote generated!', { id: loadingToast })
+      
+      // Auto-save the generated quote immediately so it persists for:
+      // 1. Audit trail visibility
+      // 2. Context for subsequent AI generations
+      // 3. PDF generation
+      await autoSaveGeneratedQuote(data, aiPrompt)
+      
+      toast.success('Quote generated & saved!', { id: loadingToast })
       setAiPrompt('') // Clear the prompt after generation
     } catch (error) {
       toast.error('Failed to generate quote', { id: loadingToast })
     } finally {
       setIsGenerating(false)
+    }
+  }
+
+  // Auto-save generated quote to database immediately after AI generation
+  const autoSaveGeneratedQuote = async (quote: GeneratedQuote, userPrompt: string) => {
+    try {
+      const supabase = createClient()
+      
+      // If editing existing lead/quote, update it
+      if (quoteId) {
+        const subtotal = Number(quote.subtotal) || 0
+        const taxRate = Number(quote.tax_rate) || 0
+        const taxAmount = subtotal * (taxRate / 100)
+        const total = Number(quote.total) || (subtotal + taxAmount)
+
+        await supabase
+          .from('quotes')
+          .update({
+            customer_name: customerName,
+            customer_email: customerEmail || null,
+            customer_phone: customerPhone || null,
+            customer_address: customerAddress || null,
+            description,
+            subtotal,
+            tax_rate: taxRate,
+            tax_amount: taxAmount,
+            total,
+            photos,
+            lead_status: 'quoted',
+          })
+          .eq('id', quoteId)
+
+        // Delete existing items and insert new ones
+        await supabase.from('quote_items').delete().eq('quote_id', quoteId)
+
+        const items = quote.line_items.map((item, index) => ({
+          quote_id: quoteId,
+          name: item.name,
+          description: item.description || null,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total: item.total,
+          option_tier: item.option_tier || null,
+          is_upsell: item.is_upsell || false,
+          sort_order: index,
+        }))
+
+        await supabase.from('quote_items').insert(items)
+
+        // Log to audit trail
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('quote_audit_log').insert({
+            quote_id: quoteId,
+            action_type: 'ai_generation',
+            user_prompt: userPrompt,
+            description: `AI generated ${quote.line_items.length} items`,
+            changes_made: {
+              line_items: quote.line_items,
+              subtotal: quote.subtotal,
+              tax_rate: quote.tax_rate,
+              total: quote.total,
+            },
+            created_by: user.id,
+          })
+          await loadAuditLogs(quoteId)
+        }
+
+        setSavedQuoteId(quoteId)
+      } else {
+        // Create new quote (first time generating on a new lead)
+        const quoteNumber = `Q-${Date.now().toString().slice(-8)}`
+        const subtotal = Number(quote.subtotal) || 0
+        const taxRate = Number(quote.tax_rate) || 0
+        const taxAmount = subtotal * (taxRate / 100)
+        const total = Number(quote.total) || (subtotal + taxAmount)
+
+        const { data: newQuote, error: quoteError } = await supabase
+          .from('quotes')
+          .insert({
+            company_id: companyId,
+            quote_number: quoteNumber,
+            customer_name: customerName,
+            customer_email: customerEmail || null,
+            customer_phone: customerPhone || null,
+            customer_address: customerAddress || null,
+            description,
+            subtotal,
+            tax_rate: taxRate,
+            tax_amount: taxAmount,
+            total,
+            photos,
+            status: 'draft',
+            lead_status: 'quoted',
+          })
+          .select()
+          .single()
+
+        if (quoteError) throw quoteError
+
+        const items = quote.line_items.map((item, index) => ({
+          quote_id: newQuote.id,
+          name: item.name,
+          description: item.description || null,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total: item.total,
+          option_tier: item.option_tier || null,
+          is_upsell: item.is_upsell || false,
+          sort_order: index,
+        }))
+
+        await supabase.from('quote_items').insert(items)
+
+        // Log to audit trail
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('quote_audit_log').insert({
+            quote_id: newQuote.id,
+            action_type: 'ai_generation',
+            user_prompt: userPrompt,
+            description: `AI generated ${quote.line_items.length} items`,
+            changes_made: {
+              line_items: quote.line_items,
+              subtotal: quote.subtotal,
+              tax_rate: quote.tax_rate,
+              total: quote.total,
+            },
+            created_by: user.id,
+          })
+          await loadAuditLogs(newQuote.id)
+        }
+
+        setSavedQuoteId(newQuote.id)
+        
+        // Update URL with new quote ID so subsequent operations use it
+        window.history.replaceState(null, '', `?id=${newQuote.id}`)
+      }
+    } catch (error) {
+      console.error('Auto-save error:', error)
+      // Don't throw - quote is still in state, user can manually save
     }
   }
 
@@ -697,6 +881,49 @@ export default function NewQuotePage() {
     }
   }
 
+  const handleArchive = async (reason: string) => {
+    const currentQuoteId = savedQuoteId || quoteId
+    if (!currentQuoteId) {
+      toast.error('No quote/lead to archive')
+      return
+    }
+
+    try {
+      // Update lead_status to 'archived'
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ lead_status: 'archived' })
+        .eq('id', currentQuoteId)
+      
+      if (updateError) throw updateError
+      
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      const { error: auditError } = await supabase
+        .from('audit_trail')
+        .insert({
+          quote_id: currentQuoteId,
+          action: isQuoteMode ? 'quote_archived' : 'lead_archived',
+          details: reason,
+          user_id: user?.id || 'system'
+        })
+      
+      if (auditError) console.error('Audit trail error:', auditError)
+      
+      toast.success(`${isQuoteMode ? 'Quote' : 'Lead'} archived`)
+      
+      // Navigate back to appropriate queue
+      setTimeout(() => {
+        window.location.href = isQuoteMode 
+          ? '/leads-and-quotes/quotes' 
+          : '/leads-and-quotes/leads'
+      }, 500)
+    } catch (error) {
+      console.error('Error archiving:', error)
+      toast.error('Failed to archive')
+    }
+  }
+
   const handleSaveLead = async () => {
     if (!customerName || !description) {
       toast.error('Please fill in customer name and job description')
@@ -704,6 +931,30 @@ export default function NewQuotePage() {
     }
 
     try {
+      // Generate job name if not already set or if description changed significantly
+      let finalJobName = jobName
+      if (!jobName || !quoteId) {
+        try {
+          const jobNameResponse = await fetch('/api/generate-job-name', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              description,
+              customer_name: customerName,
+            }),
+          })
+
+          if (jobNameResponse.ok) {
+            const data = await jobNameResponse.json()
+            finalJobName = data.job_name
+            setJobName(data.job_name)
+          }
+        } catch (error) {
+          console.error('Error generating job name:', error)
+          // Continue with save even if job name generation fails
+        }
+      }
+
       if (quoteId) {
         // Update existing lead
         const { error: updateError } = await supabase
@@ -714,6 +965,7 @@ export default function NewQuotePage() {
             customer_phone: customerPhone || null,
             customer_address: customerAddress || null,
             description: description,
+            job_name: finalJobName || null,
             lead_status: 'new',
           })
           .eq('id', quoteId)
@@ -732,6 +984,7 @@ export default function NewQuotePage() {
               customer_phone: customerPhone,
               customer_address: customerAddress,
               description: description,
+              job_name: finalJobName,
             },
             created_by: user.id,
           })
@@ -755,6 +1008,7 @@ export default function NewQuotePage() {
           customer_phone: customerPhone || null,
           customer_address: customerAddress || null,
           description: description,
+          job_name: finalJobName || null,
           status: 'draft',
           lead_status: 'new',
           subtotal: 0,
@@ -779,6 +1033,7 @@ export default function NewQuotePage() {
             customer_phone: customerPhone,
             customer_address: customerAddress,
             description: description,
+            job_name: finalJobName,
           },
           created_by: user.id,
         })
@@ -787,9 +1042,8 @@ export default function NewQuotePage() {
       toast.success('Lead saved successfully!')
       setSavedQuoteId(newLead.id)
       
-      // Update URL with new lead ID
-      router.push(`/leads/new?id=${newLead.id}`)
-      await loadAuditLogs(newLead.id)
+      // For new leads, navigate back to leads tab with a full page reload to refresh data
+      window.location.href = '/leads-and-quotes/leads'
     } catch (error) {
       console.error('Error saving lead:', error)
       toast.error('Failed to save lead')
@@ -1262,7 +1516,10 @@ export default function NewQuotePage() {
               </div>
               <div className="min-w-0 flex-1">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {quoteId ? 'Edit Lead' : 'New Lead'}
+                  {isQuoteMode 
+                    ? (quoteId ? 'Edit Quote' : 'New Quote')
+                    : (quoteId ? 'Edit Lead' : 'New Lead')
+                  }
                 </h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {customerName || 'Enter customer details to get started'}
@@ -1282,6 +1539,54 @@ export default function NewQuotePage() {
         </div>
       ) : (
         <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
+        
+        {/* GENERATE QUOTE WITH AI - First priority when editing lead */}
+        {(savedQuoteId || quoteId) && !generatedQuote && (
+          <Card className="border-orange-500 border-2">
+            <CardHeader className="bg-orange-500/5">
+              <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+                <Bot className="h-5 w-5" />
+                Generate Quote with AI
+              </CardTitle>
+              <CardDescription>
+                Describe what you want to quote for this job and AI will generate line items
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <Label htmlFor="aiPrompt" className="text-base">What should be included in the quote?</Label>
+                <Textarea
+                  id="aiPrompt"
+                  placeholder='e.g., "Install new HVAC system with 3-ton unit, ductwork, thermostat, and labor" or "Roof repair - replace 200 sq ft of shingles, fix flashing around chimney"'
+                  value={aiPrompt}
+                  onChange={(e) => setAiPrompt(e.target.value)}
+                  className="min-h-[120px] text-lg p-4"
+                />
+                <p className="text-sm text-muted-foreground">
+                  💡 Be specific about materials, quantities, and labor. The AI will break this into individual line items with prices.
+                </p>
+              </div>
+
+              <Button
+                onClick={handleGenerateQuote}
+                disabled={!aiPrompt || isGenerating}
+                className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                    Generating Quote...
+                  </>
+                ) : (
+                  <>
+                    <Bot className="h-5 w-5 mr-2" />
+                    Generate Quote with AI
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        )}
         
         {/* 1. GENERATED QUOTE - Show when quote exists */}
         {generatedQuote && (
@@ -1394,7 +1699,7 @@ export default function NewQuotePage() {
                               ? 'text-green-700 dark:text-green-400' 
                               : ''
                           }`}>
-                            {item.is_discount || item.unit_price < 0 ? '💰 ' : ''}{item.name}
+                            {item.name}
                           </div>
                           {item.description && (
                             <div className="text-sm text-muted-foreground">{item.description}</div>
@@ -1799,6 +2104,26 @@ export default function NewQuotePage() {
                 </div>
               )}
             </div>
+
+            {/* Job Name - Only show after lead is saved */}
+            {(quoteId || savedQuoteId) && (
+              <div className="space-y-3">
+                <Label htmlFor="jobName" className="text-base flex items-center gap-2">
+                  Job Name
+                  <Bot className="h-4 w-4 text-blue-500" />
+                </Label>
+                <Input
+                  id="jobName"
+                  placeholder="AI-generated job name"
+                  value={jobName}
+                  onChange={(e) => setJobName(e.target.value)}
+                  className="h-14 text-lg"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Auto-generated by AI, but you can edit it anytime
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -1832,54 +2157,6 @@ export default function NewQuotePage() {
                   Save Lead
                 </Button>
               )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* 3.5 GENERATE QUOTE - Show after lead is saved but before quote is generated */}
-        {(savedQuoteId || quoteId) && !generatedQuote && (
-          <Card className="border-orange-500 border-2">
-            <CardHeader className="bg-orange-500/5">
-              <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
-                <Bot className="h-5 w-5" />
-                Generate Quote with AI
-              </CardTitle>
-              <CardDescription>
-                Describe what you want to quote for this job and AI will generate line items
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <Label htmlFor="aiPrompt" className="text-base">What should be included in the quote?</Label>
-                <Textarea
-                  id="aiPrompt"
-                  placeholder='e.g., "Install new HVAC system with 3-ton unit, ductwork, thermostat, and labor" or "Roof repair - replace 200 sq ft of shingles, fix flashing around chimney"'
-                  value={aiPrompt}
-                  onChange={(e) => setAiPrompt(e.target.value)}
-                  className="min-h-[120px] text-lg p-4"
-                />
-                <p className="text-sm text-muted-foreground">
-                  💡 Be specific about materials, quantities, and labor. The AI will break this into individual line items with prices.
-                </p>
-              </div>
-
-              <Button
-                onClick={handleGenerateQuote}
-                disabled={!aiPrompt || isGenerating}
-                className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Generating Quote...
-                  </>
-                ) : (
-                  <>
-                    <Bot className="h-5 w-5 mr-2" />
-                    Generate Quote with AI
-                  </>
-                )}
-              </Button>
             </CardContent>
           </Card>
         )}
@@ -1943,9 +2220,43 @@ export default function NewQuotePage() {
           />
         )}
 
+        {/* 6. ARCHIVE BUTTON - Show at very bottom when quote/lead exists */}
+        {(savedQuoteId || quoteId) && (
+          <Card className="border-orange-200 dark:border-orange-800 bg-orange-50/30 dark:bg-orange-900/10">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-orange-900 dark:text-orange-100 mb-1">
+                    Archive this {isQuoteMode ? 'quote' : 'lead'}
+                  </h3>
+                  <p className="text-sm text-orange-700 dark:text-orange-300">
+                    Archive and remove from active queues. You'll need to provide a reason.
+                  </p>
+                </div>
+                <Button
+                  onClick={() => setArchiveDialogOpen(true)}
+                  variant="outline"
+                  className="gap-2 border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30"
+                >
+                  <Archive className="h-4 w-4" />
+                  Archive
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         </main>
       )}
       </div>
+
+      {/* Archive Dialog */}
+      <ArchiveDialog
+        open={archiveDialogOpen}
+        onOpenChange={setArchiveDialogOpen}
+        onConfirm={handleArchive}
+        itemType={isQuoteMode ? 'quote' : 'lead'}
+      />
     </div>
   )
 }

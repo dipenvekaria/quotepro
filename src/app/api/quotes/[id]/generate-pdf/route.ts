@@ -114,6 +114,7 @@ export async function POST(
           total: item.total,
           option_tier: item.option_tier,
           is_upsell: item.is_upsell,
+          is_discount: item.is_discount || item.unit_price < 0,
         })),
         signUrl,
       })

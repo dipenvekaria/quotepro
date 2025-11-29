@@ -111,6 +111,11 @@ const styles = StyleSheet.create({
     borderLeftWidth: 3,
     borderLeftColor: '#FF6200',
   },
+  tableRowDiscount: {
+    backgroundColor: '#F0FDF4',
+    borderLeftWidth: 3,
+    borderLeftColor: '#22C55E',
+  },
   colDescription: {
     flex: 3,
   },
@@ -133,6 +138,9 @@ const styles = StyleSheet.create({
     color: '#1a1a1a',
     marginBottom: 2,
   },
+  itemNameDiscount: {
+    color: '#16A34A',
+  },
   itemDescription: {
     fontSize: 8,
     color: '#666666',
@@ -148,6 +156,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 4,
     alignSelf: 'flex-start',
+  },
+  discountText: {
+    color: '#16A34A',
   },
   tierSection: {
     marginBottom: 25,
@@ -311,6 +322,7 @@ interface QuoteItem {
   total: number
   option_tier?: string
   is_upsell?: boolean
+  is_discount?: boolean
 }
 
 interface QuotePDFProps {
@@ -378,28 +390,40 @@ export const QuotePDF: React.FC<QuotePDFProps> = ({ quote, company, items, signU
         <Text style={styles.colPrice}>Unit Price</Text>
         <Text style={styles.colTotal}>Total</Text>
       </View>
-      {tierItems.map((item, index) => (
-        <View
-          key={index}
-          style={[
-            styles.tableRow,
-            ...(item.is_upsell ? [styles.tableRowUpsell] : []),
-          ]}
-        >
-          <View style={styles.colDescription}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            {item.description && (
-              <Text style={styles.itemDescription}>{item.description}</Text>
-            )}
-            {item.is_upsell && (
-              <Text style={styles.upsellBadge}>UPGRADE</Text>
-            )}
+      {tierItems.map((item, index) => {
+        const isDiscount = item.is_discount || item.unit_price < 0
+        return (
+          <View
+            key={index}
+            style={[
+              styles.tableRow,
+              ...(item.is_upsell ? [styles.tableRowUpsell] : []),
+              ...(isDiscount ? [styles.tableRowDiscount] : []),
+            ]}
+          >
+            <View style={styles.colDescription}>
+              <Text style={[styles.itemName, ...(isDiscount ? [styles.itemNameDiscount] : [])]}>
+                {item.name}
+              </Text>
+              {item.description && (
+                <Text style={styles.itemDescription}>{item.description}</Text>
+              )}
+              {item.is_upsell && (
+                <Text style={styles.upsellBadge}>UPGRADE</Text>
+              )}
+            </View>
+            <Text style={[styles.colQty, ...(isDiscount ? [styles.discountText] : [])]}>
+              {item.quantity}
+            </Text>
+            <Text style={[styles.colPrice, ...(isDiscount ? [styles.discountText] : [])]}>
+              ${item.unit_price.toFixed(2)}
+            </Text>
+            <Text style={[styles.colTotal, ...(isDiscount ? [styles.discountText] : [])]}>
+              ${item.total.toFixed(2)}
+            </Text>
           </View>
-          <Text style={styles.colQty}>{item.quantity}</Text>
-          <Text style={styles.colPrice}>${item.unit_price.toFixed(2)}</Text>
-          <Text style={styles.colTotal}>${item.total.toFixed(2)}</Text>
-        </View>
-      ))}
+        )
+      })}
     </View>
   )
 

@@ -4,29 +4,30 @@
 import { useState, useMemo } from 'react'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { 
   QueueHeader, 
   QueueSearch, 
-  QueueFilters, 
-  QueueCard, 
+  QueueCard,
+  CompactQueueCard,
   EmptyQueue,
-  type FilterOption 
 } from '@/components/queues'
 import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
-import { Calendar, FileText, Plus } from 'lucide-react'
+import { Calendar, FileText, Plus, Phone } from 'lucide-react'
 import { ScheduleVisitDialog } from '@/components/schedule-visit-dialog'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
-
-type LeadStatus = 'new' | 'contacted' | 'quote_visit_scheduled' | 'all'
+import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
 export default function LeadsQueuePage() {
   const { quotes: allQuotes, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<LeadStatus>('all')
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
   const [selectedLead, setSelectedLead] = useState<{ id: string; customerName: string } | null>(null)
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
+  const [leadToArchive, setLeadToArchive] = useState<string | null>(null)
 
   // Filter leads from all quotes
   const leads = useMemo(() => {
@@ -48,32 +49,9 @@ export default function LeadsQueuePage() {
     })
   }, [allQuotes])
 
-  // Calculate counts for filters
-  const statusCounts = useMemo(() => {
-    return {
-      all: leads.length,
-      new: leads.filter(l => l.lead_status === 'new').length,
-      contacted: leads.filter(l => l.lead_status === 'contacted').length,
-      quote_visit_scheduled: leads.filter(l => l.lead_status === 'quote_visit_scheduled').length
-    }
-  }, [leads])
-
-  // Filter options
-  const filterOptions: FilterOption[] = [
-    { label: 'All Leads', value: 'all', count: statusCounts.all },
-    { label: 'New', value: 'new', count: statusCounts.new },
-    { label: 'Contacted', value: 'contacted', count: statusCounts.contacted },
-    { label: 'Visit Scheduled', value: 'quote_visit_scheduled', count: statusCounts.quote_visit_scheduled }
-  ]
-
-  // Apply filters and search
+  // Apply search only (no status filter)
   const filteredLeads = useMemo(() => {
     let filtered = leads
-
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(l => l.lead_status === statusFilter)
-    }
 
     // Apply search
     if (searchTerm) {
@@ -81,7 +59,8 @@ export default function LeadsQueuePage() {
       filtered = filtered.filter(l => 
         l.customer_name?.toLowerCase().includes(term) ||
         l.customer_address?.toLowerCase().includes(term) ||
-        l.customer_phone?.toLowerCase().includes(term)
+        l.customer_phone?.toLowerCase().includes(term) ||
+        l.job_name?.toLowerCase().includes(term)
       )
     }
 
@@ -89,7 +68,7 @@ export default function LeadsQueuePage() {
     return filtered.sort((a, b) => 
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     )
-  }, [leads, statusFilter, searchTerm])
+  }, [leads, searchTerm])
 
   const handleCreateQuote = (leadId: string) => {
     // Navigate to quote generation page with the lead data
@@ -99,6 +78,43 @@ export default function LeadsQueuePage() {
   const handleScheduleVisit = (leadId: string, customerName: string) => {
     setSelectedLead({ id: leadId, customerName })
     setScheduleDialogOpen(true)
+  }
+
+  const handleArchiveLead = async (leadId: string, reason: string) => {
+    try {
+      const supabase = createClient()
+      
+      // Update lead_status to 'archived'
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ lead_status: 'archived' })
+        .eq('id', leadId)
+      
+      if (updateError) throw updateError
+      
+      // Log to audit trail
+      const { error: auditError } = await supabase
+        .from('audit_trail')
+        .insert({
+          quote_id: leadId,
+          action: 'lead_archived',
+          details: reason,
+          user_id: (await supabase.auth.getUser()).data.user?.id || 'system'
+        })
+      
+      if (auditError) console.error('Audit trail error:', auditError)
+      
+      toast.success('Lead archived')
+      await refreshQuotes()
+    } catch (error) {
+      console.error('Error archiving lead:', error)
+      toast.error('Failed to archive lead')
+    }
+  }
+
+  const handleArchiveClick = (leadId: string) => {
+    setLeadToArchive(leadId)
+    setArchiveDialogOpen(true)
   }
 
   const getStatusLabel = (status: string) => {
@@ -120,7 +136,7 @@ export default function LeadsQueuePage() {
         ]}
       />
 
-      {/* Header - Hidden on mobile, shown on desktop */}
+      {/* Desktop Header Only */}
       <header className="hidden md:block bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
         <div className="px-6 py-6">
           <QueueHeader
@@ -128,7 +144,10 @@ export default function LeadsQueuePage() {
             description="New customer calls and inquiries"
             count={filteredLeads.length}
             action={
-              <Button onClick={() => router.push('/leads/new')}>
+              <Button 
+                onClick={() => router.push('/leads/new')}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 New Lead
               </Button>
@@ -137,35 +156,14 @@ export default function LeadsQueuePage() {
         </div>
       </header>
 
-      {/* Mobile Header - Compact version */}
-      <div className="md:hidden px-4 py-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Leads</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{filteredLeads.length} total</p>
-          </div>
-          <Button onClick={() => router.push('/leads/new')} size="sm">
-            <Plus className="w-4 h-4 mr-1" />
-            New
-          </Button>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
-        {/* Filters & Search */}
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6">
+        {/* Search Only - No Filters */}
+        <div className="mb-3 md:mb-6">
           <QueueSearch
             value={searchTerm}
             onChange={setSearchTerm}
-            placeholder="Search by customer name, address, or phone..."
-            className="flex-1"
-          />
-          <QueueFilters
-            label="Status"
-            options={filterOptions}
-            value={statusFilter}
-            onChange={(value) => setStatusFilter(value as LeadStatus)}
+            placeholder="Search leads..."
           />
         </div>
 
@@ -181,7 +179,10 @@ export default function LeadsQueuePage() {
             icon="users"
             action={
               !searchTerm && (
-                <Button onClick={() => router.push('/leads/new')}>
+                <Button 
+                  onClick={() => router.push('/leads/new')}
+                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Add First Lead
                 </Button>
@@ -189,55 +190,95 @@ export default function LeadsQueuePage() {
             }
           />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {filteredLeads.map(lead => (
-              <QueueCard
-                key={lead.id}
-                data={{
-                  id: lead.id,
-                  customer_name: lead.customer_name,
-                  customer_address: lead.customer_address,
-                  total: lead.total,
-                  created_at: lead.created_at,
-                  status: lead.lead_status
-                }}
-                badge={
-                  <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
-                    {getStatusLabel(lead.lead_status)}
-                  </span>
-                }
-                actions={
-                  <div className="flex gap-2">
-                    {lead.lead_status === 'new' && (
+              <div key={lead.id}>
+                {/* Mobile: Compact Card */}
+                <CompactQueueCard
+                  className="md:hidden"
+                  data={{
+                    id: lead.id,
+                    customer_name: lead.customer_name,
+                    customer_phone: lead.customer_phone,
+                    job_name: lead.job_name,
+                    total: lead.total,
+                    created_at: lead.created_at,
+                  }}
+                  badge={
+                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                      {getStatusLabel(lead.lead_status)}
+                    </span>
+                  }
+                  showPhone={true}
+                  hideAddress={true}
+                  onClick={() => router.push(`/leads/new?id=${lead.id}`)}
+                  onArchiveClick={handleArchiveClick}
+                />
+
+                {/* Desktop: Full Card */}
+                <QueueCard
+                  className="hidden md:block"
+                  data={{
+                    id: lead.id,
+                    customer_name: lead.customer_name,
+                    customer_address: lead.customer_address,
+                    job_name: lead.job_name,
+                    total: lead.total,
+                    created_at: lead.created_at,
+                    status: lead.lead_status
+                  }}
+                  badge={
+                    <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                      {getStatusLabel(lead.lead_status)}
+                    </span>
+                  }
+                  actions={
+                    <div className="flex gap-2 flex-wrap">
                       <Button
-                        size="sm"
+                        size="lg"
                         variant="outline"
+                        className="gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (lead.customer_phone) {
+                            window.location.href = `tel:${lead.customer_phone}`
+                          }
+                        }}
+                      >
+                        <Phone className="w-5 h-5" />
+                        Call
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="gap-2"
                         onClick={(e) => {
                           e.stopPropagation()
                           handleScheduleVisit(lead.id, lead.customer_name)
                         }}
                       >
-                        <Calendar className="w-4 h-4 mr-1.5" />
+                        <Calendar className="w-5 h-5" />
                         Schedule Visit
                       </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleCreateQuote(lead.id)
-                      }}
-                    >
-                      <FileText className="w-4 h-4 mr-1.5" />
-                      Create Quote
-                    </Button>
-                  </div>
-                }
-                onClick={() => handleCreateQuote(lead.id)}
-                showAmount={lead.total !== undefined && lead.total > 0}
-                showDate={true}
-                dateLabel="Created"
-              />
+                      <Button
+                        size="lg"
+                        className="gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleCreateQuote(lead.id)
+                        }}
+                      >
+                        <FileText className="w-5 h-5" />
+                        Create Quote
+                      </Button>
+                    </div>
+                  }
+                  onClick={() => handleCreateQuote(lead.id)}
+                  showAmount={lead.total !== undefined && lead.total > 0}
+                  showDate={true}
+                  dateLabel="Created"
+                />
+              </div>
             ))}
           </div>
         )}
@@ -256,6 +297,19 @@ export default function LeadsQueuePage() {
           }}
         />
       )}
+
+      {/* Archive Dialog */}
+      <ArchiveDialog
+        open={archiveDialogOpen}
+        onOpenChange={setArchiveDialogOpen}
+        onConfirm={async (reason) => {
+          if (leadToArchive) {
+            await handleArchiveLead(leadToArchive, reason)
+            setLeadToArchive(null)
+          }
+        }}
+        itemType="lead"
+      />
     </div>
   )
 }

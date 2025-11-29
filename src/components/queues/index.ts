@@ -9,4 +9,7 @@ export { QueueHeader } from './queue-header'
 export { QueueSearch } from './queue-search'
 export { QueueFilters, type FilterOption } from './queue-filters'
 export { QueueCard, type QueueCardData } from './queue-card'
+export { CompactQueueCard, type CompactCardData } from './compact-queue-card'
+export { MobileFilterButton } from './mobile-filter-button'
 export { EmptyQueue } from './empty-queue'
+

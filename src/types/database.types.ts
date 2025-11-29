@@ -116,15 +116,21 @@ export interface Database {
           customer_phone: string | null
           customer_address: string | null
           description: string | null
+          job_name: string | null
           subtotal: number
           tax_rate: number
           tax_amount: number
           total: number
           notes: string | null
           status: string
+          lead_status: string | null
           photos: string[]
           sent_at: string | null
           signed_at: string | null
+          accepted_at: string | null
+          scheduled_at: string | null
+          completed_at: string | null
+          paid_at: string | null
           created_at: string
           updated_at: string
         }
@@ -137,15 +143,21 @@ export interface Database {
           customer_phone?: string | null
           customer_address?: string | null
           description?: string | null
+          job_name?: string | null
           subtotal: number
           tax_rate: number
           tax_amount: number
           total: number
           notes?: string | null
           status?: string
+          lead_status?: string | null
           photos?: string[]
           sent_at?: string | null
           signed_at?: string | null
+          accepted_at?: string | null
+          scheduled_at?: string | null
+          completed_at?: string | null
+          paid_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -158,15 +170,21 @@ export interface Database {
           customer_phone?: string | null
           customer_address?: string | null
           description?: string | null
+          job_name?: string | null
           subtotal?: number
           tax_rate?: number
           tax_amount?: number
           total?: number
           notes?: string | null
           status?: string
+          lead_status?: string | null
           photos?: string[]
           sent_at?: string | null
           signed_at?: string | null
+          accepted_at?: string | null
+          scheduled_at?: string | null
+          completed_at?: string | null
+          paid_at?: string | null
           created_at?: string
           updated_at?: string
         }

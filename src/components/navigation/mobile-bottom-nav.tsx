@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Users, Calendar, DollarSign, Settings } from 'lucide-react'
+import { LayoutDashboard, Users, Calendar, DollarSign, BarChart3, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface NavItem {
@@ -13,6 +13,12 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  {
+    label: 'Dashboard',
+    href: '/home',
+    icon: LayoutDashboard,
+    matchPaths: ['/home']
+  },
   {
     label: 'Leads',
     href: '/leads-and-quotes/leads',
@@ -32,6 +38,12 @@ const navItems: NavItem[] = [
     matchPaths: ['/pay']
   },
   {
+    label: 'Analytics',
+    href: '/analytics',
+    icon: BarChart3,
+    matchPaths: ['/analytics']
+  },
+  {
     label: 'Settings',
     href: '/settings',
     icon: Settings,
@@ -48,7 +60,7 @@ export function MobileBottomNav() {
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 safe-area-inset-bottom backdrop-blur-lg bg-opacity-95 dark:bg-opacity-95">
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around h-16 px-1">
         {navItems.map((item) => {
           const Icon = item.icon
           const active = isActive(item)
@@ -58,18 +70,18 @@ export function MobileBottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all min-w-[70px] flex-1 max-w-[100px]",
+                "flex flex-col items-center justify-center gap-0.5 px-1.5 py-2 rounded-lg transition-all min-w-[50px] flex-1 max-w-[70px]",
                 active 
                   ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400" 
                   : "text-gray-600 dark:text-gray-400 active:bg-gray-100 dark:active:bg-gray-700"
               )}
             >
               <Icon className={cn(
-                "w-6 h-6 transition-colors",
+                "w-5 h-5 transition-colors",
                 active ? "text-orange-600 dark:text-orange-400" : "text-gray-500 dark:text-gray-400"
               )} />
               <span className={cn(
-                "text-[11px] font-medium transition-colors leading-tight text-center",
+                "text-[10px] font-medium transition-colors leading-tight text-center",
                 active ? "text-orange-600 dark:text-orange-400" : "text-gray-600 dark:text-gray-400"
               )}>
                 {item.label}

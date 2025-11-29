@@ -7,7 +7,7 @@ export type QuoteFollowupStatus = 'draft' | 'sent' | 'reminder_1' | 'reminder_2'
 
 interface QuoteStatusBadgeProps {
   status: QuoteFollowupStatus
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   showIcon?: boolean
 }
 
@@ -75,12 +75,14 @@ export function QuoteStatusBadge({ status, size = 'md', showIcon = true }: Quote
   const Icon = config.icon
 
   const sizeClasses = {
+    xs: 'text-[9px] px-1.5 py-0.5 gap-0.5',
     sm: 'text-xs px-2 py-0.5 gap-1',
     md: 'text-sm px-2.5 py-1 gap-1.5',
     lg: 'text-base px-3 py-1.5 gap-2',
   }
 
   const iconSizes = {
+    xs: 'h-2.5 w-2.5',
     sm: 'h-3 w-3',
     md: 'h-3.5 w-3.5',
     lg: 'h-4 w-4',

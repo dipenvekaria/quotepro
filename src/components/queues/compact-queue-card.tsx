@@ -1,0 +1,235 @@
+'use client'
+
+import { ReactNode, useState, useRef, useEffect } from 'react'
+import { Card, CardContent } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
+import { MapPin, DollarSign, Calendar, Phone, Archive } from 'lucide-react'
+import { format } from 'date-fns'
+
+/**
+ * Format address to show street and city only
+ * Example: "123 Main Street, San Francisco, CA 94102" -> "123 Main St, San Francisco"
+ */
+function formatShortAddress(address: string): string {
+  if (!address) return ''
+  
+  // Split by comma and take first two parts (street address + city)
+  const parts = address.split(',').map(p => p.trim())
+  const streetPart = parts[0] || ''
+  const cityPart = parts[1] || ''
+  
+  // Abbreviate common street types in the street part
+  const shortStreet = streetPart
+    .replace(/\bStreet\b/gi, 'St')
+    .replace(/\bAvenue\b/gi, 'Ave')
+    .replace(/\bBoulevard\b/gi, 'Blvd')
+    .replace(/\bRoad\b/gi, 'Rd')
+    .replace(/\bDrive\b/gi, 'Dr')
+    .replace(/\bLane\b/gi, 'Ln')
+    .replace(/\bCourt\b/gi, 'Ct')
+    .replace(/\bCircle\b/gi, 'Cir')
+    .replace(/\bPlace\b/gi, 'Pl')
+  
+  return cityPart ? `${shortStreet}, ${cityPart}` : shortStreet
+}
+
+export interface CompactCardData {
+  id: string
+  customer_name: string
+  customer_address?: string
+  customer_phone?: string
+  job_name?: string
+  total?: number
+  created_at?: string
+  scheduled_at?: string
+  completed_at?: string
+  paid_at?: string
+  status?: string
+  lead_status?: string
+  quote_number?: string
+}
+
+interface CompactQueueCardProps {
+  data: CompactCardData
+  badge?: ReactNode
+  actions?: ReactNode
+  onClick?: () => void
+  onArchive?: (id: string) => void
+  onArchiveClick?: (id: string) => void // Triggers dialog instead of direct archive
+  className?: string
+  showAmount?: boolean
+  showPhone?: boolean
+  hideAddress?: boolean
+}
+
+/**
+ * Mobile-optimized compact card for queue items
+ * Shows only essential info: name, badge, amount/phone
+ * Hides address on mobile for cleaner look
+ * Supports swipe-to-archive on mobile
+ */
+export function CompactQueueCard({
+  data,
+  badge,
+  actions,
+  onClick,
+  onArchive,
+  onArchiveClick,
+  className,
+  showAmount = true,
+  showPhone = false,
+  hideAddress = false,
+}: CompactQueueCardProps) {
+  const [swipeOffset, setSwipeOffset] = useState(0)
+  const [isSwiping, setIsSwiping] = useState(false)
+  const touchStartX = useRef(0)
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  const handleClick = () => {
+    if (!isSwiping && onClick) {
+      onClick()
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!onArchive && !onArchiveClick) return
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!onArchive && !onArchiveClick) return
+    const currentX = e.touches[0].clientX
+    const diff = touchStartX.current - currentX
+    
+    // Only allow swipe left (diff > 0)
+    if (diff > 0 && diff < 120) {
+      setSwipeOffset(diff)
+      setIsSwiping(true)
+    }
+  }
+
+  const handleTouchEnd = () => {
+    if (!onArchive && !onArchiveClick) return
+    
+    if (swipeOffset > 80) {
+      // If onArchiveClick provided, trigger dialog; otherwise direct archive
+      if (onArchiveClick) {
+        onArchiveClick(data.id)
+      } else if (onArchive) {
+        onArchive(data.id)
+      }
+    }
+    
+    // Reset
+    setSwipeOffset(0)
+    setTimeout(() => setIsSwiping(false), 100)
+  }
+
+  const displayDate = data?.scheduled_at || data?.completed_at || data?.paid_at || data?.created_at
+
+  return (
+    <div className="relative overflow-hidden">
+      {/* Archive Action Background */}
+      {(onArchive || onArchiveClick) && (
+        <div className="absolute inset-y-0 right-0 flex items-center justify-end pr-4 bg-orange-500 dark:bg-orange-600">
+          <Archive className="h-5 w-5 text-white" />
+        </div>
+      )}
+      
+      {/* Card */}
+      <Card 
+        ref={cardRef}
+        className={cn(
+          "transition-all active:scale-[0.98] relative",
+          onClick && !isSwiping && "cursor-pointer active:bg-gray-50 dark:active:bg-gray-800",
+          className
+        )}
+        style={{
+          transform: (onArchive || onArchiveClick) ? `translateX(-${swipeOffset}px)` : undefined,
+          transition: isSwiping ? 'none' : 'transform 0.3s ease-out'
+        }}
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+      <CardContent className="p-3">
+        <div className="flex items-center justify-between gap-3">
+          {/* Main Content */}
+          <div className="flex-1 min-w-0 space-y-1">
+            {/* Customer Name & Badge */}
+            <div className="flex items-center gap-2">
+              <h3 className="font-semibold text-sm text-gray-900 dark:text-white truncate">
+                {data.customer_name}
+              </h3>
+              {badge && <div className="flex-shrink-0">{badge}</div>}
+            </div>
+
+            {/* Job Name - Mobile Only */}
+            {data.job_name && (
+              <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                {data.job_name}
+              </p>
+            )}
+
+            {/* Secondary Info Row */}
+            <div className="flex items-center gap-3 text-sm">
+              {/* Amount */}
+              {showAmount && data.total !== undefined && data.total > 0 && (
+                <div className="flex items-center gap-1">
+                  <DollarSign className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400" />
+                  <span className="font-semibold text-orange-600 dark:text-orange-400">
+                    ${data.total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                  </span>
+                </div>
+              )}
+
+              {/* Quote Number */}
+              {data.quote_number && (
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  #{data.quote_number}
+                </span>
+              )}
+
+              {/* Date - Show on mobile */}
+              {displayDate && (
+                <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>{format(new Date(displayDate), 'MMM d')}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Address - Only shown on desktop or when explicitly requested */}
+            {!hideAddress && data.customer_address && (
+              <div className="hidden md:flex items-start gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+                <MapPin className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
+                <span className="truncate">{formatShortAddress(data.customer_address)}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Right Side: Phone Icon */}
+          {showPhone && data.customer_phone && (
+            <a 
+              href={`tel:${data.customer_phone}`}
+              className="flex-shrink-0 p-2.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+              aria-label={`Call ${data.customer_phone}`}
+            >
+              <Phone className="h-4 w-4" />
+            </a>
+          )}
+
+          {/* Actions (if provided instead of phone) */}
+          {actions && !showPhone && (
+            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+              {actions}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+    </div>
+  )
+}

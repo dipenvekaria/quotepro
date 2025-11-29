@@ -15,7 +15,8 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  BarChart3
+  BarChart3,
+  LayoutDashboard
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -95,6 +96,11 @@ export function DesktopSidebar({ counts = {
 
   const sections: (NavSection | NavLink)[] = [
     {
+      label: 'Dashboard',
+      href: '/home',
+      icon: LayoutDashboard
+    },
+    {
       label: 'Leads & Quotes',
       icon: Users,
       defaultExpanded: true,
@@ -157,7 +163,7 @@ export function DesktopSidebar({ counts = {
       icon: BarChart3
     },
     {
-      label: 'Settings',
+      label: 'Configuration',
       href: '/settings',
       icon: Settings
     }

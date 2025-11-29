@@ -5,26 +5,24 @@ const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || 'http://localhost:8
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { company_id, description, customer_name, existing_items } = body
+    const { description, customer_name } = body
 
-    if (!company_id || !description) {
+    if (!description) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Description is required' },
         { status: 400 }
       )
     }
 
     // Proxy request to Python backend
-    const response = await fetch(`${PYTHON_BACKEND_URL}/api/generate-quote`, {
+    const response = await fetch(`${PYTHON_BACKEND_URL}/api/generate-job-name`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        company_id,
         description,
         customer_name,
-        existing_items: existing_items || [], // Pass existing items for context
       }),
     })
 
@@ -32,18 +30,18 @@ export async function POST(request: NextRequest) {
       const error = await response.json()
       console.error('Python backend error:', error)
       return NextResponse.json(
-        { error: error.detail || 'Failed to generate quote' },
+        { error: error.detail || 'Failed to generate job name' },
         { status: response.status }
       )
     }
 
-    const quoteData = await response.json()
-    return NextResponse.json(quoteData)
+    const data = await response.json()
+    return NextResponse.json(data)
     
   } catch (error) {
-    console.error('Quote generation error:', error)
+    console.error('Job name generation error:', error)
     return NextResponse.json(
-      { error: 'Failed to generate quote' },
+      { error: 'Failed to generate job name' },
       { status: 500 }
     )
   }

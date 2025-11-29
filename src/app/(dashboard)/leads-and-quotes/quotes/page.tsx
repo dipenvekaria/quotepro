@@ -4,27 +4,27 @@
 import { useState, useMemo } from 'react'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { 
   QueueHeader, 
   QueueSearch, 
-  QueueFilters, 
-  QueueCard, 
+  QueueCard,
+  CompactQueueCard,
   EmptyQueue,
-  type FilterOption 
 } from '@/components/queues'
 import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
-import { FileText, Send, Eye, Trash2, Edit, ExternalLink, Plus } from 'lucide-react'
-import { format } from 'date-fns'
+import { FileText, Send, Edit, ExternalLink, Plus, Phone } from 'lucide-react'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
-
-type QuoteStatus = 'all' | 'draft' | 'sent'
+import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
 export default function QuotesQueuePage() {
   const { quotes: allQuotes, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<QuoteStatus>('all')
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
+  const [quoteToArchive, setQuoteToArchive] = useState<string | null>(null)
 
   // Filter quotes (drafted or sent, not yet accepted/signed)
   const quotes = useMemo(() => {
@@ -46,32 +46,9 @@ export default function QuotesQueuePage() {
     })
   }, [allQuotes])
 
-  // Calculate counts for filters
-  const statusCounts = useMemo(() => {
-    return {
-      all: quotes.length,
-      draft: quotes.filter(q => q.status === 'draft').length,
-      sent: quotes.filter(q => q.status === 'sent' || q.status === 'viewed').length
-    }
-  }, [quotes])
-
-  // Filter options
-  const filterOptions: FilterOption[] = [
-    { label: 'All Quotes', value: 'all', count: statusCounts.all },
-    { label: 'Draft', value: 'draft', count: statusCounts.draft },
-    { label: 'Sent', value: 'sent', count: statusCounts.sent }
-  ]
-
-  // Apply filters and search
+  // Apply search only (no status filter)
   const filteredQuotes = useMemo(() => {
     let filtered = quotes
-
-    // Apply status filter
-    if (statusFilter === 'draft') {
-      filtered = filtered.filter(q => q.status === 'draft')
-    } else if (statusFilter === 'sent') {
-      filtered = filtered.filter(q => q.status === 'sent' || q.status === 'viewed')
-    }
 
     // Apply search
     if (searchTerm) {
@@ -79,7 +56,8 @@ export default function QuotesQueuePage() {
       filtered = filtered.filter(q => 
         q.customer_name?.toLowerCase().includes(term) ||
         q.customer_address?.toLowerCase().includes(term) ||
-        q.quote_number?.toLowerCase().includes(term)
+        q.quote_number?.toLowerCase().includes(term) ||
+        q.job_name?.toLowerCase().includes(term)
       )
     }
 
@@ -89,7 +67,7 @@ export default function QuotesQueuePage() {
       const dateB = new Date(b.updated_at || b.created_at).getTime()
       return dateB - dateA
     })
-  }, [quotes, statusFilter, searchTerm])
+  }, [quotes, searchTerm])
 
   const handleEditQuote = (quoteId: string) => {
     router.push(`/quotes/new?id=${quoteId}`)
@@ -105,21 +83,41 @@ export default function QuotesQueuePage() {
     window.open(publicUrl, '_blank')
   }
 
-  const handleDeleteQuote = async (quoteId: string) => {
-    if (!confirm('Are you sure you want to delete this quote?')) return
-    
+  const handleArchiveQuote = async (quoteId: string, reason: string) => {
     try {
-      const response = await fetch(`/api/quotes/${quoteId}`, {
-        method: 'DELETE'
-      })
+      const supabase = createClient()
       
-      if (!response.ok) throw new Error('Failed to delete quote')
+      // Update lead_status to 'archived'
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ lead_status: 'archived' })
+        .eq('id', quoteId)
       
+      if (updateError) throw updateError
+      
+      // Log to audit trail
+      const { error: auditError } = await supabase
+        .from('audit_trail')
+        .insert({
+          quote_id: quoteId,
+          action: 'quote_archived',
+          details: reason,
+          user_id: (await supabase.auth.getUser()).data.user?.id || 'system'
+        })
+      
+      if (auditError) console.error('Audit trail error:', auditError)
+      
+      toast.success('Quote archived')
       await refreshQuotes()
     } catch (error) {
-      console.error('Error deleting quote:', error)
-      alert('Failed to delete quote. Please try again.')
+      console.error('Error archiving quote:', error)
+      toast.error('Failed to archive quote')
     }
+  }
+
+  const handleArchiveClick = (quoteId: string) => {
+    setQuoteToArchive(quoteId)
+    setArchiveDialogOpen(true)
   }
 
   return (
@@ -132,46 +130,34 @@ export default function QuotesQueuePage() {
         ]}
       />
 
-      {/* Header - Hidden on mobile, shown on desktop */}
+      {/* Desktop Header Only */}
       <header className="hidden md:block bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
         <div className="px-6 py-6">
           <QueueHeader
             title="Quotes"
             description="Draft and send quotes to customers"
             count={filteredQuotes.length}
+            action={
+              <Button 
+                onClick={() => router.push('/quotes/new')}
+                className="bg-orange-500 hover:bg-orange-600 text-white"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Quote
+              </Button>
+            }
           />
         </div>
       </header>
 
-      {/* Mobile Header - Compact version */}
-      <div className="md:hidden px-4 py-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Quotes</h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{filteredQuotes.length} total</p>
-          </div>
-          <Button onClick={() => router.push('/leads/new')} size="sm">
-            <Plus className="w-4 h-4 mr-1" />
-            New
-          </Button>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6">
-        {/* Filters & Search */}
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6">
+        {/* Search Only - No Filters */}
+        <div className="mb-3 md:mb-6">
           <QueueSearch
             value={searchTerm}
             onChange={setSearchTerm}
-            placeholder="Search by customer name, address, or quote number..."
-            className="flex-1"
-          />
-          <QueueFilters
-            label="Status"
-            options={filterOptions}
-            value={statusFilter}
-            onChange={(value) => setStatusFilter(value as QuoteStatus)}
+            placeholder="Search quotes..."
           />
         </div>
 
@@ -187,7 +173,10 @@ export default function QuotesQueuePage() {
             icon="file"
             action={
               !searchTerm && (
-                <Button onClick={() => router.push('/quotes/new')}>
+                <Button 
+                  onClick={() => router.push('/quotes/new')}
+                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                >
                   <FileText className="w-4 h-4 mr-2" />
                   Create First Quote
                 </Button>
@@ -195,81 +184,92 @@ export default function QuotesQueuePage() {
             }
           />
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             {filteredQuotes.map(quote => (
-              <QueueCard
-                key={quote.id}
-                data={{
-                  id: quote.id,
-                  customer_name: quote.customer_name,
-                  customer_address: quote.customer_address,
-                  total: quote.total,
-                  created_at: quote.created_at,
-                  status: quote.status
-                }}
-                badge={<QuoteStatusBadge status={quote.status} size="sm" />}
-                actions={
-                  <div className="flex flex-wrap gap-2">
-                    {/* Edit Button */}
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleEditQuote(quote.id)
-                      }}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
+              <div key={quote.id}>
+                {/* Mobile: Compact Card */}
+                <CompactQueueCard
+                  className="md:hidden"
+                  data={{
+                    id: quote.id,
+                    customer_name: quote.customer_name,
+                    quote_number: quote.quote_number,
+                    job_name: quote.job_name,
+                    total: quote.total,
+                    created_at: quote.created_at,
+                  }}
+                  badge={<QuoteStatusBadge status={quote.status} size="sm" />}
+                  showAmount={true}
+                  hideAddress={true}
+                  onClick={() => handleEditQuote(quote.id)}
+                  onArchiveClick={handleArchiveClick}
+                />
 
-                    {/* Send Button (for drafts) */}
-                    {quote.status === 'draft' && (
+                {/* Desktop: Full Card */}
+                <QueueCard
+                  className="hidden md:block"
+                  data={{
+                    id: quote.id,
+                    customer_name: quote.customer_name,
+                    customer_address: quote.customer_address,
+                    job_name: quote.job_name,
+                    total: quote.total,
+                    created_at: quote.created_at,
+                    status: quote.status
+                  }}
+                  badge={<QuoteStatusBadge status={quote.status} size="sm" />}
+                  actions={
+                    <div className="flex flex-wrap gap-2">
+                      {/* Phone Button */}
                       <Button
-                        size="sm"
+                        size="lg"
+                        variant="outline"
+                        className="gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (quote.customer_phone) {
+                            window.location.href = `tel:${quote.customer_phone}`
+                          }
+                        }}
+                      >
+                        <Phone className="w-5 h-5" />
+                        Call
+                      </Button>
+
+                      {/* Edit Button */}
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="gap-2"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleEditQuote(quote.id)
+                        }}
+                      >
+                        <Edit className="w-5 h-5" />
+                        Edit
+                      </Button>
+
+                      {/* Send Button */}
+                      <Button
+                        size="lg"
+                        className="gap-2"
                         onClick={(e) => {
                           e.stopPropagation()
                           handleSendQuote(quote.id)
                         }}
                       >
-                        <Send className="w-4 h-4 mr-1.5" />
+                        <Send className="w-5 h-5" />
                         Send
                       </Button>
-                    )}
-
-                    {/* View Public Link (for sent quotes) */}
-                    {(quote.status === 'sent' || quote.status === 'viewed') && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleViewPublicLink(quote.id)
-                        }}
-                      >
-                        <ExternalLink className="w-4 h-4 mr-1.5" />
-                        View Link
-                      </Button>
-                    )}
-
-                    {/* Delete Button */}
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDeleteQuote(quote.id)
-                      }}
-                      className="text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                }
-                onClick={() => handleEditQuote(quote.id)}
-                showAmount={true}
-                showDate={true}
-                dateLabel={quote.updated_at ? "Updated" : "Created"}
-              />
+                    </div>
+                  }
+                  onClick={() => handleEditQuote(quote.id)}
+                  showAmount={true}
+                  showDate={true}
+                  dateLabel={quote.updated_at ? "Updated" : "Created"}
+                />
+              </div>
             ))}
           </div>
         )}
@@ -283,6 +283,19 @@ export default function QuotesQueuePage() {
           </div>
         )}
       </div>
+
+      {/* Archive Dialog */}
+      <ArchiveDialog
+        open={archiveDialogOpen}
+        onOpenChange={setArchiveDialogOpen}
+        onConfirm={async (reason) => {
+          if (quoteToArchive) {
+            await handleArchiveQuote(quoteToArchive, reason)
+            setQuoteToArchive(null)
+          }
+        }}
+        itemType="quote"
+      />
     </div>
   )
 }

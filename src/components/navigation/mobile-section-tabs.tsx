@@ -36,16 +36,6 @@ export function MobileSectionTabs({ tabs, className }: MobileSectionTabsProps) {
               )}
             >
               <span>{tab.label}</span>
-              {tab.count !== undefined && (
-                <span className={cn(
-                  "text-xs px-2 py-0.5 rounded-full font-medium",
-                  isActive
-                    ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
-                    : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
-                )}>
-                  {tab.count}
-                </span>
-              )}
               {isActive && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-600 dark:bg-orange-400" />
               )}

@@ -1,6 +1,6 @@
 """
 QuotePro Python Backend
-FastAPI server for AI-powered quote generation using Groq
+FastAPI server for AI-powered quote generation using Google Gemini
 """
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
@@ -10,7 +10,7 @@ from pydantic import BaseModel, validator
 from typing import List, Optional
 import os
 from dotenv import load_dotenv
-from groq import Groq
+import google.generativeai as genai
 import json
 import re
 import pandas as pd
@@ -33,20 +33,30 @@ app.add_middleware(
 )
 
 # Initialize clients
-groq_client: Optional[Groq] = None
+gemini_model: Optional[genai.GenerativeModel] = None
 
-def get_groq_client() -> Groq:
-    """Get or create Groq client"""
-    global groq_client
-    if groq_client is None:
-        api_key = os.getenv("GROQ_API_KEY")
+def get_gemini_model() -> genai.GenerativeModel:
+    """Get or create Gemini model"""
+    global gemini_model
+    if gemini_model is None:
+        api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise HTTPException(
                 status_code=500,
-                detail="Groq API key not configured"
+                detail="Gemini API key not configured"
             )
-        groq_client = Groq(api_key=api_key)
-    return groq_client
+        genai.configure(api_key=api_key)
+        gemini_model = genai.GenerativeModel(
+            model_name='gemini-2.0-flash',
+            generation_config={
+                'temperature': 0.1,
+                'top_p': 0.95,
+                'top_k': 40,
+                'max_output_tokens': 8192,
+                'response_mime_type': 'application/json',
+            }
+        )
+    return gemini_model
 
 # Initialize Supabase client lazily to avoid startup errors
 supabase: Optional[Client] = None
@@ -166,6 +176,7 @@ class QuoteRequest(BaseModel):
     description: str
     customer_name: str
     customer_address: Optional[str] = None
+    existing_items: List[dict] = []  # Existing quote items for context
 
 
 class QuoteResponse(BaseModel):
@@ -192,7 +203,7 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "groq_configured": bool(os.getenv("GROQ_API_KEY")),
+        "gemini_configured": bool(os.getenv("GEMINI_API_KEY")),
         "supabase_configured": bool(os.getenv("NEXT_PUBLIC_SUPABASE_URL"))
     }
 
@@ -200,7 +211,7 @@ async def health_check():
 @app.post("/api/generate-quote", response_model=QuoteResponse)
 async def generate_quote(request: QuoteRequest):
     """
-    Generate an AI-powered quote using Groq and company pricing catalog
+    Generate an AI-powered quote using Google Gemini and company pricing catalog
     """
     try:
         # Get Supabase client
@@ -247,6 +258,14 @@ async def generate_quote(request: QuoteRequest):
             for item in pricing_items
         ])
         
+        # Format existing items if any
+        existing_items_text = ""
+        if request.existing_items and len(request.existing_items) > 0:
+            existing_items_text = "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 CURRENT QUOTE ITEMS (PRESERVE THESE):\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            for item in request.existing_items:
+                existing_items_text += f"• {item.get('name')} - ${item.get('unit_price')} x {item.get('quantity')} = ${item.get('total')}\n"
+            existing_items_text += "\n⚠️ PRESERVE ALL ITEMS ABOVE unless explicitly asked to remove/change them!\n"
+        
         # Create user prompt
         user_prompt = f"""Customer: {request.customer_name}
 Job Description: {request.description}
@@ -255,13 +274,14 @@ Job Description: {request.description}
 📋 YOUR PRICING CATALOG (USE ONLY THESE):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 {catalog_text}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{existing_items_text}
 
 ⚠️  IMPORTANT: 
 - ONLY use items listed above
 - ONLY use the exact prices shown
 - If you need an item NOT in the catalog, mention it in "notes" but do NOT add it to line_items
 - DO NOT make up prices or items
+- PRESERVE existing items unless asked to remove/change them
 
 Generate a professional quote matching the job description to items from the catalog above.
 
@@ -285,28 +305,22 @@ Return ONLY valid JSON with this exact structure:
   "upsell_suggestions": ["Items from catalog that add value"]
 }}"""
         
-        # Call Groq API
-        client = get_groq_client()
-        completion = client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_prompt}
-            ],
-            model="llama-3.3-70b-versatile",
-            temperature=0.7,
-            max_tokens=2048,
-        )
+        # Call Gemini API
+        model = get_gemini_model()
         
-        content = completion.choices[0].message.content
+        # Combine system and user prompts for Gemini
+        full_prompt = f"{SYSTEM_PROMPT}\n\n{user_prompt}"
         
-        if not content:
+        response = model.generate_content(full_prompt)
+        
+        if not response.text:
             raise HTTPException(
                 status_code=500,
                 detail="No response from AI"
             )
         
         # Extract JSON from response
-        json_match = re.search(r'\{[\s\S]*\}', content)
+        json_match = re.search(r'\{[\s\S]*\}', response.text)
         if not json_match:
             raise HTTPException(
                 status_code=500,
@@ -488,25 +502,25 @@ Return ONLY valid JSON with this exact structure:
             "content": current_prompt
         })
         
-        # Call Groq API with full conversation history
-        client = get_groq_client()
-        completion = client.chat.completions.create(
-            messages=messages,
-            model="llama-3.3-70b-versatile",
-            temperature=0.7,
-            max_tokens=2048,
-        )
+        # Call Gemini API with full conversation history
+        model = get_gemini_model()
         
-        content = completion.choices[0].message.content
+        # Convert messages to Gemini format (combine system + conversation)
+        conversation_text = "\n\n".join([
+            f"{msg['role'].upper()}: {msg['content']}" 
+            for msg in messages
+        ])
         
-        if not content:
+        response = model.generate_content(conversation_text)
+        
+        if not response.text:
             raise HTTPException(
                 status_code=500,
                 detail="No response from AI"
             )
         
         # Extract JSON from response
-        json_match = re.search(r'\{[\s\S]*\}', content)
+        json_match = re.search(r'\{[\s\S]*\}', response.text)
         if not json_match:
             raise HTTPException(
                 status_code=500,
@@ -998,6 +1012,76 @@ async def bulk_append_pricing(
         raise HTTPException(
             status_code=500,
             detail=f"Failed to append pricing items: {str(e)}"
+        )
+
+
+class JobNameRequest(BaseModel):
+    description: str
+    customer_name: Optional[str] = None
+
+
+class JobNameResponse(BaseModel):
+    job_name: str
+
+
+@app.post("/api/generate-job-name", response_model=JobNameResponse)
+async def generate_job_name(request: JobNameRequest):
+    """
+    Generate a concise job name from a job description using AI
+    """
+    try:
+        # Create a concise prompt for job name generation
+        system_prompt = """You are an expert at creating concise, professional job names for field service work.
+Given a job description, create a short, descriptive job name (3-6 words maximum).
+
+RULES:
+- Keep it brief (3-6 words)
+- Use specific service terms (e.g., "HVAC Replacement", "Roof Repair", "Kitchen Remodel")
+- Capitalize key words
+- NO generic terms like "Service Call" or "Job"
+- Focus on WHAT is being done
+
+EXAMPLES:
+- "Replace entire HVAC system in 3-story house" → "HVAC System Replacement"
+- "Fix leaking pipe under kitchen sink" → "Kitchen Sink Pipe Repair"
+- "Install new roof on garage" → "Garage Roof Installation"
+- "Landscape front yard with pavers and plants" → "Front Yard Landscaping"
+"""
+
+        user_prompt = f"""Job Description: {request.description}
+
+Generate a concise job name (3-6 words). Return ONLY the job name, nothing else."""
+
+        # Call Gemini API
+        # Use a simpler model config for job name generation
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="Gemini API key not configured")
+        
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(
+            model_name='gemini-2.0-flash',
+            generation_config={
+                'temperature': 0.3,
+                'max_output_tokens': 100,
+            }
+        )
+        
+        full_prompt = f"{system_prompt}\n\n{user_prompt}"
+        response = model.generate_content(full_prompt)
+        
+        job_name = response.text.strip()
+        
+        # Remove quotes if AI wrapped the name in them
+        job_name = job_name.strip('"').strip("'")
+        
+        return JobNameResponse(job_name=job_name)
+        
+    except Exception as e:
+        print(f"Error generating job name: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to generate job name: {str(e)}"
         )
 
 

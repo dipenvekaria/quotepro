@@ -80,8 +80,8 @@ export function FloatingActionMenu({
         />
       )}
 
-      {/* Menu Container */}
-      <div className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-50">
+      {/* Menu Container - Mobile Only */}
+      <div className="md:hidden fixed bottom-20 right-4 z-50">
         {/* Menu Items */}
         <div className={cn(
           "absolute bottom-16 right-0 space-y-3 transition-all duration-300 ease-out",

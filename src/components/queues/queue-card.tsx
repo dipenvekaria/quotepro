@@ -6,10 +6,38 @@ import { cn } from '@/lib/utils'
 import { MapPin, DollarSign, Calendar, User } from 'lucide-react'
 import { format } from 'date-fns'
 
+/**
+ * Format address to show street and city only
+ * Example: "123 Main Street, San Francisco, CA 94102" -> "123 Main St, San Francisco"
+ */
+function formatShortAddress(address: string): string {
+  if (!address) return ''
+  
+  // Split by comma and take first two parts (street address + city)
+  const parts = address.split(',').map(p => p.trim())
+  const streetPart = parts[0] || ''
+  const cityPart = parts[1] || ''
+  
+  // Abbreviate common street types in the street part
+  const shortStreet = streetPart
+    .replace(/\bStreet\b/gi, 'St')
+    .replace(/\bAvenue\b/gi, 'Ave')
+    .replace(/\bBoulevard\b/gi, 'Blvd')
+    .replace(/\bRoad\b/gi, 'Rd')
+    .replace(/\bDrive\b/gi, 'Dr')
+    .replace(/\bLane\b/gi, 'Ln')
+    .replace(/\bCourt\b/gi, 'Ct')
+    .replace(/\bCircle\b/gi, 'Cir')
+    .replace(/\bPlace\b/gi, 'Pl')
+  
+  return cityPart ? `${shortStreet}, ${cityPart}` : shortStreet
+}
+
 export interface QueueCardData {
   id: string
   customer_name: string
   customer_address?: string
+  job_name?: string
   total?: number
   created_at?: string
   scheduled_at?: string
@@ -61,33 +89,40 @@ export function QueueCard({
       )}
       onClick={handleClick}
     >
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-4">
+      <CardContent className="p-3">
+        <div className="flex items-start justify-between gap-3">
           {/* Main Content */}
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 space-y-1.5">
             {/* Customer Name & Badge */}
-            <div className="flex items-center gap-3 flex-wrap">
-              <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="font-semibold text-base text-gray-900 dark:text-white">
                 {data.customer_name}
               </h3>
               {badge}
             </div>
 
+            {/* Job Name */}
+            {data.job_name && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                {data.job_name}
+              </p>
+            )}
+
             {/* Address */}
             {data.customer_address && (
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
-                <span>{data.customer_address}</span>
+                <span className="truncate">{formatShortAddress(data.customer_address)}</span>
               </div>
             )}
 
             {/* Details Row */}
-            <div className="flex flex-wrap items-center gap-4 text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-sm">
               {/* Amount */}
               {showAmount && data.total !== undefined && (
                 <div className="flex items-center gap-1.5">
                   <DollarSign className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                  <span className="font-semibold text-orange-600 dark:text-orange-400 text-base">
+                  <span className="font-semibold text-orange-600 dark:text-orange-400">
                     ${data.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -97,7 +132,7 @@ export function QueueCard({
               {showDate && displayDate && (
                 <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
                   <Calendar className="h-4 w-4" />
-                  <span>
+                  <span className="text-xs">
                     {dateLabel}: {format(new Date(displayDate), 'MMM d, yyyy')}
                   </span>
                 </div>
