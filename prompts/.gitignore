@@ -1,0 +1,6 @@
+# .gitignore additions for prompts
+
+# Ignore prompt testing/experiments
+prompts/**/*-test.md
+prompts/**/*-experiment.md
+prompts/**/*.backup.md

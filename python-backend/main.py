@@ -17,6 +17,7 @@ import pandas as pd
 import io
 from supabase import create_client, Client
 from tax_rates import get_tax_rate_for_address
+from pathlib import Path
 
 # Load environment variables
 load_dotenv()
@@ -88,7 +89,91 @@ def get_supabase() -> Client:
             )
     return supabase
 
-SYSTEM_PROMPT = """You are an expert field-service admin who has written 15,000 winning quotes for HVAC, plumbing, electrical, roofing, and landscaping companies.
+def load_system_prompt(company_id: str = None, prompt_type: str = "quote-generation") -> str:
+    """
+    Load system prompt from file with optional company-specific override
+    
+    Prompt Types:
+    - 'quote-generation' (default): Main quote generation prompt
+    - 'job-name': Job name generation prompt
+    
+    Priority:
+    1. Company-specific prompt: /prompts/companies/{company_id}/{prompt_type}.md
+    2. Default prompt for type: /prompts/{prompt_type}.md (if exists)
+    3. Legacy default: /prompts/default-system-prompt.md (quote-generation only)
+    4. Fallback: hardcoded prompt (for backwards compatibility)
+    """
+    try:
+        # Get the project root directory (one level up from python-backend)
+        project_root = Path(__file__).parent.parent
+        
+        # Map legacy 'quote-generation' to 'default-system-prompt' for backwards compatibility
+        if prompt_type == "quote-generation":
+            type_filename = "default-system-prompt.md"
+        else:
+            type_filename = f"{prompt_type}.md"
+        
+        # Try company-specific prompt first
+        if company_id:
+            company_prompt_path = project_root / "prompts" / "companies" / company_id / type_filename
+            if company_prompt_path.exists():
+                print(f"✅ Loading company-specific {prompt_type} prompt for: {company_id}")
+                return company_prompt_path.read_text(encoding='utf-8')
+        
+        # Fall back to default prompt for this type
+        default_prompt_path = project_root / "prompts" / type_filename
+        if default_prompt_path.exists():
+            print(f"✅ Loading default {prompt_type} prompt")
+            return default_prompt_path.read_text(encoding='utf-8')
+        
+        # Final fallback to hardcoded prompt (quote-generation only)
+        if prompt_type == "quote-generation":
+            print("⚠️ Using hardcoded system prompt (prompt files not found)")
+            return HARDCODED_SYSTEM_PROMPT
+        
+        # For other prompt types, raise error if not found
+        raise FileNotFoundError(f"Prompt file not found for type: {prompt_type}")
+        
+    except Exception as e:
+        print(f"❌ Error loading {prompt_type} prompt: {e}")
+        # Only return hardcoded for quote-generation, otherwise re-raise
+        if prompt_type == "quote-generation":
+            return HARDCODED_SYSTEM_PROMPT
+        raise
+
+def load_user_prompt_template(template_name: str, variables: dict) -> str:
+    """
+    Load user prompt template and replace variables
+    
+    Template Names:
+    - 'quote-generation-user': Generate initial quote
+    - 'quote-update-user': Update existing quote
+    - 'job-name-user': Generate job name
+    
+    Variables are replaced using {{variable_name}} format
+    """
+    try:
+        project_root = Path(__file__).parent.parent
+        template_path = project_root / "prompts" / "templates" / f"{template_name}.md"
+        
+        if not template_path.exists():
+            raise FileNotFoundError(f"Template not found: {template_name}")
+        
+        template = template_path.read_text(encoding='utf-8')
+        
+        # Replace all variables in the format {{variable_name}}
+        for key, value in variables.items():
+            placeholder = f"{{{{{key}}}}}"
+            template = template.replace(placeholder, str(value))
+        
+        return template
+        
+    except Exception as e:
+        print(f"❌ Error loading template {template_name}: {e}")
+        raise
+
+# Keep hardcoded prompt as fallback for backwards compatibility
+HARDCODED_SYSTEM_PROMPT = """You are an expert field-service admin who has written 15,000 winning quotes for HVAC, plumbing, electrical, roofing, and landscaping companies.
 Convert the contractor's bullet points or voice note into a polished, itemized quote.
 
 🎯 IMPORTANT: This is a MULTI-TURN CONVERSATION
@@ -259,57 +344,30 @@ async def generate_quote(request: QuoteRequest):
         ])
         
         # Format existing items if any
-        existing_items_text = ""
+        existing_items_section = ""
         if request.existing_items and len(request.existing_items) > 0:
-            existing_items_text = "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 CURRENT QUOTE ITEMS (PRESERVE THESE):\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+            existing_items_section = "\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 CURRENT QUOTE ITEMS (PRESERVE THESE):\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
             for item in request.existing_items:
-                existing_items_text += f"• {item.get('name')} - ${item.get('unit_price')} x {item.get('quantity')} = ${item.get('total')}\n"
-            existing_items_text += "\n⚠️ PRESERVE ALL ITEMS ABOVE unless explicitly asked to remove/change them!\n"
+                existing_items_section += f"• {item.get('name')} - ${item.get('unit_price')} x {item.get('quantity')} = ${item.get('total')}\n"
+            existing_items_section += "\n⚠️ PRESERVE ALL ITEMS ABOVE unless explicitly asked to remove/change them!\n"
         
-        # Create user prompt
-        user_prompt = f"""Customer: {request.customer_name}
-Job Description: {request.description}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 YOUR PRICING CATALOG (USE ONLY THESE):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{catalog_text}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{existing_items_text}
-
-⚠️  IMPORTANT: 
-- ONLY use items listed above
-- ONLY use the exact prices shown
-- If you need an item NOT in the catalog, mention it in "notes" but do NOT add it to line_items
-- DO NOT make up prices or items
-- PRESERVE existing items unless asked to remove/change them
-
-Generate a professional quote matching the job description to items from the catalog above.
-
-Return ONLY valid JSON with this exact structure:
-{{
-  "line_items": [
-    {{
-      "name": "Exact item name from catalog above",
-      "description": "Brief description if needed",
-      "quantity": 1,
-      "unit_price": 100,
-      "total": 100,
-      "is_upsell": false
-    }}
-  ],
-  "options": [],
-  "subtotal": 0,
-  "tax_rate": {tax_rate},
-  "total": 0,
-  "notes": "Optional notes about the work or missing catalog items",
-  "upsell_suggestions": ["Items from catalog that add value"]
-}}"""
+        # Load user prompt template and fill in variables
+        user_prompt = load_user_prompt_template('quote-generation-user', {
+            'customer_name': request.customer_name,
+            'description': request.description,
+            'catalog_text': catalog_text,
+            'existing_items_section': existing_items_section,
+            'tax_rate': tax_rate
+        })
         
         # Call Gemini API
         model = get_gemini_model()
         
+        # Load system prompt (company-specific or default)
+        system_prompt = load_system_prompt(request.company_id)
+        
         # Combine system and user prompts for Gemini
-        full_prompt = f"{SYSTEM_PROMPT}\n\n{user_prompt}"
+        full_prompt = f"{system_prompt}\n\n{user_prompt}"
         
         response = model.generate_content(full_prompt)
         
@@ -422,8 +480,11 @@ async def update_quote_with_ai(request: UpdateQuoteRequest):
         ])
         
         # Build conversation messages with history
+        # Load system prompt (company-specific or default)
+        system_prompt = load_system_prompt(request.company_id)
+        
         messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "system", "content": system_prompt},
             {"role": "system", "content": f"""
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📋 YOUR PRICING CATALOG (USE ONLY THESE):
@@ -465,37 +526,13 @@ async def update_quote_with_ai(request: UpdateQuoteRequest):
             for item in request.existing_items
         ])
         
-        # Add current request
-        current_prompt = f"""Customer: {request.customer_name}
-
-CURRENT QUOTE ITEMS:
-{existing_items_text}
-
-USER REQUEST: {request.user_prompt}
-
-⚠️  REMEMBER: This is a conversation update. The user is asking you to UPDATE the existing quote.
-- If they say "add", KEEP existing items and ADD new ones
-- If they say "remove", REMOVE only specified items  
-- If they say "change/replace", MODIFY only specified items
-- DEFAULT: PRESERVE existing items unless explicitly told otherwise
-
-Return ONLY valid JSON with this exact structure:
-{{
-  "line_items": [
-    {{
-      "name": "Exact item name from catalog",
-      "description": "Brief description",
-      "quantity": 1,
-      "unit_price": 100,
-      "total": 100,
-      "is_upsell": false
-    }}
-  ],
-  "subtotal": 0,
-  "tax_rate": {tax_rate},
-  "total": 0,
-  "notes": "What was changed based on user request"
-}}"""
+        # Load user prompt template and fill in variables
+        current_prompt = load_user_prompt_template('quote-update-user', {
+            'customer_name': request.customer_name,
+            'existing_items_text': existing_items_text,
+            'user_prompt': request.user_prompt,
+            'tax_rate': tax_rate
+        })
         
         messages.append({
             "role": "user",
@@ -1030,27 +1067,13 @@ async def generate_job_name(request: JobNameRequest):
     Generate a concise job name from a job description using AI
     """
     try:
-        # Create a concise prompt for job name generation
-        system_prompt = """You are an expert at creating concise, professional job names for field service work.
-Given a job description, create a short, descriptive job name (3-6 words maximum).
-
-RULES:
-- Keep it brief (3-6 words)
-- Use specific service terms (e.g., "HVAC Replacement", "Roof Repair", "Kitchen Remodel")
-- Capitalize key words
-- NO generic terms like "Service Call" or "Job"
-- Focus on WHAT is being done
-
-EXAMPLES:
-- "Replace entire HVAC system in 3-story house" → "HVAC System Replacement"
-- "Fix leaking pipe under kitchen sink" → "Kitchen Sink Pipe Repair"
-- "Install new roof on garage" → "Garage Roof Installation"
-- "Landscape front yard with pavers and plants" → "Front Yard Landscaping"
-"""
-
-        user_prompt = f"""Job Description: {request.description}
-
-Generate a concise job name (3-6 words). Return ONLY the job name, nothing else."""
+        # Load system prompt from file (supports company-specific customization)
+        system_prompt = load_system_prompt(company_id=None, prompt_type="job-name-generation")
+        
+        # Load user prompt template and fill in variables
+        user_prompt = load_user_prompt_template('job-name-user', {
+            'description': request.description
+        })
 
         # Call Gemini API
         # Use a simpler model config for job name generation
