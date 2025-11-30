@@ -46,7 +46,7 @@ $$ LANGUAGE plpgsql;
 -- TABLE 1: COMPANIES_NEW
 -- ============================================
 -- Multi-tenant root table
-CREATE TABLE companies_new (
+CREATE TABLE IF NOT EXISTS companies_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   logo_url TEXT,
@@ -81,7 +81,7 @@ COMMENT ON TABLE companies_new IS 'Multi-tenant companies (QuotePro 2.0 normaliz
 -- TABLE 2: USERS_NEW
 -- ============================================
 -- Team members within companies
-CREATE TABLE users_new (
+CREATE TABLE IF NOT EXISTS users_new (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   
@@ -108,7 +108,7 @@ COMMENT ON TABLE users_new IS 'Team members with roles (QuotePro 2.0)';
 -- TABLE 3: CUSTOMERS_NEW
 -- ============================================
 -- Deduplicated customer records
-CREATE TABLE customers_new (
+CREATE TABLE IF NOT EXISTS customers_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   
@@ -138,7 +138,7 @@ COMMENT ON TABLE customers_new IS 'Deduplicated customer records (QuotePro 2.0)'
 -- TABLE 4: CUSTOMER_ADDRESSES
 -- ============================================
 -- Multiple addresses per customer
-CREATE TABLE customer_addresses (
+CREATE TABLE IF NOT EXISTS customer_addresses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   customer_id UUID NOT NULL REFERENCES customers_new(id) ON DELETE CASCADE,
   
@@ -163,7 +163,7 @@ COMMENT ON TABLE customer_addresses IS 'Multiple addresses per customer (QuotePr
 -- TABLE 5: LEADS_NEW
 -- ============================================
 -- Sales pipeline before quote creation
-CREATE TABLE leads_new (
+CREATE TABLE IF NOT EXISTS leads_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   customer_id UUID NOT NULL REFERENCES customers_new(id) ON DELETE CASCADE,
@@ -206,7 +206,7 @@ COMMENT ON TABLE leads_new IS 'Sales pipeline leads (QuotePro 2.0)';
 -- TABLE 6: QUOTES_NEW
 -- ============================================
 -- Quote management
-CREATE TABLE quotes_new (
+CREATE TABLE IF NOT EXISTS quotes_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   lead_id UUID REFERENCES leads_new(id) ON DELETE SET NULL,
@@ -264,7 +264,7 @@ COMMENT ON TABLE quotes_new IS 'Quote management with proper workflow (QuotePro 
 -- TABLE 7: QUOTE_ITEMS_NEW
 -- ============================================
 -- Line items for quotes (normalized - no longer JSONB array)
-CREATE TABLE quote_items_new (
+CREATE TABLE IF NOT EXISTS quote_items_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   quote_id UUID NOT NULL REFERENCES quotes_new(id) ON DELETE CASCADE,
   
@@ -289,7 +289,7 @@ COMMENT ON TABLE quote_items_new IS 'Quote line items - normalized (QuotePro 2.0
 -- TABLE 8: QUOTE_OPTIONS
 -- ============================================
 -- Good/Better/Best quote options
-CREATE TABLE quote_options (
+CREATE TABLE IF NOT EXISTS quote_options (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   quote_id UUID NOT NULL REFERENCES quotes_new(id) ON DELETE CASCADE,
   
@@ -310,7 +310,7 @@ COMMENT ON TABLE quote_options IS 'Good/Better/Best quote options (QuotePro 2.0)
 -- TABLE 9: JOBS_NEW
 -- ============================================
 -- Accepted quotes become scheduled jobs
-CREATE TABLE jobs_new (
+CREATE TABLE IF NOT EXISTS jobs_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   quote_id UUID NOT NULL REFERENCES quotes_new(id),
@@ -356,7 +356,7 @@ COMMENT ON TABLE jobs_new IS 'Scheduled jobs from accepted quotes (QuotePro 2.0)
 -- TABLE 10: INVOICES_NEW
 -- ============================================
 -- Invoices generated from completed jobs
-CREATE TABLE invoices_new (
+CREATE TABLE IF NOT EXISTS invoices_new (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   job_id UUID NOT NULL REFERENCES jobs_new(id),
@@ -400,7 +400,7 @@ COMMENT ON TABLE invoices_new IS 'Invoices from completed jobs (QuotePro 2.0)';
 -- TABLE 11: PAYMENTS
 -- ============================================
 -- Payment records (multiple payments per invoice)
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   invoice_id UUID NOT NULL REFERENCES invoices_new(id) ON DELETE CASCADE,
   
@@ -421,7 +421,7 @@ COMMENT ON TABLE payments IS 'Payment records - supports partial payments (Quote
 -- TABLE 12: CATALOG_ITEMS
 -- ============================================
 -- Product/service catalog with AI metadata
-CREATE TABLE catalog_items (
+CREATE TABLE IF NOT EXISTS catalog_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   
@@ -456,7 +456,7 @@ COMMENT ON TABLE catalog_items IS 'Product/service catalog with AI metadata (Quo
 -- TABLE 13: AI_CONVERSATIONS
 -- ============================================
 -- Track all AI interactions for analytics
-CREATE TABLE ai_conversations (
+CREATE TABLE IF NOT EXISTS ai_conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   user_id UUID REFERENCES users_new(id) ON DELETE SET NULL,
@@ -482,7 +482,7 @@ COMMENT ON TABLE ai_conversations IS 'AI interaction tracking for analytics and 
 -- TABLE 14: DOCUMENT_EMBEDDINGS
 -- ============================================
 -- Vector embeddings for RAG (uses pgvector extension)
-CREATE TABLE document_embeddings (
+CREATE TABLE IF NOT EXISTS document_embeddings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   
@@ -510,7 +510,7 @@ COMMENT ON TABLE document_embeddings IS 'Vector embeddings for RAG semantic sear
 -- TABLE 15: ACTIVITY_LOG
 -- ============================================
 -- Unified audit trail for all entities
-CREATE TABLE activity_log (
+CREATE TABLE IF NOT EXISTS activity_log (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies_new(id) ON DELETE CASCADE,
   user_id UUID REFERENCES users_new(id) ON DELETE SET NULL,
@@ -535,7 +535,7 @@ COMMENT ON TABLE activity_log IS 'Unified audit trail for all entities (QuotePro
 -- TABLE 16: AI_PROMPTS
 -- ============================================
 -- Company-specific AI prompt customization
-CREATE TABLE ai_prompts (
+CREATE TABLE IF NOT EXISTS ai_prompts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID REFERENCES companies_new(id) ON DELETE CASCADE,
   
