@@ -1,7 +1,7 @@
 // @ts-nocheck - Supabase type generation pending
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDashboard } from '@/lib/dashboard-context'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -10,16 +10,25 @@ import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { ScheduleJobModal } from '@/components/schedule-job-modal'
 import { Calendar, MapPin, User, DollarSign, Clock, CheckCircle } from 'lucide-react'
 import { format } from 'date-fns'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function WorkPage() {
   const { quotes, refreshQuotes } = useDashboard()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('to-schedule')
+  const searchParams = useSearchParams()
+  const tabFromUrl = searchParams.get('tab')
+  const [activeTab, setActiveTab] = useState(tabFromUrl || 'to-schedule')
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false)
   const [selectedQuote, setSelectedQuote] = useState<any>(null)
   const [completingQuoteId, setCompletingQuoteId] = useState<string | null>(null)
+
+  // Update active tab when URL changes
+  useEffect(() => {
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl)
+    }
+  }, [tabFromUrl])
 
   // Filter quotes for each tab
   const toBeScheduled = quotes.filter(q => 
@@ -284,8 +293,11 @@ export default function WorkPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
+        <Tabs value={activeTab} onValueChange={(value) => {
+          setActiveTab(value)
+          router.push(`/work${value === 'scheduled' ? '?tab=scheduled' : ''}`)
+        }} className="w-full">
+          <TabsList className="md:hidden grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="to-schedule" className="gap-2">
               <Calendar className="h-4 w-4" />
               <span className="hidden sm:inline">To be Scheduled</span>

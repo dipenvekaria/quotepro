@@ -281,7 +281,7 @@ export default function PayPage() {
           setActiveTab(value)
           router.push(`/pay${value === 'paid' ? '?tab=paid' : ''}`)
         }} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8">
+          <TabsList className="md:hidden grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="invoice" className="gap-2">
               <FileText className="h-4 w-4" />
               Invoice

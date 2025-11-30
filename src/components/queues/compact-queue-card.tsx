@@ -1,9 +1,9 @@
 'use client'
 
-import { ReactNode, useState, useRef, useEffect } from 'react'
+import { ReactNode } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { MapPin, DollarSign, Calendar, Phone, Archive } from 'lucide-react'
+import { MapPin, DollarSign, Calendar, Phone } from 'lucide-react'
 import { format } from 'date-fns'
 
 /**
@@ -66,7 +66,6 @@ interface CompactQueueCardProps {
  * Mobile-optimized compact card for queue items
  * Shows only essential info: name, badge, amount/phone
  * Hides address on mobile for cleaner look
- * Supports swipe-to-archive on mobile
  */
 export function CompactQueueCard({
   data,
@@ -80,78 +79,18 @@ export function CompactQueueCard({
   showPhone = false,
   hideAddress = false,
 }: CompactQueueCardProps) {
-  const [swipeOffset, setSwipeOffset] = useState(0)
-  const [isSwiping, setIsSwiping] = useState(false)
-  const touchStartX = useRef(0)
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  const handleClick = () => {
-    if (!isSwiping && onClick) {
-      onClick()
-    }
-  }
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!onArchive && !onArchiveClick) return
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!onArchive && !onArchiveClick) return
-    const currentX = e.touches[0].clientX
-    const diff = touchStartX.current - currentX
-    
-    // Only allow swipe left (diff > 0)
-    if (diff > 0 && diff < 120) {
-      setSwipeOffset(diff)
-      setIsSwiping(true)
-    }
-  }
-
-  const handleTouchEnd = () => {
-    if (!onArchive && !onArchiveClick) return
-    
-    if (swipeOffset > 80) {
-      // If onArchiveClick provided, trigger dialog; otherwise direct archive
-      if (onArchiveClick) {
-        onArchiveClick(data.id)
-      } else if (onArchive) {
-        onArchive(data.id)
-      }
-    }
-    
-    // Reset
-    setSwipeOffset(0)
-    setTimeout(() => setIsSwiping(false), 100)
-  }
-
   const displayDate = data?.scheduled_at || data?.completed_at || data?.paid_at || data?.created_at
 
   return (
     <div className="relative overflow-hidden">
-      {/* Archive Action Background */}
-      {(onArchive || onArchiveClick) && (
-        <div className="absolute inset-y-0 right-0 flex items-center justify-end pr-4 bg-orange-500 dark:bg-orange-600">
-          <Archive className="h-5 w-5 text-white" />
-        </div>
-      )}
-      
       {/* Card */}
       <Card 
-        ref={cardRef}
         className={cn(
           "transition-all active:scale-[0.98] relative",
-          onClick && !isSwiping && "cursor-pointer active:bg-gray-50 dark:active:bg-gray-800",
+          onClick && "cursor-pointer active:bg-gray-50 dark:active:bg-gray-800",
           className
         )}
-        style={{
-          transform: (onArchive || onArchiveClick) ? `translateX(-${swipeOffset}px)` : undefined,
-          transition: isSwiping ? 'none' : 'transform 0.3s ease-out'
-        }}
-        onClick={handleClick}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onClick={onClick}
       >
       <CardContent className="p-3">
         <div className="flex items-center justify-between gap-3">

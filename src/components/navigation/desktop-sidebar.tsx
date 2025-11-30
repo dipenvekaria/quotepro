@@ -126,13 +126,13 @@ export function DesktopSidebar({ counts = {
       children: [
         {
           label: 'Pending',
-          href: '/work/to-be-scheduled',
+          href: '/work?tab=to-schedule',
           icon: Calendar,
           count: counts.toBeScheduled
         },
         {
           label: 'Scheduled',
-          href: '/work/scheduled',
+          href: '/work?tab=scheduled',
           icon: ClipboardCheck,
           count: counts.scheduled
         }

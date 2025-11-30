@@ -204,7 +204,7 @@ export default function HomePage() {
               <p className="text-sm text-gray-600 dark:text-gray-400">Create a quote with AI assistance</p>
             </Link>
             <Link 
-              href="/work/to-be-scheduled"
+              href="/work"
               className="block p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               <p className="font-medium text-gray-900 dark:text-white">Schedule Jobs</p>

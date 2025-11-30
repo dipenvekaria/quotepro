@@ -1,7 +1,7 @@
 // @ts-nocheck - Supabase type generation pending
 'use client'
 
-import { createContext, useContext, ReactNode, useState } from 'react'
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface DashboardContextType {
@@ -23,6 +23,11 @@ export function DashboardProvider({
 }) {
   const router = useRouter()
   const [quotes, setQuotes] = useState(initialQuotes)
+
+  // Update quotes when initialQuotes changes (after router.refresh())
+  useEffect(() => {
+    setQuotes(initialQuotes)
+  }, [initialQuotes])
 
   const refreshQuotes = () => {
     // Trigger a router refresh to reload server data
