@@ -8,7 +8,7 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const { completed_at } = await request.json()
+    const { completed_at, customer_signature } = await request.json()
 
     if (!completed_at) {
       return NextResponse.json(
@@ -19,11 +19,12 @@ export async function PUT(
 
     const supabase = await createClient()
 
-    // Update the quote with completed_at timestamp
+    // Update the quote with completed_at timestamp and signature
     const { data: quote, error } = await supabase
       .from('quotes')
       .update({
         completed_at: new Date(completed_at).toISOString(),
+        customer_signature: customer_signature || null,
       })
       .eq('id', id)
       .select()
@@ -40,13 +41,35 @@ export async function PUT(
     // Log to audit trail
     await supabase.from('audit_trail').insert({
       quote_id: id,
-      action: 'completed',
-      user_id: null, // System action
-      details: {
-        completed_at: completed_at,
-        timestamp: new Date().toISOString(),
-      },
+      action_type: 'quote_completed',
+      field_name: 'completed_at',
+      new_value: completed_at,
+      changed_by: null,
+      changed_at: new Date().toISOString(),
     })
+
+    // Automatically send invoice after job completion
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
+      const sendInvoiceUrl = `${baseUrl}/api/quotes/${id}/send-invoice`
+      
+      const invoiceResponse = await fetch(sendInvoiceUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (invoiceResponse.ok) {
+        const invoiceData = await invoiceResponse.json()
+        console.log('✅ Invoice sent automatically:', invoiceData.invoice_number)
+      } else {
+        console.error('⚠️ Failed to send invoice automatically')
+      }
+    } catch (invoiceError) {
+      // Don't fail the completion if invoice sending fails
+      console.error('Error sending invoice:', invoiceError)
+    }
 
     return NextResponse.json({
       success: true,

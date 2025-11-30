@@ -38,15 +38,13 @@ export async function PUT(
     }
 
     // Log to audit trail
-    // @ts-ignore
     await supabase.from('audit_trail').insert({
       quote_id: id,
-      action: 'scheduled',
-      user_id: null, // System action
-      details: {
-        scheduled_at: scheduled_at,
-        timestamp: new Date().toISOString(),
-      },
+      action_type: 'quote_scheduled',
+      field_name: 'scheduled_at',
+      new_value: scheduled_at,
+      changed_by: null,
+      changed_at: new Date().toISOString(),
     })
 
     return NextResponse.json({

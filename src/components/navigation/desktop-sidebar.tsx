@@ -145,13 +145,13 @@ export function DesktopSidebar({ counts = {
       children: [
         {
           label: 'Invoice',
-          href: '/pay/invoice',
+          href: '/pay?tab=invoice',
           icon: DollarSign,
           count: counts.invoice
         },
         {
           label: 'Paid',
-          href: '/pay/paid',
+          href: '/pay?tab=paid',
           icon: CheckCircle2,
           count: counts.paid
         }

@@ -8,7 +8,7 @@ export async function PUT(
 ) {
   try {
     const { id } = await params
-    const { paid_at } = await request.json()
+    const { paid_at, payment_method } = await request.json()
 
     if (!paid_at) {
       return NextResponse.json(
@@ -19,11 +19,12 @@ export async function PUT(
 
     const supabase = await createClient()
 
-    // Update the quote with paid_at timestamp
+    // Update the quote with paid_at timestamp and payment method
     const { data: quote, error } = await supabase
       .from('quotes')
       .update({
         paid_at: new Date(paid_at).toISOString(),
+        payment_method: payment_method || 'manual',
       })
       .eq('id', id)
       .select()
@@ -40,12 +41,11 @@ export async function PUT(
     // Log to audit trail
     await supabase.from('audit_trail').insert({
       quote_id: id,
-      action: 'marked_paid',
-      user_id: null, // System action
-      details: {
-        paid_at: paid_at,
-        timestamp: new Date().toISOString(),
-      },
+      action_type: 'quote_paid',
+      field_name: 'paid_at',
+      new_value: paid_at,
+      changed_by: null,
+      changed_at: new Date().toISOString()
     })
 
     return NextResponse.json({

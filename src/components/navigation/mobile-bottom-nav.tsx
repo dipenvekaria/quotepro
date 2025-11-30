@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Pay',
-    href: '/pay/invoice',
+    href: '/pay',
     icon: DollarSign,
     matchPaths: ['/pay']
   },
