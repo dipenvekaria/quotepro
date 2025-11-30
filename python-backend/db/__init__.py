@@ -1,11 +1,11 @@
 """
 Database repositories for data access layer
 """
-from .base import BaseRepository
-from .quotes import QuoteRepository
-from .customers import CustomerRepository
-from .leads import LeadRepository
-from .catalog import CatalogRepository
+from .repositories.base import BaseRepository
+from .repositories.quotes import QuoteRepository
+from .repositories.customers import CustomerRepository
+from .repositories.leads import LeadRepository
+from .repositories.catalog import CatalogRepository
 
 __all__ = [
     "BaseRepository",

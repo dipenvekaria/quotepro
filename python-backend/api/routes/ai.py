@@ -1,0 +1,202 @@
+"""
+AI-powered quote generation endpoints
+Migrated from main.py with RAG enhancements
+"""
+from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
+from typing import List, Optional
+from supabase import Client
+import json
+import re
+
+from config.database import get_db_session
+from services.ai.gemini_client import get_gemini_client, GeminiClient
+from services.ai.quote_generator import QuoteGeneratorService
+from services.ai.job_namer import JobNamerService
+from db.repositories.catalog import CatalogRepository
+from tax_rates import get_tax_rate_for_address
+
+router = APIRouter(prefix="/api", tags=["AI"])
+
+
+# Request/Response Models
+class LineItem(BaseModel):
+    name: str
+    description: Optional[str] = None
+    quantity: float
+    unit_price: float
+    total: float
+    option_tier: Optional[str] = None
+    is_upsell: bool = False
+
+
+class QuoteRequest(BaseModel):
+    company_id: str
+    description: str
+    customer_name: str
+    customer_address: Optional[str] = None
+    existing_items: List[dict] = []
+
+
+class QuoteResponse(BaseModel):
+    line_items: List[LineItem]
+    options: List[dict] = []
+    subtotal: float
+    tax_rate: float
+    total: float
+    notes: Optional[str] = None
+    upsell_suggestions: List[str] = []
+
+
+class UpdateQuoteRequest(BaseModel):
+    quote_id: str
+    company_id: str
+    user_prompt: str
+    existing_items: List[dict]
+    customer_name: str
+    customer_address: Optional[str] = None
+    conversation_history: List[dict] = []
+
+
+class JobNameRequest(BaseModel):
+    description: str
+    customer_name: Optional[str] = None
+
+
+class JobNameResponse(BaseModel):
+    job_name: str
+
+
+@router.post("/generate-quote", response_model=QuoteResponse)
+async def generate_quote(
+    request: QuoteRequest,
+    db: Client = Depends(get_db_session),
+    gemini: GeminiClient = Depends(get_gemini_client)
+):
+    """
+    Generate AI-powered quote using Gemini and company catalog
+    
+    Uses RAG to find similar past quotes for better accuracy
+    """
+    try:
+        # Initialize services
+        quote_service = QuoteGeneratorService(gemini, db)
+        catalog_repo = CatalogRepository(db)
+        
+        # Fetch company pricing catalog
+        pricing_items = catalog_repo.find_all_active(request.company_id)
+        
+        if not pricing_items:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "error": "NO_PRICING_CATALOG",
+                    "message": "No pricing catalog found. Please set up your pricing catalog in Settings.",
+                    "action_required": "Navigate to Settings → Pricing"
+                }
+            )
+        
+        # Get company tax rate (fallback)
+        company_response = db.table('companies').select('tax_rate').eq('id', request.company_id).single().execute()
+        company_tax_rate = company_response.data.get('tax_rate', 8.5) if company_response.data else 8.5
+        
+        # Determine tax rate from address if provided
+        tax_rate = get_tax_rate_for_address(request.customer_address, company_tax_rate) if request.customer_address else company_tax_rate
+        
+        # Generate quote using service
+        quote_data = quote_service.generate_quote(
+            company_id=request.company_id,
+            description=request.description,
+            customer_address=request.customer_address or "",
+            existing_items=request.existing_items
+        )
+        
+        # Calculate totals
+        subtotal = sum(item['total'] for item in quote_data['line_items'])
+        total = subtotal * (1 + tax_rate / 100)
+        
+        return QuoteResponse(
+            line_items=[LineItem(**item) for item in quote_data['line_items']],
+            options=quote_data.get('options', []),
+            subtotal=subtotal,
+            tax_rate=tax_rate,
+            total=total,
+            notes=quote_data.get('notes'),
+            upsell_suggestions=quote_data.get('upsell_suggestions', [])
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"❌ Error generating quote: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate quote: {str(e)}")
+
+
+@router.post("/update-quote-with-ai")
+async def update_quote_with_ai(
+    request: UpdateQuoteRequest,
+    db: Client = Depends(get_db_session),
+    gemini: GeminiClient = Depends(get_gemini_client)
+):
+    """
+    Update existing quote using AI based on user's request
+    Examples: "add labor charges", "remove permit fee"
+    """
+    try:
+        # Initialize services
+        quote_service = QuoteGeneratorService(gemini, db)
+        
+        # Generate updated quote (existing_items provides context)
+        quote_data = quote_service.generate_quote(
+            company_id=request.company_id,
+            description=request.user_prompt,
+            customer_address=request.customer_address or "",
+            existing_items=request.existing_items
+        )
+        
+        # Get tax rate
+        company_response = db.table('companies').select('tax_rate').eq('id', request.company_id).single().execute()
+        tax_rate = company_response.data.get('tax_rate', 8.5) if company_response.data else 8.5
+        
+        if request.customer_address:
+            tax_rate = get_tax_rate_for_address(request.customer_address, tax_rate)
+        
+        # Calculate totals
+        subtotal = sum(item['total'] for item in quote_data['line_items'])
+        total = subtotal * (1 + tax_rate / 100)
+        
+        return QuoteResponse(
+            line_items=[LineItem(**item) for item in quote_data['line_items']],
+            options=quote_data.get('options', []),
+            subtotal=subtotal,
+            tax_rate=tax_rate,
+            total=total,
+            notes=quote_data.get('notes'),
+            upsell_suggestions=quote_data.get('upsell_suggestions', [])
+        )
+        
+    except Exception as e:
+        print(f"❌ Error updating quote: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update quote: {str(e)}")
+
+
+@router.post("/generate-job-name", response_model=JobNameResponse)
+async def generate_job_name(
+    request: JobNameRequest,
+    gemini: GeminiClient = Depends(get_gemini_client)
+):
+    """
+    Generate professional job name from description using AI
+    """
+    try:
+        job_namer = JobNamerService(gemini)
+        job_name = job_namer.generate_job_name(
+            description=request.description,
+            customer_name=request.customer_name or ""
+        )
+        
+        return JobNameResponse(job_name=job_name)
+        
+    except Exception as e:
+        print(f"❌ Error generating job name: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate job name: {str(e)}")
