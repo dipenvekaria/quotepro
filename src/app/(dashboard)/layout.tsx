@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { NavigationWrapper } from '@/components/navigation/navigation-wrapper'
 import { DashboardProvider } from '@/lib/dashboard-context'
+import { QueryProvider } from '@/lib/providers/QueryProvider'
 
 export default async function DashboardLayout({
   children,
@@ -40,14 +41,16 @@ export default async function DashboardLayout({
   }
 
   return (
-    <DashboardProvider company={company} quotes={quotes || []}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <NavigationWrapper>
-          <main className="py-6 px-4 sm:px-6 lg:px-8">
-            {children}
-          </main>
-        </NavigationWrapper>
-      </div>
-    </DashboardProvider>
+    <QueryProvider>
+      <DashboardProvider company={company} quotes={quotes || []}>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <NavigationWrapper>
+            <main className="py-6 px-4 sm:px-6 lg:px-8">
+              {children}
+            </main>
+          </NavigationWrapper>
+        </div>
+      </DashboardProvider>
+    </QueryProvider>
   )
 }
