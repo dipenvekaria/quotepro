@@ -2,19 +2,18 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { useDashboard } from '@/lib/dashboard-context'
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, MapPin, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, isToday } from 'date-fns'
 import Link from 'next/link'
+import { useCalendarSchedule } from '@/hooks/useCalendarSchedule'
 
 export default function CalendarPage() {
-  const { quotes } = useDashboard()
+  const { scheduledJobs, getJobsForDay } = useCalendarSchedule()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
-  // Get calendar days for current month
   const calendarDays = useMemo(() => {
     const monthStart = startOfMonth(currentDate)
     const monthEnd = endOfMonth(currentDate)
@@ -23,28 +22,6 @@ export default function CalendarPage() {
     
     return eachDayOfInterval({ start: calendarStart, end: calendarEnd })
   }, [currentDate])
-
-  // Filter scheduled jobs only
-  const scheduledJobs = useMemo(() => {
-    return quotes
-      .filter(q => q.scheduled_at)
-      .map(q => ({
-        id: q.id,
-        date: new Date(q.scheduled_at),
-        time: format(new Date(q.scheduled_at), 'h:mm a'),
-        customer: q.customer_name || 'Unnamed Customer',
-        address: q.customer_address,
-        total: q.total,
-        status: q.status,
-        quote: q,
-      }))
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-  }, [quotes])
-
-  // Get jobs for a specific day
-  const getJobsForDay = (day: Date) => {
-    return scheduledJobs.filter(job => isSameDay(job.date, day))
-  }
 
   // Get jobs for selected date
   const selectedDayJobs = getJobsForDay(selectedDate)
