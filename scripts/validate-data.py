@@ -58,8 +58,8 @@ def validate_quotes(supabase: Client) -> Dict:
         
         # Check for orphaned quotes (no line items)
         quotes_with_items = set()
-        line_items = supabase.table("line_items").select("quote_id").execute()
-        for item in line_items.data:
+        quote_items = supabase.table("quote_items").select("quote_id").execute()
+        for item in quote_items.data:
             quotes_with_items.add(item["quote_id"])
         
         orphaned = [q["id"] for q in quotes.data if q["id"] not in quotes_with_items]

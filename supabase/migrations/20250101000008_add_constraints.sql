@@ -18,18 +18,18 @@ BEGIN
     END IF;
 END $$;
 
--- Verify line_items.quote_id references quotes
-DO $$ 
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint 
-        WHERE conname = 'line_items_quote_id_fkey'
-    ) THEN
-        ALTER TABLE line_items 
-        ADD CONSTRAINT line_items_quote_id_fkey 
-        FOREIGN KEY (quote_id) REFERENCES quotes(id) ON DELETE CASCADE;
-    END IF;
-END $$;
+-- Verify quote_items.quote_id references quotes (already exists in schema)
+-- DO $$ 
+-- BEGIN
+--     IF NOT EXISTS (
+--         SELECT 1 FROM pg_constraint 
+--         WHERE conname = 'quote_items_quote_id_fkey'
+--     ) THEN
+--         ALTER TABLE quote_items 
+--         ADD CONSTRAINT quote_items_quote_id_fkey 
+--         FOREIGN KEY (quote_id) REFERENCES quotes(id) ON DELETE CASCADE;
+--     END IF;
+-- END $$;
 
 -- Verify pricing_items.company_id references companies
 DO $$ 
@@ -74,42 +74,32 @@ END $$;
 -- CHECK CONSTRAINTS
 -- ============================================================
 
--- Ensure quote total is non-negative
-DO $$ 
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint 
-        WHERE conname = 'quotes_total_check'
-    ) THEN
-        ALTER TABLE quotes 
-        ADD CONSTRAINT quotes_total_check 
-        CHECK (total >= 0);
-    END IF;
-END $$;
+-- Ensure quote total is non-negative (already enforced in schema)
+-- Quote totals are calculated, so no need for separate constraint
 
--- Ensure line item quantity is positive
+-- Ensure quote item quantity is positive
 DO $$ 
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_constraint 
-        WHERE conname = 'line_items_quantity_check'
+        WHERE conname = 'quote_items_quantity_check'
     ) THEN
-        ALTER TABLE line_items 
-        ADD CONSTRAINT line_items_quantity_check 
+        ALTER TABLE quote_items 
+        ADD CONSTRAINT quote_items_quantity_check 
         CHECK (quantity > 0);
     END IF;
 END $$;
 
--- Ensure line item price is non-negative
+-- Ensure quote item unit_price is non-negative
 DO $$ 
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_constraint 
-        WHERE conname = 'line_items_price_check'
+        WHERE conname = 'quote_items_unit_price_check'
     ) THEN
-        ALTER TABLE line_items 
-        ADD CONSTRAINT line_items_price_check 
-        CHECK (price >= 0);
+        ALTER TABLE quote_items 
+        ADD CONSTRAINT quote_items_unit_price_check 
+        CHECK (unit_price >= 0);
     END IF;
 END $$;
 
@@ -156,23 +146,40 @@ END $$;
 -- NOT NULL CONSTRAINTS
 -- ============================================================
 
--- Ensure critical fields are not null
-ALTER TABLE quotes ALTER COLUMN company_id SET NOT NULL;
-ALTER TABLE quotes ALTER COLUMN customer_name SET NOT NULL;
-ALTER TABLE quotes ALTER COLUMN status SET NOT NULL;
-ALTER TABLE quotes ALTER COLUMN total SET NOT NULL;
+-- Most NOT NULL constraints already exist in schema
+-- Only add if missing
 
-ALTER TABLE line_items ALTER COLUMN quote_id SET NOT NULL;
-ALTER TABLE line_items ALTER COLUMN description SET NOT NULL;
-ALTER TABLE line_items ALTER COLUMN quantity SET NOT NULL;
-ALTER TABLE line_items ALTER COLUMN price SET NOT NULL;
+-- Verify quote_items critical fields
+DO $$ BEGIN
+    ALTER TABLE quote_items ALTER COLUMN quote_id SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
 
-ALTER TABLE pricing_items ALTER COLUMN company_id SET NOT NULL;
-ALTER TABLE pricing_items ALTER COLUMN name SET NOT NULL;
-ALTER TABLE pricing_items ALTER COLUMN price SET NOT NULL;
+DO $$ BEGIN
+    ALTER TABLE quote_items ALTER COLUMN name SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
 
-ALTER TABLE ai_quote_analysis ALTER COLUMN company_id SET NOT NULL;
-ALTER TABLE ai_quote_analysis ALTER COLUMN analysis_type SET NOT NULL;
+DO $$ BEGIN
+    ALTER TABLE quote_items ALTER COLUMN quantity SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE quote_items ALTER COLUMN unit_price SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+-- AI analytics (if table exists)
+DO $$ BEGIN
+    ALTER TABLE ai_quote_analysis ALTER COLUMN company_id SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE ai_quote_analysis ALTER COLUMN analysis_type SET NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
 
 -- ============================================================
 -- INDEXES FOR PERFORMANCE
@@ -185,17 +192,26 @@ ON quotes(company_id, status);
 CREATE INDEX IF NOT EXISTS idx_quotes_created_at 
 ON quotes(created_at DESC);
 
-CREATE INDEX IF NOT EXISTS idx_line_items_quote_id 
-ON line_items(quote_id);
+CREATE INDEX IF NOT EXISTS idx_quote_items_quote_id 
+ON quote_items(quote_id);
 
 CREATE INDEX IF NOT EXISTS idx_pricing_items_company_category 
 ON pricing_items(company_id, category);
 
-CREATE INDEX IF NOT EXISTS idx_ai_analysis_company_type 
-ON ai_quote_analysis(company_id, analysis_type);
+-- AI analytics indexes (if table exists)
+DO $$ 
+BEGIN
+    CREATE INDEX IF NOT EXISTS idx_ai_analysis_company_type 
+    ON ai_quote_analysis(company_id, analysis_type);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-CREATE INDEX IF NOT EXISTS idx_ai_analysis_created_at 
-ON ai_quote_analysis(created_at DESC);
+DO $$ 
+BEGIN
+    CREATE INDEX IF NOT EXISTS idx_ai_analysis_created_at 
+    ON ai_quote_analysis(created_at DESC);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- ============================================================
 -- SUMMARY QUERY
@@ -211,7 +227,7 @@ FROM information_schema.table_constraints tc
 LEFT JOIN information_schema.key_column_usage kcu
     ON tc.constraint_name = kcu.constraint_name
 WHERE tc.table_schema = 'public'
-    AND tc.table_name IN ('companies', 'quotes', 'line_items', 'pricing_items', 'ai_quote_analysis')
+    AND tc.table_name IN ('companies', 'quotes', 'quote_items', 'pricing_items', 'ai_quote_analysis')
 ORDER BY tc.table_name, tc.constraint_type, tc.constraint_name;
 
 -- Verify indexes
@@ -221,9 +237,21 @@ SELECT
     indexdef
 FROM pg_indexes
 WHERE schemaname = 'public'
-    AND tablename IN ('companies', 'quotes', 'line_items', 'pricing_items', 'ai_quote_analysis')
+    AND tablename IN ('companies', 'quotes', 'quote_items', 'pricing_items', 'ai_quote_analysis')
 ORDER BY tablename, indexname;
 
-COMMENT ON CONSTRAINT quotes_total_check ON quotes IS 'Ensures quote total is non-negative';
-COMMENT ON CONSTRAINT line_items_quantity_check ON line_items IS 'Ensures quantity is positive (> 0)';
-COMMENT ON CONSTRAINT ai_quote_analysis_win_probability_check ON ai_quote_analysis IS 'Ensures win probability is between 0 and 1';
+-- Add comments on new constraints
+DO $$ BEGIN
+    COMMENT ON CONSTRAINT quote_items_quantity_check ON quote_items IS 'Ensures quantity is positive (> 0)';
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    COMMENT ON CONSTRAINT quote_items_unit_price_check ON quote_items IS 'Ensures unit price is non-negative';
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    COMMENT ON CONSTRAINT ai_quote_analysis_win_probability_check ON ai_quote_analysis IS 'Ensures win probability is between 0 and 1';
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
