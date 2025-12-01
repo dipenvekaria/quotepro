@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Import route modules
-from api.routes import health, ai, quotes
+from api.routes import health, ai, quotes, catalog
 
 # Load environment variables
 load_dotenv()
@@ -40,6 +40,7 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(ai.router)
 app.include_router(quotes.router)
+app.include_router(catalog.router)
 
 # Startup message
 @app.on_event("startup")
