@@ -2,26 +2,29 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useDashboard } from '@/lib/dashboard-context'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Button } from '@/components/ui/button'
-import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { ScheduleJobModal } from '@/components/schedule-job-modal'
-import { Calendar, MapPin, User, DollarSign, Clock, CheckCircle } from 'lucide-react'
-import { format } from 'date-fns'
+import { WorkJobCard } from '@/components/features/work/WorkJobCard'
+import { useWorkJobs } from '@/hooks/useWorkJobs'
+import { Calendar, Clock } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
 
 export default function WorkPage() {
-  const { quotes, refreshQuotes } = useDashboard()
   const router = useRouter()
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState(tabFromUrl || 'to-schedule')
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false)
   const [selectedQuote, setSelectedQuote] = useState<any>(null)
-  const [completingQuoteId, setCompletingQuoteId] = useState<string | null>(null)
+  
+  const { 
+    toBeScheduled, 
+    scheduled, 
+    handleSchedule, 
+    handleCompleteJob,
+    completingQuoteId 
+  } = useWorkJobs()
 
   // Update active tab when URL changes
   useEffect(() => {
@@ -30,256 +33,10 @@ export default function WorkPage() {
     }
   }, [tabFromUrl])
 
-  // Filter quotes for each tab
-  const toBeScheduled = quotes.filter(q => 
-    (q.status === 'accepted' || q.status === 'signed') && !q.scheduled_at
-  )
-  
-  const scheduled = quotes.filter(q => 
-    q.scheduled_at && !q.completed_at
-  )
-  
-  const handleSchedule = async (quoteId: string, scheduledDate: Date) => {
-    try {
-      const response = await fetch(`/api/quotes/${quoteId}/schedule`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scheduled_at: scheduledDate.toISOString() }),
-      })
-
-      if (!response.ok) throw new Error('Failed to schedule')
-
-      await refreshQuotes()
-    } catch (error) {
-      console.error('Error scheduling quote:', error)
-      throw error
-    }
-  }
-
-  const handleCompleteJob = async (quoteId: string) => {
-    if (!confirm('Mark this job as completed?')) return
-
-    setCompletingQuoteId(quoteId)
-    try {
-      const response = await fetch(`/api/quotes/${quoteId}/complete`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ completed_at: new Date().toISOString() }),
-      })
-
-      if (!response.ok) throw new Error('Failed to complete job')
-
-      await refreshQuotes()
-    } catch (error) {
-      console.error('Error completing job:', error)
-      alert('Failed to complete job. Please try again.')
-    } finally {
-      setCompletingQuoteId(null)
-    }
-  }
-
   const openScheduleModal = (quote: any) => {
     setSelectedQuote(quote)
     setScheduleModalOpen(true)
   }
-
-  const renderToScheduleCard = (quote: any) => (
-    <Card key={quote.id} className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 space-y-2">
-            {/* Customer Name & Quote Number */}
-            <div className="flex items-center gap-3">
-              <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
-              <QuoteStatusBadge status={quote.status} size="sm" />
-            </div>
-
-            {/* Address */}
-            {quote.customer_address && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>{quote.customer_address}</span>
-              </div>
-            )}
-
-            {/* Quote Details */}
-            <div className="flex flex-wrap items-center gap-4 text-sm">
-              <div className="flex items-center gap-1.5">
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-                <span className="font-semibold text-[#FF6200]">
-                  ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-1.5 text-muted-foreground">
-                <User className="h-4 w-4" />
-                <span className="text-xs">{quote.quote_number}</span>
-              </div>
-
-              {quote.accepted_at && (
-                <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-xs">
-                    Accepted {format(new Date(quote.accepted_at), 'MMM d')}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Description */}
-            {quote.description && (
-              <p className="text-sm text-muted-foreground line-clamp-2">
-                {quote.description}
-              </p>
-            )}
-          </div>
-
-          {/* Schedule Button */}
-          <Button
-            onClick={() => openScheduleModal(quote)}
-            className="bg-[#FF6200] hover:bg-[#E55800] shrink-0"
-          >
-            <Calendar className="h-4 w-4 mr-2" />
-            Schedule
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-
-  const renderScheduledCard = (quote: any) => (
-    <Card key={quote.id} className="hover:shadow-md transition-shadow">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-4">
-          <Link href={`/quotes/new?id=${quote.id}`} className="flex-1">
-            <div className="space-y-2">
-              {/* Customer Name & Quote Number */}
-              <div className="flex items-center gap-3">
-                <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
-                <QuoteStatusBadge status={quote.status} size="sm" />
-              </div>
-
-              {/* Address */}
-              {quote.customer_address && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>{quote.customer_address}</span>
-                </div>
-              )}
-
-              {/* Quote Details */}
-              <div className="flex flex-wrap items-center gap-4 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-semibold text-[#FF6200]">
-                    ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <User className="h-4 w-4" />
-                  <span className="text-xs">{quote.quote_number}</span>
-                </div>
-
-                {quote.scheduled_at && (
-                  <div className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 font-medium">
-                    <Calendar className="h-4 w-4" />
-                    <span>
-                      {format(new Date(quote.scheduled_at), 'MMM d, h:mm a')}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Description */}
-              {quote.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {quote.description}
-                </p>
-              )}
-            </div>
-          </Link>
-
-          {/* Complete Button */}
-          <Button
-            onClick={() => handleCompleteJob(quote.id)}
-            disabled={completingQuoteId === quote.id}
-            variant="outline"
-            className="shrink-0 border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
-          >
-            <CheckCircle className="h-4 w-4 mr-2" />
-            {completingQuoteId === quote.id ? 'Completing...' : 'Complete'}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-
-  const renderQuoteCard = (quote: any) => (
-    <Link key={quote.id} href={`/quotes/new?id=${quote.id}`}>
-      <Card className="hover:shadow-md transition-shadow cursor-pointer">
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 space-y-2">
-              {/* Customer Name & Quote Number */}
-              <div className="flex items-center gap-3">
-                <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
-                <QuoteStatusBadge status={quote.status} size="sm" />
-              </div>
-
-              {/* Address */}
-              {quote.customer_address && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span>{quote.customer_address}</span>
-                </div>
-              )}
-
-              {/* Quote Details */}
-              <div className="flex flex-wrap items-center gap-4 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-semibold text-[#FF6200]">
-                    ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  <User className="h-4 w-4" />
-                  <span className="text-xs">{quote.quote_number}</span>
-                </div>
-
-                {quote.scheduled_at && (
-                  <div className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400">
-                    <Calendar className="h-4 w-4" />
-                    <span className="font-medium">
-                      {format(new Date(quote.scheduled_at), 'MMM d, h:mm a')}
-                    </span>
-                  </div>
-                )}
-
-                {quote.accepted_at && !quote.scheduled_at && (
-                  <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-xs">
-                      Accepted {format(new Date(quote.accepted_at), 'MMM d')}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Description */}
-              {quote.description && (
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {quote.description}
-                </p>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
-  )
 
   return (
     <div className="min-h-screen pb-20">
@@ -335,7 +92,14 @@ export default function WorkPage() {
                     Click Schedule to pick a date and time.
                   </p>
                 </div>
-                {toBeScheduled.map(renderToScheduleCard)}
+                {toBeScheduled.map(quote => (
+                  <WorkJobCard
+                    key={quote.id}
+                    quote={quote}
+                    variant="to-schedule"
+                    onSchedule={openScheduleModal}
+                  />
+                ))}
               </>
             )}
           </TabsContent>
@@ -360,7 +124,15 @@ export default function WorkPage() {
                     Click Complete when the job is finished.
                   </p>
                 </div>
-                {scheduled.map(renderScheduledCard)}
+                {scheduled.map(quote => (
+                  <WorkJobCard
+                    key={quote.id}
+                    quote={quote}
+                    variant="scheduled"
+                    onComplete={handleCompleteJob}
+                    isCompleting={completingQuoteId === quote.id}
+                  />
+                ))}
               </>
             )}
           </TabsContent>
