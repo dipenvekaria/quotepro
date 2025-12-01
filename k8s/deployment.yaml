@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quotepro-backend
+  labels:
+    app: quotepro-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: quotepro-backend
+  template:
+    metadata:
+      labels:
+        app: quotepro-backend
+    spec:
+      containers:
+      - name: backend
+        image: your-docker-username/quotepro-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: quotepro-secrets
+              key: gemini-api-key
+        - name: SUPABASE_SERVICE_ROLE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: quotepro-secrets
+              key: supabase-service-role-key
+        - name: SUPABASE_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: quotepro-secrets
+              key: supabase-jwt-secret
+        - name: NEXT_PUBLIC_SUPABASE_URL
+          value: "https://your-project.supabase.co"
+        - name: ALLOWED_ORIGINS
+          value: "https://quotepro.vercel.app"
+        - name: JSON_LOGS
+          value: "true"
+        - name: LOG_LEVEL
+          value: "INFO"
+        
+        # Liveness probe - is the container alive?
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        # Readiness probe - is the container ready for traffic?
+        readinessProbe:
+          httpGet:
+            path: /api/ready
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        
+        # Startup probe - has the container started?
+        startupProbe:
+          httpGet:
+            path: /api/health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 30  # 30 * 5 = 150s max startup time
+        
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quotepro-backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: quotepro-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: quotepro-secrets
+type: Opaque
+stringData:
+  gemini-api-key: "your-gemini-api-key"
+  supabase-service-role-key: "your-supabase-service-role-key"
+  supabase-jwt-secret: "your-supabase-jwt-secret"

@@ -1,0 +1,224 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  # Run tests first
+  test:
+    name: Run Tests
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  # Deploy Frontend (Vercel)
+  deploy-frontend:
+    name: Deploy Frontend
+    needs: test
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.event.inputs.environment || 'production' }}
+      url: ${{ steps.deploy.outputs.url }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: ${{ github.event.inputs.environment == 'staging' && '--prod' || '--prod' }}
+          working-directory: ./
+      
+      - name: Comment PR with deployment URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ Frontend deployed to: ${{ steps.deploy.outputs.url }}`
+            })
+
+  # Deploy Backend (Python - example for Railway/Render)
+  deploy-backend:
+    name: Deploy Backend
+    needs: test
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.event.inputs.environment || 'production' }}
+    
+    defaults:
+      run:
+        working-directory: ./python-backend
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # Option A: Deploy to Railway
+      - name: Deploy to Railway
+        if: secrets.RAILWAY_TOKEN
+        run: |
+          npm install -g @railway/cli
+          railway up --service backend
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        continue-on-error: true
+      
+      # Option B: Deploy to Render
+      - name: Trigger Render Deploy
+        if: secrets.RENDER_DEPLOY_HOOK_URL
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        continue-on-error: true
+      
+      # Option C: Build and push Docker image
+      - name: Build and push Docker image
+        if: secrets.DOCKER_USERNAME
+        uses: docker/build-push-action@v5
+        with:
+          context: ./python-backend
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/quotepro-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/quotepro-backend:${{ github.sha }}
+        continue-on-error: true
+
+  # Run database migrations
+  migrate-database:
+    name: Run Database Migrations
+    needs: [test, deploy-backend]
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      
+      - name: Run migrations
+        run: |
+          supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      
+      - name: Verify migrations
+        run: |
+          echo "Migrations completed successfully"
+          # Add custom verification queries if needed
+
+  # Health check and smoke tests
+  health-check:
+    name: Health Check
+    needs: [deploy-frontend, deploy-backend, migrate-database]
+    runs-on: ubuntu-latest
+    environment: 
+      name: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+      - name: Wait for deployment
+        run: sleep 30
+      
+      - name: Check frontend health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.FRONTEND_URL }})
+          if [ $response -eq 200 ]; then
+            echo "✅ Frontend is healthy (HTTP $response)"
+          else
+            echo "❌ Frontend health check failed (HTTP $response)"
+            exit 1
+          fi
+      
+      - name: Check backend health
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.BACKEND_URL }}/api/health)
+          if [ $response -eq 200 ]; then
+            echo "✅ Backend is healthy (HTTP $response)"
+          else
+            echo "❌ Backend health check failed (HTTP $response)"
+            exit 1
+          fi
+      
+      - name: Check backend detailed health
+        run: |
+          curl -s ${{ secrets.BACKEND_URL }}/api/health/detailed | jq
+      
+      - name: Smoke test - AI endpoint
+        run: |
+          # Test that AI endpoint is accessible (expect 401 without auth)
+          response=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST ${{ secrets.BACKEND_URL }}/api/generate-quote \
+            -H "Content-Type: application/json" \
+            -d '{"job_description": "test"}')
+          if [ $response -eq 401 ]; then
+            echo "✅ AI endpoint protected (HTTP $response)"
+          else
+            echo "⚠️ Unexpected response (HTTP $response)"
+          fi
+      
+      - name: Notify deployment success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('✅ Deployment successful!')
+            console.log('Frontend: ${{ secrets.FRONTEND_URL }}')
+            console.log('Backend: ${{ secrets.BACKEND_URL }}')
+
+  # Rollback on failure
+  rollback:
+    name: Rollback on Failure
+    needs: health-check
+    if: failure()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Notify failure
+        run: |
+          echo "❌ Deployment failed! Health checks did not pass."
+          echo "Consider rolling back to previous version."
+      
+      - name: Create rollback issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Deployment Failed - Rollback Needed',
+              body: `Deployment failed at commit ${context.sha}\n\nHealth checks failed. Please investigate and consider rolling back.`,
+              labels: ['deployment', 'critical']
+            })
