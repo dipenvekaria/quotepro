@@ -1,83 +1,25 @@
 'use client'
 
-import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Wrench } from 'lucide-react'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(false)
-  const router = useRouter()
-  const supabase = createClient()
-
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          },
-        })
-        
-        if (error) throw error
-        toast.success('Check your email to confirm your account!')
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        
-        if (error) throw error
-        toast.success('Welcome back!')
-        router.push('/dashboard')
-        router.refresh()
-      }
-    } catch (error: unknown) {
-      const err = error as { message: string }
-      toast.error(err.message)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleGoogleLogin = async () => {
-    try {
-      // Use the current window origin to maintain the same host (localhost or IP)
-      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
-      console.log('OAuth redirect will be:', `${currentOrigin}/auth/callback`)
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${currentOrigin}/auth/callback`,
-          skipBrowserRedirect: false,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          }
-        },
-      })
-      
-      if (error) throw error
-    } catch (error: unknown) {
-      const err = error as { message: string }
-      toast.error(err.message)
-    }
-  }
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    isLoading,
+    isSignUp,
+    setIsSignUp,
+    handleAuth,
+    handleGoogleLogin
+  } = useAuth()
 
   return (
     <div className="min-h-screen bg-[#0F172A] flex items-center justify-center p-4">
