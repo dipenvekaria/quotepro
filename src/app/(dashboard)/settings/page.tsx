@@ -7,18 +7,10 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useUserRole } from '@/hooks/use-user-role'
 import { hasPermission } from '@/lib/roles'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from 'sonner'
-import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
-import { Wrench, Building2, Package, FileText, User, CreditCard, Users, Upload, Download, Search, Filter, X } from 'lucide-react'
+import { Wrench, Building2, Package, FileText, User, CreditCard, Users } from 'lucide-react'
 import { DashboardNav } from '@/components/dashboard-nav'
-import { ExpandableSearch } from '@/components/expandable-search'
 import {
   Dialog,
   DialogContent,
@@ -26,8 +18,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
+import { CompanyProfileSettings } from '@/components/features/settings/CompanyProfileSettings'
+import { PricingItemsManager } from '@/components/features/settings/PricingItemsManager'
+import { QuoteDefaultsSettings } from '@/components/features/settings/QuoteDefaultsSettings'
+import { TeamMemberManager } from '@/components/features/settings/TeamMemberManager'
+import { AccountSettings } from '@/components/features/settings/AccountSettings'
+import { SubscriptionSettings } from '@/components/features/settings/SubscriptionSettings'
 
 function SettingsPageContent() {
   const router = useRouter()
@@ -781,809 +778,98 @@ function SettingsPageContent() {
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 overflow-x-hidden">
           {/* Company Profile */}
           {activeTab === 'company' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Company Profile</CardTitle>
-                <CardDescription>
-                  Update your company information that appears on quotes
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name</Label>
-                  <Input
-                    id="companyName"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="Your Company Name"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="companyPhone">Phone Number</Label>
-                  <Input
-                    id="companyPhone"
-                    type="tel"
-                    value={companyPhone}
-                    onChange={(e) => setCompanyPhone(e.target.value)}
-                    placeholder="(555) 123-4567"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="companyEmail">Company Email</Label>
-                  <Input
-                    id="companyEmail"
-                    type="email"
-                    value={companyEmail}
-                    onChange={(e) => setCompanyEmail(e.target.value)}
-                    placeholder="contact@yourcompany.com"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="companyAddress">Company Address</Label>
-                  <Textarea
-                    id="companyAddress"
-                    value={companyAddress}
-                    onChange={(e) => setCompanyAddress(e.target.value)}
-                    placeholder="123 Main St, City, State, ZIP"
-                    rows={3}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="logo">Company Logo</Label>
-                  <div className="flex items-center gap-4">
-                    <label
-                      htmlFor="logo"
-                      className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#FF6200] transition-colors"
-                    >
-                      <span>Upload New Logo</span>
-                    </label>
-                    <input
-                      id="logo"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleLogoChange}
-                      className="hidden"
-                    />
-                    {logoPreview && (
-                      <div className="h-20 w-20 border rounded-lg overflow-hidden">
-                        <img
-                          src={logoPreview}
-                          alt="Logo preview"
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleCompanyUpdate}
-                  disabled={isSaving}
-                  className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-                >
-                  {isSaving ? 'Saving...' : 'Save Company Info'}
-                </Button>
-              </CardContent>
-            </Card>
+            <CompanyProfileSettings
+              companyName={companyName}
+              setCompanyName={setCompanyName}
+              companyPhone={companyPhone}
+              setCompanyPhone={setCompanyPhone}
+              companyEmail={companyEmail}
+              setCompanyEmail={setCompanyEmail}
+              companyAddress={companyAddress}
+              setCompanyAddress={setCompanyAddress}
+              logoPreview={logoPreview}
+              onLogoChange={handleLogoChange}
+              isSaving={isSaving}
+              onSave={handleCompanyUpdate}
+            />
           )}
 
           {/* Products & Services Tab */}
           {activeTab === 'products' && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Add New Pricing Item</CardTitle>
-                  <CardDescription>
-                    Add items to your pricing catalog for quick quote generation
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="md:col-span-2">
-                      <Label htmlFor="itemName">Item Name</Label>
-                      <Input
-                        id="itemName"
-                        value={newPricingItem.name}
-                        onChange={(e) => setNewPricingItem({ ...newPricingItem, name: e.target.value })}
-                        placeholder="e.g., HVAC Unit Installation"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="itemPrice">Price ($)</Label>
-                      <Input
-                        id="itemPrice"
-                        type="number"
-                        step="0.01"
-                        value={newPricingItem.price}
-                        onChange={(e) => setNewPricingItem({ ...newPricingItem, price: e.target.value })}
-                        placeholder="299.00"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="itemCategory">Category</Label>
-                      <select
-                        id="itemCategory"
-                        value={newPricingItem.category}
-                        onChange={(e) => setNewPricingItem({ ...newPricingItem, category: e.target.value })}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                      >
-                        <option value="Labor">Labor</option>
-                        <option value="Materials">Materials</option>
-                        <option value="Equipment">Equipment</option>
-                        <option value="Permits">Permits</option>
-                        <option value="Other">Other</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <Label htmlFor="itemDescription">Description (optional)</Label>
-                    <Textarea
-                      id="itemDescription"
-                      value={newPricingItem.description}
-                      onChange={(e) => setNewPricingItem({ ...newPricingItem, description: e.target.value })}
-                      placeholder="Add details to help AI generate better quotes..."
-                      className="w-full resize-none"
-                      rows={2}
-                    />
-                  </div>
-                  <Button
-                    onClick={handleAddPricingItem}
-                    disabled={isSaving}
-                    className="mt-4 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-                  >
-                    {isSaving ? 'Adding...' : 'Add Item'}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Bulk Upload Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Bulk Upload Pricing Items</CardTitle>
-                  <CardDescription>
-                    Upload CSV or Excel files with any column names - we'll help you map them!
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Upload Mode Selection */}
-                  <div className="space-y-2">
-                    <Label>Upload Mode</Label>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant={uploadMode === 'replace' ? 'default' : 'outline'}
-                        onClick={() => setUploadMode('replace')}
-                        className={uploadMode === 'replace' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
-                      >
-                        � Replace All
-                      </Button>
-                      <Button
-                        type="button"
-                        variant={uploadMode === 'append' ? 'default' : 'outline'}
-                        onClick={() => setUploadMode('append')}
-                        className={uploadMode === 'append' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
-                      >
-                        ➕ Add to Existing
-                      </Button>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {uploadMode === 'replace' 
-                        ? '⚠️ Replace All: Deletes all existing items and uploads new ones'
-                        : '✅ Add to Existing: Keeps current items and adds new ones from file'}
-                    </p>
-                  </div>
-
-                  {/* File Upload */}
-                  <div className="space-y-2">
-                    <Label htmlFor="bulkUpload">Select Your File</Label>
-                    <div className="flex items-center gap-4">
-                      <label
-                        htmlFor="bulkUpload"
-                        className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-[#FF6200] transition-colors flex-1 bg-gray-50 dark:bg-gray-800"
-                      >
-                        {uploadFile ? (
-                          <span className="text-sm font-medium">
-                            📎 {uploadFile.name} ({(uploadFile.size / 1024).toFixed(1)} KB)
-                          </span>
-                        ) : (
-                          <span className="text-sm">📁 Click to select CSV or Excel file</span>
-                        )}
-                      </label>
-                      <input
-                        id="bulkUpload"
-                        type="file"
-                        accept=".csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
-                        onChange={handleFileSelect}
-                        className="hidden"
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Supports: CSV (.csv), Excel (.xlsx, .xls) • Any column names work!
-                    </p>
-                  </div>
-
-                  {/* Loading State */}
-                  {isLoadingPreview && (
-                    <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg text-center">
-                      <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">📊 Analyzing your file...</p>
-                    </div>
-                  )}
-
-                  {/* Uploading State */}
-                  {isUploading && (
-                    <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg text-center">
-                      <p className="text-sm text-green-700 dark:text-green-300 font-medium">⬆️ Uploading items...</p>
-                    </div>
-                  )}
-
-                  {/* Feature Highlights */}
-                  <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                      <span className="text-lg">✨</span> Smart Column Mapping
-                    </h4>
-                    <ul className="text-xs space-y-2 text-muted-foreground">
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
-                        <span><strong>Upload any file</strong> - Works with QuickBooks, ServiceTitan, Excel, Google Sheets exports</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
-                        <span><strong>Auto-detection</strong> - We automatically detect your column headers and suggest mappings</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
-                        <span><strong>Visual preview</strong> - See first 5 rows before uploading to verify your data</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
-                        <span><strong>Map your columns</strong> - Simply match your columns to: Name, Price, Category, Description</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 dark:text-blue-400 font-bold">→</span>
-                        <span className="italic">No templates needed - use your existing files!</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Optional: Templates for those who want them */}
-                  <details className="mt-4">
-                    <summary className="text-sm text-muted-foreground cursor-pointer hover:text-foreground">
-                      📥 Need a sample file? Download template (optional)
-                    </summary>
-                    <div className="mt-3 flex gap-2">
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDownloadTemplate('csv')}
-                        className="flex-1"
-                      >
-                        📄 CSV Template
-                      </Button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDownloadTemplate('excel')}
-                        className="flex-1"
-                      >
-                        📊 Excel Template
-                      </Button>
-                    </div>
-                  </details>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="flex items-center gap-2">
-                          Your Pricing Catalog
-                          <Badge variant="secondary">{pricingItems.length} total</Badge>
-                          {filteredPricingItems.length !== pricingItems.length && (
-                            <Badge variant="outline">{filteredPricingItems.length} shown</Badge>
-                          )}
-                        </CardTitle>
-                        <CardDescription className="mt-1">
-                          Search and manage your pricing items by category
-                        </CardDescription>
-                      </div>
-                    </div>
-                    
-                    {/* Search and Filter Bar */}
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <ExpandableSearch
-                        value={searchQuery}
-                        onChange={setSearchQuery}
-                        placeholder="Search by name or description..."
-                        className="flex-1"
-                      />
-                      
-                      <div className="sm:w-64">
-                        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                          <SelectTrigger>
-                            <div className="flex items-center gap-2">
-                              <Filter className="h-4 w-4" />
-                              <SelectValue placeholder="All Categories" />
-                            </div>
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="all">All Categories</SelectItem>
-                            {allCategories.map((category) => (
-                              <SelectItem key={category} value={category}>
-                                {category}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                
-                <CardContent>
-                  {pricingItems.length === 0 ? (
-                    <div className="text-center py-12 border-2 border-dashed rounded-lg">
-                      <Package className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground mb-2">No pricing items yet</p>
-                      <p className="text-sm text-muted-foreground">Add items manually below or bulk upload from a file</p>
-                    </div>
-                  ) : filteredPricingItems.length === 0 ? (
-                    <div className="text-center py-12 border-2 border-dashed rounded-lg">
-                      <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground mb-2">No items match your filters</p>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => {
-                          setSearchQuery('')
-                          setSelectedCategory('all')
-                        }}
-                      >
-                        Clear Filters
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="max-h-[600px] overflow-y-auto pr-2 space-y-6">
-                      {Object.entries(groupedPricingItems).map(([category, items]) => (
-                        <div key={category}>
-                          <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
-                            {category}
-                            <Badge variant="secondary">{items.length}</Badge>
-                          </h3>
-                          <div className="space-y-2">
-                            {items.map((item) => (
-                              <div
-                                key={item.id}
-                                className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors gap-4"
-                              >
-                                {editingItem?.id === item.id ? (
-                                  <div className="flex-1 space-y-3">
-                                    <div className="grid md:grid-cols-2 gap-3">
-                                      <Input
-                                        value={editingItem.name}
-                                        onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
-                                        placeholder="Item name"
-                                        className="w-full"
-                                      />
-                                      <Input
-                                        type="number"
-                                        step="0.01"
-                                        value={editingItem.price}
-                                        onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
-                                        placeholder="Price"
-                                        className="w-full"
-                                      />
-                                    </div>
-                                    <Textarea
-                                      value={editingItem.description || ''}
-                                      onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
-                                      placeholder="Description (optional) - helps AI generate better quotes"
-                                      className="w-full resize-none"
-                                      rows={2}
-                                    />
-                                    <div className="flex gap-2">
-                                      <Button
-                                        size="sm"
-                                        onClick={() => handleUpdatePricingItem(editingItem)}
-                                        disabled={isSaving}
-                                        className="bg-[#FF6200] hover:bg-[#FF6200]/90 flex-1"
-                                      >
-                                        Save
-                                      </Button>
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => setEditingItem(null)}
-                                        className="flex-1"
-                                      >
-                                        Cancel
-                                      </Button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <div className="flex-1">
-                                      <p className="font-medium">{item.name}</p>
-                                      <p className="text-sm text-muted-foreground">
-                                        ${parseFloat(item.price).toFixed(2)}
-                                      </p>
-                                    </div>
-                                    <div className="flex gap-2 w-full md:w-auto">
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={() => setEditingItem({ ...item })}
-                                        className="flex-1 md:flex-none"
-                                      >
-                                        Edit
-                                      </Button>
-                                      <Button
-                                        size="sm"
-                                        variant="destructive"
-                                        onClick={() => {
-                                          setItemToDelete(item)
-                                          setDeleteDialogOpen(true)
-                                        }}
-                                        className="flex-1 md:flex-none"
-                                      >
-                                        Delete
-                                      </Button>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
+            <PricingItemsManager
+              pricingItems={pricingItems}
+              newPricingItem={newPricingItem}
+              setNewPricingItem={setNewPricingItem}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              uploadMode={uploadMode}
+              setUploadMode={setUploadMode}
+              uploadFile={uploadFile}
+              isLoadingPreview={isLoadingPreview}
+              isUploading={isUploading}
+              editingItem={editingItem}
+              setEditingItem={setEditingItem}
+              isSaving={isSaving}
+              onAddItem={handleAddPricingItem}
+              onFileSelect={handleFileSelect}
+              onUpdateItem={handleUpdatePricingItem}
+              onDeleteItem={(item) => {
+                setItemToDelete(item)
+                setDeleteDialogOpen(true)
+              }}
+              onDownloadTemplate={handleDownloadTemplate}
+            />
           )}
 
           {/* Quote Settings Tab */}
           {activeTab === 'quotes' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Quote Defaults</CardTitle>
-                <CardDescription>
-                  Set default terms, notes, and settings for all new quotes
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="defaultTerms">Default Terms & Conditions</Label>
-                  <Textarea
-                    id="defaultTerms"
-                    value={defaultTerms}
-                    onChange={(e) => setDefaultTerms(e.target.value)}
-                    placeholder="Payment due within 30 days. 50% deposit required to start work..."
-                    rows={6}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    These terms will automatically appear on all new quotes
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="defaultNotes">Default Notes</Label>
-                  <Textarea
-                    id="defaultNotes"
-                    value={defaultNotes}
-                    onChange={(e) => setDefaultNotes(e.target.value)}
-                    placeholder="Thank you for your business! Call us with any questions..."
-                    rows={4}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Additional notes that will appear on quotes
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="validDays">Quote Valid For (days)</Label>
-                  <Input
-                    id="validDays"
-                    type="number"
-                    value={defaultValidDays}
-                    onChange={(e) => setDefaultValidDays(e.target.value)}
-                    placeholder="30"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    How many days quotes remain valid for acceptance
-                  </p>
-                </div>
-
-                <Button
-                  onClick={handleQuoteSettingsUpdate}
-                  disabled={isSaving}
-                  className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-                >
-                  {isSaving ? 'Saving...' : 'Save Quote Settings'}
-                </Button>
-              </CardContent>
-            </Card>
+            <QuoteDefaultsSettings
+              defaultTerms={defaultTerms}
+              setDefaultTerms={setDefaultTerms}
+              defaultNotes={defaultNotes}
+              setDefaultNotes={setDefaultNotes}
+              defaultValidDays={defaultValidDays}
+              setDefaultValidDays={setDefaultValidDays}
+              isSaving={isSaving}
+              onSave={handleQuoteSettingsUpdate}
+            />
           )}
 
           {/* Account Tab */}
           {activeTab === 'account' && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Account Information</CardTitle>
-                  <CardDescription>
-                    Manage your login credentials
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-2">
-                    <Label>Email Address</Label>
-                    <Input value={email} disabled className="bg-gray-100 dark:bg-gray-800" />
-                    <p className="text-xs text-muted-foreground">
-                      Contact support to change your email address
-                    </p>
-                  </div>
-
-                  <div className="border-t pt-6">
-                    <h3 className="text-lg font-semibold mb-4">Change Password</h3>
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="newPassword">New Password</Label>
-                        <Input
-                          id="newPassword"
-                          type="password"
-                          value={newPassword}
-                          onChange={(e) => setNewPassword(e.target.value)}
-                          placeholder="Enter new password"
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="confirmPassword">Confirm Password</Label>
-                        <Input
-                          id="confirmPassword"
-                          type="password"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          placeholder="Confirm new password"
-                        />
-                      </div>
-
-                      <Button
-                        onClick={handlePasswordChange}
-                        disabled={isSaving || !newPassword || !confirmPassword}
-                        className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
-                      >
-                        {isSaving ? 'Updating...' : 'Update Password'}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-red-200 dark:border-red-800">
-                <CardHeader>
-                  <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
-                  <CardDescription>
-                    Account actions that cannot be undone
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button
-                    variant="destructive"
-                    onClick={handleSignOut}
-                  >
-                    Sign Out
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+            <AccountSettings
+              email={email}
+              newPassword={newPassword}
+              setNewPassword={setNewPassword}
+              confirmPassword={confirmPassword}
+              setConfirmPassword={setConfirmPassword}
+              isSaving={isSaving}
+              onPasswordChange={handlePasswordChange}
+              onSignOut={handleSignOut}
+            />
           )}
 
           {/* Team Members Tab */}
           {activeTab === 'team' && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Team Members</CardTitle>
-                  <CardDescription>
-                    Invite team members and manage their roles
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Invite New Member */}
-                  <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <h3 className="font-semibold">Invite Team Member</h3>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <div className="flex-1">
-                        <Input
-                          type="email"
-                          placeholder="email@example.com"
-                          value={inviteEmail}
-                          onChange={(e) => setInviteEmail(e.target.value)}
-                        />
-                      </div>
-                      <div className="w-full sm:w-40">
-                        <Select value={inviteRole} onValueChange={setInviteRole}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="sales">Sales Team</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <Button
-                        onClick={handleInviteTeamMember}
-                        disabled={isInviting || !inviteEmail}
-                        className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white whitespace-nowrap"
-                      >
-                        {isInviting ? 'Inviting...' : 'Send Invite'}
-                      </Button>
-                    </div>
-                    <p className="text-xs text-gray-500">
-                      Team members will receive an email invitation to join your company
-                    </p>
-                  </div>
-
-                  {/* Current Team Members */}
-                  <div className="space-y-4">
-                    <h3 className="font-semibold">Current Team Members</h3>
-                    {teamMembers.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">
-                        <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                        <p>No team members yet</p>
-                        <p className="text-sm">Invite your first team member to get started</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {teamMembers.map((member) => (
-                          <div
-                            key={member.id}
-                            className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3"
-                          >
-                            <div className="flex-1">
-                              <p className="font-medium">
-                                {member.user?.raw_user_meta_data?.full_name || member.user?.email}
-                              </p>
-                              <p className="text-sm text-gray-500">{member.user?.email}</p>
-                              <p className="text-xs text-gray-400 mt-1">
-                                Joined {new Date(member.created_at).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Select
-                                value={member.role}
-                                onValueChange={(newRole) => handleUpdateMemberRole(member.id, newRole)}
-                                disabled={isSaving}
-                              >
-                                <SelectTrigger className="w-32">
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="admin">
-                                    <div className="flex items-center gap-2">
-                                      <Badge className="bg-purple-500">Admin</Badge>
-                                    </div>
-                                  </SelectItem>
-                                  <SelectItem value="sales">
-                                    <div className="flex items-center gap-2">
-                                      <Badge className="bg-blue-500">Sales</Badge>
-                                    </div>
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleRemoveTeamMember(member.id)}
-                                disabled={isSaving}
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                              >
-                                Remove
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Role Permissions Info */}
-                  <div className="border-t pt-6 space-y-4">
-                    <h3 className="font-semibold">Role Permissions</h3>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-purple-500">Admin</Badge>
-                        </div>
-                        <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
-                          <li>• Full access to settings</li>
-                          <li>• Manage team members</li>
-                          <li>• Edit company profile</li>
-                          <li>• Manage pricing & products</li>
-                          <li>• Create & edit quotes</li>
-                          <li>• Manage subscription</li>
-                        </ul>
-                      </div>
-                      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge className="bg-blue-500">Sales Team</Badge>
-                        </div>
-                        <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
-                          <li>• Create new quotes</li>
-                          <li>• Edit existing quotes</li>
-                          <li>• Send quotes to customers</li>
-                          <li>• View all company quotes</li>
-                          <li className="text-gray-400">• No access to settings</li>
-                          <li className="text-gray-400">• Cannot manage team</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <TeamMemberManager
+              teamMembers={teamMembers}
+              inviteEmail={inviteEmail}
+              setInviteEmail={setInviteEmail}
+              inviteRole={inviteRole}
+              setInviteRole={setInviteRole}
+              isInviting={isInviting}
+              isSaving={isSaving}
+              onInvite={handleInviteTeamMember}
+              onUpdateRole={handleUpdateMemberRole}
+              onRemove={handleRemoveTeamMember}
+            />
           )}
 
           {/* Subscription Tab */}
           {activeTab === 'subscription' && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Subscription & Billing</CardTitle>
-                <CardDescription>
-                  Manage your subscription plan and billing details
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                  <div>
-                    <p className="font-semibold text-lg text-green-900 dark:text-green-100">
-                      Free Trial
-                    </p>
-                    <p className="text-sm text-green-700 dark:text-green-300 mt-1">
-                      14 days remaining • Unlimited quotes
-                    </p>
-                  </div>
-                  <Link href="/pricing">
-                    <Button className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white">
-                      Upgrade Plan
-                    </Button>
-                  </Link>
-                </div>
-
-                <div className="border-t pt-6">
-                  <h3 className="text-lg font-semibold mb-4">Available Plans</h3>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="border rounded-lg p-4">
-                      <h4 className="font-semibold text-lg">Starter</h4>
-                      <p className="text-3xl font-bold my-2">$99<span className="text-sm font-normal text-muted-foreground">/month</span></p>
-                      <p className="text-sm text-muted-foreground mb-4">Perfect for small businesses</p>
-                      <Link href="/pricing">
-                        <Button variant="outline" className="w-full">View Details</Button>
-                      </Link>
-                    </div>
-                    <div className="border rounded-lg p-4 border-[#FF6200]">
-                      <h4 className="font-semibold text-lg">Pro</h4>
-                      <p className="text-3xl font-bold my-2">$199<span className="text-sm font-normal text-muted-foreground">/month</span></p>
-                      <p className="text-sm text-muted-foreground mb-4">For growing businesses</p>
-                      <Link href="/pricing">
-                        <Button className="w-full bg-[#FF6200] hover:bg-[#FF6200]/90 text-white">View Details</Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <SubscriptionSettings />
           )}
         </main>
 
