@@ -2,6 +2,38 @@
 -- Run this to add missing constraints for data integrity
 
 -- ============================================================
+-- DATA CLEANUP (Fix existing data before adding constraints)
+-- ============================================================
+
+-- Fix null unit_price in quote_items (set to 0)
+-- Note: Negative prices are ALLOWED (for discounts/surcharges)
+UPDATE quote_items
+SET unit_price = 0
+WHERE unit_price IS NULL;
+
+-- Fix invalid quantity in quote_items (set to 1)
+UPDATE quote_items
+SET quantity = 1
+WHERE quantity <= 0 OR quantity IS NULL;
+
+-- Fix null pricing_items price (set to 0)
+-- Note: Negative prices in pricing_items should be rare, but we'll allow them
+UPDATE pricing_items
+SET price = 0
+WHERE price IS NULL;
+
+-- Fix win_probability out of range (if ai_quote_analysis exists)
+DO $$ 
+BEGIN
+    UPDATE ai_quote_analysis
+    SET win_probability = LEAST(GREATEST(win_probability, 0), 1)
+    WHERE win_probability < 0 OR win_probability > 1;
+EXCEPTION WHEN undefined_table THEN 
+    -- Table doesn't exist yet, skip
+    NULL;
+END $$;
+
+-- ============================================================
 -- FOREIGN KEY CONSTRAINTS
 -- ============================================================
 
@@ -90,31 +122,8 @@ BEGIN
     END IF;
 END $$;
 
--- Ensure quote item unit_price is non-negative
-DO $$ 
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint 
-        WHERE conname = 'quote_items_unit_price_check'
-    ) THEN
-        ALTER TABLE quote_items 
-        ADD CONSTRAINT quote_items_unit_price_check 
-        CHECK (unit_price >= 0);
-    END IF;
-END $$;
-
--- Ensure pricing item price is non-negative
-DO $$ 
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM pg_constraint 
-        WHERE conname = 'pricing_items_price_check'
-    ) THEN
-        ALTER TABLE pricing_items 
-        ADD CONSTRAINT pricing_items_price_check 
-        CHECK (price >= 0);
-    END IF;
-END $$;
+-- Note: unit_price can be negative (for discounts/surcharges), so NO constraint
+-- Note: pricing_items.price can also be negative in some edge cases
 
 -- Ensure win probability is between 0 and 1
 DO $$ 
@@ -247,11 +256,11 @@ EXCEPTION WHEN undefined_object THEN NULL;
 END $$;
 
 DO $$ BEGIN
-    COMMENT ON CONSTRAINT quote_items_unit_price_check ON quote_items IS 'Ensures unit price is non-negative';
+    COMMENT ON CONSTRAINT ai_quote_analysis_win_probability_check ON ai_quote_analysis IS 'Ensures win probability is between 0 and 1';
 EXCEPTION WHEN undefined_object THEN NULL;
 END $$;
 
 DO $$ BEGIN
-    COMMENT ON CONSTRAINT ai_quote_analysis_win_probability_check ON ai_quote_analysis IS 'Ensures win probability is between 0 and 1';
+    COMMENT ON CONSTRAINT ai_quote_analysis_type_check ON ai_quote_analysis IS 'Valid analysis types: optimizer, upsell, rag, generation';
 EXCEPTION WHEN undefined_object THEN NULL;
 END $$;
