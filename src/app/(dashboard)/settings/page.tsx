@@ -25,6 +25,7 @@ import { QuoteDefaultsSettings } from '@/components/features/settings/QuoteDefau
 import { TeamMemberManager } from '@/components/features/settings/TeamMemberManager'
 import { AccountSettings } from '@/components/features/settings/AccountSettings'
 import { SubscriptionSettings } from '@/components/features/settings/SubscriptionSettings'
+import { CatalogIndexingPanel } from '@/components/catalog-indexing-panel'
 
 function SettingsPageContent() {
   const router = useRouter()
@@ -384,7 +385,7 @@ function SettingsPageContent() {
 
     setIsSaving(true)
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('pricing_items')
         .insert({
           company_id: company.id,
@@ -394,8 +395,31 @@ function SettingsPageContent() {
           category: newPricingItem.category,
           is_default: false,
         })
+        .select()
+        .single()
 
       if (error) throw error
+      
+      // Auto-index the new item for AI search
+      try {
+        await fetch('/api/catalog/index-item', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item_id: data.id,
+            company_id: company.id,
+            name: data.name,
+            category: data.category,
+            price: data.price,
+            description: data.description || '',
+            tags: []
+          })
+        })
+      } catch (indexError) {
+        console.error('Failed to index item:', indexError)
+        // Don't fail the whole operation if indexing fails
+      }
+      
       toast.success('Pricing item added')
       setNewPricingItem({ name: '', price: '', category: 'Labor', description: '' })
       reloadUserData()
@@ -420,6 +444,26 @@ function SettingsPageContent() {
         .eq('id', item.id)
 
       if (error) throw error
+      
+      // Re-index the updated item for AI search
+      try {
+        await fetch('/api/catalog/index-item', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            item_id: item.id,
+            company_id: company.id,
+            name: item.name,
+            category: item.category,
+            price: parseFloat(item.price),
+            description: item.description || '',
+            tags: []
+          })
+        })
+      } catch (indexError) {
+        console.error('Failed to re-index item:', indexError)
+      }
+      
       toast.success('Pricing item updated')
       setEditingItem(null)
       reloadUserData()
@@ -439,6 +483,16 @@ function SettingsPageContent() {
         .eq('id', itemId)
 
       if (error) throw error
+      
+      // Remove the item from AI search index
+      try {
+        await fetch(`/api/catalog/index-item/${itemId}`, {
+          method: 'DELETE'
+        })
+      } catch (indexError) {
+        console.error('Failed to remove item from index:', indexError)
+      }
+      
       toast.success('Pricing item deleted')
       setDeleteDialogOpen(false)
       setItemToDelete(null)
@@ -790,31 +844,37 @@ function SettingsPageContent() {
 
           {/* Products & Services Tab */}
           {activeTab === 'products' && (
-            <PricingItemsManager
-              pricingItems={pricingItems}
-              newPricingItem={newPricingItem}
-              setNewPricingItem={setNewPricingItem}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              uploadMode={uploadMode}
-              setUploadMode={setUploadMode}
-              uploadFile={uploadFile}
-              isLoadingPreview={isLoadingPreview}
-              isUploading={isUploading}
-              editingItem={editingItem}
-              setEditingItem={setEditingItem}
-              isSaving={isSaving}
-              onAddItem={handleAddPricingItem}
-              onFileSelect={handleFileSelect}
-              onUpdateItem={handleUpdatePricingItem}
-              onDeleteItem={(item) => {
-                setItemToDelete(item)
-                setDeleteDialogOpen(true)
-              }}
-              onDownloadTemplate={handleDownloadTemplate}
-            />
+            <>
+              <PricingItemsManager
+                pricingItems={pricingItems}
+                newPricingItem={newPricingItem}
+                setNewPricingItem={setNewPricingItem}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                uploadMode={uploadMode}
+                setUploadMode={setUploadMode}
+                uploadFile={uploadFile}
+                isLoadingPreview={isLoadingPreview}
+                isUploading={isUploading}
+                editingItem={editingItem}
+                setEditingItem={setEditingItem}
+                isSaving={isSaving}
+                onAddItem={handleAddPricingItem}
+                onFileSelect={handleFileSelect}
+                onUpdateItem={handleUpdatePricingItem}
+                onDeleteItem={(item) => {
+                  setItemToDelete(item)
+                  setDeleteDialogOpen(true)
+                }}
+                onDownloadTemplate={handleDownloadTemplate}
+              />
+              
+              <div className="mt-8">
+                <CatalogIndexingPanel />
+              </div>
+            </>
           )}
 
           {/* Quote Settings Tab */}
