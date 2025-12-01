@@ -46,6 +46,8 @@ class QuoteResponse(BaseModel):
     total: float
     notes: Optional[str] = None
     upsell_suggestions: List[str] = []
+    # RAG metadata
+    rag_metadata: Optional[dict] = None
 
 
 class UpdateQuoteRequest(BaseModel):
@@ -123,7 +125,12 @@ async def generate_quote(
             tax_rate=tax_rate,
             total=total,
             notes=quote_data.get('notes'),
-            upsell_suggestions=quote_data.get('upsell_suggestions', [])
+            upsell_suggestions=quote_data.get('upsell_suggestions', []),
+            rag_metadata=quote_data.get('rag_metadata', {
+                'similar_quotes_found': 0,
+                'catalog_matches_found': 0,
+                'rag_enabled': False
+            })
         )
         
     except HTTPException:
@@ -173,7 +180,12 @@ async def update_quote_with_ai(
             tax_rate=tax_rate,
             total=total,
             notes=quote_data.get('notes'),
-            upsell_suggestions=quote_data.get('upsell_suggestions', [])
+            upsell_suggestions=quote_data.get('upsell_suggestions', []),
+            rag_metadata=quote_data.get('rag_metadata', {
+                'similar_quotes_found': 0,
+                'catalog_matches_found': 0,
+                'rag_enabled': False
+            })
         )
         
     except Exception as e:
