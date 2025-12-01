@@ -16,11 +16,11 @@
 
 Phase 1: Database Schema        [ ██████████ ] 100%  ✅ COMPLETE
 Phase 2: Python Backend         [ ██████████ ] 100%  ✅ COMPLETE
-Phase 3: Frontend               [ ███████░░░ ]  70%  ← WE ARE HERE (Week 3!)
+Phase 3: Frontend               [ ████████░░ ]  75%  ← WE ARE HERE (Week 3!)
 Phase 4: AI & RAG               [ ░░░░░░░░░░ ]   0%
 Phase 5: Migration              [ ░░░░░░░░░░ ]   0%
 
-Overall Progress:                [ ███████░░░ ]  70%
+Overall Progress:                [ ███████░░░ ]  75%
 ```
 
 ---
@@ -125,7 +125,7 @@ Overall Progress:                [ ███████░░░ ]  70%
 - ✅ All 6 tab sections use extracted components
 - ✅ Zero TypeScript errors
 
-**Week 3 Accomplishments (Commits: 8f818b6, 826fe9a, 34e2222, 45673df):**
+**Week 3 Accomplishments (Commits: 8f818b6, 826fe9a, 34e2222, 45673df, 260058e, 44dedd8, d5a46ad):**
 - ✅ Analyzed /work/page.tsx structure (382 lines)
 - ✅ Extracted 2 work components:
   * WorkJobCard.tsx (135 lines) - unified card for to-schedule/scheduled/completed
@@ -140,6 +140,12 @@ Overall Progress:                [ ███████░░░ ]  70%
 - ✅ Refactored /leads-and-quotes/leads/page.tsx: **315 → 195 lines (38% reduction!)**
 - ✅ Extracted useQuotesQueue hook (138 lines) - quotes/leads filtering + handlers
 - ✅ Refactored /leads-and-quotes/quotes/page.tsx: **301 → 187 lines (38% reduction!)**
+- ✅ Extracted useAnalytics hook (60 lines) - all metric calculations
+- ✅ Refactored /analytics/page.tsx: **236 → 213 lines (10% reduction)**
+- ✅ Extracted useHomeStats hook (51 lines) - dashboard stats
+- ✅ Refactored /home/page.tsx: **218 → 175 lines (20% reduction)**
+- ✅ Extracted useCalendarSchedule hook (35 lines) - scheduling logic
+- ✅ Refactored /calendar/page.tsx: **220 → 197 lines (10% reduction)**
 - ✅ Zero TypeScript errors
 
 **Remaining Work:**
@@ -154,7 +160,10 @@ Overall Progress:                [ ███████░░░ ]  70%
 - ✅ /pay/page.tsx → 148 lines (59% reduction)
 - ✅ /leads-and-quotes/leads/page.tsx → 195 lines (38% reduction)
 - ✅ /leads-and-quotes/quotes/page.tsx → 187 lines (38% reduction)
-- ✅ 17 components + 5 hooks extracted (3,263 lines total)
+- ✅ /analytics/page.tsx → 213 lines (10% reduction)
+- ✅ /home/page.tsx → 175 lines (20% reduction)
+- ✅ /calendar/page.tsx → 197 lines (10% reduction)
+- ✅ 17 components + 8 hooks extracted (3,409 lines total)
 - ✅ TanStack Query implemented
 - 🟡 React Hook Form migration (partial)
 - ✅ Zero TypeScript errors
