@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Import route modules
-from api.routes import health, ai, quotes, catalog
+from api.routes import health, ai, quotes, catalog, ai_analytics
 
 # Load environment variables
 load_dotenv()
@@ -41,6 +41,7 @@ app.include_router(health.router)
 app.include_router(ai.router)
 app.include_router(quotes.router)
 app.include_router(catalog.router)
+app.include_router(ai_analytics.router)
 
 # Startup message
 @app.on_event("startup")
