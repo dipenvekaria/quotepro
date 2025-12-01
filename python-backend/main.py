@@ -10,15 +10,26 @@ Refactored from monolithic 1,114-line file to clean modular architecture:
 
 Architecture: Phase 2 complete ✅
 """
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Import route modules
 from api.routes import health, ai, quotes, catalog, ai_analytics
+from app.routes import health as monitoring_health
+from app.middleware.logging import LoggingMiddleware
+from app.logging_config import setup_logging
 
 # Load environment variables
 load_dotenv()
+
+# Configure logging
+setup_logging(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    json_logs=os.getenv("JSON_LOGS", "false").lower() == "true",
+    log_file=os.getenv("LOG_FILE", None)
+)
 
 # API route tags for documentation organization
 tags_metadata = [
@@ -116,7 +127,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Add logging middleware
+app.add_middleware(LoggingMiddleware)
+
 # Register routes
+app.include_router(monitoring_health.router, prefix="/api", tags=["Health"])
 app.include_router(health.router, tags=["Health"])
 app.include_router(ai.router, tags=["AI Quote Generation", "Quote Optimization", "Upsell Suggestions"])
 app.include_router(quotes.router, tags=["Quotes"])
