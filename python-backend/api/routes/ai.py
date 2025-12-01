@@ -14,6 +14,7 @@ from services.ai.gemini_client import get_gemini_client, GeminiClient
 from services.ai.quote_generator import QuoteGeneratorService
 from services.ai.job_namer import JobNamerService
 from services.agents.quote_optimizer import get_quote_optimizer, QuoteOptimizerAgent
+from services.agents.upsell_suggester import get_upsell_suggester, UpsellSuggesterAgent
 from db.repositories.catalog import CatalogRepository
 from tax_rates import get_tax_rate_for_address
 
@@ -272,3 +273,77 @@ async def optimize_quote(
     except Exception as e:
         print(f"❌ Error optimizing quote: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to optimize quote: {str(e)}")
+
+
+# Upsell Suggester Models
+class SuggestUpsellsRequest(BaseModel):
+    company_id: str
+    job_description: str
+    current_items: List[dict]
+    current_total: float
+    customer_address: Optional[str] = None
+
+
+class UpsellSuggestion(BaseModel):
+    item_name: str
+    category: str
+    estimated_value: float
+    reason: str
+    source: str
+    confidence: str
+    frequency: Optional[int] = None
+    frequency_percentage: Optional[float] = None
+
+
+class SuggestUpsellsResponse(BaseModel):
+    suggestions: List[UpsellSuggestion]
+    potential_increase: float
+    potential_increase_percentage: float
+    confidence: str
+    analysis: dict
+    market_insights: dict
+
+
+@router.post("/suggest-upsells", response_model=SuggestUpsellsResponse)
+async def suggest_upsells(
+    request: SuggestUpsellsRequest,
+    db: Client = Depends(get_db_session),
+    gemini: GeminiClient = Depends(get_gemini_client)
+):
+    """
+    Suggest upsell items to increase quote value
+    
+    Analyzes historical patterns to suggest:
+    - Complementary items frequently purchased together
+    - High-margin add-ons
+    - AI-recommended contextual upsells
+    - Items that increase win rate
+    """
+    try:
+        # Initialize upsell suggester agent
+        suggester = get_upsell_suggester(gemini, db)
+        
+        # Generate upsell suggestions
+        result = suggester.suggest_upsells(
+            company_id=request.company_id,
+            job_description=request.job_description,
+            current_items=request.current_items,
+            current_total=request.current_total,
+            customer_address=request.customer_address
+        )
+        
+        # Convert suggestions to response model
+        suggestions = [UpsellSuggestion(**s) for s in result['suggestions']]
+        
+        return SuggestUpsellsResponse(
+            suggestions=suggestions,
+            potential_increase=result['potential_increase'],
+            potential_increase_percentage=result['potential_increase_percentage'],
+            confidence=result['confidence'],
+            analysis=result['analysis'],
+            market_insights=result.get('market_insights', {})
+        )
+        
+    except Exception as e:
+        print(f"❌ Error suggesting upsells: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to suggest upsells: {str(e)}")
