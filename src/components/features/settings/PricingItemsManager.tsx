@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ExpandableSearch } from '@/components/ui/expandable-search'
+import { ExpandableSearch } from '@/components/expandable-search'
 import { Package, Search, Filter } from 'lucide-react'
 
 interface PricingItem {

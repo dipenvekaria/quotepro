@@ -264,6 +264,14 @@ function SettingsPageContent() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <p className="text-muted-foreground">Loading settings...</p>
+      </div>
+    )
+  }
+
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       toast.error('Passwords do not match')
@@ -696,14 +704,6 @@ function SettingsPageContent() {
   // Get unique categories for filter dropdown
   const allCategories = [...new Set(pricingItems.map(item => item.category))].sort()
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <p className="text-muted-foreground">Loading settings...</p>
-      </div>
-    )
-  }
-
   const navItems = [
     { id: 'company', label: 'Company Profile', icon: Building2 },
     { id: 'products', label: 'Products & Services', icon: Package },
@@ -714,19 +714,13 @@ function SettingsPageContent() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 lg:flex overflow-x-hidden">
-      {/* Main Navigation - Desktop only */}
-      <div className="hidden lg:block">
-        <DashboardNav />
-      </div>
-
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Settings Content */}
       <div className="flex-1 min-w-0">
-        {/* Header with mobile menu */}
+        {/* Header */}
         <header className="bg-[#0F172A] border-b border-white/10 sticky top-0 z-20">
           <div className="px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center gap-3">
-              <DashboardNav buttonOnly />
               <div className="bg-[#FF6200] p-2 rounded-lg">
                 <Wrench className="h-5 w-5 text-white" />
               </div>
