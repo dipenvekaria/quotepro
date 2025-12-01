@@ -11,7 +11,7 @@ Refactored from monolithic 1,114-line file to clean modular architecture:
 Architecture: Phase 2 complete ✅
 """
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -19,7 +19,9 @@ from dotenv import load_dotenv
 from api.routes import health, ai, quotes, catalog, ai_analytics
 from app.routes import health as monitoring_health
 from app.middleware.logging import LoggingMiddleware
+from app.middleware.rate_limit import limiter, rate_limit_exceeded_handler
 from app.logging_config import setup_logging
+from slowapi.errors import RateLimitExceeded
 
 # Load environment variables
 load_dotenv()
@@ -103,7 +105,16 @@ to help contractors create winning quotes faster.
 * Vector embeddings (768-dim)
 
 ### Authentication:
-All endpoints require Supabase authentication. Include the user's JWT token in the Authorization header.
+All endpoints require Supabase JWT authentication. Include your token:
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+### Rate Limiting:
+Endpoints are rate-limited to prevent abuse:
+* AI generation: 10 requests/minute
+* Bulk operations: 1 request/minute
+* Standard endpoints: 60 requests/minute
     """,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -118,16 +129,22 @@ All endpoints require Supabase authentication. Include the user's JWT token in t
     },
 )
 
-# Configure CORS
+# Configure rate limiter
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+
+# Configure CORS (hardened)
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:3001").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_origins=allowed_origins,  # Specific origins only
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH"],  # Explicit methods
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID"],  # Explicit headers
+    expose_headers=["X-Request-ID"],  # Expose request ID for tracing
 )
 
-# Add logging middleware
+# Add logging middleware (before rate limiting for logging all requests)
 app.add_middleware(LoggingMiddleware)
 
 # Register routes
