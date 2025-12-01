@@ -4,8 +4,12 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Loader2, Wrench } from 'lucide-react'
+import { Loader2, Wrench, Save } from 'lucide-react'
 import { toast } from 'sonner'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Button } from '@/components/ui/button'
 import { LeadForm } from '@/components/features/leads/LeadForm'
 import { QuoteGenerator, ItemsTable, AIAssistant, ActionButtons, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
 import { AuditTrail } from '@/components/audit-trail'
@@ -41,9 +45,9 @@ export default function NewQuotePage() {
   const [customerPhone, setCustomerPhone] = useState('')
   const [customerAddress, setCustomerAddress] = useState('')
 
-  // Lead state (job description, job name, photos)
+  // Lead state (job description, job type, photos)
   const [description, setDescription] = useState('')
-  const [jobName, setJobName] = useState('')
+  const [jobType, setJobType] = useState('')
   const [photos, setPhotos] = useState<string[]>([])
 
   // Quote state
@@ -139,7 +143,7 @@ export default function NewQuotePage() {
         setCustomerPhone(quote.customer_phone || '')
         setCustomerAddress(quote.customer_address || '')
         setDescription(quote.description || '')
-        setJobName(quote.job_name || '')
+        setJobType(quote.job_type || '')
         
         if (quote.quote_items && quote.quote_items.length > 0) {
           setGeneratedQuote({
@@ -506,26 +510,27 @@ export default function NewQuotePage() {
     }
 
     try {
-      // Generate job name if not set
-      let finalJobName = jobName
-      if (!jobName || !quoteId) {
+      // Generate job type if not set (using catalog)
+      let finalJobType = jobType
+      if (!jobType || !quoteId) {
         try {
-          const jobNameResponse = await fetch('/api/generate-job-name', {
+          const jobTypeResponse = await fetch('/api/generate-job-name', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               description,
               customer_name: customerName,
+              company_id: companyId,
             }),
           })
 
-          if (jobNameResponse.ok) {
-            const data = await jobNameResponse.json()
-            finalJobName = data.job_name
-            setJobName(data.job_name)
+          if (jobTypeResponse.ok) {
+            const data = await jobTypeResponse.json()
+            finalJobType = data.job_name  // API returns as job_name for compatibility
+            setJobType(data.job_name)
           }
         } catch (error) {
-          console.error('Error generating job name:', error)
+          console.error('Error generating job type:', error)
         }
       }
 
@@ -539,7 +544,7 @@ export default function NewQuotePage() {
             customer_phone: customerPhone || null,
             customer_address: customerAddress || null,
             description: description,
-            job_name: finalJobName || null,
+            job_type: finalJobType || null,
             lead_status: 'new',
           })
           .eq('id', quoteId)
@@ -558,7 +563,7 @@ export default function NewQuotePage() {
               customer_phone: customerPhone,
               customer_address: customerAddress,
               description: description,
-              job_name: finalJobName,
+              job_type: finalJobType,
             },
             created_by: user.id,
           })
@@ -582,7 +587,7 @@ export default function NewQuotePage() {
           customer_phone: customerPhone || null,
           customer_address: customerAddress || null,
           description: description,
-          job_name: finalJobName || null,
+          job_type: finalJobType || null,
           status: 'draft',
           lead_status: 'new',
           subtotal: 0,
@@ -607,7 +612,7 @@ export default function NewQuotePage() {
             customer_phone: customerPhone,
             customer_address: customerAddress,
             description: description,
-            job_name: finalJobName,
+            job_type: finalJobType,
           },
           created_by: user.id,
         })
@@ -616,8 +621,11 @@ export default function NewQuotePage() {
       toast.success('Lead saved successfully!')
       setSavedQuoteId(newLead.id)
       
-      // Navigate back to leads tab
-      window.location.href = '/leads-and-quotes/leads'
+      // Load audit logs and stay on the page
+      await loadAuditLogs(newLead.id)
+      
+      // Update URL without redirect
+      window.history.pushState({}, '', `/dashboard/leads/new?id=${newLead.id}`)
     } catch (error) {
       console.error('Error saving lead:', error)
       toast.error('Failed to save lead')
@@ -700,44 +708,57 @@ export default function NewQuotePage() {
         </header>
 
         <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
+          {/* Customer Information - ALWAYS FIRST */}
+          <LeadForm
+            customerName={customerName}
+            customerEmail={customerEmail}
+            customerPhone={customerPhone}
+            customerAddress={customerAddress}
+            jobName={jobType}
+            onCustomerNameChange={setCustomerName}
+            onCustomerEmailChange={setCustomerEmail}
+            onCustomerPhoneChange={setCustomerPhone}
+            onCustomerAddressChange={setCustomerAddress}
+            quoteId={quoteId}
+            origin={origin}
+            hasQuote={!!generatedQuote}
+            onAddressRecalculate={recalculateQuoteForAddress}
+          />
+
           {/* Job Description - Lead capture (show only if no quote generated) */}
           {!generatedQuote && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
-              <div className="p-6 border-b">
-                <h2 className="text-xl font-semibold">Job Description</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  Briefly describe what needs to be done
-                </p>
-              </div>
-              <div className="p-6 space-y-5">
+            <Card>
+              <CardHeader>
+                <CardTitle>Job Description</CardTitle>
+                <CardDescription>Briefly describe what needs to be done</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
                 <div className="space-y-3">
-                  <label htmlFor="description" className="text-base font-medium block">
+                  <Label htmlFor="description" className="text-base">
                     What needs to be done?
-                  </label>
-                  <textarea
+                  </Label>
+                  <Textarea
                     id="description"
                     placeholder="Describe the work needed..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full min-h-[150px] text-lg p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="min-h-[150px] text-lg p-4"
                   />
                 </div>
 
                 {/* Save Lead Button - Only show if not saved yet */}
                 {!savedQuoteId && !quoteId && (
-                  <button
+                  <Button
                     onClick={handleSaveLead}
                     disabled={!customerName || !description}
-                    className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+                    className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
                   >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                    </svg>
+                    <Save className="h-5 w-5 mr-2" />
                     Save Lead
-                  </button>
+                  </Button>
                 )}
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* Generate Quote (if saved but no quote yet) */}
@@ -790,24 +811,8 @@ export default function NewQuotePage() {
             />
           )}
 
-          {/* Customer Information */}
-          <LeadForm
-            customerName={customerName}
-            customerEmail={customerEmail}
-            customerPhone={customerPhone}
-            customerAddress={customerAddress}
-            onCustomerNameChange={setCustomerName}
-            onCustomerEmailChange={setCustomerEmail}
-            onCustomerPhoneChange={setCustomerPhone}
-            onCustomerAddressChange={setCustomerAddress}
-            quoteId={quoteId}
-            origin={origin}
-            hasQuote={!!generatedQuote}
-            onAddressRecalculate={recalculateQuoteForAddress}
-          />
-
           {/* Audit Trail */}
-          {quoteId && auditLogs.length > 0 && (
+          {(savedQuoteId || quoteId) && auditLogs.length > 0 && (
             <AuditTrail logs={auditLogs} />
           )}
         </main>

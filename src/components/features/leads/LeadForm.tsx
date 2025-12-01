@@ -12,6 +12,7 @@ interface LeadFormProps {
   customerEmail: string
   customerPhone: string
   customerAddress: string
+  jobName?: string
   onCustomerNameChange: (value: string) => void
   onCustomerEmailChange: (value: string) => void
   onCustomerPhoneChange: (value: string) => void
@@ -33,6 +34,7 @@ export function LeadForm({
   customerEmail,
   customerPhone,
   customerAddress,
+  jobName,
   onCustomerNameChange,
   onCustomerEmailChange,
   onCustomerPhoneChange,
@@ -44,18 +46,26 @@ export function LeadForm({
 }: LeadFormProps) {
   const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [addressCache] = useState<Map<string, AddressSuggestion[]>>(new Map())
 
-  // Address autocomplete
+  // Address autocomplete with caching
   useEffect(() => {
     if (customerAddress.length < 3) {
       setAddressSuggestions([])
       return
     }
 
+    // Check cache first
+    const cacheKey = customerAddress.toLowerCase().trim()
+    if (addressCache.has(cacheKey)) {
+      setAddressSuggestions(addressCache.get(cacheKey)!)
+      return
+    }
+
     const timeoutId = setTimeout(async () => {
       try {
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(customerAddress)}&format=json&addressdetails=1&limit=5`,
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(customerAddress)}&format=json&addressdetails=1&limit=5&countrycodes=us`,
           {
             headers: {
               'User-Agent': 'QuoteBuilder Pro'
@@ -63,14 +73,17 @@ export function LeadForm({
           }
         )
         const data = await response.json()
+        
+        // Cache the result
+        addressCache.set(cacheKey, data)
         setAddressSuggestions(data)
       } catch (error) {
         console.error('Address lookup failed:', error)
       }
-    }, 500)
+    }, 300) // Reduced from 500ms to 300ms, US-only for faster response
 
     return () => clearTimeout(timeoutId)
-  }, [customerAddress])
+  }, [customerAddress, addressCache])
 
   const handleAddressSelect = async (address: string) => {
     onCustomerAddressChange(address)
@@ -135,6 +148,20 @@ export function LeadForm({
             className="h-14 text-lg"
           />
         </div>
+
+        {/* Job Type (read-only if populated) */}
+        {jobName && (
+          <div className="space-y-3">
+            <Label htmlFor="jobType" className="text-base">Job Type</Label>
+            <Input
+              id="jobType"
+              value={jobName}
+              readOnly
+              className="h-14 text-lg bg-gray-50 dark:bg-gray-900 cursor-not-allowed"
+              title="Auto-classified from product catalog"
+            />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">

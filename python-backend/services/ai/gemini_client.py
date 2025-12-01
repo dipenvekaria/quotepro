@@ -110,19 +110,17 @@ class GeminiClient:
         Returns:
             Generated text
         """
-        # Create model with custom config if overrides provided
-        if temperature is not None or max_tokens is not None:
-            model = genai.GenerativeModel(
-                model_name=self.model_name,
-                generation_config={
-                    'temperature': temperature or self.temperature,
-                    'top_p': 0.95,
-                    'top_k': 40,
-                    'max_output_tokens': max_tokens or self.max_tokens,
-                }
-            )
-        else:
-            model = self.model
+        # ALWAYS create new model for text generation (NOT JSON mode)
+        model = genai.GenerativeModel(
+            model_name=self.model_name,
+            generation_config={
+                'temperature': temperature if temperature is not None else self.temperature,
+                'top_p': 0.95,
+                'top_k': 40,
+                'max_output_tokens': max_tokens or self.max_tokens,
+                # NO response_mime_type - plain text only
+            }
+        )
         
         response = model.generate_content(prompt)
         return response.text

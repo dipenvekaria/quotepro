@@ -61,10 +61,11 @@ class UpdateQuoteRequest(BaseModel):
 class JobNameRequest(BaseModel):
     description: str
     customer_name: Optional[str] = None
+    company_id: Optional[str] = None  # For catalog lookup
 
 
 class JobNameResponse(BaseModel):
-    job_name: str
+    job_name: str  # Will contain job_type
 
 
 @router.post("/generate-quote", response_model=QuoteResponse)
@@ -183,20 +184,22 @@ async def update_quote_with_ai(
 @router.post("/generate-job-name", response_model=JobNameResponse)
 async def generate_job_name(
     request: JobNameRequest,
+    db: Client = Depends(get_db_session),
     gemini: GeminiClient = Depends(get_gemini_client)
 ):
     """
-    Generate professional job name from description using AI
+    Generate standardized job type from description using product catalog
     """
     try:
-        job_namer = JobNamerService(gemini)
-        job_name = job_namer.generate_job_name(
+        job_namer = JobNamerService(gemini, db_connection=db)
+        job_type = job_namer.generate_job_name(
             description=request.description,
-            customer_name=request.customer_name or ""
+            customer_name=request.customer_name or "",
+            company_id=request.company_id
         )
         
-        return JobNameResponse(job_name=job_name)
+        return JobNameResponse(job_name=job_type)  # Returns job_type as job_name for compatibility
         
     except Exception as e:
-        print(f"❌ Error generating job name: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to generate job name: {str(e)}")
+        print(f"❌ Error generating job type: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate job type: {str(e)}")
