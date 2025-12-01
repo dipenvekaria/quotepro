@@ -41,6 +41,11 @@ export default function NewQuotePage() {
   const [customerPhone, setCustomerPhone] = useState('')
   const [customerAddress, setCustomerAddress] = useState('')
 
+  // Lead state (job description, job name, photos)
+  const [description, setDescription] = useState('')
+  const [jobName, setJobName] = useState('')
+  const [photos, setPhotos] = useState<string[]>([])
+
   // Quote state
   const [generatedQuote, setGeneratedQuote] = useState<GeneratedQuote | null>(null)
   const [savedQuoteId, setSavedQuoteId] = useState<string | null>(null)
@@ -133,6 +138,8 @@ export default function NewQuotePage() {
         setCustomerEmail(quote.customer_email || '')
         setCustomerPhone(quote.customer_phone || '')
         setCustomerAddress(quote.customer_address || '')
+        setDescription(quote.description || '')
+        setJobName(quote.job_name || '')
         
         if (quote.quote_items && quote.quote_items.length > 0) {
           setGeneratedQuote({
@@ -491,6 +498,132 @@ export default function NewQuotePage() {
     }
   }
 
+  // Handle save lead (without quote)
+  const handleSaveLead = async () => {
+    if (!customerName || !description) {
+      toast.error('Please fill in customer name and job description')
+      return
+    }
+
+    try {
+      // Generate job name if not set
+      let finalJobName = jobName
+      if (!jobName || !quoteId) {
+        try {
+          const jobNameResponse = await fetch('/api/generate-job-name', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              description,
+              customer_name: customerName,
+            }),
+          })
+
+          if (jobNameResponse.ok) {
+            const data = await jobNameResponse.json()
+            finalJobName = data.job_name
+            setJobName(data.job_name)
+          }
+        } catch (error) {
+          console.error('Error generating job name:', error)
+        }
+      }
+
+      if (quoteId) {
+        // Update existing lead
+        const { error: updateError } = await supabase
+          .from('quotes')
+          .update({
+            customer_name: customerName,
+            customer_email: customerEmail || null,
+            customer_phone: customerPhone || null,
+            customer_address: customerAddress || null,
+            description: description,
+            job_name: finalJobName || null,
+            lead_status: 'new',
+          })
+          .eq('id', quoteId)
+
+        if (updateError) throw updateError
+
+        // Log to audit trail
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await supabase.from('quote_audit_log').insert({
+            quote_id: quoteId,
+            action_type: 'lead_updated',
+            description: `Lead information updated`,
+            changes_made: {
+              customer_name: customerName,
+              customer_phone: customerPhone,
+              customer_address: customerAddress,
+              description: description,
+              job_name: finalJobName,
+            },
+            created_by: user.id,
+          })
+        }
+
+        toast.success('Lead updated successfully!')
+        await loadAuditLogs(quoteId)
+        return
+      }
+
+      // Create new lead
+      const quoteNumber = `L-${Date.now().toString().slice(-8)}`
+      
+      const { data: newLead, error: insertError } = await supabase
+        .from('quotes')
+        .insert({
+          company_id: companyId,
+          quote_number: quoteNumber,
+          customer_name: customerName,
+          customer_email: customerEmail || null,
+          customer_phone: customerPhone || null,
+          customer_address: customerAddress || null,
+          description: description,
+          job_name: finalJobName || null,
+          status: 'draft',
+          lead_status: 'new',
+          subtotal: 0,
+          tax_rate: 0,
+          tax_amount: 0,
+          total: 0,
+        })
+        .select()
+        .single()
+
+      if (insertError) throw insertError
+
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: newLead.id,
+          action_type: 'lead_created',
+          description: `New lead created: ${customerName}`,
+          changes_made: {
+            customer_name: customerName,
+            customer_phone: customerPhone,
+            customer_address: customerAddress,
+            description: description,
+            job_name: finalJobName,
+          },
+          created_by: user.id,
+        })
+      }
+
+      toast.success('Lead saved successfully!')
+      setSavedQuoteId(newLead.id)
+      
+      // Navigate back to leads tab
+      window.location.href = '/leads-and-quotes/leads'
+    } catch (error) {
+      console.error('Error saving lead:', error)
+      toast.error('Failed to save lead')
+    }
+  }
+
   // Handle archive
   const handleArchive = async (reason: string) => {
     const currentQuoteId = savedQuoteId || quoteId
@@ -567,6 +700,46 @@ export default function NewQuotePage() {
         </header>
 
         <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
+          {/* Job Description - Lead capture (show only if no quote generated) */}
+          {!generatedQuote && (
+            <div className="bg-white dark:bg-gray-800 rounded-lg border shadow-sm">
+              <div className="p-6 border-b">
+                <h2 className="text-xl font-semibold">Job Description</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Briefly describe what needs to be done
+                </p>
+              </div>
+              <div className="p-6 space-y-5">
+                <div className="space-y-3">
+                  <label htmlFor="description" className="text-base font-medium block">
+                    What needs to be done?
+                  </label>
+                  <textarea
+                    id="description"
+                    placeholder="Describe the work needed..."
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="w-full min-h-[150px] text-lg p-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Save Lead Button - Only show if not saved yet */}
+                {!savedQuoteId && !quoteId && (
+                  <button
+                    onClick={handleSaveLead}
+                    disabled={!customerName || !description}
+                    className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+                  >
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    </svg>
+                    Save Lead
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Generate Quote (if saved but no quote yet) */}
           {(savedQuoteId || quoteId) && !generatedQuote && (
             <QuoteGenerator onGenerate={handleGenerateQuote} />
