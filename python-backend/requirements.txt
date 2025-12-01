@@ -25,3 +25,9 @@ openpyxl==3.1.5
 # HTTP requests - Compatible with groq and supabase
 httpx>=0.26,<0.28
 requests==2.32.3
+
+# Testing
+pytest==8.0.0
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
+faker==22.6.0  # For generating test data
