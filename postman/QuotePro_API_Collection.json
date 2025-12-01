@@ -1,0 +1,407 @@
+{
+  "info": {
+    "name": "QuotePro API - Complete Collection",
+    "description": "Comprehensive API collection for QuotePro v2.0\n\n## Authentication\nAll endpoints (except /health) require Supabase JWT token.\n\n## Environment Variables\nSet these in your Postman environment:\n- `base_url`: http://localhost:8000\n- `company_id`: Your company UUID\n- `auth_token`: Supabase JWT token\n\n## Quick Start\n1. Set up environment variables\n2. Run Health Check\n3. Test AI Quote Generation\n4. Explore other features",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Status",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI Quote Generation",
+      "item": [
+        {
+          "name": "Generate Quote - Simple",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"description\": \"Replace 50 gallon water heater and update main shutoff valve. Customer mentioned hearing strange noises from current unit.\",\n  \"customer_name\": \"John Smith\",\n  \"customer_address\": \"123 Main St, San Francisco, CA 94102\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/generate-quote",
+              "host": ["{{base_url}}"],
+              "path": ["api", "generate-quote"]
+            },
+            "description": "Generate a quote from a job description. AI will analyze the description, search similar past quotes, match catalog items, and create line items with pricing."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Quote - With Existing Items",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"description\": \"Also need to add expansion tank and check TPRV\",\n  \"customer_name\": \"John Smith\",\n  \"customer_address\": \"123 Main St, San Francisco, CA 94102\",\n  \"existing_items\": [\n    {\n      \"name\": \"50 Gallon Water Heater\",\n      \"quantity\": 1,\n      \"unit_price\": 850.00\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/generate-quote",
+              "host": ["{{base_url}}"],
+              "path": ["api", "generate-quote"]
+            },
+            "description": "Update existing quote by adding more items based on new description."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Quote (Chat)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quote_id\": \"quote-uuid-here\",\n  \"company_id\": \"{{company_id}}\",\n  \"user_prompt\": \"Change water heater to 75 gallon and add emergency shutoff valve\",\n  \"existing_items\": [\n    {\n      \"name\": \"50 Gallon Water Heater\",\n      \"quantity\": 1,\n      \"unit_price\": 850.00\n    }\n  ],\n  \"customer_name\": \"John Smith\",\n  \"customer_address\": \"123 Main St, San Francisco, CA 94102\",\n  \"conversation_history\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Add expansion tank\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"Added expansion tank for $150\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/update-quote",
+              "host": ["{{base_url}}"],
+              "path": ["api", "update-quote"]
+            },
+            "description": "Update quote via conversational chat. Maintains context from previous messages."
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Job Name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Replace 50 gallon water heater and update main shutoff valve\",\n  \"customer_name\": \"John Smith\",\n  \"company_id\": \"{{company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/generate-job-name",
+              "host": ["{{base_url}}"],
+              "path": ["api", "generate-job-name"]
+            },
+            "description": "Generate a concise, professional job name from description."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Quote Optimizer",
+      "item": [
+        {
+          "name": "Optimize Quote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"job_description\": \"Water heater replacement with valve upgrades\",\n  \"proposed_total\": 1500.00,\n  \"line_items\": [\n    {\n      \"name\": \"50 Gallon Water Heater\",\n      \"quantity\": 1,\n      \"unit_price\": 850.00\n    },\n    {\n      \"name\": \"Main Shutoff Valve\",\n      \"quantity\": 1,\n      \"unit_price\": 250.00\n    },\n    {\n      \"name\": \"Labor\",\n      \"quantity\": 3,\n      \"unit_price\": 133.33\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/optimize-quote",
+              "host": ["{{base_url}}"],
+              "path": ["api", "optimize-quote"]
+            },
+            "description": "Analyze quote to predict win probability and get pricing recommendations. Compares against 20 similar historical quotes."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Upsell Suggestions",
+      "item": [
+        {
+          "name": "Get Upsell Suggestions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"job_description\": \"Water heater replacement\",\n  \"current_items\": [\n    {\n      \"name\": \"50 Gallon Water Heater\",\n      \"quantity\": 1,\n      \"unit_price\": 850.00\n    }\n  ],\n  \"current_total\": 1200.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/suggest-upsells",
+              "host": ["{{base_url}}"],
+              "path": ["api", "suggest-upsells"]
+            },
+            "description": "Get intelligent upsell recommendations based on pattern analysis (what other customers bought) and AI contextual suggestions."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Catalog Management",
+      "item": [
+        {
+          "name": "Bulk Index Catalog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"force_reindex\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/catalog/index",
+              "host": ["{{base_url}}"],
+              "path": ["api", "catalog", "index"]
+            },
+            "description": "Index all pricing items for vector search. Required for RAG to work. Run after adding new items to catalog."
+          },
+          "response": []
+        },
+        {
+          "name": "Index Single Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"item_id\": \"pricing-item-uuid\",\n  \"company_id\": \"{{company_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/catalog/index-item",
+              "host": ["{{base_url}}"],
+              "path": ["api", "catalog", "index-item"]
+            },
+            "description": "Index a single pricing item (called automatically when item is created/updated)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Item Embedding",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/catalog/index-item/pricing-item-uuid?company_id={{company_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "catalog", "index-item", "pricing-item-uuid"],
+              "query": [
+                {
+                  "key": "company_id",
+                  "value": "{{company_id}}"
+                }
+              ]
+            },
+            "description": "Delete embedding when pricing item is removed."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Index Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/catalog/index-status/{{company_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "catalog", "index-status", "{{company_id}}"]
+            },
+            "description": "Check catalog indexing status and coverage percentage."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI Analytics",
+      "item": [
+        {
+          "name": "Get Analytics Summary",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"days\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-analytics/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-analytics", "summary"]
+            },
+            "description": "Get AI feature usage metrics, win rates, suggestion acceptance, and revenue impact for the last N days."
+          },
+          "response": []
+        },
+        {
+          "name": "Track AI Usage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_id\": \"{{company_id}}\",\n  \"quote_id\": \"quote-uuid-here\",\n  \"analysis_type\": \"optimizer\",\n  \"win_probability\": 0.73,\n  \"price_position\": \"competitive\",\n  \"suggestion_applied\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai-analytics/track",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai-analytics", "track"]
+            },
+            "description": "Track AI feature usage (called by frontend after using optimizer/upsell/RAG)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Quotes",
+      "item": [
+        {
+          "name": "Get Quote by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/quotes/quote-uuid-here",
+              "host": ["{{base_url}}"],
+              "path": ["api", "quotes", "quote-uuid-here"]
+            },
+            "description": "Fetch full quote details including line items."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "company_id",
+      "value": "your-company-uuid",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "your-supabase-jwt-token",
+      "type": "string"
+    }
+  ]
+}

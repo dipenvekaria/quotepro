@@ -79,9 +79,64 @@ async def generate_quote(
     gemini: GeminiClient = Depends(get_gemini_client)
 ):
     """
-    Generate AI-powered quote using Gemini and company catalog
+    ## Generate AI-Powered Quote
     
-    Uses RAG to find similar past quotes for better accuracy
+    Creates a professional quote using Google Gemini 2.0 Flash with RAG (Retrieval-Augmented Generation).
+    
+    ### How It Works:
+    1. **RAG Search** - Finds 3 similar past quotes for context
+    2. **Catalog Matching** - Searches 10 most relevant pricing items  
+    3. **AI Generation** - Gemini creates line items with quantities & pricing
+    4. **Tax Calculation** - Auto-calculates tax based on customer address
+    
+    ### What You Get:
+    - Detailed line items with quantities and unit prices
+    - Good/Better/Best options (if applicable)
+    - Upsell suggestions
+    - Tax calculations
+    - Professional notes
+    - RAG metadata (what sources were used)
+    
+    ### Example Request:
+    ```json
+    {
+      "company_id": "uuid-here",
+      "description": "Replace 50 gallon water heater, update main shutoff valve",
+      "customer_name": "John Smith",
+      "customer_address": "123 Main St, San Francisco, CA 94102"
+    }
+    ```
+    
+    ### Example Response:
+    ```json
+    {
+      "line_items": [
+        {
+          "name": "50 Gallon Water Heater",
+          "description": "Rheem Professional Series",
+          "quantity": 1,
+          "unit_price": 850.00,
+          "total": 850.00
+        }
+      ],
+      "subtotal": 1200.00,
+      "tax_rate": 8.5,
+      "total": 1302.00,
+      "rag_metadata": {
+        "similar_quotes_found": 3,
+        "catalog_matches_found": 10
+      }
+    }
+    ```
+    
+    ### Performance:
+    - Typical response time: 2-3 seconds
+    - Uses cached catalog embeddings for speed
+    - Gemini 2.0 Flash for fast inference
+    
+    ### Errors:
+    - **400** - NO_PRICING_CATALOG: Set up catalog in Settings first
+    - **500** - AI generation failed (retry recommended)
     """
     try:
         # Initialize services

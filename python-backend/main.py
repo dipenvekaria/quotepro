@@ -20,11 +20,91 @@ from api.routes import health, ai, quotes, catalog, ai_analytics
 # Load environment variables
 load_dotenv()
 
+# API route tags for documentation organization
+tags_metadata = [
+    {
+        "name": "Health",
+        "description": "Service health and status endpoints",
+    },
+    {
+        "name": "AI Quote Generation",
+        "description": """
+AI-powered quote generation with RAG (Retrieval-Augmented Generation).
+Uses Google Gemini 2.0 Flash to generate professional quotes from job descriptions.
+Automatically searches similar past quotes and relevant catalog items for context.
+        """,
+    },
+    {
+        "name": "Quote Optimization",
+        "description": """
+Analyze quotes to predict win probability and suggest optimal pricing.
+Compares against similar historical quotes to provide data-driven recommendations.
+        """,
+    },
+    {
+        "name": "Upsell Suggestions",
+        "description": """
+Generate intelligent upsell and cross-sell recommendations.
+Uses pattern analysis from won quotes plus AI contextual suggestions.
+        """,
+    },
+    {
+        "name": "Catalog Management",
+        "description": """
+Manage pricing item catalog and vector embeddings for RAG search.
+Automatically indexes items for semantic similarity matching.
+        """,
+    },
+    {
+        "name": "AI Analytics",
+        "description": """
+Track AI feature usage, performance metrics, and ROI.
+Provides insights into win rates, suggestion acceptance, and revenue impact.
+        """,
+    },
+    {
+        "name": "Quotes",
+        "description": "Quote CRUD operations and management",
+    },
+]
+
 # Initialize FastAPI app
 app = FastAPI(
     title="QuotePro API",
     version="2.0.0",
-    description="AI-powered quote generation for field service businesses"
+    description="""
+## AI-Powered Quote Generation for Field Service Businesses
+
+QuotePro combines cutting-edge AI (Google Gemini 2.0) with RAG (Retrieval-Augmented Generation)
+to help contractors create winning quotes faster.
+
+### Key Features:
+* 🤖 **AI Quote Generation** - Generate professional quotes from job descriptions
+* 🎯 **Quote Optimizer** - Win probability analysis & pricing recommendations  
+* 💰 **Upsell Suggester** - Data-driven cross-sell opportunities
+* 🔍 **RAG Search** - Learn from similar past quotes
+* 📊 **Analytics** - Track AI performance & ROI
+
+### Tech Stack:
+* FastAPI + Python 3.11
+* Google Gemini 2.0 Flash
+* Supabase (PostgreSQL + pgvector)
+* Vector embeddings (768-dim)
+
+### Authentication:
+All endpoints require Supabase authentication. Include the user's JWT token in the Authorization header.
+    """,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
+    openapi_tags=tags_metadata,
+    contact={
+        "name": "QuotePro Support",
+        "email": "support@quotepro.com",
+    },
+    license_info={
+        "name": "Proprietary",
+    },
 )
 
 # Configure CORS
@@ -37,11 +117,11 @@ app.add_middleware(
 )
 
 # Register routes
-app.include_router(health.router)
-app.include_router(ai.router)
-app.include_router(quotes.router)
-app.include_router(catalog.router)
-app.include_router(ai_analytics.router)
+app.include_router(health.router, tags=["Health"])
+app.include_router(ai.router, tags=["AI Quote Generation", "Quote Optimization", "Upsell Suggestions"])
+app.include_router(quotes.router, tags=["Quotes"])
+app.include_router(catalog.router, tags=["Catalog Management"])
+app.include_router(ai_analytics.router, tags=["AI Analytics"])
 
 # Startup message
 @app.on_event("startup")
