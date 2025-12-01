@@ -13,6 +13,7 @@ from config.database import get_db_session
 from services.ai.gemini_client import get_gemini_client, GeminiClient
 from services.ai.quote_generator import QuoteGeneratorService
 from services.ai.job_namer import JobNamerService
+from services.agents.quote_optimizer import get_quote_optimizer, QuoteOptimizerAgent
 from db.repositories.catalog import CatalogRepository
 from tax_rates import get_tax_rate_for_address
 
@@ -215,3 +216,59 @@ async def generate_job_name(
     except Exception as e:
         print(f"❌ Error generating job type: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate job type: {str(e)}")
+
+
+# Quote Optimizer Models
+class OptimizeQuoteRequest(BaseModel):
+    company_id: str
+    job_description: str
+    proposed_total: float
+    line_items: List[dict]
+    customer_address: Optional[str] = None
+
+
+class OptimizeQuoteResponse(BaseModel):
+    win_probability: float
+    confidence: str
+    recommendation: str
+    suggested_total: Optional[float] = None
+    price_position: str
+    market_data: dict
+    margin_analysis: dict
+    insights: str
+    similar_quotes_summary: List[dict]
+
+
+@router.post("/optimize-quote", response_model=OptimizeQuoteResponse)
+async def optimize_quote(
+    request: OptimizeQuoteRequest,
+    db: Client = Depends(get_db_session),
+    gemini: GeminiClient = Depends(get_gemini_client)
+):
+    """
+    Optimize quote pricing using AI analysis
+    
+    Analyzes similar past quotes to:
+    - Calculate win probability
+    - Suggest optimal pricing
+    - Identify margin opportunities
+    - Provide competitive insights
+    """
+    try:
+        # Initialize optimizer agent
+        optimizer = get_quote_optimizer(gemini, db)
+        
+        # Run optimization analysis
+        result = optimizer.optimize_quote(
+            company_id=request.company_id,
+            job_description=request.job_description,
+            proposed_total=request.proposed_total,
+            line_items=request.line_items,
+            customer_address=request.customer_address
+        )
+        
+        return OptimizeQuoteResponse(**result)
+        
+    except Exception as e:
+        print(f"❌ Error optimizing quote: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to optimize quote: {str(e)}")
