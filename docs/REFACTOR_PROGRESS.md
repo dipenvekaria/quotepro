@@ -16,11 +16,11 @@
 
 Phase 1: Database Schema        [ ██████████ ] 100%  ✅ COMPLETE
 Phase 2: Python Backend         [ ██████████ ] 100%  ✅ COMPLETE
-Phase 3: Frontend               [ ██████░░░░ ]  60%  ← WE ARE HERE (Week 2 done!)
+Phase 3: Frontend               [ ███████░░░ ]  70%  ← WE ARE HERE (Week 3!)
 Phase 4: AI & RAG               [ ░░░░░░░░░░ ]   0%
 Phase 5: Migration              [ ░░░░░░░░░░ ]   0%
 
-Overall Progress:                [ ██████░░░░ ]  60%
+Overall Progress:                [ ███████░░░ ]  70%
 ```
 
 ---
@@ -87,9 +87,9 @@ Overall Progress:                [ ██████░░░░ ]  60%
 ### **Phase 3: Frontend Modernization** (Weeks 5-7)
 **Status:** � IN PROGRESS (Week 1 Complete!)
 ### **Phase 3: Frontend Modernization** (Weeks 5-7)
-**Status:** 🚀 IN PROGRESS (Week 3 Started!)
+**Status:** 🚀 IN PROGRESS (Week 3 In Progress!)
 **Started:** November 30, 2025
-**Progress:** 65%
+**Progress:** 70%
 
 **Week 1 Accomplishments (Commits: e612fa4, f7066dd, 9a0cc64, aeb1301, 6211ac9, 92d0302):**
 - ✅ Installed TanStack Query + React Hook Form + Zod
@@ -125,16 +125,25 @@ Overall Progress:                [ ██████░░░░ ]  60%
 - ✅ All 6 tab sections use extracted components
 - ✅ Zero TypeScript errors
 
-**Week 3 Accomplishments (Commits: 8f818b6):**
+**Week 3 Accomplishments (Commits: 8f818b6, 826fe9a, 34e2222, 45673df):**
 - ✅ Analyzed /work/page.tsx structure (382 lines)
 - ✅ Extracted 2 work components:
   * WorkJobCard.tsx (135 lines) - unified card for to-schedule/scheduled/completed
   * useWorkJobs.ts hook (64 lines) - filtering + handlers
 - ✅ Refactored /work/page.tsx: **382 → 153 lines (60% reduction!)**
+- ✅ Analyzed /pay/page.tsx structure (358 lines)
+- ✅ Extracted 2 pay components:
+  * PayInvoiceCard.tsx (200 lines) - unified card for invoice/paid variants
+  * usePayInvoices.ts hook (50 lines) - filtering + handlers
+- ✅ Refactored /pay/page.tsx: **358 → 148 lines (59% reduction!)**
+- ✅ Extracted useLeadsQueue hook (140 lines) - leads/quotes filtering + handlers
+- ✅ Refactored /leads-and-quotes/leads/page.tsx: **315 → 195 lines (38% reduction!)**
+- ✅ Extracted useQuotesQueue hook (138 lines) - quotes/leads filtering + handlers
+- ✅ Refactored /leads-and-quotes/quotes/page.tsx: **301 → 187 lines (38% reduction!)**
 - ✅ Zero TypeScript errors
 
 **Remaining Work:**
-- Refactor remaining pages (prospects, analytics, etc.)
+- Refactor remaining pages (analytics, jobs, etc.)
 - Add visual regression tests
 - Complete Phase 3
 
@@ -142,7 +151,10 @@ Overall Progress:                [ ██████░░░░ ]  60%
 - ✅ /leads/new/page.tsx → 651 lines (71% reduction)
 - ✅ /settings/page.tsx → 1,083 lines (40% reduction)
 - ✅ /work/page.tsx → 153 lines (60% reduction)
-- ✅ 13 components extracted (2,154 lines total)
+- ✅ /pay/page.tsx → 148 lines (59% reduction)
+- ✅ /leads-and-quotes/leads/page.tsx → 195 lines (38% reduction)
+- ✅ /leads-and-quotes/quotes/page.tsx → 187 lines (38% reduction)
+- ✅ 17 components + 5 hooks extracted (3,263 lines total)
 - ✅ TanStack Query implemented
 - 🟡 React Hook Form migration (partial)
 - ✅ Zero TypeScript errors
