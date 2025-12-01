@@ -1,12 +1,10 @@
 // @ts-nocheck - Supabase type generation pending
 'use client'
 
-import { use, useEffect, useState } from 'react'
+import { use, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { 
   ArrowLeft, 
   Calendar, 
@@ -21,39 +19,15 @@ import {
   Package
 } from 'lucide-react'
 import { format } from 'date-fns'
-import { toast } from 'sonner'
 import { CompleteJobModal } from '@/components/complete-job-modal'
 import Link from 'next/link'
+import { useJobDetail } from '@/hooks/useJobDetail'
 
 export default function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
-  const [quote, setQuote] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const { quote, loading, scheduledDate } = useJobDetail(id)
   const [showCompleteModal, setShowCompleteModal] = useState(false)
-
-  useEffect(() => {
-    loadQuote()
-  }, [id])
-
-  const loadQuote = async () => {
-    try {
-      const supabase = createClient()
-      const { data, error } = await supabase
-        .from('quotes')
-        .select('*')
-        .eq('id', id)
-        .single()
-
-      if (error) throw error
-      setQuote(data)
-    } catch (error) {
-      console.error('Error loading quote:', error)
-      toast.error('Failed to load job details')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   if (loading) {
     return (
@@ -80,8 +54,6 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       </div>
     )
   }
-
-  const scheduledDate = quote.scheduled_at ? new Date(quote.scheduled_at) : null
 
   return (
     <div className="min-h-screen pb-20 md:pb-0">
