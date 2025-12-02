@@ -5,36 +5,26 @@
 -- Also add missing INSERT policy for companies (onboarding)
 -- ============================================
 
--- Drop old policies that reference _new tables
-DROP POLICY IF EXISTS companies_new_select_policy ON companies;
-DROP POLICY IF EXISTS companies_new_update_policy ON companies;
-DROP POLICY IF EXISTS users_new_select_policy ON users;
-DROP POLICY IF EXISTS users_new_update_policy ON users;
-DROP POLICY IF EXISTS users_new_insert_policy ON users;
-DROP POLICY IF EXISTS customers_new_select_policy ON customers;
-DROP POLICY IF EXISTS customers_new_insert_policy ON customers;
-DROP POLICY IF EXISTS customers_new_update_policy ON customers;
-DROP POLICY IF EXISTS customers_new_delete_policy ON customers;
-DROP POLICY IF EXISTS leads_new_select_policy ON leads;
-DROP POLICY IF EXISTS leads_new_insert_policy ON leads;
-DROP POLICY IF EXISTS leads_new_update_policy ON leads;
-DROP POLICY IF EXISTS leads_new_delete_policy ON leads;
-DROP POLICY IF EXISTS quotes_new_select_policy ON quotes;
-DROP POLICY IF EXISTS quotes_new_insert_policy ON quotes;
-DROP POLICY IF EXISTS quotes_new_update_policy ON quotes;
-DROP POLICY IF EXISTS quotes_new_delete_policy ON quotes;
-DROP POLICY IF EXISTS quote_items_new_select_policy ON quote_items;
-DROP POLICY IF EXISTS quote_items_new_insert_policy ON quote_items;
-DROP POLICY IF EXISTS quote_items_new_update_policy ON quote_items;
-DROP POLICY IF EXISTS quote_items_new_delete_policy ON quote_items;
-DROP POLICY IF EXISTS jobs_new_select_policy ON jobs;
-DROP POLICY IF EXISTS jobs_new_insert_policy ON jobs;
-DROP POLICY IF EXISTS jobs_new_update_policy ON jobs;
-DROP POLICY IF EXISTS jobs_new_delete_policy ON jobs;
-DROP POLICY IF EXISTS invoices_new_select_policy ON invoices;
-DROP POLICY IF EXISTS invoices_new_insert_policy ON invoices;
-DROP POLICY IF EXISTS invoices_new_update_policy ON invoices;
-DROP POLICY IF EXISTS invoices_new_delete_policy ON invoices;
+-- FIRST: Drop ALL existing policies to start clean
+DO $$ 
+DECLARE
+    r RECORD;
+BEGIN
+    FOR r IN (
+        SELECT schemaname, tablename, policyname
+        FROM pg_policies
+        WHERE schemaname = 'public'
+        AND tablename IN (
+            'companies', 'users', 'customers', 'customer_addresses',
+            'leads', 'quotes', 'quote_items', 'quote_options',
+            'jobs', 'invoices', 'payments', 'catalog_items',
+            'activity_log', 'ai_conversations', 'document_embeddings', 'ai_prompts'
+        )
+    ) LOOP
+        EXECUTE format('DROP POLICY IF EXISTS %I ON %I.%I', 
+            r.policyname, r.schemaname, r.tablename);
+    END LOOP;
+END $$;
 
 -- Drop and recreate helper function to reference correct table
 -- Use CASCADE because existing policies depend on this function
@@ -363,6 +353,46 @@ CREATE POLICY ai_conversations_insert_policy ON ai_conversations
   FOR INSERT
   WITH CHECK (company_id = public.get_user_company_id());
 
+-- ============================================
+-- DOCUMENT_EMBEDDINGS POLICIES
+-- ============================================
+
+CREATE POLICY document_embeddings_select_policy ON document_embeddings
+  FOR SELECT
+  USING (company_id = public.get_user_company_id());
+
+CREATE POLICY document_embeddings_insert_policy ON document_embeddings
+  FOR INSERT
+  WITH CHECK (company_id = public.get_user_company_id());
+
+CREATE POLICY document_embeddings_update_policy ON document_embeddings
+  FOR UPDATE
+  USING (company_id = public.get_user_company_id());
+
+CREATE POLICY document_embeddings_delete_policy ON document_embeddings
+  FOR DELETE
+  USING (company_id = public.get_user_company_id());
+
+-- ============================================
+-- AI_PROMPTS POLICIES
+-- ============================================
+
+CREATE POLICY ai_prompts_select_policy ON ai_prompts
+  FOR SELECT
+  USING (company_id = public.get_user_company_id());
+
+CREATE POLICY ai_prompts_insert_policy ON ai_prompts
+  FOR INSERT
+  WITH CHECK (company_id = public.get_user_company_id());
+
+CREATE POLICY ai_prompts_update_policy ON ai_prompts
+  FOR UPDATE
+  USING (company_id = public.get_user_company_id());
+
+CREATE POLICY ai_prompts_delete_policy ON ai_prompts
+  FOR DELETE
+  USING (company_id = public.get_user_company_id());
+
 -- Verify RLS is enabled
 SELECT tablename, rowsecurity FROM pg_tables 
 WHERE schemaname = 'public' 
@@ -370,6 +400,6 @@ AND tablename IN (
   'companies', 'users', 'customers', 'customer_addresses',
   'leads', 'quotes', 'quote_items', 'quote_options',
   'jobs', 'invoices', 'payments', 'catalog_items',
-  'activity_log', 'ai_conversations'
+  'activity_log', 'ai_conversations', 'document_embeddings', 'ai_prompts'
 )
 ORDER BY tablename;
