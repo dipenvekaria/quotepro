@@ -19,29 +19,29 @@ export function useUserRole() {
         return
       }
 
-      // First, check if user owns a company (they're always admin)
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('user_id', user.id)
-        .maybeSingle()
+      // NEW SCHEMA: Check users table for role and company_id
+      const { data: userRecord, error: userError } = await supabase
+        .from('users')
+        .select('role, company_id')
+        .eq('id', user.id)
+        .maybeSingle() as { data: { role: UserRole; company_id: string } | null; error: any }
 
-      if (company && !companyError) {
-        setRole('admin')
-        setCompanyId(company.id)
+      if (userRecord && !userError) {
+        setRole(userRecord.role)
+        setCompanyId(userRecord.company_id)
         setLoading(false)
         return
       }
 
-      // If not owner, check team_members table for their role
+      // Fallback: If not in users table, check team_members (for invited users)
       const { data: teamMember, error: teamError } = await supabase
         .from('team_members')
         .select('role, company_id')
         .eq('user_id', user.id)
-        .maybeSingle()
+        .maybeSingle() as { data: { role: UserRole; company_id: string } | null; error: any }
 
       if (teamMember && !teamError) {
-        setRole(teamMember.role as UserRole)
+        setRole(teamMember.role)
         setCompanyId(teamMember.company_id)
       }
 

@@ -128,10 +128,22 @@ function SettingsPageContent() {
         setUser(user)
         setEmail(user.email)
 
+        // NEW SCHEMA: Get company via users table
+        const { data: userRecord } = await supabase
+          .from('users')
+          .select('company_id')
+          .eq('id', user.id)
+          .single()
+
+        if (!userRecord?.company_id) {
+          toast.error('No company found')
+          return
+        }
+
         const { data: companyData, error: companyError } = await supabase
           .from('companies')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('id', userRecord.company_id)
           .single()
 
         if (companyData) {
@@ -141,9 +153,12 @@ function SettingsPageContent() {
           setCompanyEmail(companyData.email || '')
           setCompanyAddress(companyData.address || '')
           setLogoPreview(companyData.logo_url)
-          setDefaultTerms(companyData.default_terms || '')
-          setDefaultNotes(companyData.default_notes || '')
-          setDefaultValidDays(companyData.default_valid_days || '30')
+          
+          // NEW SCHEMA: settings stored in JSONB
+          const settings = companyData.settings || {}
+          setDefaultTerms(settings.default_terms || '')
+          setDefaultNotes(settings.default_notes || '')
+          setDefaultValidDays(settings.default_valid_days || '30')
         }
 
         const { data: pricing, error: pricingError } = await supabase
@@ -201,11 +216,23 @@ function SettingsPageContent() {
       setUser(user)
       setEmail(user.email)
 
-      console.log('🏢 Querying company data...')
+      console.log('🏢 Querying company data via users table...')
+      // NEW SCHEMA: Get company via users table
+      const { data: userRecord } = await supabase
+        .from('users')
+        .select('company_id')
+        .eq('id', user.id)
+        .single()
+
+      if (!userRecord?.company_id) {
+        toast.error('No company found')
+        return
+      }
+
       const { data: companyData, error: companyError } = await supabase
         .from('companies')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('id', userRecord.company_id)
         .single()
 
       console.log('🏢 Company query:', {
@@ -222,9 +249,12 @@ function SettingsPageContent() {
         setCompanyEmail(companyData.email || '')
         setCompanyAddress(companyData.address || '')
         setLogoPreview(companyData.logo_url)
-        setDefaultTerms(companyData.default_terms || '')
-        setDefaultNotes(companyData.default_notes || '')
-        setDefaultValidDays(companyData.default_valid_days || '30')
+        
+        // NEW SCHEMA: settings stored in JSONB
+        const settings = companyData.settings || {}
+        setDefaultTerms(settings.default_terms || '')
+        setDefaultNotes(settings.default_notes || '')
+        setDefaultValidDays(settings.default_valid_days || '30')
       }
 
       const { data: pricing, error: pricingError } = await supabase

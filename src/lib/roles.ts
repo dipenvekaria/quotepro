@@ -1,5 +1,5 @@
 // User roles
-export type UserRole = 'admin' | 'sales'
+export type UserRole = 'owner' | 'admin' | 'sales'
 
 // Team member type
 export interface TeamMember {
@@ -22,18 +22,18 @@ export interface TeamMember {
 
 // Permissions map
 export const PERMISSIONS = {
-  // Admin-only permissions
-  MANAGE_COMPANY: ['admin'],
-  MANAGE_TEAM: ['admin'],
-  MANAGE_PRICING: ['admin'],
-  VIEW_SETTINGS: ['admin'],
-  MANAGE_SUBSCRIPTION: ['admin'],
+  // Owner and Admin-only permissions
+  MANAGE_COMPANY: ['owner', 'admin'],
+  MANAGE_TEAM: ['owner', 'admin'],
+  MANAGE_PRICING: ['owner', 'admin'],
+  VIEW_SETTINGS: ['owner', 'admin'],
+  MANAGE_SUBSCRIPTION: ['owner', 'admin'],
   
-  // Both admin and sales can do these
-  CREATE_QUOTES: ['admin', 'sales'],
-  VIEW_QUOTES: ['admin', 'sales'],
-  EDIT_QUOTES: ['admin', 'sales'],
-  SEND_QUOTES: ['admin', 'sales'],
+  // Owner, admin and sales can do these
+  CREATE_QUOTES: ['owner', 'admin', 'sales'],
+  VIEW_QUOTES: ['owner', 'admin', 'sales'],
+  EDIT_QUOTES: ['owner', 'admin', 'sales'],
+  SEND_QUOTES: ['owner', 'admin', 'sales'],
 } as const
 
 export type Permission = keyof typeof PERMISSIONS
@@ -42,6 +42,11 @@ export type Permission = keyof typeof PERMISSIONS
 export function hasPermission(role: UserRole | null | undefined, permission: Permission): boolean {
   if (!role) return false
   return (PERMISSIONS[permission] as readonly string[]).includes(role)
+}
+
+// Check if user is owner
+export function isOwner(role: UserRole | null | undefined): boolean {
+  return role === 'owner'
 }
 
 // Check if user is admin
