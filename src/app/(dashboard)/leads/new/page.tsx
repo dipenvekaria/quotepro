@@ -634,8 +634,8 @@ export default function NewQuotePage() {
       // Use existing job type or generate in background (non-blocking)
       let finalJobType = jobType
       
-      // Generate job type with timeout (max 1 second)
-      if (!jobType || !quoteId) {
+      // Generate job type with timeout (max 1 second) if not already set
+      if (!jobType && description) {
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Timeout')), 1000)
         )
