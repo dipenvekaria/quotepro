@@ -207,7 +207,7 @@ export default function LeadsQueuePage() {
                     id: lead.id,
                     customer_name: lead.customer?.name || 'Unknown',
                     customer_phone: lead.customer?.phone,
-                    job_name: lead.description,
+                    job_name: lead.metadata?.job_type || lead.description,
                     job_type: lead.metadata?.job_type,
                     total: 0,
                     created_at: lead.created_at,
@@ -230,7 +230,7 @@ export default function LeadsQueuePage() {
                     id: lead.id,
                     customer_name: lead.customer?.name || 'Unknown',
                     customer_address: '', // TODO: fetch from customer_addresses
-                    job_name: lead.description,
+                    job_name: lead.metadata?.job_type || lead.description,
                     total: 0,
                     created_at: lead.created_at,
                     status: lead.status
