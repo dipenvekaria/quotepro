@@ -76,7 +76,7 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
           <div className="flex flex-col h-full">
             {/* Close button on mobile */}
             <div className="flex items-center justify-between p-4">
-              <span className="text-white font-semibold">Menu</span>
+              <span className="text-white font-bold">Menu</span>
               <Button
                 variant="ghost"
                 size="icon"
@@ -101,9 +101,9 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
                     <Button
                       variant={active ? 'secondary' : 'ghost'}
                       className={`
-                        w-full justify-start h-12 text-base
+                        w-full justify-start h-12 text-sm
                         ${active 
-                          ? 'bg-[#FF6200] hover:bg-[#FF6200]/90 text-white' 
+                          ? 'bg-[#2563eb] hover:bg-[#2563eb]/90 text-white' 
                           : 'text-white/70 hover:text-white hover:bg-white/10'
                         }
                       `}
@@ -121,7 +121,7 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
               <Button
                 variant="ghost"
                 onClick={handleSignOut}
-                className="w-full justify-start h-12 text-base text-white/70 hover:text-white hover:bg-white/10"
+                className="w-full justify-start h-12 text-sm text-white/70 hover:text-white hover:bg-white/10"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 Sign Out
@@ -157,7 +157,7 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
         <div className="flex flex-col h-full">
           {/* Mobile header with close button */}
           <div className="flex items-center justify-between p-4 lg:hidden">
-            <span className="text-white font-semibold">Menu</span>
+            <span className="text-white font-bold">Menu</span>
             <Button
               variant="ghost"
               size="icon"
@@ -185,9 +185,9 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
                   <Button
                     variant={active ? 'secondary' : 'ghost'}
                     className={`
-                      w-full justify-start h-12 text-base
+                      w-full justify-start h-12 text-sm
                       ${active 
-                        ? 'bg-[#FF6200] hover:bg-[#FF6200]/90 text-white' 
+                        ? 'bg-[#2563eb] hover:bg-[#2563eb]/90 text-white' 
                         : 'text-white/70 hover:text-white hover:bg-white/10'
                       }
                     `}
@@ -205,7 +205,7 @@ export function DashboardNav({ buttonOnly = false }: { buttonOnly?: boolean }) {
             <Button
               variant="ghost"
               onClick={handleSignOut}
-              className="w-full justify-start h-12 text-base text-white/70 hover:text-white hover:bg-white/10"
+              className="w-full justify-start h-12 text-sm text-white/70 hover:text-white hover:bg-white/10"
             >
               <LogOut className="h-5 w-5 mr-3" />
               Sign Out

@@ -125,12 +125,12 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
       <a
         key={quote.id}
         href={`/quotes/new?id=${quote.id}`}
-        className="block p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-semibold text-sm truncate">{quote.customer_name}</h3>
+              <h3 className="font-bold text-base truncate">{quote.customer_name}</h3>
               {isAtRisk && (
                 <Badge className="bg-red-500 text-white text-xs">⚠️ At Risk</Badge>
               )}
@@ -144,7 +144,7 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
             <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               <span className="font-mono font-medium text-foreground">{quote.quote_number}</span>
               <span>•</span>
-              <span className="text-[#FF6200] font-semibold">${quote.total.toLocaleString()}</span>
+              <span className="text-[#2563eb] font-bold">${quote.total.toLocaleString()}</span>
               {quote.signed_at && (
                 <>
                   <span>•</span>
@@ -154,7 +154,7 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
               {statusType === 'in-progress' && (
                 <>
                   <span>•</span>
-                  <span className={daysSinceSigned > 7 ? 'text-orange-600 font-medium' : ''}>
+                  <span className={daysSinceSigned > 7 ? 'text-blue-600 font-medium' : ''}>
                     {daysSinceSigned}d in progress
                   </span>
                 </>
@@ -333,9 +333,9 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
                     <a
                       key={quote.id}
                       href={`/quotes/new?id=${quote.id}`}
-                      className="block p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                      className="block p-3 border rounded-lg hover:bg-gray-50 transition-colors"
                     >
-                      <div className="font-semibold">{quote.customer_name}</div>
+                      <div className="font-bold">{quote.customer_name}</div>
                       <div className="text-sm text-muted-foreground">
                         #{quote.quote_number} • ${quote.total.toLocaleString()}
                       </div>
@@ -351,25 +351,25 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-[#FF6200]">{toSchedule.length}</div>
+              <div className="text-sm font-bold text-[#2563eb]">{toSchedule.length}</div>
               <p className="text-xs text-muted-foreground">To Schedule</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-blue-600">{inProgress.length}</div>
+              <div className="text-sm font-bold text-blue-600">{inProgress.length}</div>
               <p className="text-xs text-muted-foreground">In Progress</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-green-600">{completed.length}</div>
+              <div className="text-sm font-bold text-green-600">{completed.length}</div>
               <p className="text-xs text-muted-foreground">Completed</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-amber-600">{pendingPayment.length}</div>
+              <div className="text-sm font-bold text-amber-600">{pendingPayment.length}</div>
               <p className="text-xs text-muted-foreground">Awaiting Payment</p>
             </CardContent>
           </Card>

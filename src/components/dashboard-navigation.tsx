@@ -64,14 +64,14 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:w-64 lg:border-r lg:border-gray-200 dark:lg:border-gray-800 lg:bg-white dark:lg:bg-gray-950">
+      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:w-64 lg:border-r lg:border-gray-200 lg:bg-white">
         {/* Logo/Brand */}
-        <div className="flex h-16 items-center gap-3 px-6 border-b border-gray-200 dark:border-gray-800">
-          <div className="bg-[#FF6200] p-2 rounded-lg">
+        <div className="flex h-16 items-center gap-3 px-6 border-b border-gray-200">
+          <div className="bg-[#2563eb] p-2 rounded-lg">
             <Target className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold">QuotePro</h1>
+            <h1 className="text-sm font-bold">The Field Genie</h1>
             <p className="text-xs text-muted-foreground">Win more jobs</p>
           </div>
         </div>
@@ -89,15 +89,15 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   active
-                    ? 'bg-[#FF6200] text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    ? 'bg-[#2563eb] text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
                 )}
               >
                 <Icon className="h-5 w-5 shrink-0" />
                 <div className="flex flex-col">
                   <span>{item.name}</span>
                   {!active && (
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                    <span className="text-xs text-gray-500">
                       {item.description}
                     </span>
                   )}
@@ -107,10 +107,10 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
           })}
         </nav>
 
-        {/* Bottom Section - QuotePro branding */}
-        <div className="border-t border-gray-200 dark:border-gray-800 p-4">
+        {/* Bottom Section - The Field Genie branding */}
+        <div className="border-t border-gray-200 p-4">
           <p className="text-xs text-center text-muted-foreground">
-            QuotePro • Win more jobs
+            The Field Genie • Win more jobs
           </p>
         </div>
       </aside>
@@ -118,10 +118,10 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
       {/* Mobile Bottom Navigation - Modern Frosted Glass Design */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 pb-safe">
         {/* Fully opaque backdrop */}
-        <div className="absolute inset-0 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800" />
+        <div className="absolute inset-0 bg-white border-t border-gray-200" />
         
         {/* Subtle gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-50/20 to-transparent dark:from-gray-900/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-50/20 to-transparent pointer-events-none" />
         
         <div className="relative flex items-center justify-around w-full px-2 py-2">
           {navItems.map((item) => {
@@ -136,28 +136,28 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
               >
                 {/* Active indicator - liquid morphing blob */}
                 {active && (
-                  <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-orange-600/5 dark:from-orange-500/20 dark:to-orange-600/10 rounded-2xl scale-95 transition-transform" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-blue-600/5 rounded-2xl scale-95 transition-transform" />
                 )}
                 
                 {/* Icon container with smooth scaling */}
                 <div className={cn(
                   'relative rounded-xl p-2 transition-all duration-300',
                   active 
-                    ? 'bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/30 scale-105' 
-                    : 'bg-gray-100/50 dark:bg-gray-800/50 group-hover:bg-gray-200/70 dark:group-hover:bg-gray-700/70 group-hover:scale-105'
+                    ? 'bg-gradient-to-br from-slate-900 to-blue-600 shadow-lg shadow-blue-500/30 scale-105' 
+                    : 'bg-gray-100/50 group-hover:bg-gray-200/70 group-hover:scale-105'
                 )}>
                   <Icon className={cn(
                     'h-6 w-6 flex-shrink-0 transition-all duration-300',
-                    active ? 'text-white' : 'text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-200'
+                    active ? 'text-white' : 'text-gray-600 group-hover:text-gray-900
                   )} />
                 </div>
                 
                 {/* Label with smooth fade */}
                 <span className={cn(
-                  'text-[10px] font-semibold tracking-wide truncate max-w-full text-center leading-tight transition-all duration-300',
+                  'text-[10px] font-bold tracking-wide truncate max-w-full text-center leading-tight transition-all duration-300',
                   active 
-                    ? 'text-orange-600 dark:text-orange-500' 
-                    : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300'
+                    ? 'text-blue-600 
+                    : 'text-gray-500 group-hover:text-gray-700
                 )}>
                   {item.name}
                 </span>
@@ -175,9 +175,9 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
         >
           <button
             className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"
-            style={{ backgroundColor: '#FF6200', border: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E55800'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF6200'}
+            style={{ backgroundColor: '#2563eb', border: 'none' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
           >
             <Plus className="h-6 w-6 text-white" />
           </button>

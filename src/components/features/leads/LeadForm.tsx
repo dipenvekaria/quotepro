@@ -108,7 +108,7 @@ export function LeadForm({
                   href={origin ? `${origin}/q/${quoteId}` : '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-xs px-3 py-1.5 rounded border text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-950 border-blue-300 dark:border-blue-700 transition-colors"
+                  className="font-mono text-xs px-3 py-1.5 rounded border text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-300 transition-colors"
                   title="View customer quote (opens in new tab)"
                 >
                   {quoteId}
@@ -139,25 +139,25 @@ export function LeadForm({
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-3">
-          <Label htmlFor="customerName" className="text-base">Customer Name *</Label>
+          <Label htmlFor="customerName" className="text-sm">Customer Name *</Label>
           <Input
             id="customerName"
             placeholder="John Smith"
             value={customerName}
             onChange={(e) => onCustomerNameChange(e.target.value)}
-            className="h-14 text-lg"
+            className="h-14 text-sm"
           />
         </div>
 
         {/* Job Type (read-only if populated) */}
         {jobName && (
           <div className="space-y-3">
-            <Label htmlFor="jobType" className="text-base">Job Type</Label>
+            <Label htmlFor="jobType" className="text-sm">Job Type</Label>
             <Input
               id="jobType"
               value={jobName}
               readOnly
-              className="h-14 text-lg bg-gray-50 dark:bg-gray-900 cursor-not-allowed"
+              className="h-14 text-sm bg-gray-50 cursor-not-allowed"
               title="Auto-classified from product catalog"
             />
           </div>
@@ -165,32 +165,32 @@ export function LeadForm({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-3">
-            <Label htmlFor="customerPhone" className="text-base">Phone</Label>
+            <Label htmlFor="customerPhone" className="text-sm">Phone</Label>
             <Input
               id="customerPhone"
               type="tel"
               placeholder="(555) 123-4567"
               value={customerPhone}
               onChange={(e) => onCustomerPhoneChange(e.target.value)}
-              className="h-14 text-lg"
+              className="h-14 text-sm"
             />
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="customerEmail" className="text-base">Email</Label>
+            <Label htmlFor="customerEmail" className="text-sm">Email</Label>
             <Input
               id="customerEmail"
               type="email"
               placeholder="john@example.com"
               value={customerEmail}
               onChange={(e) => onCustomerEmailChange(e.target.value)}
-              className="h-14 text-lg"
+              className="h-14 text-sm"
             />
           </div>
         </div>
 
         <div className="space-y-3 relative">
-          <Label htmlFor="customerAddress" className="text-base">Job Address</Label>
+          <Label htmlFor="customerAddress" className="text-sm">Job Address</Label>
           <Input
             id="customerAddress"
             name="job-address"
@@ -210,7 +210,7 @@ export function LeadForm({
                 }
               }, 200)
             }}
-            className="h-14 text-lg"
+            className="h-14 text-sm"
             autoComplete="new-password"
           />
           

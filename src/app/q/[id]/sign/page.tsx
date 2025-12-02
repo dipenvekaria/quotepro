@@ -84,12 +84,12 @@ export default function SignPage({ params }: SignPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
-              <Loader2 className="h-12 w-12 animate-spin mx-auto text-[#FF6200]" />
-              <h2 className="text-xl font-semibold">Processing Your Acceptance...</h2>
+              <Loader2 className="h-12 w-12 animate-spin mx-auto text-[#2563eb]" />
+              <h2 className="text-sm font-bold">Processing Your Acceptance...</h2>
               <p className="text-sm text-muted-foreground">
                 Please wait while we process your quote acceptance.
               </p>
@@ -107,12 +107,12 @@ export default function SignPage({ params }: SignPageProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <AlertCircle className="h-12 w-12 mx-auto text-red-500" />
-              <h2 className="text-xl font-semibold">Unable to Start Signing</h2>
+              <h2 className="text-sm font-bold">Unable to Start Signing</h2>
               <p className="text-sm text-muted-foreground">{error}</p>
               <div className="space-y-2 pt-4">
                 <Link href={`/q/${quoteId}`}>

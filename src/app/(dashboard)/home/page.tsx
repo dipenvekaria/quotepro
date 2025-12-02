@@ -19,10 +19,10 @@ export default function HomePage() {
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
           Welcome Back!
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-600">
           Here's what's happening with your business today
         </p>
       </div>
@@ -35,15 +35,15 @@ export default function HomePage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Active Leads
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
                     {stats.leads}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                  <Users className="w-7 h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -56,15 +56,15 @@ export default function HomePage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Pending Quotes
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
                     {stats.quotes}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-                  <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                  <FileText className="w-7 h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -77,15 +77,15 @@ export default function HomePage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Scheduled Today
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
                     {stats.scheduledToday}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-md">
+                  <Calendar className="w-7 h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -98,15 +98,15 @@ export default function HomePage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Pending Revenue
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
                     ${stats.pendingRevenue.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-md">
+                  <Clock className="w-7 h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -128,10 +128,10 @@ export default function HomePage() {
                 <TrendingUp className="w-8 h-8 text-white" />
               </div>
               <div>
-                <p className="text-4xl font-bold text-gray-900 dark:text-white">
+                <p className="text-sm font-bold text-gray-900">
                   ${stats.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                   Lifetime earnings
                 </p>
               </div>
@@ -148,24 +148,24 @@ export default function HomePage() {
           <CardContent className="space-y-3">
             <Link 
               href="/leads/new"
-              className="block p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <p className="font-medium text-gray-900 dark:text-white">Create New Lead</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Capture a new customer inquiry</p>
+              <p className="font-bold text-gray-900">Create New Lead</p>
+              <p className="text-sm text-gray-600">Capture a new customer inquiry</p>
             </Link>
             <Link 
               href="/quotes/new"
-              className="block p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <p className="font-medium text-gray-900 dark:text-white">Generate Quote</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Create a quote with AI assistance</p>
+              <p className="font-bold text-gray-900">Generate Quote</p>
+              <p className="text-sm text-gray-600">Create a quote with AI assistance</p>
             </Link>
             <Link 
               href="/work"
-              className="block p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="block p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
             >
-              <p className="font-medium text-gray-900 dark:text-white">Schedule Jobs</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">View and schedule accepted quotes</p>
+              <p className="font-bold text-gray-900">Schedule Jobs</p>
+              <p className="text-sm text-gray-600">View and schedule accepted quotes</p>
             </Link>
           </CardContent>
         </Card>

@@ -35,10 +35,10 @@ export default function PayPage() {
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+      <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
         <div className="px-6 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Pay</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Review invoices and payments</p>
+          <h1 className="text-2xl font-bold text-gray-900">Pay</h1>
+          <p className="text-base text-gray-600 mt-1">Review invoices and payments</p>
         </div>
       </header>
 
@@ -52,14 +52,14 @@ export default function PayPage() {
             <TabsTrigger value="invoice" className="gap-2">
               <FileText className="h-4 w-4" />
               Invoice
-              <span className="ml-1 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full text-xs font-semibold">
+              <span className="ml-1 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">
                 {invoiceQuotes.length}
               </span>
             </TabsTrigger>
             <TabsTrigger value="paid" className="gap-2">
               <DollarSign className="h-4 w-4" />
               Paid
-              <span className="ml-1 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full text-xs font-semibold">
+              <span className="ml-1 bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-bold">
                 {paidQuotes.length}
               </span>
             </TabsTrigger>
@@ -71,7 +71,7 @@ export default function PayPage() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-lg mb-2">No Pending Invoices</h3>
+                  <h3 className="font-bold text-sm mb-2">No Pending Invoices</h3>
                   <p className="text-sm text-muted-foreground">
                     Completed jobs will appear here when ready for invoicing.
                   </p>
@@ -79,10 +79,10 @@ export default function PayPage() {
               </Card>
             ) : (
               <>
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
-                  <p className="text-sm text-orange-800 dark:text-orange-200">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">
                     💰 <strong>{invoiceQuotes.length} invoice{invoiceQuotes.length !== 1 ? 's' : ''}</strong> pending payment.
-                    Total outstanding: <strong className="text-[#FF6200]">
+                    Total outstanding: <strong className="text-[#2563eb]">
                       ${invoiceQuotes.reduce((sum, q) => sum + (q.total || 0), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </strong>
                   </p>
@@ -107,7 +107,7 @@ export default function PayPage() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <DollarSign className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-lg mb-2">No Paid Invoices</h3>
+                  <h3 className="font-bold text-sm mb-2">No Paid Invoices</h3>
                   <p className="text-sm text-muted-foreground">
                     Paid invoices will appear here for your records.
                   </p>
@@ -115,10 +115,10 @@ export default function PayPage() {
               </Card>
             ) : (
               <>
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                  <p className="text-sm text-green-800 dark:text-green-200">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <p className="text-sm text-green-800">
                     ✅ <strong>{paidQuotes.length} invoice{paidQuotes.length !== 1 ? 's' : ''}</strong> paid.
-                    Total received: <strong className="text-green-700 dark:text-green-400">
+                    Total received: <strong className="text-green-700">
                       ${paidQuotes.reduce((sum, q) => sum + (q.total || 0), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </strong>
                   </p>

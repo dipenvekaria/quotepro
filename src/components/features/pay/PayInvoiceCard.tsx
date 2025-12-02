@@ -52,7 +52,7 @@ export function PayInvoiceCard({
 
   return (
     <Card className={`hover:shadow-md transition-shadow ${
-      isPaid ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800' : ''
+      isPaid ? 'bg-green-50 border-green-200' : ''
     }`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
@@ -60,23 +60,23 @@ export function PayInvoiceCard({
             <div className="space-y-2">
               {/* Customer Name & Invoice Number */}
               <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
+                <h3 className="font-bold text-lg">{quote.customer_name}</h3>
                 {quote.invoice_number && (
                   <span className={`px-2 py-0.5 text-xs font-mono rounded ${
                     isPaid 
-                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400'
-                      : 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-blue-100 text-blue-700'
                   }`}>
                     {quote.invoice_number}
                   </span>
                 )}
                 {hasSentInvoice && !isPaid && (
-                  <span className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded">
+                  <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded">
                     Sent {format(new Date(quote.invoice_sent_at), 'MMM d')}
                   </span>
                 )}
                 {isPaid && (
-                  <span className="ml-auto bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="ml-auto bg-green-600 text-white px-3 py-1 rounded-full text-xs font-bold">
                     PAID
                   </span>
                 )}
@@ -94,10 +94,10 @@ export function PayInvoiceCard({
               <div className="flex flex-wrap items-center gap-4 text-sm">
                 <div className="flex items-center gap-1.5">
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
-                  <span className={`font-semibold text-lg ${
+                  <span className={`font-bold text-sm ${
                     isPaid 
-                      ? 'text-green-700 dark:text-green-400'
-                      : 'text-[#FF6200]'
+                      ? 'text-green-700'
+                      : 'text-[#2563eb]'
                   }`}>
                     ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
@@ -109,7 +109,7 @@ export function PayInvoiceCard({
                 </div>
 
                 {quote.completed_at && !isPaid && (
-                  <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+                  <div className="flex items-center gap-1.5 text-green-600">
                     <CheckCircle className="h-4 w-4" />
                     <span className="text-xs">
                       Completed {format(new Date(quote.completed_at), 'MMM d')}
@@ -118,7 +118,7 @@ export function PayInvoiceCard({
                 )}
 
                 {quote.paid_at && isPaid && (
-                  <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+                  <div className="flex items-center gap-1.5 text-green-600">
                     <CheckCircle className="h-4 w-4" />
                     <span className="text-xs font-medium">
                       Paid {format(new Date(quote.paid_at), 'MMM d, yyyy')}
@@ -145,7 +145,7 @@ export function PayInvoiceCard({
               {/* Payment Link */}
               {quote.payment_link_url && !isPaid && (
                 <div className="text-xs text-muted-foreground">
-                  Payment link: <a href={quote.payment_link_url} target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">View</a>
+                  Payment link: <a href={quote.payment_link_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View</a>
                 </div>
               )}
             </div>
@@ -158,7 +158,7 @@ export function PayInvoiceCard({
                 <Button
                   onClick={handleSendInvoice}
                   disabled={sending}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  className="bg-blue-700 hover:bg-blue-800"
                 >
                   <FileText className="h-4 w-4 mr-2" />
                   {sending ? 'Sending...' : 'Send Invoice'}

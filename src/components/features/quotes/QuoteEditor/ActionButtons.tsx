@@ -57,7 +57,7 @@ export function ActionButtons({
             <Button
               onClick={onSaveQuote}
               disabled={isGenerating}
-              className="flex-1 h-12 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+              className="flex-1 h-12 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
             >
               {isGenerating ? 'Saving...' : 'Save Quote'}
             </Button>
@@ -76,7 +76,7 @@ export function ActionButtons({
             <Button
               onClick={onUpdateQuote}
               disabled={isGenerating}
-              className="flex-1 h-12 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+              className="flex-1 h-12 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
             >
               {isGenerating ? 'Updating...' : 'Update Quote'}
             </Button>
@@ -98,7 +98,7 @@ export function ActionButtons({
           </div>
           
           {!canSend && (
-            <p className="text-sm text-amber-600 dark:text-amber-400 text-center">
+            <p className="text-sm text-amber-600 text-center">
               ⚠️ Add customer email or phone above to send quote
             </p>
           )}
@@ -108,7 +108,7 @@ export function ActionButtons({
               <Button
                 variant="outline"
                 onClick={onArchive}
-                className="flex-1 h-12 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+                className="flex-1 h-12 text-red-600 hover:text-red-700 hover:bg-red-50"
               >
                 <Archive className="h-4 w-4 mr-2" />
                 Archive Lead

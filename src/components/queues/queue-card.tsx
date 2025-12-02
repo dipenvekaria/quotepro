@@ -95,7 +95,7 @@ export function QueueCard({
           <div className="flex-1 space-y-1.5">
             {/* Customer Name & Badge */}
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-semibold text-base text-gray-900 dark:text-white">
+              <h3 className="font-bold text-lg text-gray-900">
                 {data.customer_name}
               </h3>
               {badge}
@@ -103,14 +103,14 @@ export function QueueCard({
 
             {/* Job Name */}
             {data.job_name && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+              <p className="text-base text-gray-600 font-bold">
                 {data.job_name}
               </p>
             )}
 
             {/* Address */}
             {data.customer_address && (
-              <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
                 <MapPin className="h-4 w-4 flex-shrink-0" />
                 <span className="truncate">{formatShortAddress(data.customer_address)}</span>
               </div>
@@ -121,8 +121,8 @@ export function QueueCard({
               {/* Amount */}
               {showAmount && data.total !== undefined && (
                 <div className="flex items-center gap-1.5">
-                  <DollarSign className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-                  <span className="font-semibold text-orange-600 dark:text-orange-400">
+                  <DollarSign className="h-4 w-4 text-gray-500" />
+                  <span className="font-bold text-blue-600">
                     ${data.total.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -130,7 +130,7 @@ export function QueueCard({
 
               {/* Date */}
               {showDate && displayDate && (
-                <div className="flex items-center gap-1.5 text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-1.5 text-gray-600">
                   <Calendar className="h-4 w-4" />
                   <span className="text-xs">
                     {dateLabel}: {format(new Date(displayDate), 'MMM d, yyyy')}

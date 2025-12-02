@@ -103,7 +103,7 @@ export function CompanyProfileSettings({
           <div className="flex items-center gap-4">
             <label
               htmlFor="logo"
-              className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#FF6200] transition-colors"
+              className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#2563eb] transition-colors"
             >
               <span>Upload New Logo</span>
             </label>
@@ -129,7 +129,7 @@ export function CompanyProfileSettings({
         <Button
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+          className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
         >
           {isSaving ? 'Saving...' : 'Save Company Info'}
         </Button>

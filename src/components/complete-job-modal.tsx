@@ -142,11 +142,11 @@ export function CompleteJobModal({ quote, onClose, onComplete }: CompleteJobModa
         <div className="space-y-6 py-4">
           {/* Job Info */}
           <div className="bg-muted rounded-lg p-4">
-            <p className="font-semibold mb-1">{quote.customer_name}</p>
+            <p className="font-bold mb-1">{quote.customer_name}</p>
             {quote.job_name && (
               <p className="text-sm text-muted-foreground">{quote.job_name}</p>
             )}
-            <p className="text-lg font-bold mt-2 text-primary">
+            <p className="text-sm font-bold mt-2 text-primary">
               ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </p>
           </div>
@@ -154,7 +154,7 @@ export function CompleteJobModal({ quote, onClose, onComplete }: CompleteJobModa
           {/* Signature Pad */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-base font-semibold">Customer Signature *</Label>
+              <Label className="text-sm font-bold">Customer Signature *</Label>
               <Button
                 type="button"
                 variant="ghost"
@@ -167,7 +167,7 @@ export function CompleteJobModal({ quote, onClose, onComplete }: CompleteJobModa
               </Button>
             </div>
             
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-950 relative">
+            <div className="border-2 border-dashed border-gray-300 rounded-lg bg-white relative">
               <canvas
                 ref={canvasRef}
                 className="w-full h-48 cursor-crosshair touch-none"

@@ -87,7 +87,7 @@ export function CompactQueueCard({
       <Card 
         className={cn(
           "transition-all active:scale-[0.98] relative",
-          onClick && "cursor-pointer active:bg-gray-50 dark:active:bg-gray-800",
+          onClick && "cursor-pointer active:bg-gray-50",
           className
         )}
         onClick={onClick}
@@ -98,7 +98,7 @@ export function CompactQueueCard({
           <div className="flex-1 min-w-0 space-y-1">
             {/* Customer Name & Badge */}
             <div className="flex items-center gap-2">
-              <h3 className="font-semibold text-sm text-gray-900 dark:text-white truncate">
+              <h3 className="font-bold text-base text-gray-900 truncate">
                 {data.customer_name}
               </h3>
               {badge && <div className="flex-shrink-0">{badge}</div>}
@@ -106,7 +106,7 @@ export function CompactQueueCard({
 
             {/* Job Name - Mobile Only */}
             {data.job_name && (
-              <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+              <p className="text-sm text-gray-600 truncate">
                 {data.job_name}
               </p>
             )}
@@ -116,8 +116,8 @@ export function CompactQueueCard({
               {/* Amount */}
               {showAmount && data.total !== undefined && data.total > 0 && (
                 <div className="flex items-center gap-1">
-                  <DollarSign className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400" />
-                  <span className="font-semibold text-orange-600 dark:text-orange-400">
+                  <DollarSign className="h-3.5 w-3.5 text-blue-500" />
+                  <span className="font-bold text-blue-600">
                     ${data.total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </span>
                 </div>
@@ -125,14 +125,14 @@ export function CompactQueueCard({
 
               {/* Quote Number */}
               {data.quote_number && (
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="text-xs text-gray-500">
                   #{data.quote_number}
                 </span>
               )}
 
               {/* Date - Show on mobile */}
               {displayDate && (
-                <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-1 text-xs text-gray-500">
                   <Calendar className="h-3.5 w-3.5" />
                   <span>{format(new Date(displayDate), 'MMM d')}</span>
                 </div>
@@ -141,7 +141,7 @@ export function CompactQueueCard({
 
             {/* Address - Only shown on desktop or when explicitly requested */}
             {!hideAddress && data.customer_address && (
-              <div className="hidden md:flex items-start gap-1.5 text-xs text-gray-500 dark:text-gray-400">
+              <div className="hidden md:flex items-start gap-1.5 text-xs text-gray-500">
                 <MapPin className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
                 <span className="truncate">{formatShortAddress(data.customer_address)}</span>
               </div>
@@ -152,7 +152,7 @@ export function CompactQueueCard({
           {showPhone && data.customer_phone && (
             <a 
               href={`tel:${data.customer_phone}`}
-              className="flex-shrink-0 p-2.5 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+              className="flex-shrink-0 p-2.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
               onClick={(e) => e.stopPropagation()}
               aria-label={`Call ${data.customer_phone}`}
             >

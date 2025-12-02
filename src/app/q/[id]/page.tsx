@@ -77,9 +77,9 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const hasTiers = Object.keys(tiers).length > 1
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header with Company Branding */}
-      <header className="bg-white dark:bg-gray-800 border-b shadow-sm">
+      <header className="bg-white border-b shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -93,10 +93,10 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 />
               )}
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-sm font-bold text-gray-900">
                   {company.name}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-600">
                   Professional Quote
                 </p>
               </div>
@@ -116,7 +116,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-xl">
+                <CardTitle className="text-sm">
                   {/* @ts-ignore */}
                   Quote for {quote.customer_name}
                 </CardTitle>
@@ -140,9 +140,9 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Customer Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
               <div className="space-y-3">
-                <h3 className="font-semibold text-sm text-gray-600 dark:text-gray-400 uppercase">
+                <h3 className="font-bold text-sm text-gray-600 uppercase">
                   Customer Details
                 </h3>
                 {/* @ts-ignore */}
@@ -163,7 +163,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 )}
               </div>
               <div className="space-y-3">
-                <h3 className="font-semibold text-sm text-gray-600 dark:text-gray-400 uppercase">
+                <h3 className="font-bold text-sm text-gray-600 uppercase">
                   Job Location
                 </h3>
                 {/* @ts-ignore */}
@@ -181,8 +181,8 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
             {/* @ts-ignore */}
             {quote.description && (
               <div>
-                <h3 className="font-semibold mb-2">Job Description</h3>
-                <p className="text-sm text-muted-foreground bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <h3 className="font-bold mb-2">Job Description</h3>
+                <p className="text-sm text-muted-foreground bg-blue-50 border border-blue-200 rounded-lg p-4">
                   {/* @ts-ignore */}
                   {quote.description}
                 </p>
@@ -193,7 +193,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
             {/* @ts-ignore */}
             {quote.photos && quote.photos.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-3">Job Photos</h3>
+                <h3 className="font-bold mb-3">Job Photos</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* @ts-ignore */}
                   {quote.photos.map((photo: string, index: number) => (
@@ -212,7 +212,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
 
             {/* Pricing - Good/Better/Best or Single Table */}
             <div>
-              <h3 className="font-semibold mb-3">Pricing Details</h3>
+              <h3 className="font-bold mb-3">Pricing Details</h3>
               
               {hasTiers ? (
                 // Good/Better/Best Display
@@ -220,12 +220,12 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                   {Object.entries(tiers).map(([tier, tierItems]: [string, any]) => (
                     <div
                       key={tier}
-                      className="border-2 rounded-lg p-4 hover:border-[#FF6200] transition-colors"
+                      className="border-2 rounded-lg p-4 hover:border-[#2563eb] transition-colors"
                     >
                       <div className="flex justify-between items-start mb-3">
-                        <h4 className="font-bold text-lg capitalize">{tier} Option</h4>
+                        <h4 className="font-bold text-sm capitalize">{tier} Option</h4>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-[#FF6200]">
+                          <div className="text-sm font-bold text-[#2563eb]">
                             $
                             {tierItems
                               .reduce((sum: number, item: any) => sum + item.total, 0)
@@ -239,12 +239,12 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                             key={idx}
                             className={`flex justify-between items-start p-3 rounded ${
                               item.is_upsell
-                                ? 'bg-orange-50 dark:bg-orange-950 border-l-4 border-[#FF6200]'
-                                : 'bg-gray-50 dark:bg-gray-800'
+                                ? 'bg-blue-50 border-l-4 border-[#2563eb]'
+                                : 'bg-gray-50'
                             }`}
                           >
                             <div className="flex-1">
-                              <div className="font-semibold">{item.name}</div>
+                              <div className="font-bold">{item.name}</div>
                               {item.description && (
                                 <div className="text-sm text-muted-foreground">
                                   {item.description}
@@ -254,7 +254,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                                 Qty: {item.quantity} × ${item.unit_price.toFixed(2)}
                               </div>
                               {item.is_upsell && (
-                                <Badge className="bg-[#FF6200] text-white mt-2">
+                                <Badge className="bg-[#2563eb] text-white mt-2">
                                   UPGRADE
                                 </Badge>
                               )}
@@ -270,12 +270,12 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 // Single Table Display
                 <div className="border rounded-lg overflow-hidden">
                   <table className="w-full">
-                    <thead className="bg-gray-100 dark:bg-gray-800">
+                    <thead className="bg-gray-100">
                       <tr>
-                        <th className="text-left p-3 text-sm font-semibold">Description</th>
-                        <th className="text-center p-3 text-sm font-semibold">Qty</th>
-                        <th className="text-right p-3 text-sm font-semibold">Price</th>
-                        <th className="text-right p-3 text-sm font-semibold">Total</th>
+                        <th className="text-left p-3 text-sm font-bold">Description</th>
+                        <th className="text-center p-3 text-sm font-bold">Qty</th>
+                        <th className="text-right p-3 text-sm font-bold">Price</th>
+                        <th className="text-right p-3 text-sm font-bold">Total</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -284,24 +284,24 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                           key={idx}
                           className={`border-t ${
                             item.is_upsell
-                              ? 'bg-orange-50 dark:bg-orange-950 border-l-4 border-[#FF6200]'
+                              ? 'bg-blue-50 border-l-4 border-[#2563eb]'
                               : ''
                           }`}
                         >
                           <td className="p-3">
-                            <div className="font-semibold">{item.name}</div>
+                            <div className="font-bold">{item.name}</div>
                             {item.description && (
                               <div className="text-sm text-muted-foreground">
                                 {item.description}
                               </div>
                             )}
                             {item.is_upsell && (
-                              <Badge className="bg-[#FF6200] text-white mt-1">UPGRADE</Badge>
+                              <Badge className="bg-[#2563eb] text-white mt-1">UPGRADE</Badge>
                             )}
                           </td>
                           <td className="p-3 text-center">{item.quantity}</td>
                           <td className="p-3 text-right">${item.unit_price.toFixed(2)}</td>
-                          <td className="p-3 text-right font-semibold">
+                          <td className="p-3 text-right font-bold">
                             ${item.total.toFixed(2)}
                           </td>
                         </tr>
@@ -316,7 +316,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   {/* @ts-ignore */}
-                  <span className="font-semibold">${quote.subtotal.toFixed(2)}</span>
+                  <span className="font-bold">${quote.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
@@ -324,12 +324,12 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                     Tax ({quote.tax_rate}%)
                   </span>
                   {/* @ts-ignore */}
-                  <span className="font-semibold">${quote.tax_amount.toFixed(2)}</span>
+                  <span className="font-bold">${quote.tax_amount.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between items-center text-xl font-bold pt-3 border-t-2">
+                <div className="flex justify-between items-center text-sm font-bold pt-3 border-t-2">
                   <span>Total</span>
                   {/* @ts-ignore */}
-                  <span className="text-[#FF6200]">${quote.total.toFixed(2)}</span>
+                  <span className="text-[#2563eb]">${quote.total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -337,8 +337,8 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
             {/* Notes */}
             {/* @ts-ignore */}
             {quote.notes && (
-              <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Additional Notes</h3>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 className="font-bold mb-2">Additional Notes</h3>
                 {/* @ts-ignore */}
                 <p className="text-sm text-muted-foreground">{quote.notes}</p>
               </div>
@@ -355,7 +355,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 <>
                   <Link href={`/q/${id}/sign`}>
                     <Button
-                      className="w-full h-14 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white text-lg font-semibold"
+                      className="w-full h-14 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white text-sm font-bold"
                       size="lg"
                     >
                       <CheckCircle className="h-5 w-5 mr-2" />
@@ -370,16 +370,16 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
 
               {/* @ts-ignore */}
               {quote.signed_at && (
-                <div className="bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4 text-center">
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 text-center">
                   <CheckCircle className="h-12 w-12 text-emerald-600 mx-auto mb-2" />
-                  <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                  <h3 className="font-bold text-emerald-900">
                     Quote Signed!
                   </h3>
-                  <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+                  <p className="text-sm text-emerald-700 mt-1">
                     {/* @ts-ignore */}
                     Signed on {new Date(quote.signed_at).toLocaleDateString()}
                   </p>
-                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-2">
+                  <p className="text-xs text-emerald-600 mt-2">
                     We'll contact you soon to schedule the work.
                   </p>
                 </div>
@@ -387,16 +387,16 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
 
               {/* @ts-ignore */}
               {!quote.signed_at && quote.accepted_at && (
-                <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-4 text-center">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
                   <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
-                  <h3 className="font-semibold text-green-900 dark:text-green-100">
+                  <h3 className="font-bold text-green-900">
                     Quote Accepted!
                   </h3>
-                  <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+                  <p className="text-sm text-green-700 mt-1">
                     {/* @ts-ignore */}
                     Accepted on {new Date(quote.accepted_at).toLocaleDateString()}
                   </p>
-                  <p className="text-xs text-green-600 dark:text-green-400 mt-2">
+                  <p className="text-xs text-green-600 mt-2">
                     We'll contact you soon to schedule the work.
                   </p>
                 </div>
@@ -418,10 +418,10 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
         </Card>
 
         {/* Company Footer */}
-        <Card className="bg-gray-50 dark:bg-gray-800">
+        <Card className="bg-gray-50">
           <CardContent className="pt-6">
             <div className="text-center space-y-3">
-              <h3 className="font-bold text-lg">{company.name}</h3>
+              <h3 className="font-bold text-sm">{company.name}</h3>
               <div className="flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
                 {company.phone && (
                   <div className="flex items-center gap-2">
@@ -446,7 +446,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[#FF6200] hover:underline"
+                  className="text-sm text-[#2563eb] hover:underline"
                 >
                   {company.website}
                 </a>

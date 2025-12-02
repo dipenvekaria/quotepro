@@ -14,8 +14,8 @@ export default function PricingPage() {
           <div className="flex items-center justify-between">
             <Link href="/">
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-white">QuoteBuilder Pro</h1>
-                <p className="text-[#FF6200] text-xs sm:text-sm font-semibold hidden sm:block">
+                <h1 className="text-sm sm:text-sm font-bold text-white">QuoteBuilder Pro</h1>
+                <p className="text-[#2563eb] text-xs sm:text-sm font-bold hidden sm:block">
                   Stop losing jobs to slow quotes.
                 </p>
               </div>
@@ -32,13 +32,13 @@ export default function PricingPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         {/* Hero Section */}
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-5xl font-bold text-white mb-3 sm:mb-4">
+          <h2 className="text-sm sm:text-sm font-bold text-white mb-3 sm:mb-4">
             Close Jobs Faster
           </h2>
-          <p className="text-base sm:text-xl text-gray-300 mb-4 sm:mb-6">
+          <p className="text-sm sm:text-sm text-gray-300 mb-4 sm:mb-6">
             Choose the plan that fits your business
           </p>
-          <div className="inline-block bg-[#FF6200] text-white px-4 py-2 rounded-lg font-semibold text-sm sm:text-base">
+          <div className="inline-block bg-[#2563eb] text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-sm">
             30 quotes free trial
           </div>
         </div>
@@ -48,8 +48,8 @@ export default function PricingPage() {
           {/* Starter Plan */}
           <Card className="border-2 border-gray-700 bg-gray-800">
             <CardHeader className="pb-4">
-              <CardTitle className="text-2xl sm:text-3xl font-bold text-white mb-2">Starter</CardTitle>
-              <CardDescription className="text-gray-400 text-sm sm:text-base">
+              <CardTitle className="text-sm sm:text-sm font-bold text-white mb-2">Starter</CardTitle>
+              <CardDescription className="text-gray-400 text-sm sm:text-sm">
                 Everything you need for 1–2 trucks
               </CardDescription>
             </CardHeader>
@@ -57,11 +57,11 @@ export default function PricingPage() {
               {/* Pricing */}
               <div className="space-y-2">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl sm:text-5xl font-bold text-white">$99</span>
-                  <span className="text-gray-400 text-sm sm:text-base">/month</span>
+                  <span className="text-sm sm:text-sm font-bold text-white">$99</span>
+                  <span className="text-gray-400 text-sm sm:text-sm">/month</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[#FF6200] font-semibold text-base sm:text-lg">$79/mo</span>
+                  <span className="text-[#2563eb] font-bold text-sm sm:text-sm">$79/mo</span>
                   <span className="text-gray-400 text-sm">billed annually</span>
                   <Badge className="bg-green-600 text-white text-xs">Save 20%</Badge>
                 </div>
@@ -69,16 +69,16 @@ export default function PricingPage() {
 
               {/* Features */}
               <div className="space-y-2 sm:space-y-3 pt-4 border-t border-gray-700">
-                <div className="text-gray-300 text-sm sm:text-base">✓ 30 quotes per month</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ 1 user</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ Quote generation</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ SMS sending</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ E-signature integration</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ Email support</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ 30 quotes per month</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ 1 user</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ Quote generation</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ SMS sending</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ E-signature integration</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ Email support</div>
               </div>
 
               <Link href="/login" className="block">
-                <Button className="w-full h-12 sm:h-14 text-base sm:text-lg font-semibold bg-white text-gray-900 hover:bg-gray-100">
+                <Button className="w-full h-12 sm:h-14 text-sm sm:text-sm font-bold bg-white text-gray-900 hover:bg-gray-100">
                   Start Free Trial
                 </Button>
               </Link>
@@ -86,19 +86,19 @@ export default function PricingPage() {
           </Card>
 
           {/* Pro Plan */}
-          <Card className="border-4 border-[#FF6200] bg-gray-800 relative">
+          <Card className="border-4 border-[#2563eb] bg-gray-800 relative">
             {/* Popular Badge */}
-            <div className="absolute top-0 right-0 bg-[#FF6200] text-white px-3 sm:px-6 py-1 sm:py-2 text-xs sm:text-sm font-bold">
+            <div className="absolute top-0 right-0 bg-[#2563eb] text-white px-3 sm:px-6 py-1 sm:py-2 text-xs sm:text-sm font-bold">
               74% CHOOSE THIS
             </div>
 
             <CardHeader className="pt-10 sm:pt-12 pb-4">
-              <CardTitle className="text-2xl sm:text-3xl font-bold text-white mb-2">Pro</CardTitle>
+              <CardTitle className="text-sm sm:text-sm font-bold text-white mb-2">Pro</CardTitle>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <Badge className="bg-[#FF6200] text-white text-xs">Most popular</Badge>
+                <Badge className="bg-[#2563eb] text-white text-xs">Most popular</Badge>
                 <Badge className="bg-green-600 text-white text-xs">Best for contractors</Badge>
               </div>
-              <CardDescription className="text-gray-300 text-sm sm:text-base">
+              <CardDescription className="text-gray-300 text-sm sm:text-sm">
                 Best for contractors who write 10+ quotes/week
               </CardDescription>
             </CardHeader>
@@ -106,11 +106,11 @@ export default function PricingPage() {
               {/* Pricing */}
               <div className="space-y-2">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl sm:text-5xl font-bold text-white">$199</span>
-                  <span className="text-gray-400 text-sm sm:text-base">/month</span>
+                  <span className="text-sm sm:text-sm font-bold text-white">$199</span>
+                  <span className="text-gray-400 text-sm sm:text-sm">/month</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[#FF6200] font-semibold text-base sm:text-lg">$149/mo</span>
+                  <span className="text-[#2563eb] font-bold text-sm sm:text-sm">$149/mo</span>
                   <span className="text-gray-400 text-sm">billed annually</span>
                   <Badge className="bg-green-600 text-white text-xs">Save 25%</Badge>
                 </div>
@@ -118,18 +118,18 @@ export default function PricingPage() {
 
               {/* Features */}
               <div className="space-y-2 sm:space-y-3 pt-4 border-t border-gray-700">
-                <div className="text-white font-semibold text-sm sm:text-base">✓ Unlimited quotes</div>
-                <div className="text-white font-semibold text-sm sm:text-base">✓ Unlimited users</div>
-                <div className="text-white font-semibold text-sm sm:text-base">✓ Priority support</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ Quote generation</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ SMS sending</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ E-signature integration</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ Custom branding</div>
-                <div className="text-gray-300 text-sm sm:text-base">✓ Advanced analytics</div>
+                <div className="text-white font-bold text-sm sm:text-sm">✓ Unlimited quotes</div>
+                <div className="text-white font-bold text-sm sm:text-sm">✓ Unlimited users</div>
+                <div className="text-white font-bold text-sm sm:text-sm">✓ Priority support</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ Quote generation</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ SMS sending</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ E-signature integration</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ Custom branding</div>
+                <div className="text-gray-300 text-sm sm:text-sm">✓ Advanced analytics</div>
               </div>
 
               <Link href="/login" className="block">
-                <Button className="w-full h-12 sm:h-14 text-base sm:text-lg font-semibold bg-[#FF6200] hover:bg-[#FF6200]/90 text-white">
+                <Button className="w-full h-12 sm:h-14 text-sm sm:text-sm font-bold bg-[#2563eb] hover:bg-[#2563eb]/90 text-white">
                   Start Free Trial
                 </Button>
               </Link>
@@ -141,15 +141,15 @@ export default function PricingPage() {
         <div className="bg-[#0F172A] rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto border border-white/10">
           <div className="grid sm:grid-cols-3 gap-6 text-center">
             <div className="space-y-2">
-              <h3 className="text-white font-semibold text-base sm:text-lg">14-day free trial</h3>
+              <h3 className="text-white font-bold text-sm sm:text-sm">14-day free trial</h3>
               <p className="text-gray-400 text-xs sm:text-sm">(no card required)</p>
             </div>
             <div className="space-y-2">
-              <h3 className="text-white font-semibold text-base sm:text-lg">Cancel anytime</h3>
+              <h3 className="text-white font-bold text-sm sm:text-sm">Cancel anytime</h3>
               <p className="text-gray-400 text-xs sm:text-sm">or downgrade anytime</p>
             </div>
             <div className="space-y-2">
-              <h3 className="text-white font-semibold text-base sm:text-lg">Money-back guarantee</h3>
+              <h3 className="text-white font-bold text-sm sm:text-sm">Money-back guarantee</h3>
               <p className="text-gray-400 text-xs sm:text-sm">if you don't win an extra job in 30 days</p>
             </div>
           </div>
@@ -157,14 +157,14 @@ export default function PricingPage() {
 
         {/* CTA Section */}
         <div className="text-center mt-12 sm:mt-16">
-          <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
+          <h3 className="text-sm sm:text-sm font-bold text-white mb-3 sm:mb-4">
             Ready to close more jobs?
           </h3>
-          <p className="text-base sm:text-xl text-gray-300 mb-6 sm:mb-8">
+          <p className="text-sm sm:text-sm text-gray-300 mb-6 sm:mb-8">
             Join thousands of contractors winning more work
           </p>
           <Link href="/login">
-            <Button className="h-14 sm:h-16 px-8 sm:px-12 text-lg sm:text-xl font-semibold bg-[#FF6200] hover:bg-[#FF6200]/90 text-white">
+            <Button className="h-14 sm:h-16 px-8 sm:px-12 text-sm sm:text-sm font-bold bg-[#2563eb] hover:bg-[#2563eb]/90 text-white">
               Start Your Free Trial
             </Button>
           </Link>

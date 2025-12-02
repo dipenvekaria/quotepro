@@ -137,7 +137,7 @@ export class SignNowClient {
           decline_by_signature: false,
         },
       ],
-      from: this.config.username || 'noreply@quotepro.com',
+      from: this.config.username || 'noreply@fieldgenie.com',
       subject: subject,
       message: message,
     }

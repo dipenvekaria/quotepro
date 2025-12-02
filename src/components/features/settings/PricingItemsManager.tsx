@@ -151,7 +151,7 @@ export function PricingItemsManager({
           <Button
             onClick={onAddItem}
             disabled={isSaving}
-            className="mt-4 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+            className="mt-4 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
           >
             {isSaving ? 'Adding...' : 'Add Item'}
           </Button>
@@ -175,7 +175,7 @@ export function PricingItemsManager({
                 type="button"
                 variant={uploadMode === 'replace' ? 'default' : 'outline'}
                 onClick={() => setUploadMode('replace')}
-                className={uploadMode === 'replace' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
+                className={uploadMode === 'replace' ? 'bg-[#2563eb] hover:bg-[#2563eb]/90' : ''}
               >
                 🔄 Replace All
               </Button>
@@ -183,7 +183,7 @@ export function PricingItemsManager({
                 type="button"
                 variant={uploadMode === 'append' ? 'default' : 'outline'}
                 onClick={() => setUploadMode('append')}
-                className={uploadMode === 'append' ? 'bg-[#FF6200] hover:bg-[#FF6200]/90' : ''}
+                className={uploadMode === 'append' ? 'bg-[#2563eb] hover:bg-[#2563eb]/90' : ''}
               >
                 ➕ Add to Existing
               </Button>
@@ -201,7 +201,7 @@ export function PricingItemsManager({
             <div className="flex items-center gap-4">
               <label
                 htmlFor="bulkUpload"
-                className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:border-[#FF6200] transition-colors flex-1 bg-gray-50 dark:bg-gray-800"
+                className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#2563eb] transition-colors flex-1 bg-gray-50"
               >
                 {uploadFile ? (
                   <span className="text-sm font-medium">
@@ -226,42 +226,42 @@ export function PricingItemsManager({
 
           {/* Loading State */}
           {isLoadingPreview && (
-            <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg text-center">
-              <p className="text-sm text-blue-700 dark:text-blue-300 font-medium">📊 Analyzing your file...</p>
+            <div className="p-4 bg-blue-50 rounded-lg text-center">
+              <p className="text-sm text-blue-700 font-medium">📊 Analyzing your file...</p>
             </div>
           )}
 
           {/* Uploading State */}
           {isUploading && (
-            <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg text-center">
-              <p className="text-sm text-green-700 dark:text-green-300 font-medium">⬆️ Uploading items...</p>
+            <div className="p-4 bg-green-50 rounded-lg text-center">
+              <p className="text-sm text-green-700 font-medium">⬆️ Uploading items...</p>
             </div>
           )}
 
           {/* Feature Highlights */}
-          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 rounded-lg border border-blue-200 dark:border-blue-800">
-            <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-              <span className="text-lg">✨</span> Smart Column Mapping
+          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+            <h4 className="font-bold text-sm mb-3 flex items-center gap-2">
+              <span className="text-sm">✨</span> Smart Column Mapping
             </h4>
             <ul className="text-xs space-y-2 text-muted-foreground">
               <li className="flex items-start gap-2">
-                <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                <span className="text-green-600 font-bold">✓</span>
                 <span><strong>Upload any file</strong> - Works with QuickBooks, ServiceTitan, Excel, Google Sheets exports</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                <span className="text-green-600 font-bold">✓</span>
                 <span><strong>Auto-detection</strong> - We automatically detect your column headers and suggest mappings</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                <span className="text-green-600 font-bold">✓</span>
                 <span><strong>Visual preview</strong> - See first 5 rows before uploading to verify your data</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                <span className="text-green-600 font-bold">✓</span>
                 <span><strong>Map your columns</strong> - Simply match your columns to: Name, Price, Category, Description</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-blue-600 dark:text-blue-400 font-bold">→</span>
+                <span className="text-blue-600 font-bold">→</span>
                 <span className="italic">No templates needed - use your existing files!</span>
               </li>
             </ul>
@@ -372,7 +372,7 @@ export function PricingItemsManager({
             <div className="max-h-[600px] overflow-y-auto pr-2 space-y-6">
               {Object.entries(groupedPricingItems).map(([category, items]) => (
                 <div key={category}>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
+                  <h3 className="text-sm font-bold mb-3 flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
                     {category}
                     <Badge variant="secondary">{items.length}</Badge>
                   </h3>
@@ -380,7 +380,7 @@ export function PricingItemsManager({
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors gap-4"
+                        className="flex flex-col md:flex-row md:items-center md:justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors gap-4"
                       >
                         {editingItem?.id === item.id ? (
                           <div className="flex-1 space-y-3">
@@ -412,7 +412,7 @@ export function PricingItemsManager({
                                 size="sm"
                                 onClick={() => onUpdateItem(editingItem)}
                                 disabled={isSaving}
-                                className="bg-[#FF6200] hover:bg-[#FF6200]/90 flex-1"
+                                className="bg-[#2563eb] hover:bg-[#2563eb]/90 flex-1"
                               >
                                 Save
                               </Button>

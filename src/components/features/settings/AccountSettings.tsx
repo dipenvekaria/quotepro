@@ -38,14 +38,14 @@ export function AccountSettings({
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label>Email Address</Label>
-            <Input value={email} disabled className="bg-gray-100 dark:bg-gray-800" />
+            <Input value={email} disabled className="bg-gray-100" />
             <p className="text-xs text-muted-foreground">
               Contact support to change your email address
             </p>
           </div>
 
           <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold mb-4">Change Password</h3>
+            <h3 className="text-lg font-bold mb-4">Change Password</h3>
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="newPassword">New Password</Label>
@@ -72,7 +72,7 @@ export function AccountSettings({
               <Button
                 onClick={onPasswordChange}
                 disabled={isSaving || !newPassword || !confirmPassword}
-                className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+                className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
               >
                 {isSaving ? 'Updating...' : 'Update Password'}
               </Button>
@@ -81,9 +81,9 @@ export function AccountSettings({
         </CardContent>
       </Card>
 
-      <Card className="border-red-200 dark:border-red-800">
+      <Card className="border-red-200">
         <CardHeader>
-          <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+          <CardTitle className="text-red-600">Danger Zone</CardTitle>
           <CardDescription>
             Account actions that cannot be undone
           </CardDescription>

@@ -59,7 +59,7 @@ export function ArchiveDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Archive className="h-5 w-5 text-orange-500" />
+            <Archive className="h-5 w-5 text-blue-500" />
             {title || `Archive ${itemType.charAt(0).toUpperCase() + itemType.slice(1)}`}
           </DialogTitle>
           <DialogDescription>
@@ -95,7 +95,7 @@ export function ArchiveDialog({
             variant="default"
             onClick={handleConfirm}
             disabled={!reason.trim() || isArchiving}
-            className="bg-orange-500 hover:bg-orange-600 dark:bg-orange-600 dark:hover:bg-orange-700"
+            className="bg-blue-500 hover:bg-blue-700"
           >
             {isArchiving ? (
               <>

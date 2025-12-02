@@ -59,13 +59,13 @@ export function MobileFilterButton({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center justify-center p-2.5 rounded-lg",
-          "bg-white dark:bg-gray-800",
-          "border border-gray-200 dark:border-gray-700",
-          "text-gray-700 dark:text-gray-300",
-          "hover:bg-gray-50 dark:hover:bg-gray-700",
+          "bg-white",
+          "border border-gray-200",
+          "text-gray-700",
+          "hover:bg-gray-50",
           "transition-colors",
-          "focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-600",
-          isOpen && "bg-gray-50 dark:bg-gray-700"
+          "focus:outline-none focus:ring-2 focus:ring-blue-500",
+          isOpen && "bg-gray-50"
         )}
         aria-label={`Filter by ${label}`}
       >
@@ -75,12 +75,12 @@ export function MobileFilterButton({
       {isOpen && (
         <div className={cn(
           "absolute z-50 right-0 mt-2 w-48 rounded-lg shadow-lg",
-          "bg-white dark:bg-gray-800",
-          "border border-gray-200 dark:border-gray-700",
+          "bg-white",
+          "border border-gray-200",
           "py-1",
           "animate-in fade-in slide-in-from-top-2 duration-200"
         )}>
-          <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide border-b border-gray-200 dark:border-gray-700">
+          <div className="px-3 py-2 text-xs font-bold text-gray-500 uppercase tracking-wide border-b border-gray-200">
             {label}
           </div>
           {options.map((option) => (
@@ -90,9 +90,9 @@ export function MobileFilterButton({
               className={cn(
                 "w-full px-3 py-2.5 text-left text-sm",
                 "flex items-center justify-between gap-2",
-                "hover:bg-gray-50 dark:hover:bg-gray-700",
+                "hover:bg-gray-50",
                 "transition-colors",
-                option.value === value && "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 font-medium"
+                option.value === value && "bg-blue-50 text-blue-600 font-bold"
               )}
             >
               <span>{option.label}</span>
@@ -100,8 +100,8 @@ export function MobileFilterButton({
                 <span className={cn(
                   "px-2 py-0.5 text-xs font-bold rounded-full",
                   option.value === value
-                    ? "bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-gray-100 text-gray-600"
                 )}>
                   {option.count}
                 </span>

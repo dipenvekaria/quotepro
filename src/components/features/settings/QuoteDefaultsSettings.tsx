@@ -81,7 +81,7 @@ export function QuoteDefaultsSettings({
         <Button
           onClick={onSave}
           disabled={isSaving}
-          className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+          className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
         >
           {isSaving ? 'Saving...' : 'Save Quote Settings'}
         </Button>

@@ -29,7 +29,7 @@ export function NewActionMenu({ companyId }: NewActionMenuProps) {
         <DropdownMenuTrigger asChild>
           <Button
             size="lg"
-            className="fixed bottom-20 right-4 z-50 h-14 w-14 rounded-full bg-[#FF6200] hover:bg-[#FF6200]/90 shadow-lg lg:hidden"
+            className="fixed bottom-20 right-4 z-50 h-14 w-14 rounded-full bg-[#2563eb] hover:bg-[#2563eb]/90 shadow-lg lg:hidden"
           >
             <Plus className="h-6 w-6" />
           </Button>
@@ -56,7 +56,7 @@ export function NewActionMenu({ companyId }: NewActionMenuProps) {
       <div className="hidden lg:block">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="w-full bg-[#FF6200] hover:bg-[#FF6200]/90 text-white">
+            <Button className="w-full bg-[#2563eb] hover:bg-[#2563eb]/90 text-white">
               <Plus className="h-4 w-4 mr-2" />
               New...
             </Button>

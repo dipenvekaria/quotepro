@@ -27,13 +27,13 @@ export default function LoginPage() {
         {/* Logo and Title */}
         <div className="text-center space-y-3">
           <div className="flex items-center justify-center gap-3">
-            <div className="bg-[#FF6200] p-3 rounded-lg">
+            <div className="bg-[#2563eb] p-3 rounded-lg">
               <Wrench className="h-8 w-8 text-white" />
             </div>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">QuoteBuilder Pro</h1>
-            <p className="text-[#FF6200] text-lg font-semibold mt-1">
+            <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
+            <p className="text-[#2563eb] text-sm font-bold mt-1">
               Win more jobs in seconds
             </p>
           </div>
@@ -80,7 +80,7 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full h-11 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white font-semibold"
+                className="w-full h-11 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white font-bold"
                 disabled={isLoading}
               >
                 {isLoading ? 'Loading...' : (isSignUp ? 'Create Account' : 'Sign In')}
@@ -128,7 +128,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setIsSignUp(!isSignUp)}
-                  className="text-[#FF6200] hover:underline font-medium"
+                  className="text-[#2563eb] hover:underline font-bold"
                 >
                   {isSignUp 
                     ? 'Already have an account? Sign in' 
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <div className="text-center">
-          <Link href="/pricing" className="text-gray-400 hover:text-[#FF6200] text-sm underline">
+          <Link href="/pricing" className="text-gray-400 hover:text-[#2563eb] text-sm underline">
             View Pricing
           </Link>
         </div>

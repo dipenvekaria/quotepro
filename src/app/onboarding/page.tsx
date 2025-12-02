@@ -22,14 +22,14 @@ export default function OnboardingPage() {
   } = useOnboarding()
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-[#0F172A] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-center gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-white">QuoteBuilder Pro</h1>
-              <p className="text-[#FF6200] text-sm font-semibold">
+              <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
+              <p className="text-[#2563eb] text-sm font-bold">
                 Stop losing jobs to slow quotes.
               </p>
             </div>
@@ -62,7 +62,7 @@ export default function OnboardingPage() {
                   placeholder="e.g., CoolAir HVAC Services"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="h-12 text-lg"
+                  className="h-12 text-sm"
                   autoFocus
                 />
               </div>
@@ -98,7 +98,7 @@ export default function OnboardingPage() {
               <Button
                 onClick={handleStep1}
                 disabled={isLoading}
-                className="w-full h-12 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+                className="w-full h-12 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
               >
                 {isLoading ? 'Saving...' : 'Continue'}
               </Button>
@@ -111,20 +111,20 @@ export default function OnboardingPage() {
           <Card>
             <CardHeader>
               <div className="flex justify-center mb-4">
-                <div className="h-20 w-20 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-4xl">
+                <div className="h-20 w-20 bg-green-100 rounded-full flex items-center justify-center text-sm">
                   ✓
                 </div>
               </div>
-              <CardTitle className="text-center text-2xl">
+              <CardTitle className="text-center text-sm">
                 You're ready to go!
               </CardTitle>
-              <CardDescription className="text-center text-lg">
+              <CardDescription className="text-center text-sm">
                 Create your first quote and start winning more jobs
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 space-y-2">
-                <h3 className="font-semibold text-primary">What's next?</h3>
+                <h3 className="font-bold text-primary">What's next?</h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-accent">✓</span>
@@ -143,7 +143,7 @@ export default function OnboardingPage() {
 
               <Button
                 onClick={handleStep2}
-                className="w-full h-14 bg-[#FF6200] hover:bg-[#FF6200]/90 text-white text-lg font-semibold"
+                className="w-full h-14 bg-[#2563eb] hover:bg-[#2563eb]/90 text-white text-sm font-bold"
               >
                 Create Your First Quote Now
               </Button>

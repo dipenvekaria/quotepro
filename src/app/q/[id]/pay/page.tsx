@@ -76,7 +76,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
       </div>
     )
   }
@@ -86,7 +86,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
       <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-6 text-center">
-            <h2 className="text-xl font-bold mb-2">Invoice Not Found</h2>
+            <h2 className="text-sm font-bold mb-2">Invoice Not Found</h2>
             <p className="text-muted-foreground">
               The invoice you're looking for doesn't exist.
             </p>
@@ -102,11 +102,11 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
     : null
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4">
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">
+          <h1 className="text-sm font-bold mb-2">
             {isPaid ? 'Payment Received' : 'Pay Invoice'}
           </h1>
           <p className="text-muted-foreground">
@@ -116,7 +116,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
 
         {/* Main Card */}
         <Card>
-          <CardHeader className="bg-orange-50 dark:bg-orange-950/20">
+          <CardHeader className="bg-blue-50">
             <CardTitle className="flex items-center justify-between">
               <span>Invoice Details</span>
               {isPaid && (
@@ -130,7 +130,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
           <CardContent className="p-6 space-y-6">
             {/* Customer Info */}
             <div>
-              <h3 className="font-semibold mb-2">Bill To:</h3>
+              <h3 className="font-bold mb-2">Bill To:</h3>
               <p className="text-sm">{quote.customer_name}</p>
               {quote.customer_address && (
                 <p className="text-sm text-muted-foreground">{quote.customer_address}</p>
@@ -145,7 +145,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
               {quote.completed_at && (
                 <div>
                   <p className="text-muted-foreground">Invoice Date</p>
-                  <p className="font-medium">
+                  <p className="font-bold">
                     {format(new Date(quote.completed_at), 'MMM d, yyyy')}
                   </p>
                 </div>
@@ -153,7 +153,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
               {dueDate && !isPaid && (
                 <div>
                   <p className="text-muted-foreground">Due Date</p>
-                  <p className="font-medium">
+                  <p className="font-bold">
                     {format(dueDate, 'MMM d, yyyy')}
                   </p>
                 </div>
@@ -161,7 +161,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
               {isPaid && quote.paid_at && (
                 <div>
                   <p className="text-muted-foreground">Paid Date</p>
-                  <p className="font-medium text-green-600">
+                  <p className="font-bold text-green-600">
                     {format(new Date(quote.paid_at), 'MMM d, yyyy')}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
             <div className="border-t pt-6">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-muted-foreground">Subtotal</span>
-                <span className="font-medium">
+                <span className="font-bold">
                   ${(quote.subtotal || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -180,15 +180,15 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
                 <span className="text-sm text-muted-foreground">
                   Tax ({quote.tax_rate || 0}%)
                 </span>
-                <span className="font-medium">
+                <span className="font-bold">
                   ${(quote.tax_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
-              <div className="flex justify-between items-center bg-orange-50 dark:bg-orange-950/20 p-4 rounded-lg">
-                <span className="text-lg font-bold">
+              <div className="flex justify-between items-center bg-blue-50 p-4 rounded-lg">
+                <span className="text-sm font-bold">
                   {isPaid ? 'Total Paid' : 'Amount Due'}
                 </span>
-                <span className="text-2xl font-bold text-orange-600">
+                <span className="text-sm font-bold text-blue-600">
                   ${(quote.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -200,7 +200,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
                 <Button
                   onClick={handlePayNow}
                   disabled={paying}
-                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white h-12 text-lg"
+                  className="flex-1 bg-blue-700 hover:bg-blue-800 text-white h-12 text-sm"
                 >
                   {paying ? (
                     <>
@@ -230,8 +230,8 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
 
             {/* Payment Info */}
             {!isPaid && (
-              <div className="text-sm text-muted-foreground bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                <p className="font-semibold mb-2">Accepted Payment Methods:</p>
+              <div className="text-sm text-muted-foreground bg-gray-50 p-4 rounded-lg">
+                <p className="font-bold mb-2">Accepted Payment Methods:</p>
                 <p>• Credit & Debit Cards</p>
                 <p>• Apple Pay & Google Pay</p>
                 <p className="mt-2 text-xs">
@@ -241,9 +241,9 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
             )}
 
             {isPaid && (
-              <div className="text-sm bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 p-4 rounded-lg text-center">
+              <div className="text-sm bg-green-50 text-green-700 p-4 rounded-lg text-center">
                 <CheckCircle className="h-8 w-8 mx-auto mb-2" />
-                <p className="font-semibold">Thank you for your payment!</p>
+                <p className="font-bold">Thank you for your payment!</p>
                 <p className="text-xs mt-1">
                   A receipt has been sent to {quote.customer_email}
                 </p>

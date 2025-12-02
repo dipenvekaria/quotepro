@@ -38,7 +38,7 @@ export function AIAssistant({
   return (
     <Card className="border-purple-500 border-2">
       <CardHeader className="bg-purple-500/5">
-        <CardTitle className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+        <CardTitle className="flex items-center gap-2 text-purple-600">
           <Bot className="h-5 w-5" />
           AI Quote Assistant
         </CardTitle>
@@ -48,8 +48,8 @@ export function AIAssistant({
       </CardHeader>
       <CardContent className="space-y-4">
         {aiNotes && (
-          <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div className="text-sm font-semibold mb-2 flex items-center gap-2">
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <div className="text-sm font-bold mb-2 flex items-center gap-2">
               📋 Installation Instructions / Job Description
             </div>
             <div className="text-sm whitespace-pre-wrap">{aiNotes}</div>
@@ -57,7 +57,7 @@ export function AIAssistant({
         )}
 
         <div className="space-y-3">
-          <Label htmlFor="aiUpdatePrompt" className="text-base">
+          <Label htmlFor="aiUpdatePrompt" className="text-sm">
             What would you like to change?
           </Label>
           <Textarea

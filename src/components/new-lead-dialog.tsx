@@ -167,7 +167,7 @@ export function NewLeadDialog({ open, onOpenChange, companyId }: NewLeadDialogPr
             </Button>
             <Button
               type="submit"
-              className="flex-1 bg-[#FF6200] hover:bg-[#FF6200]/90"
+              className="flex-1 bg-[#2563eb] hover:bg-[#2563eb]/90"
               disabled={loading}
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

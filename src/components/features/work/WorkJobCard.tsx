@@ -31,7 +31,7 @@ export function WorkJobCard({
       <div className="flex-1 space-y-2">
         {/* Customer Name & Quote Number */}
         <div className="flex items-center gap-3">
-          <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
+          <h3 className="font-bold text-lg">{quote.customer_name}</h3>
           <QuoteStatusBadge status={quote.status} size="sm" />
         </div>
 
@@ -47,7 +47,7 @@ export function WorkJobCard({
         <div className="flex flex-wrap items-center gap-4 text-sm">
           <div className="flex items-center gap-1.5">
             <DollarSign className="h-4 w-4 text-muted-foreground" />
-            <span className="font-semibold text-[#FF6200]">
+            <span className="font-bold text-[#2563eb]">
               ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </span>
           </div>
@@ -58,8 +58,8 @@ export function WorkJobCard({
           </div>
 
           {quote.scheduled_at && (
-            <div className={`flex items-center gap-1.5 font-medium ${
-              variant === 'scheduled' ? 'text-blue-600 dark:text-blue-400' : 'text-blue-600 dark:text-blue-400'
+            <div className={`flex items-center gap-1.5 font-bold ${
+              variant === 'scheduled' ? 'text-blue-600' : 'text-blue-600'
             }`}>
               <Calendar className="h-4 w-4" />
               <span className={variant === 'scheduled' ? '' : 'text-xs'}>
@@ -69,7 +69,7 @@ export function WorkJobCard({
           )}
 
           {quote.accepted_at && !quote.scheduled_at && (
-            <div className="flex items-center gap-1.5 text-green-600 dark:text-green-400">
+            <div className="flex items-center gap-1.5 text-green-600">
               <Clock className="h-4 w-4" />
               <span className="text-xs">
                 Accepted {format(new Date(quote.accepted_at), 'MMM d')}
@@ -90,7 +90,7 @@ export function WorkJobCard({
       {showScheduleButton && (
         <Button
           onClick={() => onSchedule(quote)}
-          className="bg-[#FF6200] hover:bg-[#E55800] shrink-0"
+          className="bg-[#2563eb] hover:bg-[#1d4ed8] shrink-0"
         >
           <Calendar className="h-4 w-4 mr-2" />
           Schedule
@@ -102,7 +102,7 @@ export function WorkJobCard({
           onClick={() => onComplete(quote.id)}
           disabled={isCompleting}
           variant="outline"
-          className="shrink-0 border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-950"
+          className="shrink-0 border-green-600 text-green-600 hover:bg-green-50"
         >
           <CheckCircle className="h-4 w-4 mr-2" />
           {isCompleting ? 'Completing...' : 'Complete'}

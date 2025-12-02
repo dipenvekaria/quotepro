@@ -103,7 +103,7 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
     const statusConfig = {
       to_schedule: { label: 'To Schedule', color: 'bg-gray-500' },
       scheduled: { label: 'Scheduled', color: 'bg-blue-500' },
-      in_progress: { label: 'In Progress', color: 'bg-[#FF6200]' },
+      in_progress: { label: 'In Progress', color: 'bg-[#2563eb]' },
       completed: { label: 'Completed', color: 'bg-green-500' },
     }
 
@@ -112,10 +112,10 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
     return (
       <Card className="hover:shadow-md transition-all">
         <a href={`/quotes/new?id=${quote.id}`} className="block">
-          <CardContent className="pt-6">
-            <div className="flex items-start justify-between gap-4 mb-4">
+          <CardContent className="py-3 px-3">
+            <div className="flex items-start justify-between gap-4 mb-3">
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-base truncate">{quote.customer_name}</h3>
+                <h3 className="font-bold text-base truncate">{quote.customer_name}</h3>
                 <p className="text-sm text-muted-foreground font-mono mt-1">{quote.quote_number}</p>
               </div>
               <Badge className={`${config.color} text-white flex-shrink-0`}>
@@ -123,7 +123,7 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
               </Badge>
             </div>
 
-            <div className="space-y-2.5 text-sm">
+            <div className="space-y-2 text-sm">
               {quote.customer_phone && (
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Phone className="h-4 w-4 flex-shrink-0" />
@@ -217,7 +217,7 @@ export function WorkCalendar({ quotes }: { quotes: Quote[] }) {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Clock className="h-16 w-16 text-muted-foreground mb-4 opacity-50" />
-            <p className="text-lg font-medium">
+            <p className="text-sm font-medium">
               {searchQuery || statusFilter !== 'all' 
                 ? 'No jobs match your filters' 
                 : 'No jobs yet'}

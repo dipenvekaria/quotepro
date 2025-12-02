@@ -267,7 +267,7 @@ function SettingsPageContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <p className="text-muted-foreground">Loading settings...</p>
       </div>
     )
@@ -768,26 +768,26 @@ function SettingsPageContent() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Settings Content */}
       <div className="flex-1 min-w-0">
         {/* Header */}
         <header className="bg-[#0F172A] border-b border-white/10 sticky top-0 z-20">
           <div className="px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center gap-3">
-              <div className="bg-[#FF6200] p-2 rounded-lg">
+              <div className="bg-[#2563eb] p-2 rounded-lg">
                 <Wrench className="h-5 w-5 text-white" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">Settings</h1>
-                <p className="text-gray-300 text-sm">Manage your preferences</p>
+                <p className="text-gray-300 text-base">Manage your preferences</p>
               </div>
             </div>
           </div>
         </header>
 
         {/* Tabs Navigation */}
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-[88px] z-10 overflow-hidden">
+        <div className="bg-white border-b border-gray-200 sticky top-[88px] z-10 overflow-hidden">
           <div className="overflow-x-auto scrollbar-hide">
             <nav className="flex gap-1 min-w-min px-4 sm:px-6 lg:px-8" aria-label="Settings tabs">
               {navItems.map((item) => {
@@ -798,11 +798,10 @@ function SettingsPageContent() {
                     key={item.id}
                     onClick={() => handleTabChange(item.id)}
                     className={`
-                      flex items-center justify-center gap-1.5 px-3 sm:px-4 py-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors flex-shrink-0
+                      flex items-center justify-center gap-1.5 px-3 sm:px-4 py-3 border-b-2 font-bold text-xs sm:text-sm whitespace-nowrap transition-colors flex-shrink-0
                       ${isActive 
-                        ? 'border-[#FF6200] text-[#FF6200]' 
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                      }
+                        ? 'border-[#2563eb] text-[#2563eb]' 
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}
                     `}
                   >
                     <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -976,7 +975,7 @@ function SettingsPageContent() {
               <div className="space-y-6">
                 {/* Column Mapping */}
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-sm">Column Mapping</h3>
+                  <h3 className="font-bold text-sm">Column Mapping</h3>
                   
                   {/* Name Mapping */}
                   <div className="grid grid-cols-2 gap-4 items-center">
@@ -1055,13 +1054,13 @@ function SettingsPageContent() {
 
                 {/* Data Preview */}
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-sm">Data Preview (first 5 rows)</h3>
+                  <h3 className="font-bold text-sm">Data Preview (first 5 rows)</h3>
                   <div className="overflow-x-auto border rounded-lg">
                     <table className="w-full text-sm">
-                      <thead className="bg-gray-100 dark:bg-gray-800">
+                      <thead className="bg-gray-100">
                         <tr>
                           {filePreview.columns.map((col: string) => (
-                            <th key={col} className="px-3 py-2 text-left font-medium">
+                            <th key={col} className="px-3 py-2 text-left font-bold">
                               {col}
                               {col === columnMapping.name && ' → Name'}
                               {col === columnMapping.price && ' → Price'}
@@ -1073,7 +1072,7 @@ function SettingsPageContent() {
                       </thead>
                       <tbody>
                         {filePreview.preview_data.map((row: any, idx: number) => (
-                          <tr key={idx} className="border-t hover:bg-gray-50 dark:hover:bg-gray-800">
+                          <tr key={idx} className="border-t hover:bg-gray-50">
                             {filePreview.columns.map((col: string) => (
                               <td key={col} className="px-3 py-2">
                                 {String(row[col] || '')}
@@ -1088,8 +1087,8 @@ function SettingsPageContent() {
 
                 {/* Validation Warning */}
                 {(!columnMapping.name || !columnMapping.price) && (
-                  <div className="p-3 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-sm text-yellow-800">
                       ⚠️ Please map at least the <strong>Name</strong> and <strong>Price</strong> columns to continue.
                     </p>
                   </div>
@@ -1112,7 +1111,7 @@ function SettingsPageContent() {
               <Button
                 onClick={handleBulkUpload}
                 disabled={!columnMapping.name || !columnMapping.price || isUploading}
-                className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white"
+                className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
               >
                 {isUploading ? 'Uploading...' : `Upload ${filePreview?.total_rows || 0} Items`}
               </Button>
@@ -1127,7 +1126,7 @@ function SettingsPageContent() {
 export default function SettingsPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <p className="text-muted-foreground">Loading settings...</p>
       </div>
     }>

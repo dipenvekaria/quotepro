@@ -3,6 +3,8 @@
  * Server-side error tracking
  */
 
+// Commented out - @sentry/nextjs not installed
+/*
 import * as Sentry from "@sentry/nextjs"
 
 Sentry.init({
@@ -14,3 +16,4 @@ Sentry.init({
 
   debug: false,
 })
+*/

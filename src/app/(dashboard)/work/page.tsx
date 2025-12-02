@@ -41,10 +41,10 @@ export default function WorkPage() {
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+      <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
         <div className="px-6 py-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Work</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Track scheduled jobs and completed work</p>
+          <h1 className="text-2xl font-bold text-gray-900">Work</h1>
+          <p className="text-base text-gray-600 mt-1">Track scheduled jobs and completed work</p>
         </div>
       </header>
 
@@ -59,14 +59,14 @@ export default function WorkPage() {
               <Calendar className="h-4 w-4" />
               <span className="hidden sm:inline">To be Scheduled</span>
               <span className="sm:hidden">To Schedule</span>
-              <span className="ml-1 bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300 px-2 py-0.5 rounded-full text-xs font-semibold">
+              <span className="ml-1 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">
                 {toBeScheduled.length}
               </span>
             </TabsTrigger>
             <TabsTrigger value="scheduled" className="gap-2">
               <Clock className="h-4 w-4" />
               Scheduled
-              <span className="ml-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full text-xs font-semibold">
+              <span className="ml-1 bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-bold">
                 {scheduled.length}
               </span>
             </TabsTrigger>
@@ -78,7 +78,7 @@ export default function WorkPage() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-lg mb-2">No Jobs to Schedule</h3>
+                  <h3 className="font-bold text-sm mb-2">No Jobs to Schedule</h3>
                   <p className="text-sm text-muted-foreground">
                     Accepted or signed quotes will appear here when they need scheduling.
                   </p>
@@ -86,8 +86,8 @@ export default function WorkPage() {
               </Card>
             ) : (
               <>
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
-                  <p className="text-sm text-orange-800 dark:text-orange-200">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">
                     📅 <strong>{toBeScheduled.length} job{toBeScheduled.length !== 1 ? 's' : ''}</strong> ready to schedule. 
                     Click Schedule to pick a date and time.
                   </p>
@@ -110,7 +110,7 @@ export default function WorkPage() {
               <Card>
                 <CardContent className="py-12 text-center">
                   <Clock className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="font-semibold text-lg mb-2">No Scheduled Jobs</h3>
+                  <h3 className="font-bold text-sm mb-2">No Scheduled Jobs</h3>
                   <p className="text-sm text-muted-foreground">
                     Jobs with confirmed dates and times will appear here.
                   </p>
@@ -118,8 +118,8 @@ export default function WorkPage() {
               </Card>
             ) : (
               <>
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <p className="text-sm text-blue-800">
                     🗓️ <strong>{scheduled.length} job{scheduled.length !== 1 ? 's' : ''}</strong> scheduled. 
                     Click Complete when the job is finished.
                   </p>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { 
   Users, 
@@ -16,7 +16,8 @@ import {
   ChevronsLeft,
   ChevronsRight,
   BarChart3,
-  LayoutDashboard
+  LayoutDashboard,
+  Zap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -54,6 +55,7 @@ export function DesktopSidebar({ counts = {
   paid: 0
 } }: DesktopSidebarProps) {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     'leads-quotes': true,
     'work': true,
@@ -170,7 +172,27 @@ export function DesktopSidebar({ counts = {
   ]
 
   const isActive = (href: string) => {
-    return pathname?.startsWith(href)
+    // For exact path matching (like /leads-and-quotes/leads)
+    if (!href.includes('?')) {
+      return pathname?.startsWith(href)
+    }
+    
+    // For paths with query params (like /work?tab=scheduled)
+    const [basePath, queryString] = href.split('?')
+    if (!pathname?.startsWith(basePath)) {
+      return false
+    }
+    
+    // Check if query params match using Next.js searchParams
+    const hrefParams = new URLSearchParams(queryString)
+    
+    // Check if all href params match current URL params
+    for (const [key, value] of hrefParams.entries()) {
+      if (searchParams?.get(key) !== value) {
+        return false
+      }
+    }
+    return true
   }
 
   const renderNavLink = (link: NavLink) => (
@@ -180,8 +202,8 @@ export function DesktopSidebar({ counts = {
       className={cn(
         "flex items-center justify-between px-4 py-2.5 rounded-lg transition-all group",
         isActive(link.href)
-          ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400"
-          : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
+          ? "bg-blue-50 text-blue-600"
+          : "text-gray-700 hover:bg-gray-50 hover:text-gray-900",
         isCollapsed && "justify-center px-2"
       )}
       title={isCollapsed ? link.label : undefined}
@@ -189,12 +211,12 @@ export function DesktopSidebar({ counts = {
       <div className={cn("flex items-center gap-3", isCollapsed && "gap-0")}>
         <link.icon className={cn(
           "w-4 h-4 transition-colors",
-          isActive(link.href) ? "text-orange-600 dark:text-orange-400" : "text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300"
+          isActive(link.href) ? "text-blue-600" : "text-gray-500 group-hover:text-gray-700"
         )} />
         {!isCollapsed && (
           <span className={cn(
             "text-sm font-medium",
-            isActive(link.href) ? "text-orange-600 dark:text-orange-400" : "text-gray-700 dark:text-gray-300"
+            isActive(link.href) ? "text-blue-600" : "text-gray-700"
           )}>
             {link.label}
           </span>
@@ -202,10 +224,10 @@ export function DesktopSidebar({ counts = {
       </div>
       {!isCollapsed && link.count !== undefined && link.count > 0 && (
         <span className={cn(
-          "px-2.5 py-1 text-xs font-bold rounded-full min-w-[24px] text-center",
+          "px-2.5 py-1 text-xs font-bold rounded min-w-[24px] text-center",
           isActive(link.href)
-            ? "bg-orange-500 dark:bg-orange-600 text-white"
-            : "bg-gray-700 dark:bg-gray-600 text-white"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-700 text-white"
         )}>
           {link.count}
         </span>
@@ -234,31 +256,31 @@ export function DesktopSidebar({ counts = {
           className={cn(
             "w-full flex items-center justify-between px-4 py-2.5 rounded-lg transition-all group",
             hasActiveChild 
-              ? "bg-orange-50/50 dark:bg-orange-900/10 text-orange-600 dark:text-orange-400"
-              : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100"
+              ? "bg-blue-50/50 text-blue-600"
+              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
           )}
         >
           <div className="flex items-center gap-3">
             <SectionIcon className={cn(
               "w-4 h-4 transition-colors",
-              hasActiveChild ? "text-orange-600 dark:text-orange-400" : "text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300"
+              hasActiveChild ? "text-blue-600" : "text-gray-500 group-hover:text-gray-700"
             )} />
             <span className={cn(
-              "text-sm font-semibold",
-              hasActiveChild ? "text-orange-600 dark:text-orange-400" : "text-gray-700 dark:text-gray-300"
+              "text-sm font-bold",
+              hasActiveChild ? "text-blue-600" : "text-gray-700"
             )}>
               {section.label}
             </span>
           </div>
           {isExpanded ? (
-            <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           ) : (
-            <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+            <ChevronRight className="w-4 h-4 text-gray-400" />
           )}
         </button>
 
         {isExpanded && (
-          <div className="ml-4 space-y-1 pl-3 border-l border-gray-200 dark:border-gray-700">
+          <div className="ml-4 space-y-1 pl-3 border-l border-gray-200">
             {section.children.map(child => renderNavLink(child))}
           </div>
         )}
@@ -268,30 +290,30 @@ export function DesktopSidebar({ counts = {
 
   return (
     <aside className={cn(
-      "hidden md:flex md:flex-col fixed inset-y-0 z-50 !bg-white dark:!bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300",
+      "hidden md:flex md:flex-col fixed inset-y-0 z-50 !bg-white border-r border-gray-200 transition-all duration-300",
       isCollapsed ? "w-16" : "w-64"
     )}>
       {/* Logo */}
-      <div className="flex items-center h-16 px-6 border-b border-gray-200 dark:border-gray-700 !bg-white dark:!bg-gray-800 justify-between">
+      <div className="flex items-center h-16 px-6 border-b border-gray-200 !bg-white justify-between">
         {!isCollapsed && (
           <Link href="/home" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">Q</span>
+            <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-center">
+              <Zap className="w-4 h-4 text-blue-600" fill="currentColor" />
             </div>
-            <span className="text-xl font-bold text-gray-900 dark:text-white">QuotePro</span>
+            <span className="text-sm font-bold text-gray-900">The Field Genie</span>
           </Link>
         )}
         {isCollapsed && (
           <Link href="/home">
-            <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mx-auto cursor-pointer">
-              <span className="text-white font-bold text-lg">Q</span>
+            <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-center mx-auto cursor-pointer">
+              <Zap className="w-4 h-4 text-blue-600" fill="currentColor" />
             </div>
           </Link>
         )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-4 space-y-2 !bg-white dark:!bg-gray-800">
+      <nav className="flex-1 overflow-y-auto p-4 space-y-2 !bg-white">
         {sections.map((item) => {
           if ('children' in item) {
             const sectionKey = item.label.toLowerCase().replace(/\s+&\s+/g, '-').replace(/\s+/g, '-')
@@ -306,37 +328,37 @@ export function DesktopSidebar({ counts = {
       <div className="flex-shrink-0"></div>
 
       {/* User info & Collapse Button - at the absolute bottom */}
-      <div className="border-t border-gray-200 dark:border-gray-700 !bg-white dark:!bg-gray-800">
+      <div className="border-t border-gray-200 !bg-white">
         {!isCollapsed ? (
           <div className="p-4">
-            <div className="flex items-center gap-3 px-4 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-              <div className="w-8 h-8 bg-orange-500 dark:bg-orange-600 rounded-full flex items-center justify-center">
-                <span className="text-sm font-semibold text-white">U</span>
+            <div className="flex items-center gap-3 px-4 py-2 bg-blue-50 rounded-lg">
+              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-white">U</span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-white truncate">User</p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 truncate">Contractor</p>
+                <p className="text-sm font-medium text-gray-900 truncate">User</p>
+                <p className="text-xs text-gray-600 truncate">Contractor</p>
               </div>
               <button
                 onClick={toggleCollapse}
-                className="p-1 hover:bg-orange-100 dark:hover:bg-orange-900/40 rounded transition-colors"
+                className="p-1 hover:bg-blue-100 rounded transition-colors"
                 aria-label="Collapse sidebar"
               >
-                <ChevronsLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <ChevronsLeft className="w-5 h-5 text-gray-600" />
               </button>
             </div>
           </div>
         ) : (
           <div className="p-4 flex flex-col items-center gap-3">
-            <div className="w-8 h-8 bg-orange-500 dark:bg-orange-600 rounded-full flex items-center justify-center">
-              <span className="text-sm font-semibold text-white">U</span>
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-sm font-bold text-white">U</span>
             </div>
             <button
               onClick={toggleCollapse}
-              className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+              className="p-1 hover:bg-gray-100 rounded transition-colors"
               aria-label="Expand sidebar"
             >
-              <ChevronsRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              <ChevronsRight className="w-5 h-5 text-gray-600" />
             </button>
           </div>
         )}

@@ -79,8 +79,8 @@ export function CatalogIndexingPanel() {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div className="bg-purple-100 dark:bg-purple-900/30 p-2 rounded-lg">
-            <Sparkles className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <div className="bg-purple-100 p-2 rounded-lg">
+            <Sparkles className="h-5 w-5 text-purple-600" />
           </div>
           <div>
             <CardTitle>AI Search Indexing</CardTitle>
@@ -96,7 +96,7 @@ export function CatalogIndexingPanel() {
           <div className="space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Catalog Items</span>
-              <span className="font-semibold">
+              <span className="font-bold">
                 {status.indexed_items} / {status.total_items} indexed
               </span>
             </div>
@@ -107,14 +107,14 @@ export function CatalogIndexingPanel() {
               {status.is_complete ? (
                 <>
                   <CheckCircle className="h-4 w-4 text-green-600" />
-                  <span className="text-green-600 dark:text-green-400">
+                  <span className="text-green-600">
                     All items indexed - AI search ready!
                   </span>
                 </>
               ) : status.pending_items > 0 ? (
                 <>
-                  <AlertCircle className="h-4 w-4 text-orange-600" />
-                  <span className="text-orange-600 dark:text-orange-400">
+                  <AlertCircle className="h-4 w-4 text-blue-600" />
+                  <span className="text-blue-600">
                     {status.pending_items} items pending indexing
                   </span>
                 </>
@@ -131,15 +131,15 @@ export function CatalogIndexingPanel() {
         )}
 
         {/* Info Box */}
-        <div className="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 rounded-lg p-4 space-y-2">
-          <h4 className="font-semibold text-sm text-purple-900 dark:text-purple-100">
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 space-y-2">
+          <h4 className="font-bold text-sm text-purple-900">
             What is catalog indexing?
           </h4>
-          <p className="text-sm text-purple-700 dark:text-purple-300">
+          <p className="text-sm text-purple-700">
             AI indexing enables intelligent search across your pricing catalog. When generating quotes,
             the AI can find relevant items by understanding meaning, not just keywords.
           </p>
-          <ul className="text-sm text-purple-700 dark:text-purple-300 space-y-1 mt-2">
+          <ul className="text-sm text-purple-700 space-y-1 mt-2">
             <li>• Search "water heater" → finds all plumbing heating items</li>
             <li>• Search "cooling" → finds AC, HVAC, ventilation items</li>
             <li>• Smarter quote generation with better item suggestions</li>

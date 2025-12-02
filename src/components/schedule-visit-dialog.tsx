@@ -84,7 +84,7 @@ export function ScheduleVisitDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-orange-500" />
+            <Calendar className="h-5 w-5 text-blue-500" />
             Schedule Quote Visit
           </DialogTitle>
           <DialogDescription>
@@ -125,7 +125,7 @@ export function ScheduleVisitDialog({
           <Button
             onClick={handleSchedule}
             disabled={!visitDate || !visitTime || isScheduling}
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-blue-500 hover:bg-blue-700"
           >
             {isScheduling ? 'Scheduling...' : 'Schedule Visit'}
           </Button>

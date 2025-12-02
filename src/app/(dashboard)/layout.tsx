@@ -43,7 +43,7 @@ export default async function DashboardLayout({
   return (
     <QueryProvider>
       <DashboardProvider company={company} quotes={quotes || []}>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="min-h-screen bg-gray-50">
           <NavigationWrapper>
             <main className="py-6 px-4 sm:px-6 lg:px-8">
               {children}

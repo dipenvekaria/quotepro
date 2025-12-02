@@ -9,11 +9,12 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { CalendarDays, FileText, Phone, MapPin, Mail, Clock, CheckCircle2, XCircle, Plus, Search, Filter, TrendingUp, DollarSign, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { CalendarDays, FileText, Phone, MapPin, Mail, Clock, CheckCircle2, XCircle, Plus, Search, Filter, TrendingUp, DollarSign, AlertCircle, ChevronDown, ChevronUp, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { formatDistanceToNow, isAfter, isBefore, subDays } from 'date-fns'
 import { NewLeadDialog } from './new-lead-dialog'
 import { QuoteStatusBadge, canScheduleQuote, type QuoteFollowupStatus } from './quote-status-badge'
+import { createClient } from '@/lib/supabase/client'
 
 interface LeadsAndQuotesProps {
   leads: any[]
@@ -202,31 +203,31 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex items-center justify-between gap-3">
             <TabsList className="grid grid-cols-2 h-10 flex-1">
-              <TabsTrigger value="leads" className="text-sm font-semibold">
+              <TabsTrigger value="leads" className="text-sm font-bold">
                 Leads ({filteredLeads.length})
               </TabsTrigger>
-              <TabsTrigger value="quotes" className="text-sm font-semibold">
+              <TabsTrigger value="quotes" className="text-sm font-bold">
                 Quotes ({filteredQuotes.length})
               </TabsTrigger>
             </TabsList>
             
-            {/* Filter Icon Button - Orange when active */}
+            {/* Filter Icon Button - Blue when active */}
             <Button
               variant={hasActiveFilters ? "default" : "outline"}
               size="sm"
               onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-              className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#FF6200] hover:bg-[#E55800] text-white' : ''}`}
+              className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white' : ''}`}
             >
               <Filter className="h-4 w-4" />
               {hasActiveFilters && (
-                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#FF6200]" />
+                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#2563eb]" />
               )}
             </Button>
           </div>
 
           {/* Compact Filter Section - Only shown when expanded */}
           {isFilterExpanded && (
-            <div className={`mt-3 p-3 border rounded-lg space-y-3 ${hasActiveFilters ? 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-800' : 'bg-muted/30'}`}>
+            <div className={`mt-3 p-3 border rounded-lg space-y-3 ${hasActiveFilters ? 'bg-blue-50 border-blue-200' : 'bg-muted/30'}`}>
               {/* Search Bar */}
               <div className="relative">
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground h-3.5 w-3.5" />
@@ -311,7 +312,7 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
                       setUrgencyFilter('all')
                       setSortBy('newest')
                     }}
-                    className="h-8 px-3 text-xs border-orange-300 text-orange-600 hover:bg-orange-50 dark:border-orange-700 dark:text-orange-400 dark:hover:bg-orange-950/30"
+                    className="h-8 px-3 text-xs border-blue-300 text-blue-600 hover:bg-blue-50"
                   >
                     <X className="h-3 w-3 mr-1" />
                     Reset Filters
@@ -327,7 +328,7 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
               <Card>
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <Phone className="h-12 w-12 text-muted-foreground mb-3 opacity-50" />
-                  <p className="text-base font-medium">
+                  <p className="text-sm font-medium">
                     {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all' 
                       ? 'No leads match your filters' 
                       : 'No active leads'}
@@ -335,7 +336,7 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
                   <p className="text-xs text-muted-foreground mt-1">
                     {searchQuery || leadStatusFilter !== 'all' || urgencyFilter !== 'all'
                       ? 'Try adjusting your filters'
-                      : 'Click the orange + button to add a new lead'}
+                      : 'Click the blue + button to add a new lead'}
                   </p>
                 </CardContent>
               </Card>
@@ -354,7 +355,7 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
               <Card>
                 <CardContent className="flex flex-col items-center justify-center py-12">
                   <FileText className="h-12 w-12 text-muted-foreground mb-3 opacity-50" />
-                  <p className="text-base font-medium">
+                  <p className="text-sm font-medium">
                     {searchQuery || quoteStatusFilter !== 'all' 
                       ? 'No quotes match your filters' 
                       : 'No quotes yet'}
@@ -388,6 +389,9 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
 
 // Elegant Lead Card Component
 function LeadRow({ lead }: { lead: any }) {
+  const supabase = createClient()
+  const router = useRouter()
+
   const getStatusBadge = () => {
     switch (lead.lead_status) {
       case 'new':
@@ -395,7 +399,7 @@ function LeadRow({ lead }: { lead: any }) {
       case 'contacted':
         return <Badge variant="outline" className="bg-purple-100 text-purple-700 border-purple-300 text-xs font-medium">Contacted</Badge>
       case 'quote_visit_scheduled':
-        return <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300 text-xs font-medium">Visit Scheduled</Badge>
+        return <Badge variant="outline" className="bg-blue-100 text-blue-700 border-blue-300 text-xs font-medium">Visit Scheduled</Badge>
       case 'quoted':
         return <Badge variant="outline" className="bg-green-100 text-green-700 border-green-300 text-xs font-medium">Quoted</Badge>
       default:
@@ -406,70 +410,116 @@ function LeadRow({ lead }: { lead: any }) {
   const handlePhoneClick = (e: React.MouseEvent, phone: string) => {
     e.preventDefault()
     e.stopPropagation()
-    window.open(`tel:${phone}`, '_self')
+    // Use tel: link to initiate phone call
+    window.location.href = `tel:${phone}`
   }
 
   const handleScheduleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    // TODO: Open calendar scheduling modal
-    console.log('Schedule clicked for lead:', lead.id)
+    // Open calendar page
+    window.location.href = '/calendar'
+  }
+
+  const handleCreateQuoteClick = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // Mark lead as quoted and navigate to quote editor
+    await supabase
+      .from('quotes')
+      .update({ lead_status: 'quoted' })
+      .eq('id', lead.id)
+    
+    // Set flag to show AI card
+    sessionStorage.setItem('showAICard', 'true')
+    
+    // Navigate to quote editor
+    window.location.href = `/quotes/new?id=${lead.id}`
+  }
+
+  const handleEditLeadClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // Clear AI card flag
+    sessionStorage.removeItem('showAICard')
+    
+    // Navigate to quote editor (just editing lead info)
+    window.location.href = `/quotes/new?id=${lead.id}`
   }
 
   const jobDetails = lead.description || lead.service_address_city || lead.customer_email || 'No job details'
 
   return (
-    <Link href={`/quotes/new?id=${lead.id}`}>
-      <Card className="hover:shadow-md transition-all cursor-pointer">
-        <CardContent className="py-0.5 px-2">
-          <div className="flex items-center justify-between gap-2">
-            {/* Left Side - Name and Job Details */}
-            <div className="flex-1 min-w-0 space-y-0">
-              <h3 className="text-sm font-semibold truncate leading-tight">
-                {lead.customer_name}
-              </h3>
-              <p className="text-xs text-muted-foreground truncate leading-tight">
-                {jobDetails}
-              </p>
-              <div className="flex items-center gap-2 flex-wrap leading-tight">
-                {getStatusBadge()}
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+    <Card className="hover:shadow-md transition-all">
+      <CardContent className="py-3 px-3">
+        <div className="flex items-center justify-between gap-3">
+          {/* Left Side - Name and Job Details */}
+          <div 
+            className="flex-1 min-w-0 space-y-1 cursor-pointer"
+            onClick={handleEditLeadClick}
+          >
+            <h3 className="text-base font-bold truncate">
+              {lead.customer_name}
+            </h3>
+            <p className="text-sm text-muted-foreground truncate">
+              {jobDetails}
+            </p>
+            <div className="flex items-center gap-2 flex-wrap">
+              {getStatusBadge()}
+              <div className="flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                {lead.quote_visit_date ? (
+                  <p className="text-xs font-medium text-blue-600">
+                    Scheduled for {new Date(lead.quote_visit_date).toLocaleDateString()}
+                  </p>
+                ) : (
                   <p className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(lead.created_at), { addSuffix: true })}
                   </p>
-                </div>
+                )}
               </div>
             </div>
+          </div>
 
-            {/* Right Side - Action Icons */}
-            <div className="flex items-center gap-1 flex-shrink-0">
-              {lead.customer_phone && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 rounded-full hover:bg-green-50 text-green-600 p-0"
-                  onClick={(e) => handlePhoneClick(e, lead.customer_phone)}
-                  title="Call"
-                >
-                  <Phone className="h-5 w-5" />
-                </Button>
-              )}
-              
+          {/* Right Side - Action Icons */}
+          <div className="flex items-center gap-1 flex-shrink-0">
+            {lead.customer_phone && (
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 rounded-full hover:bg-blue-50 text-blue-600 p-0"
-                onClick={handleScheduleClick}
-                title="Schedule"
+                className="h-9 w-9 rounded-full hover:bg-green-50 text-green-600 p-0"
+                onClick={(e) => handlePhoneClick(e, lead.customer_phone)}
+                title="Call"
               >
-                <CalendarDays className="h-5 w-5" />
+                <Phone className="h-5 w-5" />
               </Button>
-            </div>
+            )}
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9 w-9 rounded-full hover:bg-blue-50 text-blue-600 p-0"
+              onClick={handleScheduleClick}
+              title="Schedule"
+            >
+              <CalendarDays className="h-5 w-5" />
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-9 w-9 rounded-full hover:bg-orange-50 text-orange-600 p-0"
+              onClick={handleCreateQuoteClick}
+              title="Create Quote"
+            >
+              <Sparkles className="h-5 w-5" />
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
@@ -485,7 +535,8 @@ function QuoteRow({ quote }: { quote: any }) {
   const handlePhoneClick = (e: React.MouseEvent, phone: string) => {
     e.preventDefault()
     e.stopPropagation()
-    window.open(`tel:${phone}`, '_self')
+    // Use tel: link to initiate phone call
+    window.location.href = `tel:${phone}`
   }
 
   const handlePdfClick = (e: React.MouseEvent, pdfUrl: string) => {
@@ -503,8 +554,8 @@ function QuoteRow({ quote }: { quote: any }) {
       return
     }
     
-    // TODO: Open calendar scheduling modal
-    console.log('Schedule clicked for quote:', quote.id)
+    // Open calendar page
+    window.location.href = '/calendar'
   }
 
   const jobDetails = quote.description || quote.service_address_city || quote.customer_email || 'Quote details'
@@ -512,28 +563,28 @@ function QuoteRow({ quote }: { quote: any }) {
   return (
     <Link href={`/quotes/new?id=${quote.id}`}>
       <Card className="hover:shadow-md transition-all cursor-pointer">
-        <CardContent className="py-0.5 px-2">
-          <div className="flex items-center justify-between gap-2">
+        <CardContent className="py-3 px-3">
+          <div className="flex items-center justify-between gap-3">
             {/* Left Side - Name and Quote Details */}
-            <div className="flex-1 min-w-0 space-y-0">
-              <h3 className="text-sm font-semibold truncate leading-tight">
+            <div className="flex-1 min-w-0 space-y-1">
+              <h3 className="text-base font-bold truncate">
                 {quote.customer_name}
               </h3>
-              <p className="text-xs text-muted-foreground truncate leading-tight">
+              <p className="text-sm text-muted-foreground truncate">
                 {jobDetails}
               </p>
-              <div className="flex items-center gap-2 flex-wrap leading-tight">
+              <div className="flex items-center gap-2 flex-wrap">
                 {/* Show follow-up status badge with color coding */}
                 <QuoteStatusBadge status={followupStatus} size="sm" />
                 
                 <div className="flex items-center gap-1">
-                  <DollarSign className="h-3 w-3 text-green-600 flex-shrink-0" />
-                  <p className="text-xs font-semibold text-green-600">
+                  <DollarSign className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                  <p className="text-xs font-bold text-green-600">
                     ${(quote.total || 0).toLocaleString()}
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                  <Clock className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                   <p className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(quote.created_at), { addSuffix: true })}
                   </p>
@@ -547,7 +598,7 @@ function QuoteRow({ quote }: { quote: any }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 rounded-full hover:bg-green-50 text-green-600 p-0"
+                  className="h-9 w-9 rounded-full hover:bg-green-50 text-green-600 p-0"
                   onClick={(e) => handlePhoneClick(e, quote.customer_phone)}
                   title="Call Customer"
                 >
@@ -575,7 +626,7 @@ function QuoteRow({ quote }: { quote: any }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 rounded-full hover:bg-orange-50 text-orange-600 p-0"
+                  className="h-8 w-8 rounded-full hover:bg-blue-50 text-blue-600 p-0"
                   onClick={(e) => handlePdfClick(e, quote.pdf_url)}
                   title="View PDF"
                 >
@@ -599,7 +650,7 @@ function LeadCard({ lead }: { lead: any }) {
       case 'contacted':
         return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200 text-xs">Contacted</Badge>
       case 'quote_visit_scheduled':
-        return <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 text-xs">Visit Scheduled</Badge>
+        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-xs">Visit Scheduled</Badge>
       default:
         return null
     }
@@ -624,7 +675,7 @@ function LeadCard({ lead }: { lead: any }) {
           {/* Left: Customer info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-semibold text-sm truncate">{lead.customer_name}</h3>
+              <h3 className="font-bold text-base truncate">{lead.customer_name}</h3>
               {getStatusBadge()}
               {getUrgencyIndicator()}
               {daysOld > 14 && !lead.quote_visit_date && (
@@ -658,7 +709,7 @@ function LeadCard({ lead }: { lead: any }) {
             {/* Second row: Visit date, notes preview, timing */}
             <div className="flex flex-wrap items-center gap-3 mt-1 text-xs">
               {lead.quote_visit_date && (
-                <div className="flex items-center gap-1 text-orange-600 font-medium">
+                <div className="flex items-center gap-1 text-blue-600 font-medium">
                   <Calendar className="h-3 w-3" />
                   <span>Visit: {new Date(lead.quote_visit_date).toLocaleDateString()}</span>
                 </div>
@@ -691,7 +742,7 @@ function LeadCard({ lead }: { lead: any }) {
             <Button
               asChild
               size="sm"
-              className="h-8 text-xs bg-[#FF6200] hover:bg-[#FF6200]/90"
+              className="h-8 text-xs bg-[#2563eb] hover:bg-[#2563eb]/90"
             >
               <Link href={`/quotes/new?id=${lead.id}`}>
                 <FileText className="h-3 w-3 mr-1" />
@@ -739,7 +790,7 @@ function QuoteCard({ quote }: { quote: any }) {
           <div className="flex-1 min-w-0 flex items-center gap-4">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold text-sm truncate">{quote.customer_name}</h3>
+                <h3 className="font-bold text-base truncate">{quote.customer_name}</h3>
                 {getStatusBadge()}
                 {isExpiring && (
                   <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300 text-xs">
@@ -760,7 +811,7 @@ function QuoteCard({ quote }: { quote: any }) {
                 {quote.lead_status === 'quoted' && (
                   <>
                     <span>•</span>
-                    <span className={daysPending > 14 ? 'text-orange-600 font-medium' : ''}>
+                    <span className={daysPending > 14 ? 'text-blue-600 font-medium' : ''}>
                       {daysPending}d pending
                     </span>
                   </>
@@ -768,7 +819,7 @@ function QuoteCard({ quote }: { quote: any }) {
                 {quote.quote_visit_date && (
                   <>
                     <span>•</span>
-                    <div className="flex items-center gap-1 text-orange-600">
+                    <div className="flex items-center gap-1 text-blue-600">
                       <Calendar className="h-3 w-3" />
                       <span>Visited {new Date(quote.quote_visit_date).toLocaleDateString()}</span>
                     </div>
@@ -795,7 +846,7 @@ function QuoteCard({ quote }: { quote: any }) {
 
             {/* Amount & Financial Info */}
             <div className="text-right flex-shrink-0">
-              <div className="text-xl font-bold text-[#FF6200]">
+              <div className="text-sm font-bold text-[#2563eb]">
                 ${quote.total.toLocaleString()}
               </div>
               {quote.lead_status === 'signed' && quote.signed_at && (

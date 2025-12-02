@@ -71,7 +71,7 @@ export function ScheduleJobModal({ open, onOpenChange, quote, onSchedule }: Sche
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-[#FF6200]" />
+            <Calendar className="h-5 w-5 text-[#2563eb]" />
             Schedule Job
           </DialogTitle>
           <DialogDescription>
@@ -81,12 +81,12 @@ export function ScheduleJobModal({ open, onOpenChange, quote, onSchedule }: Sche
 
         <div className="space-y-4 py-4">
           {/* Customer Info */}
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
+          <div className="bg-gray-50 rounded-lg p-4 space-y-2">
             <div>
-              <p className="text-sm font-semibold">{quote.customer_name}</p>
+              <p className="text-sm font-bold">{quote.customer_name}</p>
               <p className="text-sm text-muted-foreground">{quote.customer_address}</p>
             </div>
-            <div className="text-lg font-bold text-[#FF6200]">
+            <div className="text-sm font-bold text-[#2563eb]">
               ${quote.total.toFixed(2)}
             </div>
           </div>
@@ -101,7 +101,7 @@ export function ScheduleJobModal({ open, onOpenChange, quote, onSchedule }: Sche
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               min={format(new Date(), 'yyyy-MM-dd')}
-              className="w-full px-3 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
+              className="w-full px-3 py-2 border rounded-md"
             />
           </div>
 
@@ -117,8 +117,8 @@ export function ScheduleJobModal({ open, onOpenChange, quote, onSchedule }: Sche
                   onClick={() => setSelectedTime(time)}
                   className={`px-3 py-2 text-sm rounded-md border transition-colors ${
                     selectedTime === time
-                      ? 'bg-[#FF6200] text-white border-[#FF6200]'
-                      : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600'
+                      ? 'bg-[#2563eb] text-white border-[#2563eb]'
+                      : 'bg-white hover:bg-gray-50 border-gray-300'
                   }`}
                 >
                   {time}
@@ -139,7 +139,7 @@ export function ScheduleJobModal({ open, onOpenChange, quote, onSchedule }: Sche
           <Button
             onClick={handleSchedule}
             disabled={!selectedDate || !selectedTime || isScheduling}
-            className="bg-[#FF6200] hover:bg-[#E55800]"
+            className="bg-[#2563eb] hover:bg-[#1d4ed8]"
           >
             {isScheduling ? 'Scheduling...' : 'Schedule Job'}
           </Button>

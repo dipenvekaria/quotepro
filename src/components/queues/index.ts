@@ -1,7 +1,7 @@
 /**
  * Queue Component Library
  * 
- * Reusable components for all queue pages in QuotePro 2.0
+ * Reusable components for all queue pages in The Field Genie
  * Provides consistent UI/UX across Leads, Quotes, Work, and Pay sections
  */
 

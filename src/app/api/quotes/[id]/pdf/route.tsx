@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 30,
-    borderBottom: '2 solid #FF6200',
+    borderBottom: '2 solid #2563eb',
     paddingBottom: 10,
   },
   logo: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   professionalQuote: {
     fontSize: 18,
-    color: '#FF6200',
+    color: '#2563eb',
     fontWeight: 'bold',
   },
   section: {
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 10,
     paddingTop: 10,
-    borderTop: '2 solid #FF6200',
+    borderTop: '2 solid #2563eb',
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#FF6200',
+    color: '#2563eb',
   },
   footer: {
     position: 'absolute',
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   signButton: {
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     color: 'white',
     padding: 12,
     textAlign: 'center',

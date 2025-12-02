@@ -46,7 +46,7 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-primary">{sentQuotes.length}</div>
+            <div className="text-sm font-bold text-primary">{sentQuotes.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Click to view sent quotes
             </p>
@@ -63,7 +63,7 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-green-600">{signedQuotes.length}</div>
+            <div className="text-sm font-bold text-green-600">{signedQuotes.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Click to view signed quotes
             </p>
@@ -80,7 +80,7 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-gray-600">{draftQuotes.length}</div>
+            <div className="text-sm font-bold text-gray-600">{draftQuotes.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Click to view drafts
             </p>
@@ -97,7 +97,7 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-primary">{quotes.length}</div>
+            <div className="text-sm font-bold text-primary">{quotes.length}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Click to view all quotes
             </p>
@@ -134,7 +134,7 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
         <CardContent>
           {filteredQuotes.length === 0 ? (
             <div className="text-center py-12">
-              <h3 className="text-lg font-semibold mb-2">No {filter !== 'all' ? filter : ''} quotes yet</h3>
+              <h3 className="text-sm font-bold mb-2">No {filter !== 'all' ? filter : ''} quotes yet</h3>
               <p className="text-muted-foreground mb-6">
                 {filter === 'all' 
                   ? 'Create your first quote and start winning more jobs'
@@ -153,11 +153,11 @@ export function DashboardQuotes({ quotes }: { quotes: Quote[] }) {
                 <a 
                   key={quote.id}
                   href={`/quotes/new?id=${quote.id}`}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer no-underline"
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer no-underline"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-semibold text-foreground">{quote.customer_name}</h4>
+                      <h4 className="font-bold text-foreground">{quote.customer_name}</h4>
                       <Badge variant={
                         quote.status === 'signed' ? 'default' : 
                         quote.status === 'sent' ? 'secondary' : 

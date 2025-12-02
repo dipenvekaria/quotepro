@@ -57,13 +57,13 @@ export function FloatingActionMenu({
       color: 'bg-blue-500 hover:bg-blue-600'
     },
     {
-      label: 'Schedule Visit',
+      label: 'Schedule',
       icon: Calendar,
       onClick: handleScheduleVisit,
       color: 'bg-purple-500 hover:bg-purple-600'
     },
     {
-      label: 'New Quote',
+      label: 'Quote',
       icon: FileText,
       onClick: handleNewQuote,
       color: 'bg-green-500 hover:bg-green-600'
@@ -104,7 +104,7 @@ export function FloatingActionMenu({
                   transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
                 }}
               >
-                <span className="bg-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium text-gray-700 whitespace-nowrap">
+                <span className="bg-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium text-gray-700 whitespace-nowrap min-w-[90px] text-center">
                   {item.label}
                 </span>
                 <button
@@ -126,7 +126,7 @@ export function FloatingActionMenu({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl flex items-center justify-center",
+            "w-14 h-14 rounded-full bg-gradient-to-br from-slate-900 to-blue-600 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl flex items-center justify-center",
             isOpen && "rotate-45"
           )}
           aria-label={isOpen ? "Close menu" : "Open actions menu"}

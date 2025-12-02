@@ -113,7 +113,7 @@ export function QuoteOptimizerPanel({
 
   const getRecommendationIcon = (rec: string) => {
     if (rec === 'maintain') return <Target className="h-4 w-4 text-green-600" />
-    if (rec.includes('lower')) return <TrendingDown className="h-4 w-4 text-orange-600" />
+    if (rec.includes('lower')) return <TrendingDown className="h-4 w-4 text-blue-600" />
     return <TrendingUp className="h-4 w-4 text-blue-600" />
   }
 
@@ -161,7 +161,7 @@ export function QuoteOptimizerPanel({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Win Probability</span>
-                <span className={`text-2xl font-bold ${getWinProbabilityColor(result.win_probability)}`}>
+                <span className={`text-sm font-bold ${getWinProbabilityColor(result.win_probability)}`}>
                   {(result.win_probability * 100).toFixed(0)}%
                 </span>
               </div>
@@ -185,7 +185,7 @@ export function QuoteOptimizerPanel({
                   {result.suggested_total && result.suggested_total !== proposedTotal && (
                     <div className="mt-2 space-y-2">
                       <div className="text-sm text-muted-foreground">
-                        Suggested: <span className="font-semibold text-foreground">${result.suggested_total.toLocaleString()}</span>
+                        Suggested: <span className="font-bold text-foreground">${result.suggested_total.toLocaleString()}</span>
                         {' '}
                         <span className="text-xs">
                           ({((result.suggested_total - proposedTotal) / proposedTotal * 100).toFixed(1)}%)
@@ -221,11 +221,11 @@ export function QuoteOptimizerPanel({
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2 bg-white rounded border">
                 <div className="text-muted-foreground">Won Quotes</div>
-                <div className="font-semibold">{result.market_data.won_quotes}/{result.market_data.similar_quotes_analyzed}</div>
+                <div className="font-bold">{result.market_data.won_quotes}/{result.market_data.similar_quotes_analyzed}</div>
               </div>
               <div className="p-2 bg-white rounded border">
                 <div className="text-muted-foreground">Avg Won Price</div>
-                <div className="font-semibold">${result.market_data.average_won_price.toLocaleString()}</div>
+                <div className="font-bold">${result.market_data.average_won_price.toLocaleString()}</div>
               </div>
             </div>
 
@@ -247,11 +247,11 @@ export function QuoteOptimizerPanel({
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="p-2 bg-white rounded border">
                       <div className="text-muted-foreground">Margin %</div>
-                      <div className="font-semibold">{result.margin_analysis.margin_percentage.toFixed(1)}%</div>
+                      <div className="font-bold">{result.margin_analysis.margin_percentage.toFixed(1)}%</div>
                     </div>
                     <div className="p-2 bg-white rounded border">
                       <div className="text-muted-foreground">Est. Profit</div>
-                      <div className="font-semibold">${result.margin_analysis.estimated_margin.toLocaleString()}</div>
+                      <div className="font-bold">${result.margin_analysis.estimated_margin.toLocaleString()}</div>
                     </div>
                   </div>
                   <div className="text-xs text-muted-foreground italic">
@@ -279,7 +279,7 @@ export function QuoteOptimizerPanel({
                             >
                               {quote.status}
                             </Badge>
-                            <span className="font-semibold">${quote.total.toLocaleString()}</span>
+                            <span className="font-bold">${quote.total.toLocaleString()}</span>
                           </div>
                         </div>
                       ))}

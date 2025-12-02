@@ -56,8 +56,8 @@ export function TeamMemberManager({
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Invite New Member */}
-          <div className="space-y-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="font-semibold">Invite Team Member</h3>
+          <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+            <h3 className="font-bold">Invite Team Member</h3>
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <Input
@@ -81,7 +81,7 @@ export function TeamMemberManager({
               <Button
                 onClick={onInvite}
                 disabled={isInviting || !inviteEmail}
-                className="bg-[#FF6200] hover:bg-[#FF6200]/90 text-white whitespace-nowrap"
+                className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white whitespace-nowrap"
               >
                 {isInviting ? 'Inviting...' : 'Send Invite'}
               </Button>
@@ -93,7 +93,7 @@ export function TeamMemberManager({
 
           {/* Current Team Members */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Current Team Members</h3>
+            <h3 className="font-bold">Current Team Members</h3>
             {teamMembers.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
                 <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
@@ -156,13 +156,13 @@ export function TeamMemberManager({
 
           {/* Role Permissions Info */}
           <div className="border-t pt-6 space-y-4">
-            <h3 className="font-semibold">Role Permissions</h3>
+            <h3 className="font-bold">Role Permissions</h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge className="bg-purple-500">Admin</Badge>
                 </div>
-                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                <ul className="text-sm space-y-1 text-gray-700">
                   <li>• Full access to settings</li>
                   <li>• Manage team members</li>
                   <li>• Edit company profile</li>
@@ -171,11 +171,11 @@ export function TeamMemberManager({
                   <li>• Manage subscription</li>
                 </ul>
               </div>
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Badge className="bg-blue-500">Sales Team</Badge>
                 </div>
-                <ul className="text-sm space-y-1 text-gray-700 dark:text-gray-300">
+                <ul className="text-sm space-y-1 text-gray-700">
                   <li>• Create new quotes</li>
                   <li>• Edit existing quotes</li>
                   <li>• Send quotes to customers</li>

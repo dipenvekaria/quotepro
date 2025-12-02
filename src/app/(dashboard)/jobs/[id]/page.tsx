@@ -44,7 +44,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Job Not Found</h2>
+          <h2 className="text-sm font-bold mb-2">Job Not Found</h2>
           <p className="text-muted-foreground mb-4">The requested job could not be found.</p>
           <Button onClick={() => router.push('/work')}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -58,7 +58,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-10">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="px-6 py-4">
           <div className="flex items-center gap-4">
             <Button 
@@ -70,7 +70,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               Back to Work
             </Button>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold">Job Details</h1>
+              <h1 className="text-sm font-bold">Job Details</h1>
               <p className="text-sm text-muted-foreground">{quote.quote_number}</p>
             </div>
             {!quote.completed_at && scheduledDate && (
@@ -90,39 +90,39 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Schedule Info Card */}
         {scheduledDate && (
-          <div className="bg-blue-50 dark:bg-slate-900 rounded-xl">
+          <div className="bg-blue-50 rounded-xl">
             <Card className="!bg-transparent !border-0 !shadow-none">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-100">
-                <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <CardTitle className="flex items-center gap-2 text-blue-900">
+                <Calendar className="h-5 w-5 text-blue-600" />
                 Scheduled Appointment
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <Calendar className="h-5 w-5 text-blue-600" />
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Date</p>
-                    <p className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                    <p className="text-sm text-gray-600">Date</p>
+                    <p className="font-bold text-sm text-gray-900">
                       {format(scheduledDate, 'EEEE, MMMM d, yyyy')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                  <Clock className="h-5 w-5 text-blue-600" />
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Time</p>
-                    <p className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                    <p className="text-sm text-gray-600">Time</p>
+                    <p className="font-bold text-sm text-gray-900">
                       {format(scheduledDate, 'h:mm a')}
                     </p>
                   </div>
                 </div>
               </div>
               {quote.job_name && (
-                <div className="pt-3 border-t border-blue-200 dark:border-slate-700">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Job Description</p>
-                  <p className="font-medium text-blue-900 dark:text-blue-100">{quote.job_name}</p>
+                <div className="pt-3 border-t border-blue-200">
+                  <p className="text-sm text-gray-600 mb-1">Job Description</p>
+                  <p className="font-bold text-blue-900">{quote.job_name}</p>
                 </div>
               )}
             </CardContent>
@@ -140,14 +140,14 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <h3 className="font-semibold text-lg">{quote.customer_name}</h3>
+              <h3 className="font-bold text-sm">{quote.customer_name}</h3>
             </div>
             {quote.customer_address && (
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-muted-foreground mt-0.5" />
                 <div>
                   <p className="text-sm text-muted-foreground">Address</p>
-                  <p className="font-medium">{quote.customer_address}</p>
+                  <p className="font-bold">{quote.customer_address}</p>
                 </div>
               </div>
             )}
@@ -156,7 +156,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 <Phone className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm text-muted-foreground">Phone</p>
-                  <a href={`tel:${quote.customer_phone}`} className="font-medium hover:underline">
+                  <a href={`tel:${quote.customer_phone}`} className="font-bold hover:underline">
                     {quote.customer_phone}
                   </a>
                 </div>
@@ -167,7 +167,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 <Mail className="h-5 w-5 text-muted-foreground" />
                 <div>
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <a href={`mailto:${quote.customer_email}`} className="font-medium hover:underline">
+                  <a href={`mailto:${quote.customer_email}`} className="font-bold hover:underline">
                     {quote.customer_email}
                   </a>
                 </div>
@@ -190,12 +190,12 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 {quote.items.map((item: any, index: number) => (
                   <div key={index} className="flex justify-between items-start py-3 border-b last:border-0">
                     <div className="flex-1">
-                      <p className="font-medium">{item.description || item.name}</p>
+                      <p className="font-bold">{item.description || item.name}</p>
                       {item.quantity && (
                         <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
                       )}
                     </div>
-                    <p className="font-semibold">
+                    <p className="font-bold">
                       ${(item.price || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </p>
                   </div>
@@ -218,7 +218,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               {quote.subtotal > 0 && (
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span className="font-medium">
+                  <span className="font-bold">
                     ${quote.subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -228,7 +228,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   <span className="text-muted-foreground">
                     Discount ({quote.discount_percentage}%)
                   </span>
-                  <span className="font-medium text-green-600 dark:text-green-400">
+                  <span className="font-bold text-green-600">
                     -${quote.discount_amount?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
@@ -238,15 +238,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   <span className="text-muted-foreground">
                     Tax ({quote.tax_rate}%)
                   </span>
-                  <span className="font-medium">
+                  <span className="font-bold">
                     ${quote.tax.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
               )}
-              <div className="border-t border-gray-200 dark:border-gray-700 my-3" />
+              <div className="border-t border-gray-200 my-3" />
               <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold">Total</span>
-                <span className="text-2xl font-bold text-primary">
+                <span className="text-sm font-bold">Total</span>
+                <span className="text-sm font-bold text-primary">
                   ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>

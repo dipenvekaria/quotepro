@@ -129,7 +129,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
               <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="px-3 pb-3">
-              <div className="text-2xl font-bold">{stats.todayVisits.length + stats.todayJobs.length}</div>
+              <div className="text-sm font-bold">{stats.todayVisits.length + stats.todayJobs.length}</div>
               <p className="text-[10px] text-muted-foreground mt-0.5">
                 {stats.todayVisits.length}v • {stats.todayJobs.length}j
               </p>
@@ -145,7 +145,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
               <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="px-3 pb-3">
-              <div className="text-2xl font-bold text-green-600">${(stats.totalSignedValue / 1000).toFixed(1)}k</div>
+              <div className="text-sm font-bold text-green-600">${(stats.totalSignedValue / 1000).toFixed(1)}k</div>
               <p className="text-[10px] text-muted-foreground mt-0.5">
                 {stats.signedCount} • {stats.closeRate}%
               </p>
@@ -161,7 +161,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
               <Phone className="h-3.5 w-3.5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="px-3 pb-3">
-              <div className="text-2xl font-bold text-[#FF6200]">{stats.pendingLeadsCount}</div>
+              <div className="text-sm font-bold text-[#2563eb]">{stats.pendingLeadsCount}</div>
               <p className="text-[10px] text-muted-foreground mt-0.5">
                 Need attention
               </p>
@@ -177,7 +177,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
               <FileText className="h-3.5 w-3.5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="px-3 pb-3">
-              <div className="text-2xl font-bold">{stats.quotesNeedingAttentionCount}</div>
+              <div className="text-sm font-bold">{stats.quotesNeedingAttentionCount}</div>
               <p className="text-[10px] text-muted-foreground mt-0.5">
                 Not signed
               </p>
@@ -199,7 +199,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
                 href={`/quotes/new?id=${item.id}`}
                 className="flex items-center gap-2 p-2 border rounded-lg hover:bg-muted/50 transition-colors"
               >
-                <div className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${item.quote_visit_date ? 'bg-[#FF6200]' : 'bg-green-500'}`} />
+                <div className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${item.quote_visit_date ? 'bg-[#2563eb]' : 'bg-green-500'}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{item.customer_name}</p>
                   <p className="text-[10px] text-muted-foreground">
@@ -216,7 +216,7 @@ export function HomeDashboard({ quotes, companyId }: HomeDashboardProps) {
       <Card>
         <CardHeader className="px-3 pt-3 pb-2">
           <div className="flex items-center gap-1.5">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#FF6200] animate-pulse" />
+            <div className="h-1.5 w-1.5 rounded-full bg-[#2563eb] animate-pulse" />
             <CardTitle className="text-xs font-medium text-muted-foreground">Daily Summary</CardTitle>
           </div>
         </CardHeader>

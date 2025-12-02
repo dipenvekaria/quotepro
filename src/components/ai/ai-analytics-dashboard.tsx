@@ -111,7 +111,7 @@ export function AIAnalyticsDashboard() {
       {/* Header with Time Range Selector */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+          <h2 className="text-sm font-bold flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-purple-600" />
             AI Performance Analytics
           </h2>
@@ -145,7 +145,7 @@ export function AIAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-purple-600">
+            <div className="text-sm font-bold text-purple-600">
               {data.total_ai_quotes}
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
@@ -164,7 +164,7 @@ export function AIAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className={`text-3xl font-bold ${getPerformanceColor(data.avg_win_probability, 60)}`}>
+            <div className={`text-sm font-bold ${getPerformanceColor(data.avg_win_probability, 60)}`}>
               {data.avg_win_probability.toFixed(0)}%
             </div>
             <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
@@ -183,7 +183,7 @@ export function AIAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className={`text-3xl font-bold ${getPerformanceColor(data.suggestion_acceptance_rate, 30)}`}>
+            <div className={`text-sm font-bold ${getPerformanceColor(data.suggestion_acceptance_rate, 30)}`}>
               {data.suggestion_acceptance_rate.toFixed(0)}%
             </div>
             <div className="text-xs text-muted-foreground mt-2">
@@ -201,7 +201,7 @@ export function AIAnalyticsDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-emerald-600">
+            <div className="text-sm font-bold text-emerald-600">
               ${data.total_upsell_revenue.toLocaleString()}
             </div>
             <div className="text-xs text-muted-foreground mt-2">
@@ -216,7 +216,7 @@ export function AIAnalyticsDashboard() {
         {/* Feature Usage Breakdown */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Feature Usage</CardTitle>
+            <CardTitle className="text-sm">Feature Usage</CardTitle>
             <CardDescription>AI feature adoption breakdown</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -227,7 +227,7 @@ export function AIAnalyticsDashboard() {
                   <div className="h-2 w-2 rounded-full bg-purple-600"></div>
                   <span>RAG Quote Generation</span>
                 </div>
-                <span className="font-semibold">{data.rag_usage}</span>
+                <span className="font-bold">{data.rag_usage}</span>
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div 
@@ -244,7 +244,7 @@ export function AIAnalyticsDashboard() {
                   <div className="h-2 w-2 rounded-full bg-blue-600"></div>
                   <span>Quote Optimizer</span>
                 </div>
-                <span className="font-semibold">{data.optimizer_usage}</span>
+                <span className="font-bold">{data.optimizer_usage}</span>
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div 
@@ -261,7 +261,7 @@ export function AIAnalyticsDashboard() {
                   <div className="h-2 w-2 rounded-full bg-emerald-600"></div>
                   <span>Upsell Suggester</span>
                 </div>
-                <span className="font-semibold">{data.upsell_usage}</span>
+                <span className="font-bold">{data.upsell_usage}</span>
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div 
@@ -276,7 +276,7 @@ export function AIAnalyticsDashboard() {
         {/* Business Impact */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Business Impact</CardTitle>
+            <CardTitle className="text-sm">Business Impact</CardTitle>
             <CardDescription>Revenue and performance metrics</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -286,15 +286,15 @@ export function AIAnalyticsDashboard() {
               <div className="mt-2 space-y-1">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Acceptance Rate</span>
-                  <span className="font-semibold">{data.upsell_acceptance_rate.toFixed(1)}%</span>
+                  <span className="font-bold">{data.upsell_acceptance_rate.toFixed(1)}%</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Revenue Captured</span>
-                  <span className="font-semibold">${data.total_upsell_revenue.toLocaleString()}</span>
+                  <span className="font-bold">${data.total_upsell_revenue.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Potential Revenue</span>
-                  <span className="font-semibold">${data.total_potential_revenue.toLocaleString()}</span>
+                  <span className="font-bold">${data.total_potential_revenue.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -305,13 +305,13 @@ export function AIAnalyticsDashboard() {
               <div className="mt-2 space-y-1">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Average Probability</span>
-                  <span className="font-semibold">{data.avg_win_probability.toFixed(1)}%</span>
+                  <span className="font-bold">{data.avg_win_probability.toFixed(1)}%</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Trend</span>
                   <div className="flex items-center gap-1">
                     {getTrendIcon(data.win_rate_trend)}
-                    <span className="font-semibold capitalize">{data.win_rate_trend}</span>
+                    <span className="font-bold capitalize">{data.win_rate_trend}</span>
                   </div>
                 </div>
               </div>
@@ -321,7 +321,7 @@ export function AIAnalyticsDashboard() {
             <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
               <div className="text-sm font-medium text-purple-900">AI ROI Indicator</div>
               <div className="mt-2">
-                <div className="text-2xl font-bold text-purple-700">
+                <div className="text-sm font-bold text-purple-700">
                   {data.total_upsell_revenue > 0 ? '+' : ''}
                   ${data.total_upsell_revenue.toLocaleString()}
                 </div>
@@ -337,7 +337,7 @@ export function AIAnalyticsDashboard() {
       {/* Success Metrics Summary */}
       <Card className="border-green-200 bg-gradient-to-br from-green-50 to-white">
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
+          <CardTitle className="text-sm flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-green-600" />
             Success Metrics Summary
           </CardTitle>
@@ -345,7 +345,7 @@ export function AIAnalyticsDashboard() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center p-4 bg-white rounded-lg border">
-              <div className="text-3xl font-bold text-green-600">
+              <div className="text-sm font-bold text-green-600">
                 {data.avg_win_probability >= 60 ? '✅' : '⚠️'}
               </div>
               <div className="text-sm font-medium mt-2">Win Probability</div>
@@ -355,7 +355,7 @@ export function AIAnalyticsDashboard() {
             </div>
 
             <div className="text-center p-4 bg-white rounded-lg border">
-              <div className="text-3xl font-bold text-green-600">
+              <div className="text-sm font-bold text-green-600">
                 {data.suggestion_acceptance_rate >= 15 ? '✅' : '⚠️'}
               </div>
               <div className="text-sm font-medium mt-2">Suggestion Acceptance</div>
@@ -365,7 +365,7 @@ export function AIAnalyticsDashboard() {
             </div>
 
             <div className="text-center p-4 bg-white rounded-lg border">
-              <div className="text-3xl font-bold text-green-600">
+              <div className="text-sm font-bold text-green-600">
                 {data.total_upsell_revenue > 0 ? '✅' : '⚠️'}
               </div>
               <div className="text-sm font-medium mt-2">Revenue Impact</div>

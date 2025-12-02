@@ -19,7 +19,7 @@ export function MobileSectionTabs({ tabs, className }: MobileSectionTabsProps) {
   const pathname = usePathname()
 
   return (
-    <div className={cn("md:hidden sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700", className)}>
+    <div className={cn("md:hidden sticky top-0 z-40 bg-white border-b border-gray-200", className)}>
       <div className="flex items-center">
         {tabs.map((tab, index) => {
           const isActive = pathname === tab.href || pathname?.startsWith(tab.href + '/')
@@ -31,13 +31,13 @@ export function MobileSectionTabs({ tabs, className }: MobileSectionTabsProps) {
               className={cn(
                 "flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-all relative",
                 isActive
-                  ? "text-orange-600 dark:text-orange-400"
-                  : "text-gray-600 dark:text-gray-400 active:bg-gray-50 dark:active:bg-gray-800"
+                  ? "text-blue-600"
+                  : "text-gray-600 active:bg-gray-50"
               )}
             >
               <span>{tab.label}</span>
               {isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-600 dark:bg-orange-400" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-700" />
               )}
             </Link>
           )

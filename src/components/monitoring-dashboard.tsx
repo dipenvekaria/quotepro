@@ -59,10 +59,10 @@ export function MonitoringDashboard() {
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-32 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
+        <div className="h-32 bg-gray-100 rounded-lg animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-40 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse" />
+            <div key={i} className="h-40 bg-gray-100 rounded-lg animate-pulse" />
           ))}
         </div>
       </div>
@@ -71,15 +71,15 @@ export function MonitoringDashboard() {
 
   if (error || !health) {
     return (
-      <Card className="border-red-200 dark:border-red-800">
+      <Card className="border-red-200">
         <CardHeader>
           <div className="flex items-center gap-2">
             <AlertCircle className="h-5 w-5 text-red-600" />
-            <CardTitle className="text-red-900 dark:text-red-100">Service Offline</CardTitle>
+            <CardTitle className="text-red-900">Service Offline</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-red-700 dark:text-red-300">{error || 'Unable to connect to backend service'}</p>
+          <p className="text-red-700">{error || 'Unable to connect to backend service'}</p>
         </CardContent>
       </Card>
     )
@@ -107,7 +107,7 @@ export function MonitoringDashboard() {
           <CardDescription>Backend service health metrics</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
             <Clock className="h-4 w-4" />
             <span>Uptime: {formatUptime(health.uptime_seconds)}</span>
           </div>
@@ -122,12 +122,12 @@ export function MonitoringDashboard() {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Server className="h-4 w-4 text-blue-600" />
-                <CardTitle className="text-base">CPU Usage</CardTitle>
+                <CardTitle className="text-sm">CPU Usage</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-2">{health.system.cpu_percent.toFixed(1)}%</div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="text-sm font-bold mb-2">{health.system.cpu_percent.toFixed(1)}%</div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-blue-600 h-2 rounded-full transition-all"
                   style={{ width: `${health.system.cpu_percent}%` }}
@@ -141,15 +141,15 @@ export function MonitoringDashboard() {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-green-600" />
-                <CardTitle className="text-base">Memory Usage</CardTitle>
+                <CardTitle className="text-sm">Memory Usage</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-2">{health.system.memory.percent_used.toFixed(1)}%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <div className="text-sm font-bold mb-2">{health.system.memory.percent_used.toFixed(1)}%</div>
+              <div className="text-sm text-gray-600 mb-2">
                 {health.system.memory.available_mb.toFixed(0)} MB available
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-green-600 h-2 rounded-full transition-all"
                   style={{ width: `${health.system.memory.percent_used}%` }}
@@ -163,15 +163,15 @@ export function MonitoringDashboard() {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Server className="h-4 w-4 text-purple-600" />
-                <CardTitle className="text-base">Disk Usage</CardTitle>
+                <CardTitle className="text-sm">Disk Usage</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold mb-2">{health.system.disk.percent_used.toFixed(1)}%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <div className="text-sm font-bold mb-2">{health.system.disk.percent_used.toFixed(1)}%</div>
+              <div className="text-sm text-gray-600 mb-2">
                 {health.system.disk.free_gb.toFixed(1)} GB free
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-purple-600 h-2 rounded-full transition-all"
                   style={{ width: `${health.system.disk.percent_used}%` }}
@@ -186,10 +186,10 @@ export function MonitoringDashboard() {
       {health.system && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Runtime Information</CardTitle>
+            <CardTitle className="text-sm">Runtime Information</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-gray-600">
               <strong>Python:</strong> {health.system.python_version.split(' ')[0]}
             </div>
           </CardContent>

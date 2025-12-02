@@ -137,7 +137,7 @@ export default function LeadsQueuePage() {
       />
 
       {/* Desktop Header Only */}
-      <header className="hidden md:block bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+      <header className="hidden md:block bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
         <div className="px-6 py-6">
           <QueueHeader
             title="Leads"
@@ -146,7 +146,7 @@ export default function LeadsQueuePage() {
             action={
               <Button 
                 onClick={() => router.push('/leads/new')}
-                className="bg-orange-500 hover:bg-orange-600 text-white"
+                className="bg-blue-500 hover:bg-blue-700 text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 New Lead
@@ -181,7 +181,7 @@ export default function LeadsQueuePage() {
               !searchTerm && (
                 <Button 
                   onClick={() => router.push('/leads/new')}
-                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                  className="bg-blue-500 hover:bg-blue-700 text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add First Lead
@@ -205,7 +205,7 @@ export default function LeadsQueuePage() {
                     created_at: lead.created_at,
                   }}
                   badge={
-                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                    <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-700">
                       {getStatusLabel(lead.lead_status)}
                     </span>
                   }
@@ -228,7 +228,7 @@ export default function LeadsQueuePage() {
                     status: lead.lead_status
                   }}
                   badge={
-                    <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400">
+                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
                       {getStatusLabel(lead.lead_status)}
                     </span>
                   }

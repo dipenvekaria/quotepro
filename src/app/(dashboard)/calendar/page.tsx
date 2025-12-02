@@ -37,20 +37,20 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-10">
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-                <CalendarIcon className="h-8 w-8 text-[#FF6200]" />
+              <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                <CalendarIcon className="h-8 w-8 text-[#2563eb]" />
                 Calendar
               </h1>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-base text-muted-foreground mt-1">
                 {scheduledJobs.length} scheduled job{scheduledJobs.length !== 1 ? 's' : ''}
               </p>
             </div>
             
-            <Button onClick={handleToday} className="bg-[#FF6200] hover:bg-[#E55800]">
+            <Button onClick={handleToday} className="bg-[#2563eb] hover:bg-[#1d4ed8]">
               Today
             </Button>
           </div>
@@ -65,7 +65,7 @@ export default function CalendarPage() {
             <Card>
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-2xl font-bold">
+                  <CardTitle className="text-sm font-bold">
                     {format(currentDate, 'MMMM yyyy')}
                   </CardTitle>
                   <div className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export default function CalendarPage() {
                 <div className="grid grid-cols-7 gap-1">
                   {/* Day Headers */}
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                    <div key={day} className="text-center text-sm font-semibold text-muted-foreground py-3">
+                    <div key={day} className="text-center text-sm font-bold text-muted-foreground py-3">
                       {day}
                     </div>
                   ))}
@@ -102,14 +102,14 @@ export default function CalendarPage() {
                         onClick={() => setSelectedDate(day)}
                         className={`
                           aspect-square p-2 rounded-lg transition-all relative
-                          ${isCurrentMonth ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800/50'}
-                          ${isDayToday ? 'ring-2 ring-[#FF6200]' : ''}
-                          ${isSelected ? 'bg-blue-50 dark:bg-blue-950 ring-2 ring-blue-500' : ''}
-                          ${!isSelected && isCurrentMonth ? 'hover:bg-gray-50 dark:hover:bg-gray-800' : ''}
-                          border border-gray-200 dark:border-gray-700
+                          ${isCurrentMonth ? 'bg-white' : 'bg-gray-50'}
+                          ${isDayToday ? 'ring-2 ring-[#2563eb]' : ''}
+                          ${isSelected ? 'bg-blue-50 ring-2 ring-blue-500' : ''}
+                          ${!isSelected && isCurrentMonth ? 'hover:bg-gray-50' : ''}
+                          border border-gray-200
                         `}
                       >
-                        <div className={`text-sm font-medium ${isCurrentMonth ? '' : 'text-muted-foreground'}`}>
+                        <div className={`text-sm font-bold ${isCurrentMonth ? '' : 'text-muted-foreground'}`}>
                           {format(day, 'd')}
                         </div>
                         
@@ -119,7 +119,7 @@ export default function CalendarPage() {
                             {dayJobs.slice(0, 3).map((_, i) => (
                               <div
                                 key={i}
-                                className="w-1.5 h-1.5 rounded-full bg-[#FF6200]"
+                                className="w-1.5 h-1.5 rounded-full bg-[#2563eb]"
                               />
                             ))}
                           </div>
@@ -136,7 +136,7 @@ export default function CalendarPage() {
           <div className="lg:col-span-1">
             <Card className="sticky top-24">
               <CardHeader className="pb-4">
-                <CardTitle className="text-lg">
+                <CardTitle className="text-sm">
                   {format(selectedDate, 'EEEE, MMM d')}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">
@@ -155,17 +155,17 @@ export default function CalendarPage() {
                   <div className="space-y-3 max-h-[600px] overflow-y-auto">
                     {selectedDayJobs.map((job) => (
                       <Link key={job.id} href={`/quotes/new?id=${job.id}`}>
-                        <Card className="hover:shadow-md transition-shadow cursor-pointer border-l-4 border-l-[#FF6200]">
+                        <Card className="hover:shadow-md transition-shadow cursor-pointer border-l-4 border-l-[#2563eb]">
                           <CardContent className="p-4">
                             <div className="space-y-2">
                               {/* Time */}
-                              <div className="flex items-center gap-2 text-[#FF6200] font-semibold">
+                              <div className="flex items-center gap-2 text-[#2563eb] font-bold">
                                 <Clock className="h-4 w-4" />
                                 <span>{job.time}</span>
                               </div>
 
                               {/* Customer */}
-                              <h3 className="font-semibold">{job.customer}</h3>
+                              <h3 className="font-bold">{job.customer}</h3>
 
                               {/* Address */}
                               {job.address && (
@@ -176,7 +176,7 @@ export default function CalendarPage() {
                               )}
 
                               {/* Total */}
-                              <div className="flex items-center gap-2 text-sm font-semibold text-[#FF6200]">
+                              <div className="flex items-center gap-2 text-sm font-bold text-[#2563eb]">
                                 <DollarSign className="h-4 w-4" />
                                 <span>${job.total?.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
                               </div>

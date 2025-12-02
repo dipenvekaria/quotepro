@@ -33,10 +33,10 @@ export default function NewQuotePage() {
   const router = useRouter()
   const supabase = createClient()
 
-  // Quote mode detection
-  const [isQuoteMode, setIsQuoteMode] = useState(() => {
+  // Check if creating quote from lead (showAICard flag set)
+  const [isCreatingQuote, setIsCreatingQuote] = useState(() => {
     if (typeof window === 'undefined') return false
-    return sessionStorage.getItem('isQuoteMode') === 'true'
+    return sessionStorage.getItem('showAICard') === 'true'
   })
 
   // Customer state
@@ -72,6 +72,8 @@ export default function NewQuotePage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setOrigin(window.location.origin)
+      // Check if creating quote from lead
+      setIsCreatingQuote(sessionStorage.getItem('showAICard') === 'true')
     }
     loadCompany()
     if (quoteId) {
@@ -79,22 +81,6 @@ export default function NewQuotePage() {
       loadAuditLogs(quoteId)
     }
   }, [quoteId])
-
-  // Quote mode management
-  useEffect(() => {
-    const checkQuoteMode = () => {
-      const mode = sessionStorage.getItem('isQuoteMode')
-      setIsQuoteMode(mode === 'true')
-    }
-    checkQuoteMode()
-    window.addEventListener('storage', checkQuoteMode)
-    return () => {
-      window.removeEventListener('storage', checkQuoteMode)
-      if (!window.location.pathname.includes('/quotes/new')) {
-        sessionStorage.removeItem('isQuoteMode')
-      }
-    }
-  }, [])
 
   // Auto-lookup customer by phone
   useEffect(() => {
@@ -442,6 +428,26 @@ export default function NewQuotePage() {
 
       await supabase.from('quote_items').insert(items)
 
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: quote.id,
+          action_type: 'ai_generation',
+          description: `Quote generated with ${generatedQuote.line_items.length} items`,
+          changes_made: {
+            item_count: generatedQuote.line_items.length,
+            subtotal,
+            total,
+            tax_rate: taxRate,
+          },
+          created_by: user.id,
+        })
+      }
+
+      // Reload audit logs
+      await loadAuditLogs(quote.id)
+
       toast.success('Quote saved successfully!')
       router.push(`/dashboard/leads/new?id=${quote.id}`)
     } catch (error) {
@@ -455,6 +461,25 @@ export default function NewQuotePage() {
   // Handle update quote
   const handleUpdateQuote = async () => {
     await saveQuoteToDatabase()
+    
+    // Log to audit trail
+    const currentQuoteId = savedQuoteId || quoteId
+    if (currentQuoteId) {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: currentQuoteId,
+          action_type: 'manual_edit',
+          description: `Quote manually updated`,
+          changes_made: {
+            timestamp: new Date().toISOString(),
+          },
+          created_by: user.id,
+        })
+      }
+      await loadAuditLogs(currentQuoteId)
+    }
+    
     toast.success('Quote updated')
   }
 
@@ -473,30 +498,60 @@ export default function NewQuotePage() {
 
     setIsSending(true)
     try {
-      const response = await fetch('/api/send-quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          quote_id: currentQuoteId,
-          recipient_email: customerEmail,
-          company_logo: companyLogo,
-        }),
-      })
-
-      if (!response.ok) {
-        const data = await response.json()
-        throw new Error(data.error || 'Failed to send quote')
-      }
-
-      await supabase
+      // Update quote status to sent and set sent_at timestamp
+      const { error: updateError } = await supabase
         .from('quotes')
-        .update({ lead_status: 'sent' })
+        .update({ 
+          followup_status: 'sent',
+          sent_at: new Date().toISOString()
+        })
         .eq('id', currentQuoteId)
 
-      toast.success('Quote sent successfully!')
+      if (updateError) throw updateError
+
+      // Log to audit trail
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quote_audit_log').insert({
+          quote_id: currentQuoteId,
+          action_type: 'quote_sent',
+          description: `Quote sent to customer`,
+          changes_made: {
+            followup_status: 'sent',
+            sent_at: new Date().toISOString(),
+          },
+          created_by: user.id,
+        })
+      }
+
+      // Copy public link to clipboard
+      const publicLink = `${origin}/q/${currentQuoteId}`
+      await navigator.clipboard.writeText(publicLink)
+
+      // Send email if email provided (optional, existing functionality)
+      if (customerEmail) {
+        const response = await fetch('/api/send-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quote_id: currentQuoteId,
+            recipient_email: customerEmail,
+            company_logo: companyLogo,
+          }),
+        })
+
+        if (!response.ok) {
+          console.error('Email send failed, but quote marked as sent')
+        }
+      }
+
+      // Reload audit logs
+      await loadAuditLogs(currentQuoteId)
+
+      toast.success('Quote sent! Link copied to clipboard.')
     } catch (err: any) {
       console.error('Send error:', err)
-      toast.error(err.message)
+      toast.error(err.message || 'Failed to send quote')
     } finally {
       setIsSending(false)
     }
@@ -510,27 +565,35 @@ export default function NewQuotePage() {
     }
 
     try {
-      // Generate job type if not set (using catalog)
+      // Use existing job type or generate in background (non-blocking)
       let finalJobType = jobType
+      
+      // Generate job type with timeout (max 2 seconds)
       if (!jobType || !quoteId) {
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 2000)
+        )
+        
+        const fetchPromise = fetch('/api/generate-job-name', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            description,
+            customer_name: customerName,
+            company_id: companyId,
+          }),
+        })
+        
         try {
-          const jobTypeResponse = await fetch('/api/generate-job-name', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              description,
-              customer_name: customerName,
-              company_id: companyId,
-            }),
-          })
-
+          const jobTypeResponse = await Promise.race([fetchPromise, timeoutPromise])
           if (jobTypeResponse.ok) {
             const data = await jobTypeResponse.json()
-            finalJobType = data.job_name  // API returns as job_name for compatibility
+            finalJobType = data.job_name
             setJobType(data.job_name)
           }
         } catch (error) {
-          console.error('Error generating job type:', error)
+          // Timeout or error - continue without job type
+          console.log('Job type generation skipped (timeout or error)')
         }
       }
 
@@ -571,6 +634,9 @@ export default function NewQuotePage() {
 
         toast.success('Lead updated successfully!')
         await loadAuditLogs(quoteId)
+        
+        // Redirect back to leads page
+        router.push('/leads-and-quotes/leads')
         return
       }
 
@@ -619,13 +685,9 @@ export default function NewQuotePage() {
       }
 
       toast.success('Lead saved successfully!')
-      setSavedQuoteId(newLead.id)
       
-      // Load audit logs and stay on the page
-      await loadAuditLogs(newLead.id)
-      
-      // Update URL without redirect
-      window.history.pushState({}, '', `/dashboard/leads/new?id=${newLead.id}`)
+      // Redirect back to leads page
+      router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error saving lead:', error)
       toast.error('Failed to save lead')
@@ -674,7 +736,7 @@ export default function NewQuotePage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#FF6200]" />
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#2563eb]" />
           <p className="text-muted-foreground">Loading quote...</p>
         </div>
       </div>
@@ -682,25 +744,21 @@ export default function NewQuotePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="pb-20 min-w-0">
         {/* Header */}
-        <header className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200/50 dark:border-gray-800/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80 dark:bg-opacity-80">
+        <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
           <div className="px-6 py-4">
             <div className="flex items-center gap-3">
-              <div className="bg-orange-500 dark:bg-orange-600 p-2 rounded-lg">
+              <div className="bg-blue-500 p-2 rounded-lg">
                 <Wrench className="h-5 w-5 text-white" />
               </div>
               <div className="min-w-0 flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {isQuoteMode 
-                    ? (quoteId ? 'Edit Quote' : 'New Quote')
-                    : (quoteId ? 'Edit Lead' : 'New Lead')
-                  }
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {isCreatingQuote ? 'Edit Quote' : quoteId ? 'Edit Lead' : 'New Lead'}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {customerName || 'Enter customer details to get started'}
-                  {quoteId && ` • Lead ID: ${quoteId}`}
+                <p className="text-base text-gray-600 mt-1">
+                  {jobType || customerName || 'Enter customer details to get started'}
                 </p>
               </div>
             </div>
@@ -708,7 +766,12 @@ export default function NewQuotePage() {
         </header>
 
         <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
-          {/* Customer Information - ALWAYS FIRST */}
+          {/* AI Quote Generator - FIRST (only when explicitly creating quote from lead) */}
+          {isCreatingQuote && (
+            <QuoteGenerator onGenerate={handleGenerateQuote} />
+          )}
+
+          {/* Customer Information - ALWAYS SHOWN */}
           <LeadForm
             customerName={customerName}
             customerEmail={customerEmail}
@@ -725,46 +788,39 @@ export default function NewQuotePage() {
             onAddressRecalculate={recalculateQuoteForAddress}
           />
 
-          {/* Job Description - Lead capture (show only if no quote generated) */}
-          {!generatedQuote && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Job Description</CardTitle>
-                <CardDescription>Briefly describe what needs to be done</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="space-y-3">
-                  <Label htmlFor="description" className="text-base">
-                    What needs to be done?
-                  </Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Describe the work needed..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="min-h-[150px] text-lg p-4"
-                  />
-                </div>
+          {/* Job Description - ALWAYS SHOWN */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Job Description</CardTitle>
+              <CardDescription>Briefly describe what needs to be done</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="space-y-3">
+                <Label htmlFor="description" className="text-sm">
+                  What needs to be done?
+                </Label>
+                <Textarea
+                  id="description"
+                  placeholder="Describe the work needed..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[150px] text-sm p-4"
+                />
+              </div>
 
-                {/* Save Lead Button - Only show if not saved yet */}
-                {!savedQuoteId && !quoteId && (
-                  <Button
-                    onClick={handleSaveLead}
-                    disabled={!customerName || !description}
-                    className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
-                  >
-                    <Save className="h-5 w-5 mr-2" />
-                    Save Lead
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Generate Quote (if saved but no quote yet) */}
-          {(savedQuoteId || quoteId) && !generatedQuote && (
-            <QuoteGenerator onGenerate={handleGenerateQuote} />
-          )}
+              {/* Save Lead Button - Show when no quote items exist */}
+              {!generatedQuote && (
+                <Button
+                  onClick={handleSaveLead}
+                  disabled={!customerName || !description}
+                  className="w-full h-14 text-sm font-bold bg-blue-500 hover:bg-blue-700 text-white"
+                >
+                  <Save className="h-5 w-5 mr-2" />
+                  Save Lead
+                </Button>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Quote Editor */}
           {generatedQuote && (
@@ -779,8 +835,8 @@ export default function NewQuotePage() {
               />
 
               {generatedQuote.notes && (
-                <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <div className="text-sm font-semibold mb-2">📋 Installation Instructions / Job Description</div>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="text-sm font-bold mb-2">📋 Installation Instructions / Job Description</div>
                   <div className="text-sm whitespace-pre-wrap">{generatedQuote.notes}</div>
                 </div>
               )}
@@ -811,9 +867,9 @@ export default function NewQuotePage() {
             />
           )}
 
-          {/* Audit Trail */}
-          {(savedQuoteId || quoteId) && auditLogs.length > 0 && (
-            <AuditTrail logs={auditLogs} />
+          {/* Audit Trail - ALWAYS SHOW if quote/lead exists */}
+          {(savedQuoteId || quoteId) && (
+            <AuditTrail quoteId={savedQuoteId || quoteId!} entries={auditLogs} />
           )}
         </main>
 

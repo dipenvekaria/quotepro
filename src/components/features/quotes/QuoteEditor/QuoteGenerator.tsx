@@ -28,9 +28,9 @@ export function QuoteGenerator({ onGenerate, disabled = false }: QuoteGeneratorP
   }
 
   return (
-    <Card className="border-orange-500 border-2">
-      <CardHeader className="bg-orange-500/5">
-        <CardTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+    <Card className="border-blue-500 border-2">
+      <CardHeader className="bg-blue-500/5">
+        <CardTitle className="flex items-center gap-2 text-blue-600">
           <Bot className="h-5 w-5" />
           Generate Quote with AI
         </CardTitle>
@@ -40,7 +40,7 @@ export function QuoteGenerator({ onGenerate, disabled = false }: QuoteGeneratorP
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-3">
-          <Label htmlFor="aiPrompt" className="text-base">
+          <Label htmlFor="aiPrompt" className="text-sm">
             What should be included in the quote?
           </Label>
           <Textarea
@@ -48,7 +48,7 @@ export function QuoteGenerator({ onGenerate, disabled = false }: QuoteGeneratorP
             placeholder='e.g., "Install new HVAC system with 3-ton unit, ductwork, thermostat, and labor" or "Roof repair - replace 200 sq ft of shingles, fix flashing around chimney"'
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            className="min-h-[120px] text-lg p-4"
+            className="min-h-[120px] text-sm p-4"
           />
           <p className="text-sm text-muted-foreground">
             💡 Be specific about materials, quantities, and labor. The AI will break this into individual line items with prices.
@@ -58,7 +58,7 @@ export function QuoteGenerator({ onGenerate, disabled = false }: QuoteGeneratorP
         <Button
           onClick={handleGenerate}
           disabled={!prompt.trim() || isGenerating || disabled}
-          className="w-full h-14 text-lg font-semibold bg-orange-500 hover:bg-orange-600 text-white"
+          className="w-full h-14 text-sm font-bold bg-blue-500 hover:bg-blue-700 text-white"
         >
           {isGenerating ? (
             <>

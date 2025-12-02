@@ -111,10 +111,10 @@ export function ItemsTable({
   }
 
   return (
-    <Card className="border-[#FF6200] border-2">
-      <CardHeader className="bg-[#FF6200]/5 relative z-10">
+    <Card className="border-[#2563eb] border-2">
+      <CardHeader className="bg-[#2563eb]/5 relative z-10">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-[#FF6200]">Generated Quote</CardTitle>
+          <CardTitle className="text-[#2563eb]">Generated Quote</CardTitle>
           <Button
             onClick={handleAddItem}
             variant="outline"
@@ -132,8 +132,8 @@ export function ItemsTable({
             <div key={index}>
               {editingIndex === index ? (
                 // Edit Mode
-                <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-lg border-2 border-blue-300 dark:border-blue-700 space-y-3">
-                  <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800">
+                <div className="p-3 bg-blue-50 rounded-lg border-2 border-blue-300 space-y-3">
+                  <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
                     <input
                       type="checkbox"
                       id="edit-is-discount"
@@ -184,7 +184,7 @@ export function ItemsTable({
                     <div className="space-y-2">
                       <Label className="text-xs">
                         Unit Price ($)
-                        {(editedItem?.is_discount || (editedItem?.unit_price ?? 0) < 0) && <span className="text-red-600 font-semibold"> (negative)</span>}
+                        {(editedItem?.is_discount || (editedItem?.unit_price ?? 0) < 0) && <span className="text-red-600 font-bold"> (negative)</span>}
                       </Label>
                       <Input
                         type="number"
@@ -210,13 +210,13 @@ export function ItemsTable({
                 // View Mode
                 <div className={`flex justify-between items-start p-3 rounded-lg group ${
                   item.is_discount || item.unit_price < 0 
-                    ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800' 
-                    : 'bg-gray-50 dark:bg-gray-800'
+                    ? 'bg-green-50 border border-green-200' 
+                    : 'bg-gray-50'
                 }`}>
                   <div className="flex-1">
-                    <div className={`font-semibold ${
+                    <div className={`font-bold ${
                       item.is_discount || item.unit_price < 0 
-                        ? 'text-green-700 dark:text-green-400' 
+                        ? 'text-green-700' 
                         : ''
                     }`}>
                       {item.name}
@@ -229,9 +229,9 @@ export function ItemsTable({
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className={`font-semibold ${
+                    <div className={`font-bold ${
                       item.is_discount || item.unit_price < 0 
-                        ? 'text-green-700 dark:text-green-400' 
+                        ? 'text-green-700' 
                         : ''
                     }`}>
                       ${item.total.toFixed(2)}
@@ -249,7 +249,7 @@ export function ItemsTable({
                         onClick={() => handleDeleteItem(index)}
                         variant="ghost"
                         size="sm"
-                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
+                        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -262,10 +262,10 @@ export function ItemsTable({
 
           {/* Add New Item Form */}
           {isAddingItem && (
-            <div className="p-3 bg-green-50 dark:bg-green-950 rounded-lg border-2 border-green-300 dark:border-green-700 space-y-3">
-              <div className="font-semibold text-green-700 dark:text-green-300 mb-2">Add New Item</div>
+            <div className="p-3 bg-green-50 rounded-lg border-2 border-green-300 space-y-3">
+              <div className="font-bold text-green-700 mb-2">Add New Item</div>
               
-              <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-800">
+              <div className="flex items-center gap-2 p-2 bg-white rounded border border-gray-200">
                 <input
                   type="checkbox"
                   id="is-discount"
@@ -320,7 +320,7 @@ export function ItemsTable({
                 </div>
                 <div className="space-y-2">
                   <Label className="text-xs">
-                    Unit Price ($) * {newItem.is_discount && <span className="text-red-600 font-semibold">(negative)</span>}
+                    Unit Price ($) * {newItem.is_discount && <span className="text-red-600 font-bold">(negative)</span>}
                   </Label>
                   <Input
                     type="number"
@@ -356,9 +356,9 @@ export function ItemsTable({
             <span>Tax ({taxRate?.toFixed(2) || '0.00'}%):</span>
             <span>${(subtotal * (taxRate / 100)).toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-lg font-bold border-t pt-2">
+          <div className="flex justify-between text-sm font-bold border-t pt-2">
             <span>Total:</span>
-            <span className="text-[#FF6200]">${total.toFixed(2)}</span>
+            <span className="text-[#2563eb]">${total.toFixed(2)}</span>
           </div>
         </div>
       </CardContent>

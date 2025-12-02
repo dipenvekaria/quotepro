@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#FF6200',
+    borderBottomColor: '#2563eb',
   },
   logo: {
     width: 120,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   tableRowUpsell: {
     backgroundColor: '#FFF5F0',
     borderLeftWidth: 3,
-    borderLeftColor: '#FF6200',
+    borderLeftColor: '#2563eb',
   },
   tableRowDiscount: {
     backgroundColor: '#F0FDF4',
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
   },
   upsellBadge: {
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     color: '#FFFFFF',
     fontSize: 7,
     fontFamily: 'Helvetica-Bold',
@@ -182,10 +182,10 @@ const styles = StyleSheet.create({
   tierPrice: {
     fontSize: 16,
     fontFamily: 'Helvetica-Bold',
-    color: '#FF6200',
+    color: '#2563eb',
   },
   tierBadge: {
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     color: '#FFFFFF',
     fontSize: 9,
     fontFamily: 'Helvetica-Bold',
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   grandTotalValue: {
     fontSize: 16,
     fontFamily: 'Helvetica-Bold',
-    color: '#FF6200',
+    color: '#2563eb',
   },
   photoSection: {
     marginTop: 25,
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   signButton: {
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     color: '#FFFFFF',
     fontSize: 14,
     fontFamily: 'Helvetica-Bold',

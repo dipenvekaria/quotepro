@@ -50,7 +50,7 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
       case 'item_modified':
         return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 text-xs whitespace-nowrap">Modified Item</Badge>
       case 'visit_scheduled':
-        return <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100 text-xs whitespace-nowrap">Visit Scheduled</Badge>
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100 text-xs whitespace-nowrap">Visit Scheduled</Badge>
       default:
         return <Badge variant="outline" className="text-xs whitespace-nowrap">{actionType}</Badge>
     }
@@ -173,7 +173,7 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
       {isExpanded && (
         <CardContent>
           <div className="space-y-0 border rounded-lg overflow-hidden">
-            <div className="bg-muted/50 px-4 py-2 grid grid-cols-12 gap-4 text-xs font-semibold text-muted-foreground border-b">
+            <div className="bg-muted/50 px-4 py-2 grid grid-cols-12 gap-4 text-xs font-bold text-muted-foreground border-b">
               <div className="col-span-2">When</div>
               <div className="col-span-2">Who</div>
               <div className="col-span-2">Action</div>

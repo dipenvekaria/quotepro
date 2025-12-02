@@ -194,7 +194,7 @@ export function UpsellSuggestionsPanel({
               <div className="grid grid-cols-2 gap-2">
                 <div className="p-3 bg-white rounded-lg border">
                   <div className="text-xs text-muted-foreground">Potential Increase</div>
-                  <div className="text-lg font-bold text-green-600">
+                  <div className="text-sm font-bold text-green-600">
                     +${result.potential_increase.toLocaleString()}
                   </div>
                   <div className="text-xs text-muted-foreground">
@@ -244,7 +244,7 @@ export function UpsellSuggestionsPanel({
                               <div className="text-xs text-muted-foreground">{suggestion.category}</div>
                             </div>
                             <div className="text-right">
-                              <div className="font-semibold text-sm">
+                              <div className="font-bold text-sm">
                                 ${suggestion.estimated_value.toLocaleString()}
                               </div>
                               {getConfidenceBadge(suggestion.confidence)}

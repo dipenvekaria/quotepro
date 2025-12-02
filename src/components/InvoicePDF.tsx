@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#FF6200',
+    borderBottomColor: '#2563eb',
   },
   logo: {
     width: 120,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontFamily: 'Helvetica-Bold',
-    color: '#FF6200',
+    color: '#2563eb',
     marginBottom: 10,
   },
   invoiceNumber: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     padding: 10,
     fontFamily: 'Helvetica-Bold',
     fontSize: 9,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 12,
-    backgroundColor: '#FF6200',
+    backgroundColor: '#2563eb',
     borderRadius: 4,
     marginTop: 8,
   },

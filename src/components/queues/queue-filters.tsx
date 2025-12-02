@@ -54,18 +54,18 @@ export function QueueFilters({
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-2 px-4 py-2.5 rounded-lg",
-          "bg-white dark:bg-gray-800",
-          "border border-gray-200 dark:border-gray-700",
-          "text-sm font-medium text-gray-700 dark:text-gray-300",
-          "hover:bg-gray-50 dark:hover:bg-gray-700",
+          "bg-white",
+          "border border-gray-200",
+          "text-sm font-bold text-gray-700",
+          "hover:bg-gray-50",
           "transition-colors",
-          "focus:outline-none focus:ring-2 focus:ring-orange-500 dark:focus:ring-orange-600"
+          "focus:outline-none focus:ring-2 focus:ring-blue-500"
         )}
       >
-        <span className="text-gray-500 dark:text-gray-400">{label}:</span>
-        <span className="text-gray-900 dark:text-white">{selectedOption.label}</span>
+        <span className="text-gray-500">{label}:</span>
+        <span className="text-gray-900">{selectedOption.label}</span>
         {selectedOption.count !== undefined && (
-          <span className="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <span className="px-2 py-0.5 text-xs font-bold rounded-full bg-gray-200 text-gray-700">
             {selectedOption.count}
           </span>
         )}
@@ -78,8 +78,8 @@ export function QueueFilters({
       {isOpen && (
         <div className={cn(
           "absolute z-50 mt-2 w-full min-w-[200px] rounded-lg shadow-lg",
-          "bg-white dark:bg-gray-800",
-          "border border-gray-200 dark:border-gray-700",
+          "bg-white",
+          "border border-gray-200",
           "py-1"
         )}>
           {options.map((option) => (
@@ -92,13 +92,13 @@ export function QueueFilters({
               className={cn(
                 "w-full flex items-center justify-between px-4 py-2.5",
                 "text-sm text-left",
-                "hover:bg-gray-50 dark:hover:bg-gray-700",
+                "hover:bg-gray-50",
                 "transition-colors",
-                option.value === value && "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400"
+                option.value === value && "bg-blue-50 text-blue-600"
               )}
             >
               <span className={cn(
-                option.value === value ? "font-semibold" : "font-medium"
+                option.value === value ? "font-bold" : "font-bold"
               )}>
                 {option.label}
               </span>
@@ -106,8 +106,8 @@ export function QueueFilters({
                 <span className={cn(
                   "px-2 py-0.5 text-xs font-bold rounded-full",
                   option.value === value 
-                    ? "bg-orange-500 dark:bg-orange-600 text-white" 
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                    ? "bg-blue-500 text-white" 
+                    : "bg-gray-200 text-gray-700"
                 )}>
                   {option.count}
                 </span>

@@ -7,6 +7,8 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+// Commented out - @sentry/nextjs not installed
+/*
 import * as Sentry from "@sentry/nextjs"
 
 Sentry.init({
@@ -73,3 +75,4 @@ Sentry.init({
     return event
   },
 })
+*/
