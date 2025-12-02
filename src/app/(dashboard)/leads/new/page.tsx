@@ -220,7 +220,17 @@ export default function NewQuotePage() {
     try {
       const { data, error } = await supabase
         .from('activity_log')
-        .select('*')
+        .select(`
+          *,
+          users (
+            id,
+            role,
+            profiles (
+              full_name,
+              email
+            )
+          )
+        `)
         .eq('entity_id', id)
         .order('created_at', { ascending: false })
       
