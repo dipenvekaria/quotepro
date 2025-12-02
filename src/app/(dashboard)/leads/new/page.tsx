@@ -122,20 +122,31 @@ export default function NewQuotePage() {
       // NEW SCHEMA: First try loading as a lead
       const { data: lead, error: leadError } = await supabase
         .from('leads')
-        .select(`
-          *,
-          customer:customers(*),
-          customer_addresses(*)
-        `)
+        .select('*')
         .eq('id', id)
         .single()
 
+      console.log('Lead query result:', { lead, leadError })
+
       if (lead && !leadError) {
-        // It's a lead - populate form from lead + customer data
-        setCustomerName(lead.customer?.name || '')
-        setCustomerEmail(lead.customer?.email || '')
-        setCustomerPhone(lead.customer?.phone || '')
-        setCustomerAddress(lead.customer_addresses?.[0]?.address || '')
+        // It's a lead - fetch customer separately
+        const { data: customer } = await supabase
+          .from('customers')
+          .select('*')
+          .eq('id', lead.customer_id)
+          .single()
+
+        const { data: addresses } = await supabase
+          .from('customer_addresses')
+          .select('*')
+          .eq('customer_id', lead.customer_id)
+          .eq('is_primary', true)
+          .limit(1)
+
+        setCustomerName(customer?.name || '')
+        setCustomerEmail(customer?.email || '')
+        setCustomerPhone(customer?.phone || '')
+        setCustomerAddress(addresses?.[0]?.address || '')
         setDescription(lead.description || '')
         setJobType(lead.metadata?.job_type || '')
         setIsLoadingQuote(false)
@@ -145,22 +156,33 @@ export default function NewQuotePage() {
       // If not a lead, try loading as a quote
       const { data: quote, error } = await supabase
         .from('quotes')
-        .select(`
-          *,
-          quote_items(*),
-          customer:customers(*),
-          customer_addresses(*)
-        `)
+        .select('*, quote_items(*)')
         .eq('id', id)
         .single()
+
+      console.log('Quote query result:', { quote, error })
 
       if (error) throw error
 
       if (quote) {
-        setCustomerName(quote.customer?.name || '')
-        setCustomerEmail(quote.customer?.email || '')
-        setCustomerPhone(quote.customer?.phone || '')
-        setCustomerAddress(quote.customer_addresses?.[0]?.address || '')
+        // Fetch customer for quote
+        const { data: customer } = await supabase
+          .from('customers')
+          .select('*')
+          .eq('id', quote.customer_id)
+          .single()
+
+        const { data: addresses } = await supabase
+          .from('customer_addresses')
+          .select('*')
+          .eq('customer_id', quote.customer_id)
+          .eq('is_primary', true)
+          .limit(1)
+
+        setCustomerName(customer?.name || '')
+        setCustomerEmail(customer?.email || '')
+        setCustomerPhone(customer?.phone || '')
+        setCustomerAddress(addresses?.[0]?.address || '')
         setDescription(quote.description || '')
         setJobType(quote.metadata?.job_type || '')
         
