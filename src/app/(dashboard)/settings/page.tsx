@@ -146,23 +146,28 @@ function SettingsPageContent() {
           .eq('id', userRecord.company_id)
           .single()
 
-        if (companyData) {
-          setCompany(companyData)
-          setCompanyName(companyData.name || '')
-          setCompanyPhone(companyData.phone || '')
-          setCompanyEmail(companyData.email || '')
-          setCompanyAddress(companyData.address || '')
-          setLogoPreview(companyData.logo_url)
-          
-          // NEW SCHEMA: settings stored in JSONB
-          const settings = companyData.settings || {}
-          setDefaultTerms(settings.default_terms || '')
-          setDefaultNotes(settings.default_notes || '')
-          setDefaultValidDays(settings.default_valid_days || '30')
+        if (!companyData) {
+          toast.error('Company not found')
+          setIsLoading(false)
+          return
         }
 
+        setCompany(companyData)
+        setCompanyName(companyData.name || '')
+        setCompanyPhone(companyData.phone || '')
+        setCompanyEmail(companyData.email || '')
+        setCompanyAddress(companyData.address || '')
+        setLogoPreview(companyData.logo_url)
+        
+        // NEW SCHEMA: settings stored in JSONB
+        const settings = companyData.settings || {}
+        setDefaultTerms(settings.default_terms || '')
+        setDefaultNotes(settings.default_notes || '')
+        setDefaultValidDays(settings.default_valid_days || '30')
+
+        // NEW SCHEMA: catalog_items instead of pricing_items
         const { data: pricing, error: pricingError } = await supabase
-          .from('pricing_items')
+          .from('catalog_items')
           .select('*')
           .eq('company_id', companyData.id)
           .order('category', { ascending: true })
@@ -255,38 +260,39 @@ function SettingsPageContent() {
         setDefaultTerms(settings.default_terms || '')
         setDefaultNotes(settings.default_notes || '')
         setDefaultValidDays(settings.default_valid_days || '30')
+
+        // NEW SCHEMA: catalog_items instead of pricing_items
+        const { data: pricing, error: pricingError } = await supabase
+          .from('catalog_items')
+          .select('*')
+          .eq('company_id', companyData.id)
+          .order('category', { ascending: true })
+          .order('name', { ascending: true })
+
+        console.log('📊 Catalog items query:', { 
+          companyId: companyData.id, 
+          count: pricing?.length || 0,
+          error: pricingError,
+          sample: pricing?.[0]
+        })
+
+        setPricingItems(pricing || [])
+        
+        // Load team members
+        const { data: members } = await supabase
+          .from('team_members')
+          .select(`
+            *,
+            user:user_id (
+              email,
+              raw_user_meta_data
+            )
+          `)
+          .eq('company_id', companyData.id)
+          .order('created_at', { ascending: false })
+        
+        setTeamMembers(members || [])
       }
-
-      const { data: pricing, error: pricingError } = await supabase
-        .from('pricing_items')
-        .select('*')
-        .eq('company_id', companyData.id)
-        .order('category', { ascending: true })
-        .order('name', { ascending: true })
-
-      console.log('📊 Pricing items query:', { 
-        companyId: companyData.id, 
-        count: pricing?.length || 0,
-        error: pricingError,
-        sample: pricing?.[0]
-      })
-
-      setPricingItems(pricing || [])
-      
-      // Load team members
-      const { data: members } = await supabase
-        .from('team_members')
-        .select(`
-          *,
-          user:user_id (
-            email,
-            raw_user_meta_data
-          )
-        `)
-        .eq('company_id', companyData.id)
-        .order('created_at', { ascending: false })
-      
-      setTeamMembers(members || [])
     } catch (error) {
       console.error('Error loading data:', error)
       toast.error('Failed to load settings')
