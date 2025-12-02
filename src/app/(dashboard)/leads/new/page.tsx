@@ -149,6 +149,11 @@ export default function NewQuotePage() {
         setCustomerAddress(addresses?.[0]?.address || '')
         setDescription(lead.description || '')
         setJobType(lead.metadata?.job_type || '')
+        
+        // Clear quote mode flag when loading a lead
+        setIsCreatingQuote(false)
+        sessionStorage.removeItem('showAICard')
+        
         setIsLoadingQuote(false)
         return
       }
@@ -186,8 +191,9 @@ export default function NewQuotePage() {
         setDescription(quote.description || '')
         setJobType(quote.job_name || '')
         
-        // Set as quote mode since we're loading a quote
+        // Set quote mode and ensure sessionStorage is set
         setIsCreatingQuote(true)
+        sessionStorage.setItem('showAICard', 'true')
         setSavedQuoteId(quote.id)
         
         if (quote.quote_items && quote.quote_items.length > 0) {
