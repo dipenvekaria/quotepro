@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional
 from config.settings import get_settings
-from db.supabase_client import get_supabase_client
+from config.database import get_supabase
 from services.ai.gemini_client import GeminiClient
 from services.auto_indexer import get_auto_indexer
 
@@ -45,7 +45,7 @@ async def index_catalog(request: IndexRequest, background_tasks: BackgroundTasks
     """
     try:
         settings = get_settings()
-        db = get_supabase_client()
+        db = get_supabase()
         gemini = GeminiClient(api_key=settings.GEMINI_API_KEY)
         indexer = get_auto_indexer(db, gemini)
         
@@ -94,7 +94,7 @@ async def index_single_item(request: IndexItemRequest):
     """
     try:
         settings = get_settings()
-        db = get_supabase_client()
+        db = get_supabase()
         gemini = GeminiClient(api_key=settings.GEMINI_API_KEY)
         indexer = get_auto_indexer(db, gemini)
         
@@ -132,7 +132,7 @@ async def delete_item_embedding(item_id: str):
     """
     try:
         settings = get_settings()
-        db = get_supabase_client()
+        db = get_supabase()
         gemini = GeminiClient(api_key=settings.GEMINI_API_KEY)
         indexer = get_auto_indexer(db, gemini)
         
@@ -174,7 +174,7 @@ async def get_index_status(company_id: str):
         }
     """
     try:
-        db = get_supabase_client()
+        db = get_supabase()
         
         # Count total pricing items
         total_response = db.table("pricing_items")\
