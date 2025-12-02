@@ -37,7 +37,8 @@ DROP POLICY IF EXISTS invoices_new_update_policy ON invoices;
 DROP POLICY IF EXISTS invoices_new_delete_policy ON invoices;
 
 -- Drop and recreate helper function to reference correct table
-DROP FUNCTION IF EXISTS public.get_user_company_id();
+-- Use CASCADE because existing policies depend on this function
+DROP FUNCTION IF EXISTS public.get_user_company_id() CASCADE;
 
 CREATE OR REPLACE FUNCTION public.get_user_company_id()
 RETURNS UUID AS $$
