@@ -67,9 +67,102 @@ export default function LeadsQueuePage() {
     )
   }, [leads, searchTerm])
 
-  const handleCreateQuote = (leadId: string) => {
-    // Navigate to quote generation page with the lead data
-    router.push(`/leads/new?id=${leadId}&mode=quote`)
+  const handleCreateQuote = async (leadId: string) => {
+    try {
+      const supabase = createClient()
+      
+      // First, check if a quote already exists for this lead
+      const { data: existingQuote } = await supabase
+        .from('quotes')
+        .select('id')
+        .eq('lead_id', leadId)
+        .maybeSingle()
+      
+      if (existingQuote) {
+        // Quote already exists, navigate to edit it
+        toast.success('Opening existing quote...')
+        sessionStorage.setItem('showAICard', 'true')
+        router.push(`/quotes/new?id=${existingQuote.id}`)
+        return
+      }
+      
+      // No quote exists, create a new one
+      const { data: lead } = await supabase
+        .from('leads')
+        .select('*, customers(*)')
+        .eq('id', leadId)
+        .single()
+      
+      if (!lead) {
+        toast.error('Lead not found')
+        return
+      }
+      
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        toast.error('You must be logged in')
+        return
+      }
+      
+      // Generate quote number (simple timestamp-based for now)
+      const quoteNumber = `Q-${Date.now()}`
+      
+      // Create a new quote from the lead
+      const { data: newQuote, error: quoteError } = await supabase
+        .from('quotes')
+        .insert({
+          company_id: lead.company_id,
+          customer_id: lead.customer_id,
+          lead_id: leadId,
+          quote_number: quoteNumber,
+          job_name: lead.metadata?.job_type || 'New Quote',
+          description: lead.description,
+          status: 'draft',
+          created_by: user.id,
+          subtotal: 0,
+          tax_amount: 0,
+          total: 0,
+        })
+        .select()
+        .single()
+      
+      if (quoteError) {
+        console.error('Error creating quote:', quoteError)
+        toast.error('Failed to create quote')
+        return
+      }
+      
+      // Update lead status to 'quoted'
+      await supabase
+        .from('leads')
+        .update({ status: 'quoted' })
+        .eq('id', leadId)
+      
+      // Log activity
+      await supabase.from('activity_log').insert({
+        company_id: lead.company_id,
+        user_id: user.id,
+        entity_type: 'quote',
+        entity_id: newQuote.id,
+        action: 'created',
+        description: `Quote created from lead: ${lead.customers?.name || 'Unknown'}`,
+      })
+      
+      // Refresh dashboard counts
+      await refreshQuotes()
+      
+      toast.success('Quote created! Redirecting...')
+      
+      // Set flag to show AI quote generation card
+      sessionStorage.setItem('showAICard', 'true')
+      
+      // Navigate to quote editor
+      router.push(`/quotes/new?id=${newQuote.id}`)
+    } catch (error) {
+      console.error('Error creating quote:', error)
+      toast.error('Failed to create quote')
+    }
   }
 
   const handleScheduleVisit = (leadId: string, customerName: string) => {
@@ -281,7 +374,7 @@ export default function LeadsQueuePage() {
                       </Button>
                     </div>
                   }
-                  onClick={() => handleCreateQuote(lead.id)}
+                  onClick={() => router.push(`/leads/new?id=${lead.id}`)}
                   showAmount={lead.total !== undefined && lead.total > 0}
                   showDate={true}
                   dateLabel="Created"

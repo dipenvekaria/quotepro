@@ -184,7 +184,11 @@ export default function NewQuotePage() {
         setCustomerPhone(customer?.phone || '')
         setCustomerAddress(addresses?.[0]?.address || '')
         setDescription(quote.description || '')
-        setJobType(quote.metadata?.job_type || '')
+        setJobType(quote.job_name || '')
+        
+        // Set as quote mode since we're loading a quote
+        setIsCreatingQuote(true)
+        setSavedQuoteId(quote.id)
         
         if (quote.quote_items && quote.quote_items.length > 0) {
           setGeneratedQuote({
@@ -218,6 +222,23 @@ export default function NewQuotePage() {
   // Load audit logs
   const loadAuditLogs = async (id: string) => {
     try {
+      // First, check if this is a quote with a linked lead
+      let entityIds = [id]
+      
+      if (isCreatingQuote || sessionStorage.getItem('showAICard') === 'true') {
+        // Loading a quote - also get the lead's history if it exists
+        const { data: quote } = await supabase
+          .from('quotes')
+          .select('lead_id')
+          .eq('id', id)
+          .maybeSingle()
+        
+        if (quote?.lead_id) {
+          entityIds.push(quote.lead_id)
+        }
+      }
+      
+      // Load all activity logs for both quote and lead
       const { data, error } = await supabase
         .from('activity_log')
         .select(`
@@ -231,7 +252,7 @@ export default function NewQuotePage() {
             )
           )
         `)
-        .eq('entity_id', id)
+        .in('entity_id', entityIds)
         .order('created_at', { ascending: false })
       
       if (error) throw error
