@@ -115,25 +115,54 @@ export default function NewQuotePage() {
     }
   }
 
-  // Load existing quote
+  // Load existing quote OR lead
   const loadExistingQuote = async (id: string) => {
     setIsLoadingQuote(true)
     try {
+      // NEW SCHEMA: First try loading as a lead
+      const { data: lead, error: leadError } = await supabase
+        .from('leads')
+        .select(`
+          *,
+          customer:customers(*),
+          customer_addresses(*)
+        `)
+        .eq('id', id)
+        .single()
+
+      if (lead && !leadError) {
+        // It's a lead - populate form from lead + customer data
+        setCustomerName(lead.customer?.name || '')
+        setCustomerEmail(lead.customer?.email || '')
+        setCustomerPhone(lead.customer?.phone || '')
+        setCustomerAddress(lead.customer_addresses?.[0]?.address || '')
+        setDescription(lead.description || '')
+        setJobType(lead.metadata?.job_type || '')
+        setIsLoadingQuote(false)
+        return
+      }
+
+      // If not a lead, try loading as a quote
       const { data: quote, error } = await supabase
         .from('quotes')
-        .select('*, quote_items(*)')
+        .select(`
+          *,
+          quote_items(*),
+          customer:customers(*),
+          customer_addresses(*)
+        `)
         .eq('id', id)
         .single()
 
       if (error) throw error
 
       if (quote) {
-        setCustomerName(quote.customer_name || '')
-        setCustomerEmail(quote.customer_email || '')
-        setCustomerPhone(quote.customer_phone || '')
-        setCustomerAddress(quote.customer_address || '')
+        setCustomerName(quote.customer?.name || '')
+        setCustomerEmail(quote.customer?.email || '')
+        setCustomerPhone(quote.customer?.phone || '')
+        setCustomerAddress(quote.customer_addresses?.[0]?.address || '')
         setDescription(quote.description || '')
-        setJobType(quote.job_type || '')
+        setJobType(quote.metadata?.job_type || '')
         
         if (quote.quote_items && quote.quote_items.length > 0) {
           setGeneratedQuote({
@@ -186,11 +215,12 @@ export default function NewQuotePage() {
     if (digitsOnly.length < 10 || !companyId) return
 
     try {
+      // NEW SCHEMA: Lookup from customers table
       const { data: existingCustomers, error } = await supabase
-        .from('quotes')
-        .select('customer_name, customer_email, customer_phone, customer_address')
+        .from('customers')
+        .select('*')
         .eq('company_id', companyId)
-        .ilike('customer_phone', `%${digitsOnly.slice(-10)}%`)
+        .ilike('phone', `%${digitsOnly.slice(-10)}%`)
         .order('created_at', { ascending: false })
         .limit(1)
 
@@ -201,16 +231,26 @@ export default function NewQuotePage() {
 
       if (existingCustomers && existingCustomers.length > 0) {
         const customer = existingCustomers[0]
-        if (!customerName && customer.customer_name) {
-          setCustomerName(customer.customer_name)
+        if (!customerName && customer.name) {
+          setCustomerName(customer.name)
         }
-        if (!customerEmail && customer.customer_email) {
-          setCustomerEmail(customer.customer_email)
+        if (!customerEmail && customer.email) {
+          setCustomerEmail(customer.email)
         }
-        if (!customerAddress && customer.customer_address) {
-          setCustomerAddress(customer.customer_address)
+        
+        // Load customer's primary address
+        const { data: addresses } = await supabase
+          .from('customer_addresses')
+          .select('*')
+          .eq('customer_id', customer.id)
+          .eq('is_primary', true)
+          .limit(1)
+        
+        if (addresses && addresses.length > 0 && !customerAddress) {
+          setCustomerAddress(addresses[0].address)
         }
-        toast.success(`Found existing customer: ${customer.customer_name}`)
+        
+        toast.success(`Found existing customer: ${customer.name}`)
       }
     } catch (error) {
       console.error('Error in customer lookup:', error)
