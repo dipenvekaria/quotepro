@@ -39,6 +39,7 @@ export interface CompactCardData {
   customer_address?: string
   customer_phone?: string
   job_name?: string
+  job_type?: string
   total?: number
   created_at?: string
   scheduled_at?: string
@@ -108,6 +109,13 @@ export function CompactQueueCard({
             {data.job_name && (
               <p className="text-sm text-gray-600 truncate">
                 {data.job_name}
+              </p>
+            )}
+
+            {/* Job Type - Mobile Only (if no job_name) */}
+            {!data.job_name && data.job_type && (
+              <p className="text-sm text-gray-500 truncate">
+                {data.job_type}
               </p>
             )}
 

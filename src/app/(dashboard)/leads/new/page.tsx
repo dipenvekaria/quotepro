@@ -15,6 +15,7 @@ import { QuoteGenerator, ItemsTable, AIAssistant, ActionButtons, type QuoteItem 
 import { AuditTrail } from '@/components/audit-trail'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { useGenerateQuote, useUpdateQuoteWithAI } from '@/lib/hooks/useQuotes'
+import { useDashboard } from '@/lib/dashboard-context'
 
 interface GeneratedQuote {
   line_items: QuoteItem[]
@@ -32,6 +33,7 @@ export default function NewQuotePage() {
   const quoteId = searchParams.get('id')
   const router = useRouter()
   const supabase = createClient()
+  const { refreshQuotes } = useDashboard()
 
   // Check if creating quote from lead (showAICard flag set)
   const [isCreatingQuote, setIsCreatingQuote] = useState(() => {
@@ -568,10 +570,10 @@ export default function NewQuotePage() {
       // Use existing job type or generate in background (non-blocking)
       let finalJobType = jobType
       
-      // Generate job type with timeout (max 2 seconds)
+      // Generate job type with timeout (max 1 second)
       if (!jobType || !quoteId) {
         const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), 2000)
+          setTimeout(() => reject(new Error('Timeout')), 1000)
         )
         
         const fetchPromise = fetch('/api/generate-job-name', {
@@ -636,6 +638,7 @@ export default function NewQuotePage() {
         await loadAuditLogs(quoteId)
         
         // Redirect back to leads page
+        refreshQuotes()
         router.push('/leads-and-quotes/leads')
         return
       }
@@ -687,6 +690,7 @@ export default function NewQuotePage() {
       toast.success('Lead saved successfully!')
       
       // Redirect back to leads page
+      refreshQuotes()
       router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error saving lead:', error)
@@ -757,9 +761,16 @@ export default function NewQuotePage() {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {isCreatingQuote ? 'Edit Quote' : quoteId ? 'Edit Lead' : 'New Lead'}
                 </h1>
-                <p className="text-base text-gray-600 mt-1">
-                  {jobType || customerName || 'Enter customer details to get started'}
-                </p>
+                {jobType && (
+                  <p className="text-base text-gray-600 mt-1">
+                    {jobType}
+                  </p>
+                )}
+                {!jobType && customerName && (
+                  <p className="text-base text-gray-600 mt-1">
+                    {customerName}
+                  </p>
+                )}
               </div>
             </div>
           </div>

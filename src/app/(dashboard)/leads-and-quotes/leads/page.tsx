@@ -201,6 +201,7 @@ export default function LeadsQueuePage() {
                     customer_name: lead.customer_name,
                     customer_phone: lead.customer_phone,
                     job_name: lead.job_name,
+                    job_type: lead.job_type,
                     total: lead.total,
                     created_at: lead.created_at,
                   }}
