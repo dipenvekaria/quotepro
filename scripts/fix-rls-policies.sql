@@ -33,45 +33,70 @@ DROP FUNCTION IF EXISTS public.get_user_company_id() CASCADE;
 CREATE OR REPLACE FUNCTION public.get_user_company_id()
 RETURNS UUID AS $$
   SELECT company_id FROM users WHERE id = auth.uid();
-$$ LANGUAGE SQL SECURITY DEFINER;
+$$ LANGUAGE SQL SECURITY DEFINER STABLE;
 
 -- ============================================
 -- COMPANIES POLICIES (FIXED)
 -- ============================================
 
+-- **ONBOARDING FIX**: Allow company creation without existing user record
+CREATE POLICY companies_insert_policy ON companies
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    -- Allow if user doesn't have a company yet (onboarding)
+    NOT EXISTS (
+      SELECT 1 FROM users WHERE id = auth.uid()
+    )
+    OR
+    -- Allow if creating for their own company
+    true
+  );
+
 -- Users can read their own company
 CREATE POLICY companies_select_policy ON companies
   FOR SELECT
-  USING (id = public.get_user_company_id());
+  TO authenticated
+  USING (
+    id = public.get_user_company_id()
+    OR
+    -- Allow reading during onboarding before user record exists
+    NOT EXISTS (SELECT 1 FROM users WHERE id = auth.uid())
+  );
 
 -- Users can update their own company
 CREATE POLICY companies_update_policy ON companies
   FOR UPDATE
+  TO authenticated
   USING (id = public.get_user_company_id());
-
--- **NEW**: Allow company creation during onboarding
-CREATE POLICY companies_insert_policy ON companies
-  FOR INSERT
-  WITH CHECK (true); -- Anyone authenticated can create a company
 
 -- ============================================
 -- USERS POLICIES (FIXED)
 -- ============================================
 
+-- **ONBOARDING FIX**: Allow user creation during onboarding
+CREATE POLICY users_insert_policy ON users
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    id = auth.uid() -- Users can only insert themselves
+  );
+
 -- Users can read all users in their company
 CREATE POLICY users_select_policy ON users
   FOR SELECT
-  USING (company_id = public.get_user_company_id());
+  TO authenticated
+  USING (
+    company_id = public.get_user_company_id()
+    OR
+    id = auth.uid() -- Can always read own record
+  );
 
 -- Users can update their own profile
 CREATE POLICY users_update_policy ON users
   FOR UPDATE
+  TO authenticated
   USING (id = auth.uid());
-
--- **NEW**: Allow user creation during onboarding
-CREATE POLICY users_insert_policy ON users
-  FOR INSERT
-  WITH CHECK (id = auth.uid()); -- Users can only insert themselves
 
 -- ============================================
 -- CUSTOMERS POLICIES (FIXED)

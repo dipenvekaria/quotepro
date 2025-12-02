@@ -18,7 +18,8 @@ export default function OnboardingPage() {
     progress,
     handleLogoChange,
     handleStep1,
-    handleStep2
+    handleStep2,
+    handleLogout
   } = useOnboarding()
 
   return (
@@ -26,13 +27,23 @@ export default function OnboardingPage() {
       {/* Header */}
       <header className="bg-[#0F172A] border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-center gap-3">
-            <div>
-              <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
-              <p className="text-[#2563eb] text-sm font-bold">
-                Stop losing jobs to slow quotes.
-              </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div>
+                <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
+                <p className="text-[#2563eb] text-sm font-bold">
+                  Stop losing jobs to slow quotes.
+                </p>
+              </div>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleLogout}
+              className="text-white/70 hover:text-white hover:bg-white/10"
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </header>

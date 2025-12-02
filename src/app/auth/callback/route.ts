@@ -29,15 +29,15 @@ export async function GET(request: Request) {
       if (user) {
         console.log('  - User authenticated:', user.email)
         
-        // @ts-ignore - Supabase typing
-        const { data: company } = await supabase
-          .from('companies')
-          .select('id')
-          .eq('user_id', user.id)
-          .single()
+        // NEW SCHEMA: Check users table for company_id
+        const { data: userRecord } = await supabase
+          .from('users')
+          .select('company_id')
+          .eq('id', user.id)
+          .single() as { data: { company_id: string } | null }
 
-        // If no company exists, redirect to onboarding
-        const redirectTo = company ? (next || '/dashboard') : '/onboarding'
+        // If no user record exists, redirect to onboarding
+        const redirectTo = userRecord?.company_id ? (next || '/dashboard') : '/onboarding'
         
         // Create redirect URL preserving the original host
         const redirectUrl = new URL(redirectTo, origin)

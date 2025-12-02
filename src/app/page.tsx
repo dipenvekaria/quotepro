@@ -14,15 +14,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
       const { data: { user } } = await supabase.auth.getUser()
       
       if (user) {
-        // @ts-ignore - Supabase typing
-        const { data: company } = await supabase
-          .from('companies')
-          .select('id')
-          .eq('user_id', user.id)
-          .single()
+        // NEW SCHEMA: Check users table for company_id
+        const { data: userRecord } = await supabase
+          .from('users')
+          .select('company_id')
+          .eq('id', user.id)
+          .single() as { data: { company_id: string } | null }
 
         // Redirect to onboarding if new user, home if returning
-        redirect(company ? '/home' : '/onboarding')
+        redirect(userRecord?.company_id ? '/home' : '/onboarding')
       }
     }
   }

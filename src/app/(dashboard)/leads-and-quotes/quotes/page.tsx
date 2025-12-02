@@ -21,25 +21,26 @@ export default function QuotesPage() {
 
   const loadData = async () => {
     try {
-      // Get user's company
+      // Get user's company via users table
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.push('/login')
         return
       }
 
-      const { data: company } = await supabase
-        .from('companies')
-        .select('id')
-        .eq('user_id', user.id)
-        .single()
+      // NEW SCHEMA: Get company via users table
+      const { data: userRecord } = await supabase
+        .from('users')
+        .select('company_id')
+        .eq('id', user.id)
+        .single() as { data: { company_id: string } | null }
 
-      if (!company) {
+      if (!userRecord?.company_id) {
         router.push('/login')
         return
       }
 
-      setCompanyId(company.id)
+      setCompanyId(userRecord.company_id)
 
       // Load all quotes (includes leads and quotes)
       const { data: allQuotes, error } = await supabase

@@ -25,13 +25,14 @@ export function useOnboarding() {
       return
     }
 
-    const { data: company } = await supabase
-      .from('companies')
-      .select('*')
-      .eq('user_id', user.id)
+    // NEW SCHEMA: Check users table for company_id
+    const { data: userRecord } = await supabase
+      .from('users')
+      .select('company_id')
+      .eq('id', user.id)
       .single()
 
-    if (company) {
+    if (userRecord?.company_id) {
       router.push('/dashboard')
     }
   }
@@ -77,19 +78,33 @@ export function useOnboarding() {
         logoUrl = publicUrl
       }
 
-      const { data: newCompany, error } = await supabase
+      // NEW SCHEMA: Create company first (no user_id column)
+      const { data: newCompany, error: companyError } = await supabase
         .from('companies')
         .insert({
-          user_id: user.id,
           name: companyName,
           logo_url: logoUrl,
         })
         .select()
         .single()
 
-      if (error) {
-        console.error('Company creation error:', error)
-        throw error
+      if (companyError) {
+        console.error('Company creation error:', companyError)
+        throw companyError
+      }
+
+      // NEW SCHEMA: Create user record linking to company
+      const { error: userError } = await supabase
+        .from('users')
+        .insert({
+          id: user.id,
+          company_id: newCompany.id,
+          role: 'owner'
+        })
+
+      if (userError) {
+        console.error('User record creation error:', userError)
+        throw userError
       }
 
       console.log('Company created successfully:', newCompany)
@@ -123,6 +138,11 @@ export function useOnboarding() {
     router.push('/dashboard')
   }
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+
   const progress = (step / 2) * 100
 
   return {
@@ -134,6 +154,7 @@ export function useOnboarding() {
     progress,
     handleLogoChange,
     handleStep1,
-    handleStep2
+    handleStep2,
+    handleLogout
   }
 }
