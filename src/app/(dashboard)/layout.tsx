@@ -21,28 +21,37 @@ export default async function DashboardLayout({
 
   const { data: company } = await supabase
     .from('companies')
-    .select('id, name, logo_url, phone, email, address, tax_rate, user_id, created_at, updated_at')
-    .eq('user_id', user.id)
+    .select('id, name, logo_url, phone, email, address, settings, created_at, updated_at')
+    .eq('id', (await supabase
+      .from('users')
+      .select('company_id')
+      .eq('id', user.id)
+      .single()
+    ).data?.company_id)
     .single()
 
   if (!company) {
     redirect('/onboarding')
   }
 
-  // Fetch all quotes once at layout level
-  const { data: quotes, error: quotesError } = await supabase
-    .from('quotes')
-    .select('*')
+  // Fetch all leads with customer data
+  const { data: leads, error: leadsError } = await supabase
+    .from('leads')
+    .select(`
+      *,
+      customer:customers(*),
+      quotes(count)
+    `)
     .eq('company_id', company.id)
     .order('created_at', { ascending: false })
 
-  if (quotesError) {
-    console.error('Error fetching quotes:', quotesError)
+  if (leadsError) {
+    console.error('Error fetching leads:', leadsError)
   }
 
   return (
     <QueryProvider>
-      <DashboardProvider company={company} quotes={quotes || []}>
+      <DashboardProvider company={company} quotes={leads || []}>
         <div className="min-h-screen bg-gray-50">
           <NavigationWrapper>
             <main className="py-6 px-4 sm:px-6 lg:px-8">

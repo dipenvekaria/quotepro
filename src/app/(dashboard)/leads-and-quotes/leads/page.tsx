@@ -21,7 +21,7 @@ import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
 export default function LeadsQueuePage() {
-  const { quotes: allQuotes, refreshQuotes } = useDashboard()
+  const { quotes: allLeads, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
@@ -29,25 +29,21 @@ export default function LeadsQueuePage() {
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [leadToArchive, setLeadToArchive] = useState<string | null>(null)
 
-  // Filter leads from all quotes
+  // Filter leads (status: new, contacted, qualified)
   const leads = useMemo(() => {
-    return allQuotes.filter(q => {
-      // Must have lead status (not quoted yet)
-      const hasLeadStatus = ['new', 'contacted', 'quote_visit_scheduled'].includes(q.lead_status)
-      // Must not have a quote total (no line items added yet)
-      const hasNoQuote = !q.total || q.total === 0
-      return hasLeadStatus && hasNoQuote
+    return allLeads.filter(l => {
+      const isLead = ['new', 'contacted', 'qualified', 'quote_sent'].includes(l.status)
+      return isLead
     })
-  }, [allQuotes])
+  }, [allLeads])
 
-  // Calculate quotes count for tab
+  // Calculate quotes count (status: quoted, won, lost)
   const quotes = useMemo(() => {
-    return allQuotes.filter(q => {
-      const isQuoteLead = ['quoted', 'lost'].includes(q.lead_status) || (q.total && q.total > 0)
-      const notInWorkQueue = !q.accepted_at && !q.signed_at
-      return isQuoteLead && notInWorkQueue
+    return allLeads.filter(l => {
+      const isQuote = ['quoted', 'won'].includes(l.status)
+      return isQuote
     })
-  }, [allQuotes])
+  }, [allLeads])
 
   // Apply search only (no status filter)
   const filteredLeads = useMemo(() => {
@@ -57,10 +53,11 @@ export default function LeadsQueuePage() {
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter(l => 
-        l.customer_name?.toLowerCase().includes(term) ||
-        l.customer_address?.toLowerCase().includes(term) ||
-        l.customer_phone?.toLowerCase().includes(term) ||
-        l.job_name?.toLowerCase().includes(term)
+        l.customer?.name?.toLowerCase().includes(term) ||
+        l.customer?.phone?.toLowerCase().includes(term) ||
+        l.customer?.email?.toLowerCase().includes(term) ||
+        l.description?.toLowerCase().includes(term) ||
+        l.metadata?.job_type?.toLowerCase().includes(term)
       )
     }
 
@@ -84,25 +81,30 @@ export default function LeadsQueuePage() {
     try {
       const supabase = createClient()
       
-      // Update lead_status to 'archived'
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      // Update lead status to 'archived'
       const { error: updateError } = await supabase
-        .from('quotes')
-        .update({ lead_status: 'archived' })
+        .from('leads')
+        .update({ 
+          status: 'archived',
+          archived_reason: reason 
+        })
         .eq('id', leadId)
       
       if (updateError) throw updateError
       
-      // Log to audit trail
-      const { error: auditError } = await supabase
-        .from('audit_trail')
-        .insert({
-          quote_id: leadId,
-          action: 'lead_archived',
-          details: reason,
-          user_id: (await supabase.auth.getUser()).data.user?.id || 'system'
+      // Log to activity log
+      if (user) {
+        await supabase.from('activity_log').insert({
+          entity_type: 'lead',
+          entity_id: leadId,
+          action: 'archived',
+          description: `Lead archived: ${reason}`,
+          user_id: user.id,
         })
-      
-      if (auditError) console.error('Audit trail error:', auditError)
+      }
       
       toast.success('Lead archived')
       await refreshQuotes()
@@ -121,7 +123,12 @@ export default function LeadsQueuePage() {
     const labels: Record<string, string> = {
       new: 'New',
       contacted: 'Contacted',
-      quote_visit_scheduled: 'Visit Scheduled'
+      qualified: 'Qualified',
+      quote_sent: 'Quote Sent',
+      quoted: 'Quoted',
+      won: 'Won',
+      lost: 'Lost',
+      archived: 'Archived'
     }
     return labels[status] || status
   }
@@ -198,16 +205,16 @@ export default function LeadsQueuePage() {
                   className="md:hidden"
                   data={{
                     id: lead.id,
-                    customer_name: lead.customer_name,
-                    customer_phone: lead.customer_phone,
-                    job_name: lead.job_name,
-                    job_type: lead.job_type,
-                    total: lead.total,
+                    customer_name: lead.customer?.name || 'Unknown',
+                    customer_phone: lead.customer?.phone,
+                    job_name: lead.description,
+                    job_type: lead.metadata?.job_type,
+                    total: 0,
                     created_at: lead.created_at,
                   }}
                   badge={
                     <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-blue-100 text-blue-700">
-                      {getStatusLabel(lead.lead_status)}
+                      {getStatusLabel(lead.status)}
                     </span>
                   }
                   showPhone={true}
@@ -221,16 +228,16 @@ export default function LeadsQueuePage() {
                   className="hidden md:block"
                   data={{
                     id: lead.id,
-                    customer_name: lead.customer_name,
-                    customer_address: lead.customer_address,
-                    job_name: lead.job_name,
-                    total: lead.total,
+                    customer_name: lead.customer?.name || 'Unknown',
+                    customer_address: '', // TODO: fetch from customer_addresses
+                    job_name: lead.description,
+                    total: 0,
                     created_at: lead.created_at,
-                    status: lead.lead_status
+                    status: lead.status
                   }}
                   badge={
                     <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
-                      {getStatusLabel(lead.lead_status)}
+                      {getStatusLabel(lead.status)}
                     </span>
                   }
                   actions={

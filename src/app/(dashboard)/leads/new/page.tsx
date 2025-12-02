@@ -166,15 +166,15 @@ export default function NewQuotePage() {
   const loadAuditLogs = async (id: string) => {
     try {
       const { data, error } = await supabase
-        .from('quote_audit_log')
+        .from('activity_log')
         .select('*')
-        .eq('quote_id', id)
+        .eq('entity_id', id)
         .order('created_at', { ascending: false })
       
       if (error) throw error
       setAuditLogs(data || [])
     } catch (error) {
-      console.error('Error loading audit logs:', error)
+      console.error('Error loading activity logs:', error)
     }
   }
 
@@ -599,43 +599,61 @@ export default function NewQuotePage() {
         }
       }
 
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        toast.error('You must be logged in')
+        return
+      }
+
       if (quoteId) {
         // Update existing lead
         const { error: updateError } = await supabase
-          .from('quotes')
+          .from('leads')
           .update({
-            customer_name: customerName,
-            customer_email: customerEmail || null,
-            customer_phone: customerPhone || null,
-            customer_address: customerAddress || null,
             description: description,
-            job_type: finalJobType || null,
-            lead_status: 'new',
+            metadata: { job_type: finalJobType },
           })
           .eq('id', quoteId)
 
         if (updateError) throw updateError
 
-        // Log to audit trail
-        const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
-          await supabase.from('quote_audit_log').insert({
-            quote_id: quoteId,
-            action_type: 'lead_updated',
-            description: `Lead information updated`,
-            changes_made: {
-              customer_name: customerName,
-              customer_phone: customerPhone,
-              customer_address: customerAddress,
-              description: description,
-              job_type: finalJobType,
-            },
-            created_by: user.id,
-          })
+        // Update customer info
+        const { data: existingLead } = await supabase
+          .from('leads')
+          .select('customer_id')
+          .eq('id', quoteId)
+          .single()
+
+        if (existingLead?.customer_id) {
+          await supabase
+            .from('customers')
+            .update({
+              name: customerName,
+              email: customerEmail || null,
+              phone: customerPhone || null,
+            })
+            .eq('id', existingLead.customer_id)
         }
 
+        // Log to activity trail
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'lead',
+          entity_id: quoteId,
+          action: 'updated',
+          description: `Lead information updated`,
+          changes: {
+            customer_name: customerName,
+            customer_phone: customerPhone,
+            customer_address: customerAddress,
+            description: description,
+            job_type: finalJobType,
+          },
+        })
+
         toast.success('Lead updated successfully!')
-        await loadAuditLogs(quoteId)
         
         // Redirect back to leads page
         refreshQuotes()
@@ -643,49 +661,83 @@ export default function NewQuotePage() {
         return
       }
 
-      // Create new lead
-      const quoteNumber = `L-${Date.now().toString().slice(-8)}`
-      
+      // Create new lead - First, create or find customer
+      const { data: customer, error: customerError } = await supabase
+        .from('customers')
+        .upsert({
+          company_id: companyId,
+          name: customerName,
+          email: customerEmail || null,
+          phone: customerPhone || null,
+        }, {
+          onConflict: 'company_id,phone',
+          ignoreDuplicates: false
+        })
+        .select()
+        .single()
+
+      if (customerError) {
+        // If upsert fails due to conflict, try to fetch existing
+        const { data: existingCustomer } = await supabase
+          .from('customers')
+          .select()
+          .eq('company_id', companyId)
+          .eq('phone', customerPhone)
+          .single()
+
+        if (!existingCustomer) throw customerError
+        
+        // Use existing customer
+        var customerId = existingCustomer.id
+      } else {
+        var customerId = customer.id
+      }
+
+      // Create customer address if provided
+      if (customerAddress && customerId) {
+        await supabase
+          .from('customer_addresses')
+          .upsert({
+            customer_id: customerId,
+            address: customerAddress,
+            is_primary: true,
+          })
+      }
+
+      // Create lead
       const { data: newLead, error: insertError } = await supabase
-        .from('quotes')
+        .from('leads')
         .insert({
           company_id: companyId,
-          quote_number: quoteNumber,
-          customer_name: customerName,
-          customer_email: customerEmail || null,
-          customer_phone: customerPhone || null,
-          customer_address: customerAddress || null,
+          customer_id: customerId,
           description: description,
-          job_type: finalJobType || null,
-          status: 'draft',
-          lead_status: 'new',
-          subtotal: 0,
-          tax_rate: 0,
-          tax_amount: 0,
-          total: 0,
+          status: 'new',
+          source: 'direct',
+          urgency: 'medium',
+          assigned_to: user.id,
+          metadata: { job_type: finalJobType },
         })
         .select()
         .single()
 
       if (insertError) throw insertError
 
-      // Log to audit trail
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: newLead.id,
-          action_type: 'lead_created',
-          description: `New lead created: ${customerName}`,
-          changes_made: {
-            customer_name: customerName,
-            customer_phone: customerPhone,
-            customer_address: customerAddress,
-            description: description,
-            job_type: finalJobType,
-          },
-          created_by: user.id,
-        })
-      }
+      // Log to activity trail
+      await supabase.from('activity_log').insert({
+        company_id: companyId,
+        user_id: user.id,
+        entity_type: 'lead',
+        entity_id: newLead.id,
+        action: 'created',
+        description: `New lead created: ${customerName}`,
+        changes: {
+          customer_name: customerName,
+          customer_phone: customerPhone,
+          customer_address: customerAddress,
+          description: description,
+          job_type: finalJobType,
+        },
+      })
 
       toast.success('Lead saved successfully!')
       
