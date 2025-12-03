@@ -132,7 +132,7 @@ export default function QuotesPage() {
                 ? "Try adjusting your search" 
                 : "Create a lead first, then generate a quote from it."
             }
-            icon="file-text"
+            icon="file"
             action={
               !searchTerm && (
                 <Button 

@@ -20,10 +20,10 @@ interface AuditLogEntry {
   users?: {
     id: string
     role: string
-    profiles?: {
-      full_name: string | null
-      email: string
-    }
+  }
+  profiles?: {
+    full_name: string | null
+    email: string
   }
 }
 
@@ -96,8 +96,8 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
   }
 
   const getUserName = (entry: AuditLogEntry): string => {
-    if (entry.users?.profiles) {
-      return entry.users.profiles.full_name || entry.users.profiles.email || 'User'
+    if (entry.profiles) {
+      return entry.profiles.full_name || entry.profiles.email || 'User'
     }
     return 'System'
   }

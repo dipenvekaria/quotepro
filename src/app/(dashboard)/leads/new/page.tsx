@@ -249,13 +249,13 @@ export default function NewQuotePage() {
         .from('activity_log')
         .select(`
           *,
-          users (
+          users!activity_log_user_id_fkey (
             id,
-            role,
-            profiles (
-              full_name,
-              email
-            )
+            role
+          ),
+          profiles!activity_log_user_id_fkey (
+            full_name,
+            email
           )
         `)
         .in('entity_id', entityIds)
