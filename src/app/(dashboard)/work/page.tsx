@@ -60,6 +60,9 @@ export default function WorkPage() {
   const myJobs = useMemo(() => {
     return quotes
       .filter(q => {
+        // Only show quotes (not leads) - these are actual jobs
+        if (q._type !== 'quote') return false
+        
         // Must have a scheduled date
         if (!q.scheduled_at) return false
         
