@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
       .from('quotes')
       .select(`
         *,
-        companies(*)
+        companies(*),
+        customer:customers(*)
       `)
       .eq('id', quote_id)
       .single()
@@ -30,6 +31,8 @@ export async function POST(request: NextRequest) {
 
     // @ts-ignore - Supabase typing
     const company = quote.companies
+    // @ts-ignore - Supabase typing
+    const customer = quote.customer
     // @ts-ignore - Supabase typing
     const quoteData: any = quote
     
@@ -50,16 +53,16 @@ export async function POST(request: NextRequest) {
       // Upload document to SignNow
       const documentId = await signNowClient.uploadDocument(
         pdfBuffer,
-        `Quote_${quoteData.quote_number}_${quoteData.customer_name}.pdf`
+        `Quote_${quoteData.quote_number}_${customer?.name || 'Customer'}.pdf`
       )
       
       // Create signing invitation
       const inviteId = await signNowClient.createInvite(
         documentId,
-        quoteData.customer_email || 'customer@example.com',
-        quoteData.customer_name,
+        customer?.email || 'customer@example.com',
+        customer?.name || 'Customer',
         `Quote ${quoteData.quote_number} from ${company.name}`,
-        `Hi ${quoteData.customer_name},\n\nPlease review and sign this quote to proceed with the work.\n\nTotal: $${quoteData.total.toLocaleString()}\n\nThank you,\n${company.name}`
+        `Hi ${customer?.name || 'Customer'},\n\nPlease review and sign this quote to proceed with the work.\n\nTotal: $${quoteData.total.toLocaleString()}\n\nThank you,\n${company.name}`
       )
       
       // Save signature request to database

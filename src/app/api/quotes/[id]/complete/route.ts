@@ -38,14 +38,16 @@ export async function PUT(
       )
     }
 
-    // Log to audit trail
-    await supabase.from('audit_trail').insert({
-      quote_id: id,
-      action_type: 'quote_completed',
-      field_name: 'completed_at',
-      new_value: completed_at,
-      changed_by: null,
-      changed_at: new Date().toISOString(),
+    // Log to activity_log
+    const { data: { user } } = await supabase.auth.getUser()
+    await supabase.from('activity_log').insert({
+      company_id: quote.company_id,
+      user_id: user?.id || null,
+      entity_type: 'quote',
+      entity_id: id,
+      action: 'completed',
+      description: 'Job marked as completed',
+      changes: { completed_at },
     })
 
     // Automatically send invoice after job completion

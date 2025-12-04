@@ -41,8 +41,10 @@ export function useLeadsQueue() {
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter(l => 
+        l.customer?.name?.toLowerCase().includes(term) ||
         l.customer_name?.toLowerCase().includes(term) ||
         l.customer_address?.toLowerCase().includes(term) ||
+        l.customer?.phone?.toLowerCase().includes(term) ||
         l.customer_phone?.toLowerCase().includes(term) ||
         l.job_name?.toLowerCase().includes(term)
       )
@@ -68,27 +70,32 @@ export function useLeadsQueue() {
     try {
       const supabase = createClient()
       
-      // Update lead_status to 'archived'
-      // @ts-ignore - lead_status column pending migration
+      // Get lead to get company_id
+      const { data: lead } = await supabase
+        .from('leads')
+        .select('company_id')
+        .eq('id', leadId)
+        .single()
+      
+      // Update lead status to 'archived'
       const { error: updateError } = await supabase
-        .from('quotes')
-        .update({ lead_status: 'archived' })
+        .from('leads')
+        .update({ status: 'archived' })
         .eq('id', leadId)
       
       if (updateError) throw updateError
       
-      // Log to audit trail
-      // @ts-ignore - audit_trail types pending
-      const { error: auditError } = await supabase
-        .from('audit_trail')
-        .insert({
-          quote_id: leadId,
-          action: 'lead_archived',
-          details: reason,
-          user_id: (await supabase.auth.getUser()).data.user?.id || 'system'
-        })
-      
-      if (auditError) console.error('Audit trail error:', auditError)
+      // Log to activity_log
+      const { data: { user } } = await supabase.auth.getUser()
+      // @ts-ignore
+      await supabase.from('activity_log').insert({
+        company_id: lead?.company_id,
+        user_id: user?.id || null,
+        entity_type: 'lead',
+        entity_id: leadId,
+        action: 'archived',
+        description: reason,
+      })
       
       toast.success('Lead archived')
       await refreshQuotes()

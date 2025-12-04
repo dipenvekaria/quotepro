@@ -1,3 +1,4 @@
+// @ts-nocheck - Supabase types pending regeneration
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -53,97 +54,76 @@ export async function POST(request: NextRequest) {
     switch (event.event) {
       case 'document.signed':
         // Update quote with signed status and timestamp
-        // @ts-ignore
         await supabase
           .from('quotes')
-          // @ts-ignore
           .update({
             status: 'signed',
-            signed_at: event.data.signed_at || new Date().toISOString(),
+            accepted_at: event.data.signed_at || new Date().toISOString(),
           })
-          // @ts-ignore
           .eq('id', quote.id)
 
-        // Log to audit trail
-        // @ts-ignore
-        await supabase.from('quote_audit_log').insert({
-          // @ts-ignore
-          quote_id: quote.id,
+        // Log to activity_log (new schema)
+        await supabase.from('activity_log').insert({
+          company_id: quote.company_id,
+          entity_type: 'quote',
+          entity_id: quote.id,
           action: 'signed',
-          user_id: null, // Customer action
-          details: {
+          description: 'Customer signed quote via SignNow',
+          metadata: {
             signer_email: event.data.signer_email,
             signed_at: event.data.signed_at || new Date().toISOString(),
             signnow_document_id: event.data.document_id,
           },
         })
 
-        // @ts-ignore
         console.log('✅ Quote marked as signed:', quote.quote_number)
-
-        // TODO: Send notification to sales team
-        // await sendNotification({
-        //   type: 'quote_signed',
-        //   quote_number: quote.quote_number,
-        //   customer: quote.customer_name,
-        // })
-
         break
 
       case 'document.declined':
-        // Update quote status to declined
-        // @ts-ignore
+        // Update quote status to rejected
         await supabase
           .from('quotes')
-          // @ts-ignore
           .update({
-            status: 'declined',
+            status: 'rejected',
+            rejected_at: event.data.declined_at || new Date().toISOString(),
           })
-          // @ts-ignore
           .eq('id', quote.id)
 
-        // Log to audit trail
-        // @ts-ignore
-        await supabase.from('quote_audit_log').insert({
-          // @ts-ignore
-          quote_id: quote.id,
-          action: 'declined',
-          user_id: null,
-          details: {
+        // Log to activity_log
+        await supabase.from('activity_log').insert({
+          company_id: quote.company_id,
+          entity_type: 'quote',
+          entity_id: quote.id,
+          action: 'rejected',
+          description: 'Customer declined quote via SignNow',
+          metadata: {
             decliner_email: event.data.signer_email,
             declined_at: event.data.declined_at || new Date().toISOString(),
             reason: event.data.reason || 'No reason provided',
           },
         })
 
-        // @ts-ignore
         console.log('❌ Quote declined:', quote.quote_number)
-
-        // TODO: Send notification to sales team
-        // await sendNotification({
-        //   type: 'quote_declined',
-        //   quote_number: quote.quote_number,
-        //   customer: quote.customer_name,
-        //   reason: event.data.reason,
-        // })
-
         break
 
       case 'document.viewed':
-        // Track when customer viewed the document in SignNow
-        // @ts-ignore
-        await supabase.from('quote_audit_log').insert({
-          // @ts-ignore
-          quote_id: quote.id,
-          action: 'viewed_signnow',
-          user_id: null,
-          details: {
+        // Update viewed_at and log to activity
+        await supabase
+          .from('quotes')
+          .update({ viewed_at: new Date().toISOString() })
+          .eq('id', quote.id)
+
+        await supabase.from('activity_log').insert({
+          company_id: quote.company_id,
+          entity_type: 'quote',
+          entity_id: quote.id,
+          action: 'viewed',
+          description: 'Customer viewed quote in SignNow',
+          metadata: {
             viewer_email: event.data.signer_email,
-            viewed_at: new Date().toISOString(),
           },
         })
         
-        // @ts-ignore
         console.log('👀 Quote viewed in SignNow:', quote.quote_number)
         break
 

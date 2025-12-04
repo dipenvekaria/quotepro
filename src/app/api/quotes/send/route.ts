@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
       .from('quotes')
       .select(`
         *,
-        companies(*)
+        companies(*),
+        customer:customers(*)
       `)
       .eq('id', quote_id)
       .single()
@@ -30,12 +31,13 @@ export async function POST(request: NextRequest) {
 
     // @ts-ignore
     const company = quote.companies
+    // @ts-ignore
+    const customer = quote.customer
     const quoteUrl = `${process.env.NEXT_PUBLIC_APP_URL}/quotes/${quote_id}/view`
 
     // Send SMS if requested
     if (send_via === 'sms' || send_via === 'both') {
-      // @ts-ignore
-      if (!quote.customer_phone) {
+      if (!customer?.phone) {
         return NextResponse.json(
           { error: 'Customer phone number required for SMS' },
           { status: 400 }
@@ -48,18 +50,15 @@ export async function POST(request: NextRequest) {
       )
 
       await twilioClient.messages.create({
-        // @ts-ignore
-        to: quote.customer_phone,
+        to: customer.phone,
         from: process.env.TWILIO_PHONE_NUMBER,
-        // @ts-ignore
-        body: `Hey ${quote.customer_name.split(' ')[0]}, here's your quote from ${company.name} – takes 10 seconds to review & sign → ${quoteUrl}`,
+        body: `Hey ${customer.name?.split(' ')[0] || 'there'}, here's your quote from ${company.name} – takes 10 seconds to review & sign → ${quoteUrl}`,
       })
     }
 
     // Send Email if requested (using Supabase or other email service)
     if (send_via === 'email' || send_via === 'both') {
-      // @ts-ignore
-      if (!quote.customer_email) {
+      if (!customer?.email) {
         return NextResponse.json(
           { error: 'Customer email required for email' },
           { status: 400 }

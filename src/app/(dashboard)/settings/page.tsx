@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dialog"
 import { CompanyProfileSettings } from '@/components/features/settings/CompanyProfileSettings'
 import { PricingItemsManager } from '@/components/features/settings/PricingItemsManager'
+import { SmartCSVImport } from '@/components/features/settings/SmartCSVImport'
 import { QuoteDefaultsSettings } from '@/components/features/settings/QuoteDefaultsSettings'
 import { TeamMemberManager } from '@/components/features/settings/TeamMemberManager'
 import { AccountSettings } from '@/components/features/settings/AccountSettings'
@@ -305,6 +306,14 @@ function SettingsPageContent() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <p className="text-muted-foreground">Loading settings...</p>
+      </div>
+    )
+  }
+
+  if (!company) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-muted-foreground">No company found. Please contact support.</p>
       </div>
     )
   }
@@ -880,6 +889,18 @@ function SettingsPageContent() {
           {/* Products & Services Tab */}
           {activeTab === 'products' && (
             <>
+              {/* AI-Powered CSV Import */}
+              <div className="mb-8">
+                <SmartCSVImport
+                  companyId={company.id}
+                  onImportComplete={() => {
+                    reloadUserData()
+                    toast.success('Import complete! Refreshing catalog...')
+                  }}
+                />
+              </div>
+
+              {/* Manual Add & Existing Items */}
               <PricingItemsManager
                 pricingItems={pricingItems}
                 newPricingItem={newPricingItem}

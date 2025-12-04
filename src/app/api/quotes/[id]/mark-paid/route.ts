@@ -38,14 +38,16 @@ export async function PUT(
       )
     }
 
-    // Log to audit trail
-    await supabase.from('audit_trail').insert({
-      quote_id: id,
-      action_type: 'quote_paid',
-      field_name: 'paid_at',
-      new_value: paid_at,
-      changed_by: null,
-      changed_at: new Date().toISOString()
+    // Log to activity_log
+    const { data: { user } } = await supabase.auth.getUser()
+    await supabase.from('activity_log').insert({
+      company_id: quote.company_id,
+      user_id: user?.id || null,
+      entity_type: 'quote',
+      entity_id: id,
+      action: 'paid',
+      description: 'Payment received',
+      changes: { paid_at, payment_method },
     })
 
     return NextResponse.json({

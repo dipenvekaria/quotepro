@@ -1,22 +1,33 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { User, MapPin } from 'lucide-react'
+import { SmartCustomerInput } from './SmartCustomerInput'
+
+interface Customer {
+  id: string
+  name: string
+  phone?: string
+  email?: string
+  address?: string
+}
 
 interface LeadFormProps {
   customerName: string
   customerEmail: string
   customerPhone: string
   customerAddress: string
+  jobDescription?: string
+  isDescriptionReadOnly?: boolean
   jobName?: string
+  companyId?: string
   onCustomerNameChange: (value: string) => void
   onCustomerEmailChange: (value: string) => void
   onCustomerPhoneChange: (value: string) => void
   onCustomerAddressChange: (value: string) => void
+  onJobDescriptionChange?: (value: string) => void
+  onCustomerSelect?: (customer: Customer) => void
   quoteId?: string | null
   origin?: string
   hasQuote?: boolean
@@ -34,11 +45,16 @@ export function LeadForm({
   customerEmail,
   customerPhone,
   customerAddress,
+  jobDescription = '',
+  isDescriptionReadOnly = false,
   jobName,
+  companyId,
   onCustomerNameChange,
   onCustomerEmailChange,
   onCustomerPhoneChange,
   onCustomerAddressChange,
+  onJobDescriptionChange,
+  onCustomerSelect,
   quoteId,
   origin,
   hasQuote = false,
@@ -97,140 +113,120 @@ export function LeadForm({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle>Customer Information</CardTitle>
-            {quoteId && hasQuote && (
-              <div className="flex items-center gap-2">
-                <a
-                  href={origin ? `${origin}/q/${quoteId}` : '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-xs px-3 py-1.5 rounded border text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-300 transition-colors"
-                  title="View customer quote (opens in new tab)"
-                >
-                  {quoteId}
-                </a>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    if (origin) {
-                      const link = `${origin}/q/${quoteId}`
-                      navigator.clipboard.writeText(link)
-                      toast.success('Customer quote link copied!')
-                    } else {
-                      navigator.clipboard.writeText(quoteId)
-                      toast.success('Quote ID copied!')
-                    }
-                  }}
-                  className="h-8 px-2"
-                  title="Copy customer quote link"
-                >
-                  <span className="sr-only">Copy Quote Link</span>
-                  📋
-                </Button>
-              </div>
-            )}
-          </div>
+    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 overflow-hidden">
+      {/* Header */}
+      <div className="px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <User className="w-4 h-4 text-gray-600" />
+          <span className="text-base font-semibold text-gray-900">Customer Info</span>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-5">
-        <div className="space-y-3">
-          <Label htmlFor="customerName" className="text-sm">Customer Name *</Label>
-          <Input
-            id="customerName"
-            placeholder="John Smith"
+        {quoteId && hasQuote && (
+          <button
+            onClick={() => {
+              if (origin) {
+                navigator.clipboard.writeText(`${origin}/q/${quoteId}`)
+                toast.success('Link copied!')
+              }
+            }}
+            className="font-mono text-xs text-gray-500 hover:text-gray-700"
+          >
+            #{quoteId.slice(0, 8)}
+          </button>
+        )}
+      </div>
+
+      <div className="px-4 pb-4 space-y-3">
+        {/* Name - Smart Customer Search */}
+        {companyId ? (
+          <SmartCustomerInput
+            companyId={companyId}
+            value={customerName}
+            onChange={onCustomerNameChange}
+            onSelectCustomer={(customer) => {
+              onCustomerNameChange(customer.name)
+              if (customer.phone) onCustomerPhoneChange(customer.phone)
+              if (customer.email) onCustomerEmailChange(customer.email)
+              if (customer.address) onCustomerAddressChange(customer.address)
+              onCustomerSelect?.(customer)
+              toast.success(`Loaded: ${customer.name}`)
+            }}
+            placeholder="Search customer name or phone..."
+          />
+        ) : (
+          <input
+            placeholder="Customer name *"
             value={customerName}
             onChange={(e) => onCustomerNameChange(e.target.value)}
-            className="h-14 text-sm"
+            className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent"
           />
-        </div>
-
-        {/* Job Type (read-only if populated) */}
-        {jobName && (
-          <div className="space-y-3">
-            <Label htmlFor="jobType" className="text-sm">Job Type</Label>
-            <Input
-              id="jobType"
-              value={jobName}
-              readOnly
-              className="h-14 text-sm bg-gray-50 cursor-not-allowed"
-              title="Auto-classified from product catalog"
-            />
-          </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            <Label htmlFor="customerPhone" className="text-sm">Phone</Label>
-            <Input
-              id="customerPhone"
-              type="tel"
-              placeholder="(555) 123-4567"
-              value={customerPhone}
-              onChange={(e) => onCustomerPhoneChange(e.target.value)}
-              className="h-14 text-sm"
-            />
-          </div>
-
-          <div className="space-y-3">
-            <Label htmlFor="customerEmail" className="text-sm">Email</Label>
-            <Input
-              id="customerEmail"
-              type="email"
-              placeholder="john@example.com"
-              value={customerEmail}
-              onChange={(e) => onCustomerEmailChange(e.target.value)}
-              className="h-14 text-sm"
-            />
-          </div>
+        {/* Phone + Email */}
+        <div className="grid grid-cols-2 gap-2">
+          <input
+            type="tel"
+            placeholder="Phone"
+            value={customerPhone}
+            onChange={(e) => onCustomerPhoneChange(e.target.value)}
+            className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={customerEmail}
+            onChange={(e) => onCustomerEmailChange(e.target.value)}
+            className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent"
+          />
         </div>
 
-        <div className="space-y-3 relative">
-          <Label htmlFor="customerAddress" className="text-sm">Job Address</Label>
-          <Input
-            id="customerAddress"
-            name="job-address"
-            placeholder="Start typing address..."
-            value={customerAddress}
-            onChange={(e) => {
-              onCustomerAddressChange(e.target.value)
-              setShowSuggestions(true)
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            onBlur={async (e) => {
-              setTimeout(async () => {
-                setShowSuggestions(false)
-                // Recalculate if address changed and we have a quote
-                if (hasQuote && onAddressRecalculate && e.target.value) {
-                  await onAddressRecalculate(e.target.value)
-                }
-              }, 200)
-            }}
-            className="h-14 text-sm"
-            autoComplete="new-password"
-          />
-          
-          {/* Address Suggestions Dropdown */}
+        {/* Address */}
+        <div className="relative">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+            <input
+              placeholder="Job address"
+              value={customerAddress}
+              onChange={(e) => {
+                onCustomerAddressChange(e.target.value)
+                setShowSuggestions(true)
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent"
+              autoComplete="off"
+            />
+          </div>
           {showSuggestions && addressSuggestions.length > 0 && (
-            <div className="absolute z-50 w-full mt-1 bg-card border border-border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+            <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto">
               {addressSuggestions.map((suggestion, index) => (
                 <button
                   key={index}
                   type="button"
-                  className="w-full text-left px-4 py-3 hover:bg-accent/10 border-b border-border last:border-b-0 transition-colors"
+                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
                   onClick={() => handleAddressSelect(suggestion.display_name)}
                 >
-                  <div className="text-sm font-medium">{suggestion.display_name}</div>
+                  {suggestion.display_name}
                 </button>
               ))}
             </div>
           )}
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Job Description */}
+        {isDescriptionReadOnly ? (
+          <div className="bg-white/80 rounded-xl p-3 text-sm text-gray-700 min-h-[100px] border border-gray-200">
+            {jobDescription}
+          </div>
+        ) : (
+          <textarea
+            placeholder="Job description - what does the customer need?"
+            value={jobDescription}
+            onChange={(e) => onJobDescriptionChange?.(e.target.value)}
+            className="w-full min-h-[100px] px-4 py-3 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent resize-none"
+            rows={4}
+          />
+        )}
+      </div>
+    </div>
   )
 }

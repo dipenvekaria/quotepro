@@ -39,8 +39,7 @@ export default async function DashboardLayout({
     .from('leads')
     .select(`
       *,
-      customer:customers(*),
-      quotes(count)
+      customer:customers(*)
     `)
     .eq('company_id', company.id)
     .order('created_at', { ascending: false })
@@ -49,14 +48,33 @@ export default async function DashboardLayout({
     console.error('Error fetching leads:', leadsError)
   }
 
+  // Fetch all quotes with customer data
+  const { data: quotes, error: quotesError } = await supabase
+    .from('quotes')
+    .select(`
+      *,
+      customer:customers(*),
+      lead:leads(id)
+    `)
+    .eq('company_id', company.id)
+    .order('created_at', { ascending: false })
+
+  if (quotesError) {
+    console.error('Error fetching quotes:', quotesError)
+  }
+
+  // Combine leads and quotes for the dashboard context
+  const allData = [
+    ...(leads || []).map(lead => ({ ...lead, _type: 'lead' })),
+    ...(quotes || []).map(quote => ({ ...quote, _type: 'quote' }))
+  ]
+
   return (
     <QueryProvider>
-      <DashboardProvider company={company} quotes={leads || []}>
-        <div className="min-h-screen bg-gray-50">
+      <DashboardProvider company={company} quotes={allData}>
+        <div className="min-h-screen min-h-[100dvh] bg-gray-50">
           <NavigationWrapper>
-            <main className="py-6 px-4 sm:px-6 lg:px-8">
-              {children}
-            </main>
+            {children}
           </NavigationWrapper>
         </div>
       </DashboardProvider>

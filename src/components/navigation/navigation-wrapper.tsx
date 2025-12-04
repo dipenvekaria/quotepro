@@ -5,6 +5,7 @@ import { DesktopSidebar } from './desktop-sidebar'
 import { FloatingActionMenu } from '../floating-action-menu'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useMemo, useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface NavigationWrapperProps {
   children: React.ReactNode
@@ -13,6 +14,10 @@ interface NavigationWrapperProps {
 export function NavigationWrapper({ children }: NavigationWrapperProps) {
   const { quotes } = useDashboard()
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const pathname = usePathname()
+  
+  // Hide FAB on quotes page (quotes created from leads workflow only)
+  const showFab = !pathname?.includes('/leads-and-quotes/quotes')
 
   // Sync with sidebar collapse state
   useEffect(() => {
@@ -51,17 +56,15 @@ export function NavigationWrapper({ children }: NavigationWrapperProps) {
     }
 
     return {
-      // Leads: new customer calls, not yet quoted
-      leads: quotes.filter(q => 
-        !q.lead_status || q.lead_status === 'new' || q.lead_status === 'contacted'
-      ).length,
+      // Leads: items from leads table with lead-like statuses
+      leads: quotes.filter(q => {
+        const isFromLeadsTable = q._type === 'lead' || !q._type
+        const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(q.status)
+        return isFromLeadsTable && isLeadStatus
+      }).length,
 
-      // Quotes: drafted or sent, not accepted yet
-      quotes: quotes.filter(q => 
-        q.lead_status === 'quoted' && 
-        !q.accepted_at && 
-        !q.signed_at
-      ).length,
+      // Quotes: items from quotes table
+      quotes: quotes.filter(q => q._type === 'quote').length,
 
       // To be Scheduled: accepted/signed but not scheduled
       toBeScheduled: quotes.filter(q => 
@@ -94,16 +97,16 @@ export function NavigationWrapper({ children }: NavigationWrapperProps) {
       {/* Desktop Sidebar */}
       <DesktopSidebar counts={counts} />
 
-      {/* Main Content Area */}
-      <div className={isCollapsed ? "md:pl-16 pb-16 md:pb-0" : "md:pl-64 pb-16 md:pb-0"}>
+      {/* Main Content Area - pb-20 for mobile nav height */}
+      <div className={isCollapsed ? "md:pl-16 pb-20 md:pb-0" : "md:pl-64 pb-20 md:pb-0"}>
         {children}
       </div>
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
 
-      {/* Floating Action Menu */}
-      <FloatingActionMenu />
+      {/* Floating Action Menu - hidden on quotes page */}
+      {showFab && <FloatingActionMenu />}
     </>
   )
 }

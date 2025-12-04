@@ -6,12 +6,9 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Loader2, Wrench, Save } from 'lucide-react'
 import { toast } from 'sonner'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { LeadForm } from '@/components/features/leads/LeadForm'
-import { QuoteGenerator, ItemsTable, AIAssistant, ActionButtons, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
+import { ItemsTable, AIAssistant, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
 import { AuditTrail } from '@/components/audit-trail'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { useGenerateQuote, useUpdateQuoteWithAI } from '@/lib/hooks/useQuotes'
@@ -47,10 +44,12 @@ export default function NewQuotePage() {
   const [customerPhone, setCustomerPhone] = useState('')
   const [customerAddress, setCustomerAddress] = useState('')
 
-  // Lead state (job description, job type, photos)
-  const [description, setDescription] = useState('')
+  // Lead state - Original call notes (read-only after lead creation)
+  const [originalCallNotes, setOriginalCallNotes] = useState('')  // From first customer call - never editable after save
+  const [salesVisitNotes, setSalesVisitNotes] = useState('')  // Sales agent notes from site visit
   const [jobType, setJobType] = useState('')
   const [photos, setPhotos] = useState<string[]>([])
+  const [isExistingLead, setIsExistingLead] = useState(false)  // Track if lead already exists (notes become read-only)
 
   // Quote state
   const [generatedQuote, setGeneratedQuote] = useState<GeneratedQuote | null>(null)
@@ -63,6 +62,7 @@ export default function NewQuotePage() {
   const [isLoadingQuote, setIsLoadingQuote] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [isSending, setIsSending] = useState(false)
+  const [isSavingLead, setIsSavingLead] = useState(false)
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
 
@@ -147,7 +147,13 @@ export default function NewQuotePage() {
         setCustomerEmail(customer?.email || '')
         setCustomerPhone(customer?.phone || '')
         setCustomerAddress(addresses?.[0]?.address || '')
-        setDescription(lead.description || '')
+        
+        // Original call notes - now READ-ONLY since lead exists
+        setOriginalCallNotes(lead.description || '')
+        setIsExistingLead(true)  // Mark as existing - notes become read-only
+        
+        // Sales visit notes from metadata (if any)
+        setSalesVisitNotes(lead.metadata?.sales_notes || '')
         setJobType(lead.metadata?.job_type || '')
         
         // Clear quote mode flag when loading a lead
@@ -188,7 +194,13 @@ export default function NewQuotePage() {
         setCustomerEmail(customer?.email || '')
         setCustomerPhone(customer?.phone || '')
         setCustomerAddress(addresses?.[0]?.address || '')
-        setDescription(quote.description || '')
+        
+        // Original call notes - READ-ONLY (from linked lead or quote description)
+        setOriginalCallNotes(quote.description || '')
+        setIsExistingLead(true)  // Mark as existing - notes are read-only
+        
+        // Sales visit notes from metadata
+        setSalesVisitNotes(quote.metadata?.sales_notes || '')
         setJobType(quote.job_name || '')
         
         // Set quote mode and ensure sessionStorage is set
@@ -228,10 +240,16 @@ export default function NewQuotePage() {
   // Load audit logs
   const loadAuditLogs = async (id: string) => {
     try {
-      // First, check if this is a quote with a linked lead
-      let entityIds = [id]
+      console.log('🔍 Loading audit logs for ID:', id)
       
-      if (isCreatingQuote || sessionStorage.getItem('showAICard') === 'true') {
+      // Determine if we're loading a lead or quote
+      const isQuote = isCreatingQuote || sessionStorage.getItem('showAICard') === 'true'
+      console.log('📋 Is quote mode?', isQuote)
+      
+      let entityIds = [id]
+      let leadId: string | null = null
+      
+      if (isQuote) {
         // Loading a quote - also get the lead's history if it exists
         const { data: quote } = await supabase
           .from('quotes')
@@ -239,10 +257,16 @@ export default function NewQuotePage() {
           .eq('id', id)
           .maybeSingle()
         
+        console.log('📄 Quote data:', quote)
+        
         if (quote?.lead_id) {
+          leadId = quote.lead_id
           entityIds.push(quote.lead_id)
+          console.log('🔗 Found linked lead:', leadId)
         }
       }
+      
+      console.log('🎯 Querying entity IDs:', entityIds)
       
       // Load all activity logs for both quote and lead
       const { data, error } = await supabase
@@ -251,20 +275,23 @@ export default function NewQuotePage() {
           *,
           users!activity_log_user_id_fkey (
             id,
-            role
-          ),
-          profiles!activity_log_user_id_fkey (
-            full_name,
-            email
+            role,
+            profile
           )
         `)
         .in('entity_id', entityIds)
         .order('created_at', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        console.error('❌ Audit log query error:', error)
+        throw error
+      }
+      
+      console.log('✅ Loaded audit logs:', data?.length || 0, 'entries')
       setAuditLogs(data || [])
     } catch (error) {
-      console.error('Error loading activity logs:', error)
+      console.error('❌ Error loading activity logs:', error)
+      setAuditLogs([])
     }
   }
 
@@ -363,10 +390,21 @@ export default function NewQuotePage() {
     }
   }
 
-  // Generate quote with AI
-  const handleGenerateQuote = async (prompt: string) => {
+  // Generate quote with AI - combines original call notes + sales visit notes
+  const handleGenerateQuote = async () => {
     if (!customerName.trim()) {
       toast.error('Please enter customer name first')
+      return
+    }
+
+    // Combine original call notes + sales visit notes for AI context
+    const fullDescription = [
+      originalCallNotes && `Customer Request: ${originalCallNotes}`,
+      salesVisitNotes && `Sales Notes: ${salesVisitNotes}`
+    ].filter(Boolean).join('\n\n')
+
+    if (!fullDescription.trim()) {
+      toast.error('Please add job description or sales notes')
       return
     }
 
@@ -376,7 +414,8 @@ export default function NewQuotePage() {
     try {
       const data = await generateQuoteMutation.mutateAsync({
         company_id: companyId,
-        description: prompt,
+        description: fullDescription,
+        customer_name: customerName,
         customer_address: customerAddress || undefined,
         existing_items: generatedQuote?.line_items,
       })
@@ -403,6 +442,8 @@ export default function NewQuotePage() {
       return
     }
 
+    const previousItems = generatedQuote?.line_items || []
+
     try {
       const data = await updateQuoteMutation.mutateAsync({
         quote_id: currentQuoteId,
@@ -427,7 +468,7 @@ export default function NewQuotePage() {
     }
   }
 
-  // Save quote to database
+  // Save quote to database (update existing quote)
   const saveQuoteToDatabase = async (quote: GeneratedQuote = generatedQuote!) => {
     if (!quote) return
 
@@ -439,19 +480,16 @@ export default function NewQuotePage() {
     const currentQuoteId = savedQuoteId || quoteId
 
     if (currentQuoteId) {
-      // Update existing
+      // Update existing quote
       await supabase
         .from('quotes')
         .update({
-          customer_name: customerName,
-          customer_email: customerEmail || null,
-          customer_phone: customerPhone || null,
-          customer_address: customerAddress || null,
           subtotal,
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total,
-          lead_status: 'quoted',
+          notes: quote.notes || null,
+          description: originalCallNotes || null,
         })
         .eq('id', currentQuoteId)
 
@@ -475,6 +513,75 @@ export default function NewQuotePage() {
     }
   }
 
+  // Helper: Get or create customer
+  const getOrCreateCustomer = async () => {
+    // Try to find existing customer by phone or email
+    let customerId: string | null = null
+
+    if (customerPhone) {
+      const digitsOnly = customerPhone.replace(/\D/g, '')
+      const { data: existing } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('company_id', companyId)
+        .ilike('phone', `%${digitsOnly.slice(-10)}%`)
+        .limit(1)
+        .single()
+      
+      if (existing) customerId = existing.id
+    }
+
+    if (!customerId && customerEmail) {
+      const { data: existing } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('company_id', companyId)
+        .eq('email', customerEmail)
+        .limit(1)
+        .single()
+      
+      if (existing) customerId = existing.id
+    }
+
+    // Create new customer if not found
+    if (!customerId) {
+      const { data: newCustomer, error } = await supabase
+        .from('customers')
+        .insert({
+          company_id: companyId,
+          name: customerName,
+          email: customerEmail || null,
+          phone: customerPhone || null,
+        })
+        .select('id')
+        .single()
+
+      if (error) throw error
+      customerId = newCustomer.id
+
+      // Create address if provided
+      if (customerAddress && customerId) {
+        await supabase.from('customer_addresses').insert({
+          customer_id: customerId,
+          address: customerAddress,
+          is_primary: true,
+        })
+      }
+    } else {
+      // Update existing customer's info
+      await supabase
+        .from('customers')
+        .update({
+          name: customerName,
+          email: customerEmail || null,
+          phone: customerPhone || null,
+        })
+        .eq('id', customerId)
+    }
+
+    return customerId
+  }
+
   // Handle save quote (new quote)
   const handleSaveQuote = async () => {
     if (!customerName.trim()) {
@@ -489,24 +596,31 @@ export default function NewQuotePage() {
 
     setIsGenerating(true)
     try {
+      // Get or create customer (new normalized schema)
+      const customerId = await getOrCreateCustomer()
+
       const subtotal = generatedQuote.line_items.reduce((sum, item) => sum + item.total, 0)
       const taxRate = generatedQuote.tax_rate || 0
       const taxAmount = subtotal * (taxRate / 100)
       const total = subtotal + taxAmount
 
+      // Generate quote number
+      const quoteNumber = `Q-${Date.now().toString(36).toUpperCase()}`
+
       const { data: quote, error: quoteError } = await supabase
         .from('quotes')
         .insert({
           company_id: companyId,
-          customer_name: customerName,
-          customer_email: customerEmail || null,
-          customer_phone: customerPhone || null,
-          customer_address: customerAddress || null,
+          customer_id: customerId,
+          quote_number: quoteNumber,
+          description: originalCallNotes || null,
+          job_name: jobType || null,
           subtotal,
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total,
-          lead_status: 'quoted',
+          status: 'draft',
+          notes: generatedQuote.notes || null,
         })
         .select()
         .single()
@@ -531,20 +645,26 @@ export default function NewQuotePage() {
 
       await supabase.from('quote_items').insert(items)
 
-      // Log to audit trail
+      // Log to activity_log (new schema)
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: quote.id,
-          action_type: 'ai_generation',
-          description: `Quote generated with ${generatedQuote.line_items.length} items`,
-          changes_made: {
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: quote.id,
+          action: 'ai_generated',
+          description: `AI generated quote with ${generatedQuote.line_items.length} items`,
+          changes: {
             item_count: generatedQuote.line_items.length,
             subtotal,
-            total,
             tax_rate: taxRate,
+            total,
           },
-          created_by: user.id,
+          metadata: {
+            ai_prompt: originalCallNotes,
+            customer_name: customerName,
+          },
         })
       }
 
@@ -561,29 +681,29 @@ export default function NewQuotePage() {
     }
   }
 
-  // Handle update quote
+  // Handle update quote - explicit save from user
   const handleUpdateQuote = async () => {
     await saveQuoteToDatabase()
+    setHasUnsavedChanges(false)
     
-    // Log to audit trail
+    // Log to activity_log (new schema)
     const currentQuoteId = savedQuoteId || quoteId
     if (currentQuoteId) {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: currentQuoteId,
-          action_type: 'manual_edit',
-          description: `Quote manually updated`,
-          changes_made: {
-            timestamp: new Date().toISOString(),
-          },
-          created_by: user.id,
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: currentQuoteId,
+          action: 'updated',
+          description: 'Quote manually updated',
         })
       }
       await loadAuditLogs(currentQuoteId)
     }
     
-    toast.success('Quote updated')
+    toast.success('Quote saved')
   }
 
   // Handle send quote
@@ -612,18 +732,19 @@ export default function NewQuotePage() {
 
       if (updateError) throw updateError
 
-      // Log to audit trail
+      // Log to activity_log (new schema)
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: currentQuoteId,
-          action_type: 'quote_sent',
-          description: `Quote sent to customer`,
-          changes_made: {
-            followup_status: 'sent',
-            sent_at: new Date().toISOString(),
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: currentQuoteId,
+          action: 'sent',
+          description: 'Quote sent to customer',
+          metadata: {
+            sent_to: customerEmail || customerPhone,
           },
-          created_by: user.id,
         })
       }
 
@@ -662,17 +783,19 @@ export default function NewQuotePage() {
 
   // Handle save lead (without quote)
   const handleSaveLead = async () => {
-    if (!customerName || !description) {
+    if (!customerName || !originalCallNotes) {
       toast.error('Please fill in customer name and job description')
       return
     }
 
+    setIsSavingLead(true)
+    
     try {
       // Use existing job type or generate in background (non-blocking)
       let finalJobType = jobType
       
       // Generate job type with timeout (max 5 seconds) if not already set
-      if (!jobType && description) {
+      if (!jobType && originalCallNotes) {
         const timeoutPromise = new Promise((_, reject) => 
           setTimeout(() => reject(new Error('Timeout')), 5000)
         )
@@ -681,7 +804,7 @@ export default function NewQuotePage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            description,
+            description: originalCallNotes,
             customer_name: customerName,
             company_id: companyId,
           }),
@@ -712,7 +835,7 @@ export default function NewQuotePage() {
         const { error: updateError } = await supabase
           .from('leads')
           .update({
-            description: description,
+            description: originalCallNotes,
             metadata: { job_type: finalJobType },
           })
           .eq('id', quoteId)
@@ -749,7 +872,7 @@ export default function NewQuotePage() {
             customer_name: customerName,
             customer_phone: customerPhone,
             customer_address: customerAddress,
-            description: description,
+            description: originalCallNotes,
             job_type: finalJobType,
           },
         })
@@ -811,7 +934,7 @@ export default function NewQuotePage() {
         .insert({
           company_id: companyId,
           customer_id: customerId,
-          description: description,
+          description: originalCallNotes,
           status: 'new',
           source: 'direct',
           urgency: 'medium',
@@ -835,19 +958,21 @@ export default function NewQuotePage() {
           customer_name: customerName,
           customer_phone: customerPhone,
           customer_address: customerAddress,
-          description: description,
+          description: originalCallNotes,
           job_type: finalJobType,
         },
       })
 
       toast.success('Lead saved successfully!')
       
-      // Redirect back to leads page
-      refreshQuotes()
+      // Refresh navigation counts and redirect
+      await refreshQuotes()
       router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error saving lead:', error)
       toast.error('Failed to save lead')
+    } finally {
+      setIsSavingLead(false)
     }
   }
 
@@ -873,12 +998,16 @@ export default function NewQuotePage() {
     }
   }
 
+  // Track if quote has unsaved changes
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+
   // Handle items change
   const handleItemsChange = (items: QuoteItem[]) => {
     if (!generatedQuote) return
 
     const subtotal = items.reduce((sum, item) => sum + item.total, 0)
     const taxRate = generatedQuote.tax_rate || 0
+    setHasUnsavedChanges(true)
     const total = subtotal + (subtotal * (taxRate / 100))
 
     setGeneratedQuote({
@@ -893,146 +1022,167 @@ export default function NewQuotePage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#2563eb]" />
-          <p className="text-muted-foreground">Loading quote...</p>
+          <Loader2 className="h-6 w-6 animate-spin mx-auto mb-3 text-[#0055FF]" />
+          <p className="text-sm text-gray-500">Loading...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="pb-20 min-w-0">
-        {/* Header */}
-        <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
-          <div className="px-6 py-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <Wrench className="h-5 w-5 text-white" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {isCreatingQuote ? 'Edit Quote' : quoteId ? 'Edit Lead' : 'New Lead'}
-                </h1>
-                {jobType && (
-                  <p className="text-base text-gray-600 mt-1">
-                    {jobType}
-                  </p>
-                )}
-                {!jobType && customerName && (
-                  <p className="text-base text-gray-600 mt-1">
-                    {customerName}
-                  </p>
-                )}
-              </div>
+    <div className="min-h-[100dvh] bg-gray-50">
+      {/* Clean Figma-style header */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+          <div className="min-w-0">
+            <h1 className="text-xl font-semibold text-gray-900 truncate">
+              {generatedQuote ? 'Quote' : isCreatingQuote ? 'Create Quote' : quoteId ? 'Edit Lead' : 'New Lead'}
+              </h1>
+              {customerName && (
+                <p className="text-sm text-gray-500 truncate">{customerName}</p>
+              )}
+            </div>
+            
+            {/* Action buttons */}
+            <div className="flex items-center gap-2">
+              {/* Save Lead button - when editing existing lead (not quote mode) */}
+              {isExistingLead && !generatedQuote && !isCreatingQuote && (
+                <Button
+                  onClick={handleSaveLead}
+                  disabled={isSavingLead}
+                  className="h-10 px-5 bg-[#0055FF] hover:bg-blue-600 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25"
+                >
+                  {isSavingLead ? (
+                    <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4 mr-1.5" />
+                  )}
+                  {isSavingLead ? 'Saving...' : 'Save'}
+                </Button>
+              )}
+              
+              {/* Save Quote button */}
+              {generatedQuote && (savedQuoteId || quoteId) && (
+                <Button
+                  onClick={handleUpdateQuote}
+                  disabled={!hasUnsavedChanges}
+                  className={hasUnsavedChanges 
+                    ? "h-10 px-5 bg-[#0055FF] hover:bg-blue-600 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25" 
+                    : "h-10 px-5 bg-gray-100 text-gray-400 font-medium rounded-xl border border-gray-200"
+                  }
+                >
+                  <Save className="h-4 w-4 mr-1.5" />
+                  Save
+                </Button>
+              )}
+              
+              {/* Send button */}
+              {generatedQuote && (savedQuoteId || quoteId) && (customerEmail || customerPhone) && (
+                <Button
+                  onClick={handleSendQuote}
+                  disabled={isSending}
+                  className="h-10 px-5 bg-gray-900 hover:bg-black text-white font-medium rounded-xl"
+                >
+                  {isSending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>Send</>
+                  )}
+                </Button>
+              )}
             </div>
           </div>
         </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
-          {/* AI Quote Generator - FIRST (only when explicitly creating quote from lead) */}
-          {isCreatingQuote && (
-            <QuoteGenerator onGenerate={handleGenerateQuote} />
+        <main className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6 space-y-4">
+          {/* 1. QUOTE ITEMS - Most important when quote exists */}
+          {generatedQuote && (
+            <ItemsTable
+              items={generatedQuote.line_items}
+              subtotal={generatedQuote.subtotal}
+              taxRate={generatedQuote.tax_rate}
+              total={generatedQuote.total}
+              onItemsChange={handleItemsChange}
+              onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
+              companyId={companyId}
+            />
           )}
 
-          {/* Customer Information - ALWAYS SHOWN */}
+          {/* 2. AI ASSISTANT - Only show when creating/editing quote (not just editing lead) */}
+          {isCreatingQuote && (
+            <AIAssistant
+              quoteId={savedQuoteId || quoteId}
+              aiNotes={generatedQuote?.notes}
+              hasQuote={!!generatedQuote}
+              isGenerating={isGenerating}
+              onGenerateQuote={handleGenerateQuote}
+              onUpdateWithAI={handleUpdateWithAI}
+              disabled={!customerName}
+            />
+          )}
+
+          {/* 3. CUSTOMER INFO */}
           <LeadForm
             customerName={customerName}
             customerEmail={customerEmail}
             customerPhone={customerPhone}
             customerAddress={customerAddress}
-            jobName={jobType}
+            jobDescription={originalCallNotes}
+            isDescriptionReadOnly={isExistingLead}
+            companyId={companyId}
             onCustomerNameChange={setCustomerName}
             onCustomerEmailChange={setCustomerEmail}
             onCustomerPhoneChange={setCustomerPhone}
             onCustomerAddressChange={setCustomerAddress}
-            quoteId={quoteId}
+            onJobDescriptionChange={setOriginalCallNotes}
+            quoteId={savedQuoteId || quoteId}
             origin={origin}
             hasQuote={!!generatedQuote}
             onAddressRecalculate={recalculateQuoteForAddress}
           />
 
-          {/* Job Description - ALWAYS SHOWN */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Job Description</CardTitle>
-              <CardDescription>Briefly describe what needs to be done</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div className="space-y-3">
-                <Label htmlFor="description" className="text-sm">
-                  What needs to be done?
-                </Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe the work needed..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[150px] text-sm p-4"
-                />
-              </div>
-
-              {/* Save Lead Button - Show when no quote items exist */}
-              {!generatedQuote && (
-                <Button
-                  onClick={handleSaveLead}
-                  disabled={!customerName || !description}
-                  className="w-full h-14 text-sm font-bold bg-blue-500 hover:bg-blue-700 text-white"
-                >
-                  <Save className="h-5 w-5 mr-2" />
+          {/* New Lead: Save Lead button */}
+          {!isExistingLead && !generatedQuote && (
+            <Button
+              onClick={handleSaveLead}
+              disabled={!customerName || !originalCallNotes || isSavingLead}
+              className="w-full h-10 text-sm font-medium bg-[#0055FF] hover:bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/25"
+            >
+              {isSavingLead ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
                   Save Lead
-                </Button>
+                </>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Quote Editor */}
-          {generatedQuote && (
-            <>
-              <ItemsTable
-                items={generatedQuote.line_items}
-                subtotal={generatedQuote.subtotal}
-                taxRate={generatedQuote.tax_rate}
-                total={generatedQuote.total}
-                onItemsChange={handleItemsChange}
-                onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
-              />
-
-              {generatedQuote.notes && (
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <div className="text-sm font-bold mb-2">📋 Installation Instructions / Job Description</div>
-                  <div className="text-sm whitespace-pre-wrap">{generatedQuote.notes}</div>
-                </div>
-              )}
-
-              <ActionButtons
-                quoteId={quoteId}
-                savedQuoteId={savedQuoteId}
-                hasQuote={!!generatedQuote}
-                customerEmail={customerEmail}
-                customerPhone={customerPhone}
-                isGenerating={isGenerating}
-                isSending={isSending}
-                onSaveQuote={handleSaveQuote}
-                onUpdateQuote={handleUpdateQuote}
-                onSendQuote={handleSendQuote}
-                onRegenerateQuote={() => setGeneratedQuote(null)}
-                onArchive={() => setArchiveDialogOpen(true)}
-              />
-            </>
+            </Button>
           )}
 
-          {/* AI Assistant (if quote is saved) */}
-          {(savedQuoteId || quoteId) && generatedQuote && (
-            <AIAssistant
-              quoteId={savedQuoteId || quoteId}
-              aiNotes={generatedQuote.notes}
-              onUpdateWithAI={handleUpdateWithAI}
-            />
+          {/* Save Quote button - only when quote not saved yet */}
+          {generatedQuote && !savedQuoteId && !quoteId && (
+            <Button
+              onClick={handleSaveQuote}
+              disabled={isGenerating}
+              className="w-full h-10 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              <Save className="h-4 w-4 mr-1.5" />
+              Save Quote
+            </Button>
           )}
 
-          {/* Audit Trail - ALWAYS SHOW if quote/lead exists */}
-          {(savedQuoteId || quoteId) && (
+          {/* Missing contact info hint */}
+          {generatedQuote && (savedQuoteId || quoteId) && !customerEmail && !customerPhone && (
+            <p className="text-xs text-slate-500 text-center">
+              Add email or phone to send quote
+            </p>
+          )}
+
+          {/* 4. AUDIT TRAIL - Last */}
+          {(savedQuoteId || quoteId) && auditLogs.length > 0 && (
             <AuditTrail quoteId={savedQuoteId || quoteId!} entries={auditLogs} />
           )}
         </main>
@@ -1043,7 +1193,6 @@ export default function NewQuotePage() {
           onOpenChange={setArchiveDialogOpen}
           onArchive={handleArchive}
         />
-      </div>
     </div>
   )
 }

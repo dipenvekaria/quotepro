@@ -1,20 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus, UserPlus, Calendar, FileText, X } from 'lucide-react'
+import { Plus, UserPlus, Calendar, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
 interface FloatingActionMenuProps {
   onNewLead?: () => void
   onScheduleVisit?: () => void
-  onNewQuote?: () => void
 }
 
 export function FloatingActionMenu({ 
   onNewLead, 
-  onScheduleVisit, 
-  onNewQuote 
+  onScheduleVisit
 }: FloatingActionMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
@@ -35,17 +33,7 @@ export function FloatingActionMenu({
       onScheduleVisit()
     } else {
       // Default: navigate to calendar
-      router.push('/work/to-be-scheduled?action=schedule')
-    }
-  }
-
-  const handleNewQuote = () => {
-    setIsOpen(false)
-    if (onNewQuote) {
-      onNewQuote()
-    } else {
-      // Default: navigate to new quote page
-      router.push('/quotes/new')
+      router.push('/work/calendar')
     }
   }
 
@@ -54,19 +42,13 @@ export function FloatingActionMenu({
       label: 'New Lead',
       icon: UserPlus,
       onClick: handleNewLead,
-      color: 'bg-blue-500 hover:bg-blue-600'
+      color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
-      label: 'Schedule',
+      label: 'Calendar',
       icon: Calendar,
       onClick: handleScheduleVisit,
       color: 'bg-purple-500 hover:bg-purple-600'
-    },
-    {
-      label: 'Quote',
-      icon: FileText,
-      onClick: handleNewQuote,
-      color: 'bg-green-500 hover:bg-green-600'
     }
   ]
 
@@ -104,7 +86,7 @@ export function FloatingActionMenu({
                   transitionDelay: isOpen ? `${index * 50}ms` : '0ms'
                 }}
               >
-                <span className="bg-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium text-gray-700 whitespace-nowrap min-w-[90px] text-center">
+                <span className="bg-white px-3 py-2 rounded-xl shadow-lg text-sm font-medium text-gray-700 whitespace-nowrap min-w-[90px] text-center">
                   {item.label}
                 </span>
                 <button
@@ -126,8 +108,8 @@ export function FloatingActionMenu({
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "w-14 h-14 rounded-full bg-gradient-to-br from-slate-900 to-blue-600 text-white shadow-lg transition-all hover:scale-110 hover:shadow-xl flex items-center justify-center",
-            isOpen && "rotate-45"
+            "w-14 h-14 rounded-full bg-[#0055FF] text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-110 hover:shadow-xl flex items-center justify-center",
+            isOpen && "rotate-45 bg-gray-800"
           )}
           aria-label={isOpen ? "Close menu" : "Open actions menu"}
         >

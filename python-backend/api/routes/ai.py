@@ -156,9 +156,10 @@ async def generate_quote(
                 }
             )
         
-        # Get company tax rate (fallback)
-        company_response = db.table('companies').select('tax_rate').eq('id', request.company_id).single().execute()
-        company_tax_rate = company_response.data.get('tax_rate', 8.5) if company_response.data else 8.5
+        # Get company tax rate from settings JSONB (new schema)
+        company_response = db.table('companies').select('settings').eq('id', request.company_id).single().execute()
+        settings = company_response.data.get('settings', {}) if company_response.data else {}
+        company_tax_rate = settings.get('tax_rate', 8.5) if settings else 8.5
         
         # Determine tax rate from address if provided
         tax_rate = get_tax_rate_for_address(request.customer_address, company_tax_rate) if request.customer_address else company_tax_rate
@@ -219,9 +220,10 @@ async def update_quote_with_ai(
             existing_items=request.existing_items
         )
         
-        # Get tax rate
-        company_response = db.table('companies').select('tax_rate').eq('id', request.company_id).single().execute()
-        tax_rate = company_response.data.get('tax_rate', 8.5) if company_response.data else 8.5
+        # Get tax rate from settings JSONB (new schema)
+        company_response = db.table('companies').select('settings').eq('id', request.company_id).single().execute()
+        settings = company_response.data.get('settings', {}) if company_response.data else {}
+        tax_rate = settings.get('tax_rate', 8.5) if settings else 8.5
         
         if request.customer_address:
             tax_rate = get_tax_rate_for_address(request.customer_address, tax_rate)

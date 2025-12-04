@@ -14,7 +14,7 @@ import { Package, Search, Filter } from 'lucide-react'
 interface PricingItem {
   id: string
   name: string
-  price: string
+  base_price: number
   category: string
   description?: string
 }
@@ -394,8 +394,8 @@ export function PricingItemsManager({
                               <Input
                                 type="number"
                                 step="0.01"
-                                value={editingItem.price}
-                                onChange={(e) => setEditingItem({ ...editingItem, price: e.target.value })}
+                                value={editingItem.base_price}
+                                onChange={(e) => setEditingItem({ ...editingItem, base_price: parseFloat(e.target.value) || 0 })}
                                 placeholder="Price"
                                 className="w-full"
                               />
@@ -431,7 +431,7 @@ export function PricingItemsManager({
                             <div className="flex-1">
                               <p className="font-medium">{item.name}</p>
                               <p className="text-sm text-muted-foreground">
-                                ${parseFloat(item.price).toFixed(2)}
+                                ${(item.base_price || 0).toFixed(2)}
                               </p>
                             </div>
                             <div className="flex gap-2 w-full md:w-auto">

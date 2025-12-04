@@ -14,7 +14,7 @@ export function useCalendarSchedule() {
         id: q.id,
         date: new Date(q.scheduled_at),
         time: format(new Date(q.scheduled_at), 'h:mm a'),
-        customer: q.customer_name || 'Unnamed Customer',
+        customer: q.customer?.name || q.customer_name || 'Unnamed Customer',
         address: q.customer_address,
         total: q.total,
         status: q.status,

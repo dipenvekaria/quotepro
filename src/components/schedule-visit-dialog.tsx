@@ -42,29 +42,38 @@ export function ScheduleVisitDialog({
       // Combine date and time into a timestamp
       const scheduledAt = new Date(`${visitDate}T${visitTime}:00`)
       
-      // Update the quote with scheduled visit time and change lead_status
+      // Update the lead with scheduled visit time (new schema uses leads table)
       const { error } = await supabase
-        .from('quotes')
+        .from('leads')
         .update({
-          quote_visit_scheduled_at: scheduledAt.toISOString(),
-          lead_status: 'quote_visit_scheduled'
+          scheduled_visit_at: scheduledAt.toISOString(),
+          status: 'contacted'
         })
         .eq('id', leadId)
 
       if (error) throw error
 
-      // Log to audit trail
+      // Get company_id for activity log
+      const { data: lead } = await supabase
+        .from('leads')
+        .select('company_id')
+        .eq('id', leadId)
+        .single()
+
+      // Log to activity_log (new schema)
       const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: leadId,
-          action_type: 'visit_scheduled',
-          description: `Quote visit scheduled for ${scheduledAt.toLocaleDateString()} at ${scheduledAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
-          changes_made: {
+      if (user && lead) {
+        await supabase.from('activity_log').insert({
+          company_id: lead.company_id,
+          user_id: user.id,
+          entity_type: 'lead',
+          entity_id: leadId,
+          action: 'visit_scheduled',
+          description: `Visit scheduled for ${scheduledAt.toLocaleDateString()} at ${scheduledAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
+          metadata: {
             scheduled_at: scheduledAt.toISOString(),
             customer_name: customerName
           },
-          created_by: user.id,
         })
       }
 

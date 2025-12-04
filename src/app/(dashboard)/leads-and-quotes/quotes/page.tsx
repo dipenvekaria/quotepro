@@ -1,7 +1,7 @@
 // @ts-nocheck - Using new normalized schema
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -23,20 +23,23 @@ export default function QuotesPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const supabase = createClient()
 
-  // Filter for actual quotes (from quotes table, not leads)
+  // DISABLED: Refresh on mount (causing RLS errors)
+  // useEffect(() => {
+  //   refreshQuotes()
+  // }, [refreshQuotes])
+
+  // Filter for actual quotes (from quotes table)
   const quotes = useMemo(() => {
-    // This needs to query the quotes table separately
-    // For now, filter by status that indicates it's a quote
-    return allData.filter(item => 
-      ['draft', 'sent', 'viewed', 'accepted', 'rejected'].includes(item.status)
-    )
+    return allData.filter(item => item._type === 'quote')
   }, [allData])
 
-  // Filter for leads
+  // Filter for leads (for tab count)
   const leads = useMemo(() => {
-    return allData.filter(item => 
-      ['new', 'contacted', 'qualified', 'quote_sent'].includes(item.status)
-    )
+    return allData.filter(item => {
+      const isFromLeadsTable = item._type === 'lead' || !item._type
+      const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(item.status)
+      return isFromLeadsTable && isLeadStatus
+    })
   }, [allData])
 
   // Apply search filter
@@ -83,7 +86,7 @@ export default function QuotesPage() {
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
+    <div className="min-h-[100dvh] bg-gray-50">
       {/* Mobile Tabs */}
       <MobileSectionTabs 
         tabs={[
@@ -93,21 +96,12 @@ export default function QuotesPage() {
       />
 
       {/* Desktop Header */}
-      <header className="hidden md:block bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
-        <div className="px-6 py-6">
+      <header className="hidden md:block bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <QueueHeader
             title="Quotes"
             description="Generated quotes and proposals"
             count={filteredQuotes.length}
-            action={
-              <Button 
-                onClick={() => router.push('/leads-and-quotes/leads')}
-                className="bg-blue-500 hover:bg-blue-700 text-white"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                New Lead
-              </Button>
-            }
           />
         </div>
       </header>
@@ -135,13 +129,13 @@ export default function QuotesPage() {
             icon="file"
             action={
               !searchTerm && (
-                <Button 
+                <button 
                   onClick={() => router.push('/leads-and-quotes/leads')}
-                  className="bg-blue-500 hover:bg-blue-700 text-white"
+                  className="h-10 px-5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25 inline-flex items-center gap-2"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4" />
                   Go to Leads
-                </Button>
+                </button>
               )
             }
           />

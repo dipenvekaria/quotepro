@@ -18,13 +18,15 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Fetch quote with all details
+  // Fetch quote with all details including customer
   const { data: quote, error } = await supabase
     .from('quotes')
     .select(`
       *,
       quote_items (*),
-      companies (*)
+      companies (*),
+      customer:customers(*),
+      customer_address:customer_addresses!customer_addresses_customer_id_fkey(*)
     `)
     .eq('id', id)
     .single()
@@ -37,6 +39,10 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const company = quote.companies
   // @ts-ignore - Supabase typing
   const items = quote.quote_items || []
+  // @ts-ignore - Supabase typing
+  const customer = quote.customer
+  // @ts-ignore - Supabase typing  
+  const primaryAddress = quote.customer_address?.find((a: any) => a.is_primary) || quote.customer_address?.[0]
 
   // Track that the quote was viewed
   // @ts-ignore
@@ -117,8 +123,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-sm">
-                  {/* @ts-ignore */}
-                  Quote for {quote.customer_name}
+                  Quote for {customer?.name || 'Customer'}
                 </CardTitle>
                 <p className="text-sm text-muted-foreground mt-1">
                   {/* @ts-ignore */}
@@ -145,20 +150,16 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 <h3 className="font-bold text-sm text-gray-600 uppercase">
                   Customer Details
                 </h3>
-                {/* @ts-ignore */}
-                {quote.customer_phone && (
+                {customer?.phone && (
                   <div className="flex items-center gap-2 text-sm">
                     <Phone className="h-4 w-4 text-gray-500" />
-                    {/* @ts-ignore */}
-                    <span>{quote.customer_phone}</span>
+                    <span>{customer.phone}</span>
                   </div>
                 )}
-                {/* @ts-ignore */}
-                {quote.customer_email && (
+                {customer?.email && (
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-gray-500" />
-                    {/* @ts-ignore */}
-                    <span>{quote.customer_email}</span>
+                    <span>{customer.email}</span>
                   </div>
                 )}
               </div>
@@ -166,12 +167,10 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                 <h3 className="font-bold text-sm text-gray-600 uppercase">
                   Job Location
                 </h3>
-                {/* @ts-ignore */}
-                {quote.customer_address && (
+                {primaryAddress?.address && (
                   <div className="flex items-start gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-gray-500 mt-0.5" />
-                    {/* @ts-ignore */}
-                    <span>{quote.customer_address}</span>
+                    <span>{primaryAddress.address}</span>
                   </div>
                 )}
               </div>

@@ -31,15 +31,15 @@ export function WorkJobCard({
       <div className="flex-1 space-y-2">
         {/* Customer Name & Quote Number */}
         <div className="flex items-center gap-3">
-          <h3 className="font-bold text-lg">{quote.customer_name}</h3>
+          <h3 className="font-bold text-lg">{quote.customer?.name || quote.customer_name || 'Customer'}</h3>
           <QuoteStatusBadge status={quote.status} size="sm" />
         </div>
 
         {/* Address */}
-        {quote.customer_address && (
+        {(quote.customer_address || quote.customer?.address) && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
-            <span>{quote.customer_address}</span>
+            <span>{quote.customer_address || quote.customer?.address}</span>
           </div>
         )}
 

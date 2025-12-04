@@ -83,13 +83,13 @@ export function QueueCard({
   return (
     <Card 
       className={cn(
-        "transition-shadow",
+        "transition-shadow bg-white border border-gray-200 rounded-2xl",
         onClick && "cursor-pointer hover:shadow-md",
         className
       )}
       onClick={handleClick}
     >
-      <CardContent className="p-3">
+      <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           {/* Main Content */}
           <div className="flex-1 space-y-1.5">

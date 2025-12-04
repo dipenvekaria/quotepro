@@ -5,7 +5,7 @@ const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || 'http://localhost:8
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { company_id, description, customer_name, existing_items } = body
+    const { company_id, description, customer_name, customer_address, existing_items } = body
 
     if (!company_id || !description) {
       return NextResponse.json(
@@ -23,8 +23,9 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         company_id,
         description,
-        customer_name,
-        existing_items: existing_items || [], // Pass existing items for context
+        customer_name: customer_name || 'Customer',
+        customer_address: customer_address || '',
+        existing_items: existing_items || [],
       }),
     })
 

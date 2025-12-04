@@ -39,6 +39,7 @@ export function useQuotesQueue() {
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter(q => 
+        q.customer?.name?.toLowerCase().includes(term) ||
         q.customer_name?.toLowerCase().includes(term) ||
         q.customer_address?.toLowerCase().includes(term) ||
         q.quote_number?.toLowerCase().includes(term) ||
@@ -72,6 +73,13 @@ export function useQuotesQueue() {
     try {
       const supabase = createClient()
       
+      // Get quote to get company_id
+      const { data: quote } = await supabase
+        .from('quotes')
+        .select('company_id')
+        .eq('id', quoteId)
+        .single()
+      
       // Update lead_status to 'archived'
       // @ts-ignore - lead_status column pending migration
       const { error: updateError } = await supabase
@@ -81,18 +89,17 @@ export function useQuotesQueue() {
       
       if (updateError) throw updateError
       
-      // Log to audit trail
-      // @ts-ignore - audit_trail types pending
-      const { error: auditError } = await supabase
-        .from('audit_trail')
-        .insert({
-          quote_id: quoteId,
-          action: 'quote_archived',
-          details: reason,
-          user_id: (await supabase.auth.getUser()).data.user?.id || 'system'
-        })
-      
-      if (auditError) console.error('Audit trail error:', auditError)
+      // Log to activity_log
+      const { data: { user } } = await supabase.auth.getUser()
+      // @ts-ignore
+      await supabase.from('activity_log').insert({
+        company_id: quote?.company_id,
+        user_id: user?.id || null,
+        entity_type: 'quote',
+        entity_id: quoteId,
+        action: 'archived',
+        description: reason,
+      })
       
       toast.success('Quote archived')
       await refreshQuotes()

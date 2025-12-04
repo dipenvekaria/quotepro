@@ -16,34 +16,35 @@ export default function HomePage() {
   const stats = useHomeStats()
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Welcome Back!
-        </h1>
-        <p className="text-gray-600">
-          Here's what's happening with your business today
-        </p>
-      </div>
+    <div className="min-h-[100dvh] bg-gray-50 px-4 py-6 md:px-6">
+      <div className="space-y-6 max-w-7xl mx-auto">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome Back!
+          </h1>
+          <p className="text-gray-600">
+            Here's what's happening with your business today
+          </p>
+        </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {/* Active Leads */}
         <Link href="/leads-and-quotes/leads">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white border border-gray-200 rounded-2xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Active Leads
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">
                     {stats.leads}
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                  <Users className="w-7 h-7 text-white" />
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-[#0055FF] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <Users className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -52,19 +53,19 @@ export default function HomePage() {
 
         {/* Pending Quotes */}
         <Link href="/leads-and-quotes/quotes">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white border border-gray-200 rounded-2xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-wider">
                     Pending Quotes
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">
                     {stats.quotes}
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                  <FileText className="w-7 h-7 text-white" />
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-[#0055FF] rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <FileText className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -73,19 +74,19 @@ export default function HomePage() {
 
         {/* Scheduled Today */}
         <Link href="/work/scheduled">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Scheduled Today
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white border border-gray-200 rounded-2xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-wider">
+                    Scheduled
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">
                     {stats.scheduledToday}
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-md">
-                  <Calendar className="w-7 h-7 text-white" />
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-gray-800 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <Calendar className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -94,19 +95,19 @@ export default function HomePage() {
 
         {/* Pending Revenue */}
         <Link href="/pay/invoice">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
-                    Pending Revenue
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-white border border-gray-200 rounded-2xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[10px] md:text-xs font-bold text-gray-600 uppercase tracking-wider">
+                    Revenue
                   </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                  <p className="text-xl md:text-3xl font-bold text-gray-900 mt-1">
                     ${stats.pendingRevenue.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-md">
-                  <Clock className="w-7 h-7 text-white" />
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-gray-800 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+                  <Clock className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -169,6 +170,7 @@ export default function HomePage() {
             </Link>
           </CardContent>
         </Card>
+      </div>
       </div>
     </div>
   )

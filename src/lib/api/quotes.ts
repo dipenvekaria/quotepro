@@ -29,6 +29,7 @@ export interface GeneratedQuote {
 export interface GenerateQuoteRequest {
   company_id: string
   description: string
+  customer_name?: string
   customer_address?: string
   existing_items?: QuoteItem[]
   photos?: string[]

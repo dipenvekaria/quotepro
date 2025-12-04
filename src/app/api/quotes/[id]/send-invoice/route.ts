@@ -14,10 +14,10 @@ export async function POST(
     const { id } = await params
     const supabase = await createClient()
 
-    // Get quote with items
+    // Get quote with items and customer
     const { data: quote, error: quoteError } = await supabase
       .from('quotes')
-      .select('*')
+      .select('*, customer:customers(*)')
       .eq('id', id)
       .single()
 
@@ -27,6 +27,8 @@ export async function POST(
         { status: 404 }
       )
     }
+
+    const customer = quote.customer
 
     // Ensure job is completed
     if (!quote.completed_at) {
@@ -88,6 +90,10 @@ export async function POST(
         quote: {
           ...quote,
           invoice_number: invoiceNumber,
+          customer_name: customer?.name || 'Customer',
+          customer_email: customer?.email || '',
+          customer_phone: customer?.phone || '',
+          customer_address: '', // TODO: fetch from customer_addresses
         },
         company,
         items: items || [],
@@ -142,19 +148,21 @@ export async function POST(
 
     // TODO: Send email via Resend
     // For now, just log that we would send an email
-    console.log(`📧 Would send invoice email to: ${quote.customer_email}`)
+    console.log(`📧 Would send invoice email to: ${customer?.email || 'No email'}`)
     console.log(`   Invoice: ${invoiceNumber}`)
     console.log(`   PDF: ${publicUrl}`)
     console.log(`   Payment Link: ${paymentLinkUrl}`)
 
-    // Log to audit trail
-    await supabase.from('audit_trail').insert({
-      quote_id: id,
-      action_type: 'invoice_sent',
-      field_name: 'invoice_sent_at',
-      new_value: new Date().toISOString(),
-      changed_by: null,
-      changed_at: new Date().toISOString(),
+    // Log to activity log
+    const { data: { user } } = await supabase.auth.getUser()
+    await supabase.from('activity_log').insert({
+      company_id: quote.company_id,
+      user_id: user?.id || null,
+      entity_type: 'quote',
+      entity_id: id,
+      action: 'invoice_sent',
+      description: `Invoice ${invoiceNumber} sent`,
+      changes: { invoice_number: invoiceNumber },
     })
 
     return NextResponse.json({

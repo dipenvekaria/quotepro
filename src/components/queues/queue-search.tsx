@@ -29,12 +29,12 @@ export function QueueSearch({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={cn(
-          "w-full pl-10 pr-10 py-2.5 rounded-lg",
+          "w-full pl-10 pr-10 py-2.5 rounded-xl",
           "bg-white",
           "border border-gray-200",
           "text-gray-900",
           "placeholder:text-gray-400",
-          "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+          "focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent",
           "transition-colors"
         )}
       />

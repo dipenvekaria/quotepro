@@ -1,7 +1,7 @@
 // @ts-nocheck - New lead_status column pending database migration
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -29,19 +29,26 @@ export default function LeadsQueuePage() {
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [leadToArchive, setLeadToArchive] = useState<string | null>(null)
 
-  // Filter leads (status: new, contacted, qualified)
+  // DISABLED: Refresh on mount (causing RLS errors)
+  // useEffect(() => {
+  //   refreshQuotes()
+  // }, [refreshQuotes])
+
+  // Filter leads (only items from leads table with lead-like statuses)
   const leads = useMemo(() => {
     return allLeads.filter(l => {
-      const isLead = ['new', 'contacted', 'qualified', 'quote_sent'].includes(l.status)
-      return isLead
+      // Only show items from the leads table (not quotes table)
+      const isFromLeadsTable = l._type === 'lead' || !l._type
+      const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(l.status)
+      return isFromLeadsTable && isLeadStatus
     })
   }, [allLeads])
 
-  // Calculate quotes count (status: quoted, won, lost)
+  // Calculate quotes count (from quotes table)
   const quotes = useMemo(() => {
     return allLeads.filter(l => {
-      const isQuote = ['quoted', 'won'].includes(l.status)
-      return isQuote
+      // Count items from quotes table
+      return l._type === 'quote'
     })
   }, [allLeads])
 
@@ -227,7 +234,7 @@ export default function LeadsQueuePage() {
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
+    <div className="min-h-[100dvh] bg-gray-50">
       {/* Mobile Tabs */}
       <MobileSectionTabs 
         tabs={[
@@ -237,20 +244,20 @@ export default function LeadsQueuePage() {
       />
 
       {/* Desktop Header Only */}
-      <header className="hidden md:block bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
-        <div className="px-6 py-6">
+      <header className="hidden md:block bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <QueueHeader
             title="Leads"
             description="New customer calls and inquiries"
             count={filteredLeads.length}
             action={
-              <Button 
+              <button 
                 onClick={() => router.push('/leads/new')}
-                className="bg-blue-500 hover:bg-blue-700 text-white"
+                className="h-10 px-5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25 inline-flex items-center gap-2"
               >
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-4 h-4" />
                 New Lead
-              </Button>
+              </button>
             }
           />
         </div>
@@ -279,13 +286,13 @@ export default function LeadsQueuePage() {
             icon="users"
             action={
               !searchTerm && (
-                <Button 
+                <button 
                   onClick={() => router.push('/leads/new')}
-                  className="bg-blue-500 hover:bg-blue-700 text-white"
+                  className="h-10 px-5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25 inline-flex items-center gap-2"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4" />
                   Add First Lead
-                </Button>
+                </button>
               )
             }
           />

@@ -28,7 +28,9 @@ export async function POST(
       .from('quotes')
       .select(`
         *,
-        quote_items (*)
+        quote_items (*),
+        customer:customers(*),
+        customer_addresses!customer_addresses_customer_id_fkey(*)
       `)
       .eq('id', quoteId)
       .single()
@@ -36,6 +38,11 @@ export async function POST(
     if (quoteError || !quote) {
       return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
     }
+
+    // @ts-ignore - Supabase typing
+    const customer = quote.customer
+    // @ts-ignore - Supabase typing
+    const primaryAddress = quote.customer_addresses?.find((a: any) => a.is_primary) || quote.customer_addresses?.[0]
 
     // Fetch company details
     // @ts-ignore - Supabase typing issue
@@ -64,14 +71,10 @@ export async function POST(
           id: quote.id,
           // @ts-ignore
           quote_number: quote.quote_number,
-          // @ts-ignore
-          customer_name: quote.customer_name,
-          // @ts-ignore
-          customer_email: quote.customer_email,
-          // @ts-ignore
-          customer_phone: quote.customer_phone,
-          // @ts-ignore
-          customer_address: quote.customer_address,
+          customer_name: customer?.name || 'Customer',
+          customer_email: customer?.email || '',
+          customer_phone: customer?.phone || '',
+          customer_address: primaryAddress?.address || '',
           // @ts-ignore
           description: quote.description,
           // @ts-ignore

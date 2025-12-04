@@ -20,10 +20,11 @@ interface AuditLogEntry {
   users?: {
     id: string
     role: string
-  }
-  profiles?: {
-    full_name: string | null
-    email: string
+    profile?: {
+      first_name?: string
+      last_name?: string
+      email?: string
+    }
   }
 }
 
@@ -33,7 +34,7 @@ interface AuditTrailProps {
 }
 
 export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const getActionBadge = (action: string) => {
     switch (action) {
@@ -73,6 +74,26 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
     const changes = entry.changes
     const parts: string[] = []
 
+    // AI generation details
+    if (entry.action === 'ai_generated' || entry.action === 'ai_generation') {
+      if (changes.ai_prompt) parts.push(`Prompt: "${changes.ai_prompt.substring(0, 60)}${changes.ai_prompt.length > 60 ? '...' : ''}"`)
+      if (changes.item_count) parts.push(`${changes.item_count} items generated`)
+      if (changes.total) parts.push(`Total: $${changes.total.toFixed(2)}`)
+      return parts.join(' • ')
+    }
+
+    // AI update details
+    if (entry.action === 'ai_updated') {
+      if (changes.ai_prompt) parts.push(`"${changes.ai_prompt.substring(0, 50)}${changes.ai_prompt.length > 50 ? '...' : ''}"`)
+      if (changes.items_added?.length > 0) parts.push(`Added: ${changes.items_added.join(', ')}`)
+      if (changes.items_removed?.length > 0) parts.push(`Removed: ${changes.items_removed.join(', ')}`)
+      if (changes.previous_total && changes.new_total) {
+        const diff = changes.new_total - changes.previous_total
+        parts.push(`$${changes.previous_total.toFixed(2)} → $${changes.new_total.toFixed(2)} (${diff >= 0 ? '+' : ''}${diff.toFixed(2)})`)
+      }
+      return parts.join(' • ')
+    }
+
     // Lead created/updated
     if (entry.action === 'created' || entry.action === 'updated') {
       if (changes.customer_name) parts.push(`Customer: ${changes.customer_name}`)
@@ -96,20 +117,25 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
   }
 
   const getUserName = (entry: AuditLogEntry): string => {
-    if (entry.profiles) {
-      return entry.profiles.full_name || entry.profiles.email || 'User'
+    if (entry.users?.profile) {
+      const { first_name, last_name, email } = entry.users.profile
+      if (first_name && last_name) {
+        return `${first_name} ${last_name}`
+      }
+      if (first_name) return first_name
+      if (email) return email
     }
     return 'System'
   }
 
   if (!entries || entries.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Audit Trail</CardTitle>
+      <Card className="bg-white border border-gray-200 rounded-2xl">
+        <CardHeader className="px-4 py-3 border-b border-gray-100">
+          <CardTitle className="text-base font-semibold text-gray-900">Audit Trail</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
+        <CardContent className="p-4">
+          <div className="text-center py-6 text-muted-foreground">
             <p>No activity yet</p>
             <p className="text-sm mt-1">Changes will appear here as you edit</p>
           </div>
@@ -119,10 +145,10 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="bg-white border border-gray-200 rounded-2xl">
+      <CardHeader className="px-4 py-3 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <CardTitle>Audit Trail ({entries.length})</CardTitle>
+          <CardTitle className="text-base font-semibold text-gray-900">Audit Trail ({entries.length})</CardTitle>
           <Button
             variant="ghost"
             size="sm"

@@ -32,9 +32,13 @@ class Settings(BaseSettings):
     embedding_dimension: int = 1536
     vector_search_limit: int = 10
     
+    # CORS - for Cloudflare tunnel access
+    allowed_origins: str = "http://localhost:3000,http://localhost:3001"
+    
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "ignore"
 
 
 @lru_cache()

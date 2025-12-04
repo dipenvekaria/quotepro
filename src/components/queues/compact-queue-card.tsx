@@ -87,7 +87,7 @@ export function CompactQueueCard({
       {/* Card */}
       <Card 
         className={cn(
-          "transition-all active:scale-[0.98] relative",
+          "transition-all active:scale-[0.98] relative bg-white border border-gray-200 rounded-xl",
           onClick && "cursor-pointer active:bg-gray-50",
           className
         )}
