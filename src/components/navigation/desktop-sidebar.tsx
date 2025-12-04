@@ -8,15 +8,11 @@ import {
   FileText, 
   Calendar, 
   ClipboardCheck, 
-  DollarSign, 
-  CheckCircle2, 
   Settings,
   ChevronDown,
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  BarChart3,
-  LayoutDashboard,
   Zap
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -39,20 +35,12 @@ interface DesktopSidebarProps {
   counts?: {
     leads: number
     quotes: number
-    toBeScheduled: number
-    scheduled: number
-    invoice: number
-    paid: number
   }
 }
 
 export function DesktopSidebar({ counts = {
   leads: 0,
-  quotes: 0,
-  toBeScheduled: 0,
-  scheduled: 0,
-  invoice: 0,
-  paid: 0
+  quotes: 0
 } }: DesktopSidebarProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -98,11 +86,6 @@ export function DesktopSidebar({ counts = {
 
   const sections: (NavSection | NavLink)[] = [
     {
-      label: 'Dashboard',
-      href: '/home',
-      icon: LayoutDashboard
-    },
-    {
       label: 'Leads & Quotes',
       icon: Users,
       defaultExpanded: true,
@@ -122,50 +105,17 @@ export function DesktopSidebar({ counts = {
       ]
     },
     {
+      label: 'Calendar',
+      href: '/calendar',
+      icon: Calendar
+    },
+    {
       label: 'Work',
-      icon: Calendar,
-      defaultExpanded: true,
-      children: [
-        {
-          label: 'Pending',
-          href: '/work?tab=to-schedule',
-          icon: Calendar,
-          count: counts.toBeScheduled
-        },
-        {
-          label: 'Scheduled',
-          href: '/work?tab=scheduled',
-          icon: ClipboardCheck,
-          count: counts.scheduled
-        }
-      ]
+      href: '/work',
+      icon: ClipboardCheck
     },
     {
-      label: 'Pay',
-      icon: DollarSign,
-      defaultExpanded: true,
-      children: [
-        {
-          label: 'Invoice',
-          href: '/pay?tab=invoice',
-          icon: DollarSign,
-          count: counts.invoice
-        },
-        {
-          label: 'Paid',
-          href: '/pay?tab=paid',
-          icon: CheckCircle2,
-          count: counts.paid
-        }
-      ]
-    },
-    {
-      label: 'Analytics',
-      href: '/analytics',
-      icon: BarChart3
-    },
-    {
-      label: 'Configuration',
+      label: 'Settings',
       href: '/settings',
       icon: Settings
     }

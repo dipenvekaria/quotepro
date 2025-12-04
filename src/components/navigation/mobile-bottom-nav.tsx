@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, Users, Calendar, DollarSign, BarChart3, Settings } from 'lucide-react'
+import { LayoutDashboard, Users, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface NavItem {
@@ -14,40 +14,22 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: 'Dashboard',
-    href: '/home',
-    icon: LayoutDashboard,
-    matchPaths: ['/home']
-  },
-  {
     label: 'Leads',
     href: '/leads-and-quotes/leads',
     icon: Users,
     matchPaths: ['/leads-and-quotes', '/leads', '/quotes']
   },
   {
-    label: 'Work',
-    href: '/work/to-be-scheduled',
+    label: 'Calendar',
+    href: '/calendar',
     icon: Calendar,
+    matchPaths: ['/calendar']
+  },
+  {
+    label: 'Work',
+    href: '/work',
+    icon: LayoutDashboard,
     matchPaths: ['/work']
-  },
-  {
-    label: 'Pay',
-    href: '/pay',
-    icon: DollarSign,
-    matchPaths: ['/pay']
-  },
-  {
-    label: 'Analytics',
-    href: '/analytics',
-    icon: BarChart3,
-    matchPaths: ['/analytics']
-  },
-  {
-    label: 'Settings',
-    href: '/settings',
-    icon: Settings,
-    matchPaths: ['/settings']
   }
 ]
 

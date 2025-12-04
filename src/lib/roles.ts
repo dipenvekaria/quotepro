@@ -1,5 +1,5 @@
 // User roles
-export type UserRole = 'owner' | 'admin' | 'sales'
+export type UserRole = 'owner' | 'admin' | 'technician' | 'sales' | 'accountant' | 'member'
 
 // Team member type
 export interface TeamMember {
@@ -29,11 +29,19 @@ export const PERMISSIONS = {
   VIEW_SETTINGS: ['owner', 'admin'],
   MANAGE_SUBSCRIPTION: ['owner', 'admin'],
   
+  // Calendar/scheduling access (office staff only - NOT technicians)
+  VIEW_CALENDAR: ['owner', 'admin', 'sales', 'accountant'],
+  ASSIGN_JOBS: ['owner', 'admin', 'sales'],
+  
   // Owner, admin and sales can do these
   CREATE_QUOTES: ['owner', 'admin', 'sales'],
   VIEW_QUOTES: ['owner', 'admin', 'sales'],
   EDIT_QUOTES: ['owner', 'admin', 'sales'],
   SEND_QUOTES: ['owner', 'admin', 'sales'],
+  
+  // Technicians and above
+  VIEW_ASSIGNED_JOBS: ['owner', 'admin', 'technician', 'sales'],
+  COMPLETE_JOBS: ['owner', 'admin', 'technician'],
 } as const
 
 export type Permission = keyof typeof PERMISSIONS
@@ -54,7 +62,12 @@ export function isAdmin(role: UserRole | null | undefined): boolean {
   return role === 'admin'
 }
 
-// Check if user is sales
-export function isSales(role: UserRole | null | undefined): boolean {
-  return role === 'sales'
+// Check if user is technician
+export function isTechnician(role: UserRole | null | undefined): boolean {
+  return role === 'technician'
+}
+
+// Check if user can see calendar (office staff only)
+export function canViewCalendar(role: UserRole | null | undefined): boolean {
+  return hasPermission(role, 'VIEW_CALENDAR')
 }
