@@ -4,14 +4,11 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Loader2, Wrench, Save } from 'lucide-react'
+import { Loader2, Save } from 'lucide-react'
 import { toast } from 'sonner'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { LeadForm } from '@/components/features/leads/LeadForm'
-import { QuoteGenerator, ItemsTable, AIAssistant, ActionButtons, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
+import { ItemsTable, AIAssistant, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
 import { AuditTrail } from '@/components/audit-trail'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { useGenerateQuote, useUpdateQuoteWithAI } from '@/lib/hooks/useQuotes'
@@ -65,6 +62,7 @@ export default function NewQuotePage() {
   const [isSending, setIsSending] = useState(false)
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
   // TanStack Query hooks
   const generateQuoteMutation = useGenerateQuote()
@@ -190,13 +188,19 @@ export default function NewQuotePage() {
         setCustomerAddress(addresses?.[0]?.address || '')
         setDescription(quote.description || '')
         setJobType(quote.job_name || '')
-        
-        // Set quote mode and ensure sessionStorage is set
-        setIsCreatingQuote(true)
-        sessionStorage.setItem('showAICard', 'true')
         setSavedQuoteId(quote.id)
         
-        if (quote.quote_items && quote.quote_items.length > 0) {
+        // Only set "creating quote" mode if quote has no items yet
+        const hasItems = quote.quote_items && quote.quote_items.length > 0
+        if (!hasItems) {
+          setIsCreatingQuote(true)
+          sessionStorage.setItem('showAICard', 'true')
+        } else {
+          setIsCreatingQuote(false)
+          sessionStorage.removeItem('showAICard')
+        }
+        
+        if (hasItems) {
           setGeneratedQuote({
             line_items: quote.quote_items.map((item: any) => ({
               name: item.name,
@@ -877,6 +881,7 @@ export default function NewQuotePage() {
   const handleItemsChange = (items: QuoteItem[]) => {
     if (!generatedQuote) return
 
+    setHasUnsavedChanges(true)
     const subtotal = items.reduce((sum, item) => sum + item.total, 0)
     const taxRate = generatedQuote.tax_rate || 0
     const total = subtotal + (subtotal * (taxRate / 100))
@@ -893,157 +898,138 @@ export default function NewQuotePage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#2563eb]" />
-          <p className="text-muted-foreground">Loading quote...</p>
+          <Loader2 className="h-6 w-6 animate-spin mx-auto mb-3 text-[#0055FF]" />
+          <p className="text-sm text-gray-500">Loading...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="pb-20 min-w-0">
-        {/* Header */}
-        <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
-          <div className="px-6 py-4">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-500 p-2 rounded-lg">
-                <Wrench className="h-5 w-5 text-white" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {isCreatingQuote ? 'Edit Quote' : quoteId ? 'Edit Lead' : 'New Lead'}
-                </h1>
-                {jobType && (
-                  <p className="text-base text-gray-600 mt-1">
-                    {jobType}
-                  </p>
-                )}
-                {!jobType && customerName && (
-                  <p className="text-base text-gray-600 mt-1">
-                    {customerName}
-                  </p>
-                )}
-              </div>
-            </div>
+    <div className="min-h-[100dvh] bg-gray-50">
+      {/* Clean header with Save/Send buttons */}
+      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+          <div className="min-w-0">
+            <h1 className="text-xl font-semibold text-gray-900 truncate">
+              {generatedQuote ? 'Quote' : isCreatingQuote ? 'Create Quote' : 'Edit Quote'}
+            </h1>
+            {customerName && (
+              <p className="text-sm text-gray-500 truncate">{customerName}</p>
+            )}
           </div>
-        </header>
+          
+          {/* Action buttons in header */}
+          <div className="flex items-center gap-2">
+            {/* Save Quote button */}
+            {generatedQuote && (savedQuoteId || quoteId) && (
+              <Button
+                onClick={handleUpdateQuote}
+                disabled={!hasUnsavedChanges}
+                className={hasUnsavedChanges 
+                  ? "h-10 px-5 bg-[#0055FF] hover:bg-blue-600 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25" 
+                  : "h-10 px-5 bg-gray-100 text-gray-400 font-medium rounded-xl border border-gray-200"
+                }
+              >
+                <Save className="h-4 w-4 mr-1.5" />
+                Save
+              </Button>
+            )}
+            
+            {/* Send button */}
+            {generatedQuote && (savedQuoteId || quoteId) && (
+              <Button
+                onClick={handleSendQuote}
+                disabled={isSending}
+                className="h-10 px-5 bg-gray-900 hover:bg-black text-white font-medium rounded-xl"
+              >
+                {isSending ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>Send</>
+                )}
+              </Button>
+            )}
+          </div>
+        </div>
+      </header>
 
-        <main className="max-w-5xl mx-auto px-6 py-4 space-y-4">
-          {/* AI Quote Generator - FIRST (only when explicitly creating quote from lead) */}
-          {isCreatingQuote && (
-            <QuoteGenerator onGenerate={handleGenerateQuote} />
-          )}
-
-          {/* Customer Information - ALWAYS SHOWN */}
-          <LeadForm
-            customerName={customerName}
-            customerEmail={customerEmail}
-            customerPhone={customerPhone}
-            customerAddress={customerAddress}
-            jobName={jobType}
-            onCustomerNameChange={setCustomerName}
-            onCustomerEmailChange={setCustomerEmail}
-            onCustomerPhoneChange={setCustomerPhone}
-            onCustomerAddressChange={setCustomerAddress}
-            quoteId={quoteId}
-            origin={origin}
-            hasQuote={!!generatedQuote}
-            onAddressRecalculate={recalculateQuoteForAddress}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6 space-y-4">
+        {/* 1. QUOTE ITEMS - Most important when quote exists */}
+        {generatedQuote && (
+          <ItemsTable
+            items={generatedQuote.line_items}
+            subtotal={generatedQuote.subtotal}
+            taxRate={generatedQuote.tax_rate}
+            total={generatedQuote.total}
+            onItemsChange={handleItemsChange}
+            onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
+            companyId={companyId}
           />
+        )}
 
-          {/* Job Description - ALWAYS SHOWN */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Job Description</CardTitle>
-              <CardDescription>Briefly describe what needs to be done</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div className="space-y-3">
-                <Label htmlFor="description" className="text-sm">
-                  What needs to be done?
-                </Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe the work needed..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="min-h-[150px] text-sm p-4"
-                />
-              </div>
-
-              {/* Save Lead Button - Show when no quote items exist */}
-              {!generatedQuote && (
-                <Button
-                  onClick={handleSaveLead}
-                  disabled={!customerName || !description}
-                  className="w-full h-14 text-sm font-bold bg-blue-500 hover:bg-blue-700 text-white"
-                >
-                  <Save className="h-5 w-5 mr-2" />
-                  Save Lead
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Quote Editor */}
-          {generatedQuote && (
-            <>
-              <ItemsTable
-                items={generatedQuote.line_items}
-                subtotal={generatedQuote.subtotal}
-                taxRate={generatedQuote.tax_rate}
-                total={generatedQuote.total}
-                onItemsChange={handleItemsChange}
-                onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
-              />
-
-              {generatedQuote.notes && (
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <div className="text-sm font-bold mb-2">📋 Installation Instructions / Job Description</div>
-                  <div className="text-sm whitespace-pre-wrap">{generatedQuote.notes}</div>
-                </div>
-              )}
-
-              <ActionButtons
-                quoteId={quoteId}
-                savedQuoteId={savedQuoteId}
-                hasQuote={!!generatedQuote}
-                customerEmail={customerEmail}
-                customerPhone={customerPhone}
-                isGenerating={isGenerating}
-                isSending={isSending}
-                onSaveQuote={handleSaveQuote}
-                onUpdateQuote={handleUpdateQuote}
-                onSendQuote={handleSendQuote}
-                onRegenerateQuote={() => setGeneratedQuote(null)}
-                onArchive={() => setArchiveDialogOpen(true)}
-              />
-            </>
-          )}
-
-          {/* AI Assistant (if quote is saved) */}
-          {(savedQuoteId || quoteId) && generatedQuote && (
-            <AIAssistant
-              quoteId={savedQuoteId || quoteId}
-              aiNotes={generatedQuote.notes}
-              onUpdateWithAI={handleUpdateWithAI}
-            />
-          )}
-
-          {/* Audit Trail - ALWAYS SHOW if quote/lead exists */}
-          {(savedQuoteId || quoteId) && (
-            <AuditTrail quoteId={savedQuoteId || quoteId!} entries={auditLogs} />
-          )}
-        </main>
-
-        {/* Archive Dialog */}
-        <ArchiveDialog
-          open={archiveDialogOpen}
-          onOpenChange={setArchiveDialogOpen}
-          onArchive={handleArchive}
+        {/* 2. AI ASSISTANT - For generating/updating quote */}
+        <AIAssistant
+          quoteId={savedQuoteId || quoteId}
+          aiNotes={generatedQuote?.notes}
+          hasQuote={!!generatedQuote}
+          isGenerating={isGenerating}
+          onGenerateQuote={handleGenerateQuote}
+          onUpdateWithAI={handleUpdateWithAI}
+          disabled={!customerName}
         />
-      </div>
+
+        {/* 3. CUSTOMER INFO */}
+        <LeadForm
+          customerName={customerName}
+          customerEmail={customerEmail}
+          customerPhone={customerPhone}
+          customerAddress={customerAddress}
+          jobDescription={description}
+          isDescriptionReadOnly={true}
+          companyId={companyId}
+          onCustomerNameChange={setCustomerName}
+          onCustomerEmailChange={setCustomerEmail}
+          onCustomerPhoneChange={setCustomerPhone}
+          onCustomerAddressChange={setCustomerAddress}
+          onJobDescriptionChange={setDescription}
+          quoteId={savedQuoteId || quoteId}
+          origin={origin}
+          hasQuote={!!generatedQuote}
+          onAddressRecalculate={recalculateQuoteForAddress}
+        />
+
+        {/* Save Quote button - only when quote not saved yet */}
+        {generatedQuote && !savedQuoteId && !quoteId && (
+          <Button
+            onClick={handleSaveQuote}
+            disabled={isGenerating}
+            className="w-full h-10 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+          >
+            <Save className="h-4 w-4 mr-1.5" />
+            Save Quote
+          </Button>
+        )}
+
+        {/* Missing contact info hint */}
+        {generatedQuote && (savedQuoteId || quoteId) && !customerEmail && !customerPhone && (
+          <p className="text-xs text-slate-500 text-center">
+            Add email or phone to send quote
+          </p>
+        )}
+
+        {/* 4. AUDIT TRAIL - Always show when quote exists */}
+        {(savedQuoteId || quoteId) && (
+          <AuditTrail quoteId={savedQuoteId || quoteId!} entries={auditLogs} />
+        )}
+      </main>
+
+      {/* Archive Dialog */}
+      <ArchiveDialog
+        open={archiveDialogOpen}
+        onOpenChange={setArchiveDialogOpen}
+        onArchive={handleArchive}
+      />
     </div>
   )
 }
