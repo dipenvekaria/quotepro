@@ -367,12 +367,12 @@ export function TeamCalendar({
 
   // Handle external event drop (from sidebar)
   const handleExternalDrop = async (info: any) => {
-    const { event, draggedEl } = info
-    const data = JSON.parse(draggedEl.getAttribute('data-event') || '{}')
+    const { event } = info
+    const extendedProps = event.extendedProps
     const newStart = event.start
 
     try {
-      if (data.extendedProps.type === 'quote') {
+      if (extendedProps.type === 'quote') {
         // Schedule the job
         const { error } = await supabase
           .from('quotes')
@@ -380,11 +380,11 @@ export function TeamCalendar({
             scheduled_at: newStart.toISOString(),
             status: 'scheduled'
           })
-          .eq('id', data.extendedProps.id)
+          .eq('id', extendedProps.id)
 
         if (error) throw error
         toast.success('Job scheduled!')
-      } else if (data.extendedProps.type === 'lead') {
+      } else if (extendedProps.type === 'lead') {
         // Schedule the visit
         const { error } = await supabase
           .from('leads')
@@ -392,19 +392,19 @@ export function TeamCalendar({
             scheduled_visit_at: newStart.toISOString(),
             status: 'contacted'
           })
-          .eq('id', data.extendedProps.id)
+          .eq('id', extendedProps.id)
 
         if (error) throw error
         toast.success('Visit scheduled!')
       }
 
-      // Remove from external events list
-      draggedEl.remove()
+      // Remove the temporary event (will be replaced by real data on refresh)
+      event.remove()
       refreshQuotes()
     } catch (error) {
       console.error('Error scheduling:', error)
       toast.error('Failed to schedule')
-      info.revert()
+      event.remove()
     }
   }
 
@@ -665,7 +665,7 @@ export function TeamCalendar({
             editable={true}
             droppable={true}
             eventDrop={handleEventDrop}
-            drop={handleExternalDrop}
+            eventReceive={handleExternalDrop}
             eventClick={handleEventClick}
             datesSet={handleDatesSet}
             slotMinTime="06:00:00"

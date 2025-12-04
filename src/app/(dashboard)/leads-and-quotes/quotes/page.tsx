@@ -14,13 +14,16 @@ import {
   EmptyQueue,
 } from '@/components/queues'
 import { Button } from '@/components/ui/button'
-import { FileText, Plus } from 'lucide-react'
+import { FileText, Plus, Archive } from 'lucide-react'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
+import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
 export default function QuotesPage() {
   const { quotes: allData, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
+  const [selectedQuoteId, setSelectedQuoteId] = useState<string | null>(null)
   const supabase = createClient()
 
   // DISABLED: Refresh on mount (causing RLS errors)
@@ -28,9 +31,13 @@ export default function QuotesPage() {
   //   refreshQuotes()
   // }, [refreshQuotes])
 
-  // Filter for actual quotes (from quotes table)
+  // Filter for actual quotes (from quotes table), exclude archived
   const quotes = useMemo(() => {
-    return allData.filter(item => item._type === 'quote')
+    return allData.filter(item => 
+      item._type === 'quote' && 
+      item.status !== 'archived' && 
+      !item.archived_at
+    )
   }, [allData])
 
   // Filter for leads (for tab count)
@@ -83,6 +90,45 @@ export default function QuotesPage() {
       expired: 'bg-orange-100 text-orange-800'
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
+  }
+
+  const handleArchive = async (reason: string) => {
+    if (!selectedQuoteId) return
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      // Update quote status to archived
+      const { error: updateError } = await supabase
+        .from('quotes')
+        .update({ 
+          status: 'archived',
+          archived_at: new Date().toISOString(),
+          archived_reason: reason
+        })
+        .eq('id', selectedQuoteId)
+
+      if (updateError) throw updateError
+
+      // Log to activity_log
+      if (user) {
+        const quote = quotes.find(q => q.id === selectedQuoteId)
+        await supabase.from('activity_log').insert({
+          company_id: quote?.company_id,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: selectedQuoteId,
+          action: 'archived',
+          description: `Quote archived: ${reason}`,
+        })
+      }
+
+      toast.success('Quote archived')
+      refreshQuotes()
+    } catch (err) {
+      console.error('Archive error:', err)
+      toast.error('Failed to archive quote')
+    }
   }
 
   return (
@@ -143,28 +189,43 @@ export default function QuotesPage() {
           <div className="space-y-2 md:space-y-3">
             {filteredQuotes.map(quote => (
               <div key={quote.id}>
-                {/* Mobile: Compact Card */}
-                <CompactQueueCard
-                  className="md:hidden"
-                  data={{
-                    id: quote.id,
-                    customer_name: quote.customer?.name || 'Unknown',
-                    customer_phone: quote.customer?.phone,
-                    job_name: quote.job_name || quote.description,
-                    total: quote.total || 0,
-                    created_at: quote.created_at,
-                  }}
-                  badge={
-                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${getStatusColor(quote.status)}`}>
-                      {getStatusLabel(quote.status)}
-                    </span>
-                  }
-                  showPhone={true}
-                  onClick={() => {
-                    sessionStorage.setItem('showAICard', 'true')
-                    router.push(`/quotes/new?id=${quote.id}`)
-                  }}
-                />
+                {/* Mobile: Compact Card with archive action */}
+                <div className="md:hidden">
+                  <CompactQueueCard
+                    data={{
+                      id: quote.id,
+                      customer_name: quote.customer?.name || 'Unknown',
+                      customer_phone: quote.customer?.phone,
+                      job_name: quote.job_name || quote.description,
+                      total: quote.total || 0,
+                      created_at: quote.created_at,
+                    }}
+                    badge={
+                      <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${getStatusColor(quote.status)}`}>
+                        {getStatusLabel(quote.status)}
+                      </span>
+                    }
+                    showPhone={true}
+                    onClick={() => {
+                      sessionStorage.setItem('showAICard', 'true')
+                      router.push(`/quotes/new?id=${quote.id}`)
+                    }}
+                  />
+                  {/* Mobile Archive Button */}
+                  <div className="flex justify-end -mt-2 mb-2 px-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedQuoteId(quote.id)
+                        setArchiveDialogOpen(true)
+                      }}
+                      className="text-xs text-gray-500 hover:text-red-600 flex items-center gap-1 py-1"
+                    >
+                      <Archive className="w-3 h-3" />
+                      Archive
+                    </button>
+                  </div>
+                </div>
 
                 {/* Desktop: Full Card */}
                 <QueueCard
@@ -185,6 +246,19 @@ export default function QuotesPage() {
                   }
                   actions={
                     <div className="flex gap-2">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="gap-2 text-gray-600 hover:text-red-600 hover:border-red-300"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setSelectedQuoteId(quote.id)
+                          setArchiveDialogOpen(true)
+                        }}
+                      >
+                        <Archive className="w-5 h-5" />
+                        Archive
+                      </Button>
                       <Button
                         size="lg"
                         className="gap-2"
@@ -212,6 +286,15 @@ export default function QuotesPage() {
           </div>
         )}
       </div>
+
+      {/* Archive Dialog */}
+      <ArchiveDialog
+        open={archiveDialogOpen}
+        onOpenChange={setArchiveDialogOpen}
+        onConfirm={handleArchive}
+        itemType="quote"
+      />
     </div>
   )
 }
+
