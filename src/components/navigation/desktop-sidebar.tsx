@@ -35,12 +35,14 @@ interface DesktopSidebarProps {
   counts?: {
     leads: number
     quotes: number
+    toBeScheduled: number
   }
 }
 
 export function DesktopSidebar({ counts = {
   leads: 0,
-  quotes: 0
+  quotes: 0,
+  toBeScheduled: 0
 } }: DesktopSidebarProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -107,7 +109,8 @@ export function DesktopSidebar({ counts = {
     {
       label: 'Calendar',
       href: '/calendar',
-      icon: Calendar
+      icon: Calendar,
+      count: counts.toBeScheduled
     },
     {
       label: 'Work',

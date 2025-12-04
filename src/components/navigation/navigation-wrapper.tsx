@@ -56,21 +56,28 @@ export function NavigationWrapper({ children }: NavigationWrapperProps) {
     }
 
     return {
-      // Leads: items from leads table with lead-like statuses
+      // Leads: items from leads table with lead-like statuses (exclude archived)
       leads: quotes.filter(q => {
         const isFromLeadsTable = q._type === 'lead' || !q._type
-        const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(q.status)
-        return isFromLeadsTable && isLeadStatus
+        const isLeadStatus = ['new', 'contacted', 'qualified', 'quoted', 'quote_sent'].includes(q.status)
+        const isNotArchived = q.status !== 'archived' && !q.archived_at
+        return isFromLeadsTable && isLeadStatus && isNotArchived
       }).length,
 
-      // Quotes: items from quotes table
-      quotes: quotes.filter(q => q._type === 'quote').length,
+      // Quotes: items from quotes table (exclude archived)
+      quotes: quotes.filter(q => 
+        q._type === 'quote' && 
+        q.status !== 'archived' && 
+        !q.archived_at
+      ).length,
 
-      // To be Scheduled: accepted/signed but not scheduled
+      // To be Scheduled: accepted/signed quotes not yet scheduled
       toBeScheduled: quotes.filter(q => 
-        (q.accepted_at || q.signed_at) && 
+        q._type === 'quote' &&
+        (q.accepted_at || q.signed_at || q.status === 'accepted' || q.status === 'signed') && 
         !q.scheduled_at &&
-        !q.completed_at
+        !q.completed_at &&
+        q.status !== 'archived'
       ).length,
 
       // Scheduled: scheduled but not completed

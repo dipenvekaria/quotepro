@@ -31,21 +31,21 @@ export default function LeadsQueuePage() {
   //   refreshQuotes()
   // }, [refreshQuotes])
 
-  // Filter leads (only items from leads table with lead-like statuses)
+  // Filter leads (only items from leads table with lead-like statuses, exclude archived)
   const leads = useMemo(() => {
     return allLeads.filter(l => {
       // Only show items from the leads table (not quotes table)
       const isFromLeadsTable = l._type === 'lead' || !l._type
-      const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(l.status)
-      return isFromLeadsTable && isLeadStatus
+      const isLeadStatus = ['new', 'contacted', 'qualified', 'quoted', 'quote_sent'].includes(l.status)
+      const isNotArchived = l.status !== 'archived' && !l.archived_at
+      return isFromLeadsTable && isLeadStatus && isNotArchived
     })
   }, [allLeads])
 
-  // Calculate quotes count (from quotes table)
+  // Calculate quotes count (from quotes table, exclude archived)
   const quotes = useMemo(() => {
     return allLeads.filter(l => {
-      // Count items from quotes table
-      return l._type === 'quote'
+      return l._type === 'quote' && l.status !== 'archived' && !l.archived_at
     })
   }, [allLeads])
 

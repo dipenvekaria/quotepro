@@ -309,7 +309,8 @@ export function TeamCalendar({
       .filter(item => {
         // Quotes that are accepted/signed but not scheduled
         if (item._type === 'quote') {
-          return (item.status === 'accepted' || item.status === 'signed') && !item.scheduled_at
+          const isAccepted = item.status === 'accepted' || item.status === 'signed' || item.accepted_at || item.signed_at
+          return isAccepted && !item.scheduled_at
         }
         // Leads that need visit scheduling
         if (item._type === 'lead') {
@@ -371,17 +372,21 @@ export function TeamCalendar({
     const extendedProps = event.extendedProps
     const newStart = event.start
 
+    console.log('Scheduling event:', { extendedProps, newStart })
+
     try {
       if (extendedProps.type === 'quote') {
         // Schedule the job
-        const { error } = await supabase
+        const { error, data } = await supabase
           .from('quotes')
           .update({ 
             scheduled_at: newStart.toISOString(),
             status: 'scheduled'
           })
           .eq('id', extendedProps.id)
+          .select()
 
+        console.log('Schedule result:', { error, data, id: extendedProps.id })
         if (error) throw error
         toast.success('Job scheduled!')
       } else if (extendedProps.type === 'lead') {
