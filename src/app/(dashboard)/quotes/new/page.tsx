@@ -253,19 +253,18 @@ export default function NewQuotePage() {
         .from('activity_log')
         .select(`
           *,
-          users!activity_log_user_id_fkey (
+          users (
             id,
-            role
-          ),
-          profiles!activity_log_user_id_fkey (
-            full_name,
-            email
+            role,
+            profile
           )
         `)
         .in('entity_id', entityIds)
         .order('created_at', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        console.error('Activity log error:', error)
+      }
       setAuditLogs(data || [])
     } catch (error) {
       console.error('Error loading activity logs:', error)
@@ -368,7 +367,7 @@ export default function NewQuotePage() {
   }
 
   // Generate quote with AI
-  const handleGenerateQuote = async (prompt: string) => {
+  const handleGenerateQuote = async () => {
     if (!customerName.trim()) {
       toast.error('Please enter customer name first')
       return
@@ -380,7 +379,7 @@ export default function NewQuotePage() {
     try {
       const data = await generateQuoteMutation.mutateAsync({
         company_id: companyId,
-        description: prompt,
+        description: description || 'General quote request',
         customer_address: customerAddress || undefined,
         existing_items: generatedQuote?.line_items,
       })
@@ -879,18 +878,19 @@ export default function NewQuotePage() {
 
   // Handle items change
   const handleItemsChange = (items: QuoteItem[]) => {
-    if (!generatedQuote) return
-
     setHasUnsavedChanges(true)
     const subtotal = items.reduce((sum, item) => sum + item.total, 0)
-    const taxRate = generatedQuote.tax_rate || 0
+    const taxRate = generatedQuote?.tax_rate || 0
     const total = subtotal + (subtotal * (taxRate / 100))
 
     setGeneratedQuote({
-      ...generatedQuote,
       line_items: items,
+      options: generatedQuote?.options || [],
       subtotal,
+      tax_rate: taxRate,
+      tax_amount: subtotal * (taxRate / 100),
       total,
+      notes: generatedQuote?.notes,
     })
   }
 
@@ -955,24 +955,22 @@ export default function NewQuotePage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6 space-y-4">
-        {/* 1. QUOTE ITEMS - Most important when quote exists */}
-        {generatedQuote && (
-          <ItemsTable
-            items={generatedQuote.line_items}
-            subtotal={generatedQuote.subtotal}
-            taxRate={generatedQuote.tax_rate}
-            total={generatedQuote.total}
-            onItemsChange={handleItemsChange}
-            onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
-            companyId={companyId}
-          />
-        )}
+        {/* 1. QUOTE ITEMS - Always show (empty state has Add Item button) */}
+        <ItemsTable
+          items={generatedQuote?.line_items || []}
+          subtotal={generatedQuote?.subtotal || 0}
+          taxRate={generatedQuote?.tax_rate || 0}
+          total={generatedQuote?.total || 0}
+          onItemsChange={handleItemsChange}
+          onSaveItems={savedQuoteId || quoteId ? saveQuoteToDatabase : undefined}
+          companyId={companyId}
+        />
 
-        {/* 2. AI ASSISTANT - For generating/updating quote */}
+        {/* 2. AI GENERATE - Show generate button when no items, update button when has items */}
         <AIAssistant
           quoteId={savedQuoteId || quoteId}
           aiNotes={generatedQuote?.notes}
-          hasQuote={!!generatedQuote}
+          hasQuote={!!generatedQuote && generatedQuote.line_items.length > 0}
           isGenerating={isGenerating}
           onGenerateQuote={handleGenerateQuote}
           onUpdateWithAI={handleUpdateWithAI}

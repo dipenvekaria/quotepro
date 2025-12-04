@@ -198,6 +198,15 @@ export function ItemsTable({
       </div>
 
       <div className="p-4 space-y-3">
+        {/* Empty state */}
+        {items.length === 0 && !isAddingItem && (
+          <div className="text-center py-8 text-gray-500">
+            <Package className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+            <p className="text-sm font-medium">No items yet</p>
+            <p className="text-xs mt-1">Click "Add Item" above or use AI to generate</p>
+          </div>
+        )}
+
         {/* Items list */}
         <div className="space-y-2">
           {items.map((item, index) => (

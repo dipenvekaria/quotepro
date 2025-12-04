@@ -69,7 +69,7 @@ export function AIAssistant({
             ) : (
               <>
                 <Sparkles className="h-5 w-5 mr-2" />
-                Generate Quote with AI
+                Generate Initial Quote from Job Description
               </>
             )}
           </Button>
