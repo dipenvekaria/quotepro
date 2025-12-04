@@ -1,5 +1,5 @@
 """
-Lead repository for managing leads_new table
+Lead repository for managing leads table
 """
 from .base import BaseRepository
 from supabase import Client
@@ -7,10 +7,10 @@ from typing import List, Dict, Any
 
 
 class LeadRepository(BaseRepository):
-    """Repository for leads_new table"""
+    """Repository for leads table"""
     
     def __init__(self, db: Client):
-        super().__init__(db, "leads_new")
+        super().__init__(db, "leads")
     
     def find_by_status(
         self,

@@ -16,7 +16,6 @@ import {
 import { QuoteStatusBadge } from '@/components/quote-status-badge'
 import { Button } from '@/components/ui/button'
 import { Calendar, FileText, Plus, Phone } from 'lucide-react'
-import { ScheduleVisitDialog } from '@/components/schedule-visit-dialog'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 
@@ -24,8 +23,6 @@ export default function LeadsQueuePage() {
   const { quotes: allLeads, refreshQuotes } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
-  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
-  const [selectedLead, setSelectedLead] = useState<{ id: string; customerName: string } | null>(null)
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [leadToArchive, setLeadToArchive] = useState<string | null>(null)
 
@@ -172,9 +169,9 @@ export default function LeadsQueuePage() {
     }
   }
 
-  const handleScheduleVisit = (leadId: string, customerName: string) => {
-    setSelectedLead({ id: leadId, customerName })
-    setScheduleDialogOpen(true)
+  const handleScheduleVisit = () => {
+    // Navigate to calendar view to see team availability
+    router.push('/work/calendar')
   }
 
   const handleArchiveLead = async (leadId: string, reason: string) => {
@@ -362,7 +359,7 @@ export default function LeadsQueuePage() {
                         className="gap-2"
                         onClick={(e) => {
                           e.stopPropagation()
-                          handleScheduleVisit(lead.id, lead.customer_name)
+                          handleScheduleVisit()
                         }}
                       >
                         <Calendar className="w-5 h-5" />
@@ -391,20 +388,6 @@ export default function LeadsQueuePage() {
           </div>
         )}
       </div>
-
-      {/* Schedule Visit Dialog */}
-      {selectedLead && (
-        <ScheduleVisitDialog
-          leadId={selectedLead.id}
-          customerName={selectedLead.customerName}
-          open={scheduleDialogOpen}
-          onOpenChange={setScheduleDialogOpen}
-          onScheduled={() => {
-            refreshQuotes()
-            setSelectedLead(null)
-          }}
-        />
-      )}
 
       {/* Archive Dialog */}
       <ArchiveDialog

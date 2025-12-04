@@ -1,6 +1,7 @@
 // @ts-nocheck - Reuse existing lead/quote editor
 'use client'
 
+import { useEffect } from 'react'
 import NewQuotePage from '@/app/(dashboard)/leads/new/page'
 
 /**
@@ -23,10 +24,13 @@ import NewQuotePage from '@/app/(dashboard)/leads/new/page'
  * - SignNow integration
  */
 export default function QuoteEditorPage() {
-  // Set the flag synchronously so child component can read it immediately
-  if (typeof window !== 'undefined') {
+  // Set the flag in useEffect to avoid hydration mismatch
+  useEffect(() => {
     sessionStorage.setItem('isQuoteMode', 'true')
-  }
+    return () => {
+      sessionStorage.removeItem('isQuoteMode')
+    }
+  }, [])
   
   return <NewQuotePage />
 }

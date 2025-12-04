@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ScheduleJobModal } from '@/components/schedule-job-modal'
 import { WorkJobCard } from '@/components/features/work/WorkJobCard'
 import { useWorkJobs } from '@/hooks/useWorkJobs'
 import { Calendar, Clock } from 'lucide-react'
@@ -15,13 +14,10 @@ export default function WorkPage() {
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab')
   const [activeTab, setActiveTab] = useState(tabFromUrl || 'to-schedule')
-  const [scheduleModalOpen, setScheduleModalOpen] = useState(false)
-  const [selectedQuote, setSelectedQuote] = useState<any>(null)
   
   const { 
     toBeScheduled, 
     scheduled, 
-    handleSchedule, 
     handleCompleteJob,
     completingQuoteId 
   } = useWorkJobs()
@@ -33,9 +29,9 @@ export default function WorkPage() {
     }
   }, [tabFromUrl])
 
-  const openScheduleModal = (quote: any) => {
-    setSelectedQuote(quote)
-    setScheduleModalOpen(true)
+  // Navigate to calendar view for scheduling
+  const handleScheduleClick = () => {
+    router.push('/work/calendar')
   }
 
   return (
@@ -100,7 +96,7 @@ export default function WorkPage() {
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">
                     📅 <strong>{toBeScheduled.length} job{toBeScheduled.length !== 1 ? 's' : ''}</strong> ready to schedule. 
-                    Click Schedule to pick a date and time.
+                    Open the calendar to see team availability and drag jobs to schedule.
                   </p>
                 </div>
                 {toBeScheduled.map(quote => (
@@ -108,7 +104,7 @@ export default function WorkPage() {
                     key={quote.id}
                     quote={quote}
                     variant="to-schedule"
-                    onSchedule={openScheduleModal}
+                    onSchedule={handleScheduleClick}
                   />
                 ))}
               </>
@@ -148,16 +144,6 @@ export default function WorkPage() {
             )}
           </TabsContent>
         </Tabs>
-
-        {/* Schedule Modal */}
-        {selectedQuote && (
-          <ScheduleJobModal
-            open={scheduleModalOpen}
-            onOpenChange={setScheduleModalOpen}
-            quote={selectedQuote}
-            onSchedule={handleSchedule}
-          />
-        )}
       </main>
     </div>
   )

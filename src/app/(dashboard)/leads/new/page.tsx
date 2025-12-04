@@ -32,11 +32,8 @@ export default function NewQuotePage() {
   const supabase = createClient()
   const { refreshQuotes } = useDashboard()
 
-  // Check if creating quote from lead (showAICard flag set)
-  const [isCreatingQuote, setIsCreatingQuote] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return sessionStorage.getItem('showAICard') === 'true'
-  })
+  // Check if creating quote from lead (showAICard flag set) - start false to match SSR
+  const [isCreatingQuote, setIsCreatingQuote] = useState(false)
 
   // Customer state
   const [customerName, setCustomerName] = useState('')
@@ -706,16 +703,11 @@ export default function NewQuotePage() {
     toast.success('Quote saved')
   }
 
-  // Handle send quote
+  // Handle send quote - opens customer view in new window
   const handleSendQuote = async () => {
     const currentQuoteId = savedQuoteId || quoteId
     if (!currentQuoteId) {
       toast.error('Please save the quote first')
-      return
-    }
-
-    if (!customerEmail && !customerPhone) {
-      toast.error('Please add customer email or phone number to send quote')
       return
     }
 
@@ -725,14 +717,14 @@ export default function NewQuotePage() {
       const { error: updateError } = await supabase
         .from('quotes')
         .update({ 
-          followup_status: 'sent',
+          status: 'sent',
           sent_at: new Date().toISOString()
         })
         .eq('id', currentQuoteId)
 
       if (updateError) throw updateError
 
-      // Log to activity_log (new schema)
+      // Log to activity_log
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         await supabase.from('activity_log').insert({
@@ -741,38 +733,21 @@ export default function NewQuotePage() {
           entity_type: 'quote',
           entity_id: currentQuoteId,
           action: 'sent',
-          description: 'Quote sent to customer',
+          description: 'Quote opened for customer signing',
           metadata: {
-            sent_to: customerEmail || customerPhone,
+            customer_name: customerName,
           },
         })
       }
 
-      // Copy public link to clipboard
+      // Open customer quote view in new window
       const publicLink = `${origin}/q/${currentQuoteId}`
-      await navigator.clipboard.writeText(publicLink)
-
-      // Send email if email provided (optional, existing functionality)
-      if (customerEmail) {
-        const response = await fetch('/api/send-quote', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            quote_id: currentQuoteId,
-            recipient_email: customerEmail,
-            company_logo: companyLogo,
-          }),
-        })
-
-        if (!response.ok) {
-          console.error('Email send failed, but quote marked as sent')
-        }
-      }
+      window.open(publicLink, '_blank', 'noopener,noreferrer')
 
       // Reload audit logs
       await loadAuditLogs(currentQuoteId)
 
-      toast.success('Quote sent! Link copied to clipboard.')
+      toast.success('Quote opened for customer. Once signed, it will move to pending queue.')
     } catch (err: any) {
       console.error('Send error:', err)
       toast.error(err.message || 'Failed to send quote')
@@ -1076,8 +1051,8 @@ export default function NewQuotePage() {
                 </Button>
               )}
               
-              {/* Send button */}
-              {generatedQuote && (savedQuoteId || quoteId) && (customerEmail || customerPhone) && (
+              {/* Send button - opens customer view in new window */}
+              {generatedQuote && (savedQuoteId || quoteId) && (
                 <Button
                   onClick={handleSendQuote}
                   disabled={isSending}

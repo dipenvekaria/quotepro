@@ -1,5 +1,5 @@
 """
-Customer repository for managing customers_new table
+Customer repository for managing customers table
 """
 from .base import BaseRepository
 from supabase import Client
@@ -7,10 +7,10 @@ from typing import List, Dict, Any, Optional
 
 
 class CustomerRepository(BaseRepository):
-    """Repository for customers_new table"""
+    """Repository for customers table"""
     
     def __init__(self, db: Client):
-        super().__init__(db, "customers_new")
+        super().__init__(db, "customers")
     
     def find_by_email(self, email: str, company_id: str) -> Optional[Dict[str, Any]]:
         """

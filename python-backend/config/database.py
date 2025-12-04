@@ -40,7 +40,7 @@ def get_db_session() -> Generator[Client, None, None]:
     Usage:
         @app.get("/endpoint")
         async def endpoint(db: Client = Depends(get_db_session)):
-            result = db.table("quotes_new").select("*").execute()
+            result = db.table("quotes").select("*").execute()
     
     Yields:
         Supabase client for database queries

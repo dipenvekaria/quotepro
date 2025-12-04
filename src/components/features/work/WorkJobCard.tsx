@@ -10,7 +10,7 @@ import Link from 'next/link'
 interface WorkJobCardProps {
   quote: any
   variant: 'to-schedule' | 'scheduled' | 'completed' | 'invoiced'
-  onSchedule?: (quote: any) => void
+  onSchedule?: () => void
   onComplete?: (quoteId: string) => void
   isCompleting?: boolean
 }
@@ -89,7 +89,7 @@ export function WorkJobCard({
       {/* Action Buttons */}
       {showScheduleButton && (
         <Button
-          onClick={() => onSchedule(quote)}
+          onClick={() => onSchedule()}
           className="bg-[#2563eb] hover:bg-[#1d4ed8] shrink-0"
         >
           <Calendar className="h-4 w-4 mr-2" />

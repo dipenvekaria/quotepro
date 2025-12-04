@@ -1,5 +1,5 @@
 """
-Quote repository for managing quotes_new table
+Quote repository for managing quotes table
 """
 from .base import BaseRepository
 from supabase import Client
@@ -7,10 +7,10 @@ from typing import List, Dict, Any, Optional
 
 
 class QuoteRepository(BaseRepository):
-    """Repository for quotes_new table"""
+    """Repository for quotes table"""
     
     def __init__(self, db: Client):
-        super().__init__(db, "quotes_new")
+        super().__init__(db, "quotes")
     
     def find_with_details(self, quote_id: str, company_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -105,7 +105,7 @@ class QuoteRepository(BaseRepository):
             item["quote_id"] = quote["id"]
         
         # Insert all items
-        self.db.table("quote_items_new").insert(items).execute()
+        self.db.table("quote_items").insert(items).execute()
         
         # Return quote with items using view
         return self.find_with_details(quote["id"], quote_data["company_id"])

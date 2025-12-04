@@ -25,13 +25,13 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
       *,
       quote_items (*),
       companies (*),
-      customer:customers(*),
-      customer_address:customer_addresses!customer_addresses_customer_id_fkey(*)
+      customers (*)
     `)
     .eq('id', id)
     .single()
 
   if (error || !quote) {
+    console.error('Quote fetch error:', error)
     notFound()
   }
 
@@ -40,15 +40,23 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   // @ts-ignore - Supabase typing
   const items = quote.quote_items || []
   // @ts-ignore - Supabase typing
-  const customer = quote.customer
-  // @ts-ignore - Supabase typing  
-  const primaryAddress = quote.customer_address?.find((a: any) => a.is_primary) || quote.customer_address?.[0]
+  const customer = quote.customers
+
+  // Get customer address if customer exists
+  let primaryAddress = null
+  if (customer?.id) {
+    const { data: addresses } = await supabase
+      .from('customer_addresses')
+      .select('*')
+      .eq('customer_id', customer.id)
+      .order('is_primary', { ascending: false })
+      .limit(1)
+    primaryAddress = addresses?.[0]
+  }
 
   // Track that the quote was viewed
-  // @ts-ignore
   await supabase
     .from('quotes')
-    // @ts-ignore
     .update({ viewed_at: new Date().toISOString() })
     .eq('id', id)
 
