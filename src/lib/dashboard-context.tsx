@@ -51,7 +51,8 @@ export function DashboardProvider({
         .select(`
           *,
           customer:customers(*),
-          lead:leads(id)
+          lead:leads(id),
+          quote_items(id)
         `)
         .eq('company_id', company.id)
         .order('created_at', { ascending: false })

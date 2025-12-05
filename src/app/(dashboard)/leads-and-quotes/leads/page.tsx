@@ -31,21 +31,35 @@ export default function LeadsQueuePage() {
   //   refreshQuotes()
   // }, [refreshQuotes])
 
-  // Filter leads (only items from leads table with lead-like statuses, exclude archived)
+  // Filter leads: items from leads table OR quotes with 0 items (not yet a quote)
+  // Exclude archived
   const leads = useMemo(() => {
     return allLeads.filter(l => {
-      // Only show items from the leads table (not quotes table)
-      const isFromLeadsTable = l._type === 'lead' || !l._type
-      const isLeadStatus = ['new', 'contacted', 'qualified', 'quoted', 'quote_sent'].includes(l.status)
-      const isNotArchived = l.status !== 'archived' && !l.archived_at
-      return isFromLeadsTable && isLeadStatus && isNotArchived
+      // Skip archived items
+      if (l.status === 'archived' || l.archived_at) return false
+      
+      // From leads table - only pre-quote statuses (not 'quoted')
+      if (l._type === 'lead' || !l._type) {
+        return ['new', 'contacted', 'qualified'].includes(l.status)
+      }
+      
+      // From quotes table - only show if 0 items (still a lead, not a quote yet)
+      if (l._type === 'quote') {
+        const itemCount = l.quote_items?.length || 0
+        return itemCount === 0
+      }
+      
+      return false
     })
   }, [allLeads])
 
-  // Calculate quotes count (from quotes table, exclude archived)
+  // Calculate quotes count: quotes with 1+ items, exclude archived
   const quotes = useMemo(() => {
     return allLeads.filter(l => {
-      return l._type === 'quote' && l.status !== 'archived' && !l.archived_at
+      if (l.status === 'archived' || l.archived_at) return false
+      if (l._type !== 'quote') return false
+      const itemCount = l.quote_items?.length || 0
+      return itemCount > 0
     })
   }, [allLeads])
 

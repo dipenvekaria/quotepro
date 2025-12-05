@@ -31,21 +31,33 @@ export default function QuotesPage() {
   //   refreshQuotes()
   // }, [refreshQuotes])
 
-  // Filter for actual quotes (from quotes table), exclude archived
+  // Filter for actual quotes: quotes with 1+ items, exclude archived
   const quotes = useMemo(() => {
-    return allData.filter(item => 
-      item._type === 'quote' && 
-      item.status !== 'archived' && 
-      !item.archived_at
-    )
+    return allData.filter(item => {
+      if (item.status === 'archived' || item.archived_at) return false
+      if (item._type !== 'quote') return false
+      const itemCount = item.quote_items?.length || 0
+      return itemCount > 0
+    })
   }, [allData])
 
-  // Filter for leads (for tab count)
+  // Filter for leads: leads table + quotes with 0 items, exclude archived
   const leads = useMemo(() => {
     return allData.filter(item => {
-      const isFromLeadsTable = item._type === 'lead' || !item._type
-      const isLeadStatus = ['new', 'contacted', 'qualified', 'quote_sent'].includes(item.status)
-      return isFromLeadsTable && isLeadStatus
+      if (item.status === 'archived' || item.archived_at) return false
+      
+      // From leads table - only pre-quote statuses
+      if (item._type === 'lead' || !item._type) {
+        return ['new', 'contacted', 'qualified'].includes(item.status)
+      }
+      
+      // From quotes table - only if 0 items
+      if (item._type === 'quote') {
+        const itemCount = item.quote_items?.length || 0
+        return itemCount === 0
+      }
+      
+      return false
     })
   }, [allData])
 

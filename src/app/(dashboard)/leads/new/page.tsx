@@ -152,34 +152,54 @@ export default function LeadEditorPage() {
       } else {
         let newCustomerId: string
 
-        const { data: customer, error: customerError } = await supabase
-          .from('customers')
-          .upsert({
-            company_id: companyId,
-            name: customerName.trim(),
-            email: customerEmail.trim() || null,
-            phone: customerPhone.trim() || null,
-          }, {
-            onConflict: 'company_id,phone',
-            ignoreDuplicates: false
-          })
-          .select()
-          .single()
-
-        if (customerError) {
-          const { data: existing } = await supabase
+        // First check if customer exists by phone or email
+        let existingCustomer = null
+        
+        if (customerPhone.trim()) {
+          const { data } = await supabase
             .from('customers')
             .select('id')
             .eq('company_id', companyId)
             .eq('phone', customerPhone.trim())
+            .maybeSingle()
+          existingCustomer = data
+        }
+        
+        if (!existingCustomer && customerEmail.trim()) {
+          const { data } = await supabase
+            .from('customers')
+            .select('id')
+            .eq('company_id', companyId)
+            .eq('email', customerEmail.trim())
+            .maybeSingle()
+          existingCustomer = data
+        }
+
+        if (existingCustomer) {
+          // Update existing customer
+          newCustomerId = existingCustomer.id
+          await supabase
+            .from('customers')
+            .update({
+              name: customerName.trim(),
+              email: customerEmail.trim() || null,
+              phone: customerPhone.trim() || null,
+            })
+            .eq('id', newCustomerId)
+        } else {
+          // Create new customer
+          const { data: customer, error: customerError } = await supabase
+            .from('customers')
+            .insert({
+              company_id: companyId,
+              name: customerName.trim(),
+              email: customerEmail.trim() || null,
+              phone: customerPhone.trim() || null,
+            })
+            .select()
             .single()
 
-          if (existing) {
-            newCustomerId = existing.id
-          } else {
-            throw customerError
-          }
-        } else {
+          if (customerError) throw customerError
           newCustomerId = customer.id
         }
 
@@ -193,6 +213,26 @@ export default function LeadEditorPage() {
             })
         }
 
+        // Use AI to classify job type from call notes
+        let jobType = ''
+        try {
+          const fetchPromise = fetch('http://localhost:8000/api/generate-job-name', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ description: callNotes.trim() }),
+          })
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout')), 3000)
+          )
+          const response = await Promise.race([fetchPromise, timeoutPromise]) as Response
+          if (response.ok) {
+            const data = await response.json()
+            jobType = data.job_name || ''
+          }
+        } catch (error) {
+          console.log('Job classification skipped:', error)
+        }
+
         const { data: newLead, error: leadError } = await supabase
           .from('leads')
           .insert({
@@ -203,6 +243,7 @@ export default function LeadEditorPage() {
             source: 'direct',
             urgency: 'medium',
             assigned_to: userId,
+            metadata: jobType ? { job_type: jobType } : null,
           })
           .select()
           .single()
@@ -242,7 +283,7 @@ export default function LeadEditorPage() {
   return (
     <div className="min-h-[100dvh] bg-gray-50">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -274,7 +315,7 @@ export default function LeadEditorPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6">
         <LeadForm
           customerName={customerName}
           customerEmail={customerEmail}

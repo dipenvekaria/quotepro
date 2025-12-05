@@ -48,13 +48,14 @@ export default async function DashboardLayout({
     console.error('Error fetching leads:', leadsError)
   }
 
-  // Fetch all quotes with customer data
+  // Fetch all quotes with customer data and item counts
   const { data: quotes, error: quotesError } = await supabase
     .from('quotes')
     .select(`
       *,
       customer:customers(*),
-      lead:leads(id)
+      lead:leads(id),
+      quote_items(id)
     `)
     .eq('company_id', company.id)
     .order('created_at', { ascending: false })

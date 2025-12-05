@@ -251,14 +251,7 @@ export default function NewQuotePage() {
       // Load all activity logs for both quote and lead
       const { data, error } = await supabase
         .from('activity_log')
-        .select(`
-          *,
-          users (
-            id,
-            role,
-            profile
-          )
-        `)
+        .select('*')
         .in('entity_id', entityIds)
         .order('created_at', { ascending: false })
       
@@ -537,17 +530,13 @@ export default function NewQuotePage() {
       // Log to audit trail
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: quote.id,
-          action_type: 'ai_generation',
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: quote.id,
+          action: 'ai_generation',
           description: `Quote generated with ${generatedQuote.line_items.length} items`,
-          changes_made: {
-            item_count: generatedQuote.line_items.length,
-            subtotal,
-            total,
-            tax_rate: taxRate,
-          },
-          created_by: user.id,
         })
       }
 
@@ -573,14 +562,13 @@ export default function NewQuotePage() {
     if (currentQuoteId) {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: currentQuoteId,
-          action_type: 'manual_edit',
-          description: `Quote manually updated`,
-          changes_made: {
-            timestamp: new Date().toISOString(),
-          },
-          created_by: user.id,
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: currentQuoteId,
+          action: 'updated',
+          description: 'Quote manually updated',
         })
       }
       await loadAuditLogs(currentQuoteId)
@@ -618,15 +606,13 @@ export default function NewQuotePage() {
       // Log to audit trail
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('quote_audit_log').insert({
-          quote_id: currentQuoteId,
-          action_type: 'quote_sent',
-          description: `Quote sent to customer`,
-          changes_made: {
-            followup_status: 'sent',
-            sent_at: new Date().toISOString(),
-          },
-          created_by: user.id,
+        await supabase.from('activity_log').insert({
+          company_id: companyId,
+          user_id: user.id,
+          entity_type: 'quote',
+          entity_id: currentQuoteId,
+          action: 'sent',
+          description: 'Quote sent to customer',
         })
       }
 

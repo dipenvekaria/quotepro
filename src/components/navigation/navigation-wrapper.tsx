@@ -56,20 +56,32 @@ export function NavigationWrapper({ children }: NavigationWrapperProps) {
     }
 
     return {
-      // Leads: items from leads table with lead-like statuses (exclude archived)
+      // Leads: items from leads table (pre-quote statuses) + quotes with 0 items
+      // Exclude archived
       leads: quotes.filter(q => {
-        const isFromLeadsTable = q._type === 'lead' || !q._type
-        const isLeadStatus = ['new', 'contacted', 'qualified', 'quoted', 'quote_sent'].includes(q.status)
-        const isNotArchived = q.status !== 'archived' && !q.archived_at
-        return isFromLeadsTable && isLeadStatus && isNotArchived
+        if (q.status === 'archived' || q.archived_at) return false
+        
+        // From leads table - only pre-quote statuses
+        if (q._type === 'lead' || !q._type) {
+          return ['new', 'contacted', 'qualified'].includes(q.status)
+        }
+        
+        // From quotes table - only if 0 items (still a lead)
+        if (q._type === 'quote') {
+          const itemCount = q.quote_items?.length || 0
+          return itemCount === 0
+        }
+        
+        return false
       }).length,
 
-      // Quotes: items from quotes table (exclude archived)
-      quotes: quotes.filter(q => 
-        q._type === 'quote' && 
-        q.status !== 'archived' && 
-        !q.archived_at
-      ).length,
+      // Quotes: quotes with 1+ items (exclude archived)
+      quotes: quotes.filter(q => {
+        if (q.status === 'archived' || q.archived_at) return false
+        if (q._type !== 'quote') return false
+        const itemCount = q.quote_items?.length || 0
+        return itemCount > 0
+      }).length,
 
       // To be Scheduled: accepted/signed quotes not yet scheduled
       toBeScheduled: quotes.filter(q => 
