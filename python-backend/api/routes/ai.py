@@ -21,6 +21,18 @@ from tax_rates import get_tax_rate_for_address
 router = APIRouter(prefix="/api", tags=["AI"])
 
 
+# Security: Validate company exists (prevents arbitrary company_id injection)
+def validate_company_id(company_id: str, db: Client) -> bool:
+    """Validate company_id exists in database"""
+    if not company_id:
+        return False
+    try:
+        result = db.table("companies").select("id").eq("id", company_id).single().execute()
+        return result.data is not None
+    except Exception:
+        return False
+
+
 # Request/Response Models
 class LineItem(BaseModel):
     name: str
@@ -136,9 +148,14 @@ async def generate_quote(
     
     ### Errors:
     - **400** - NO_PRICING_CATALOG: Set up catalog in Settings first
+    - **403** - Invalid company_id
     - **500** - AI generation failed (retry recommended)
     """
     try:
+        # Security: Validate company_id
+        if not validate_company_id(request.company_id, db):
+            raise HTTPException(status_code=403, detail="Invalid company_id")
+        
         # Initialize services
         quote_service = QuoteGeneratorService(gemini, db)
         catalog_repo = CatalogRepository(db)
@@ -209,6 +226,10 @@ async def update_quote_with_ai(
     Examples: "add labor charges", "remove permit fee"
     """
     try:
+        # Security: Validate company_id
+        if not validate_company_id(request.company_id, db):
+            raise HTTPException(status_code=403, detail="Invalid company_id")
+        
         # Initialize services
         quote_service = QuoteGeneratorService(gemini, db)
         
@@ -262,6 +283,10 @@ async def generate_job_name(
     Generate standardized job type from description using product catalog
     """
     try:
+        # Security: Validate company_id if provided
+        if request.company_id and not validate_company_id(request.company_id, db):
+            raise HTTPException(status_code=403, detail="Invalid company_id")
+        
         job_namer = JobNamerService(gemini, db_connection=db)
         job_type = job_namer.generate_job_name(
             description=request.description,
@@ -271,6 +296,8 @@ async def generate_job_name(
         
         return JobNameResponse(job_name=job_type)  # Returns job_type as job_name for compatibility
         
+    except HTTPException:
+        raise
     except Exception as e:
         print(f"❌ Error generating job type: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate job type: {str(e)}")
@@ -313,6 +340,10 @@ async def optimize_quote(
     - Provide competitive insights
     """
     try:
+        # Security: Validate company_id
+        if not validate_company_id(request.company_id, db):
+            raise HTTPException(status_code=403, detail="Invalid company_id")
+        
         # Initialize optimizer agent
         optimizer = get_quote_optimizer(gemini, db)
         
@@ -377,6 +408,10 @@ async def suggest_upsells(
     - Items that increase win rate
     """
     try:
+        # Security: Validate company_id
+        if not validate_company_id(request.company_id, db):
+            raise HTTPException(status_code=403, detail="Invalid company_id")
+        
         # Initialize upsell suggester agent
         suggester = get_upsell_suggester(gemini, db)
         

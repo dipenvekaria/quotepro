@@ -307,12 +307,13 @@ export function TeamCalendar({
   const unscheduledJobs = useMemo<UnscheduledJob[]>(() => {
     return quotes
       .filter(item => {
-        // Quotes that are accepted/signed but not scheduled
+        // Quotes that are accepted/signed but not yet scheduled
         if (item._type === 'quote') {
-          const isAccepted = item.status === 'accepted' || item.status === 'signed' || item.accepted_at || item.signed_at
+          // Must be accepted or signed status AND not have scheduled_at
+          const isAccepted = item.status === 'accepted' || item.status === 'signed'
           return isAccepted && !item.scheduled_at
         }
-        // Leads that need visit scheduling
+        // Leads that need visit scheduling (only new/contacted/qualified, not quoted)
         if (item._type === 'lead') {
           return !item.scheduled_visit_at && ['new', 'contacted', 'qualified'].includes(item.status)
         }

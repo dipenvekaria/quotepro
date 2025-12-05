@@ -33,10 +33,7 @@ export default function NewQuotePage() {
   const { refreshQuotes } = useDashboard()
 
   // Check if creating quote from lead (showAICard flag set)
-  const [isCreatingQuote, setIsCreatingQuote] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return sessionStorage.getItem('showAICard') === 'true'
-  })
+  const [isCreatingQuote, setIsCreatingQuote] = useState(false)
 
   // Customer state
   const [customerName, setCustomerName] = useState('')
@@ -122,7 +119,7 @@ export default function NewQuotePage() {
         .from('leads')
         .select('*')
         .eq('id', id)
-        .single()
+        .maybeSingle()
 
       console.log('Lead query result:', { lead, leadError })
 
@@ -585,11 +582,6 @@ export default function NewQuotePage() {
       return
     }
 
-    if (!customerEmail && !customerPhone) {
-      toast.error('Please add customer email or phone number to send quote')
-      return
-    }
-
     setIsSending(true)
     try {
       // Update quote status to sent and set sent_at timestamp
@@ -616,31 +608,10 @@ export default function NewQuotePage() {
         })
       }
 
-      // Copy public link to clipboard
-      const publicLink = `${origin}/q/${currentQuoteId}`
-      await navigator.clipboard.writeText(publicLink)
-
-      // Send email if email provided (optional, existing functionality)
-      if (customerEmail) {
-        const response = await fetch('/api/send-quote', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            quote_id: currentQuoteId,
-            recipient_email: customerEmail,
-            company_logo: companyLogo,
-          }),
-        })
-
-        if (!response.ok) {
-          console.error('Email send failed, but quote marked as sent')
-        }
-      }
-
-      // Reload audit logs
-      await loadAuditLogs(currentQuoteId)
-
-      toast.success('Quote sent! Link copied to clipboard.')
+      toast.success('Opening customer view...')
+      
+      // Open the public quote page that customer will see
+      window.open(`/q/${currentQuoteId}`, '_blank')
     } catch (err: any) {
       console.error('Send error:', err)
       toast.error(err.message || 'Failed to send quote')

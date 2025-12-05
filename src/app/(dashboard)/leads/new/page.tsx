@@ -213,16 +213,20 @@ export default function LeadEditorPage() {
             })
         }
 
-        // Use AI to classify job type from call notes
+        // Use AI to classify job type from call notes (uses catalog job types)
         let jobType = ''
         try {
-          const fetchPromise = fetch('http://localhost:8000/api/generate-job-name', {
+          const fetchPromise = fetch('/api/generate-job-name', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: callNotes.trim() }),
+            body: JSON.stringify({ 
+              description: callNotes.trim(),
+              company_id: companyId,
+              customer_name: customerName.trim(),
+            }),
           })
           const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 3000)
+            setTimeout(() => reject(new Error('Timeout')), 5000)
           )
           const response = await Promise.race([fetchPromise, timeoutPromise]) as Response
           if (response.ok) {

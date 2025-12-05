@@ -5,7 +5,7 @@ const PYTHON_BACKEND_URL = process.env.PYTHON_BACKEND_URL || 'http://localhost:8
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { description, customer_name } = body
+    const { description, customer_name, company_id } = body
 
     if (!description) {
       return NextResponse.json(
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         description,
         customer_name,
+        company_id,
       }),
     })
 

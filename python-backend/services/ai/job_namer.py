@@ -109,18 +109,17 @@ Description: {description}"""
             return []
         
         try:
-            cursor = self.db.cursor()
-            # Try new schema first (catalog_items)
-            cursor.execute("""
-                SELECT DISTINCT job_type 
-                FROM catalog_items 
-                WHERE company_id = %s 
-                  AND job_type IS NOT NULL 
-                  AND job_type != ''
-                ORDER BY job_type
-            """, (company_id,))
+            # Use Supabase client
+            response = self.db.table("catalog_items").select("category").eq("company_id", company_id).eq("is_active", True).execute()
             
-            return [row[0] for row in cursor.fetchall()]
+            if response.data:
+                # Get unique categories (job types)
+                categories = set()
+                for item in response.data:
+                    if item.get("category"):
+                        categories.add(item["category"])
+                return sorted(list(categories))
+            return []
         except Exception as e:
             print(f"Error fetching catalog job types: {e}")
             return []
