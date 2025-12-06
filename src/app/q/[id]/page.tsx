@@ -18,45 +18,52 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const { id } = await params
   const supabase = await createClient()
 
-  // Fetch quote with all details including customer
+  // Fetch quote first (without joins to avoid RLS issues)
   const { data: quote, error } = await supabase
-    .from('quotes')
-    .select(`
-      *,
-      quote_items (*),
-      companies (*),
-      customers (*)
-    `)
+    .from('work_items')
+    .select('*')
     .eq('id', id)
-    .single()
+    .single() as { data: any; error: any }
 
   if (error || !quote) {
-    console.error('Quote fetch error:', error)
+    console.error('Quote fetch error:', error, 'id:', id)
     notFound()
   }
 
-  // @ts-ignore - Supabase typing
-  const company = quote.companies
-  // @ts-ignore - Supabase typing
-  const items = quote.quote_items || []
-  // @ts-ignore - Supabase typing
-  const customer = quote.customers
+  // Fetch related data separately
+  const { data: items } = await supabase
+    .from('quote_items')
+    .select('*')
+    .eq('quote_id', id)
+    .order('sort_order') as { data: any[] | null }
+
+  const { data: company } = await supabase
+    .from('companies')
+    .select('*')
+    .eq('id', quote.company_id)
+    .single() as { data: any }
+
+  const { data: customer } = quote.customer_id ? await supabase
+    .from('customers')
+    .select('*')
+    .eq('id', quote.customer_id)
+    .single() as { data: any } : { data: null }
 
   // Get customer address if customer exists
-  let primaryAddress = null
+  let primaryAddress: any = null
   if (customer?.id) {
     const { data: addresses } = await supabase
       .from('customer_addresses')
       .select('*')
       .eq('customer_id', customer.id)
       .order('is_primary', { ascending: false })
-      .limit(1)
+      .limit(1) as { data: any[] | null }
     primaryAddress = addresses?.[0]
   }
 
   // Track that the quote was viewed
-  await supabase
-    .from('quotes')
+  await (supabase
+    .from('work_items') as any)
     .update({ viewed_at: new Date().toISOString() })
     .eq('id', id)
 
@@ -81,7 +88,8 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
   const StatusIcon = status.icon
 
   // Group items by tier for Good/Better/Best display
-  const tiers = items.reduce((acc: any, item: any) => {
+  const quoteItems = items || []
+  const tiers = quoteItems.reduce((acc: any, item: any) => {
     const tier = item.option_tier || 'standard'
     if (!acc[tier]) acc[tier] = []
     acc[tier].push(item)
@@ -286,7 +294,7 @@ export default async function PublicQuoteViewer({ params }: QuoteViewerProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {items.map((item: any, idx: number) => (
+                      {quoteItems.map((item: any, idx: number) => (
                         <tr
                           key={idx}
                           className={`border-t ${

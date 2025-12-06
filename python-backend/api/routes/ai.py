@@ -226,6 +226,12 @@ async def update_quote_with_ai(
     Examples: "add labor charges", "remove permit fee"
     """
     try:
+        # Debug: Log existing items
+        print(f"📝 Update quote - prompt: {request.user_prompt}")
+        print(f"📝 Existing items count: {len(request.existing_items)}")
+        for item in request.existing_items:
+            print(f"   - {item.get('name', item.get('description', 'unknown'))}: ${item.get('total', 0)}")
+        
         # Security: Validate company_id
         if not validate_company_id(request.company_id, db):
             raise HTTPException(status_code=403, detail="Invalid company_id")

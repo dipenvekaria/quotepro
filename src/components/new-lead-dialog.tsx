@@ -45,9 +45,9 @@ export function NewLeadDialog({ open, onOpenChange, companyId }: NewLeadDialogPr
       // Generate quote number
       const quoteNumber = `Q-${Date.now()}`
 
-      // Create lead in quotes table with lead_status='new'
+      // Create lead in work_items table with status='lead'
       const { data: lead, error } = await supabase
-        .from('quotes')
+        .from('work_items')
         .insert({
           company_id: companyId,
           quote_number: quoteNumber,
@@ -56,8 +56,7 @@ export function NewLeadDialog({ open, onOpenChange, companyId }: NewLeadDialogPr
           customer_phone: formData.customer_phone,
           customer_address: formData.customer_address,
           notes: formData.notes,
-          lead_status: 'new', // New lead!
-          status: 'draft', // Keep existing status field
+          status: 'lead',
           subtotal: 0,
           tax_rate: 0,
           tax_amount: 0,

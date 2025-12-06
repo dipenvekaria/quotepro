@@ -17,7 +17,7 @@ export async function getNextInvoiceNumber(supabase: any): Promise<string> {
 
   // Get highest invoice number for current year
   const { data, error } = await supabase
-    .from('quotes')
+    .from('work_items')
     .select('invoice_number')
     .like('invoice_number', `${yearPrefix}%`)
     .order('invoice_number', { ascending: false })

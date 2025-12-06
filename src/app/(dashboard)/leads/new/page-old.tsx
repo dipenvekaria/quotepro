@@ -14,9 +14,9 @@ import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 export default function LeadEditorPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const workItemId = searchParams.get('id')
+  const leadId = searchParams.get('id')
   const supabase = createClient()
-  const { refreshWorkItems } = useDashboard()
+  const { refreshQuotes } = useDashboard()
 
   const [customerName, setCustomerName] = useState('')
   const [customerEmail, setCustomerEmail] = useState('')
@@ -33,7 +33,7 @@ export default function LeadEditorPage() {
 
   useEffect(() => {
     loadUserAndLead()
-  }, [workItemId])
+  }, [leadId])
 
   const loadUserAndLead = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -53,8 +53,8 @@ export default function LeadEditorPage() {
       setCompanyId(userRecord.company_id)
     }
 
-    if (workItemId) {
-      await loadExistingLead(workItemId)
+    if (leadId) {
+      await loadExistingLead(leadId)
     } else {
       setIsLoading(false)
     }
@@ -63,7 +63,7 @@ export default function LeadEditorPage() {
   const loadExistingLead = async (id: string) => {
     try {
       const { data: lead, error } = await supabase
-        .from('work_items')
+        .from('leads')
         .select('*')
         .eq('id', id)
         .single()
@@ -103,30 +103,41 @@ export default function LeadEditorPage() {
   }
 
   const handleArchive = async (reason: string) => {
-    if (!workItemId) return
+    if (!leadId) return
     try {
+      // Archive the lead
       const { error } = await supabase
-        .from('work_items')
+        .from('leads')
         .update({ 
           status: 'archived',
           archived_at: new Date().toISOString(),
           archived_reason: reason
         })
-        .eq('id', workItemId)
+        .eq('id', leadId)
 
       if (error) throw error
+
+      // Also archive any quotes linked to this lead
+      await supabase
+        .from('quotes')
+        .update({ 
+          status: 'archived',
+          archived_at: new Date().toISOString(),
+          archived_reason: reason
+        })
+        .eq('lead_id', leadId)
 
       await supabase.from('activity_log').insert({
         company_id: companyId,
         user_id: userId,
-        entity_type: 'work_item',
-        entity_id: workItemId,
+        entity_type: 'lead',
+        entity_id: leadId,
         action: 'archived',
         description: `Lead archived: ${customerName} - ${reason}`,
       })
 
       toast.success('Lead archived')
-      await refreshWorkItems()
+      await refreshQuotes()
       router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error archiving lead:', error)
@@ -146,7 +157,7 @@ export default function LeadEditorPage() {
 
     setIsSaving(true)
     try {
-      if (isEditMode && workItemId) {
+      if (isEditMode && leadId) {
         if (customerId) {
           await supabase
             .from('customers')
@@ -169,15 +180,15 @@ export default function LeadEditorPage() {
         }
 
         await supabase
-          .from('work_items')
+          .from('leads')
           .update({ description: callNotes.trim() })
-          .eq('id', workItemId)
+          .eq('id', leadId)
 
         await supabase.from('activity_log').insert({
           company_id: companyId,
           user_id: userId,
           entity_type: 'lead',
-          entity_id: workItemId,
+          entity_id: leadId,
           action: 'updated',
           description: 'Lead updated: ' + customerName,
         })
@@ -271,27 +282,28 @@ export default function LeadEditorPage() {
           console.log('Job classification skipped:', error)
         }
 
-        const { data: newWorkItem, error: workItemError } = await supabase
-          .from('work_items')
+        const { data: newLead, error: leadError } = await supabase
+          .from('leads')
           .insert({
             company_id: companyId,
             customer_id: newCustomerId,
             description: callNotes.trim(),
-            status: 'lead',
+            status: 'new',
+            source: 'direct',
+            urgency: 'medium',
             assigned_to: userId,
-            created_by: userId,
-            metadata: jobType ? { job_type: jobType } : {},
+            metadata: jobType ? { job_type: jobType } : null,
           })
           .select()
           .single()
 
-        if (workItemError) throw workItemError
+        if (leadError) throw leadError
 
         await supabase.from('activity_log').insert({
           company_id: companyId,
           user_id: userId,
-          entity_type: 'work_item',
-          entity_id: newWorkItem.id,
+          entity_type: 'lead',
+          entity_id: newLead.id,
           action: 'created',
           description: 'New lead: ' + customerName,
         })
@@ -299,7 +311,7 @@ export default function LeadEditorPage() {
         toast.success('Lead created!')
       }
 
-      await refreshWorkItems()
+      await refreshQuotes()
       router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error saving lead:', error)
@@ -369,7 +381,7 @@ export default function LeadEditorPage() {
         />
 
         {/* Archive Button - only show when editing */}
-        {isEditMode && workItemId && (
+        {isEditMode && leadId && (
           <div className="bg-white rounded-2xl border border-gray-200 p-4">
             <Button
               variant="outline"

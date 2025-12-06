@@ -31,7 +31,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
       const supabase = createClient()
       
       const { data, error } = await supabase
-        .from('quotes')
+        .from('work_items')
         .select(`
           *,
           companies (*)

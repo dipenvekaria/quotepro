@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
 
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select(`
         *,
         companies(*),
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
       // Update quote status to sent
       await supabase
-        .from('quotes')
+        .from('work_items')
         .update({
           status: 'sent',
           sent_at: new Date().toISOString(),
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       
       // Fallback: just mark as sent without e-signature
       await supabase
-        .from('quotes')
+        .from('work_items')
         .update({
           status: 'sent',
           sent_at: new Date().toISOString(),

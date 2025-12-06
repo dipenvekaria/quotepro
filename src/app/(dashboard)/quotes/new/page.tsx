@@ -30,7 +30,7 @@ export default function NewQuotePage() {
   const quoteId = searchParams.get('id')
   const router = useRouter()
   const supabase = createClient()
-  const { refreshQuotes } = useDashboard()
+  const { refreshWorkItems } = useDashboard()
 
   // Check if creating quote from lead (showAICard flag set)
   const [isCreatingQuote, setIsCreatingQuote] = useState(false)
@@ -60,6 +60,24 @@ export default function NewQuotePage() {
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+
+  // Wrapper functions to track changes
+  const handleCustomerNameChange = (value: string) => {
+    setCustomerName(value)
+    if (generatedQuote) setHasUnsavedChanges(true)
+  }
+  const handleCustomerEmailChange = (value: string) => {
+    setCustomerEmail(value)
+    if (generatedQuote) setHasUnsavedChanges(true)
+  }
+  const handleCustomerPhoneChange = (value: string) => {
+    setCustomerPhone(value)
+    if (generatedQuote) setHasUnsavedChanges(true)
+  }
+  const handleCustomerAddressChange = (value: string) => {
+    setCustomerAddress(value)
+    if (generatedQuote) setHasUnsavedChanges(true)
+  }
 
   // TanStack Query hooks
   const generateQuoteMutation = useGenerateQuote()
@@ -114,17 +132,18 @@ export default function NewQuotePage() {
   const loadExistingQuote = async (id: string) => {
     setIsLoadingQuote(true)
     try {
-      // NEW SCHEMA: First try loading as a lead
+      // NEW SCHEMA: First try loading as a lead (status = 'lead')
       const { data: lead, error: leadError } = await supabase
-        .from('leads')
+        .from('work_items')
         .select('*')
         .eq('id', id)
+        .eq('status', 'lead')
         .maybeSingle()
 
       console.log('Lead query result:', { lead, leadError })
 
       if (lead && !leadError) {
-        // It's a lead - fetch customer separately
+        // It's a lead (status = 'lead') - fetch customer separately
         const { data: customer } = await supabase
           .from('customers')
           .select('*')
@@ -155,8 +174,8 @@ export default function NewQuotePage() {
 
       // If not a lead, try loading as a quote
       const { data: quote, error } = await supabase
-        .from('quotes')
-        .select('*, quote_items(*)')
+        .from('work_items')
+        .select('*')
         .eq('id', id)
         .single()
 
@@ -165,6 +184,13 @@ export default function NewQuotePage() {
       if (error) throw error
 
       if (quote) {
+        // Fetch quote items separately (avoids RLS join issues)
+        const { data: quoteItems } = await supabase
+          .from('quote_items')
+          .select('*')
+          .eq('quote_id', id)
+          .order('sort_order')
+
         // Fetch customer for quote
         const { data: customer } = await supabase
           .from('customers')
@@ -188,7 +214,7 @@ export default function NewQuotePage() {
         setSavedQuoteId(quote.id)
         
         // Only set "creating quote" mode if quote has no items yet
-        const hasItems = quote.quote_items && quote.quote_items.length > 0
+        const hasItems = quoteItems && quoteItems.length > 0
         if (!hasItems) {
           setIsCreatingQuote(true)
           sessionStorage.setItem('showAICard', 'true')
@@ -199,7 +225,7 @@ export default function NewQuotePage() {
         
         if (hasItems) {
           setGeneratedQuote({
-            line_items: quote.quote_items.map((item: any) => ({
+            line_items: quoteItems.map((item: any) => ({
               name: item.name,
               description: item.description,
               quantity: item.quantity,
@@ -208,6 +234,7 @@ export default function NewQuotePage() {
               option_tier: item.option_tier,
               is_upsell: item.is_upsell,
               is_discount: item.is_discount
+              // discount_target: item.discount_target // TODO: uncomment after running migration
             })),
             options: [],
             subtotal: quote.subtotal || 0,
@@ -235,7 +262,7 @@ export default function NewQuotePage() {
       if (isCreatingQuote || sessionStorage.getItem('showAICard') === 'true') {
         // Loading a quote - also get the lead's history if it exists
         const { data: quote } = await supabase
-          .from('quotes')
+          .from('work_items')
           .select('lead_id')
           .eq('id', id)
           .maybeSingle()
@@ -245,7 +272,7 @@ export default function NewQuotePage() {
         }
       }
       
-      // Load all activity logs for both quote and lead
+      // Load all activity logs (skip user join - may have RLS issues)
       const { data, error } = await supabase
         .from('activity_log')
         .select('*')
@@ -341,7 +368,7 @@ export default function NewQuotePage() {
 
       if (savedQuoteId || quoteId) {
         await supabase
-          .from('quotes')
+          .from('work_items')
           .update({
             customer_address: newAddress,
             tax_rate,
@@ -377,10 +404,8 @@ export default function NewQuotePage() {
       setGeneratedQuote(data)
       toast.success('Quote generated!', { id: loadingToast })
 
-      // Auto-save if editing existing quote
-      if (savedQuoteId || quoteId) {
-        await saveQuoteToDatabase(data)
-      }
+      // Mark as unsaved - user needs to click Save
+      setHasUnsavedChanges(true)
     } catch (error) {
       toast.error('Failed to generate quote', { id: loadingToast })
     } finally {
@@ -422,7 +447,10 @@ export default function NewQuotePage() {
 
   // Save quote to database
   const saveQuoteToDatabase = async (quote: GeneratedQuote = generatedQuote!) => {
-    if (!quote) return
+    if (!quote) {
+      console.log('❌ saveQuoteToDatabase: No quote to save')
+      return
+    }
 
     const subtotal = quote.line_items.reduce((sum, item) => sum + item.total, 0)
     const taxRate = quote.tax_rate || 0
@@ -430,26 +458,32 @@ export default function NewQuotePage() {
     const total = subtotal + taxAmount
 
     const currentQuoteId = savedQuoteId || quoteId
+    console.log('💾 saveQuoteToDatabase:', { currentQuoteId, itemCount: quote.line_items.length, total })
 
     if (currentQuoteId) {
-      // Update existing
-      await supabase
-        .from('quotes')
+      // Update existing work_item (don't update customer fields - those are in customers table)
+      const { error: updateError } = await supabase
+        .from('work_items')
         .update({
-          customer_name: customerName,
-          customer_email: customerEmail || null,
-          customer_phone: customerPhone || null,
-          customer_address: customerAddress || null,
           subtotal,
           tax_rate: taxRate,
           tax_amount: taxAmount,
           total,
-          lead_status: 'quoted',
+          status: 'draft', // Mark as draft when saving quote
         })
         .eq('id', currentQuoteId)
+      
+      if (updateError) {
+        console.error('❌ Error updating work_item:', updateError)
+        toast.error(`Failed to save: ${updateError.message}`)
+        return false
+      }
 
       // Delete and re-insert items
-      await supabase.from('quote_items').delete().eq('quote_id', currentQuoteId)
+      const { error: deleteError } = await supabase.from('quote_items').delete().eq('quote_id', currentQuoteId)
+      if (deleteError) {
+        console.error('❌ Error deleting quote_items:', deleteError)
+      }
 
       const items = quote.line_items.map((item, index) => ({
         quote_id: currentQuoteId,
@@ -461,11 +495,22 @@ export default function NewQuotePage() {
         option_tier: item.option_tier || null,
         is_upsell: item.is_upsell || false,
         is_discount: item.is_discount || false,
+        // discount_target: (item as any).discount_target || null, // TODO: uncomment after running migration
         sort_order: index,
       }))
 
-      await supabase.from('quote_items').insert(items)
+      const { error: insertError } = await supabase.from('quote_items').insert(items)
+      if (insertError) {
+        console.error('❌ Error inserting quote_items:', insertError)
+        toast.error(`Failed to save items: ${insertError.message}`)
+        return false
+      } else {
+        console.log('✅ Quote saved successfully:', currentQuoteId, 'items:', items.length)
+        setHasUnsavedChanges(false)
+        return true
+      }
     }
+    return false
   }
 
   // Handle save quote (new quote)
@@ -488,7 +533,7 @@ export default function NewQuotePage() {
       const total = subtotal + taxAmount
 
       const { data: quote, error: quoteError } = await supabase
-        .from('quotes')
+        .from('work_items')
         .insert({
           company_id: companyId,
           customer_name: customerName,
@@ -550,27 +595,87 @@ export default function NewQuotePage() {
     }
   }
 
-  // Handle update quote
+  // Handle update quote with detailed audit logging
   const handleUpdateQuote = async () => {
-    await saveQuoteToDatabase()
-    
-    // Log to audit trail
     const currentQuoteId = savedQuoteId || quoteId
-    if (currentQuoteId) {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        await supabase.from('activity_log').insert({
-          company_id: companyId,
-          user_id: user.id,
-          entity_type: 'quote',
-          entity_id: currentQuoteId,
-          action: 'updated',
-          description: 'Quote manually updated',
-        })
+    if (!currentQuoteId || !generatedQuote) {
+      toast.error('No quote to update')
+      return
+    }
+
+    // Fetch current items before updating (separate query to avoid RLS issues)
+    const { data: previousItems } = await supabase
+      .from('quote_items')
+      .select('*')
+      .eq('quote_id', currentQuoteId)
+
+    // Track changes
+    const changes: Record<string, any> = {}
+    const existingItems = previousItems || []
+    const newItems = generatedQuote.line_items || []
+    
+    // Compare totals
+    const previousTotal = existingItems.reduce((sum: number, item: any) => sum + (item.total || 0), 0)
+    const newTotal = newItems.reduce((sum, item) => sum + item.total, 0)
+    
+    if (Math.abs(previousTotal - newTotal) > 0.01) {
+      changes.total_changed = { from: previousTotal, to: newTotal }
+    }
+
+    // Track item changes
+    const previousItemNames = existingItems.map((i: any) => i.name)
+    const newItemNames = newItems.map(i => i.name)
+    const itemsAdded = newItemNames.filter(n => !previousItemNames.includes(n))
+    const itemsRemoved = previousItemNames.filter((n: string) => !newItemNames.includes(n))
+    
+    if (itemsAdded.length) changes.items_added = itemsAdded
+    if (itemsRemoved.length) changes.items_removed = itemsRemoved
+
+    // Track quantity/price changes
+    const modifiedItems: string[] = []
+    for (const newItem of newItems) {
+      const oldItem = existingItems.find((p: any) => p.name === newItem.name)
+      if (oldItem) {
+        if (oldItem.quantity !== newItem.quantity || Math.abs(oldItem.unit_price - newItem.unit_price) > 0.01) {
+          modifiedItems.push(`${newItem.name} (qty: ${oldItem.quantity}→${newItem.quantity}, price: $${oldItem.unit_price}→$${newItem.unit_price})`)
+        }
       }
-      await loadAuditLogs(currentQuoteId)
+    }
+    if (modifiedItems.length) changes.items_modified = modifiedItems
+
+    // Save to database
+    const saved = await saveQuoteToDatabase()
+    if (!saved) {
+      return // Error already shown
     }
     
+    // Log to audit trail with details
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const hasChanges = Object.keys(changes).length > 0
+      const description = hasChanges
+        ? `Manual update: ${itemsAdded.length ? `+${itemsAdded.length} items` : ''} ${itemsRemoved.length ? `-${itemsRemoved.length} items` : ''} ${modifiedItems.length ? `${modifiedItems.length} modified` : ''}`.trim()
+        : 'Quote manually updated (no changes)'
+
+      await supabase.from('activity_log').insert({
+        company_id: companyId,
+        user_id: user.id,
+        entity_type: 'quote',
+        entity_id: currentQuoteId,
+        action: 'updated',
+        description,
+        changes: {
+          ...changes,
+          previous_total: previousTotal,
+          new_total: newTotal,
+          previous_item_count: existingItems.length,
+          new_item_count: newItems.length,
+        },
+      })
+    }
+    await loadAuditLogs(currentQuoteId)
+    
+    setHasUnsavedChanges(false)
     toast.success('Quote updated')
   }
 
@@ -586,9 +691,9 @@ export default function NewQuotePage() {
     try {
       // Update quote status to sent and set sent_at timestamp
       const { error: updateError } = await supabase
-        .from('quotes')
+        .from('work_items')
         .update({ 
-          followup_status: 'sent',
+          status: 'sent',
           sent_at: new Date().toISOString()
         })
         .eq('id', currentQuoteId)
@@ -670,7 +775,7 @@ export default function NewQuotePage() {
       if (quoteId) {
         // Update existing lead
         const { error: updateError } = await supabase
-          .from('leads')
+          .from('work_items')
           .update({
             description: description,
             metadata: { job_type: finalJobType },
@@ -681,7 +786,7 @@ export default function NewQuotePage() {
 
         // Update customer info
         const { data: existingLead } = await supabase
-          .from('leads')
+          .from('work_items')
           .select('customer_id')
           .eq('id', quoteId)
           .single()
@@ -717,7 +822,7 @@ export default function NewQuotePage() {
         toast.success('Lead updated successfully!')
         
         // Redirect back to leads page
-        refreshQuotes()
+        refreshWorkItems()
         router.push('/leads-and-quotes/leads')
         return
       }
@@ -767,7 +872,7 @@ export default function NewQuotePage() {
 
       // Create lead
       const { data: newLead, error: insertError } = await supabase
-        .from('leads')
+        .from('work_items')
         .insert({
           company_id: companyId,
           customer_id: customerId,
@@ -803,7 +908,7 @@ export default function NewQuotePage() {
       toast.success('Lead saved successfully!')
       
       // Redirect back to leads page
-      refreshQuotes()
+      refreshWorkItems()
       router.push('/leads-and-quotes/leads')
     } catch (error) {
       console.error('Error saving lead:', error)
@@ -817,35 +922,90 @@ export default function NewQuotePage() {
     if (!currentQuoteId) return
 
     try {
+      // Get quote to find linked lead
+      const { data: quote } = await supabase
+        .from('work_items')
+        .select('lead_id')
+        .eq('id', currentQuoteId)
+        .single()
+
+      // Archive the quote
       await supabase
-        .from('quotes')
+        .from('work_items')
         .update({
-          lead_status: 'archived',
+          status: 'archived',
           archived_reason: reason,
           archived_at: new Date().toISOString(),
         })
         .eq('id', currentQuoteId)
 
-      toast.success('Lead archived')
-      router.push('/dashboard')
+      // Also archive linked lead if exists
+      if (quote?.lead_id) {
+        await supabase
+          .from('work_items')
+          .update({
+            status: 'archived',
+            archived_reason: reason,
+            archived_at: new Date().toISOString(),
+          })
+          .eq('id', quote.lead_id)
+      }
+
+      toast.success('Quote archived')
+      await refreshWorkItems()
+      router.push('/leads-and-quotes/quotes')
     } catch (error) {
-      toast.error('Failed to archive lead')
+      toast.error('Failed to archive quote')
     }
   }
 
-  // Handle items change
+  // Handle items change - recalculates percentage-based discounts
   const handleItemsChange = (items: QuoteItem[]) => {
     setHasUnsavedChanges(true)
-    const subtotal = items.reduce((sum, item) => sum + item.total, 0)
+    
+    // Separate regular items and discounts
+    const regularItems = items.filter(item => !item.is_discount && item.total >= 0)
+    const discountItems = items.filter(item => item.is_discount || item.total < 0)
+    
+    // Calculate subtotal of regular items (before discounts)
+    const regularSubtotal = regularItems.reduce((sum, item) => sum + item.total, 0)
+    
+    // Recalculate percentage-based discounts ONLY if discount_target is "total"
+    const updatedDiscounts = discountItems.map(discount => {
+      // Only recalculate if discount_target is "total" (overall discount, not item-specific)
+      const isOverallDiscount = (discount as any).discount_target === 'total'
+      
+      // Check if this is a percentage discount (name contains "%")
+      const nameMatch = discount.name.match(/(\d+(?:\.\d+)?)\s*%/)
+      
+      if (isOverallDiscount && nameMatch) {
+        const percentage = parseFloat(nameMatch[1])
+        const newDiscountAmount = -(regularSubtotal * percentage / 100)
+        return {
+          ...discount,
+          unit_price: newDiscountAmount,
+          total: newDiscountAmount
+        }
+      }
+      // Item-specific discounts stay fixed
+      return discount
+    })
+    
+    // Combine items with updated discounts
+    const allItems = [...regularItems, ...updatedDiscounts]
+    
+    // Calculate final subtotal (includes discounts)
+    const subtotal = allItems.reduce((sum, item) => sum + item.total, 0)
     const taxRate = generatedQuote?.tax_rate || 0
-    const total = subtotal + (subtotal * (taxRate / 100))
+    const taxAmount = subtotal * (taxRate / 100)
+    const total = subtotal + taxAmount
 
     setGeneratedQuote({
-      line_items: items,
+      line_items: allItems,
       options: generatedQuote?.options || [],
       subtotal,
       tax_rate: taxRate,
-      tax_amount: subtotal * (taxRate / 100),
+      tax_amount: taxAmount,
       total,
       notes: generatedQuote?.notes,
     })
@@ -878,12 +1038,12 @@ export default function NewQuotePage() {
           
           {/* Action buttons in header */}
           <div className="flex items-center gap-2">
-            {/* Save Quote button */}
-            {generatedQuote && (savedQuoteId || quoteId) && (
+            {/* Save Quote button - show for existing quotes OR new quotes with items */}
+            {generatedQuote && (
               <Button
-                onClick={handleUpdateQuote}
-                disabled={!hasUnsavedChanges}
-                className={hasUnsavedChanges 
+                onClick={savedQuoteId || quoteId ? handleUpdateQuote : handleSaveQuote}
+                disabled={!hasUnsavedChanges && (savedQuoteId || quoteId)}
+                className={hasUnsavedChanges || (!savedQuoteId && !quoteId)
                   ? "h-10 px-5 bg-[#0055FF] hover:bg-blue-600 text-white font-medium rounded-xl shadow-lg shadow-blue-500/25" 
                   : "h-10 px-5 bg-gray-100 text-gray-400 font-medium rounded-xl border border-gray-200"
                 }
@@ -943,10 +1103,10 @@ export default function NewQuotePage() {
           jobDescription={description}
           isDescriptionReadOnly={true}
           companyId={companyId}
-          onCustomerNameChange={setCustomerName}
-          onCustomerEmailChange={setCustomerEmail}
-          onCustomerPhoneChange={setCustomerPhone}
-          onCustomerAddressChange={setCustomerAddress}
+          onCustomerNameChange={handleCustomerNameChange}
+          onCustomerEmailChange={handleCustomerEmailChange}
+          onCustomerPhoneChange={handleCustomerPhoneChange}
+          onCustomerAddressChange={handleCustomerAddressChange}
           onJobDescriptionChange={setDescription}
           quoteId={savedQuoteId || quoteId}
           origin={origin}
@@ -959,7 +1119,10 @@ export default function NewQuotePage() {
           <Button
             onClick={handleSaveQuote}
             disabled={isGenerating}
-            className="w-full h-10 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+            className={hasUnsavedChanges
+              ? "w-full h-10 text-sm font-medium bg-[#0055FF] hover:bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/25 animate-pulse"
+              : "w-full h-10 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+            }
           >
             <Save className="h-4 w-4 mr-1.5" />
             Save Quote

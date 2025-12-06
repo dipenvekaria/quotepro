@@ -25,7 +25,7 @@ export async function POST(
 
     // Fetch quote with all details
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select(`
         *,
         quote_items (*),

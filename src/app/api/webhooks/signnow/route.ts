@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     // Find the quote associated with this SignNow document
     const { data: quotes, error: findError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select('*')
       .eq('signnow_document_id', event.data.document_id)
       .limit(1)
@@ -55,9 +55,9 @@ export async function POST(request: NextRequest) {
       case 'document.signed':
         // Update quote with signed status and timestamp
         await supabase
-          .from('quotes')
+          .from('work_items')
           .update({
-            status: 'signed',
+            status: 'accepted',
             accepted_at: event.data.signed_at || new Date().toISOString(),
           })
           .eq('id', quote.id)
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         // Log to activity_log (new schema)
         await supabase.from('activity_log').insert({
           company_id: quote.company_id,
-          entity_type: 'quote',
+          entity_type: 'work_item',
           entity_id: quote.id,
           action: 'signed',
           description: 'Customer signed quote via SignNow',
@@ -80,19 +80,20 @@ export async function POST(request: NextRequest) {
         break
 
       case 'document.declined':
-        // Update quote status to rejected
+        // Update quote status to archived
         await supabase
-          .from('quotes')
+          .from('work_items')
           .update({
-            status: 'rejected',
-            rejected_at: event.data.declined_at || new Date().toISOString(),
+            status: 'archived',
+            archived_at: event.data.declined_at || new Date().toISOString(),
+            archived_reason: event.data.reason || 'Customer declined via SignNow',
           })
           .eq('id', quote.id)
 
         // Log to activity_log
         await supabase.from('activity_log').insert({
           company_id: quote.company_id,
-          entity_type: 'quote',
+          entity_type: 'work_item',
           entity_id: quote.id,
           action: 'rejected',
           description: 'Customer declined quote via SignNow',
@@ -109,13 +110,13 @@ export async function POST(request: NextRequest) {
       case 'document.viewed':
         // Update viewed_at and log to activity
         await supabase
-          .from('quotes')
+          .from('work_items')
           .update({ viewed_at: new Date().toISOString() })
           .eq('id', quote.id)
 
         await supabase.from('activity_log').insert({
           company_id: quote.company_id,
-          entity_type: 'quote',
+          entity_type: 'work_item',
           entity_id: quote.id,
           action: 'viewed',
           description: 'Customer viewed quote in SignNow',

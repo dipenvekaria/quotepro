@@ -20,11 +20,7 @@ interface AuditLogEntry {
   users?: {
     id: string
     role: string
-    profile?: {
-      first_name?: string
-      last_name?: string
-      email?: string
-    }
+    profile?: Record<string, any>  // JSONB profile field
   }
 }
 
@@ -94,8 +90,19 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
       return parts.join(' • ')
     }
 
-    // Lead created/updated
+    // Lead created/updated or manual quote update
     if (entry.action === 'created' || entry.action === 'updated') {
+      // Manual quote updates with detailed changes
+      if (changes.items_added?.length > 0) parts.push(`Added: ${changes.items_added.slice(0, 3).join(', ')}${changes.items_added.length > 3 ? ` +${changes.items_added.length - 3} more` : ''}`)
+      if (changes.items_removed?.length > 0) parts.push(`Removed: ${changes.items_removed.slice(0, 3).join(', ')}${changes.items_removed.length > 3 ? ` +${changes.items_removed.length - 3} more` : ''}`)
+      if (changes.items_modified?.length > 0) parts.push(`Modified: ${changes.items_modified.length} item(s)`)
+      if (changes.total_changed) {
+        const { from, to } = changes.total_changed
+        const diff = to - from
+        parts.push(`Total: $${from.toFixed(2)} → $${to.toFixed(2)} (${diff >= 0 ? '+' : ''}$${diff.toFixed(2)})`)
+      }
+      
+      // Original lead/quote creation info
       if (changes.customer_name) parts.push(`Customer: ${changes.customer_name}`)
       if (changes.customer_phone) parts.push(`Phone: ${changes.customer_phone}`)
       if (changes.customer_address) parts.push(`Address: ${changes.customer_address}`)
@@ -117,14 +124,30 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
   }
 
   const getUserName = (entry: AuditLogEntry): string => {
+    // Handle JSONB profile field from users table
     if (entry.users?.profile) {
-      const { first_name, last_name, email } = entry.users.profile
-      if (first_name && last_name) {
-        return `${first_name} ${last_name}`
+      const profile = entry.users.profile
+      const firstName = profile.first_name || profile.firstName
+      const lastName = profile.last_name || profile.lastName
+      const email = profile.email
+      
+      if (firstName && lastName) {
+        return `${firstName} ${lastName}`
       }
-      if (first_name) return first_name
+      if (firstName) return firstName
       if (email) return email
     }
+    
+    // Fallback to role if available
+    if (entry.users?.role) {
+      return entry.users.role.charAt(0).toUpperCase() + entry.users.role.slice(1)
+    }
+    
+    // Check if it's an AI action
+    if (entry.action === 'ai_generated' || entry.action === 'ai_updated') {
+      return 'AI Assistant'
+    }
+    
     return 'System'
   }
 

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     // Get the quote
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select('*')
       .eq('id', quote_id)
       .single()
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     // Update quote status to 'accepted'
     const now = new Date().toISOString()
     const { error: updateError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .update({
         status: 'accepted',
         accepted_at: now,

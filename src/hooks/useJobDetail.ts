@@ -15,7 +15,7 @@ export function useJobDetail(id: string) {
     try {
       const supabase = createClient()
       const { data, error } = await supabase
-        .from('quotes')
+        .from('work_items')
         .select('*')
         .eq('id', id)
         .single()

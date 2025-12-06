@@ -16,7 +16,7 @@ export async function POST(
 
     // Get quote with items and customer
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select('*, customer:customers(*)')
       .eq('id', id)
       .single()
@@ -43,9 +43,9 @@ export async function POST(
     if (!invoiceNumber) {
       invoiceNumber = await getNextInvoiceNumber(supabase)
       
-      // Update quote with invoice number
+      // Update work_item with invoice number
       const { error: updateError } = await supabase
-        .from('quotes')
+        .from('work_items')
         .update({ invoice_number: invoiceNumber })
         .eq('id', id)
 
@@ -128,9 +128,9 @@ export async function POST(
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
     const paymentLinkUrl = `${baseUrl}/q/${id}/pay`
 
-    // Update quote with invoice details
+    // Update work_item with invoice details
     const { error: updateInvoiceError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .update({
         invoice_pdf_url: publicUrl,
         payment_link_url: paymentLinkUrl,

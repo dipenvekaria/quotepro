@@ -19,12 +19,13 @@ export async function PUT(
 
     const supabase = await createClient()
 
-    // Update the quote with scheduled_at timestamp
+    // Update the work_item with scheduled_at timestamp
     // @ts-ignore
     const { data: quote, error } = await supabase
-      .from('quotes')
+      .from('work_items')
       .update({
         scheduled_at: new Date(scheduled_at).toISOString(),
+        status: 'scheduled',
       })
       .eq('id', id)
       .select()
@@ -43,7 +44,7 @@ export async function PUT(
     await supabase.from('activity_log').insert({
       company_id: quote.company_id,
       user_id: user?.id || null,
-      entity_type: 'quote',
+      entity_type: 'work_item',
       entity_id: id,
       action: 'scheduled',
       description: 'Job scheduled',

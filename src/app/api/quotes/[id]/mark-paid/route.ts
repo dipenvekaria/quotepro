@@ -19,12 +19,13 @@ export async function PUT(
 
     const supabase = await createClient()
 
-    // Update the quote with paid_at timestamp and payment method
+    // Update the work_item with paid_at timestamp and payment method
     const { data: quote, error } = await supabase
-      .from('quotes')
+      .from('work_items')
       .update({
         paid_at: new Date(paid_at).toISOString(),
         payment_method: payment_method || 'manual',
+        status: 'paid',
       })
       .eq('id', id)
       .select()
@@ -43,7 +44,7 @@ export async function PUT(
     await supabase.from('activity_log').insert({
       company_id: quote.company_id,
       user_id: user?.id || null,
-      entity_type: 'quote',
+      entity_type: 'work_item',
       entity_id: id,
       action: 'paid',
       description: 'Payment received',

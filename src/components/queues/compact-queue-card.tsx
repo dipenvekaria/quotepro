@@ -80,6 +80,11 @@ export function CompactQueueCard({
   showPhone = false,
   hideAddress = false,
 }: CompactQueueCardProps) {
+  // Guard against undefined data
+  if (!data) {
+    return null
+  }
+  
   const displayDate = data?.scheduled_at || data?.completed_at || data?.paid_at || data?.created_at
 
   return (
@@ -156,24 +161,26 @@ export function CompactQueueCard({
             )}
           </div>
 
-          {/* Right Side: Phone Icon */}
-          {showPhone && data.customer_phone && (
-            <a 
-              href={`tel:${data.customer_phone}`}
-              className="flex-shrink-0 p-2.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-              aria-label={`Call ${data.customer_phone}`}
-            >
-              <Phone className="h-4 w-4" />
-            </a>
-          )}
+          {/* Right Side: Phone Icon + Actions */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {showPhone && data.customer_phone && (
+              <a 
+                href={`tel:${data.customer_phone}`}
+                className="p-2.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+                aria-label={`Call ${data.customer_phone}`}
+              >
+                <Phone className="h-4 w-4" />
+              </a>
+            )}
 
-          {/* Actions (if provided instead of phone) */}
-          {actions && !showPhone && (
-            <div className="flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-              {actions}
-            </div>
-          )}
+            {/* Actions */}
+            {actions && (
+              <div onClick={(e) => e.stopPropagation()}>
+                {actions}
+              </div>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

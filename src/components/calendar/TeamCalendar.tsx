@@ -83,7 +83,7 @@ export function TeamCalendar({
   const calendarRef = useRef<FullCalendar>(null)
   const externalEventsRef = useRef<HTMLDivElement>(null)
   const supabase = createClient()
-  const { quotes, refreshQuotes } = useDashboard()
+  const { workItems, refreshWorkItems } = useDashboard()
   
   const [viewMode, setViewMode] = useState<'team' | 'personal'>(defaultView)
   const [calendarView, setCalendarView] = useState<'timeGridWeek' | 'timeGridDay' | 'dayGridMonth'>('timeGridWeek')
@@ -234,13 +234,13 @@ export function TeamCalendar({
     }
   }, [mode, isLoading])
 
-  // Build calendar events from quotes and leads
+  // Build calendar events from work items
   const calendarEvents = useMemo<CalendarEvent[]>(() => {
     const events: CalendarEvent[] = []
 
-    quotes.forEach(item => {
-      // Scheduled jobs (from quotes table with scheduled_at)
-      if (item._type === 'quote' && item.scheduled_at) {
+    workItems.forEach(item => {
+      // Scheduled jobs (status = 'scheduled' or 'in_progress' with scheduled_at)
+      if (item.scheduled_at && ['scheduled', 'in_progress'].includes(item.status)) {
         events.push({
           id: `job-${item.id}`,
           title: item.job_name || item.customer?.name || 'Scheduled Job',
@@ -262,28 +262,6 @@ export function TeamCalendar({
           }
         })
       }
-
-      // Quote visits (from leads table with scheduled_visit_at)
-      if (item._type === 'lead' && item.scheduled_visit_at) {
-        events.push({
-          id: `visit-${item.id}`,
-          title: `Visit: ${item.customer?.name || 'Unknown'}`,
-          start: item.scheduled_visit_at,
-          end: new Date(new Date(item.scheduled_visit_at).getTime() + 1 * 60 * 60 * 1000).toISOString(),
-          backgroundColor: '#F59E0B',
-          borderColor: '#D97706',
-          textColor: '#ffffff',
-          extendedProps: {
-            type: 'quote_visit',
-            leadId: item.id,
-            customerId: item.customer_id,
-            customerName: item.customer?.name || 'Unknown',
-            customerPhone: item.customer?.phone,
-            customerAddress: item.customer?.address,
-            jobName: item.metadata?.job_type
-          }
-        })
-      }
     })
 
     // Filter by selected technician if in personal view
@@ -301,27 +279,18 @@ export function TeamCalendar({
     }
 
     return events
-  }, [quotes, viewMode, currentUserId, selectedTechnician])
+  }, [workItems, viewMode, currentUserId, selectedTechnician])
 
-  // Unscheduled jobs for sidebar
+  // Unscheduled jobs for sidebar (accepted but not scheduled)
   const unscheduledJobs = useMemo<UnscheduledJob[]>(() => {
-    return quotes
+    return workItems
       .filter(item => {
-        // Quotes that are accepted/signed but not yet scheduled
-        if (item._type === 'quote') {
-          // Must be accepted or signed status AND not have scheduled_at
-          const isAccepted = item.status === 'accepted' || item.status === 'signed'
-          return isAccepted && !item.scheduled_at
-        }
-        // Leads that need visit scheduling (only new/contacted/qualified, not quoted)
-        if (item._type === 'lead') {
-          return !item.scheduled_visit_at && ['new', 'contacted', 'qualified'].includes(item.status)
-        }
-        return false
+        // Accepted quotes that are not yet scheduled
+        return item.status === 'accepted' && !item.scheduled_at
       })
       .map(item => ({
         id: item.id,
-        type: item._type as 'lead' | 'quote',
+        type: 'quote' as const,
         customerName: item.customer?.name || 'Unknown',
         customerPhone: item.customer?.phone,
         customerAddress: item.customer?.address,
@@ -330,9 +299,9 @@ export function TeamCalendar({
         createdAt: item.created_at
       }))
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  }, [quotes])
+  }, [workItems])
 
-  // Handle event drop (drag & drop scheduling)
+  // Handle event drop (drag & drop rescheduling)
   const handleEventDrop = async (info: any) => {
     const { event } = info
     const newStart = event.start
@@ -340,26 +309,17 @@ export function TeamCalendar({
 
     try {
       if (extendedProps.type === 'scheduled_job' && extendedProps.quoteId) {
-        // Update quote scheduled_at
+        // Update work item scheduled_at
         const { error } = await supabase
-          .from('quotes')
+          .from('work_items')
           .update({ scheduled_at: newStart.toISOString() })
           .eq('id', extendedProps.quoteId)
 
         if (error) throw error
         toast.success('Job rescheduled')
-      } else if (extendedProps.type === 'quote_visit' && extendedProps.leadId) {
-        // Update lead scheduled_visit_at
-        const { error } = await supabase
-          .from('leads')
-          .update({ scheduled_visit_at: newStart.toISOString() })
-          .eq('id', extendedProps.leadId)
-
-        if (error) throw error
-        toast.success('Visit rescheduled')
       }
 
-      refreshQuotes()
+      refreshWorkItems()
     } catch (error) {
       console.error('Error rescheduling:', error)
       toast.error('Failed to reschedule')
@@ -367,7 +327,7 @@ export function TeamCalendar({
     }
   }
 
-  // Handle external event drop (from sidebar)
+  // Handle external event drop (from sidebar - scheduling accepted jobs)
   const handleExternalDrop = async (info: any) => {
     const { event } = info
     const extendedProps = event.extendedProps
@@ -376,37 +336,23 @@ export function TeamCalendar({
     console.log('Scheduling event:', { extendedProps, newStart })
 
     try {
-      if (extendedProps.type === 'quote') {
-        // Schedule the job
-        const { error, data } = await supabase
-          .from('quotes')
-          .update({ 
-            scheduled_at: newStart.toISOString(),
-            status: 'scheduled'
-          })
-          .eq('id', extendedProps.id)
-          .select()
+      // Schedule the job - update to 'scheduled' status
+      const { error, data } = await supabase
+        .from('work_items')
+        .update({ 
+          scheduled_at: newStart.toISOString(),
+          status: 'scheduled'
+        })
+        .eq('id', extendedProps.id)
+        .select()
 
-        console.log('Schedule result:', { error, data, id: extendedProps.id })
-        if (error) throw error
-        toast.success('Job scheduled!')
-      } else if (extendedProps.type === 'lead') {
-        // Schedule the visit
-        const { error } = await supabase
-          .from('leads')
-          .update({ 
-            scheduled_visit_at: newStart.toISOString(),
-            status: 'contacted'
-          })
-          .eq('id', extendedProps.id)
-
-        if (error) throw error
-        toast.success('Visit scheduled!')
-      }
+      console.log('Schedule result:', { error, data, id: extendedProps.id })
+      if (error) throw error
+      toast.success('Job scheduled!')
 
       // Remove the temporary event (will be replaced by real data on refresh)
       event.remove()
-      refreshQuotes()
+      refreshWorkItems()
     } catch (error) {
       console.error('Error scheduling:', error)
       toast.error('Failed to schedule')

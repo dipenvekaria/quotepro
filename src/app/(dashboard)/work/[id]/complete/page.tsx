@@ -27,7 +27,7 @@ export default function CompleteJobPage({ params }: Props) {
     async function loadJob() {
       const supabase = createClient()
       const { data, error } = await supabase
-        .from('quotes')
+        .from('work_items')
         .select('*, customers(*)')
         .eq('id', jobId)
         .single()
@@ -134,7 +134,7 @@ export default function CompleteJobPage({ params }: Props) {
       const supabase = createClient()
       
       const { error: updateError } = await supabase
-        .from('quotes')
+        .from('work_items')
         .update({
           completed_at: new Date().toISOString(),
           customer_signature: signatureDataUrl,
@@ -149,7 +149,7 @@ export default function CompleteJobPage({ params }: Props) {
         await supabase.from('activity_log').insert({
           company_id: job.company_id,
           user_id: user.id,
-          entity_type: 'quote',
+          entity_type: 'work_item',
           entity_id: jobId,
           action: 'job_completed',
           description: 'Job completed with customer signature',

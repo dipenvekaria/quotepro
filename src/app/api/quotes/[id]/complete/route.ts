@@ -19,12 +19,13 @@ export async function PUT(
 
     const supabase = await createClient()
 
-    // Update the quote with completed_at timestamp and signature
+    // Update the work_item with completed_at timestamp and signature
     const { data: quote, error } = await supabase
-      .from('quotes')
+      .from('work_items')
       .update({
         completed_at: new Date(completed_at).toISOString(),
         customer_signature: customer_signature || null,
+        status: 'completed',
       })
       .eq('id', id)
       .select()
@@ -43,7 +44,7 @@ export async function PUT(
     await supabase.from('activity_log').insert({
       company_id: quote.company_id,
       user_id: user?.id || null,
-      entity_type: 'quote',
+      entity_type: 'work_item',
       entity_id: id,
       action: 'completed',
       description: 'Job marked as completed',

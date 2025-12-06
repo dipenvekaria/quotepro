@@ -42,12 +42,11 @@ export function ScheduleVisitDialog({
       // Combine date and time into a timestamp
       const scheduledAt = new Date(`${visitDate}T${visitTime}:00`)
       
-      // Update the lead with scheduled visit time (new schema uses leads table)
+      // Update the work_item with scheduled visit time
       const { error } = await supabase
-        .from('leads')
+        .from('work_items')
         .update({
-          scheduled_visit_at: scheduledAt.toISOString(),
-          status: 'contacted'
+          scheduled_at: scheduledAt.toISOString()
         })
         .eq('id', leadId)
 
@@ -55,7 +54,7 @@ export function ScheduleVisitDialog({
 
       // Get company_id for activity log
       const { data: lead } = await supabase
-        .from('leads')
+        .from('work_items')
         .select('company_id')
         .eq('id', leadId)
         .single()

@@ -108,7 +108,7 @@ export async function GET(
     const supabase = await createClient()
     
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select(`
         *,
         quote_items(*),

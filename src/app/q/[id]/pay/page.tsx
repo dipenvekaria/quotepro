@@ -23,7 +23,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
   async function loadQuote() {
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select('*')
       .eq('id', id)
       .single()

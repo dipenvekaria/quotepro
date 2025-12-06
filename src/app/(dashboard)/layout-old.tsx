@@ -34,55 +34,45 @@ export default async function DashboardLayout({
     redirect('/onboarding')
   }
 
-  // Fetch all work items with customer data
-  // Try work_items first, fallback to quotes if not migrated yet
-  let workItems: any[] = []
-  let fetchError: any = null
-
-  const { data: workItemsData, error: workItemsError } = await supabase
-    .from('work_items')
+  // Fetch all leads with customer data
+  const { data: leads, error: leadsError } = await supabase
+    .from('leads')
     .select(`
       *,
       customer:customers(*)
     `)
     .eq('company_id', company.id)
-    .neq('status', 'archived')
     .order('created_at', { ascending: false })
 
-  if (workItemsError) {
-    console.error('Error fetching work_items, trying quotes fallback:', workItemsError)
-    
-    // Fallback to old quotes table
-    const { data: quotesData, error: quotesError } = await supabase
-      .from('quotes')
-      .select(`
-        *,
-        customer:customers(*)
-      `)
-      .eq('company_id', company.id)
-      .order('created_at', { ascending: false })
-    
-    if (quotesError) {
-      console.error('Error fetching quotes:', quotesError)
-      fetchError = quotesError
-    } else {
-      // Map quotes to work_items format
-      workItems = (quotesData || []).map(q => ({
-        ...q,
-        status: q.lead_status === 'new' ? 'lead' : (q.status || 'draft')
-      }))
-    }
-  } else {
-    workItems = workItemsData || []
+  if (leadsError) {
+    console.error('Error fetching leads:', leadsError)
   }
 
-  if (fetchError) {
-    console.error('Error fetching data:', fetchError)
+  // Fetch all quotes with customer data and item counts
+  const { data: quotes, error: quotesError } = await supabase
+    .from('quotes')
+    .select(`
+      *,
+      customer:customers(*),
+      lead:leads(id),
+      quote_items(id)
+    `)
+    .eq('company_id', company.id)
+    .order('created_at', { ascending: false })
+
+  if (quotesError) {
+    console.error('Error fetching quotes:', quotesError)
   }
+
+  // Combine leads and quotes for the dashboard context
+  const allData = [
+    ...(leads || []).map(lead => ({ ...lead, _type: 'lead' })),
+    ...(quotes || []).map(quote => ({ ...quote, _type: 'quote' }))
+  ]
 
   return (
     <QueryProvider>
-      <DashboardProvider company={company} workItems={workItems || []}>
+      <DashboardProvider company={company} quotes={allData}>
         <div className="min-h-screen min-h-[100dvh] bg-gray-50">
           <NavigationWrapper>
             {children}

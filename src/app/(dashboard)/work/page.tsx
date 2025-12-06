@@ -40,7 +40,7 @@ interface Job {
 
 export default function WorkPage() {
   const router = useRouter()
-  const { quotes, refreshQuotes } = useDashboard()
+  const { workItems, refreshWorkItems } = useDashboard()
   const { role } = useUserRole()
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [updatingJobId, setUpdatingJobId] = useState<string | null>(null)
@@ -56,12 +56,12 @@ export default function WorkPage() {
   }, [])
 
   // For technicians, filter to only their assigned jobs
-  // For office staff, show all scheduled jobs
+  // For office staff, show all scheduled/in_progress jobs
   const myJobs = useMemo(() => {
-    return quotes
+    return workItems
       .filter(q => {
-        // Only show quotes (not leads) - these are actual jobs
-        if (q._type !== 'quote') return false
+        // Only scheduled or in_progress status
+        if (!['scheduled', 'in_progress'].includes(q.status)) return false
         
         // Must have a scheduled date
         if (!q.scheduled_at) return false
@@ -76,9 +76,9 @@ export default function WorkPage() {
       })
       .map(q => ({
         id: q.id,
-        customer_name: q.customer?.name || q.customer_name || 'Customer',
+        customer_name: q.customer?.name || 'Customer',
         customer_phone: q.customer?.phone,
-        customer_address: q.customer?.address || q.customer_address,
+        customer_address: q.customer?.address,
         job_name: q.job_name || q.description,
         description: q.description,
         scheduled_at: q.scheduled_at,
@@ -87,7 +87,7 @@ export default function WorkPage() {
         assigned_to: q.assigned_to
       }))
       .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
-  }, [quotes, role, currentUserId])
+  }, [workItems, role, currentUserId])
 
   // Split jobs by time period
   const todayJobs = myJobs.filter(j => isToday(parseISO(j.scheduled_at)))
@@ -114,13 +114,13 @@ export default function WorkPage() {
     try {
       const supabase = createClient()
       const { error } = await supabase
-        .from('quotes')
+        .from('work_items')
         .update({ started_at: new Date().toISOString(), status: 'in_progress' })
         .eq('id', jobId)
       
       if (error) throw error
       toast.success('Job started!')
-      await refreshQuotes()
+      await refreshWorkItems()
     } catch (err) {
       toast.error('Failed to start job')
     } finally {

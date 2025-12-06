@@ -27,11 +27,8 @@ export async function POST(request: NextRequest) {
 
     // Fetch existing quote with customer data (new normalized schema)
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
-      .select(`
-        *,
-        quote_items(*)
-      `)
+      .from('work_items')
+      .select(`*`)
       .eq('id', quote_id)
       .single() as { data: any; error: any }
 
@@ -42,6 +39,18 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       )
     }
+
+    // Fetch quote_items separately (avoiding RLS join issues)
+    const { data: quoteItems, error: itemsError } = await supabase
+      .from('quote_items')
+      .select('*')
+      .eq('quote_id', quote_id)
+    
+    if (itemsError) {
+      console.error('Quote items fetch error:', itemsError)
+    }
+    
+    console.log(`📦 Fetched ${quoteItems?.length || 0} existing items for quote ${quote_id}`)
 
     // Fetch customer data separately if customer_id exists
     let customerName = 'Customer'
@@ -78,6 +87,9 @@ export async function POST(request: NextRequest) {
       .order('created_at', { ascending: true })
 
     // Call Python backend to update quote with conversation history
+    const existingItems = quoteItems || []
+    console.log(`📤 Sending ${existingItems.length} items to Python backend`)
+    
     const response = await fetch(`${PYTHON_BACKEND_URL}/api/update-quote-with-ai`, {
       method: 'POST',
       headers: {
@@ -87,7 +99,7 @@ export async function POST(request: NextRequest) {
         quote_id,
         company_id,
         user_prompt,
-        existing_items: quote.quote_items || [],
+        existing_items: existingItems,
         customer_name: customerName,
         customer_address: customerAddress,
         conversation_history: auditHistory || [],
@@ -106,16 +118,16 @@ export async function POST(request: NextRequest) {
     const updatedQuote = await response.json()
 
     // Calculate what changed for audit trail display
-    const previousItems = quote.quote_items || []
+    const previousItems = existingItems
     const newItems = updatedQuote.line_items || []
     const previousTotal = previousItems.reduce((sum: number, item: any) => sum + (item.total || 0), 0)
     const newTotal = updatedQuote.total || 0
     
-    // Find added and removed items by description
-    const previousDescriptions = new Set(previousItems.map((i: any) => i.description))
-    const newDescriptions = new Set(newItems.map((i: any) => i.description))
-    const itemsAdded = newItems.filter((i: any) => !previousDescriptions.has(i.description)).map((i: any) => i.description)
-    const itemsRemoved = previousItems.filter((i: any) => !newDescriptions.has(i.description)).map((i: any) => i.description)
+    // Find added and removed items by name
+    const previousNames = new Set(previousItems.map((i: any) => i.name))
+    const newNames = new Set(newItems.map((i: any) => i.name))
+    const itemsAdded = newItems.filter((i: any) => !previousNames.has(i.name)).map((i: any) => i.name)
+    const itemsRemoved = previousItems.filter((i: any) => !newNames.has(i.name)).map((i: any) => i.name)
 
     // Log to activity_log (new schema)
     const { error: auditError } = await supabase.from('activity_log').insert({

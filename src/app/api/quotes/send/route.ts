@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
 
     const { data: quote, error: quoteError } = await supabase
-      .from('quotes')
+      .from('work_items')
       .select(`
         *,
         companies(*),
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     // Update quote status to 'sent'
     await supabase
-      .from('quotes')
+      .from('work_items')
       // @ts-ignore - Supabase typing
       .update({ 
         status: 'sent',

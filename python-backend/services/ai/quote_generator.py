@@ -250,11 +250,18 @@ class QuoteGeneratorService:
         # Add catalog
         parts.append(catalog_text)
         
-        # Add existing items
+        # Add existing items - CRITICAL for updates to preserve items
         if existing_items:
-            parts.append("\nEXISTING ITEMS:")
+            parts.append("\n⚠️ EXISTING QUOTE ITEMS (PRESERVE UNLESS USER ASKS TO CHANGE/REMOVE):")
+            parts.append("=" * 50)
             for item in existing_items:
-                parts.append(f"- {item.get('name')}: {item.get('quantity')} x ${item.get('unit_price')}")
+                name = item.get('name') or item.get('description', 'Unknown')
+                qty = item.get('quantity', 1)
+                price = item.get('unit_price', 0)
+                total = item.get('total', 0)
+                parts.append(f"- {name}: {qty} x ${price} = ${total}")
+            parts.append("=" * 50)
+            parts.append("IMPORTANT: Keep ALL items above UNLESS user explicitly asks to remove/change them.\n")
         
         # Add context
         parts.append(f"\nCUSTOMER ADDRESS: {customer_address}")
