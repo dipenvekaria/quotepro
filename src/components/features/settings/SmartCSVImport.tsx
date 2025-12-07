@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Upload, Check, X, AlertCircle, Loader2, Download, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
+import { autoIndexCatalog } from '@/lib/auto-index-catalog'
 
 interface ColumnMapping {
   csv_column: string
@@ -268,6 +269,9 @@ export function SmartCSVImport({ companyId, onImportComplete }: SmartCSVImportPr
       if (insertError) throw insertError
 
       toast.success(`✅ Imported ${result.imported_count} items${result.error_count > 0 ? ` (${result.error_count} errors)` : ''}`)
+      
+      // Auto-index catalog for AI search (background)
+      autoIndexCatalog(companyId)
       
       // Reset
       setFile(null)

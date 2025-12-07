@@ -26,7 +26,7 @@ import { QuoteDefaultsSettings } from '@/components/features/settings/QuoteDefau
 import { TeamMemberManager } from '@/components/features/settings/TeamMemberManager'
 import { AccountSettings } from '@/components/features/settings/AccountSettings'
 import { SubscriptionSettings } from '@/components/features/settings/SubscriptionSettings'
-import { CatalogIndexingPanel } from '@/components/catalog-indexing-panel'
+import { autoIndexCatalog } from '@/lib/auto-index-catalog'
 
 function SettingsPageContent() {
   const router = useRouter()
@@ -434,25 +434,8 @@ function SettingsPageContent() {
 
       if (error) throw error
       
-      // Auto-index the new item for AI search
-      try {
-        await fetch('/api/catalog/index-item', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            item_id: data.id,
-            company_id: company.id,
-            name: data.name,
-            category: data.category,
-            price: data.price,
-            description: data.description || '',
-            tags: []
-          })
-        })
-      } catch (indexError) {
-        console.error('Failed to index item:', indexError)
-        // Don't fail the whole operation if indexing fails
-      }
+      // Auto-index for AI search (background)
+      autoIndexCatalog(company.id)
       
       toast.success('Pricing item added')
       setNewPricingItem({ name: '', price: '', category: 'Labor', description: '' })
@@ -479,24 +462,8 @@ function SettingsPageContent() {
 
       if (error) throw error
       
-      // Re-index the updated item for AI search
-      try {
-        await fetch('/api/catalog/index-item', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            item_id: item.id,
-            company_id: company.id,
-            name: item.name,
-            category: item.category,
-            price: parseFloat(item.price),
-            description: item.description || '',
-            tags: []
-          })
-        })
-      } catch (indexError) {
-        console.error('Failed to re-index item:', indexError)
-      }
+      // Auto-index for AI search (background)
+      autoIndexCatalog(company.id)
       
       toast.success('Pricing item updated')
       setEditingItem(null)
@@ -518,14 +485,8 @@ function SettingsPageContent() {
 
       if (error) throw error
       
-      // Remove the item from AI search index
-      try {
-        await fetch(`/api/catalog/index-item/${itemId}`, {
-          method: 'DELETE'
-        })
-      } catch (indexError) {
-        console.error('Failed to remove item from index:', indexError)
-      }
+      // Auto-index for AI search (background, will handle removal)
+      autoIndexCatalog(company.id)
       
       toast.success('Pricing item deleted')
       setDeleteDialogOpen(false)
@@ -745,10 +706,6 @@ function SettingsPageContent() {
                   setDeleteDialogOpen(true)
                 }}
               />
-              
-              <div className="mt-8">
-                <CatalogIndexingPanel />
-              </div>
             </>
           )}
 
