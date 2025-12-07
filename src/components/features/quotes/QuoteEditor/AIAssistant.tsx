@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Sparkles, Loader2, Send, Wand2, Bot } from 'lucide-react'
+import { Sparkles, Loader2, Send, Wand2 } from 'lucide-react'
 
 interface AIAssistantProps {
   quoteId?: string | null
@@ -11,7 +11,6 @@ interface AIAssistantProps {
   isGenerating?: boolean
   onGenerateQuote?: () => Promise<void>
   onUpdateWithAI: (prompt: string) => Promise<void>
-  onOpenChat: () => void
   disabled?: boolean
 }
 
@@ -22,7 +21,6 @@ export function AIAssistant({
   isGenerating = false,
   onGenerateQuote,
   onUpdateWithAI,
-  onOpenChat,
   disabled = false,
 }: AIAssistantProps) {
   const [prompt, setPrompt] = useState('')
@@ -100,15 +98,6 @@ export function AIAssistant({
                   <Send className="h-4 w-4" />
                 )}
                 <span className="ml-2">Update Quote</span>
-              </Button>
-              <Button
-                onClick={onOpenChat}
-                disabled={disabled}
-                variant="outline"
-                className="h-10"
-              >
-                <Bot className="h-4 w-4 mr-2" />
-                Chat Assistant
               </Button>
             </div>
           </div>
