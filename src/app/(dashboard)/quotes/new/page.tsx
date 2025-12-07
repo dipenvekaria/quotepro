@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { LeadForm } from '@/components/features/leads/LeadForm'
-import { ItemsTable, AIAssistant, type QuoteItem } from '@/components/features/quotes/QuoteEditor'
+import { ItemsTable, AIAssistant, type QuoteItem, ChatAssistant } from '@/components/features/quotes/QuoteEditor'
 import { AuditTrail } from '@/components/audit-trail'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { useGenerateQuote, useUpdateQuoteWithAI } from '@/lib/hooks/useQuotes'
@@ -61,6 +61,7 @@ export default function NewQuotePage() {
   const [auditLogs, setAuditLogs] = useState<any[]>([])
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [isChatAssistantOpen, setIsChatAssistantOpen] = useState(false)
 
   // Wrapper functions to track changes
   const handleCustomerNameChange = (value: string) => {
@@ -78,6 +79,27 @@ export default function NewQuotePage() {
   const handleCustomerAddressChange = (value: string) => {
     setCustomerAddress(value)
     if (generatedQuote) setHasUnsavedChanges(true)
+  }
+
+  const handleChatAssistantComplete = (newItems: QuoteItem[]) => {
+    setGeneratedQuote(prev => {
+      const updatedItems = [...(prev?.line_items || []), ...newItems]
+      const subtotal = updatedItems.reduce((acc, item) => acc + item.quantity * item.unit_price, 0)
+      const taxRate = prev?.tax_rate || 0.08
+      const taxAmount = subtotal * taxRate
+      const total = subtotal + taxAmount
+
+      return {
+        ...(prev || {}),
+        line_items: updatedItems,
+        subtotal,
+        tax_amount: taxAmount,
+        total,
+      }
+    })
+    setHasUnsavedChanges(true)
+    setIsChatAssistantOpen(false)
+    toast.success('AI Assistant added new items to your quote.')
   }
 
   // TanStack Query hooks
@@ -1233,13 +1255,13 @@ export default function NewQuotePage() {
 
         {/* 2. AI GENERATE - Show generate button when no items, update button when has items */}
         <AIAssistant
-          quoteId={savedQuoteId || quoteId}
-          aiNotes={generatedQuote?.notes}
-          hasQuote={!!generatedQuote && generatedQuote.line_items.length > 0}
+          quoteId={savedQuoteId}
+          hasQuote={!!generatedQuote}
           isGenerating={isGenerating}
           onGenerateQuote={handleGenerateQuote}
           onUpdateWithAI={handleUpdateWithAI}
-          disabled={!customerName}
+          onOpenChat={() => setIsChatAssistantOpen(true)}
+          disabled={isLoadingQuote}
         />
 
         {/* 3. CUSTOMER INFO */}
@@ -1329,12 +1351,18 @@ export default function NewQuotePage() {
         </div>
       )}
 
-      {/* Archive Dialog */}
-      <ArchiveDialog
-        open={archiveDialogOpen}
-        onOpenChange={setArchiveDialogOpen}
-        onArchive={handleArchive}
+      <ChatAssistant
+        open={isChatAssistantOpen}
+        onOpenChange={setIsChatAssistantOpen}
       />
+
+      {savedQuoteId && (
+        <ArchiveDialog
+          open={archiveDialogOpen}
+          onOpenChange={setArchiveDialogOpen}
+          onArchive={handleArchive}
+        />
+      )}
     </div>
   )
 }

@@ -154,7 +154,6 @@ app.include_router(ai.router, tags=["AI Quote Generation", "Quote Optimization",
 app.include_router(quotes.router, tags=["Quotes"])
 app.include_router(catalog.router, tags=["Catalog Management"])
 app.include_router(catalog_import.router, prefix="/api", tags=["Catalog Import"])
-app.include_router(ai_analytics.router, tags=["AI Analytics"])
 
 # Startup message
 @app.on_event("startup")

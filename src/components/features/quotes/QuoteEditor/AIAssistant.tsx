@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Sparkles, Loader2, Send, Wand2 } from 'lucide-react'
+import { Sparkles, Loader2, Send, Wand2, Bot } from 'lucide-react'
 
 interface AIAssistantProps {
   quoteId?: string | null
@@ -11,6 +11,7 @@ interface AIAssistantProps {
   isGenerating?: boolean
   onGenerateQuote?: () => Promise<void>
   onUpdateWithAI: (prompt: string) => Promise<void>
+  onOpenChat: () => void
   disabled?: boolean
 }
 
@@ -21,6 +22,7 @@ export function AIAssistant({
   isGenerating = false,
   onGenerateQuote,
   onUpdateWithAI,
+  onOpenChat,
   disabled = false,
 }: AIAssistantProps) {
   const [prompt, setPrompt] = useState('')
@@ -53,8 +55,9 @@ export function AIAssistant({
         <span className="text-base font-semibold text-gray-900">AI Genie</span>
       </div>
       
-      <div className="p-4">
-        {/* No quote yet - Show generate button */}
+      {/* Body */}
+      <div className="p-4 space-y-4">
+        {/* No quote yet - Show big generate button */}
         {!hasQuote && onGenerateQuote && (
           <Button
             onClick={onGenerateQuote}
@@ -83,28 +86,30 @@ export function AIAssistant({
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full min-h-[100px] px-4 py-3 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#0055FF] focus:border-transparent resize-none"
-              rows={4}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow text-sm"
             />
-            {/* Button row - full width on mobile, right-aligned on desktop */}
-            <div className="flex justify-end">
-              <button
+            <div className="flex items-center justify-between gap-2">
+              <Button
                 onClick={handleUpdate}
-                disabled={!prompt.trim() || !quoteId || isUpdating || disabled}
-                className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium rounded-xl shadow-lg shadow-purple-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                disabled={isUpdating || !prompt.trim() || disabled}
+                className="flex-1 h-10 bg-blue-600 hover:bg-blue-700 text-white"
               >
                 {isUpdating ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Updating...</span>
-                  </>
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <>
-                    <Send className="h-4 w-4" />
-                    <span>Update Quote</span>
-                  </>
+                  <Send className="h-4 w-4" />
                 )}
-              </button>
+                <span className="ml-2">Update Quote</span>
+              </Button>
+              <Button
+                onClick={onOpenChat}
+                disabled={disabled}
+                variant="outline"
+                className="h-10"
+              >
+                <Bot className="h-4 w-4 mr-2" />
+                Chat Assistant
+              </Button>
             </div>
           </div>
         )}
