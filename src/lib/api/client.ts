@@ -17,6 +17,7 @@ export class APIError extends Error {
 
 interface FetchOptions extends RequestInit {
   body?: any
+  timeout?: number
 }
 
 /**
@@ -41,33 +42,47 @@ export async function apiClient<T = any>(
     headers['Authorization'] = `Bearer ${session.access_token}`
   }
 
+  const timeout = options.timeout || 60000 // 60s default
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeout)
+
   const config: RequestInit = {
     ...options,
     headers,
+    signal: controller.signal,
     body: options.body ? JSON.stringify(options.body) : undefined,
   }
 
-  const response = await fetch(endpoint, config)
+  try {
+    const response = await fetch(endpoint, config)
+    clearTimeout(timeoutId)
 
-  if (!response.ok) {
-    let error: APIError
-    try {
-      const errorData = await response.json()
-      error = new APIError(
-        errorData.error || errorData.message || 'Request failed',
-        response.status,
-        errorData.code
-      )
-    } catch {
-      error = new APIError(
-        `Request failed: ${response.statusText}`,
-        response.status
-      )
+    if (!response.ok) {
+      let error: APIError
+      try {
+        const errorData = await response.json()
+        error = new APIError(
+          errorData.error || errorData.message || 'Request failed',
+          response.status,
+          errorData.code
+        )
+      } catch {
+        error = new APIError(
+          `Request failed: ${response.statusText}`,
+          response.status
+        )
+      }
+      throw error
     }
-    throw error
-  }
 
-  return response.json() as Promise<T>
+    return response.json() as Promise<T>
+  } catch (err) {
+    clearTimeout(timeoutId)
+    if (err instanceof Error && err.name === 'AbortError') {
+      throw new APIError('Request timeout', 408)
+    }
+    throw err
+  }
 }
 
 /**

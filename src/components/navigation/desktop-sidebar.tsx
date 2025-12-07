@@ -247,20 +247,23 @@ export function DesktopSidebar({ counts = {
       isCollapsed ? "w-16" : "w-64"
     )}>
       {/* Logo */}
-      <div className="flex items-center h-16 px-6 border-b border-gray-200 !bg-white justify-between">
+      <div className="flex items-center h-16 px-6 border-b border-gray-200 !bg-white justify-center">
         {!isCollapsed && (
-          <Link href="/home" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-center">
-              <Zap className="w-4 h-4 text-blue-600" fill="currentColor" />
-            </div>
-            <span className="text-sm font-bold text-gray-900">The Field Genie</span>
+          <Link href="/home" className="flex items-center justify-center w-full">
+            <img 
+              src="/thefieldgenie.png" 
+              alt="The Field Genie" 
+              className="h-14 w-auto object-contain max-w-full"
+            />
           </Link>
         )}
         {isCollapsed && (
           <Link href="/home">
-            <div className="w-8 h-8 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-center mx-auto cursor-pointer">
-              <Zap className="w-4 h-4 text-blue-600" fill="currentColor" />
-            </div>
+            <img 
+              src="/thefieldgenie.png" 
+              alt="The Field Genie" 
+              className="h-12 w-auto object-contain cursor-pointer"
+            />
           </Link>
         )}
       </div>

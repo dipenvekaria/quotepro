@@ -252,7 +252,7 @@ export default function WorkPage() {
   }
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0 bg-gray-50">
+    <div className="min-h-screen pb-20 md:pb-0 bg-gray-50 overflow-x-hidden">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4 py-4">

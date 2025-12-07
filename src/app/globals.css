@@ -121,4 +121,20 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+  
+  /* Hide React DevTools badge on mobile */
+  @media (max-width: 768px) {
+    #react-devtools-portal,
+    [data-react-devtools-portal],
+    .__react-devtools-logo__,
+    iframe[src*="react-devtools"],
+    div[style*="react-devtools"],
+    div[id*="react-devtools"],
+    div[class*="react-devtools"] {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  }
 }

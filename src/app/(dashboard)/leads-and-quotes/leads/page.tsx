@@ -14,6 +14,7 @@ import {
   EmptyQueue,
 } from '@/components/queues'
 import { Button } from '@/components/ui/button'
+import { ActionButton } from '@/components/ui/action-button'
 import { FileText, Plus, Phone, Archive, Calendar } from 'lucide-react'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
@@ -92,7 +93,7 @@ export default function LeadsQueuePage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50">
+    <div className="min-h-[100dvh] bg-gray-50 overflow-x-hidden">
       {/* Mobile Tabs */}
       <MobileSectionTabs 
         activeTab="leads"
@@ -100,27 +101,22 @@ export default function LeadsQueuePage() {
         quotesCount={counts.quotes}
       />
 
+      {/* Header */}
       <QueueHeader
         title="Leads"
         subtitle={`${filteredLeads.length} lead${filteredLeads.length !== 1 ? 's' : ''} waiting`}
-        action={
-          <Button
-            onClick={() => router.push('/leads/new')}
-            className="bg-[#0055FF] hover:bg-blue-600 text-white"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            New Lead
-          </Button>
-        }
       />
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4 pb-24 md:pb-4 overflow-x-hidden">
+        {/* Search */}
         <QueueSearch
           value={searchTerm}
           onChange={setSearchTerm}
           placeholder="Search leads..."
         />
 
+        {/* Empty State or List */}
         {filteredLeads.length === 0 ? (
           <EmptyQueue
             icon="users"
@@ -151,16 +147,17 @@ export default function LeadsQueuePage() {
                   showPhone={true}
                   showAmount={false}
                   actions={
-                    <Button
+                    <ActionButton
+                      variant="primary"
                       size="sm"
+                      icon={FileText}
                       onClick={(e) => {
                         e.stopPropagation()
                         handleCreateQuote(lead.id)
                       }}
                     >
-                      <FileText className="h-4 w-4 mr-1" />
-                      Quote
-                    </Button>
+                      <span className="hidden sm:inline">Quote</span>
+                    </ActionButton>
                   }
                 />
 
@@ -177,16 +174,16 @@ export default function LeadsQueuePage() {
                     status: lead.status,
                   }}
                   badge={
-                    <span className="px-2.5 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">
+                    <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
                       Lead
                     </span>
                   }
                   actions={
-                    <div className="flex gap-2 flex-wrap">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="gap-2"
+                    <div className="flex gap-2">
+                      <ActionButton
+                        variant="ghost"
+                        size="md"
+                        icon={Phone}
                         onClick={(e) => {
                           e.stopPropagation()
                           if (lead.customer?.phone) {
@@ -194,33 +191,32 @@ export default function LeadsQueuePage() {
                           }
                         }}
                       >
-                        <Phone className="w-5 h-5" />
                         Call
-                      </Button>
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="gap-2"
+                      </ActionButton>
+                      <ActionButton
+                        variant="secondary"
+                        size="md"
+                        icon={Archive}
                         onClick={(e) => {
                           e.stopPropagation()
                           setSelectedLeadId(lead.id)
                           setArchiveDialogOpen(true)
                         }}
                       >
-                        <Archive className="w-5 h-5" />
                         Archive
-                      </Button>
-                      <Button
-                        size="lg"
-                        className="gap-2"
+                      </ActionButton>
+                      <ActionButton
+                        variant="primary"
+                        size="md"
+                        icon={FileText}
                         onClick={(e) => {
                           e.stopPropagation()
                           handleCreateQuote(lead.id)
                         }}
+                        className="shadow-md shadow-blue-500/20"
                       >
-                        <FileText className="w-5 h-5" />
                         Create Quote
-                      </Button>
+                      </ActionButton>
                     </div>
                   }
                   onClick={() => router.push(`/leads/new?id=${lead.id}`)}
@@ -234,6 +230,15 @@ export default function LeadsQueuePage() {
         )}
       </main>
 
+      {/* Mobile Floating Action Button */}
+      <button
+        onClick={() => router.push('/leads/new')}
+        className="md:hidden fixed bottom-20 right-4 z-40 w-14 h-14 bg-[#0055FF] hover:bg-[#0046DD] text-white rounded-full shadow-xl flex items-center justify-center transition-all active:scale-95 hover:shadow-2xl"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
+
+      {/* Archive Dialog */}
       <ArchiveDialog
         open={archiveDialogOpen}
         onOpenChange={setArchiveDialogOpen}

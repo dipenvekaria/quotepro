@@ -46,7 +46,7 @@ export function AIAssistant({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-blue-50 flex items-center gap-2">
         <Wand2 className="w-4 h-4 text-[#0055FF]" />

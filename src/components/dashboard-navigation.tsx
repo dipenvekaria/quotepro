@@ -15,33 +15,21 @@ const navItems = [
   },
   {
     name: 'Leads',
-    href: '/leads',
+    href: '/leads-and-quotes/leads',
     icon: Target,
     description: 'Manage leads and quotes'
   },
   {
-    name: 'Work',
+    name: 'Calendar',
     href: '/work',
     icon: Calendar,
     description: 'Schedule and track jobs'
   },
   {
-    name: 'Pay',
-    href: '/pay',
-    icon: DollarSign,
-    description: 'Invoices and payments'
-  },
-  {
-    name: 'Stats',
-    href: '/analytics',
-    icon: BarChart3,
-    description: 'Performance insights'
-  },
-  {
     name: 'More',
     href: '/settings',
     icon: Settings,
-    description: 'Company and team settings'
+    description: 'Settings and options'
   },
 ]
 
@@ -52,29 +40,24 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
     if (href === '/home') {
       return pathname === '/home' || pathname === '/'
     }
-    if (href === '/leads') {
-      return pathname === '/leads' || pathname === '/prospects'
+    if (href === '/leads-and-quotes/leads') {
+      return pathname === '/leads-and-quotes/leads' || pathname === '/leads-and-quotes/quotes' || pathname === '/leads' || pathname === '/prospects'
     }
     return pathname?.startsWith(href)
   }
-
-  // Show FAB only on Leads page
-  const showFAB = pathname === '/leads' || pathname === '/prospects'
 
   return (
     <>
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:w-64 lg:border-r lg:border-gray-200 lg:bg-white">
-        {/* Logo/Brand */}
-        <div className="flex h-16 items-center gap-3 px-6 border-b border-gray-200">
-          <div className="bg-[#2563eb] p-2 rounded-lg">
-            <Target className="h-5 w-5 text-white" />
-          </div>
-          <div>
-            <h1 className="text-sm font-bold">The Field Genie</h1>
-            <p className="text-xs text-muted-foreground">Win more jobs</p>
-          </div>
-        </div>
+        {/* Logo/Brand - Clickable to go home */}
+        <Link href="/home" className="flex h-16 items-center justify-center px-6 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+          <img 
+            src="/thefieldgenie.png" 
+            alt="The Field Genie" 
+            className="h-14 w-auto object-contain max-w-full"
+          />
+        </Link>
 
         {/* Navigation Items */}
         <nav className="flex-1 space-y-1 px-3 py-4">
@@ -107,10 +90,10 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
           })}
         </nav>
 
-        {/* Bottom Section - The Field Genie branding */}
+        {/* Bottom Section - Field Genie branding */}
         <div className="border-t border-gray-200 p-4">
           <p className="text-xs text-center text-muted-foreground">
-            The Field Genie • Win more jobs
+            Field Genie • Win more jobs
           </p>
         </div>
       </aside>
@@ -148,7 +131,7 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
                 )}>
                   <Icon className={cn(
                     'h-6 w-6 flex-shrink-0 transition-all duration-300',
-                    active ? 'text-white' : 'text-gray-600 group-hover:text-gray-900
+                    active ? 'text-white' : 'text-gray-600 group-hover:text-gray-900'
                   )} />
                 </div>
                 
@@ -156,8 +139,8 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
                 <span className={cn(
                   'text-[10px] font-bold tracking-wide truncate max-w-full text-center leading-tight transition-all duration-300',
                   active 
-                    ? 'text-blue-600 
-                    : 'text-gray-500 group-hover:text-gray-700
+                    ? 'text-blue-600' 
+                    : 'text-gray-500 group-hover:text-gray-700'
                 )}>
                   {item.name}
                 </span>
@@ -166,23 +149,6 @@ export function DashboardNavigation({ companyId }: { companyId: string }) {
           })}
         </div>
       </nav>
-
-      {/* Floating Action Button - Bottom Right Above Navigation Bar (only on Leads page) */}
-      {showFAB && (
-        <Link
-          href="/leads?new_lead=true"
-          className="fixed bottom-20 right-4 z-50 lg:bottom-6 lg:right-6"
-        >
-          <button
-            className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center"
-            style={{ backgroundColor: '#2563eb', border: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1d4ed8'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-          >
-            <Plus className="h-6 w-6 text-white" />
-          </button>
-        </Link>
-      )}
     </>
   )
 }

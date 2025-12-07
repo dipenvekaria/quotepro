@@ -184,7 +184,7 @@ export function ItemsTable({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
         <span className="text-base font-semibold text-gray-900">Quote Items</span>

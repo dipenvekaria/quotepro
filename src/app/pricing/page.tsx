@@ -13,9 +13,13 @@ export default function PricingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-center justify-between">
             <Link href="/">
-              <div>
-                <h1 className="text-sm sm:text-sm font-bold text-white">QuoteBuilder Pro</h1>
-                <p className="text-[#2563eb] text-xs sm:text-sm font-bold hidden sm:block">
+              <div className="flex items-center gap-2">
+                <img 
+                  src="/thefieldgenie.png" 
+                  alt="The Field Genie" 
+                  className="h-14 w-auto object-contain"
+                />
+                <p className="text-[#2563eb] text-xs sm:text-sm font-bold">
                   Stop losing jobs to slow quotes.
                 </p>
               </div>
@@ -175,7 +179,7 @@ export default function PricingPage() {
       <footer className="bg-[#0F172A] border-t border-white/10 mt-16 sm:mt-24 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-gray-400 text-sm">
-            <p>&copy; 2025 QuoteBuilder Pro. All rights reserved.</p>
+            <p>&copy; 2025 The Field Genie. All rights reserved.</p>
             <p className="mt-2">Built for contractors who want to close jobs faster.</p>
           </div>
         </div>

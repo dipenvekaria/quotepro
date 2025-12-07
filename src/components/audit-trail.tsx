@@ -153,7 +153,7 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
 
   if (!entries || entries.length === 0) {
     return (
-      <Card className="bg-white border border-gray-200 rounded-2xl">
+      <Card className="bg-white border border-gray-200 rounded-xl">
         <CardHeader className="px-4 py-3 border-b border-gray-100">
           <CardTitle className="text-base font-semibold text-gray-900">Audit Trail</CardTitle>
         </CardHeader>
@@ -168,7 +168,7 @@ export function AuditTrail({ quoteId, entries }: AuditTrailProps) {
   }
 
   return (
-    <Card className="bg-white border border-gray-200 rounded-2xl">
+    <Card className="bg-white border border-gray-200 rounded-xl">
       <CardHeader className="px-4 py-3 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base font-semibold text-gray-900">Audit Trail ({entries.length})</CardTitle>

@@ -71,7 +71,7 @@ export const globalTheme = {
 // Brand Configuration
 export const brandConfig = {
   name: 'The Field Genie',
-  shortName: 'Field Genie',
+  shortName: 'The Field Genie',
   tagline: 'AI-powered quote generation for field service contractors',
   description: 'Win more jobs in seconds with intelligent quote automation',
 };

@@ -35,7 +35,7 @@ export function MobileSectionTabs({
   ]
 
   return (
-    <div className={cn("md:hidden sticky top-0 z-40 bg-white border-b border-gray-200", className)}>
+    <div className={cn("md:hidden sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm", className)}>
       <div className="flex items-center">
         {tabs.map((tab) => {
           const isActive = activeTab 
@@ -47,23 +47,23 @@ export function MobileSectionTabs({
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-all relative",
+                "flex-1 flex items-center justify-center gap-2.5 py-4 px-4 text-base font-semibold transition-all relative",
                 isActive
-                  ? "text-blue-600"
-                  : "text-gray-600 active:bg-gray-50"
+                  ? "text-blue-600 bg-blue-50/50"
+                  : "text-gray-600 active:bg-gray-50 hover:bg-gray-50"
               )}
             >
               <span>{tab.label}</span>
               {tab.count !== undefined && tab.count > 0 && (
                 <span className={cn(
-                  "text-xs px-1.5 py-0.5 rounded-full",
-                  isActive ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600"
+                  "text-sm font-bold px-2 py-1 rounded-full min-w-[24px] text-center",
+                  isActive ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 )}>
                   {tab.count}
                 </span>
               )}
               {isActive && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-700" />
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 rounded-t-full" />
               )}
             </Link>
           )

@@ -26,13 +26,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Logo and Title */}
         <div className="text-center space-y-3">
-          <div className="flex items-center justify-center gap-3">
-            <div className="bg-[#2563eb] p-3 rounded-lg">
-              <Wrench className="h-8 w-8 text-white" />
-            </div>
+          <div className="flex items-center justify-center px-8">
+            <img 
+              src="/thefieldgenie.png" 
+              alt="The Field Genie" 
+              className="h-32 w-full object-contain"
+            />
           </div>
           <div>
-            <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
             <p className="text-[#2563eb] text-sm font-bold mt-1">
               Win more jobs in seconds
             </p>
@@ -46,7 +47,7 @@ export default function LoginPage() {
             <CardDescription>
               {isSignUp 
                 ? 'Start your free trial today' 
-                : 'Welcome back to QuoteBuilder Pro'}
+                : 'Welcome back to The Field Genie'}
             </CardDescription>
           </CardHeader>
           <CardContent>

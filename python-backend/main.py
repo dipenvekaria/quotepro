@@ -16,8 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 # Import route modules
-from api.routes import health, ai, quotes, catalog, ai_analytics
-from routers import catalog_import
+from api.routes import health, ai, quotes, catalog, ai_analytics, catalog_import
 from app.routes import health as monitoring_health
 from app.middleware.logging import LoggingMiddleware
 from app.middleware.rate_limit import limiter, rate_limit_exceeded_handler

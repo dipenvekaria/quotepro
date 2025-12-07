@@ -427,7 +427,7 @@ function LeadRow({ lead }: { lead: any }) {
     
     // Mark lead as quoted and navigate to quote editor
     await supabase
-      .from('quotes')
+      .from('work_items')
       .update({ lead_status: 'quoted' })
       .eq('id', lead.id)
     

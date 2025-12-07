@@ -33,7 +33,7 @@ export default function PayPage() {
   }, [searchParams])
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 md:pb-0 overflow-x-hidden">
       {/* Header */}
       <header className="bg-gray-50 border-b border-gray-200/50 sticky top-0 z-10 backdrop-blur-sm bg-opacity-80">
         <div className="px-6 py-6">

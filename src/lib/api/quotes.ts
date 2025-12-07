@@ -39,6 +39,18 @@ export interface UpdateQuoteWithAIRequest {
   quote_id: string
   company_id: string
   user_prompt: string
+  existing_items?: Array<{
+    description: string
+    quantity: number
+    unit_price: number
+    total: number
+  }>
+  customer_name: string
+  customer_address?: string
+  conversation_history?: Array<{
+    role: string
+    content: string
+  }>
 }
 
 export interface SaveQuoteRequest {

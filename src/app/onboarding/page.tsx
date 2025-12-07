@@ -29,12 +29,14 @@ export default function OnboardingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div>
-                <h1 className="text-sm font-bold text-white">QuoteBuilder Pro</h1>
-                <p className="text-[#2563eb] text-sm font-bold">
-                  Stop losing jobs to slow quotes.
-                </p>
-              </div>
+              <img 
+                src="/thefieldgenie.png" 
+                alt="The Field Genie" 
+                className="h-16 w-auto object-contain"
+              />
+              <p className="text-[#2563eb] text-sm font-bold">
+                Stop losing jobs to slow quotes.
+              </p>
             </div>
             <Button
               variant="ghost"

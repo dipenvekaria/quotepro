@@ -20,23 +20,16 @@ export function FieldGenieLogo({ size = 'md', showText = true, className = '' }:
 
   return (
     <div className={`flex items-center gap-4 ${className}`}>
-      {/* Lightning Bolt Icon */}
-      <div 
-        className="rounded-lg p-2 flex-shrink-0 bg-slate-900"
+      {/* Field Genie Logo */}
+      <img 
+        src="/thefieldgenie.png" 
+        alt="The Field Genie" 
+        className="flex-shrink-0 object-contain"
         style={{ 
           width: iconSize,
           height: iconSize
         }}
-      >
-        <svg 
-          width={iconSize - 16} 
-          height={iconSize - 16} 
-          viewBox="0 0 24 24" 
-          fill="white"
-        >
-          <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" />
-        </svg>
-      </div>
+      />
 
       {/* Text Logo */}
       {showText && (
@@ -56,21 +49,14 @@ export function FieldGenieLogo({ size = 'md', showText = true, className = '' }:
 // Icon-only version for small spaces (collapsed sidebar, mobile, etc.)
 export function FieldGenieIcon({ size = 40, className = '' }: { size?: number; className?: string }) {
   return (
-    <div 
-      className={`rounded-lg p-2 flex items-center justify-center bg-slate-900 ${className}`}
+    <img 
+      src="/thefieldgenie.png" 
+      alt="The Field Genie" 
+      className={`object-contain ${className}`}
       style={{ 
         width: size,
         height: size
       }}
-    >
-      <svg 
-        width={size - 16} 
-        height={size - 16} 
-        viewBox="0 0 24 24" 
-        fill="white"
-      >
-        <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" />
-      </svg>
-    </div>
+    />
   )
 }

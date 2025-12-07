@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { NetworkStatus } from "@/components/network-status";
+import { HideDevTools } from "@/components/hide-devtools";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,13 +17,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QuoteBuilder Pro - Win more jobs in seconds, not minutes",
+  title: "The Field Genie - Win more jobs in seconds, not minutes",
   description: "Professional quote builder for home service contractors. HVAC, plumbing, electrical, roofing, and more.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "QuoteBuilder Pro",
+    title: "The Field Genie",
   },
 };
 
@@ -37,10 +38,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined') {
+                window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+                  isDisabled: true,
+                  supportsFiber: true,
+                  inject: function() {},
+                  onCommitFiberRoot: function() {},
+                  onCommitFiberUnmount: function() {},
+                };
+              }
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ErrorBoundary>
+          <HideDevTools />
           <NetworkStatus />
           {children}
           <Toaster />

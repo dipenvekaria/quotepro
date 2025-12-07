@@ -259,6 +259,12 @@ async def update_quote_with_ai(
         subtotal = sum(item['total'] for item in quote_data['line_items'])
         total = subtotal * (1 + tax_rate / 100)
         
+        # DEBUG: Log what AI returned
+        print(f"🤖 AI returned {len(quote_data['line_items'])} items:")
+        for item in quote_data['line_items']:
+            print(f"   - {item.get('name', 'unknown')}: ${item.get('total', 0)}")
+        print(f"   TOTAL: ${total:.2f}")
+        
         return QuoteResponse(
             line_items=[LineItem(**item) for item in quote_data['line_items']],
             options=quote_data.get('options', []),

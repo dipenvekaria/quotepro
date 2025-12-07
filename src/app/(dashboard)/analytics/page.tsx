@@ -19,7 +19,7 @@ export default function AnalyticsPage() {
   } = useAnalytics()
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden pb-20 md:pb-0">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -40,7 +40,7 @@ export default function AnalyticsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                     Win Rate
                   </p>
                   <div className="text-3xl font-bold text-[#2563eb] mt-2">{winRate}%</div>
@@ -48,7 +48,7 @@ export default function AnalyticsPage() {
                     {signedQuotes.length} of {sentQuotes.length} sent quotes
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                <div className="w-14 h-14 bg-[#0055FF] rounded-xl flex items-center justify-center shadow-sm">
                   <Award className="w-7 h-7 text-white" />
                 </div>
               </div>
@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                     Avg Quote Value
                   </p>
                   <div className="text-3xl font-bold mt-2">${averageQuoteValue.toLocaleString()}</div>
@@ -67,7 +67,7 @@ export default function AnalyticsPage() {
                     Across {quotes.length} quotes
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-slate-700 rounded-xl flex items-center justify-center shadow-md">
+                <div className="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center shadow-sm">
                   <Target className="w-7 h-7 text-white" />
                 </div>
               </div>
@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                     Total Revenue
                   </p>
                   <div className="text-3xl font-bold text-green-600 mt-2">${totalRevenue.toLocaleString()}</div>
@@ -86,7 +86,7 @@ export default function AnalyticsPage() {
                     From {signedQuotes.length} signed quotes
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-green-600 rounded-xl flex items-center justify-center shadow-md">
+                <div className="w-14 h-14 bg-green-600 rounded-xl flex items-center justify-center shadow-sm">
                   <DollarSign className="w-7 h-7 text-white" />
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function AnalyticsPage() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  <p className="text-xs font-medium text-gray-600 uppercase tracking-wide">
                     This Month
                   </p>
                   <div className="text-3xl font-bold mt-2">${revenueThisMonth.toLocaleString()}</div>
@@ -105,7 +105,7 @@ export default function AnalyticsPage() {
                     {signedThisMonth.length} deals closed
                   </p>
                 </div>
-                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                <div className="w-14 h-14 bg-[#0055FF] rounded-xl flex items-center justify-center shadow-sm">
                   <TrendingUp className="w-7 h-7 text-white" />
                 </div>
               </div>

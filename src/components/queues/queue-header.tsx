@@ -5,40 +5,45 @@ import { cn } from '@/lib/utils'
 
 interface QueueHeaderProps {
   title: string
-  description?: string
-  count?: number
+  subtitle?: string
   action?: ReactNode
   className?: string
 }
 
 /**
  * Standard header for queue pages
- * Shows title, optional description, item count badge, and action button
+ * Shows title, optional subtitle, and action button
+ * Consistent spacing and typography across all queue pages
  */
 export function QueueHeader({ 
   title, 
-  description, 
-  count, 
+  subtitle,
   action,
   className 
 }: QueueHeaderProps) {
   return (
-    <div className={cn("flex items-start justify-between gap-4", className)}>
-      <div className="flex-1">
-        <h1 className="text-2xl font-bold text-gray-900">
-          {title}
-        </h1>
-        {description && (
-          <p className="text-base text-gray-600 mt-1">
-            {description}
-          </p>
+    <header className={cn(
+      "bg-white border-b border-gray-200 sticky top-0 z-10",
+      "px-4 md:px-6 py-4",
+      className
+    )}>
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="text-sm md:text-base text-gray-600 mt-0.5">
+              {subtitle}
+            </p>
+          )}
+        </div>
+        {action && (
+          <div className="flex-shrink-0">
+            {action}
+          </div>
         )}
       </div>
-      {action && (
-        <div className="flex-shrink-0">
-          {action}
-        </div>
-      )}
-    </div>
+    </header>
   )
 }

@@ -83,8 +83,8 @@ export function QueueCard({
   return (
     <Card 
       className={cn(
-        "transition-shadow bg-white border border-gray-200 rounded-2xl",
-        onClick && "cursor-pointer hover:shadow-md",
+        "transition-all bg-white border border-gray-200 rounded-xl",
+        onClick && "cursor-pointer hover:shadow-md active:scale-[0.98] active:bg-gray-50",
         className
       )}
       onClick={handleClick}

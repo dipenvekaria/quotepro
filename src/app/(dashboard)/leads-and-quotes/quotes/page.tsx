@@ -13,7 +13,8 @@ import {
   EmptyQueue,
 } from '@/components/queues'
 import { Button } from '@/components/ui/button'
-import { FileText, Plus, Archive, Send } from 'lucide-react'
+import { ActionButton } from '@/components/ui/action-button'
+import { FileText, Archive, Send } from 'lucide-react'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { formatDistanceToNow } from 'date-fns'
@@ -82,7 +83,7 @@ export default function QuotesQueuePage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50">
+    <div className="min-h-[100dvh] bg-gray-50 overflow-x-hidden">
       {/* Mobile Tabs */}
       <MobileSectionTabs 
         activeTab="quotes"
@@ -90,27 +91,22 @@ export default function QuotesQueuePage() {
         quotesCount={counts.quotes}
       />
 
+      {/* Header */}
       <QueueHeader
         title="Quotes"
         subtitle={`${filteredQuotes.length} quote${filteredQuotes.length !== 1 ? 's' : ''}`}
-        action={
-          <Button
-            onClick={() => router.push('/quotes/new')}
-            className="bg-[#0055FF] hover:bg-blue-600 text-white"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            New Quote
-          </Button>
-        }
       />
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4 pb-24 md:pb-4 overflow-x-hidden">
+        {/* Search */}
         <QueueSearch
           value={searchTerm}
           onChange={setSearchTerm}
           placeholder="Search quotes..."
         />
 
+        {/* Empty State or List */}
         {filteredQuotes.length === 0 ? (
           <EmptyQueue
             icon="file"
@@ -136,19 +132,16 @@ export default function QuotesQueuePage() {
                 onClick={() => router.push(`/quotes/new?id=${quote.id}`)}
                 showAmount={true}
                 actions={
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectedQuoteId(quote.id)
-                        setArchiveDialogOpen(true)
-                      }}
-                    >
-                      <Archive className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <ActionButton
+                    variant="ghost"
+                    size="sm"
+                    icon={Archive}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedQuoteId(quote.id)
+                      setArchiveDialogOpen(true)
+                    }}
+                  />
                 }
               />
             ))}
@@ -156,6 +149,7 @@ export default function QuotesQueuePage() {
         )}
       </main>
 
+      {/* Archive Dialog */}
       <ArchiveDialog
         open={archiveDialogOpen}
         onOpenChange={setArchiveDialogOpen}

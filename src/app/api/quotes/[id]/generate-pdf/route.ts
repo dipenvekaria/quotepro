@@ -182,7 +182,7 @@ export async function POST(
     // Update quote with PDF URL
     // @ts-ignore - Supabase typing
     const { error: updateError } = await supabase
-      .from('quotes')
+      .from('work_items')
       // @ts-ignore
       .update({ pdf_url: publicUrl })
       // @ts-ignore

@@ -107,35 +107,24 @@ export function DashboardProvider({
   const refreshWorkItems = async () => {
     setIsRefreshing(true)
     try {
-      // Try work_items first, fallback to quotes if not migrated
+      // Fetch from work_items table with customer data
       const { data, error } = await supabase
         .from('work_items')
-        .select('*')
+        .select(`
+          *,
+          customer:customers (
+            id,
+            name,
+            email,
+            phone
+          )
+        `)
         .eq('company_id', company.id)
         .neq('status', 'archived')
         .order('created_at', { ascending: false })
 
       if (error) {
-        console.error('Error refreshing work_items, trying quotes:', error)
-        
-        // Fallback to quotes table
-        const { data: quotesData, error: quotesError } = await supabase
-          .from('quotes')
-          .select('*')
-          .eq('company_id', company.id)
-          .order('created_at', { ascending: false })
-        
-        if (quotesError) {
-          console.error('Error fetching quotes:', quotesError)
-          return
-        }
-        
-        // Map quotes to work_items format
-        const mapped = (quotesData || []).map(q => ({
-          ...q,
-          status: q.lead_status === 'new' ? 'lead' : (q.status || 'draft')
-        }))
-        setWorkItems(mapped)
+        console.error('Error refreshing work_items:', error)
         return
       }
 

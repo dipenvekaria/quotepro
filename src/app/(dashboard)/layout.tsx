@@ -35,10 +35,6 @@ export default async function DashboardLayout({
   }
 
   // Fetch all work items with customer data
-  // Try work_items first, fallback to quotes if not migrated yet
-  let workItems: any[] = []
-  let fetchError: any = null
-
   const { data: workItemsData, error: workItemsError } = await supabase
     .from('work_items')
     .select(`
@@ -50,39 +46,14 @@ export default async function DashboardLayout({
     .order('created_at', { ascending: false })
 
   if (workItemsError) {
-    console.error('Error fetching work_items, trying quotes fallback:', workItemsError)
-    
-    // Fallback to old quotes table
-    const { data: quotesData, error: quotesError } = await supabase
-      .from('quotes')
-      .select(`
-        *,
-        customer:customers(*)
-      `)
-      .eq('company_id', company.id)
-      .order('created_at', { ascending: false })
-    
-    if (quotesError) {
-      console.error('Error fetching quotes:', quotesError)
-      fetchError = quotesError
-    } else {
-      // Map quotes to work_items format
-      workItems = (quotesData || []).map(q => ({
-        ...q,
-        status: q.lead_status === 'new' ? 'lead' : (q.status || 'draft')
-      }))
-    }
-  } else {
-    workItems = workItemsData || []
+    console.error('Error fetching work_items:', workItemsError)
   }
 
-  if (fetchError) {
-    console.error('Error fetching data:', fetchError)
-  }
+  const workItems = workItemsData || []
 
   return (
     <QueryProvider>
-      <DashboardProvider company={company} workItems={workItems || []}>
+      <DashboardProvider company={company} workItems={workItems}>
         <div className="min-h-screen min-h-[100dvh] bg-gray-50">
           <NavigationWrapper>
             {children}

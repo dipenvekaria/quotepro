@@ -2,10 +2,8 @@
 
 import { MobileBottomNav } from './mobile-bottom-nav'
 import { DesktopSidebar } from './desktop-sidebar'
-import { FloatingActionMenu } from '../floating-action-menu'
 import { useDashboard } from '@/lib/dashboard-context'
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
 
 interface NavigationWrapperProps {
   children: React.ReactNode
@@ -19,10 +17,6 @@ interface NavigationWrapperProps {
 export function NavigationWrapper({ children }: NavigationWrapperProps) {
   const { counts } = useDashboard()
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const pathname = usePathname()
-  
-  // Hide FAB on quotes page (quotes created from leads workflow only)
-  const showFab = !pathname?.includes('/leads-and-quotes/quotes')
 
   // Sync with sidebar collapse state
   useEffect(() => {
@@ -67,9 +61,6 @@ export function NavigationWrapper({ children }: NavigationWrapperProps) {
 
       {/* Mobile Bottom Navigation */}
       <MobileBottomNav />
-
-      {/* Floating Action Menu - hidden on quotes page */}
-      {showFab && <FloatingActionMenu />}
     </>
   )
 }

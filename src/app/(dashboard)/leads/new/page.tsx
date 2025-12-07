@@ -4,9 +4,10 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Loader2, Save, ArrowLeft, Archive } from 'lucide-react'
+import { Loader2, Save, ArrowLeft, Archive, Plus, FileText } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { ActionButton } from '@/components/ui/action-button'
 import { LeadForm } from '@/components/features/leads/LeadForm'
 import { useDashboard } from '@/lib/dashboard-context'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
@@ -131,6 +132,28 @@ export default function LeadEditorPage() {
     } catch (error) {
       console.error('Error archiving lead:', error)
       toast.error('Failed to archive lead')
+    }
+  }
+
+  const handleCreateQuote = async () => {
+    if (!workItemId) return
+    try {
+      const { error } = await supabase
+        .from('work_items')
+        .update({ status: 'draft' })
+        .eq('id', workItemId)
+
+      if (error) throw error
+
+      toast.success('Creating quote...')
+      await refreshWorkItems()
+      
+      // Navigate to quote editor
+      sessionStorage.setItem('showAICard', 'true')
+      router.push(`/quotes/new?id=${workItemId}`)
+    } catch (error) {
+      console.error('Error creating quote:', error)
+      toast.error('Failed to create quote')
     }
   }
 
@@ -318,8 +341,9 @@ export default function LeadEditorPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+    <div className="min-h-[100dvh] bg-gray-50 pb-safe overflow-x-hidden">
+      {/* Header - Desktop only */}
+      <header className="hidden md:block bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
@@ -335,24 +359,54 @@ export default function LeadEditorPage() {
             </h1>
           </div>
           
-          <Button
-            onClick={handleSaveLead}
-            disabled={!customerName || !callNotes || isSaving}
-            className="h-10 px-5 bg-[#0055FF] hover:bg-blue-600 text-white font-medium rounded-xl"
-          >
-            {isSaving ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-1.5" />
+          {/* Header Actions - Only show when editing */}
+          {isEditMode && (
+            <div className="flex items-center gap-2">
+              <ActionButton
+                variant="secondary"
+                size="md"
+                icon={FileText}
+                onClick={() => {
+                  // Convert lead to quote
+                  handleCreateQuote()
+                }}
+              >
+                Create Quote
+              </ActionButton>
+              <ActionButton
+                variant="primary"
+                size="md"
+                icon={Save}
+                loading={isSaving}
+                disabled={!customerName || !callNotes}
+                onClick={handleSaveLead}
+              >
                 Save
-              </>
-            )}
-          </Button>
+              </ActionButton>
+            </div>
+          )}
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6 py-3 md:py-6 space-y-4">
+      {/* Mobile Header - Simple */}
+      <header className="md:hidden bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="px-4 py-3 flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            className="h-9 w-9"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="text-lg font-semibold text-gray-900">
+            {isEditMode ? 'Edit Lead' : 'New Lead'}
+          </h1>
+        </div>
+      </header>
+
+      {/* Main Content - with bottom padding for mobile sticky button + bottom nav */}
+      <main className="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-6 space-y-4 pb-32 md:pb-6">
         <LeadForm
           customerName={customerName}
           customerEmail={customerEmail}
@@ -368,20 +422,60 @@ export default function LeadEditorPage() {
           onJobDescriptionChange={setCallNotes}
         />
 
-        {/* Archive Button - only show when editing */}
+        {/* Desktop Action Buttons - Only for New Leads */}
+        {!isEditMode && (
+          <div className="hidden md:block space-y-3">
+            {/* Save Button - Primary CTA */}
+            <div className="bg-white rounded-xl border border-gray-200 p-4">
+              <ActionButton
+                variant="primary"
+                size="xl"
+                icon={Save}
+                loading={isSaving}
+                disabled={!customerName || !callNotes}
+                onClick={handleSaveLead}
+                fullWidth
+                className="shadow-lg shadow-blue-500/20"
+              >
+                Save Lead
+              </ActionButton>
+            </div>
+          </div>
+        )}
+
+        {/* Archive Button - Desktop only, edit mode only */}
         {isEditMode && workItemId && (
-          <div className="bg-white rounded-2xl border border-gray-200 p-4">
-            <Button
-              variant="outline"
+          <div className="hidden md:block bg-white rounded-xl border border-gray-200 p-4">
+            <ActionButton
+              variant="destructive"
+              size="lg"
+              icon={Archive}
               onClick={() => setArchiveDialogOpen(true)}
-              className="w-full text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700"
+              fullWidth
             >
-              <Archive className="h-4 w-4 mr-2" />
               Archive Lead
-            </Button>
+            </ActionButton>
           </div>
         )}
       </main>
+
+      {/* Mobile Sticky Bottom Button - Above bottom nav */}
+      <div className="md:hidden fixed bottom-16 left-0 right-0 z-50">
+        <div className="bg-white border-t border-gray-200 p-3 shadow-2xl">
+          <ActionButton
+            variant="primary"
+            size="xl"
+            icon={Save}
+            loading={isSaving}
+            disabled={!customerName || !callNotes}
+            onClick={handleSaveLead}
+            fullWidth
+            className="shadow-lg shadow-blue-500/30"
+          >
+            {isEditMode ? 'Save Changes' : 'Save Lead'}
+          </ActionButton>
+        </div>
+      </div>
 
       {/* Archive Dialog */}
       <ArchiveDialog

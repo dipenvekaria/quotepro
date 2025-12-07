@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 
 export function useLeadsQueue() {
-  const { quotes: allQuotes, refreshQuotes } = useDashboard()
+  const { workItems, refreshWorkItems } = useDashboard()
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('')
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false)
@@ -13,25 +13,15 @@ export function useLeadsQueue() {
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false)
   const [leadToArchive, setLeadToArchive] = useState<string | null>(null)
 
-  // Filter leads from all quotes
+  // Filter leads from work_items (status = 'lead')
   const leads = useMemo(() => {
-    return allQuotes.filter(q => {
-      // Must have lead status (not quoted yet)
-      const hasLeadStatus = ['new', 'contacted', 'quote_visit_scheduled'].includes(q.lead_status)
-      // Must not have a quote total (no line items added yet)
-      const hasNoQuote = !q.total || q.total === 0
-      return hasLeadStatus && hasNoQuote
-    })
-  }, [allQuotes])
+    return workItems.filter(item => item.status === 'lead')
+  }, [workItems])
 
-  // Calculate quotes count for tab
+  // Calculate quotes count for tab (draft, sent, accepted)
   const quotes = useMemo(() => {
-    return allQuotes.filter(q => {
-      const isQuoteLead = ['quoted', 'lost'].includes(q.lead_status) || (q.total && q.total > 0)
-      const notInWorkQueue = !q.accepted_at && !q.signed_at
-      return isQuoteLead && notInWorkQueue
-    })
-  }, [allQuotes])
+    return workItems.filter(item => ['draft', 'sent', 'accepted'].includes(item.status))
+  }, [workItems])
 
   // Apply search only (no status filter)
   const filteredLeads = useMemo(() => {
@@ -72,14 +62,15 @@ export function useLeadsQueue() {
       
       // Get lead to get company_id
       const { data: lead } = await supabase
-        .from('leads')
+        .from('work_items')
         .select('company_id')
         .eq('id', leadId)
+        .eq('status', 'lead')
         .single()
       
       // Update lead status to 'archived'
       const { error: updateError } = await supabase
-        .from('leads')
+        .from('work_items')
         .update({ status: 'archived' })
         .eq('id', leadId)
       
@@ -98,7 +89,7 @@ export function useLeadsQueue() {
       })
       
       toast.success('Lead archived')
-      await refreshQuotes()
+      await refreshWorkItems()
     } catch (error) {
       console.error('Error archiving lead:', error)
       toast.error('Failed to archive lead')
@@ -142,7 +133,7 @@ export function useLeadsQueue() {
     handleArchiveLead,
     handleArchiveClick,
     getStatusLabel,
-    refreshQuotes,
+    refreshWorkItems,
     router
   }
 }
