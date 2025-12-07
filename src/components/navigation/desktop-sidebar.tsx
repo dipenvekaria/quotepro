@@ -36,13 +36,15 @@ interface DesktopSidebarProps {
     leads: number
     quotes: number
     toBeScheduled: number
+    scheduled: number
   }
 }
 
 export function DesktopSidebar({ counts = {
   leads: 0,
   quotes: 0,
-  toBeScheduled: 0
+  toBeScheduled: 0,
+  scheduled: 0
 } }: DesktopSidebarProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -115,7 +117,8 @@ export function DesktopSidebar({ counts = {
     {
       label: 'Work',
       href: '/work',
-      icon: ClipboardCheck
+      icon: ClipboardCheck,
+      count: counts.scheduled
     },
     {
       label: 'Settings',

@@ -4,12 +4,14 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Home, Target, Calendar, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useDashboard } from '@/lib/dashboard-context'
 
 interface NavItem {
   label: string
   href: string
   icon: React.ComponentType<{ className?: string }>
   matchPaths: string[]
+  countKey?: 'work' | 'leads' | 'quotes'
 }
 
 const navItems: NavItem[] = [
@@ -23,13 +25,15 @@ const navItems: NavItem[] = [
     label: 'Leads',
     href: '/leads-and-quotes/leads',
     icon: Target,
-    matchPaths: ['/leads-and-quotes', '/leads', '/quotes']
+    matchPaths: ['/leads-and-quotes', '/leads', '/quotes'],
+    countKey: 'leads'
   },
   {
     label: 'Calendar',
     href: '/work',
     icon: Calendar,
-    matchPaths: ['/work', '/calendar']
+    matchPaths: ['/work', '/calendar'],
+    countKey: 'work'
   },
   {
     label: 'More',
@@ -41,6 +45,7 @@ const navItems: NavItem[] = [
 
 export function MobileBottomNav() {
   const pathname = usePathname()
+  const { counts } = useDashboard()
 
   const isActive = (item: NavItem) => {
     // Special case for home - only match exact paths
@@ -59,26 +64,32 @@ export function MobileBottomNav() {
           {navItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item)
+            const count = item.countKey ? counts[item.countKey] : 0
             
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-xl transition-all flex-1",
+                  "flex flex-col items-center justify-center gap-1 px-2 py-2 rounded-xl transition-all flex-1 relative",
                   active 
                     ? "bg-blue-50" 
                     : "active:bg-gray-100"
                 )}
               >
                 <div className={cn(
-                  "p-1.5 rounded-lg transition-all",
+                  "p-1.5 rounded-lg transition-all relative",
                   active ? "bg-blue-600" : "bg-gray-100"
                 )}>
                   <Icon className={cn(
                     "w-5 h-5 transition-colors",
                     active ? "text-white" : "text-gray-600"
                   )} />
+                  {count > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 min-w-[16px] px-1 flex items-center justify-center">
+                      {count > 99 ? '99+' : count}
+                    </span>
+                  )}
                 </div>
                 <span className={cn(
                   "text-[10px] font-semibold transition-colors leading-tight text-center",
