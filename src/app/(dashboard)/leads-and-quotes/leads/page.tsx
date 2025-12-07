@@ -105,6 +105,16 @@ export default function LeadsQueuePage() {
       <QueueHeader
         title="Leads"
         subtitle={`${filteredLeads.length} lead${filteredLeads.length !== 1 ? 's' : ''} waiting`}
+        action={
+          <Button
+            onClick={() => router.push('/leads/new')}
+            className="hidden md:flex bg-[#2563eb] hover:bg-[#1d4ed8] text-white"
+            size="sm"
+          >
+            <Plus className="h-4 w-4 mr-1.5" />
+            New Lead
+          </Button>
+        }
       />
 
       {/* Main Content */}

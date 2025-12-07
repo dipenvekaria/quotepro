@@ -211,18 +211,30 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
               </TabsTrigger>
             </TabsList>
             
-            {/* Filter Icon Button - Blue when active */}
-            <Button
-              variant={hasActiveFilters ? "default" : "outline"}
-              size="sm"
-              onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-              className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white' : ''}`}
-            >
-              <Filter className="h-4 w-4" />
-              {hasActiveFilters && (
-                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#2563eb]" />
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* New Lead Button - Desktop only */}
+              <Button
+                onClick={() => setShowNewLeadDialog(true)}
+                className="hidden md:flex h-10 bg-[#2563eb] hover:bg-[#1d4ed8] text-white"
+                size="sm"
+              >
+                <Plus className="h-4 w-4 mr-1.5" />
+                New Lead
+              </Button>
+
+              {/* Filter Icon Button - Blue when active */}
+              <Button
+                variant={hasActiveFilters ? "default" : "outline"}
+                size="sm"
+                onClick={() => setIsFilterExpanded(!isFilterExpanded)}
+                className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white' : ''}`}
+              >
+                <Filter className="h-4 w-4" />
+                {hasActiveFilters && (
+                  <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#2563eb]" />
+                )}
+              </Button>
+            </div>
           </div>
 
           {/* Compact Filter Section - Only shown when expanded */}
