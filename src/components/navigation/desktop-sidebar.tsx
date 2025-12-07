@@ -121,7 +121,7 @@ export function DesktopSidebar({ counts = {
       count: counts.scheduled
     },
     {
-      label: 'Settings',
+      label: 'Configuration',
       href: '/settings',
       icon: Settings
     }

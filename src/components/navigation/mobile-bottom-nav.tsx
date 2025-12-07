@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
     countKey: 'work'
   },
   {
-    label: 'More',
+    label: 'Config',
     href: '/settings',
     icon: Settings,
     matchPaths: ['/settings', '/analytics', '/pay']

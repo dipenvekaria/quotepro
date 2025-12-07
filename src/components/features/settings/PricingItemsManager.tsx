@@ -32,19 +32,12 @@ interface PricingItemsManagerProps {
   setSearchQuery: (query: string) => void
   selectedCategory: string
   setSelectedCategory: (category: string) => void
-  uploadMode: 'replace' | 'append'
-  setUploadMode: (mode: 'replace' | 'append') => void
-  uploadFile: File | null
-  isLoadingPreview: boolean
-  isUploading: boolean
   editingItem: PricingItem | null
   setEditingItem: (item: PricingItem | null) => void
   isSaving: boolean
   onAddItem: () => void
-  onFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void
   onUpdateItem: (item: PricingItem) => void
   onDeleteItem: (item: PricingItem) => void
-  onDownloadTemplate: (format: 'csv' | 'excel') => void
 }
 
 export function PricingItemsManager({
@@ -55,19 +48,12 @@ export function PricingItemsManager({
   setSearchQuery,
   selectedCategory,
   setSelectedCategory,
-  uploadMode,
-  setUploadMode,
-  uploadFile,
-  isLoadingPreview,
-  isUploading,
   editingItem,
   setEditingItem,
   isSaving,
   onAddItem,
-  onFileSelect,
   onUpdateItem,
   onDeleteItem,
-  onDownloadTemplate,
 }: PricingItemsManagerProps) {
   // Filter items
   const filteredPricingItems = pricingItems.filter((item) => {
@@ -155,144 +141,6 @@ export function PricingItemsManager({
           >
             {isSaving ? 'Adding...' : 'Add Item'}
           </Button>
-        </CardContent>
-      </Card>
-
-      {/* Bulk Upload Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Bulk Upload Pricing Items</CardTitle>
-          <CardDescription>
-            Upload CSV or Excel files with any column names - we'll help you map them!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Upload Mode Selection */}
-          <div className="space-y-2">
-            <Label>Upload Mode</Label>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant={uploadMode === 'replace' ? 'default' : 'outline'}
-                onClick={() => setUploadMode('replace')}
-                className={uploadMode === 'replace' ? 'bg-[#2563eb] hover:bg-[#2563eb]/90' : ''}
-              >
-                🔄 Replace All
-              </Button>
-              <Button
-                type="button"
-                variant={uploadMode === 'append' ? 'default' : 'outline'}
-                onClick={() => setUploadMode('append')}
-                className={uploadMode === 'append' ? 'bg-[#2563eb] hover:bg-[#2563eb]/90' : ''}
-              >
-                ➕ Add to Existing
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {uploadMode === 'replace' 
-                ? '⚠️ Replace All: Deletes all existing items and uploads new ones'
-                : '✅ Add to Existing: Keeps current items and adds new ones from file'}
-            </p>
-          </div>
-
-          {/* File Upload */}
-          <div className="space-y-2">
-            <Label htmlFor="bulkUpload">Select Your File</Label>
-            <div className="flex items-center gap-4">
-              <label
-                htmlFor="bulkUpload"
-                className="flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#2563eb] transition-colors flex-1 bg-gray-50"
-              >
-                {uploadFile ? (
-                  <span className="text-sm font-medium">
-                    📎 {uploadFile.name} ({(uploadFile.size / 1024).toFixed(1)} KB)
-                  </span>
-                ) : (
-                  <span className="text-sm">📁 Click to select CSV or Excel file</span>
-                )}
-              </label>
-              <input
-                id="bulkUpload"
-                type="file"
-                accept=".csv,.xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
-                onChange={onFileSelect}
-                className="hidden"
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Supports: CSV (.csv), Excel (.xlsx, .xls) • Any column names work!
-            </p>
-          </div>
-
-          {/* Loading State */}
-          {isLoadingPreview && (
-            <div className="p-4 bg-blue-50 rounded-lg text-center">
-              <p className="text-sm text-blue-700 font-medium">📊 Analyzing your file...</p>
-            </div>
-          )}
-
-          {/* Uploading State */}
-          {isUploading && (
-            <div className="p-4 bg-green-50 rounded-lg text-center">
-              <p className="text-sm text-green-700 font-medium">⬆️ Uploading items...</p>
-            </div>
-          )}
-
-          {/* Feature Highlights */}
-          <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-            <h4 className="font-bold text-sm mb-3 flex items-center gap-2">
-              <span className="text-sm">✨</span> Smart Column Mapping
-            </h4>
-            <ul className="text-xs space-y-2 text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold">✓</span>
-                <span><strong>Upload any file</strong> - Works with QuickBooks, ServiceTitan, Excel, Google Sheets exports</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold">✓</span>
-                <span><strong>Auto-detection</strong> - We automatically detect your column headers and suggest mappings</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold">✓</span>
-                <span><strong>Visual preview</strong> - See first 5 rows before uploading to verify your data</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-600 font-bold">✓</span>
-                <span><strong>Map your columns</strong> - Simply match your columns to: Name, Price, Category, Description</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-600 font-bold">→</span>
-                <span className="italic">No templates needed - use your existing files!</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Optional Templates */}
-          <details className="mt-4">
-            <summary className="text-sm text-muted-foreground cursor-pointer hover:text-foreground">
-              📥 Need a sample file? Download template (optional)
-            </summary>
-            <div className="mt-3 flex gap-2">
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => onDownloadTemplate('csv')}
-                className="flex-1"
-              >
-                📄 CSV Template
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                variant="outline"
-                onClick={() => onDownloadTemplate('excel')}
-                className="flex-1"
-              >
-                📊 Excel Template
-              </Button>
-            </div>
-          </details>
         </CardContent>
       </Card>
 

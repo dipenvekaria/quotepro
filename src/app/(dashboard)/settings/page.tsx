@@ -71,17 +71,6 @@ function SettingsPageContent() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [itemToDelete, setItemToDelete] = useState(null)
   
-  // Bulk upload state
-  const [uploadFile, setUploadFile] = useState<File | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
-  const [uploadMode, setUploadMode] = useState<'replace' | 'append'>('replace')
-  
-  // Column mapping state
-  const [showMappingDialog, setShowMappingDialog] = useState(false)
-  const [filePreview, setFilePreview] = useState<any>(null)
-  const [columnMapping, setColumnMapping] = useState<any>({})
-  const [isLoadingPreview, setIsLoadingPreview] = useState(false)
-  
   // Filtering and search state
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -617,169 +606,6 @@ function SettingsPageContent() {
     await supabase.auth.signOut()
     router.push('/login')
   }
-  
-  // Bulk upload handlers
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // Validate file type
-      const validTypes = [
-        'text/csv',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      ]
-      if (!validTypes.includes(file.type) && !file.name.match(/\.(csv|xlsx|xls)$/i)) {
-        toast.error('Please upload a CSV or Excel file (.csv, .xlsx, .xls)')
-        return
-      }
-      setUploadFile(file)
-      
-      // Automatically preview the file
-      await handlePreviewFile(file)
-    }
-  }
-  
-  const handlePreviewFile = async (file: File) => {
-    setIsLoadingPreview(true)
-    try {
-      console.log('📁 Previewing file:', file.name, file.type, file.size)
-      
-      const formData = new FormData()
-      formData.append('file', file)
-      
-      console.log('🚀 Sending preview request via Next.js API...')
-      const response = await fetch('/api/pricing/preview', {
-        method: 'POST',
-        body: formData,
-      })
-      
-      console.log('📊 Response status:', response.status, response.statusText)
-      
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('❌ Backend error response:', errorText)
-        
-        let errorMessage = 'Failed to preview file'
-        try {
-          const errorData = JSON.parse(errorText)
-          errorMessage = errorData.detail || errorMessage
-        } catch {
-          errorMessage = errorText || errorMessage
-        }
-        throw new Error(errorMessage)
-      }
-      
-      const data = await response.json()
-      console.log('✅ Preview data received:', data)
-      
-      // Set preview data and suggested mapping
-      setFilePreview(data)
-      setColumnMapping(data.suggested_mapping)
-      setShowMappingDialog(true)
-      
-    } catch (error: any) {
-      console.error('❌ Preview error:', error)
-      
-      // Better error messages
-      let errorMessage = 'Failed to preview file'
-      if (error.message === 'Failed to fetch') {
-        errorMessage = 'Cannot connect to backend server. Is it running on port 8000?'
-      } else if (error.message) {
-        errorMessage = error.message
-      }
-      
-      toast.error(errorMessage)
-    } finally {
-      setIsLoadingPreview(false)
-    }
-  }
-  
-  const handleBulkUpload = async () => {
-    if (!uploadFile) {
-      toast.error('Please select a file to upload')
-      return
-    }
-    
-    if (!company?.id) {
-      toast.error('Company ID not found')
-      return
-    }
-    
-    // Validate required mappings
-    if (!columnMapping.name || !columnMapping.price) {
-      toast.error('Please map at least Name and Price columns')
-      return
-    }
-    
-    setIsUploading(true)
-    setShowMappingDialog(false)
-    
-    try {
-      const formData = new FormData()
-      formData.append('file', uploadFile)
-      formData.append('company_id', company.id)
-      formData.append('column_mapping', JSON.stringify(columnMapping))
-      
-      const endpoint = uploadMode === 'replace' 
-        ? '/api/pricing/bulk-upload'
-        : '/api/pricing/bulk-append'
-      
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        body: formData,
-      })
-      
-      const data = await response.json()
-      
-      if (!response.ok) {
-        throw new Error(data.detail?.message || data.detail || 'Upload failed')
-      }
-      
-      toast.success(`Successfully uploaded ${data.items_count} items!`)
-      setUploadFile(null)
-      setFilePreview(null)
-      setColumnMapping({})
-      
-      // Reload pricing items
-      await reloadUserData()
-      
-      // Force a small delay to ensure UI updates
-      setTimeout(() => {
-        toast.success(`${data.items_count} items now visible in catalog below`)
-      }, 500)
-      
-    } catch (error: any) {
-      console.error('Upload error:', error)
-      toast.error(error.message || 'Failed to upload pricing items')
-    } finally {
-      setIsUploading(false)
-    }
-  }
-  
-  const handleDownloadTemplate = async (format: 'csv' | 'excel') => {
-    try {
-      const response = await fetch(`http://localhost:8000/api/pricing/download-template?format=${format}`)
-      
-      if (!response.ok) {
-        throw new Error('Failed to download template')
-      }
-      
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = format === 'csv' ? 'pricing_template.csv' : 'pricing_template.xlsx'
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-      
-      toast.success(`Template downloaded successfully`)
-    } catch (error: any) {
-      console.error('Download error:', error)
-      toast.error('Failed to download template')
-    }
-  }
 
   // Filter pricing items based on search and category
   const filteredPricingItems = pricingItems.filter(item => {
@@ -814,18 +640,18 @@ function SettingsPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Settings Content */}
+      {/* Configuration Content */}
       <div className="flex-1 min-w-0">
         {/* Header */}
-        <header className="bg-[#0F172A] border-b border-white/10 sticky top-0 z-20">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-20">
           <div className="px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center gap-3">
               <div className="bg-[#2563eb] p-2 rounded-lg">
                 <Wrench className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Settings</h1>
-                <p className="text-gray-300 text-base">Manage your preferences</p>
+                <h1 className="text-2xl font-bold text-gray-900">Configuration</h1>
+                <p className="text-gray-600 text-base">Manage your preferences</p>
               </div>
             </div>
           </div>
@@ -909,22 +735,15 @@ function SettingsPageContent() {
                 setSearchQuery={setSearchQuery}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
-                uploadMode={uploadMode}
-                setUploadMode={setUploadMode}
-                uploadFile={uploadFile}
-                isLoadingPreview={isLoadingPreview}
-                isUploading={isUploading}
                 editingItem={editingItem}
                 setEditingItem={setEditingItem}
                 isSaving={isSaving}
                 onAddItem={handleAddPricingItem}
-                onFileSelect={handleFileSelect}
                 onUpdateItem={handleUpdatePricingItem}
                 onDeleteItem={(item) => {
                   setItemToDelete(item)
                   setDeleteDialogOpen(true)
                 }}
-                onDownloadTemplate={handleDownloadTemplate}
               />
               
               <div className="mt-8">
@@ -1008,169 +827,6 @@ function SettingsPageContent() {
                 disabled={isSaving}
               >
                 {isSaving ? 'Deleting...' : 'Delete'}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-
-        {/* Column Mapping Dialog */}
-        <Dialog open={showMappingDialog} onOpenChange={setShowMappingDialog}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Map Your Columns</DialogTitle>
-              <DialogDescription>
-                {filePreview && (
-                  <>
-                    Found {filePreview.total_rows} rows in "{filePreview.filename}". 
-                    Map your file columns to our database fields below.
-                  </>
-                )}
-              </DialogDescription>
-            </DialogHeader>
-
-            {filePreview && (
-              <div className="space-y-6">
-                {/* Column Mapping */}
-                <div className="space-y-4">
-                  <h3 className="font-bold text-sm">Column Mapping</h3>
-                  
-                  {/* Name Mapping */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <Label>Item Name (Required)</Label>
-                    <Select 
-                      value={columnMapping.name || ''} 
-                      onValueChange={(value) => setColumnMapping({...columnMapping, name: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select column for name..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {filePreview.columns.map((col: string) => (
-                          <SelectItem key={col} value={col}>{col}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Price Mapping */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <Label>Price (Required)</Label>
-                    <Select 
-                      value={columnMapping.price || ''} 
-                      onValueChange={(value) => setColumnMapping({...columnMapping, price: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select column for price..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {filePreview.columns.map((col: string) => (
-                          <SelectItem key={col} value={col}>{col}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Category Mapping */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <Label>Category (Optional)</Label>
-                    <Select 
-                      value={columnMapping.category || '__none__'} 
-                      onValueChange={(value) => setColumnMapping({...columnMapping, category: value === '__none__' ? null : value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select column for category..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="__none__">-- Skip this field --</SelectItem>
-                        {filePreview.columns.map((col: string) => (
-                          <SelectItem key={col} value={col}>{col}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Description Mapping */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <Label>Description (Optional)</Label>
-                    <Select 
-                      value={columnMapping.description || '__none__'} 
-                      onValueChange={(value) => setColumnMapping({...columnMapping, description: value === '__none__' ? null : value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select column for description..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="__none__">-- Skip this field --</SelectItem>
-                        {filePreview.columns.map((col: string) => (
-                          <SelectItem key={col} value={col}>{col}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Data Preview */}
-                <div className="space-y-2">
-                  <h3 className="font-bold text-sm">Data Preview (first 5 rows)</h3>
-                  <div className="overflow-x-auto border rounded-lg">
-                    <table className="w-full text-sm">
-                      <thead className="bg-gray-100">
-                        <tr>
-                          {filePreview.columns.map((col: string) => (
-                            <th key={col} className="px-3 py-2 text-left font-bold">
-                              {col}
-                              {col === columnMapping.name && ' → Name'}
-                              {col === columnMapping.price && ' → Price'}
-                              {col === columnMapping.category && ' → Category'}
-                              {col === columnMapping.description && ' → Description'}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filePreview.preview_data.map((row: any, idx: number) => (
-                          <tr key={idx} className="border-t hover:bg-gray-50">
-                            {filePreview.columns.map((col: string) => (
-                              <td key={col} className="px-3 py-2">
-                                {String(row[col] || '')}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Validation Warning */}
-                {(!columnMapping.name || !columnMapping.price) && (
-                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-sm text-yellow-800">
-                      ⚠️ Please map at least the <strong>Name</strong> and <strong>Price</strong> columns to continue.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <DialogFooter className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowMappingDialog(false)
-                  setUploadFile(null)
-                  setFilePreview(null)
-                  setColumnMapping({})
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleBulkUpload}
-                disabled={!columnMapping.name || !columnMapping.price || isUploading}
-                className="bg-[#2563eb] hover:bg-[#2563eb]/90 text-white"
-              >
-                {isUploading ? 'Uploading...' : `Upload ${filePreview?.total_rows || 0} Items`}
               </Button>
             </DialogFooter>
           </DialogContent>
