@@ -118,14 +118,14 @@ function SettingsPageContent() {
         setUser(user)
         setEmail(user.email)
 
-        // NEW SCHEMA: Get company via users table
-        const { data: userRecord } = await supabase
-          .from('users')
+        // Get company via team_members table
+        const { data: teamMember } = await supabase
+          .from('team_members')
           .select('company_id')
-          .eq('id', user.id)
+          .eq('user_id', user.id)
           .single()
 
-        if (!userRecord?.company_id) {
+        if (!teamMember?.company_id) {
           toast.error('No company found')
           return
         }
@@ -133,7 +133,7 @@ function SettingsPageContent() {
         const { data: companyData, error: companyError } = await supabase
           .from('companies')
           .select('*')
-          .eq('id', userRecord.company_id)
+          .eq('id', teamMember.company_id)
           .single()
 
         if (!companyData) {
@@ -165,18 +165,15 @@ function SettingsPageContent() {
 
         setPricingItems(pricing || [])
         
-        // Load team members
-        const { data: members } = await supabase
+        // Load team members (no FK join to avoid RLS conflict with auth.users)
+        console.log('📋 [Initial Load] Loading team members for company:', companyData.id)
+        const { data: members, error: membersError } = await supabase
           .from('team_members')
-          .select(`
-            *,
-            user:user_id (
-              email,
-              raw_user_meta_data
-            )
-          `)
+          .select('*')
           .eq('company_id', companyData.id)
           .order('created_at', { ascending: false })
+        
+        console.log('👥 [Initial Load] Team members result:', { count: members?.length || 0, error: membersError, members })
         
         setTeamMembers(members || [])
       } catch (error) {
@@ -211,15 +208,15 @@ function SettingsPageContent() {
       setUser(user)
       setEmail(user.email)
 
-      console.log('🏢 Querying company data via users table...')
-      // NEW SCHEMA: Get company via users table
-      const { data: userRecord } = await supabase
-        .from('users')
+      console.log('🏢 Querying company data via team_members table...')
+      // Get company via team_members table
+      const { data: teamMember } = await supabase
+        .from('team_members')
         .select('company_id')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single()
 
-      if (!userRecord?.company_id) {
+      if (!teamMember?.company_id) {
         toast.error('No company found')
         return
       }
@@ -227,7 +224,7 @@ function SettingsPageContent() {
       const { data: companyData, error: companyError } = await supabase
         .from('companies')
         .select('*')
-        .eq('id', userRecord.company_id)
+        .eq('id', teamMember.company_id)
         .single()
 
       console.log('🏢 Company query:', {
@@ -268,18 +265,15 @@ function SettingsPageContent() {
 
         setPricingItems(pricing || [])
         
-        // Load team members
-        const { data: members } = await supabase
+        // Load team members (no FK join to avoid RLS conflict with auth.users)
+        console.log('📋 [Reload] Loading team members for company:', companyData.id)
+        const { data: members, error: membersError } = await supabase
           .from('team_members')
-          .select(`
-            *,
-            user:user_id (
-              email,
-              raw_user_meta_data
-            )
-          `)
+          .select('*')
           .eq('company_id', companyData.id)
           .order('created_at', { ascending: false })
+        
+        console.log('👥 [Reload] Team members result:', { count: members?.length || 0, error: membersError, members })
         
         setTeamMembers(members || [])
       }
@@ -747,6 +741,7 @@ function SettingsPageContent() {
               setInviteRole={setInviteRole}
               isInviting={isInviting}
               isSaving={isSaving}
+              currentUserId={user?.id}
               onInvite={handleInviteTeamMember}
               onUpdateRole={handleUpdateMemberRole}
               onRemove={handleRemoveTeamMember}

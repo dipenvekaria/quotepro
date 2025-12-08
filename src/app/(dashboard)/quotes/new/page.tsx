@@ -99,14 +99,14 @@ export default function NewQuotePage() {
         return
       }
 
-      // NEW SCHEMA: Get company via users table
-      const { data: userRecord } = await supabase
-        .from('users')
+      // Get company via team_members table
+      const { data: teamMember } = await supabase
+        .from('team_members')
         .select('company_id, companies(id, logo_url)')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single() as { data: { company_id: string; companies: { id: string; logo_url: string } } | null }
 
-      const company = userRecord?.companies
+      const company = teamMember?.companies
       if (company) {
         setCompanyId(company.id)
         setCompanyLogo(company.logo_url)

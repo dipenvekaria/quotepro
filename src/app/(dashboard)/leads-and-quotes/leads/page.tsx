@@ -20,6 +20,8 @@ import { FileText, Plus, Phone, Archive, Calendar, X } from 'lucide-react'
 import { MobileSectionTabs } from '@/components/navigation/mobile-section-tabs'
 import { ArchiveDialog } from '@/components/dialogs/archive-dialog'
 import { formatDistanceToNow } from 'date-fns'
+import { useUserRole } from '@/hooks/use-user-role'
+import { PermissionGuard } from '@/components/guards/PermissionGuard'
 
 /**
  * LEADS QUEUE
@@ -149,14 +151,16 @@ export default function LeadsQueuePage() {
         title="Leads"
         subtitle={`${filteredLeads.length} lead${filteredLeads.length !== 1 ? 's' : ''} waiting`}
         action={
-          <Button
-            onClick={() => router.push('/leads/new')}
-            className="hidden md:flex h-11 px-4 text-base bg-blue-600 hover:bg-blue-700 text-white"
-            size="sm"
-          >
-            <Plus className="h-5 w-5 mr-1.5" />
-            New Lead
-          </Button>
+          <PermissionGuard permission="canCreateLeads">
+            <Button
+              onClick={() => router.push('/leads/new')}
+              className="hidden md:flex h-11 px-4 text-base bg-blue-600 hover:bg-blue-700 text-white"
+              size="sm"
+            >
+              <Plus className="h-5 w-5 mr-1.5" />
+              New Lead
+            </Button>
+          </PermissionGuard>
         }
       />
 
@@ -289,30 +293,34 @@ export default function LeadsQueuePage() {
                       >
                         Call
                       </ActionButton>
-                      <ActionButton
-                        variant="secondary"
-                        size="md"
-                        icon={Archive}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          setSelectedLeadId(lead.id)
-                          setArchiveDialogOpen(true)
-                        }}
-                      >
-                        Archive
-                      </ActionButton>
-                      <ActionButton
-                        variant="primary"
-                        size="md"
-                        icon={FileText}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleCreateQuote(lead.id)
-                        }}
-                        className="bg-slate-900 hover:bg-slate-800 text-white"
-                      >
-                        Create Quote
-                      </ActionButton>
+                      <PermissionGuard permission="canDeleteLeads">
+                        <ActionButton
+                          variant="secondary"
+                          size="md"
+                          icon={Archive}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedLeadId(lead.id)
+                            setArchiveDialogOpen(true)
+                          }}
+                        >
+                          Archive
+                        </ActionButton>
+                      </PermissionGuard>
+                      <PermissionGuard permission="canCreateQuotes">
+                        <ActionButton
+                          variant="primary"
+                          size="md"
+                          icon={FileText}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleCreateQuote(lead.id)
+                          }}
+                          className="bg-slate-900 hover:bg-slate-800 text-white"
+                        >
+                          Create Quote
+                        </ActionButton>
+                      </PermissionGuard>
                     </div>
                   }
                   onClick={() => router.push(`/leads/new?id=${lead.id}`)}
@@ -326,15 +334,16 @@ export default function LeadsQueuePage() {
         )}
       </main>
 
-      {/* Mobile Floating Action Button */}
       {/* FAB - New Lead */}
-      <button
-        onClick={() => router.push('/leads/new')}
-        className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-40 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-xl flex items-center justify-center transition-all active:scale-95 hover:shadow-2xl"
-        aria-label="New Lead"
-      >
-        <Plus className="w-6 h-6" />
-      </button>
+      <PermissionGuard permission="canCreateLeads">
+        <button
+          onClick={() => router.push('/leads/new')}
+          className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-40 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-xl flex items-center justify-center transition-all active:scale-95 hover:shadow-2xl"
+          aria-label="New Lead"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
+      </PermissionGuard>
 
       {/* Archive Dialog */}
       <ArchiveDialog

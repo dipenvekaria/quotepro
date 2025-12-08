@@ -19,15 +19,21 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
+  // Get user's team membership
+  const { data: teamMember } = await supabase
+    .from('team_members')
+    .select('company_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!teamMember) {
+    redirect('/onboarding')
+  }
+
   const { data: company } = await supabase
     .from('companies')
     .select('id, name, logo_url, phone, email, address, settings, created_at, updated_at')
-    .eq('id', (await supabase
-      .from('users')
-      .select('company_id')
-      .eq('id', user.id)
-      .single()
-    ).data?.company_id)
+    .eq('id', teamMember.company_id)
     .single()
 
   if (!company) {

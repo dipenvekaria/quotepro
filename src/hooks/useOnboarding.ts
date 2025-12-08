@@ -25,14 +25,14 @@ export function useOnboarding() {
       return
     }
 
-    // NEW SCHEMA: Check users table for company_id
-    const { data: userRecord } = await supabase
-      .from('users')
+    // Check team_members table for company_id
+    const { data: teamMember } = await supabase
+      .from('team_members')
       .select('company_id')
-      .eq('id', user.id)
+      .eq('user_id', user.id)
       .single()
 
-    if (userRecord?.company_id) {
+    if (teamMember?.company_id) {
       router.push('/dashboard')
     }
   }
@@ -78,7 +78,7 @@ export function useOnboarding() {
         logoUrl = publicUrl
       }
 
-      // NEW SCHEMA: Create company first (no user_id column)
+      // Create company
       const { data: newCompany, error: companyError } = await supabase
         .from('companies')
         .insert({
@@ -93,18 +93,18 @@ export function useOnboarding() {
         throw companyError
       }
 
-      // NEW SCHEMA: Create user record linking to company
-      const { error: userError } = await supabase
-        .from('users')
+      // Create team_members record linking user to company as owner
+      const { error: teamError } = await supabase
+        .from('team_members')
         .insert({
-          id: user.id,
+          user_id: user.id,
           company_id: newCompany.id,
           role: 'owner'
         })
 
-      if (userError) {
-        console.error('User record creation error:', userError)
-        throw userError
+      if (teamError) {
+        console.error('Team member creation error:', teamError)
+        throw teamError
       }
 
       console.log('Company created successfully:', newCompany)

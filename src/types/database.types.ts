@@ -44,7 +44,7 @@ export interface Database {
           id: string
           company_id: string
           user_id: string
-          role: 'admin' | 'sales'
+          role: 'owner' | 'office' | 'sales' | 'technician'
           invited_by: string | null
           invited_at: string
           created_at: string

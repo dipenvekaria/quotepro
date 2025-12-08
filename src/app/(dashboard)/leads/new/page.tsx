@@ -44,14 +44,14 @@ export default function LeadEditorPage() {
     }
     setUserId(user.id)
 
-    const { data: userRecord } = await supabase
-      .from('users')
+    const { data: teamMember } = await supabase
+      .from('team_members')
       .select('company_id')
-      .eq('id', user.id)
+      .eq('user_id', user.id)
       .single()
 
-    if (userRecord?.company_id) {
-      setCompanyId(userRecord.company_id)
+    if (teamMember?.company_id) {
+      setCompanyId(teamMember.company_id)
     }
 
     if (workItemId) {
