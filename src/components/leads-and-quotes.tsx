@@ -212,26 +212,26 @@ export function LeadsAndQuotes({ leads, quotes, companyId }: LeadsAndQuotesProps
             </TabsList>
             
             <div className="flex items-center gap-2">
-              {/* New Lead Button - Desktop only */}
+              {/* New Lead Button - Desktop only - Blue accent color */}
               <Button
                 onClick={() => setShowNewLeadDialog(true)}
-                className="hidden md:flex h-10 bg-[#2563eb] hover:bg-[#1d4ed8] text-white"
+                className="hidden md:flex h-9 bg-blue-600 hover:bg-blue-700 text-white"
                 size="sm"
               >
                 <Plus className="h-4 w-4 mr-1.5" />
                 New Lead
               </Button>
 
-              {/* Filter Icon Button - Blue when active */}
+              {/* Filter Icon Button - Using accent (blue-600) when active */}
               <Button
                 variant={hasActiveFilters ? "default" : "outline"}
                 size="sm"
                 onClick={() => setIsFilterExpanded(!isFilterExpanded)}
-                className={`h-10 w-10 p-0 relative ${hasActiveFilters ? 'bg-[#2563eb] hover:bg-[#1d4ed8] text-white' : ''}`}
+                className={`h-9 w-9 p-0 relative ${hasActiveFilters ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''}`}
               >
                 <Filter className="h-4 w-4" />
                 {hasActiveFilters && (
-                  <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-[#2563eb]" />
+                  <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-white border border-blue-600" />
                 )}
               </Button>
             </div>
@@ -512,17 +512,17 @@ function LeadRow({ lead }: { lead: any }) {
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 rounded-full hover:bg-blue-50 text-blue-600 p-0"
+              className="h-9 w-9 rounded-full hover:bg-red-50 text-red-600 p-0"
               onClick={handleScheduleClick}
-              title="Schedule"
+              title="Archive"
             >
-              <CalendarDays className="h-5 w-5" />
+              <XCircle className="h-5 w-5" />
             </Button>
 
             <Button
               variant="ghost"
               size="sm"
-              className="h-9 w-9 rounded-full hover:bg-orange-50 text-orange-600 p-0"
+              className="h-9 w-9 rounded-full hover:bg-slate-100 text-slate-900 p-0"
               onClick={handleCreateQuoteClick}
               title="Create Quote"
             >

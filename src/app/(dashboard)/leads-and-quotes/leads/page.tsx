@@ -151,10 +151,10 @@ export default function LeadsQueuePage() {
         action={
           <Button
             onClick={() => router.push('/leads/new')}
-            className="hidden md:flex bg-[#2563eb] hover:bg-[#1d4ed8] text-white"
+            className="hidden md:flex h-11 px-4 text-base bg-blue-600 hover:bg-blue-700 text-white"
             size="sm"
           >
-            <Plus className="h-4 w-4 mr-1.5" />
+            <Plus className="h-5 w-5 mr-1.5" />
             New Lead
           </Button>
         }
@@ -309,7 +309,7 @@ export default function LeadsQueuePage() {
                           e.stopPropagation()
                           handleCreateQuote(lead.id)
                         }}
-                        className="shadow-md shadow-blue-500/20"
+                        className="bg-slate-900 hover:bg-slate-800 text-white"
                       >
                         Create Quote
                       </ActionButton>
@@ -327,9 +327,11 @@ export default function LeadsQueuePage() {
       </main>
 
       {/* Mobile Floating Action Button */}
+      {/* FAB - New Lead */}
       <button
         onClick={() => router.push('/leads/new')}
-        className="md:hidden fixed bottom-20 right-4 z-40 w-14 h-14 bg-[#0055FF] hover:bg-[#0046DD] text-white rounded-full shadow-xl flex items-center justify-center transition-all active:scale-95 hover:shadow-2xl"
+        className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-40 w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-xl flex items-center justify-center transition-all active:scale-95 hover:shadow-2xl"
+        aria-label="New Lead"
       >
         <Plus className="w-6 h-6" />
       </button>

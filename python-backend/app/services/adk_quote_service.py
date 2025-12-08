@@ -1,4 +1,3 @@
-# python-backend/app/services/adk_quote_service.py
 """
 ADK Quote Service - Unified service for calling ADK agent from regular API endpoints
 """
@@ -12,33 +11,35 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 
 from app.agents.quote_builder_agent import create_quote_builder_agent
+from app.agents.tools.rag_tools import set_company_id
 
 
 class AdkQuoteService:
     """Service for generating and updating quotes using ADK agent"""
     
-    def __init__(self):
+    def __init__(self, company_id: str = None):
         self.session_service = InMemorySessionService()
         self.app_name = "QuoteBuilderAgent"
+        self.company_id = company_id
     
-    async def generate_quote_async(
-        self, 
+    async def generate_quote(
+        self,
         description: str,
-        existing_items: List[Dict] = None,
+        existing_items: List[dict] = None,
         customer_address: Optional[str] = None
-    ) -> Dict[str, Any]:
+    ) -> dict:
         """
         Generate or update quote using ADK agent
         
         Args:
             description: Job description or update instruction
             existing_items: Existing line items (for updates)
-            customer_address: Customer address for tax calculation
+            customer_address: Customer address (for context only)
             
         Returns:
-            dict with line_items array and metadata
+            dict with line_items array
         """
-        # Create session
+        # Create session with company_id in state
         session_id = str(uuid4())
         user_id = "api_user"
         
@@ -48,6 +49,12 @@ class AdkQuoteService:
             session_id=session_id
         )
         
+        # Store company_id in session state for tools to access
+        if self.company_id:
+            session.state["company_id"] = self.company_id
+            # Also set in context var for catalog tool
+            set_company_id(self.company_id)
+        
         # Build the prompt
         if existing_items:
             prompt = f"""Update the existing quote based on this instruction: {description}
@@ -55,14 +62,19 @@ class AdkQuoteService:
 Current line items:
 {json.dumps(existing_items, indent=2)}
 
-Return updated line items as JSON array."""
+Requirements:
+- Modify line items according to the instruction
+- After modifying, call recalculate_discount tool to update percentage-based discounts
+- Return the updated line_items array"""
         else:
             prompt = f"""Generate a quote for: {description}
 
-Return line items as JSON array with name, description, quantity, unit_price, total fields."""
-        
-        if customer_address:
-            prompt += f"\n\nCustomer address: {customer_address}"
+Requirements:
+1. FIRST call retrieve_catalog_items(query="{description}") to get products with REAL prices
+2. OPTIONALLY call retrieve_similar_quotes(query="{description}") to see past pricing patterns
+3. Build line_items using ONLY retrieved catalog data - DO NOT make up prices
+4. If no catalog items found, return empty line_items array
+5. Return structured JSON with line_items array"""
         
         # Run the agent
         agent = create_quote_builder_agent()
@@ -89,45 +101,43 @@ Return line items as JSON array with name, description, quantity, unit_price, to
         if not final_response:
             raise Exception("ADK agent did not produce a response")
         
-        # Parse JSON response
+        # Log raw response for debugging
+        print(f"🤖 ADK agent raw response (first 500 chars):\n{final_response[:500]}")
+        
+        # With output_schema, the response should be valid JSON
         try:
-            # Extract JSON from response (agent might wrap it in markdown)
-            json_match = final_response
-            if "```json" in final_response:
-                json_match = final_response.split("```json")[1].split("```")[0].strip()
-            elif "```" in final_response:
-                json_match = final_response.split("```")[1].split("```")[0].strip()
-            
-            result = json.loads(json_match)
+            result = json.loads(final_response)
             
             # Ensure we have line_items array
             if isinstance(result, list):
                 result = {"line_items": result}
             elif "line_items" not in result:
-                raise Exception("Response missing line_items array")
+                print(f"❌ Response missing line_items. Response keys: {result.keys() if isinstance(result, dict) else 'not a dict'}")
+                raise Exception(f"Response missing line_items array. Got: {list(result.keys()) if isinstance(result, dict) else type(result)}")
             
-            return result
+            return {"line_items": result["line_items"]}
             
         except json.JSONDecodeError as e:
-            raise Exception(f"Failed to parse agent response as JSON: {str(e)}\nResponse: {final_response}")
-    
-    def generate_quote(
-        self, 
-        description: str,
-        existing_items: List[Dict] = None,
-        customer_address: Optional[str] = None
-    ) -> Dict[str, Any]:
-        """Synchronous wrapper for generate_quote_async"""
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        try:
-            return loop.run_until_complete(
-                self.generate_quote_async(description, existing_items, customer_address)
-            )
-        finally:
-            loop.close()
-
-
-def get_adk_quote_service() -> AdkQuoteService:
-    """Dependency injection for ADK quote service"""
-    return AdkQuoteService()
+            # Fallback: try to extract JSON from markdown (shouldn't happen with output_schema)
+            print(f"⚠️  JSON parse failed, trying markdown extraction...")
+            try:
+                if "```json" in final_response:
+                    json_match = final_response.split("```json")[1].split("```")[0].strip()
+                elif "```" in final_response:
+                    json_match = final_response.split("```")[1].split("```")[0].strip()
+                else:
+                    json_match = final_response.strip()
+                
+                result = json.loads(json_match)
+                
+                if isinstance(result, list):
+                    result = {"line_items": result}
+                elif "line_items" not in result:
+                    raise Exception(f"Extracted JSON missing line_items array. Got: {list(result.keys()) if isinstance(result, dict) else type(result)}")
+                
+                return {"line_items": result["line_items"]}
+                
+            except Exception as fallback_error:
+                print(f"❌ Fallback extraction also failed: {str(fallback_error)}")
+                print(f"Raw response:\n{final_response}")
+                raise Exception(f"Failed to parse agent response as JSON: {str(e)}")

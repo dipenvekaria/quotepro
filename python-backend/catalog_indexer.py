@@ -24,14 +24,14 @@ class CatalogIndexer:
         
         # Initialize clients
         self.db: Client = create_client(
-            settings.SUPABASE_URL,
-            settings.SUPABASE_SERVICE_KEY
+            settings.next_public_supabase_url,
+            settings.supabase_service_role_key
         )
-        self.gemini = GeminiClient(api_key=settings.GEMINI_API_KEY)
+        self.gemini = GeminiClient(api_key=settings.gemini_api_key)
         self.vector_store = VectorStore(self.db, self.gemini)
         
         print("✅ Catalog Indexer initialized")
-        print(f"   Database: {settings.SUPABASE_URL[:30]}...")
+        print(f"   Database: {settings.next_public_supabase_url[:30]}...")
         print(f"   AI Model: {self.gemini.model_name}")
     
     def fetch_catalog_items(self, company_id: str) -> List[Dict]:
@@ -46,9 +46,10 @@ class CatalogIndexer:
         """
         print(f"\n📦 Fetching catalog items for company {company_id}...")
         
-        response = self.db.table("pricing_items")\
+        response = self.db.table("catalog_items")\
             .select("*")\
             .eq("company_id", company_id)\
+            .eq("is_active", True)\
             .execute()
         
         items = response.data
@@ -105,12 +106,21 @@ class CatalogIndexer:
             # Build content for embedding
             content = self.build_embedding_content(item)
             
-            # Prepare metadata
+            # Store COMPLETE record in metadata for RAG retrieval
             metadata = {
+                "id": str(item["id"]),
                 "name": item["name"],
+                "description": item.get("description"),
                 "category": item.get("category"),
-                "price": float(item["price"]),
-                "is_default": item.get("is_default", False)
+                "subcategory": item.get("subcategory"),
+                "base_price": float(item.get("base_price", 0)),
+                "unit": item.get("unit", "each"),
+                "is_active": item.get("is_active", True),
+                "tags": item.get("tags", []),
+                "typical_quantity": item.get("typical_quantity"),
+                "labor_hours": item.get("labor_hours"),
+                "material_cost": item.get("material_cost"),
+                "job_type": item.get("job_type")
             }
             
             # Save embedding
@@ -122,7 +132,7 @@ class CatalogIndexer:
                 metadata=metadata
             )
             
-            print(f"   ✓ {item['name'][:40]:<40} | {item.get('category', 'N/A'):<15} | ${item['price']:>8.2f}")
+            print(f"   ✓ {item['name'][:40]:<40} | {item.get('category', 'N/A'):<15} | ${item.get('base_price', 0):>8.2f}")
             return True
             
         except Exception as e:

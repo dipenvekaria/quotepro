@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 
 # Import route modules
 from api.routes import health, ai, quotes, catalog, ai_analytics, catalog_import
+from api import index_work_item
 from app.routes import health as monitoring_health
 from app.middleware.logging import LoggingMiddleware
 from app.middleware.rate_limit import limiter, rate_limit_exceeded_handler
@@ -154,6 +155,7 @@ app.include_router(ai.router, tags=["AI Quote Generation", "Quote Optimization",
 app.include_router(quotes.router, tags=["Quotes"])
 app.include_router(catalog.router, tags=["Catalog Management"])
 app.include_router(catalog_import.router, prefix="/api", tags=["Catalog Import"])
+app.include_router(index_work_item.router, tags=["Auto-Indexing"])
 
 # Startup message
 @app.on_event("startup")

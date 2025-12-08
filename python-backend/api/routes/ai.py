@@ -22,6 +22,56 @@ from app.services.adk_quote_service import AdkQuoteService
 router = APIRouter(prefix="/api", tags=["AI"])
 
 
+# ========== TAX CALCULATION ENDPOINT ==========
+
+class TaxRateRequest(BaseModel):
+    customer_address: str
+    company_id: Optional[str] = None  # For fallback to company default
+
+
+class TaxRateResponse(BaseModel):
+    tax_rate: float
+    address: str
+    
+
+@router.post("/calculate-tax-rate", response_model=TaxRateResponse)
+async def calculate_tax_rate(
+    request: TaxRateRequest,
+    db: Client = Depends(get_db_session)
+):
+    """
+    Calculate sales tax rate for customer address.
+    Called once when customer/lead is saved.
+    Frontend stores the tax_rate in customer/lead metadata.
+    
+    This eliminates need for tax calculation on every quote generation/update.
+    """
+    try:
+        # Get company default tax rate as fallback
+        default_rate = 8.5
+        if request.company_id:
+            company_response = db.table('companies').select('settings').eq('id', request.company_id).single().execute()
+            settings = company_response.data.get('settings', {}) if company_response.data else {}
+            default_rate = settings.get('tax_rate', 8.5) if settings else 8.5
+        
+        # Calculate tax rate for address
+        tax_rate = get_tax_rate_for_address(request.customer_address, default_rate)
+        
+        print(f"💰 Calculated tax rate {tax_rate}% for address: {request.customer_address}")
+        
+        return TaxRateResponse(
+            tax_rate=tax_rate,
+            address=request.customer_address
+        )
+        
+    except Exception as e:
+        print(f"❌ Tax calculation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Tax calculation failed: {str(e)}")
+
+
+# ========== EXISTING ENDPOINTS ==========
+
+
 # Security: Validate company exists (prevents arbitrary company_id injection)
 def validate_company_id(company_id: str, db: Client) -> bool:
     """Validate company_id exists in database"""
@@ -180,8 +230,8 @@ async def generate_quote(
         tax_rate = get_tax_rate_for_address(request.customer_address, company_tax_rate) if request.customer_address else company_tax_rate
         
         # ✨ NEW: Generate quote using ADK agent
-        adk_service = AdkQuoteService()
-        quote_data = adk_service.generate_quote(
+        adk_service = AdkQuoteService(company_id=request.company_id)
+        quote_data = await adk_service.generate_quote(
             description=request.description,
             existing_items=request.existing_items,
             customer_address=request.customer_address
@@ -238,16 +288,6 @@ async def update_quote_with_ai(
         if not validate_company_id(request.company_id, db):
             raise HTTPException(status_code=403, detail="Invalid company_id")
         
-        # ✨ NEW: Use ADK agent for quote updates (includes automatic discount recalculation)
-        adk_service = AdkQuoteService()
-        quote_data = adk_service.generate_quote(
-            description=request.user_prompt,
-            existing_items=request.existing_items,
-            customer_address=request.customer_address
-        )
-        
-        print(f"✨ ADK agent returned {len(quote_data['line_items'])} items (discounts auto-recalculated)")
-        
         # Get tax rate from settings JSONB (new schema)
         company_response = db.table('companies').select('settings').eq('id', request.company_id).single().execute()
         settings = company_response.data.get('settings', {}) if company_response.data else {}
@@ -255,6 +295,14 @@ async def update_quote_with_ai(
         
         if request.customer_address:
             tax_rate = get_tax_rate_for_address(request.customer_address, tax_rate)
+        
+        # ✨ NEW: Use ADK agent for quote updates (includes automatic discount recalculation)
+        adk_service = AdkQuoteService(company_id=request.company_id)
+        quote_data = await adk_service.generate_quote(
+            description=request.user_prompt,
+            existing_items=request.existing_items,
+            customer_address=request.customer_address
+        )
         
         # Calculate totals
         subtotal = sum(item['total'] for item in quote_data['line_items'])

@@ -59,12 +59,17 @@ class VectorStore:
         # Generate embedding vector
         embedding = self.gemini.generate_embedding(content)
         
+        # Convert UUIDs to strings for database compatibility
+        from uuid import UUID
+        company_id_str = str(company_id) if isinstance(company_id, UUID) else company_id
+        entity_id_str = str(entity_id) if isinstance(entity_id, UUID) else entity_id
+        
         # Prepare data
         data = {
-            "company_id": company_id,
+            "company_id": company_id_str,
             "content": content,
             "entity_type": entity_type,
-            "entity_id": entity_id,
+            "entity_id": entity_id_str,
             "embedding": embedding,  # pgvector handles list[float] → vector
             "metadata": metadata or {}
         }
@@ -72,7 +77,7 @@ class VectorStore:
         # Insert into database
         result = self.db.table(self.table).insert(data).execute()
         
-        print(f"✅ Saved embedding for {entity_type} {entity_id}")
+        print(f"✅ Saved embedding for {entity_type} {entity_id_str}")
         return result.data[0]["id"]
     
     def search_similar(
@@ -113,9 +118,13 @@ class VectorStore:
         
         # Build RPC call for vector search
         # Using Supabase RPC to call custom PostgreSQL function
+        # Convert company_id to string if it's a UUID object
+        from uuid import UUID
+        company_id_str = str(company_id) if isinstance(company_id, UUID) else company_id
+        
         params = {
             "query_embedding": query_embedding,
-            "match_company_id": company_id,
+            "match_company_id": company_id_str,
             "match_entity_type": entity_type,
             "match_threshold": threshold,
             "match_count": limit
