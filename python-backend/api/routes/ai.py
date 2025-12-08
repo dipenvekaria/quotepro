@@ -17,6 +17,7 @@ from services.agents.quote_optimizer import get_quote_optimizer, QuoteOptimizerA
 from services.agents.upsell_suggester import get_upsell_suggester, UpsellSuggesterAgent
 from db.repositories.catalog import CatalogRepository
 from tax_rates import get_tax_rate_for_address
+from app.services.adk_quote_service import AdkQuoteService
 
 router = APIRouter(prefix="/api", tags=["AI"])
 
@@ -156,11 +157,8 @@ async def generate_quote(
         if not validate_company_id(request.company_id, db):
             raise HTTPException(status_code=403, detail="Invalid company_id")
         
-        # Initialize services
-        quote_service = QuoteGeneratorService(gemini, db)
+        # Check catalog exists
         catalog_repo = CatalogRepository(db)
-        
-        # Fetch company pricing catalog
         pricing_items = catalog_repo.find_all_active(request.company_id)
         
         if not pricing_items:
@@ -181,13 +179,15 @@ async def generate_quote(
         # Determine tax rate from address if provided
         tax_rate = get_tax_rate_for_address(request.customer_address, company_tax_rate) if request.customer_address else company_tax_rate
         
-        # Generate quote using service
-        quote_data = quote_service.generate_quote(
-            company_id=request.company_id,
+        # ✨ NEW: Generate quote using ADK agent
+        adk_service = AdkQuoteService()
+        quote_data = adk_service.generate_quote(
             description=request.description,
-            customer_address=request.customer_address or "",
-            existing_items=request.existing_items
+            existing_items=request.existing_items,
+            customer_address=request.customer_address
         )
+        
+        print(f"✨ ADK agent returned {len(quote_data['line_items'])} items")
         
         # Calculate totals
         subtotal = sum(item['total'] for item in quote_data['line_items'])
@@ -224,6 +224,8 @@ async def update_quote_with_ai(
     """
     Update existing quote using AI based on user's request
     Examples: "add labor charges", "remove permit fee"
+    
+    NOTE: Uses ADK agent for automatic discount recalculation
     """
     try:
         # Debug: Log existing items
@@ -236,16 +238,15 @@ async def update_quote_with_ai(
         if not validate_company_id(request.company_id, db):
             raise HTTPException(status_code=403, detail="Invalid company_id")
         
-        # Initialize services
-        quote_service = QuoteGeneratorService(gemini, db)
-        
-        # Generate updated quote (existing_items provides context)
-        quote_data = quote_service.generate_quote(
-            company_id=request.company_id,
+        # ✨ NEW: Use ADK agent for quote updates (includes automatic discount recalculation)
+        adk_service = AdkQuoteService()
+        quote_data = adk_service.generate_quote(
             description=request.user_prompt,
-            customer_address=request.customer_address or "",
-            existing_items=request.existing_items
+            existing_items=request.existing_items,
+            customer_address=request.customer_address
         )
+        
+        print(f"✨ ADK agent returned {len(quote_data['line_items'])} items (discounts auto-recalculated)")
         
         # Get tax rate from settings JSONB (new schema)
         company_response = db.table('companies').select('settings').eq('id', request.company_id).single().execute()
