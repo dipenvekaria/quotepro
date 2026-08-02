@@ -1,0 +1,96 @@
+# QuotePro Agent Registry
+#
+# One entry per agent. Prompts live in `src/quotepro/prompts/`.
+# Tools resolved from `src/quotepro/agents/registry.py::_default_tool_registry()`.
+#
+# Add a new agent:
+#   1. Drop a `<name>_v1.md` prompt in prompts/.
+#   2. Register the tool callable in registry.py.
+#   3. Append an entry here.
+
+agents:
+  - name: router
+    description: >
+      Top-level orchestrator. Classifies user intent and delegates to a
+      specialist sub-agent. Falls back to plain chat if no specialist matches.
+    prompt_file: router_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.0
+    tools: []
+
+  - name: quote_builder
+    description: >
+      Generates a professional quote from a natural-language job description.
+      Grounds every line item in retrieved catalog data. Never fabricates
+      prices or product names.
+    prompt_file: quote_builder_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.1
+    tools:
+      - retrieve_catalog_items
+      - retrieve_similar_quotes
+      - get_tax_rate
+      - recalculate_discount
+    output_schema: QuoteOutput
+
+  - name: quote_updater
+    description: >
+      Applies incremental edits to an existing quote — add/remove items,
+      change quantities, adjust discounts. Preserves all existing items
+      unless explicitly told otherwise.
+    prompt_file: quote_updater_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.1
+    tools:
+      - retrieve_catalog_items
+      - recalculate_discount
+    output_schema: QuoteOutput
+
+  - name: job_namer
+    description: >
+      Produces a concise 3–5 word job name from a customer description.
+      Used to auto-fill the job_name field on lead creation.
+    prompt_file: job_namer_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.2
+    tools: []
+
+  - name: upsell_suggester
+    description: >
+      Given a current quote, suggests 2–3 upsell/cross-sell items grounded
+      in the catalog and patterns from historically-won quotes.
+    prompt_file: upsell_suggester_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.3
+    tools:
+      - retrieve_catalog_items
+      - retrieve_similar_quotes
+
+  - name: quote_optimizer
+    description: >
+      Analyzes a proposed quote against similar past quotes and returns a
+      win-probability estimate plus optional pricing suggestions.
+    prompt_file: quote_optimizer_v1.md
+    model: gemini-2.0-flash-thinking-exp-1219
+    temperature: 0.0
+    tools:
+      - retrieve_similar_quotes
+
+  - name: invoice_drafter
+    description: >
+      Drafts an invoice from a completed job. Copies line items from the
+      accepted quote, applies any scope changes noted during the job,
+      and formats a customer-facing summary.
+    prompt_file: invoice_drafter_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.1
+    tools: []
+
+  - name: schedule_assistant
+    description: >
+      Suggests scheduling windows for a new job given tech availability,
+      customer preference, and existing scheduled work.
+    prompt_file: schedule_assistant_v1.md
+    model: gemini-2.0-flash
+    temperature: 0.1
+    tools: []
