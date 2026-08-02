@@ -1,0 +1,23 @@
+# Lefthook config: fast, cross-platform git hooks
+# Docs: https://lefthook.dev
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,jsx,ts,tsx,json,jsonc}"
+      run: pnpm biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+    ruff:
+      glob: "python-backend/**/*.py"
+      run: cd python-backend && uv run ruff check --fix {staged_files} && uv run ruff format {staged_files}
+      stage_fixed: true
+
+pre-push:
+  parallel: true
+  commands:
+    typecheck:
+      run: pnpm tsc --noEmit
+    pytest:
+      glob: "python-backend/**/*.py"
+      run: cd python-backend && uv run pytest -x --ff -q
