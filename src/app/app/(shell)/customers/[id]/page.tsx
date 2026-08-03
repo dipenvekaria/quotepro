@@ -39,7 +39,7 @@ export default async function CustomerDetailPage({
     .from('customers')
     .select(`
       id, name, email, phone, notes, tags, source, created_at,
-      addresses (id, line1, line2, city, state, postal_code, is_primary)
+      addresses:customer_addresses (id, address, city, state, zip, is_primary)
     `)
     .eq('company_id', profile.company_id)
     .eq('id', id)
@@ -65,11 +65,10 @@ export default async function CustomerDetailPage({
 
   const addresses = (customer.addresses ?? []) as Array<{
     id: string
-    line1: string | null
-    line2: string | null
+    address: string | null
     city: string | null
     state: string | null
-    postal_code: string | null
+    zip: string | null
     is_primary: boolean
   }>
   const primary = addresses.find((a) => a.is_primary) ?? addresses[0]
@@ -205,15 +204,9 @@ export default async function CustomerDetailPage({
             </div>
             {primary ? (
               <address className="mt-3 text-sm not-italic leading-relaxed text-muted-foreground">
-                {primary.line1}
-                {primary.line2 ? (
-                  <>
-                    <br />
-                    {primary.line2}
-                  </>
-                ) : null}
+                {primary.address}
                 <br />
-                {[primary.city, primary.state, primary.postal_code].filter(Boolean).join(', ')}
+                {[primary.city, primary.state, primary.zip].filter(Boolean).join(', ')}
               </address>
             ) : (
               <p className="mt-3 text-xs text-muted-foreground">

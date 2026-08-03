@@ -11,10 +11,10 @@ import { EmptyState } from '@/components/shared/empty-state'
 type ScheduledJob = {
   id: string
   status: string
-  scheduled_at: string
+  scheduled_start: string
   total: number
   customers: { name: string } | null
-  addresses: { line1: string | null; city: string | null; state: string | null } | null
+  addresses: { address: string | null; city: string | null; state: string | null } | null
 }
 
 // ---------------------------------------------------------------------------
@@ -45,15 +45,15 @@ export default async function CalendarPage({
   const { data: jobs } = await supabase
     .from('work_items')
     .select(`
-      id, status, scheduled_at, total,
+      id, status, scheduled_start, total,
       customers!work_items_customer_id_fkey (name),
-      addresses!work_items_address_id_fkey (line1, city, state)
+      addresses:customer_addresses!work_items_address_id_fkey (address, city, state)
     `)
     .eq('company_id', profile.company_id)
-    .not('scheduled_at', 'is', null)
-    .gte('scheduled_at', weekStart.toISOString())
-    .lt('scheduled_at', weekEnd.toISOString())
-    .order('scheduled_at', { ascending: true })
+    .not('scheduled_start', 'is', null)
+    .gte('scheduled_start', weekStart.toISOString())
+    .lt('scheduled_start', weekEnd.toISOString())
+    .order('scheduled_start', { ascending: true })
 
   const list = (jobs ?? []) as unknown as ScheduledJob[]
 
@@ -65,7 +65,7 @@ export default async function CalendarPage({
 
   const jobsByDay: Record<string, ScheduledJob[]> = {}
   for (const j of list) {
-    const key = new Date(j.scheduled_at).toISOString().slice(0, 10)
+    const key = new Date(j.scheduled_start).toISOString().slice(0, 10)
     ;(jobsByDay[key] ??= []).push(j)
   }
 
@@ -147,7 +147,7 @@ export default async function CalendarPage({
                         <div className="flex items-center justify-between">
                           <StatusBadge status={j.status} />
                           <span className="tabular text-[10px] text-muted-foreground">
-                            {new Date(j.scheduled_at).toLocaleTimeString('en-US', {
+                            {new Date(j.scheduled_start).toLocaleTimeString('en-US', {
                               hour: 'numeric',
                               minute: '2-digit',
                             })}
