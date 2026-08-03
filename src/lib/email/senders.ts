@@ -3,6 +3,8 @@
 import { render } from '@react-email/render'
 
 import { QuoteSentEmail } from '@/emails/QuoteSentEmail'
+import { renderInvoicePdf, renderQuotePdf, type InvoicePdfProps, type QuotePdfProps } from '@/lib/pdf/documents'
+
 import { getFromAddress, getResend } from './client'
 
 // ---------------------------------------------------------------------------
@@ -17,6 +19,7 @@ type SendQuoteEmailInput = {
   items: { name: string; quantity: number; unit_price: number }[]
   fromLabel?: string
   replyTo?: string
+  pdfProps?: QuotePdfProps
 }
 
 type SendResult =
@@ -51,7 +54,18 @@ export async function sendQuoteEmail(input: SendQuoteEmailInput): Promise<SendRe
     }),
   )
 
-  const from = input.fromLabel ? `${input.fromLabel} <${extractAddress(getFromAddress())}>` : getFromAddress()
+  const from = input.fromLabel
+    ? `${input.fromLabel} <${extractAddress(getFromAddress())}>`
+    : getFromAddress()
+
+  const attachments = input.pdfProps
+    ? [
+        {
+          filename: `${input.quoteNumber}.pdf`,
+          content: await renderQuotePdf(input.pdfProps),
+        },
+      ]
+    : undefined
 
   const { data, error } = await resend.emails.send({
     from,
@@ -59,6 +73,7 @@ export async function sendQuoteEmail(input: SendQuoteEmailInput): Promise<SendRe
     subject: `Your quote ${input.quoteNumber} is ready`,
     html,
     replyTo: input.replyTo,
+    attachments,
   })
 
   if (error) return { ok: false, error: error.message }
@@ -76,6 +91,7 @@ type SendInvoiceEmailInput = {
   dueDate?: Date | null
   fromLabel?: string
   replyTo?: string
+  pdfProps?: InvoicePdfProps
 }
 
 export async function sendInvoiceEmail(input: SendInvoiceEmailInput): Promise<SendResult> {
@@ -109,7 +125,18 @@ export async function sendInvoiceEmail(input: SendInvoiceEmailInput): Promise<Se
   </div>
 </body></html>`
 
-  const from = input.fromLabel ? `${input.fromLabel} <${extractAddress(getFromAddress())}>` : getFromAddress()
+  const from = input.fromLabel
+    ? `${input.fromLabel} <${extractAddress(getFromAddress())}>`
+    : getFromAddress()
+
+  const attachments = input.pdfProps
+    ? [
+        {
+          filename: `${input.invoiceNumber}.pdf`,
+          content: await renderInvoicePdf(input.pdfProps),
+        },
+      ]
+    : undefined
 
   const { data, error } = await resend.emails.send({
     from,
@@ -117,6 +144,7 @@ export async function sendInvoiceEmail(input: SendInvoiceEmailInput): Promise<Se
     subject: `Invoice ${input.invoiceNumber} — ${fmtMoney(input.amountDue)} due`,
     html,
     replyTo: input.replyTo,
+    attachments,
   })
 
   if (error) return { ok: false, error: error.message }

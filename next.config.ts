@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production",
   },
   poweredByHeader: false,
+  devIndicators: false,
+  allowedDevOrigins: ["*.trycloudflare.com"],
   async headers() {
     return [
       {

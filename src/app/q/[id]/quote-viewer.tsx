@@ -5,6 +5,7 @@ import {
   Building2,
   Check,
   CheckCircle2,
+  Download,
   FileText,
   Mail,
   MapPin,
@@ -83,7 +84,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
     <div className="min-h-screen bg-muted/30">
       {/* Top ribbon (company header) */}
       <header className="border-b border-border/70 bg-background">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-2 px-6 py-4">
           <div className="flex items-center gap-3">
             {quote.companies?.logo_url ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -97,16 +98,27 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
                 <Building2 className="h-4 w-4" />
               </div>
             )}
-            <div>
-              <div className="text-sm font-semibold">{quote.companies?.name ?? 'Your provider'}</div>
-              <div className="text-[11px] text-muted-foreground">
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold">{quote.companies?.name ?? 'Your provider'}</div>
+              <div className="truncate text-[11px] text-muted-foreground">
                 {quote.companies?.phone ?? quote.companies?.email ?? ''}
               </div>
             </div>
           </div>
-          <span className="hidden text-[11px] text-muted-foreground sm:inline">
-            Quote {quote.quote_number ?? `#${quote.public_token.slice(0, 6).toUpperCase()}`}
-          </span>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="hidden text-[11px] text-muted-foreground sm:inline">
+              Quote {quote.quote_number ?? `#${quote.public_token.slice(0, 6).toUpperCase()}`}
+            </span>
+            <a
+              href={`/q/${quote.public_token}/pdf`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-8 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-[11px] font-medium hover:bg-muted"
+            >
+              <Download className="h-3 w-3" />
+              PDF
+            </a>
+          </div>
         </div>
       </header>
 
