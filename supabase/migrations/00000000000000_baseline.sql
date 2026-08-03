@@ -99,7 +99,7 @@ COMMENT ON TABLE public.companies IS 'Multi-tenant root. One row per contractor 
 
 CREATE TABLE public.users (
   id             UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-  company_id     UUID NOT NULL REFERENCES public.companies(id) ON DELETE CASCADE,
+  company_id     UUID REFERENCES public.companies(id) ON DELETE CASCADE,
   role           public.user_role NOT NULL DEFAULT 'technician',
   profile        JSONB NOT NULL DEFAULT jsonb_build_object(
                    'first_name', NULL,
@@ -203,15 +203,8 @@ CREATE TABLE public.work_items (
   created_by            UUID REFERENCES public.users(id) ON DELETE SET NULL,
 
   status                public.work_item_status NOT NULL DEFAULT 'lead',
-  kind                  TEXT GENERATED ALWAYS AS (
-                          CASE
-                            WHEN status = 'lead' THEN 'lead'
-                            WHEN status = 'archived' THEN 'archived'
-                            WHEN status::text LIKE 'quote_%' THEN 'quote'
-                            WHEN status::text LIKE 'job_%'   THEN 'job'
-                            ELSE 'unknown'
-                          END
-                        ) STORED,
+  kind                  TEXT NOT NULL DEFAULT 'lead'
+                          CHECK (kind IN ('lead','quote','job','archived','unknown')),
 
   source                TEXT NOT NULL DEFAULT 'direct'
                           CHECK (source IN ('direct','phone','website','referral','google_ads','facebook','other')),
@@ -367,7 +360,7 @@ CREATE TABLE public.document_embeddings (
   entity_id    UUID NOT NULL,
   content      TEXT NOT NULL CHECK (length(content) > 0),
   embedding    vector(768) NOT NULL,
-  tsv          TSVECTOR GENERATED ALWAYS AS (to_tsvector('english', coalesce(content, ''))) STORED,
+  tsv          TSVECTOR,
   metadata     JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -529,6 +522,39 @@ CREATE TRIGGER trg_invoices_updated_at         BEFORE UPDATE ON public.invoices 
 CREATE TRIGGER trg_doc_embeddings_updated_at   BEFORE UPDATE ON public.document_embeddings FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 CREATE TRIGGER trg_adk_sessions_updated_at     BEFORE UPDATE ON public.adk_sessions_v2  FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
 CREATE TRIGGER trg_notif_prefs_updated_at      BEFORE UPDATE ON public.notification_prefs FOR EACH ROW EXECUTE FUNCTION public.set_updated_at();
+
+-- Keep work_items.kind derived from status. Trigger (not GENERATED) because the
+-- `status::text LIKE ...` expression is not IMMUTABLE per Postgres.
+CREATE OR REPLACE FUNCTION public.set_work_item_kind()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.kind := CASE
+    WHEN NEW.status = 'lead' THEN 'lead'
+    WHEN NEW.status = 'archived' THEN 'archived'
+    WHEN NEW.status::text LIKE 'quote_%' THEN 'quote'
+    WHEN NEW.status::text LIKE 'job_%'   THEN 'job'
+    ELSE 'unknown'
+  END;
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_work_items_set_kind
+  BEFORE INSERT OR UPDATE OF status ON public.work_items
+  FOR EACH ROW EXECUTE FUNCTION public.set_work_item_kind();
+
+-- Populate document_embeddings.tsv on write (to_tsvector is STABLE, not IMMUTABLE).
+CREATE OR REPLACE FUNCTION public.set_document_embedding_tsv()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+  NEW.tsv := to_tsvector('simple', coalesce(NEW.content, ''));
+  RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER trg_document_embeddings_set_tsv
+  BEFORE INSERT OR UPDATE OF content ON public.document_embeddings
+  FOR EACH ROW EXECUTE FUNCTION public.set_document_embedding_tsv();
 
 -- Notify indexer worker when embeddings need refresh
 CREATE OR REPLACE FUNCTION public.notify_indexer()

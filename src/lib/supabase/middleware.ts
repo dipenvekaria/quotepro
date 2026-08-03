@@ -31,7 +31,7 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Allow public routes
-  const publicRoutes = ['/login', '/auth', '/pricing']
+  const publicRoutes = ['/login', '/auth', '/pricing', '/preview', '/q/', '/i/', '/signup', '/forgot-password']
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
   // Protected routes
@@ -69,7 +69,7 @@ export async function updateSession(request: NextRequest) {
       url.port = '' // Remove port for tunnels
     }
     
-    url.pathname = '/dashboard'
+    url.pathname = '/app'
     console.log('✅ Middleware: User logged in, redirecting from /login to:', url.toString())
     return NextResponse.redirect(url)
   }

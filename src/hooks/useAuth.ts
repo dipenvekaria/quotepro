@@ -17,25 +17,35 @@ export function useAuth() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         })
-        
+
         if (error) throw error
-        toast.success('Check your email to confirm your account!')
+
+        // With email confirmation disabled (see supabase/config.toml), signUp
+        // returns a session immediately. Redirect straight into onboarding.
+        if (data.session) {
+          toast.success('Welcome to QuotePro!')
+          router.push('/app')
+          router.refresh()
+        } else {
+          // Confirmation-required project — nudge to check email.
+          toast.success('Check your email to confirm your account!')
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         })
-        
+
         if (error) throw error
         toast.success('Welcome back!')
-        router.push('/dashboard')
+        router.push('/app')
         router.refresh()
       }
     } catch (error: unknown) {

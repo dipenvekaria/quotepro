@@ -3,11 +3,21 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* =========================================================================
+   Design Tokens — Stripe/Attio-inspired
+   - Pure white base, subtle warm neutrals (not cold slate)
+   - Indigo accent (#5B5BFE-ish) — signals AI + trust
+   - Soft borders (near-invisible until interaction)
+   - Restrained shadows, generous radii
+   - Typography returns to normal weight; semibold reserved for emphasis
+   ========================================================================= */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -16,11 +26,13 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
+
   --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -37,104 +49,195 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 }
 
+/* -------- Light (default) ----------------------------------------------- */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+
+  /* Surfaces */
+  --background: oklch(0.995 0 0);                    /* Pure white */
+  --foreground: oklch(0.14 0.005 285);               /* Warm near-black */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.14 0.005 285);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  /* Executive Black Theme: Slate-900 primary (#0f172a), Blue-600 accent (#2563eb) */
-  --primary: oklch(0.15 0.01 240); /* Slate-900 #0f172a - Executive authority */
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.45 0.15 250); /* Blue-600 #2563eb - Professional highlight */
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.65 0.02 240); /* Slate-400 - Strong borders */
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.45 0.15 250); /* Blue-600 focus rings */
-  --chart-1: oklch(0.45 0.15 250);
-  --chart-2: oklch(0.15 0.01 240);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.15 0.01 240);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --popover-foreground: oklch(0.14 0.005 285);
+
+  /* Brand — Indigo (Stripe/Attio family) */
+  --primary: oklch(0.55 0.24 268);                   /* #5B5BFE */
+  --primary-foreground: oklch(0.99 0 0);
+
+  /* Neutrals */
+  --secondary: oklch(0.975 0.005 285);               /* Very light warm gray */
+  --secondary-foreground: oklch(0.20 0.005 285);
+  --muted: oklch(0.968 0.005 285);
+  --muted-foreground: oklch(0.55 0.010 285);         /* Muted body copy */
+  --accent: oklch(0.968 0.010 268);                  /* Faint indigo-tinted surface */
+  --accent-foreground: oklch(0.20 0.010 268);
+
+  /* Semantic */
+  --destructive: oklch(0.60 0.24 25);                /* Ruby */
+
+  /* Lines */
+  --border: oklch(0.925 0.008 285);                  /* Soft warm gray */
+  --input: oklch(0.925 0.008 285);
+  --ring: oklch(0.55 0.24 268 / 0.35);               /* Indigo focus ring */
+
+  /* Charts (indigo → violet family + supporting) */
+  --chart-1: oklch(0.55 0.24 268);
+  --chart-2: oklch(0.70 0.18 296);
+  --chart-3: oklch(0.75 0.15 200);
+  --chart-4: oklch(0.68 0.19 145);
+  --chart-5: oklch(0.72 0.20 55);
+
+  /* Sidebar */
+  --sidebar: oklch(0.985 0.003 285);
+  --sidebar-foreground: oklch(0.14 0.005 285);
+  --sidebar-primary: oklch(0.55 0.24 268);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.945 0.010 268);
+  --sidebar-accent-foreground: oklch(0.20 0.010 268);
+  --sidebar-border: oklch(0.925 0.008 285);
+  --sidebar-ring: oklch(0.55 0.24 268 / 0.35);
 }
 
+/* -------- Dark ---------------------------------------------------------- */
+.dark {
+  --background: oklch(0.145 0.005 285);              /* Rich near-black */
+  --foreground: oklch(0.97 0.002 285);
+  --card: oklch(0.185 0.006 285);
+  --card-foreground: oklch(0.97 0.002 285);
+  --popover: oklch(0.185 0.006 285);
+  --popover-foreground: oklch(0.97 0.002 285);
+
+  --primary: oklch(0.72 0.22 268);                   /* Slightly brighter indigo for contrast */
+  --primary-foreground: oklch(0.14 0.005 285);
+
+  --secondary: oklch(0.225 0.008 285);
+  --secondary-foreground: oklch(0.97 0.002 285);
+  --muted: oklch(0.225 0.008 285);
+  --muted-foreground: oklch(0.68 0.010 285);
+  --accent: oklch(0.28 0.030 268);
+  --accent-foreground: oklch(0.97 0.002 285);
+
+  --destructive: oklch(0.70 0.22 25);
+
+  --border: oklch(0.30 0.008 285);
+  --input: oklch(0.30 0.008 285);
+  --ring: oklch(0.72 0.22 268 / 0.35);
+
+  --chart-1: oklch(0.72 0.22 268);
+  --chart-2: oklch(0.72 0.20 296);
+  --chart-3: oklch(0.78 0.15 200);
+  --chart-4: oklch(0.72 0.19 145);
+  --chart-5: oklch(0.78 0.20 55);
+
+  --sidebar: oklch(0.165 0.006 285);
+  --sidebar-foreground: oklch(0.97 0.002 285);
+  --sidebar-primary: oklch(0.72 0.22 268);
+  --sidebar-primary-foreground: oklch(0.14 0.005 285);
+  --sidebar-accent: oklch(0.25 0.020 268);
+  --sidebar-accent-foreground: oklch(0.97 0.002 285);
+  --sidebar-border: oklch(0.30 0.008 285);
+  --sidebar-ring: oklch(0.72 0.22 268 / 0.35);
+}
+
+/* =========================================================================
+   Base — typography, focus, selection
+   ========================================================================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
-    @apply bg-background text-foreground;
-    /* Professional Bold Typography - Standard sizes */
-    @apply text-base font-bold antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01", "ss03";  /* Geist stylistic sets */
+    letter-spacing: -0.005em;
   }
-  
-  /* Typography defaults - Professional Bold (Standard Tailwind sizes) */
-  h1 {
-    @apply text-3xl font-bold tracking-tight leading-tight;
-  }
-  h2 {
-    @apply text-2xl font-bold tracking-tight leading-snug;
-  }
-  h3 {
-    @apply text-xl font-bold tracking-normal leading-snug;
-  }
-  h4 {
-    @apply text-lg font-bold tracking-normal leading-normal;
-  }
-  p {
-    @apply text-base font-bold leading-relaxed;
-  }
-  small {
-    @apply text-sm font-bold;
+
+  /* Headings — semibold, tight tracking */
+  h1 { @apply text-4xl font-semibold tracking-tight leading-[1.1]; letter-spacing: -0.02em; }
+  h2 { @apply text-2xl font-semibold tracking-tight leading-tight; letter-spacing: -0.015em; }
+  h3 { @apply text-lg  font-semibold tracking-tight leading-snug; letter-spacing: -0.01em; }
+  h4 { @apply text-base font-semibold leading-snug; }
+
+  /* Body — normal weight, comfortable rhythm */
+  p     { @apply text-[15px] leading-relaxed text-foreground/90; }
+  small { @apply text-sm text-muted-foreground; }
+
+  /* Tabular numerics anywhere numbers matter */
+  .tabular, table td, table th, [data-tabular] { font-variant-numeric: tabular-nums; }
+
+  /* Selection */
+  ::selection { background: var(--primary); color: var(--primary-foreground); }
+
+  /* Focus */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
+    border-radius: calc(var(--radius) - 2px);
   }
 }
 
+/* =========================================================================
+   Utilities — Stripe/Attio motifs
+   ========================================================================= */
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  
-  /* Hide React DevTools badge on mobile */
+
+  /* Subtle grid background — pairs with hero panels */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+  }
+
+  /* Radial dots background — soft, decorative */
+  .bg-dots {
+    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+    background-size: 18px 18px;
+  }
+
+  /* Elevated card shadow (Attio) */
+  .shadow-card {
+    box-shadow:
+      0 1px 2px 0 rgb(15 23 42 / 0.03),
+      0 8px 24px -4px rgb(15 23 42 / 0.06);
+  }
+
+  /* Signature indigo gradient */
+  .bg-indigo-glow {
+    background:
+      radial-gradient(ellipse 800px 400px at 20% 0%, oklch(0.72 0.22 268 / 0.15), transparent 60%),
+      radial-gradient(ellipse 600px 400px at 80% 100%, oklch(0.78 0.20 296 / 0.12), transparent 60%),
+      var(--background);
+  }
+
+  /* Hide React DevTools badge on mobile (kept from prior) */
   @media (max-width: 768px) {
     #react-devtools-portal,
     [data-react-devtools-portal],
     .__react-devtools-logo__,
-    iframe[src*="react-devtools"],
-    div[style*="react-devtools"],
-    div[id*="react-devtools"],
-    div[class*="react-devtools"] {
+    iframe[src*="react-devtools"] {
       display: none !important;
-      visibility: hidden !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
     }
   }
 }

@@ -85,7 +85,11 @@ INSERT INTO public.users (id, company_id, role, profile, is_active) VALUES
    jsonb_build_object('first_name','Sam','last_name','Office','phone','+1-555-0102'), TRUE),
   ('33333333-3333-3333-3333-333333333333', 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'technician',
    jsonb_build_object('first_name','Tam','last_name','Tech','phone','+1-555-0103'), TRUE)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  company_id = EXCLUDED.company_id,
+  role = EXCLUDED.role,
+  profile = EXCLUDED.profile,
+  is_active = EXCLUDED.is_active;
 
 -- ----------------------------------------------------------------------------
 -- 4. Catalog (40 realistic HVAC + plumbing items)

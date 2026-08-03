@@ -1,0 +1,222 @@
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { Filter, Inbox, Plus } from 'lucide-react'
+
+import { EmptyState } from '@/components/shared/empty-state'
+import { StatusBadge } from '@/components/shared/status-badge'
+import { createClient } from '@/lib/supabase/server'
+import { cn } from '@/lib/utils'
+
+type Column = {
+  key: string
+  label: string
+  statuses: string[]
+  dot: string
+}
+
+const COLUMNS: Column[] = [
+  { key: 'leads',   label: 'Leads',    statuses: ['lead'],                                                         dot: 'bg-primary' },
+  { key: 'quotes',  label: 'Quotes',   statuses: ['quote_draft','quote_sent','quote_viewed'],                      dot: 'bg-violet-500' },
+  { key: 'accepted',label: 'Won',      statuses: ['quote_accepted','job_scheduled','job_in_progress'],             dot: 'bg-amber-500' },
+  { key: 'closed',  label: 'Completed',statuses: ['job_completed'],                                                dot: 'bg-emerald-500' },
+]
+
+export default async function PipelinePage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { data: profile } = await supabase
+    .from('users')
+    .select('company_id')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (!profile?.company_id) redirect('/app/onboarding')
+  const companyId = profile.company_id as string
+
+  const { data: workItems } = await supabase
+    .from('work_items')
+    .select('id, status, kind, job_name, description, total, customer_id, created_at, updated_at')
+    .eq('company_id', companyId)
+    .neq('status', 'archived')
+    .order('updated_at', { ascending: false })
+    .limit(500)
+
+  const customerIds = Array.from(new Set((workItems ?? []).map((w) => w.customer_id).filter(Boolean)))
+  const { data: customers } = customerIds.length
+    ? await supabase.from('customers').select('id, name').in('id', customerIds)
+    : { data: [] as { id: string; name: string }[] }
+  const customerMap = new Map((customers ?? []).map((c) => [c.id, c.name]))
+
+  const grouped = COLUMNS.reduce<Record<string, typeof workItems>>((acc, col) => {
+    acc[col.key] = (workItems ?? []).filter((w) => col.statuses.includes(w.status as string))
+    return acc
+  }, {})
+
+  const total = workItems?.length ?? 0
+
+  return (
+    <div className="mx-auto max-w-[1600px] px-6 py-6 lg:px-10 lg:py-8">
+      {/* Header */}
+      <div className="flex items-end justify-between">
+        <div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Workspace</span>
+            <span>/</span>
+            <span className="text-foreground">Pipeline</span>
+          </div>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">Pipeline</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {total} active {total === 1 ? 'item' : 'items'} across all stages.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground shadow-sm hover:text-foreground">
+            <Filter className="h-3.5 w-3.5" />
+            Filter
+          </button>
+          <Link
+            href="/app/quotes/new"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
+          >
+            <Plus className="h-4 w-4" />
+            New
+          </Link>
+        </div>
+      </div>
+
+      {/* Board */}
+      {total === 0 ? (
+        <div className="mt-8">
+          <EmptyState
+            icon={Inbox}
+            title="Nothing in your pipeline yet"
+            description="Create your first lead or quote to start tracking work through your business."
+            action={
+              <Link
+                href="/app/quotes/new"
+                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
+              >
+                <Plus className="h-3.5 w-3.5" /> New quote
+              </Link>
+            }
+          />
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {COLUMNS.map((col) => {
+            const items = grouped[col.key] ?? []
+            const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
+            return (
+              <div key={col.key} className="min-w-0">
+                <div className="mb-2 flex items-center justify-between px-1">
+                  <div className="flex items-center gap-1.5 text-xs font-medium">
+                    <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
+                    {col.label}
+                    <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
+                      {items.length}
+                    </span>
+                  </div>
+                  {value > 0 && (
+                    <span className="text-[11px] font-medium tabular text-muted-foreground">
+                      {fmtMoney(value)}
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  {items.map((item) => (
+                    <PipelineCard
+                      key={item.id}
+                      id={item.id}
+                      status={item.status}
+                      jobName={item.job_name}
+                      description={item.description}
+                      customer={customerMap.get(item.customer_id) ?? 'Unknown customer'}
+                      total={Number(item.total ?? 0)}
+                      updatedAt={item.updated_at}
+                    />
+                  ))}
+                  <Link
+                    href="/app/quotes/new"
+                    className="flex items-center justify-center gap-1 rounded-lg border border-dashed border-border/80 py-2 text-xs text-muted-foreground hover:border-primary/60 hover:text-primary"
+                  >
+                    <Plus className="h-3 w-3" /> Add
+                  </Link>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// -----------------------------------------------------------------------------
+
+function PipelineCard({
+  id,
+  status,
+  jobName,
+  description,
+  customer,
+  total,
+  updatedAt,
+}: {
+  id: string
+  status: string
+  jobName: string | null
+  description: string | null
+  customer: string
+  total: number
+  updatedAt: string
+}) {
+  const initials = customer
+    .split(' ')
+    .slice(0, 2)
+    .map((s) => s[0])
+    .join('')
+    .toUpperCase()
+
+  return (
+    <Link
+      href={`/app/pipeline/${id}`}
+      className="group block rounded-lg border border-border/70 bg-background p-3 shadow-sm transition-all hover:border-border hover:shadow-card"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <StatusBadge status={status as never} showIcon={false} className="text-[10px]" />
+        {total > 0 && (
+          <span className="text-xs font-semibold tabular">{fmtMoney(total)}</span>
+        )}
+      </div>
+      <div className="mt-2 line-clamp-2 text-sm font-medium leading-snug">
+        {jobName || description || 'Untitled'}
+      </div>
+      <div className="mt-2.5 flex items-center justify-between">
+        <div className="flex min-w-0 items-center gap-1.5">
+          <div className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
+            {initials}
+          </div>
+          <span className="truncate text-xs text-muted-foreground">{customer}</span>
+        </div>
+        <span className="text-[11px] text-muted-foreground">{fmtRelative(updatedAt)}</span>
+      </div>
+    </Link>
+  )
+}
+
+function fmtMoney(n: number) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
+}
+
+function fmtRelative(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime()
+  const m = Math.floor(diff / 60000)
+  if (m < 60) return `${m}m`
+  const h = Math.floor(m / 60)
+  if (h < 24) return `${h}h`
+  const d = Math.floor(h / 24)
+  return `${d}d`
+}

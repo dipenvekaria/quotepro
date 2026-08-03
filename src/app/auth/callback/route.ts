@@ -28,22 +28,10 @@ export async function GET(request: Request) {
       
       if (user) {
         console.log('  - User authenticated:', user.email)
-        
-        // Check team_members table for company_id
-        const { data: teamMember } = await supabase
-          .from('team_members')
-          .select('company_id')
-          .eq('user_id', user.id)
-          .single() as { data: { company_id: string } | null }
 
-        // If no team member record exists, redirect to onboarding
-        const redirectTo = teamMember?.company_id ? (next || '/dashboard') : '/onboarding'
-        
-        // Create redirect URL preserving the original host
-        const redirectUrl = new URL(redirectTo, origin)
-        
+        // Route through /app — it decides onboarding vs dashboard.
+        const redirectUrl = new URL(next || '/app', origin)
         console.log('  - Redirecting to:', redirectUrl.toString())
-        
         return NextResponse.redirect(redirectUrl.toString())
       }
     } else {
