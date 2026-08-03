@@ -57,6 +57,20 @@ export default async function WorkItemDetailPage({
     .eq('is_active', true)
     .order('email', { ascending: true })
 
+  const { data: invoice } = await supabase
+    .from('invoices')
+    .select('id, invoice_number, status, total, amount_paid, sent_at, paid_at, due_date, public_token')
+    .eq('work_item_id', id)
+    .maybeSingle()
+
+  const { data: payments } = invoice
+    ? await supabase
+        .from('payments')
+        .select('id, amount, method, reference_number, paid_at')
+        .eq('invoice_id', invoice.id)
+        .order('paid_at', { ascending: false })
+    : { data: [] as never[] }
+
   return (
     <WorkItemDetail
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
@@ -67,6 +81,8 @@ export default async function WorkItemDetailPage({
           return { id: t.id, name: p?.full_name || t.email }
         })
       }
+      invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}
+      payments={(payments ?? []) as Parameters<typeof WorkItemDetail>[0]['payments']}
     />
   )
 }

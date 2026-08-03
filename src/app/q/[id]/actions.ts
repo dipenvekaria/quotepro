@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { createAdminClient } from '@/lib/supabase/admin'
+import { sbAdmin } from '@/lib/supabase/untyped'
 
 // ---------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
   const parsed = acceptSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
 
-  const admin = createAdminClient()
+  const admin = sbAdmin()
 
   const { data: item, error: fetchErr } = await admin
     .from('work_items')
@@ -55,7 +55,7 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
   const parsed = declineSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
 
-  const admin = createAdminClient()
+  const admin = sbAdmin()
 
   const { data: item } = await admin
     .from('work_items')
@@ -88,7 +88,7 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
 // ---------------------------------------------------------------------------
 
 export async function markQuoteViewed(token: string) {
-  const admin = createAdminClient()
+  const admin = sbAdmin()
 
   const { data: item } = await admin
     .from('work_items')

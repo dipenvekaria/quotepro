@@ -76,7 +76,7 @@ export default async function CustomerDetailPage({
   const initials = customer.name
     .split(' ')
     .slice(0, 2)
-    .map((s) => s.charAt(0))
+    .map((s: string) => s.charAt(0))
     .join('')
     .toUpperCase()
 

@@ -99,7 +99,7 @@ export default async function CustomersPage() {
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                        {(c.name.split(' ').slice(0, 2).map((s) => s[0]).join('') || '?').toUpperCase()}
+                        {(c.name.split(' ').slice(0, 2).map((s: string) => s[0]).join('') || '?').toUpperCase()}
                       </div>
                       <div className="min-w-0">
                         <div className="truncate text-sm font-medium">{c.name}</div>

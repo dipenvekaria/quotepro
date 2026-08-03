@@ -52,7 +52,7 @@ export async function listWorkItems(filters: Partial<ListFilters> = {}): Promise
 
   const { data, error } = await query
   if (error) throw new Error(`listWorkItems: ${error.message}`)
-  return (data ?? []) as WorkItemSummary[]
+  return ((data ?? []) as unknown) as WorkItemSummary[]
 }
 
 export async function getWorkItemDetail(id: string) {

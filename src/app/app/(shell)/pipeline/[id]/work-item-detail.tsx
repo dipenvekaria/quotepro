@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils'
 
 import { changeStatus, sendQuote, updateWorkItem } from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
+import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
 
 // ---------------------------------------------------------------------------
 
@@ -75,6 +76,26 @@ type WorkItem = {
 
 type Teammate = { id: string; name: string }
 
+export type Invoice = {
+  id: string
+  invoice_number: string
+  status: 'draft' | 'sent' | 'partial' | 'paid' | 'overdue' | 'cancelled'
+  total: number
+  amount_paid: number
+  sent_at: string | null
+  paid_at: string | null
+  due_date: string | null
+  public_token: string
+}
+
+export type Payment = {
+  id: string
+  amount: number
+  method: string
+  reference_number: string | null
+  paid_at: string
+}
+
 // ---------------------------------------------------------------------------
 
 const STATUS_ACTIONS: Record<string, { label: string; to: string; primary?: boolean }[]> = {
@@ -104,10 +125,14 @@ export function WorkItemDetail({
   workItem,
   lineItems: initialItems,
   teammates,
+  invoice,
+  payments,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
   teammates: Teammate[]
+  invoice: Invoice | null
+  payments: Payment[]
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
@@ -119,6 +144,8 @@ export function WorkItemDetail({
 
   const [savingItems, startItemsSave] = useTransition()
   const [savingMeta, startMetaSave] = useTransition()
+  const [payOpen, setPayOpen] = useState(false)
+  const [invoiceSending, startInvoiceSend] = useTransition()
   const [transitioning, startTransition_] = useTransition()
 
   const [sendOpen, setSendOpen] = useState(false)
@@ -213,6 +240,27 @@ export function WorkItemDetail({
       }
       setSentToken(res.data.public_token)
       setSendOpen(true)
+      if (res.data.email === 'sent') toast.success('Quote sent — email delivered.')
+      else if (res.data.email === 'skipped') toast.info('Quote sent — no email on file, share the link.')
+      else if (res.data.email === 'error') toast.warning('Quote sent, but email failed.')
+      router.refresh()
+    })
+  }
+
+  function doSendInvoice() {
+    startInvoiceSend(async () => {
+      const created = await convertToInvoice(workItem.id)
+      if (!created.ok) {
+        toast.error(created.error)
+        return
+      }
+      const send = await sendInvoice(created.data.id)
+      if (!send.ok) {
+        toast.error(send.error)
+        return
+      }
+      if (send.data.email === 'sent') toast.success(`Invoice ${created.data.invoice_number} sent.`)
+      else toast.info(`Invoice ${created.data.invoice_number} created — link ready to share.`)
       router.refresh()
     })
   }
@@ -258,7 +306,7 @@ export function WorkItemDetail({
               <h1 className="text-xl font-semibold tracking-tight">
                 {workItem.customers?.name ?? 'Customer'}
               </h1>
-              <StatusBadge status={workItem.status} />
+              <StatusBadge status={workItem.status as Parameters<typeof StatusBadge>[0]['status']} />
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
               {workItem.customers?.email && (
@@ -295,17 +343,38 @@ export function WorkItemDetail({
               Send quote
             </Button>
           ) : (
-            actions.map((a) => (
-              <Button
-                key={a.to}
-                onClick={() => transition(a.to)}
-                disabled={transitioning}
-                variant={a.primary ? 'default' : 'outline'}
-                className="h-9"
-              >
-                {a.label}
-              </Button>
-            ))
+            <>
+              {actions.map((a) => (
+                <Button
+                  key={a.to}
+                  onClick={() => transition(a.to)}
+                  disabled={transitioning}
+                  variant={a.primary ? 'default' : 'outline'}
+                  className="h-9"
+                >
+                  {a.label}
+                </Button>
+              ))}
+              {(workItem.status === 'quote_accepted' ||
+                workItem.status === 'job_scheduled' ||
+                workItem.status === 'job_in_progress' ||
+                workItem.status === 'job_completed') &&
+                !invoice && (
+                  <Button
+                    onClick={doSendInvoice}
+                    disabled={invoiceSending}
+                    variant="outline"
+                    className="h-9 gap-1.5 border-primary/40 text-primary hover:bg-primary/5"
+                  >
+                    {invoiceSending ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <Send className="h-3.5 w-3.5" />
+                    )}
+                    Send invoice
+                  </Button>
+                )}
+            </>
           )}
         </div>
       </header>
@@ -529,6 +598,15 @@ export function WorkItemDetail({
               </div>
             </div>
           </div>
+
+          {/* Invoice card */}
+          {invoice && (
+            <InvoiceCard
+              invoice={invoice}
+              payments={payments}
+              onRecordPayment={() => setPayOpen(true)}
+            />
+          )}
         </aside>
       </div>
 
@@ -537,6 +615,18 @@ export function WorkItemDetail({
         <SentModal
           publicUrl={`${typeof window !== 'undefined' ? window.location.origin : ''}/q/${sentToken}`}
           onClose={() => setSendOpen(false)}
+        />
+      )}
+
+      {/* Record payment modal */}
+      {payOpen && invoice && (
+        <RecordPaymentModal
+          invoice={invoice}
+          onClose={() => setPayOpen(false)}
+          onRecorded={() => {
+            setPayOpen(false)
+            router.refresh()
+          }}
         />
       )}
     </div>
@@ -685,6 +775,220 @@ function SentModal({ publicUrl, onClose }: { publicUrl: string; onClose: () => v
           >
             Preview <ExternalLink className="h-3.5 w-3.5" />
           </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+
+function InvoiceCard({
+  invoice,
+  payments,
+  onRecordPayment,
+}: {
+  invoice: Invoice
+  payments: Payment[]
+  onRecordPayment: () => void
+}) {
+  const publicUrl = typeof window === 'undefined' ? '' : `${window.location.origin}/i/${invoice.public_token}`
+  const amountDue = Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
+  const paid = invoice.status === 'paid'
+
+  const badge = {
+    draft: { label: 'Draft', cls: 'bg-muted text-muted-foreground' },
+    sent: { label: 'Sent', cls: 'bg-blue-500/10 text-blue-700 dark:text-blue-300' },
+    partial: { label: 'Partial', cls: 'bg-amber-500/10 text-amber-700 dark:text-amber-300' },
+    paid: { label: 'Paid', cls: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' },
+    overdue: { label: 'Overdue', cls: 'bg-destructive/10 text-destructive' },
+    cancelled: { label: 'Cancelled', cls: 'bg-muted text-muted-foreground' },
+  }[invoice.status]
+
+  return (
+    <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-semibold">Invoice</h2>
+        <span
+          className={`inline-flex h-5 items-center rounded-full px-2 text-[10px] font-medium ${badge.cls}`}
+        >
+          {badge.label}
+        </span>
+      </div>
+      <div className="mt-1 text-xs text-muted-foreground tabular">{invoice.invoice_number}</div>
+
+      <dl className="mt-4 space-y-2 text-sm">
+        <div className="flex justify-between text-muted-foreground">
+          <dt>Total</dt>
+          <dd className="tabular text-foreground">{fmtMoney(Number(invoice.total))}</dd>
+        </div>
+        <div className="flex justify-between text-muted-foreground">
+          <dt>Paid</dt>
+          <dd className="tabular text-foreground">{fmtMoney(Number(invoice.amount_paid ?? 0))}</dd>
+        </div>
+        <div className="mt-2 flex items-center justify-between border-t border-border/70 pt-2">
+          <dt className="text-sm font-semibold">{paid ? 'Fully paid' : 'Due'}</dt>
+          <dd
+            className={`text-base font-semibold tabular ${paid ? 'text-emerald-600' : 'text-foreground'}`}
+          >
+            {fmtMoney(paid ? Number(invoice.total) : amountDue)}
+          </dd>
+        </div>
+      </dl>
+
+      {/* Public link */}
+      <div className="mt-4 flex items-center gap-1 rounded-md border border-border bg-background p-1.5">
+        <div className="flex-1 truncate px-2 font-mono text-[11px] text-muted-foreground">
+          {publicUrl}
+        </div>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(publicUrl)
+            toast.success('Link copied')
+          }}
+          className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+          title="Copy link"
+        >
+          <Copy className="h-3.5 w-3.5" />
+        </button>
+        <a
+          href={publicUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+          title="Open"
+        >
+          <ExternalLink className="h-3.5 w-3.5" />
+        </a>
+      </div>
+
+      {!paid && (
+        <Button onClick={onRecordPayment} className="mt-4 h-9 w-full gap-1.5">
+          <Check className="h-3.5 w-3.5" />
+          Record payment
+        </Button>
+      )}
+
+      {payments.length > 0 && (
+        <div className="mt-4">
+          <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            Recent payments
+          </div>
+          <ul className="mt-1.5 space-y-1 text-xs">
+            {payments.slice(0, 3).map((p) => (
+              <li key={p.id} className="flex justify-between">
+                <span className="capitalize text-muted-foreground">
+                  {p.method.replace('_', ' ')} · {new Date(p.paid_at).toLocaleDateString()}
+                </span>
+                <span className="tabular font-medium">+{fmtMoney(Number(p.amount))}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+
+function RecordPaymentModal({
+  invoice,
+  onClose,
+  onRecorded,
+}: {
+  invoice: Invoice
+  onClose: () => void
+  onRecorded: () => void
+}) {
+  const amountDue = Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
+  const [amount, setAmount] = useState(amountDue)
+  const [method, setMethod] = useState<'cash' | 'check' | 'card' | 'bank_transfer' | 'stripe'>('check')
+  const [ref, setRef] = useState('')
+  const [busy, startBusy] = useTransition()
+
+  function submit() {
+    if (!(amount > 0)) {
+      toast.error('Amount must be greater than zero.')
+      return
+    }
+    startBusy(async () => {
+      const res = await recordPayment({
+        invoice_id: invoice.id,
+        amount,
+        method,
+        reference_number: ref || undefined,
+      })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      toast.success(res.data.newStatus === 'paid' ? 'Invoice fully paid.' : 'Payment recorded.')
+      onRecorded()
+    })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl border border-border bg-popover p-6 shadow-2xl">
+        <h2 className="text-lg font-semibold">Record a payment</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {invoice.invoice_number} · {fmtMoney(amountDue)} outstanding
+        </p>
+
+        <div className="mt-4 space-y-3">
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+              Amount received
+            </label>
+            <div className="flex items-center gap-1 rounded-md border border-input bg-background px-2">
+              <span className="text-sm text-muted-foreground">$</span>
+              <input
+                type="number"
+                step="0.01"
+                value={amount}
+                onChange={(e) => setAmount(Number(e.target.value))}
+                className="h-10 w-full bg-transparent text-sm tabular focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Method</label>
+            <select
+              value={method}
+              onChange={(e) => setMethod(e.target.value as typeof method)}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+            >
+              <option value="check">Check</option>
+              <option value="cash">Cash</option>
+              <option value="card">Credit card</option>
+              <option value="bank_transfer">Bank transfer</option>
+              <option value="stripe">Stripe</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+              Reference (optional)
+            </label>
+            <input
+              value={ref}
+              onChange={(e) => setRef(e.target.value)}
+              placeholder="Check #, transaction id…"
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+            />
+          </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-end gap-2">
+          <Button variant="outline" onClick={onClose} className="h-9">
+            Cancel
+          </Button>
+          <Button onClick={submit} disabled={busy} className="h-9 gap-1.5 shadow-sm">
+            {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+            Record {fmtMoney(amount)}
+          </Button>
         </div>
       </div>
     </div>

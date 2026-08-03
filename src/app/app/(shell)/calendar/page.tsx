@@ -145,7 +145,7 @@ export default async function CalendarPage({
                         className="block rounded-md border border-border/60 bg-background p-2 text-xs hover:border-primary/40 hover:shadow-sm"
                       >
                         <div className="flex items-center justify-between">
-                          <StatusBadge status={j.status} />
+                          <StatusBadge status={j.status as Parameters<typeof StatusBadge>[0]['status']} />
                           <span className="tabular text-[10px] text-muted-foreground">
                             {new Date(j.scheduled_start).toLocaleTimeString('en-US', {
                               hour: 'numeric',

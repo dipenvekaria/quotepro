@@ -9,16 +9,15 @@
 import { createClient } from '@supabase/supabase-js'
 
 import { env, envServer } from '@/lib/env'
-import type { Database } from '@/types/database.types'
 
-let _admin: ReturnType<typeof createClient<Database>> | null = null
+let _admin: ReturnType<typeof createClient> | null = null
 
 export function createAdminClient() {
   if (typeof window !== 'undefined') {
     throw new Error('createAdminClient() called from client bundle')
   }
   if (_admin) return _admin
-  _admin = createClient<Database>(
+  _admin = createClient(
     env.NEXT_PUBLIC_SUPABASE_URL,
     envServer().SUPABASE_SERVICE_ROLE_KEY,
     {

@@ -54,7 +54,7 @@ export async function listCatalog(filter: Partial<CatalogItemFilter> = {}): Prom
 
   const { data, error } = await query
   if (error) throw new Error(`listCatalog: ${error.message}`)
-  return (data ?? []) as CatalogItem[]
+  return ((data ?? []) as unknown) as CatalogItem[]
 }
 
 export async function getCatalogCategories(): Promise<string[]> {

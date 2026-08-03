@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-import { createAdminClient } from '@/lib/supabase/admin'
+import { sbAdmin } from '@/lib/supabase/untyped'
 
 import { QuoteViewer } from './quote-viewer'
 import { markQuoteViewed } from './actions'
@@ -16,7 +16,7 @@ export default async function PublicQuotePage({
   params: Promise<{ id: string }>
 }) {
   const { id: token } = await params
-  const admin = createAdminClient()
+  const admin = sbAdmin()
 
   const { data: quote } = await admin
     .from('work_items')
