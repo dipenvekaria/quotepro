@@ -57,7 +57,7 @@ export default async function PipelinePage() {
   const total = workItems?.length ?? 0
 
   return (
-    <div className="mx-auto max-w-[1600px] px-6 py-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>
@@ -104,12 +104,12 @@ export default async function PipelinePage() {
           />
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:overflow-visible sm:px-0 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           {COLUMNS.map((col) => {
             const items = grouped[col.key] ?? []
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
             return (
-              <div key={col.key} className="min-w-0">
+              <div key={col.key} className="w-[85vw] max-w-[320px] shrink-0 snap-start sm:w-auto sm:min-w-0 sm:max-w-none">
                 <div className="mb-2 flex items-center justify-between px-1">
                   <div className="flex items-center gap-1.5 text-xs font-medium">
                     <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />

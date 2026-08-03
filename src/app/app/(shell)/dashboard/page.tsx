@@ -58,7 +58,7 @@ export default async function DashboardPage() {
   const greetingName = firstName || (user.email ?? '').split('@')[0]
 
   return (
-    <div className="mx-auto max-w-[1400px] px-6 py-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       {/* Header */}
       <div className="flex items-end justify-between">
         <div>

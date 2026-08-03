@@ -282,7 +282,7 @@ export function WorkItemDetail({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto max-w-[1600px] px-6 py-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
         <Link href="/app/pipeline" className="inline-flex items-center gap-1 hover:text-foreground">

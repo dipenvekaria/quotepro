@@ -42,7 +42,7 @@ export default async function CustomersPage() {
   }
 
   return (
-    <div className="mx-auto max-w-[1400px] px-6 py-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       <div className="flex items-end justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">

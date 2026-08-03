@@ -52,6 +52,7 @@ type Invoice = {
     phone: string | null
     email: string | null
     address: string | null
+    stripe_charges_enabled?: boolean | null
   } | null
   customers: { name: string; email: string | null; phone: string | null } | null
 }
@@ -242,15 +243,34 @@ export function InvoiceViewer({
           <section className="mt-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent p-6 shadow-sm">
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
-              <h2 className="text-sm font-semibold">How to pay</h2>
+              <h2 className="text-sm font-semibold">Pay online</h2>
             </div>
-            <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-              {invoice.companies?.name ?? 'Your provider'} accepts payment by check, bank transfer, cash,
-              or card. Contact them directly to arrange payment — details below.
-            </p>
-            <p className="mt-3 text-xs text-muted-foreground">
-              Online payments coming soon.
-            </p>
+            {invoice.companies?.stripe_charges_enabled ? (
+              <>
+                <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+                  Fast, secure, no account needed. Choose bank transfer (usually cheapest) or card at
+                  checkout. Your receipt arrives instantly.
+                </p>
+                <div className="mt-4">
+                  <a
+                    href={`/api/stripe/checkout/${invoice.public_token}`}
+                    className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90"
+                  >
+                    <CreditCard className="h-4 w-4" />
+                    Pay {fmtMoney(amountDue)} now
+                  </a>
+                </div>
+                <p className="mt-2 text-[11px] text-muted-foreground">Powered by Stripe · PCI compliant · Instant confirmation</p>
+              </>
+            ) : (
+              <>
+                <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+                  {invoice.companies?.name ?? 'Your provider'} accepts payment by check, bank transfer,
+                  cash, or card. Contact them directly to arrange payment — details below.
+                </p>
+                <p className="mt-3 text-xs text-muted-foreground">Online payments coming soon.</p>
+              </>
+            )}
           </section>
         )}
 

@@ -21,7 +21,7 @@ export default async function PublicInvoicePage({
     .select(`
       id, invoice_number, subtotal, tax_amount, total, amount_paid, status,
       due_date, sent_at, paid_at, public_token, notes,
-      companies (id, name, logo_url, phone, email, address),
+      companies (id, name, logo_url, phone, email, address, stripe_charges_enabled),
       customers (name, email, phone),
       work_items (
         id, description, tax_rate,

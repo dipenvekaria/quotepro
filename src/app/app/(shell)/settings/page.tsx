@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { Building2, CreditCard, Sparkles, Users } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, Building2, CreditCard, Sparkles, Users } from 'lucide-react'
 
 import { createClient } from '@/lib/supabase/server'
 
@@ -21,7 +22,7 @@ export default async function SettingsPage() {
 
   const { data: company } = await supabase
     .from('companies')
-    .select('id, name, logo_url, phone, email, address, settings, subscription_tier, subscription_status')
+    .select('id, name, logo_url, phone, email, address, settings, subscription_tier, subscription_status, stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees')
     .eq('id', profile.company_id)
     .maybeSingle()
 
@@ -37,7 +38,7 @@ export default async function SettingsPage() {
   const settings = (company.settings ?? {}) as { tax_rate?: number }
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       <header>
         <div className="text-xs text-muted-foreground">Workspace</div>
         <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
@@ -124,25 +125,47 @@ export default async function SettingsPage() {
       <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
         <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
           <CreditCard className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Billing</h2>
+          <h2 className="text-sm font-semibold">Payments</h2>
         </header>
-        <div className="grid gap-5 p-5 sm:grid-cols-2">
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Plan</div>
-            <div className="mt-1 text-lg font-semibold capitalize">
-              {company.subscription_tier ?? 'trial'}
+        <div className="p-5">
+          <p className="text-sm text-muted-foreground">
+            Payment processing lives on the{' '}
+            <Link href="/app/integrations" className="text-primary hover:underline">
+              Integrations page
+            </Link>{' '}
+            — connect your own Stripe account there.
+          </p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-lg border border-border/70 bg-muted/30 p-3">
+              <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                {company.stripe_charges_enabled ? 'Stripe status' : 'Payments'}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-sm font-medium">
+                <span
+                  className={`inline-block h-2 w-2 rounded-full ${
+                    company.stripe_charges_enabled ? 'bg-emerald-500' : 'bg-muted-foreground/40'
+                  }`}
+                />
+                {company.stripe_charges_enabled
+                  ? 'Ready — customers can pay online'
+                  : company.stripe_account_id
+                    ? 'Onboarding in progress'
+                    : 'Not connected'}
+              </div>
             </div>
-            <div className="text-xs text-muted-foreground">
-              Status: {company.subscription_status ?? 'trial'}
+            <div className="rounded-lg border border-border/70 bg-muted/30 p-3">
+              <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Plan</div>
+              <div className="mt-1 text-sm font-semibold capitalize">
+                {company.subscription_tier ?? 'trial'}
+              </div>
             </div>
           </div>
-          <div>
-            <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-              Next invoice
-            </div>
-            <div className="mt-1 text-lg font-semibold tabular">$0.00</div>
-            <div className="text-xs text-muted-foreground">Stripe integration coming next.</div>
-          </div>
+          <Link
+            href="/app/integrations"
+            className="mt-3 inline-flex h-8 items-center gap-1 text-xs font-medium text-primary hover:underline"
+          >
+            Manage integrations <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
       </section>
 

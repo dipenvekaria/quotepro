@@ -61,6 +61,8 @@ const serverEnvSchema = z.object({
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().optional(),
+  STRIPE_PLATFORM_FEE_BPS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
   BACKEND_INTERNAL_URL: z.string().url().default('http://localhost:8000'),
