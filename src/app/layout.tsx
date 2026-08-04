@@ -17,18 +17,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Field Genie - Win more jobs in seconds, not minutes",
-  description: "Professional quote builder for home service contractors. HVAC, plumbing, electrical, roofing, and more.",
+  title: {
+    default: "QuotePro — Quote to cash for field service",
+    template: "%s · QuotePro",
+  },
+  description:
+    "AI-powered quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "The Field Genie",
+    title: "QuotePro",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0F172A",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F172A" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

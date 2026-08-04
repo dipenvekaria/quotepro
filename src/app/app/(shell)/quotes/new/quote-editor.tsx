@@ -486,7 +486,7 @@ function LineItemRow({
 }) {
   const rowTotal = item.quantity * item.unit_price
   return (
-    <div className="group grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 px-5 py-3">
+    <div className="group flex flex-col gap-3 px-4 py-3 sm:grid sm:grid-cols-[1fr_auto_auto_auto_auto] sm:items-center sm:gap-3 sm:px-5">
       <div className="min-w-0">
         <input
           value={item.name}
@@ -501,13 +501,14 @@ function LineItemRow({
           className="mt-0.5 w-full bg-transparent text-xs text-muted-foreground focus:outline-none"
         />
       </div>
+      <div className="flex items-center justify-between gap-2 sm:contents">
       <div className="flex items-center gap-1">
         <input
           type="number"
           step="0.01"
           value={item.quantity}
           onChange={(e) => onChange({ quantity: Number(e.target.value) })}
-          className="h-8 w-16 rounded border border-input bg-background px-2 text-right text-sm tabular"
+          className="h-8 w-14 rounded border border-input bg-background px-2 text-right text-sm tabular sm:w-16"
         />
         <span className="text-xs text-muted-foreground">×</span>
       </div>
@@ -518,19 +519,20 @@ function LineItemRow({
           step="0.01"
           value={item.unit_price}
           onChange={(e) => onChange({ unit_price: Number(e.target.value) })}
-          className="h-8 w-24 rounded border border-input bg-background px-2 text-right text-sm tabular"
+          className="h-8 w-20 rounded border border-input bg-background px-2 text-right text-sm tabular sm:w-24"
         />
       </div>
-      <div className="w-24 text-right text-sm font-semibold tabular">
+      <div className="w-20 text-right text-sm font-semibold tabular sm:w-24">
         {fmtMoney(rowTotal)}
       </div>
       <button
         onClick={onRemove}
-        className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
+        className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100"
         aria-label={`Remove row ${idx + 1}`}
       >
         <Trash2 className="h-3.5 w-3.5" />
       </button>
+      </div>
     </div>
   )
 }
