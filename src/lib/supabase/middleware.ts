@@ -46,6 +46,7 @@ export async function updateSession(request: NextRequest) {
     if (forwardedHost) {
       url.protocol = forwardedProto || 'https'
       url.host = forwardedHost
+      if (!forwardedHost.includes(':')) url.port = ''
     }
     
     url.pathname = '/login'
@@ -65,6 +66,7 @@ export async function updateSession(request: NextRequest) {
     if (forwardedHost) {
       url.protocol = forwardedProto || 'https'
       url.host = forwardedHost
+      if (!forwardedHost.includes(':')) url.port = ''
     }
     
     url.pathname = '/app'
