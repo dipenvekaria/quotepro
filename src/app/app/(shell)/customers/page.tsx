@@ -4,6 +4,9 @@ import { Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { customers as customersTable, customerAddresses } from '@/lib/db/schema'
+import { desc, eq, inArray } from 'drizzle-orm'
 
 export default async function CustomersPage() {
   const supabase = await createClient()
@@ -19,23 +22,35 @@ export default async function CustomersPage() {
   if (!profile?.company_id) redirect('/app/onboarding')
   const companyId = profile.company_id as string
 
-  const { data: customers } = await supabase
-    .from('customers')
-    .select('id, name, email, phone, created_at')
-    .eq('company_id', companyId)
-    .order('created_at', { ascending: false })
+  // Data via the direct-Postgres (Drizzle) layer. company_id is enforced here
+  // because this connection bypasses Supabase RLS.
+  const list = await db
+    .select({
+      id: customersTable.id,
+      name: customersTable.name,
+      email: customersTable.email,
+      phone: customersTable.phone,
+      created_at: customersTable.createdAt,
+    })
+    .from(customersTable)
+    .where(eq(customersTable.companyId, companyId))
+    .orderBy(desc(customersTable.createdAt))
     .limit(200)
 
-  const list = customers ?? []
-
-  const addresses = list.length
-    ? await supabase
-        .from('customer_addresses')
-        .select('customer_id, address, city, state, is_primary')
-        .in('customer_id', list.map((c) => c.id))
-    : { data: [] }
+  const addressRows = list.length
+    ? await db
+        .select({
+          customer_id: customerAddresses.customerId,
+          address: customerAddresses.address,
+          city: customerAddresses.city,
+          state: customerAddresses.state,
+          is_primary: customerAddresses.isPrimary,
+        })
+        .from(customerAddresses)
+        .where(inArray(customerAddresses.customerId, list.map((c) => c.id)))
+    : []
   const primaryByCustomer = new Map<string, { address: string; city: string | null; state: string | null }>()
-  for (const a of (addresses.data ?? [])) {
+  for (const a of addressRows) {
     if (a.is_primary || !primaryByCustomer.has(a.customer_id)) {
       primaryByCustomer.set(a.customer_id, { address: a.address, city: a.city, state: a.state })
     }
