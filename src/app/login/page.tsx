@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Bot, Sparkles, Zap } from 'lucide-react'
+import { ArrowRight, Sparkles, Zap } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -165,69 +165,96 @@ export default function LoginPage() {
       </div>
 
       {/* ─────────── RIGHT: marketing panel (desktop only) ─────────── */}
-      <aside className="relative hidden overflow-hidden bg-indigo-glow lg:flex">
-        <div className="absolute inset-0 bg-dots opacity-40" aria-hidden />
+      <aside className="relative hidden overflow-hidden bg-[#050d24] lg:flex">
+        {/* Cloud-soft gradient mesh */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div
+            className="absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(56,132,255,0.45), transparent 70%)' }}
+          />
+          <div
+            className="absolute -right-24 top-1/3 h-[26rem] w-[26rem] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(45,212,235,0.26), transparent 70%)' }}
+          />
+          <div
+            className="absolute -bottom-32 left-1/4 h-[26rem] w-[26rem] rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.30), transparent 70%)' }}
+          />
+        </div>
 
-        {/* Floating quote card */}
-        <div className="relative z-10 flex w-full flex-col justify-between p-16">
-          <div className="flex justify-end">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur">
-              <Bot className="h-3.5 w-3.5 text-primary" />
-              AI-powered, human-approved
+        <div className="relative z-10 flex w-full flex-col justify-between p-14 xl:p-16">
+          <div className="flex justify-between">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
+              AI-powered quoting for the trades
             </div>
           </div>
 
           <div className="space-y-8">
-            <h2 className="text-4xl font-semibold tracking-tight text-foreground">
-              Win more jobs in{' '}
-              <span className="bg-gradient-to-r from-primary via-primary to-fuchsia-500 bg-clip-text text-transparent">
-                seconds
-              </span>
-              , not hours.
-            </h2>
-            <p className="max-w-md text-[15px] leading-relaxed text-muted-foreground">
-              Generate professional quotes, send them for signature, and get paid — all
-              from one place. Trusted by field-service pros across the US.
-            </p>
+            <div className="space-y-5">
+              <h2 className="max-w-xl text-[2.75rem] font-semibold leading-[1.05] tracking-tight text-white">
+                Win more jobs in{' '}
+                <span className="bg-gradient-to-r from-sky-300 via-cyan-300 to-blue-200 bg-clip-text text-transparent">
+                  seconds
+                </span>
+                , not hours.
+              </h2>
+              <p className="max-w-md text-[15px] leading-relaxed text-slate-300">
+                Generate professional quotes, send them for signature, and get paid —
+                all from one place. Trusted by field-service pros across the US.
+              </p>
+            </div>
 
-            {/* Mock quote card */}
-            <div className="relative w-full max-w-md rounded-2xl border border-border/70 bg-background/80 p-6 shadow-card backdrop-blur">
-              <div className="flex items-center justify-between border-b border-border/60 pb-4">
+            {/* Glassy quote card */}
+            <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-white/[0.06] p-6 shadow-2xl backdrop-blur-md">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">Quote #Q-1042</p>
-                  <p className="mt-1 font-semibold">Water Heater Replacement</p>
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Quote #Q-1042</p>
+                  <p className="mt-1 font-semibold text-white">Water Heater Replacement</p>
                 </div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-400/20 px-2 py-0.5 text-xs font-medium text-emerald-300 ring-1 ring-inset ring-emerald-400/30">
                   Accepted
                 </span>
               </div>
               <dl className="mt-4 space-y-2 text-sm tabular">
-                <div className="flex justify-between text-muted-foreground">
+                <div className="flex justify-between text-slate-400">
                   <dt>50-gal gas water heater</dt>
-                  <dd className="text-foreground">$1,250.00</dd>
+                  <dd className="text-slate-200">$1,250.00</dd>
                 </div>
-                <div className="flex justify-between text-muted-foreground">
+                <div className="flex justify-between text-slate-400">
                   <dt>Standard labor · 3 hrs</dt>
-                  <dd className="text-foreground">$375.00</dd>
+                  <dd className="text-slate-200">$375.00</dd>
                 </div>
-                <div className="flex justify-between text-muted-foreground">
+                <div className="flex justify-between text-slate-400">
                   <dt>Expansion tank</dt>
-                  <dd className="text-foreground">$89.00</dd>
+                  <dd className="text-slate-200">$89.00</dd>
                 </div>
-                <div className="flex justify-between border-t border-border/60 pt-2 font-semibold">
+                <div className="flex justify-between border-t border-white/10 pt-2 font-semibold text-white">
                   <dt>Total</dt>
                   <dd>$1,850.55</dd>
                 </div>
               </dl>
-              <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                <Zap className="h-3.5 w-3.5 text-primary" />
-                Generated in 2.4s · 4 line items grounded in your catalog
+              <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
+                <Zap className="h-3.5 w-3.5 text-cyan-300" />
+                Generated in 2.4s · grounded in your catalog
               </div>
             </div>
           </div>
 
-          <div className="text-xs text-muted-foreground">
-            SOC 2 in progress · 256-bit encryption · Data stays yours
+          {/* Stats / trust row */}
+          <div className="grid max-w-md grid-cols-3 gap-4 border-t border-white/10 pt-6">
+            <div>
+              <div className="text-2xl font-semibold text-white">2.4s</div>
+              <div className="mt-0.5 text-[11px] text-slate-400">Avg. quote draft</div>
+            </div>
+            <div>
+              <div className="text-2xl font-semibold text-white">3×</div>
+              <div className="mt-0.5 text-[11px] text-slate-400">Faster quotes</div>
+            </div>
+            <div>
+              <div className="text-2xl font-semibold text-white">SOC 2</div>
+              <div className="mt-0.5 text-[11px] text-slate-400">In progress</div>
+            </div>
           </div>
         </div>
       </aside>
