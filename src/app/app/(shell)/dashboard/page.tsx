@@ -14,7 +14,6 @@ import {
   FileText,
   Package,
   Plug,
-  Plus,
   Sparkles,
   TrendingUp,
   Users,
@@ -193,15 +192,6 @@ export default async function DashboardPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             {summaryLine(todaysJobs.length, stalledQuotes.length, overdueInvoices.length)}
           </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            href="/app/quotes/new"
-            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
-          >
-            <Plus className="h-4 w-4" />
-            New quote
-          </Link>
         </div>
       </header>
 

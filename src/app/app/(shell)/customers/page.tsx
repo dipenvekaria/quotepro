@@ -55,13 +55,6 @@ export default async function CustomersPage() {
             {list.length} {list.length === 1 ? 'customer' : 'customers'} in your book.
           </p>
         </div>
-        <Link
-          href="/app/quotes/new"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
-        >
-          <Plus className="h-4 w-4" />
-          Add via new quote
-        </Link>
       </div>
 
       {list.length === 0 ? (

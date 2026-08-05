@@ -419,17 +419,8 @@ export function QuoteEditor({
                 <dd className="text-lg font-semibold tabular">{fmtMoney(total)}</dd>
               </div>
             </dl>
-
-            <Button
-              onClick={save}
-              disabled={saving}
-              className="mt-6 h-10 w-full gap-1.5"
-            >
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-              Save quote
-            </Button>
-            <p className="mt-2 text-center text-[11px] text-muted-foreground">
-              Draft saves stay private until you send.
+            <p className="mt-4 text-center text-[11px] text-muted-foreground">
+              Use “Save quote” above — drafts stay private until you send.
             </p>
           </div>
 
