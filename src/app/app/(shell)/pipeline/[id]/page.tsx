@@ -35,8 +35,8 @@ export default async function WorkItemDetailPage({
       customer_id, address_id, created_by, assigned_to,
       customers!work_items_customer_id_fkey (id, name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip),
-      creator:users!work_items_created_by_fkey (email, profile),
-      assignee:users!work_items_assigned_to_fkey (email, profile)
+      creator:users!work_items_created_by_fkey (profile),
+      assignee:users!work_items_assigned_to_fkey (profile)
     `)
     .eq('company_id', profile.company_id)
     .eq('id', id)
@@ -52,10 +52,10 @@ export default async function WorkItemDetailPage({
 
   const { data: teammates } = await supabase
     .from('users')
-    .select('id, email, profile')
+    .select('id, profile')
     .eq('company_id', profile.company_id)
     .eq('is_active', true)
-    .order('email', { ascending: true })
+    .order('created_at', { ascending: true })
 
   const { data: invoice } = await supabase
     .from('invoices')
@@ -78,7 +78,7 @@ export default async function WorkItemDetailPage({
       teammates={
         (teammates ?? []).map((t) => {
           const p = (t.profile as { full_name?: string } | null)
-          return { id: t.id, name: p?.full_name || t.email }
+          return { id: t.id, name: p?.full_name || 'Teammate' }
         })
       }
       invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}

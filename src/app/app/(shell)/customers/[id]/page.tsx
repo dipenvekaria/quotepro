@@ -38,7 +38,7 @@ export default async function CustomerDetailPage({
   const { data: customer, error } = await supabase
     .from('customers')
     .select(`
-      id, name, email, phone, notes, tags, source, created_at,
+      id, name, email, phone, metadata, created_at,
       addresses:customer_addresses (id, address, city, state, zip, is_primary)
     `)
     .eq('company_id', profile.company_id)
@@ -57,7 +57,7 @@ export default async function CustomerDetailPage({
 
   const items = workItems ?? []
   const totalRevenue = items
-    .filter((w) => w.status === 'invoice_paid' || w.status === 'job_complete')
+    .filter((w) => w.status === 'job_completed')
     .reduce((s, w) => s + Number(w.total || 0), 0)
   const openValue = items
     .filter((w) => ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress'].includes(w.status as string))
@@ -72,6 +72,7 @@ export default async function CustomerDetailPage({
     is_primary: boolean
   }>
   const primary = addresses.find((a) => a.is_primary) ?? addresses[0]
+  const meta = (customer.metadata ?? {}) as { source?: string; tags?: string[]; notes?: string }
 
   const initials = customer.name
     .split(' ')
@@ -117,10 +118,10 @@ export default async function CustomerDetailPage({
                   </a>
                 </span>
               )}
-              {customer.source && (
+              {meta.source && (
                 <span className="inline-flex items-center gap-1">
                   <Building2 className="h-3.5 w-3.5" />
-                  {customer.source}
+                  {meta.source}
                 </span>
               )}
             </div>
@@ -236,11 +237,11 @@ export default async function CustomerDetailPage({
                   })}
                 </dd>
               </div>
-              {customer.tags && Array.isArray(customer.tags) && customer.tags.length > 0 && (
+              {meta.tags && Array.isArray(meta.tags) && meta.tags.length > 0 && (
                 <div>
                   <dt className="text-muted-foreground">Tags</dt>
                   <dd className="mt-1 flex flex-wrap gap-1">
-                    {(customer.tags as string[]).map((tag) => (
+                    {(meta.tags as string[]).map((tag) => (
                       <span
                         key={tag}
                         className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium"
@@ -252,12 +253,12 @@ export default async function CustomerDetailPage({
                 </div>
               )}
             </dl>
-            {customer.notes && (
+            {meta.notes && (
               <div className="mt-4 rounded-md bg-muted/50 p-3">
                 <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                   Notes
                 </div>
-                <p className="mt-1 text-xs leading-relaxed">{customer.notes}</p>
+                <p className="mt-1 text-xs leading-relaxed">{meta.notes}</p>
               </div>
             )}
           </section>

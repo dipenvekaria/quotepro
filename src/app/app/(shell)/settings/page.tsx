@@ -15,20 +15,20 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from('users')
-    .select('company_id, role, profile, email')
+    .select('company_id, role, profile')
     .eq('id', user.id)
     .maybeSingle()
   if (!profile?.company_id) redirect('/app/onboarding')
 
   const { data: company } = await supabase
     .from('companies')
-    .select('id, name, logo_url, phone, email, address, settings, subscription_tier, subscription_status, stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees')
+    .select('id, name, logo_url, phone, email, address, settings, plan, stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees')
     .eq('id', profile.company_id)
     .maybeSingle()
 
   const { data: teammates } = await supabase
     .from('users')
-    .select('id, email, role, profile, is_active, last_seen_at')
+    .select('id, role, profile, is_active, last_login_at')
     .eq('company_id', profile.company_id)
     .order('role', { ascending: true })
 
@@ -91,7 +91,7 @@ export default async function SettingsPage() {
         <ul className="divide-y divide-border/70">
           {(teammates ?? []).map((t) => {
             const p = t.profile as { full_name?: string } | null
-            const name = p?.full_name || t.email
+            const name = p?.full_name || 'Teammate'
             const initials = (name || '?')
               .split(' ')
               .slice(0, 2)
@@ -106,7 +106,9 @@ export default async function SettingsPage() {
                   </div>
                   <div>
                     <div className="text-sm font-medium">{name}</div>
-                    <div className="text-xs text-muted-foreground">{t.email}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {t.last_login_at ? `Last active ${new Date(t.last_login_at as string).toLocaleDateString()}` : 'Invited'}
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -156,7 +158,7 @@ export default async function SettingsPage() {
             <div className="rounded-lg border border-border/70 bg-muted/30 p-3">
               <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Plan</div>
               <div className="mt-1 text-sm font-semibold capitalize">
-                {company.subscription_tier ?? 'trial'}
+                {company.plan ?? 'trial'}
               </div>
             </div>
           </div>
