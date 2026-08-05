@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import {
   AlertCircle,
+  ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
   Bell,
@@ -41,15 +42,16 @@ export default async function DashboardPage() {
   if (!profile?.company_id) redirect('/app/onboarding')
 
   const companyId = profile.company_id as string
-  const firstName =
-    ((profile.profile as { full_name?: string } | null)?.full_name || user.email || 'there')
-      .split(' ')[0]
+  const fullName = (profile.profile as { full_name?: string } | null)?.full_name?.trim()
+  const emailLocal = (user.email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
+  const rawFirst = (fullName || emailLocal || 'there').split(' ')[0]
+  const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : 'there'
   const now = new Date()
   const todayIso = now.toISOString().slice(0, 10)
   const dayStart = new Date(now); dayStart.setHours(0, 0, 0, 0)
   const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate() + 1)
   const twoDaysAgo = new Date(now.getTime() - 48 * 3_600_000).toISOString()
-  const thirtyDaysAgo = new Date(now.getTime() - 30 * 86_400_000).toISOString()
+  const sixtyDaysAgo = new Date(now.getTime() - 60 * 86_400_000).toISOString()
 
   // Parallel fetch — 6 lightweight queries
   const [
@@ -91,9 +93,9 @@ export default async function DashboardPage() {
       .limit(6),
     supabase
       .from('work_items')
-      .select('id, status, total, sent_at, accepted_at, created_at')
+      .select('id, status, total, sent_at, accepted_at, created_at, updated_at')
       .eq('company_id', companyId)
-      .gte('created_at', thirtyDaysAgo),
+      .gte('created_at', sixtyDaysAgo),
     supabase
       .from('companies')
       .select('stripe_charges_enabled')
@@ -105,19 +107,75 @@ export default async function DashboardPage() {
   const stalledQuotes = (stalledQuotesQ.data ?? []) as unknown as Array<{ id: string; description: string | null; total: number; sent_at: string; viewed_at: string | null; customers: { name: string } | null }>
   const overdueInvoices = (overdueInvoicesQ.data ?? []) as unknown as Array<{ id: string; invoice_number: string; total: number; amount_paid: number; due_date: string; public_token: string; customers: { name: string; email: string | null } | null }>
   const activity = (recentActivityQ.data ?? []) as unknown as Array<{ id: string; status: string; description: string | null; total: number; updated_at: string; customers: { name: string } | null }>
-  const metrics = (metricsQ.data ?? []) as Array<{ id: string; status: string; total: number; sent_at: string | null; accepted_at: string | null; created_at: string }>
+  const metrics = (metricsQ.data ?? []) as Array<{ id: string; status: string; total: number; sent_at: string | null; accepted_at: string | null; created_at: string; updated_at: string | null }>
   const stripeConnected = Boolean((stripeQ.data as { stripe_charges_enabled?: boolean } | null)?.stripe_charges_enabled)
 
-  // Compute metrics
-  const quotesSent = metrics.filter((m) => m.sent_at).length
-  const quotesAccepted = metrics.filter((m) => m.accepted_at).length
-  const acceptanceRate = quotesSent > 0 ? Math.round((quotesAccepted / quotesSent) * 100) : 0
-  const revenue = metrics
-    .filter((m) => m.status === 'job_completed')
-    .reduce((s, m) => s + Number(m.total || 0), 0)
-  const pipelineValue = metrics
-    .filter((m) => ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress'].includes(m.status))
-    .reduce((s, m) => s + Number(m.total || 0), 0)
+  // KPI metrics: current 30d vs prior 30d (for trend), plus 30-day cumulative sparklines.
+  const T = now.getTime()
+  const d30 = T - 30 * 86_400_000
+  const d60 = T - 60 * 86_400_000
+  const inWin = (iso: string | null, a: number, b: number) => {
+    if (!iso) return false
+    const t = new Date(iso).getTime()
+    return t >= a && t < b
+  }
+  const isCompleted = (s: string) => s === 'job_completed'
+  const isOpen = (s: string) => ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress'].includes(s)
+
+  const sentCur = metrics.filter((m) => inWin(m.sent_at, d30, T)).length
+  const sentPrior = metrics.filter((m) => inWin(m.sent_at, d60, d30)).length
+  const accCur = metrics.filter((m) => inWin(m.accepted_at, d30, T)).length
+  const accPrior = metrics.filter((m) => inWin(m.accepted_at, d60, d30)).length
+  const revCur = metrics.filter((m) => isCompleted(m.status) && inWin(m.updated_at, d30, T)).reduce((s, m) => s + Number(m.total || 0), 0)
+  const revPrior = metrics.filter((m) => isCompleted(m.status) && inWin(m.updated_at, d60, d30)).reduce((s, m) => s + Number(m.total || 0), 0)
+
+  const quotesSent = sentCur
+  const quotesAccepted = accCur
+  const acceptanceRate = sentCur > 0 ? Math.round((accCur / sentCur) * 100) : 0
+  const acceptanceRatePrior = sentPrior > 0 ? (accPrior / sentPrior) * 100 : 0
+  const revenue = revCur
+  const pipelineValue = metrics.filter((m) => isOpen(m.status)).reduce((s, m) => s + Number(m.total || 0), 0)
+
+  const pctDelta = (cur: number, prior: number): number | null =>
+    prior > 0 ? Math.round(((cur - prior) / prior) * 100) : null
+  const quotesSentDelta = pctDelta(sentCur, sentPrior)
+  const closeRateDelta = pctDelta(acceptanceRate, acceptanceRatePrior)
+  const revenueDelta = pctDelta(revCur, revPrior)
+
+  // 30-day cumulative series for the KPI sparklines.
+  const dayStartMs = new Date(dayStart).getTime()
+  const keyOf = (ms: number) => new Date(ms).toISOString().slice(0, 10)
+  const dayIndex = new Map(Array.from({ length: 30 }, (_, i) => [keyOf(dayStartMs - (29 - i) * 86_400_000), i] as const))
+  const sentPerDay = new Array(30).fill(0)
+  const accPerDay = new Array(30).fill(0)
+  const revPerDay = new Array(30).fill(0)
+  const pipePerDay = new Array(30).fill(0)
+  for (const m of metrics) {
+    if (m.sent_at) {
+      const i = dayIndex.get(m.sent_at.slice(0, 10))
+      if (i !== undefined) { sentPerDay[i] += 1; pipePerDay[i] += Number(m.total || 0) }
+    }
+    if (m.accepted_at) {
+      const i = dayIndex.get(m.accepted_at.slice(0, 10))
+      if (i !== undefined) accPerDay[i] += 1
+    }
+    if (isCompleted(m.status) && m.updated_at) {
+      const i = dayIndex.get(m.updated_at.slice(0, 10))
+      if (i !== undefined) revPerDay[i] += Number(m.total || 0)
+    }
+  }
+  let cSent = 0, cAcc = 0, cRev = 0, cPipe = 0
+  const sentSeries: number[] = []
+  const rateSeries: number[] = []
+  const revSeries: number[] = []
+  const pipeSeries: number[] = []
+  for (let i = 0; i < 30; i++) {
+    cSent += sentPerDay[i]; cAcc += accPerDay[i]; cRev += revPerDay[i]; cPipe += pipePerDay[i]
+    sentSeries.push(cSent)
+    rateSeries.push(cSent > 0 ? Math.round((cAcc / cSent) * 100) : 0)
+    revSeries.push(cRev)
+    pipeSeries.push(cPipe)
+  }
 
   const showSetupChecklist = !stripeConnected
 
@@ -194,6 +252,8 @@ export default async function DashboardPage() {
           label="Quotes sent"
           value={quotesSent.toString()}
           hint={`${quotesAccepted} accepted (30d)`}
+          delta={quotesSentDelta}
+          series={sentSeries}
         />
         <Kpi
           icon={TrendingUp}
@@ -201,18 +261,23 @@ export default async function DashboardPage() {
           value={`${acceptanceRate}%`}
           hint={acceptanceRate >= 40 ? 'On target' : 'Room to grow'}
           accent={acceptanceRate >= 40 ? 'good' : undefined}
+          delta={closeRateDelta}
+          series={rateSeries}
         />
         <Kpi
           icon={CreditCard}
           label="Revenue"
           value={fmtCompact(revenue)}
           hint="Last 30 days"
+          delta={revenueDelta}
+          series={revSeries}
         />
         <Kpi
           icon={Zap}
           label="Pipeline"
           value={fmtCompact(pipelineValue)}
           hint="Open + in progress"
+          series={pipeSeries}
         />
       </div>
 
@@ -430,12 +495,16 @@ function Kpi({
   value,
   hint,
   accent,
+  delta,
+  series,
 }: {
   icon: typeof FileText
   label: string
   value: string
   hint: string
   accent?: 'good'
+  delta?: number | null
+  series?: number[]
 }) {
   return (
     <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
@@ -452,9 +521,65 @@ function Kpi({
           <Icon className="h-3 w-3" />
         </div>
       </div>
-      <div className="mt-2 text-xl font-semibold tabular sm:text-2xl">{value}</div>
-      <div className="mt-0.5 text-[11px] text-muted-foreground">{hint}</div>
+      <div className="mt-2 flex items-end justify-between gap-2">
+        <div className="text-xl font-semibold tabular sm:text-2xl">{value}</div>
+        <TrendChip delta={delta ?? null} />
+      </div>
+      {series && series.length > 1 ? <Sparkline data={series} className="mt-2.5" /> : null}
+      <div className="mt-1.5 text-[11px] text-muted-foreground">{hint}</div>
     </div>
+  )
+}
+
+function TrendChip({ delta }: { delta: number | null }) {
+  if (delta === null || !Number.isFinite(delta) || delta === 0) return null
+  const up = delta > 0
+  return (
+    <span
+      className={cn(
+        'mb-0.5 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-medium tabular',
+        up ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600',
+      )}
+      title="vs. prior 30 days"
+    >
+      {up ? <ArrowUpRight className="h-2.5 w-2.5" /> : <ArrowDownRight className="h-2.5 w-2.5" />}
+      {up ? '+' : ''}{delta}%
+    </span>
+  )
+}
+
+function Sparkline({ data, className }: { data: number[]; className?: string }) {
+  if (!data || data.length < 2) return null
+  const w = 100
+  const h = 26
+  const max = Math.max(...data)
+  const min = Math.min(...data)
+  const range = max - min || 1
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * w
+    const y = h - ((v - min) / range) * (h - 2) - 1
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  })
+  const line = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${p}`).join(' ')
+  const area = `${line} L${w},${h} L0,${h} Z`
+  return (
+    <svg
+      viewBox={`0 0 ${w} ${h}`}
+      preserveAspectRatio="none"
+      className={cn('h-6 w-full text-primary', className)}
+      aria-hidden="true"
+    >
+      <path d={area} className="fill-primary opacity-10" />
+      <path
+        d={line}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
   )
 }
 
