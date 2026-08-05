@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
+import { useFormStatus } from 'react-dom'
 import {
   BarChart3,
   Bell,
@@ -24,7 +25,7 @@ import {
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { createClient } from '@/lib/supabase/client'
+import { signOut } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 
 // ---------------------------------------------------------------------------
@@ -291,15 +292,6 @@ function TopBar({
 // ---------------------------------------------------------------------------
 
 function UserMenu({ email, onClose }: { email: string; onClose: () => void }) {
-  const [signingOut, setSigningOut] = useState(false)
-  const supabase = createClient()
-
-  async function signOut() {
-    setSigningOut(true)
-    await supabase.auth.signOut()
-    window.location.href = '/login'
-  }
-
   return (
     <>
       <div className="fixed inset-0 z-10" onClick={onClose} />
@@ -315,17 +307,26 @@ function UserMenu({ email, onClose }: { email: string; onClose: () => void }) {
         >
           <Settings className="h-4 w-4" /> Settings
         </Link>
-        <Button
-          onClick={signOut}
-          disabled={signingOut}
-          variant="ghost"
-          className="w-full justify-start gap-2 px-2 py-1.5 text-sm font-normal"
-        >
-          <LogOut className="h-4 w-4" />
-          {signingOut ? 'Signing out…' : 'Sign out'}
-        </Button>
+        <form action={signOut}>
+          <SignOutButton />
+        </form>
       </div>
     </>
+  )
+}
+
+function SignOutButton() {
+  const { pending } = useFormStatus()
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      variant="ghost"
+      className="w-full justify-start gap-2 px-2 py-1.5 text-sm font-normal"
+    >
+      <LogOut className="h-4 w-4" />
+      {pending ? 'Signing out…' : 'Sign out'}
+    </Button>
   )
 }
 
