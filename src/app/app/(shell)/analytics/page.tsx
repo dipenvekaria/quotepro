@@ -17,67 +17,76 @@ export default async function AnalyticsPage() {
     .maybeSingle()
   if (!profile?.company_id) redirect('/app/onboarding')
 
-  const since30 = new Date(Date.now() - 30 * 86_400_000).toISOString()
-  const since90 = new Date(Date.now() - 90 * 86_400_000).toISOString()
+  const now = Date.now()
+  const since30 = new Date(now - 30 * 86_400_000).toISOString()
+  const WEEKS = 12
+  const since12w = new Date(now - WEEKS * 7 * 86_400_000).toISOString()
 
-  const [{ data: items30 }, { data: items90 }, { count: customerCount }, { data: recentSent }] =
+  const [{ data: sentItems }, { data: openItems }, { count: customerCount }, { data: recentSent }] =
     await Promise.all([
       supabase
         .from('work_items')
-        .select('id, kind, status, total, created_at, sent_at, accepted_at, users!work_items_created_by_fkey(email, profile)')
+        .select('id, status, total, sent_at, accepted_at, updated_at, users!work_items_created_by_fkey(profile)')
         .eq('company_id', profile.company_id)
-        .gte('created_at', since30),
+        .not('sent_at', 'is', null)
+        .gte('sent_at', since12w),
       supabase
         .from('work_items')
-        .select('id, status, total, created_at')
+        .select('id, status, total')
         .eq('company_id', profile.company_id)
-        .gte('created_at', since90),
+        .in('status', ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress']),
       supabase
         .from('customers')
         .select('id', { count: 'exact', head: true })
         .eq('company_id', profile.company_id),
       supabase
         .from('work_items')
-        .select('id, total, sent_at, users!work_items_created_by_fkey(email, profile)')
+        .select('id, total, sent_at, users!work_items_created_by_fkey(profile)')
         .eq('company_id', profile.company_id)
         .not('sent_at', 'is', null)
         .order('sent_at', { ascending: false })
         .limit(20),
     ])
 
-  const list30 = items30 ?? []
-  const list90 = items90 ?? []
+  const sent = sentItems ?? []
+  const inLast30 = (iso: string | null) => !!iso && new Date(iso).getTime() >= now - 30 * 86_400_000
 
-  const quotesSent30 = list30.filter((w) => w.sent_at).length
-  const quotesAccepted30 = list30.filter((w) => w.accepted_at).length
+  const sent30 = sent.filter((w) => inLast30(w.sent_at))
+  const quotesSent30 = sent30.length
+  const quotesAccepted30 = sent.filter((w) => inLast30(w.accepted_at)).length
   const acceptanceRate = quotesSent30 > 0 ? (quotesAccepted30 / quotesSent30) * 100 : 0
-  const revenue30 = list30
-    .filter((w) => w.status === 'invoice_paid' || w.status === 'job_complete')
+  const revenue30 = sent
+    .filter((w) => w.status === 'job_completed' && inLast30(w.updated_at))
     .reduce((s, w) => s + Number(w.total || 0), 0)
-  const pipelineValue = list30
-    .filter((w) => ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress'].includes(w.status as string))
-    .reduce((s, w) => s + Number(w.total || 0), 0)
+  const pipelineValue = (openItems ?? []).reduce((s, w) => s + Number(w.total || 0), 0)
 
-  // Group by week for a mini trend
-  const weeks = new Map<string, { count: number; revenue: number }>()
-  for (const w of list90) {
-    const d = new Date(w.created_at)
-    const key = `${d.getFullYear()}-W${Math.floor((d.getDate() - 1) / 7) + 1}-${d.getMonth() + 1}`
-    const entry = weeks.get(key) ?? { count: 0, revenue: 0 }
-    entry.count += 1
-    entry.revenue += Number(w.total || 0)
-    weeks.set(key, entry)
+  // Weekly quote volume by sent date, last 12 weeks (Mon-anchored).
+  const weekStartMs = (ms: number) => {
+    const d = new Date(ms)
+    d.setHours(0, 0, 0, 0)
+    const day = d.getDay()
+    d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day))
+    return d.getTime()
   }
-  const weekEntries = Array.from(weeks.entries()).slice(-12)
-  const maxCount = Math.max(1, ...weekEntries.map(([, v]) => v.count))
+  const firstBucketStart = weekStartMs(now) - (WEEKS - 1) * 7 * 86_400_000
+  const weekBuckets = Array.from({ length: WEEKS }, (_, i) => ({
+    start: firstBucketStart + i * 7 * 86_400_000,
+    count: 0,
+  }))
+  for (const w of sent) {
+    if (!w.sent_at) continue
+    const idx = Math.round((weekStartMs(new Date(w.sent_at).getTime()) - firstBucketStart) / (7 * 86_400_000))
+    if (idx >= 0 && idx < WEEKS) weekBuckets[idx].count += 1
+  }
+  const maxCount = Math.max(1, ...weekBuckets.map((b) => b.count))
 
-  // Rep breakdown
+  // Rep breakdown (sent in last 30 days)
   const byRep = new Map<string, { name: string; sent: number; accepted: number; revenue: number }>()
-  for (const w of list30) {
-    const rep = (w as { users?: { email?: string; profile?: { full_name?: string } } }).users
-    const name = rep?.profile?.full_name || rep?.email || 'Unknown'
+  for (const w of sent30) {
+    const rep = (w as { users?: { profile?: { full_name?: string } } }).users
+    const name = rep?.profile?.full_name || 'Team member'
     const entry = byRep.get(name) ?? { name, sent: 0, accepted: 0, revenue: 0 }
-    if (w.sent_at) entry.sent += 1
+    entry.sent += 1
     if (w.accepted_at) {
       entry.accepted += 1
       entry.revenue += Number(w.total || 0)
@@ -85,7 +94,6 @@ export default async function AnalyticsPage() {
     byRep.set(name, entry)
   }
   const repList = Array.from(byRep.values())
-    .filter((r) => r.sent > 0)
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 5)
 
@@ -134,20 +142,22 @@ export default async function AnalyticsPage() {
             <span className="text-xs text-muted-foreground">Last 12 weeks</span>
           </header>
           <div className="flex h-56 items-end gap-2 px-5 py-4">
-            {weekEntries.length === 0 ? (
+            {sent.length === 0 ? (
               <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
                 Not enough data yet.
               </div>
             ) : (
-              weekEntries.map(([label, entry]) => (
-                <div key={label} className="group flex flex-1 flex-col items-center gap-1.5">
+              weekBuckets.map((b) => (
+                <div key={b.start} className="group flex flex-1 flex-col items-center gap-1.5">
                   <div className="relative flex h-full w-full items-end">
                     <div
                       className="w-full rounded-t-md bg-gradient-to-t from-primary/30 to-primary/60 transition-all group-hover:from-primary/50 group-hover:to-primary"
-                      style={{ height: `${(entry.count / maxCount) * 100}%`, minHeight: entry.count ? '4px' : 0 }}
+                      style={{ height: `${(b.count / maxCount) * 100}%`, minHeight: b.count ? '4px' : 0 }}
                     />
                   </div>
-                  <div className="text-[10px] tabular text-muted-foreground">{entry.count}</div>
+                  <div className="text-[10px] tabular text-muted-foreground">
+                    {new Date(b.start).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })}
+                  </div>
                 </div>
               ))
             )}
@@ -229,12 +239,12 @@ export default async function AnalyticsPage() {
         ) : (
           <ul className="divide-y divide-border/70">
             {(recentSent ?? []).slice(0, 10).map((r) => {
-              const rep = (r as { users?: { email?: string; profile?: { full_name?: string } } }).users
+              const rep = (r as { users?: { profile?: { full_name?: string } } }).users
               return (
                 <li key={r.id} className="flex items-center justify-between px-5 py-3">
                   <div>
                     <div className="text-sm font-medium">
-                      Sent by {rep?.profile?.full_name || rep?.email || 'unknown'}
+                      Sent by {rep?.profile?.full_name || 'a teammate'}
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {new Date(r.sent_at as string).toLocaleString()}
