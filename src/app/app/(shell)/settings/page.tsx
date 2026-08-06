@@ -2,39 +2,55 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, Building2, CreditCard, Sparkles, Users } from 'lucide-react'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 import { SettingsForm } from './settings-form'
 
 // ---------------------------------------------------------------------------
 
 export default async function SettingsPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { companyId, role } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id, role, profile')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
+  const [company] = await query<{
+    id: string
+    name: string
+    logo_url: string | null
+    phone: string | null
+    email: string | null
+    address: string | null
+    settings: Record<string, unknown> | null
+    plan: string | null
+    stripe_account_id: string | null
+    stripe_charges_enabled: boolean | null
+    stripe_details_submitted: boolean | null
+    pass_card_fees: boolean | null
+  }>(
+    `select id, name, logo_url, phone, email, address, settings, plan,
+            stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees
+       from companies
+      where id = $1
+      limit 1`,
+    [companyId],
+  )
 
-  const { data: company } = await supabase
-    .from('companies')
-    .select('id, name, logo_url, phone, email, address, settings, plan, stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees')
-    .eq('id', profile.company_id)
-    .maybeSingle()
-
-  const { data: teammates } = await supabase
-    .from('users')
-    .select('id, role, profile, is_active, last_login_at')
-    .eq('company_id', profile.company_id)
-    .order('role', { ascending: true })
+  const teammates = await query<{
+    id: string
+    role: string
+    profile: Record<string, unknown> | null
+    is_active: boolean
+    last_login_at: string | null
+  }>(
+    `select id, role, profile, is_active, last_login_at
+       from users
+      where company_id = $1
+      order by role asc`,
+    [companyId],
+  )
 
   if (!company) redirect('/app/onboarding')
 
-  const canEdit = profile.role === 'owner' || profile.role === 'admin'
+  const canEdit = role === 'owner' || role === 'admin'
   const settings = (company.settings ?? {}) as { tax_rate?: number }
 
   return (

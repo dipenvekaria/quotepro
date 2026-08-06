@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import {
   AlertCircle,
   ArrowDownRight,
@@ -21,7 +20,8 @@ import {
 } from 'lucide-react'
 
 import { StatusBadge } from '@/components/shared/status-badge'
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
 
 import { SendRemindersButton } from './send-reminders-button'
@@ -29,20 +29,10 @@ import { SendRemindersButton } from './send-reminders-button'
 // ---------------------------------------------------------------------------
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { email, companyId, profile } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id, profile, role')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
-
-  const companyId = profile.company_id as string
-  const fullName = (profile.profile as { full_name?: string } | null)?.full_name?.trim()
-  const emailLocal = (user.email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
+  const fullName = (profile as { full_name?: string } | null)?.full_name?.trim()
+  const emailLocal = (email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
   const rawFirst = (fullName || emailLocal || 'there').split(' ')[0]
   const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : 'there'
   const now = new Date()
@@ -52,62 +42,129 @@ export default async function DashboardPage() {
   const twoDaysAgo = new Date(now.getTime() - 48 * 3_600_000).toISOString()
   const sixtyDaysAgo = new Date(now.getTime() - 60 * 86_400_000).toISOString()
 
-  // Parallel fetch — 6 lightweight queries
-  const [
-    todaysJobsQ,
-    stalledQuotesQ,
-    overdueInvoicesQ,
-    recentActivityQ,
-    metricsQ,
-    stripeQ,
-  ] = await Promise.all([
-    supabase
-      .from('work_items')
-      .select('id, status, description, total, scheduled_start, customers!work_items_customer_id_fkey(name)')
-      .eq('company_id', companyId)
-      .gte('scheduled_start', dayStart.toISOString())
-      .lt('scheduled_start', dayEnd.toISOString())
-      .order('scheduled_start', { ascending: true }),
-    supabase
-      .from('work_items')
-      .select('id, description, total, sent_at, viewed_at, customers!work_items_customer_id_fkey(name)')
-      .eq('company_id', companyId)
-      .eq('status', 'quote_sent')
-      .lt('sent_at', twoDaysAgo)
-      .order('sent_at', { ascending: true })
-      .limit(5),
-    supabase
-      .from('invoices')
-      .select('id, invoice_number, total, amount_paid, due_date, public_token, customers(name, email)')
-      .eq('company_id', companyId)
-      .in('status', ['sent', 'partial', 'overdue'])
-      .lt('due_date', todayIso)
-      .order('due_date', { ascending: true })
-      .limit(5),
-    supabase
-      .from('work_items')
-      .select('id, status, description, total, updated_at, customers!work_items_customer_id_fkey(name)')
-      .eq('company_id', companyId)
-      .order('updated_at', { ascending: false })
-      .limit(6),
-    supabase
-      .from('work_items')
-      .select('id, status, total, sent_at, accepted_at, created_at, updated_at')
-      .eq('company_id', companyId)
-      .gte('created_at', sixtyDaysAgo),
-    supabase
-      .from('companies')
-      .select('stripe_charges_enabled')
-      .eq('id', companyId)
-      .maybeSingle(),
-  ])
+  // Parallel fetch — 6 lightweight queries via raw pg
+  const [todaysJobsRows, stalledRows, overdueRows, activityRows, metrics, companyRows] =
+    await Promise.all([
+      query<{
+        id: string
+        status: string
+        description: string | null
+        total: number
+        scheduled_start: string
+        customer_name: string | null
+      }>(
+        `select w.id, w.status, w.description, w.total, w.scheduled_start, c.name as customer_name
+           from work_items w
+           left join customers c on c.id = w.customer_id
+          where w.company_id = $1 and w.scheduled_start >= $2 and w.scheduled_start < $3
+          order by w.scheduled_start asc`,
+        [companyId, dayStart.toISOString(), dayEnd.toISOString()],
+      ),
+      query<{
+        id: string
+        description: string | null
+        total: number
+        sent_at: string
+        viewed_at: string | null
+        customer_name: string | null
+      }>(
+        `select w.id, w.description, w.total, w.sent_at, w.viewed_at, c.name as customer_name
+           from work_items w
+           left join customers c on c.id = w.customer_id
+          where w.company_id = $1 and w.status = 'quote_sent' and w.sent_at < $2
+          order by w.sent_at asc
+          limit 5`,
+        [companyId, twoDaysAgo],
+      ),
+      query<{
+        id: string
+        invoice_number: string
+        total: number
+        amount_paid: number
+        due_date: string
+        public_token: string
+        customer_name: string | null
+        customer_email: string | null
+      }>(
+        `select i.id, i.invoice_number, i.total, i.amount_paid, i.due_date, i.public_token,
+                c.name as customer_name, c.email as customer_email
+           from invoices i
+           left join customers c on c.id = i.customer_id
+          where i.company_id = $1 and i.status::text = any($2::text[]) and i.due_date < $3
+          order by i.due_date asc
+          limit 5`,
+        [companyId, ['sent', 'partial', 'overdue'], todayIso],
+      ),
+      query<{
+        id: string
+        status: string
+        description: string | null
+        total: number
+        updated_at: string
+        customer_name: string | null
+      }>(
+        `select w.id, w.status, w.description, w.total, w.updated_at, c.name as customer_name
+           from work_items w
+           left join customers c on c.id = w.customer_id
+          where w.company_id = $1
+          order by w.updated_at desc
+          limit 6`,
+        [companyId],
+      ),
+      query<{
+        id: string
+        status: string
+        total: number
+        sent_at: string | null
+        accepted_at: string | null
+        created_at: string
+        updated_at: string | null
+      }>(
+        `select id, status, total, sent_at, accepted_at, created_at, updated_at
+           from work_items
+          where company_id = $1 and created_at >= $2`,
+        [companyId, sixtyDaysAgo],
+      ),
+      query<{ stripe_charges_enabled: boolean | null }>(
+        `select stripe_charges_enabled from companies where id = $1 limit 1`,
+        [companyId],
+      ),
+    ])
 
-  const todaysJobs = (todaysJobsQ.data ?? []) as unknown as Array<{ id: string; status: string; description: string | null; total: number; scheduled_start: string; customers: { name: string } | null }>
-  const stalledQuotes = (stalledQuotesQ.data ?? []) as unknown as Array<{ id: string; description: string | null; total: number; sent_at: string; viewed_at: string | null; customers: { name: string } | null }>
-  const overdueInvoices = (overdueInvoicesQ.data ?? []) as unknown as Array<{ id: string; invoice_number: string; total: number; amount_paid: number; due_date: string; public_token: string; customers: { name: string; email: string | null } | null }>
-  const activity = (recentActivityQ.data ?? []) as unknown as Array<{ id: string; status: string; description: string | null; total: number; updated_at: string; customers: { name: string } | null }>
-  const metrics = (metricsQ.data ?? []) as Array<{ id: string; status: string; total: number; sent_at: string | null; accepted_at: string | null; created_at: string; updated_at: string | null }>
-  const stripeConnected = Boolean((stripeQ.data as { stripe_charges_enabled?: boolean } | null)?.stripe_charges_enabled)
+  const todaysJobs = todaysJobsRows.map((r) => ({
+    id: r.id,
+    status: r.status,
+    description: r.description,
+    total: r.total,
+    scheduled_start: r.scheduled_start,
+    customers: r.customer_name ? { name: r.customer_name } : null,
+  }))
+  const stalledQuotes = stalledRows.map((r) => ({
+    id: r.id,
+    description: r.description,
+    total: r.total,
+    sent_at: r.sent_at,
+    viewed_at: r.viewed_at,
+    customers: r.customer_name ? { name: r.customer_name } : null,
+  }))
+  const overdueInvoices = overdueRows.map((r) => ({
+    id: r.id,
+    invoice_number: r.invoice_number,
+    total: r.total,
+    amount_paid: r.amount_paid,
+    due_date: r.due_date,
+    public_token: r.public_token,
+    customers: r.customer_name ? { name: r.customer_name, email: r.customer_email } : null,
+  }))
+  const activity = activityRows.map((r) => ({
+    id: r.id,
+    status: r.status,
+    description: r.description,
+    total: r.total,
+    updated_at: r.updated_at,
+    customers: r.customer_name ? { name: r.customer_name } : null,
+  }))
+  const stripeConnected = Boolean(companyRows[0]?.stripe_charges_enabled)
 
   // KPI metrics: current 30d vs prior 30d (for trend), plus 30-day cumulative sparklines.
   const T = now.getTime()

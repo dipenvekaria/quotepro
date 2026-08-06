@@ -1,54 +1,76 @@
-import { redirect } from 'next/navigation'
 import { ArrowUpRight, DollarSign, FileText, Sparkles, TrendingUp, Users } from 'lucide-react'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 // ---------------------------------------------------------------------------
 
 export default async function AnalyticsPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
+  const { companyId } = await requireSession()
 
   const now = Date.now()
   const since30 = new Date(now - 30 * 86_400_000).toISOString()
   const WEEKS = 12
   const since12w = new Date(now - WEEKS * 7 * 86_400_000).toISOString()
 
-  const [{ data: sentItems }, { data: openItems }, { count: customerCount }, { data: recentSent }] =
-    await Promise.all([
-      supabase
-        .from('work_items')
-        .select('id, status, total, sent_at, accepted_at, updated_at, users!work_items_created_by_fkey(profile)')
-        .eq('company_id', profile.company_id)
-        .not('sent_at', 'is', null)
-        .gte('sent_at', since12w),
-      supabase
-        .from('work_items')
-        .select('id, status, total')
-        .eq('company_id', profile.company_id)
-        .in('status', ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress']),
-      supabase
-        .from('customers')
-        .select('id', { count: 'exact', head: true })
-        .eq('company_id', profile.company_id),
-      supabase
-        .from('work_items')
-        .select('id, total, sent_at, users!work_items_created_by_fkey(profile)')
-        .eq('company_id', profile.company_id)
-        .not('sent_at', 'is', null)
-        .order('sent_at', { ascending: false })
-        .limit(20),
-    ])
+  const [sentRows, openItems, customerCountRows, recentSentRows] = await Promise.all([
+    query<{
+      id: string
+      status: string
+      total: number
+      sent_at: string | null
+      accepted_at: string | null
+      updated_at: string | null
+      rep_profile: Record<string, unknown> | null
+    }>(
+      `select w.id, w.status, w.total, w.sent_at, w.accepted_at, w.updated_at, u.profile as rep_profile
+         from work_items w
+         left join users u on u.id = w.created_by
+        where w.company_id = $1 and w.sent_at is not null and w.sent_at >= $2`,
+      [companyId, since12w],
+    ),
+    query<{ id: string; status: string; total: number }>(
+      `select id, status, total
+         from work_items
+        where company_id = $1 and status::text = any($2::text[])`,
+      [companyId, ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress']],
+    ),
+    query<{ count: number }>(
+      `select count(*)::int as count from customers where company_id = $1`,
+      [companyId],
+    ),
+    query<{
+      id: string
+      total: number
+      sent_at: string | null
+      rep_profile: Record<string, unknown> | null
+    }>(
+      `select w.id, w.total, w.sent_at, u.profile as rep_profile
+         from work_items w
+         left join users u on u.id = w.created_by
+        where w.company_id = $1 and w.sent_at is not null
+        order by w.sent_at desc
+        limit 20`,
+      [companyId],
+    ),
+  ])
 
-  const sent = sentItems ?? []
+  const sent = sentRows.map((r) => ({
+    id: r.id,
+    status: r.status,
+    total: r.total,
+    sent_at: r.sent_at,
+    accepted_at: r.accepted_at,
+    updated_at: r.updated_at,
+    users: r.rep_profile ? { profile: r.rep_profile } : null,
+  }))
+  const customerCount = customerCountRows[0]?.count ?? 0
+  const recentSent = recentSentRows.map((r) => ({
+    id: r.id,
+    total: r.total,
+    sent_at: r.sent_at,
+    users: r.rep_profile ? { profile: r.rep_profile } : null,
+  }))
   const inLast30 = (iso: string | null) => !!iso && new Date(iso).getTime() >= now - 30 * 86_400_000
 
   const sent30 = sent.filter((w) => inLast30(w.sent_at))
