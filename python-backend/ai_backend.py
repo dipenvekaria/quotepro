@@ -31,12 +31,19 @@ SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv(
 )
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 
+# Vertex AI (GCP-native) toggle. When enabled we authenticate via Application
+# Default Credentials (service account / Workload Identity) instead of an API
+# key, using the unified google-genai SDK.
+USE_VERTEX = os.getenv("GOOGLE_GENAI_USE_VERTEXAI", "").strip().lower() in {"1", "true", "yes"}
+GCP_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "").strip()
+GCP_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1").strip()
+
 # Try latest fast models first, then older/lite variants if quota differs.
 GEMINI_MODELS = [
     m.strip()
     for m in os.getenv(
         "GEMINI_MODELS",
-        "gemini-flash-latest,gemini-2.5-flash,gemini-3.5-flash,gemini-flash-lite-latest,gemini-2.0-flash",
+        "gemini-2.5-flash,gemini-flash-latest,gemini-2.5-flash-lite,gemini-flash-lite-latest,gemini-2.0-flash",
     ).split(",")
     if m.strip()
 ]
@@ -46,11 +53,23 @@ if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
 
 sb: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-USE_REAL_AI = bool(GEMINI_API_KEY)
+# Unified google-genai client works against either backend:
+#   • Vertex AI  → genai.Client(vertexai=True, project=..., location=...)  [ADC]
+#   • AI Studio  → genai.Client(api_key=GEMINI_API_KEY)
+USE_REAL_AI = bool(GEMINI_API_KEY) or (USE_VERTEX and bool(GCP_PROJECT))
+genai_client = None
+genai_types = None
+AI_MODE = "mock"
 if USE_REAL_AI:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types as genai_types
 
-    genai.configure(api_key=GEMINI_API_KEY)
+    if USE_VERTEX and GCP_PROJECT:
+        genai_client = genai.Client(vertexai=True, project=GCP_PROJECT, location=GCP_LOCATION)
+        AI_MODE = f"vertex:{GCP_LOCATION}"
+    else:
+        genai_client = genai.Client(api_key=GEMINI_API_KEY)
+        AI_MODE = "gemini"
 
 # ---------------------------------------------------------------------------
 # App
@@ -227,12 +246,14 @@ def _real_generate(
     used_model = ""
     for model_name in GEMINI_MODELS:
         try:
-            model = genai.GenerativeModel(
-                model_name,
-                system_instruction=_SYSTEM_PROMPT,
-                generation_config={"response_mime_type": "application/json"},
+            resp = genai_client.models.generate_content(
+                model=model_name,
+                contents=user_prompt,
+                config=genai_types.GenerateContentConfig(
+                    system_instruction=_SYSTEM_PROMPT,
+                    response_mime_type="application/json",
+                ),
             )
-            resp = model.generate_content(user_prompt)
             raw = resp.text or "{}"
             used_model = model_name
             break
@@ -275,7 +296,7 @@ def _real_generate(
 def health() -> dict[str, Any]:
     return {
         "status": "ok",
-        "ai_mode": "gemini" if USE_REAL_AI else "mock",
+        "ai_mode": AI_MODE,
         "models": GEMINI_MODELS if USE_REAL_AI else [],
         "supabase_url": SUPABASE_URL,
     }
