@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import {
   ArrowLeft,
   Building2,
@@ -12,7 +12,8 @@ import {
   User,
 } from 'lucide-react'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import { StatusBadge } from '@/components/shared/status-badge'
 
 // ---------------------------------------------------------------------------
@@ -23,39 +24,56 @@ export default async function CustomerDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const supabase = await createClient()
+  const { companyId } = await requireSession()
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const [customer] = await query<{
+    id: string
+    name: string
+    email: string | null
+    phone: string | null
+    metadata: Record<string, unknown> | null
+    created_at: string
+  }>(
+    `select id, name, email, phone, metadata, created_at
+       from customers
+      where company_id = $1 and id = $2
+      limit 1`,
+    [companyId, id],
+  )
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
+  if (!customer) notFound()
 
-  const { data: customer, error } = await supabase
-    .from('customers')
-    .select(`
-      id, name, email, phone, metadata, created_at,
-      addresses:customer_addresses (id, address, city, state, zip, is_primary)
-    `)
-    .eq('company_id', profile.company_id)
-    .eq('id', id)
-    .maybeSingle()
+  const addressRows = await query<{
+    id: string
+    address: string | null
+    city: string | null
+    state: string | null
+    zip: string | null
+    is_primary: boolean
+  }>(
+    `select id, address, city, state, zip, is_primary
+       from customer_addresses
+      where customer_id = $1
+      order by is_primary desc`,
+    [id],
+  )
 
-  if (error || !customer) notFound()
-
-  const { data: workItems } = await supabase
-    .from('work_items')
-    .select('id, kind, status, description, total, created_at, updated_at')
-    .eq('company_id', profile.company_id)
-    .eq('customer_id', id)
-    .order('created_at', { ascending: false })
-    .limit(50)
-
-  const items = workItems ?? []
+  const items = await query<{
+    id: string
+    kind: string | null
+    status: string
+    description: string | null
+    total: number
+    created_at: string
+    updated_at: string
+  }>(
+    `select id, kind, status, description, total, created_at, updated_at
+       from work_items
+      where company_id = $1 and customer_id = $2
+      order by created_at desc
+      limit 50`,
+    [companyId, id],
+  )
   const totalRevenue = items
     .filter((w) => w.status === 'job_completed')
     .reduce((s, w) => s + Number(w.total || 0), 0)
@@ -63,14 +81,7 @@ export default async function CustomerDetailPage({
     .filter((w) => ['quote_sent', 'quote_accepted', 'job_scheduled', 'job_in_progress'].includes(w.status as string))
     .reduce((s, w) => s + Number(w.total || 0), 0)
 
-  const addresses = (customer.addresses ?? []) as Array<{
-    id: string
-    address: string | null
-    city: string | null
-    state: string | null
-    zip: string | null
-    is_primary: boolean
-  }>
+  const addresses = addressRows
   const primary = addresses.find((a) => a.is_primary) ?? addresses[0]
   const meta = (customer.metadata ?? {}) as { source?: string; tags?: string[]; notes?: string }
 
