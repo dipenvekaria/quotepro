@@ -5,7 +5,8 @@ import { z } from 'zod'
 
 import { env } from '@/lib/env'
 import { sendQuoteEmail } from '@/lib/email/senders'
-import { sbServer } from '@/lib/supabase/untyped'
+import { getSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 // ---------------------------------------------------------------------------
 
@@ -24,16 +25,40 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
   const parsed = updateSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
 
-  const supabase = await sbServer()
-  const { data, error } = await supabase
-    .from('work_items')
-    .update(parsed.data)
-    .eq('id', parsed.data.id)
-    .select('id')
-    .maybeSingle()
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
 
-  if (error) return { ok: false as const, error: error.message }
-  if (!data) return { ok: false as const, error: 'Not found or no permission' }
+  const d = parsed.data
+  const values: unknown[] = []
+  const sets: string[] = []
+  const add = (col: string, val: unknown) => {
+    values.push(val)
+    sets.push(`${col} = $${values.length}`)
+  }
+  if (d.description !== undefined) add('description', d.description)
+  if (d.notes !== undefined) add('notes', d.notes)
+  if (d.job_name !== undefined) add('job_name', d.job_name)
+  if (d.scheduled_start !== undefined) add('scheduled_start', d.scheduled_start)
+  if (d.assigned_to !== undefined) add('assigned_to', d.assigned_to)
+  if (!sets.length) return { ok: true as const }
+
+  values.push(d.id)
+  const idParam = `$${values.length}`
+  values.push(session.companyId)
+  const companyParam = `$${values.length}`
+
+  let rows: { id: string }[]
+  try {
+    rows = await query<{ id: string }>(
+      `update work_items set ${sets.join(', ')}
+        where id = ${idParam} and company_id = ${companyParam}
+        returning id`,
+      values,
+    )
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
+  }
+  if (!rows[0]) return { ok: false as const, error: 'Not found or no permission' }
 
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
@@ -64,17 +89,40 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
   const parsed = statusSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: 'Invalid status' }
 
-  const supabase = await sbServer()
-  const now = new Date().toISOString()
-  const patch: Record<string, string | null> = { status: parsed.data.to }
-  if (parsed.data.to === 'quote_sent') patch.sent_at = now
-  else if (parsed.data.to === 'quote_viewed') patch.viewed_at = now
-  else if (parsed.data.to === 'quote_accepted') patch.accepted_at = now
-  else if (parsed.data.to === 'quote_rejected') patch.rejected_at = now
-  else if (parsed.data.to === 'job_completed') patch.completed_at = now
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
 
-  const { error } = await supabase.from('work_items').update(patch).eq('id', parsed.data.id)
-  if (error) return { ok: false as const, error: error.message }
+  const now = new Date().toISOString()
+  const values: unknown[] = [parsed.data.to]
+  const sets = ['status = $1::work_item_status']
+  const tsCol: Record<string, string | undefined> = {
+    quote_sent: 'sent_at',
+    quote_viewed: 'viewed_at',
+    quote_accepted: 'accepted_at',
+    quote_rejected: 'rejected_at',
+    job_completed: 'completed_at',
+  }
+  const col = tsCol[parsed.data.to]
+  if (col) {
+    values.push(now)
+    sets.push(`${col} = $${values.length}`)
+  }
+  values.push(parsed.data.id)
+  const idParam = `$${values.length}`
+  values.push(session.companyId)
+  const companyParam = `$${values.length}`
+
+  try {
+    const rows = await query<{ id: string }>(
+      `update work_items set ${sets.join(', ')}
+        where id = ${idParam} and company_id = ${companyParam}
+        returning id`,
+      values,
+    )
+    if (!rows[0]) return { ok: false as const, error: 'Not found or no permission' }
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
+  }
 
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
@@ -84,48 +132,71 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
 // ---------------------------------------------------------------------------
 
 export async function sendQuote(id: string) {
-  const supabase = await sbServer()
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
 
-  const { data: item, error: fetchErr } = await supabase
-    .from('work_items')
-    .select(`
-      id, status, public_token, sent_at, total, quote_number,
-      customers!work_items_customer_id_fkey (name, email),
-      companies (name, email),
-      quote_items (name, quantity, unit_price, sort_order)
-    `)
-    .eq('id', id)
-    .maybeSingle()
-  if (fetchErr) return { ok: false as const, error: fetchErr.message }
+  const [item] = await query<{
+    id: string
+    status: string
+    public_token: string
+    sent_at: string | null
+    total: number | null
+    quote_number: string | null
+    customer_name: string | null
+    customer_email: string | null
+    company_name: string | null
+    company_email: string | null
+  }>(
+    `select w.id, w.status, w.public_token, w.sent_at, w.total, w.quote_number,
+            c.name as customer_name, c.email as customer_email,
+            co.name as company_name, co.email as company_email
+       from work_items w
+       left join customers c on c.id = w.customer_id
+       left join companies co on co.id = w.company_id
+      where w.id = $1 and w.company_id = $2
+      limit 1`,
+    [id, session.companyId],
+  )
   if (!item) return { ok: false as const, error: 'Not found' }
 
-  const patch: Record<string, string> = {
-    status: 'quote_sent',
-    sent_at: item.sent_at ?? new Date().toISOString(),
-  }
+  const quoteItemRows = await query<{
+    name: string
+    quantity: number
+    unit_price: number
+    sort_order: number | null
+  }>(
+    `select name, quantity, unit_price, sort_order from quote_items where work_item_id = $1`,
+    [id],
+  )
 
-  const { error } = await supabase.from('work_items').update(patch).eq('id', id)
-  if (error) return { ok: false as const, error: error.message }
+  const sentAt = item.sent_at ?? new Date().toISOString()
+  try {
+    await query(
+      `update work_items set status = 'quote_sent'::work_item_status, sent_at = $1
+        where id = $2 and company_id = $3`,
+      [sentAt, id, session.companyId],
+    )
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
+  }
 
   // Best-effort email (never blocks the send action).
   let emailResult: 'sent' | 'skipped' | 'error' = 'skipped'
-  const cust = item.customers as unknown as { name: string; email: string | null } | null
-  const comp = item.companies as unknown as { name: string; email: string | null } | null
-  if (cust?.email) {
+  if (item.customer_email) {
     const publicUrl = `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/q/${item.public_token}`
-    const items = ((item.quote_items ?? []) as Array<{ name: string; quantity: number; unit_price: number; sort_order: number }>)
-      .sort((a, b) => a.sort_order - b.sort_order)
+    const items = quoteItemRows
+      .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       .map((li) => ({ name: li.name, quantity: li.quantity, unit_price: li.unit_price }))
     try {
       const res = await sendQuoteEmail({
-        to: cust.email,
-        customerName: cust.name,
+        to: item.customer_email,
+        customerName: item.customer_name ?? '',
         quoteNumber: item.quote_number ?? `Q-${item.public_token.slice(0, 6).toUpperCase()}`,
         total: Number(item.total ?? 0),
         publicUrl,
         items,
-        fromLabel: comp?.name,
-        replyTo: comp?.email ?? undefined,
+        fromLabel: item.company_name ?? undefined,
+        replyTo: item.company_email ?? undefined,
       })
       emailResult = res.ok && !('skipped' in res && res.skipped) ? 'sent' : res.ok ? 'skipped' : 'error'
     } catch {
@@ -137,6 +208,6 @@ export async function sendQuote(id: string) {
   revalidatePath(`/app/pipeline/${id}`)
   return {
     ok: true as const,
-    data: { public_token: item.public_token as string, email: emailResult },
+    data: { public_token: item.public_token, email: emailResult },
   }
 }

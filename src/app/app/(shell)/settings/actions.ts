@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { createClient } from '@/lib/supabase/server'
+import { getSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 // ---------------------------------------------------------------------------
 
@@ -24,41 +25,37 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
     return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
   }
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { ok: false as const, error: 'Not authenticated' }
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id, role')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) return { ok: false as const, error: 'No company' }
-  if (profile.role !== 'owner' && profile.role !== 'admin') {
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  if (session.role !== 'owner' && session.role !== 'admin') {
     return { ok: false as const, error: 'Only owners and admins can update settings' }
   }
 
-  const { data: current } = await supabase
-    .from('companies')
-    .select('settings')
-    .eq('id', profile.company_id)
-    .maybeSingle()
-
+  const [current] = await query<{ settings: Record<string, unknown> | null }>(
+    'select settings from companies where id = $1 limit 1',
+    [session.companyId],
+  )
   const currentSettings = (current?.settings ?? {}) as Record<string, unknown>
+  const nextSettings = { ...currentSettings, tax_rate: parsed.data.tax_rate }
 
-  const { error } = await supabase
-    .from('companies')
-    .update({
-      name: parsed.data.name,
-      logo_url: parsed.data.logo_url || null,
-      phone: parsed.data.phone || null,
-      email: parsed.data.email || null,
-      address: parsed.data.address || null,
-      settings: { ...currentSettings, tax_rate: parsed.data.tax_rate },
-    })
-    .eq('id', profile.company_id)
-
-  if (error) return { ok: false as const, error: error.message }
+  try {
+    await query(
+      `update companies
+          set name = $1, logo_url = $2, phone = $3, email = $4, address = $5, settings = $6::jsonb
+        where id = $7`,
+      [
+        parsed.data.name,
+        parsed.data.logo_url || null,
+        parsed.data.phone || null,
+        parsed.data.email || null,
+        parsed.data.address || null,
+        JSON.stringify(nextSettings),
+        session.companyId,
+      ],
+    )
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
+  }
 
   revalidatePath('/app/settings')
   revalidatePath('/app')
