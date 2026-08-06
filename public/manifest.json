@@ -1,11 +1,11 @@
 {
-  "name": "The Field Genie",
-  "short_name": "The Field Genie",
-  "description": "Win more jobs in seconds, not minutes. Professional quote builder for home service contractors.",
+  "name": "Rivet",
+  "short_name": "Rivet",
+  "description": "Quote to cash for field service. Win more jobs — quote, send, and get paid from one place.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0F172A",
-  "theme_color": "#0F172A",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "orientation": "portrait",
   "icons": [
     {

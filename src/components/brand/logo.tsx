@@ -126,3 +126,47 @@ export function Logo({
     </span>
   )
 }
+
+// -----------------------------------------------------------------------------
+// App brand — the single source of truth wired across the product.
+// -----------------------------------------------------------------------------
+
+export const BRAND_NAME = 'Rivet'
+
+// Icon-only brand mark (Rise on the ink tile). Sizes are overridable per slot.
+export function BrandMark({
+  tile = 'h-8 w-8',
+  mark = 'h-5 w-5',
+  className,
+}: {
+  tile?: string
+  mark?: string
+  className?: string
+}) {
+  return (
+    <LogoTile className={cn(tile, className)}>
+      <RiseMark className={mark} />
+    </LogoTile>
+  )
+}
+
+// Full app lockup: brand mark + wordmark.
+export function BrandLogo({
+  className,
+  tile = 'h-8 w-8',
+  mark = 'h-5 w-5',
+  wordmarkClassName = 'text-sm',
+}: {
+  className?: string
+  tile?: string
+  mark?: string
+  wordmarkClassName?: string
+}) {
+  return (
+    <span className={cn('inline-flex items-center gap-2', className)}>
+      <BrandMark tile={tile} mark={mark} />
+      <Wordmark name={BRAND_NAME} className={wordmarkClassName} />
+    </span>
+  )
+}
+

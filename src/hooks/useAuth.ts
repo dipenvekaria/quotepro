@@ -30,7 +30,7 @@ export function useAuth() {
         // With email confirmation disabled (see supabase/config.toml), signUp
         // returns a session immediately. Redirect straight into onboarding.
         if (data.session) {
-          toast.success('Welcome to QuotePro!')
+          toast.success('Welcome to Rivet!')
           router.push('/app')
           router.refresh()
         } else {

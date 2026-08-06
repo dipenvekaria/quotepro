@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "QuotePro — Quote to cash for field service",
-    template: "%s · QuotePro",
+    default: "Rivet — Quote to cash for field service",
+    template: "%s · Rivet",
   },
   description:
     "Quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades.",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "QuotePro",
+    title: "Rivet",
   },
   icons: {
     icon: "/favicon.ico",

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { PageContainer, PageHeader, Section } from '@/components/shared/page'
 import { StatusBadge } from '@/components/shared/status-badge'
-import { ForwardMark, Logo, LogoTile, RiseMark, RivetMark } from '@/components/brand/logo'
+import { BrandMark, ForwardMark, Logo, LogoTile, RiseMark, RivetMark } from '@/components/brand/logo'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -60,7 +60,7 @@ export default function BrandPage() {
   return (
     <PageContainer>
       <PageHeader
-        eyebrow="QuotePro"
+        eyebrow="Rivet"
         title="Design Kit"
         description="The single source of truth for our look and voice. Calm, focused, and consistent — features stay powerful while the interface stays quiet."
       />
@@ -123,11 +123,9 @@ export default function BrandPage() {
         <Section title="Brand">
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2.5">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-                <span className="text-base font-semibold">Q</span>
-              </div>
+              <BrandMark tile="h-9 w-9" mark="h-5 w-5" />
               <div className="leading-tight">
-                <div className="text-sm font-semibold">QuotePro</div>
+                <div className="text-sm font-semibold">Rivet</div>
                 <div className="text-xs text-muted-foreground">Quote to cash for field service</div>
               </div>
             </div>

@@ -4,12 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 /* =========================================================================
-   Design Tokens — Stripe/Attio-inspired
-   - Pure white base, subtle warm neutrals (not cold slate)
-   - Indigo accent (#5B5BFE-ish) — signals AI + trust
-   - Soft borders (near-invisible until interaction)
-   - Restrained shadows, generous radii
-   - Typography returns to normal weight; semibold reserved for emphasis
+   Design Tokens — Rivet (monochrome, best-in-class restraint)
+   - Pure white base, subtle warm neutrals
+   - Ink (near-black) brand accent — a black & white identity
+   - Semantic color reserved for status + destructive only
+   - Soft borders, restrained shadows, generous radii
    ========================================================================= */
 
 @theme inline {
@@ -69,8 +68,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.14 0.005 285);
 
-  /* Brand — Indigo (Stripe/Attio family) */
-  --primary: oklch(0.55 0.20 250);                   /* #5B5BFE */
+  /* Brand — Ink (monochrome) */
+  --primary: oklch(0.21 0 0);                        /* Near-black */
   --primary-foreground: oklch(0.99 0 0);
 
   /* Neutrals */
@@ -78,8 +77,8 @@
   --secondary-foreground: oklch(0.20 0.005 285);
   --muted: oklch(0.968 0.005 285);
   --muted-foreground: oklch(0.55 0.010 285);         /* Muted body copy */
-  --accent: oklch(0.968 0.010 250);                  /* Faint indigo-tinted surface */
-  --accent-foreground: oklch(0.20 0.010 250);
+  --accent: oklch(0.968 0.004 285);                  /* Neutral gray surface */
+  --accent-foreground: oklch(0.20 0.004 285);
 
   /* Semantic */
   --destructive: oklch(0.60 0.24 25);                /* Ruby */
@@ -87,24 +86,24 @@
   /* Lines */
   --border: oklch(0.925 0.008 285);                  /* Soft warm gray */
   --input: oklch(0.925 0.008 285);
-  --ring: oklch(0.55 0.20 250 / 0.35);               /* Indigo focus ring */
+  --ring: oklch(0.21 0 0 / 0.30);                    /* Ink focus ring */
 
-  /* Charts (indigo → violet family + supporting) */
-  --chart-1: oklch(0.55 0.20 250);
-  --chart-2: oklch(0.70 0.18 296);
-  --chart-3: oklch(0.75 0.15 200);
-  --chart-4: oklch(0.68 0.19 145);
-  --chart-5: oklch(0.72 0.20 55);
+  /* Charts (grayscale ramp — monochrome brand) */
+  --chart-1: oklch(0.21 0 0);
+  --chart-2: oklch(0.42 0 0);
+  --chart-3: oklch(0.57 0 0);
+  --chart-4: oklch(0.72 0 0);
+  --chart-5: oklch(0.84 0 0);
 
   /* Sidebar */
   --sidebar: oklch(0.985 0.003 285);
   --sidebar-foreground: oklch(0.14 0.005 285);
-  --sidebar-primary: oklch(0.55 0.20 250);
+  --sidebar-primary: oklch(0.21 0 0);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.945 0.010 250);
-  --sidebar-accent-foreground: oklch(0.20 0.010 250);
+  --sidebar-accent: oklch(0.955 0.004 285);
+  --sidebar-accent-foreground: oklch(0.20 0.004 285);
   --sidebar-border: oklch(0.925 0.008 285);
-  --sidebar-ring: oklch(0.55 0.20 250 / 0.35);
+  --sidebar-ring: oklch(0.21 0 0 / 0.30);
 }
 
 /* -------- Dark ---------------------------------------------------------- */
@@ -116,36 +115,36 @@
   --popover: oklch(0.185 0.006 285);
   --popover-foreground: oklch(0.97 0.002 285);
 
-  --primary: oklch(0.72 0.18 250);                   /* Slightly brighter indigo for contrast */
-  --primary-foreground: oklch(0.14 0.005 285);
+  --primary: oklch(0.97 0 0);                        /* White brand on dark */
+  --primary-foreground: oklch(0.16 0 0);
 
   --secondary: oklch(0.225 0.008 285);
   --secondary-foreground: oklch(0.97 0.002 285);
   --muted: oklch(0.225 0.008 285);
   --muted-foreground: oklch(0.68 0.010 285);
-  --accent: oklch(0.28 0.030 250);
+  --accent: oklch(0.28 0.004 285);
   --accent-foreground: oklch(0.97 0.002 285);
 
   --destructive: oklch(0.70 0.22 25);
 
   --border: oklch(0.30 0.008 285);
   --input: oklch(0.30 0.008 285);
-  --ring: oklch(0.72 0.18 250 / 0.35);
+  --ring: oklch(0.97 0 0 / 0.30);
 
-  --chart-1: oklch(0.72 0.18 250);
-  --chart-2: oklch(0.72 0.20 296);
-  --chart-3: oklch(0.78 0.15 200);
-  --chart-4: oklch(0.72 0.19 145);
-  --chart-5: oklch(0.78 0.20 55);
+  --chart-1: oklch(0.97 0 0);
+  --chart-2: oklch(0.80 0 0);
+  --chart-3: oklch(0.65 0 0);
+  --chart-4: oklch(0.50 0 0);
+  --chart-5: oklch(0.38 0 0);
 
   --sidebar: oklch(0.165 0.006 285);
   --sidebar-foreground: oklch(0.97 0.002 285);
-  --sidebar-primary: oklch(0.72 0.18 250);
-  --sidebar-primary-foreground: oklch(0.14 0.005 285);
-  --sidebar-accent: oklch(0.25 0.020 250);
+  --sidebar-primary: oklch(0.97 0 0);
+  --sidebar-primary-foreground: oklch(0.16 0 0);
+  --sidebar-accent: oklch(0.26 0.004 285);
   --sidebar-accent-foreground: oklch(0.97 0.002 285);
   --sidebar-border: oklch(0.30 0.008 285);
-  --sidebar-ring: oklch(0.72 0.18 250 / 0.35);
+  --sidebar-ring: oklch(0.97 0 0 / 0.30);
 }
 
 /* =========================================================================
@@ -239,11 +238,11 @@
       0 8px 24px -4px rgb(15 23 42 / 0.06);
   }
 
-  /* Signature indigo gradient */
+  /* Signature soft glow (neutral) */
   .bg-indigo-glow {
     background:
-      radial-gradient(ellipse 800px 400px at 20% 0%, oklch(0.72 0.22 268 / 0.15), transparent 60%),
-      radial-gradient(ellipse 600px 400px at 80% 100%, oklch(0.78 0.20 296 / 0.12), transparent 60%),
+      radial-gradient(ellipse 800px 400px at 20% 0%, oklch(0.55 0 0 / 0.06), transparent 60%),
+      radial-gradient(ellipse 600px 400px at 80% 100%, oklch(0.55 0 0 / 0.05), transparent 60%),
       var(--background);
   }
 

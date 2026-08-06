@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { BrandLogo } from '@/components/brand/logo'
 import { useAuth } from '@/hooks/useAuth'
 
 export default function LoginPage() {
@@ -25,11 +26,8 @@ export default function LoginPage() {
     <div className="grid min-h-dvh grid-cols-1 bg-background lg:grid-cols-2">
       {/* ─────────── LEFT: form ─────────── */}
       <div className="flex flex-col justify-between px-6 py-8 sm:px-10 lg:px-16">
-        <header className="flex items-center gap-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4 w-4" strokeWidth={2.5} />
-          </div>
-          <span className="text-sm font-semibold tracking-tight">QuotePro</span>
+        <header>
+          <BrandLogo />
         </header>
 
         <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
@@ -40,7 +38,7 @@ export default function LoginPage() {
             <p className="mt-2 text-[15px] text-muted-foreground">
               {isSignUp
                 ? 'Start winning more jobs. Free 14-day trial.'
-                : 'Sign in to your QuotePro workspace.'}
+                : 'Sign in to your workspace.'}
             </p>
           </div>
 
@@ -155,7 +153,7 @@ export default function LoginPage() {
         </main>
 
         <footer className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} QuotePro</span>
+          <span>© {new Date().getFullYear()} Rivet</span>
           <div className="flex items-center gap-4">
             <Link href="/pricing" className="hover:text-foreground">Pricing</Link>
             <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
@@ -165,27 +163,27 @@ export default function LoginPage() {
       </div>
 
       {/* ─────────── RIGHT: marketing panel (desktop only) ─────────── */}
-      <aside className="relative hidden overflow-hidden bg-[#050d24] lg:flex">
+      <aside className="relative hidden overflow-hidden bg-[#0a0a0a] lg:flex">
         {/* Cloud-soft gradient mesh */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <div
             className="absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(56,132,255,0.45), transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.10), transparent 70%)' }}
           />
           <div
             className="absolute -right-24 top-1/3 h-[26rem] w-[26rem] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(45,212,235,0.26), transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%)' }}
           />
           <div
             className="absolute -bottom-32 left-1/4 h-[26rem] w-[26rem] rounded-full blur-3xl"
-            style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.30), transparent 70%)' }}
+            style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%)' }}
           />
         </div>
 
         <div className="relative z-10 flex w-full flex-col justify-between p-14 xl:p-16">
           <div className="flex justify-between">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur">
-              <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
+              <Sparkles className="h-3.5 w-3.5 text-white/70" />
               Quoting that wins more jobs
             </div>
           </div>
@@ -194,7 +192,7 @@ export default function LoginPage() {
             <div className="space-y-5">
               <h2 className="max-w-xl text-[2.75rem] font-semibold leading-[1.05] tracking-tight text-white">
                 Win more jobs in{' '}
-                <span className="bg-gradient-to-r from-sky-300 via-cyan-300 to-blue-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
                   seconds
                 </span>
                 , not hours.
@@ -235,7 +233,7 @@ export default function LoginPage() {
                 </div>
               </dl>
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
-                <Zap className="h-3.5 w-3.5 text-cyan-300" />
+                <Zap className="h-3.5 w-3.5 text-white/70" />
                 Generated in 2.4s · grounded in your catalog
               </div>
             </div>

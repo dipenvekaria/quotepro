@@ -11,10 +11,10 @@ type Variant = {
 }
 
 const VARIANTS: Record<WorkItemStatus, Variant> = {
-  lead: { label: 'New Lead', icon: Circle, className: 'bg-blue-100 text-blue-700 ring-blue-600/20' },
+  lead: { label: 'New Lead', icon: Circle, className: 'bg-zinc-100 text-zinc-700 ring-zinc-600/20' },
   quote_draft: { label: 'Draft', icon: FileText, className: 'bg-gray-100 text-gray-700 ring-gray-500/20' },
-  quote_sent: { label: 'Sent', icon: Send, className: 'bg-sky-100 text-sky-700 ring-sky-600/20' },
-  quote_viewed: { label: 'Viewed', icon: Circle, className: 'bg-indigo-100 text-indigo-700 ring-indigo-600/20' },
+  quote_sent: { label: 'Sent', icon: Send, className: 'bg-violet-100 text-violet-700 ring-violet-600/20' },
+  quote_viewed: { label: 'Viewed', icon: Circle, className: 'bg-purple-100 text-purple-700 ring-purple-600/20' },
   quote_accepted: {
     label: 'Accepted',
     icon: CheckCircle2,

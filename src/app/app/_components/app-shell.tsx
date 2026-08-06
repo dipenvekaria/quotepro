@@ -19,12 +19,12 @@ import {
   Plus,
   Search,
   Settings,
-  Sparkles,
   Users,
   X,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
 import { signOut } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 
@@ -136,11 +136,9 @@ function Sidebar({
           href="/app/dashboard"
           className="group flex flex-1 items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-sidebar-accent"
         >
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4 w-4" strokeWidth={2.5} />
-          </div>
+          <BrandMark tile="h-8 w-8" mark="h-5 w-5" />
           <div className="flex-1 truncate">
-            <div className="truncate text-sm font-semibold">QuotePro</div>
+            <div className="truncate text-sm font-semibold">{BRAND_NAME}</div>
             <div className="truncate text-[11px] text-muted-foreground">
               {company?.name ?? 'Setup pending'}
             </div>
@@ -237,11 +235,9 @@ function TopBar({
 
       {/* Mobile brand */}
       <Link href="/app/dashboard" className="flex items-center gap-1.5 lg:hidden">
-        <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
-          <Sparkles className="h-3.5 w-3.5" />
-        </div>
+        <BrandMark tile="h-7 w-7" mark="h-4 w-4" />
         <span className="text-sm font-semibold sm:hidden">
-          {company?.name?.split(' ')[0] ?? 'QuotePro'}
+          {company?.name?.split(' ')[0] ?? BRAND_NAME}
         </span>
       </Link>
 
