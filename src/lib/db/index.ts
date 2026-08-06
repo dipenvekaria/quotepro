@@ -1,12 +1,8 @@
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
+import { Pool, type QueryResultRow } from 'pg'
 
-import * as schema from './schema'
-
-// Direct Postgres connection (Cloud SQL-ready). Swap DATABASE_URL to point at
-// Cloud SQL in prod — no code change. NOTE: this connects as the app DB user and
-// bypasses Supabase RLS, so tenant scoping (company_id) must be enforced in each
-// query until we move RLS/authz into this layer.
+// Raw Postgres access (no ORM). DATABASE_URL points at local Postgres in dev and
+// Cloud SQL in prod (via the Cloud SQL Connector / private IP). Tenant scoping
+// (company_id) must be enforced in each query — this connection is not RLS-bound.
 const globalForDb = globalThis as unknown as { __pgPool?: Pool }
 
 const pool =
@@ -18,4 +14,12 @@ const pool =
 
 if (process.env.NODE_ENV !== 'production') globalForDb.__pgPool = pool
 
-export const db = drizzle(pool, { schema })
+export async function query<T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params: unknown[] = [],
+): Promise<T[]> {
+  const result = await pool.query<T>(text, params)
+  return result.rows
+}
+
+export { pool }

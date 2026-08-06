@@ -4,9 +4,7 @@ import { Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { createClient } from '@/lib/supabase/server'
-import { db } from '@/lib/db'
-import { customers as customersTable, customerAddresses } from '@/lib/db/schema'
-import { desc, eq, inArray } from 'drizzle-orm'
+import { query } from '@/lib/db'
 
 export default async function CustomersPage() {
   const supabase = await createClient()
@@ -22,32 +20,36 @@ export default async function CustomersPage() {
   if (!profile?.company_id) redirect('/app/onboarding')
   const companyId = profile.company_id as string
 
-  // Data via the direct-Postgres (Drizzle) layer. company_id is enforced here
-  // because this connection bypasses Supabase RLS.
-  const list = await db
-    .select({
-      id: customersTable.id,
-      name: customersTable.name,
-      email: customersTable.email,
-      phone: customersTable.phone,
-      created_at: customersTable.createdAt,
-    })
-    .from(customersTable)
-    .where(eq(customersTable.companyId, companyId))
-    .orderBy(desc(customersTable.createdAt))
-    .limit(200)
+  // Data via the raw-Postgres layer. company_id is enforced here because this
+  // connection is not RLS-bound.
+  const list = await query<{
+    id: string
+    name: string
+    email: string | null
+    phone: string | null
+    created_at: Date
+  }>(
+    `select id, name, email, phone, created_at
+       from customers
+      where company_id = $1
+      order by created_at desc
+      limit 200`,
+    [companyId],
+  )
 
   const addressRows = list.length
-    ? await db
-        .select({
-          customer_id: customerAddresses.customerId,
-          address: customerAddresses.address,
-          city: customerAddresses.city,
-          state: customerAddresses.state,
-          is_primary: customerAddresses.isPrimary,
-        })
-        .from(customerAddresses)
-        .where(inArray(customerAddresses.customerId, list.map((c) => c.id)))
+    ? await query<{
+        customer_id: string
+        address: string
+        city: string | null
+        state: string | null
+        is_primary: boolean
+      }>(
+        `select customer_id, address, city, state, is_primary
+           from customer_addresses
+          where customer_id = any($1::uuid[])`,
+        [list.map((c) => c.id)],
+      )
     : []
   const primaryByCustomer = new Map<string, { address: string; city: string | null; state: string | null }>()
   for (const a of addressRows) {
