@@ -373,10 +373,10 @@ export default async function DashboardPage() {
           )}
         </Zone>
 
-        {/* Stalled quotes (AI nudge) */}
+        {/* Stalled quotes — gentle follow-up reminders */}
         <Zone
           icon={Sparkles}
-          title="AI nudges"
+          title="Worth a follow-up"
           count={stalledQuotes.length}
           tone={stalledQuotes.length > 0 ? 'warn' : 'default'}
           linkHref="/app/pipeline"
@@ -385,8 +385,8 @@ export default async function DashboardPage() {
           {stalledQuotes.length === 0 ? (
             <EmptyRow
               icon={CheckCircle2}
-              title="No stalled quotes"
-              hint="Sent quotes older than 48h will show up here."
+              title="You're all caught up"
+              hint="Quotes you sent over 48h ago that are still waiting will show up here."
             />
           ) : (
             <ul className="divide-y divide-border/70">
@@ -413,8 +413,8 @@ export default async function DashboardPage() {
                     <div className="mt-1 text-[11px] text-primary">
                       <Sparkles className="mr-0.5 inline h-2.5 w-2.5" />
                       {q.viewed_at
-                        ? 'Follow up — they saw it but haven\'t decided.'
-                        : 'Nudge — a quick call often reopens interest.'}
+                        ? 'They opened it — a friendly check-in can help close the deal.'
+                        : 'A quick call often reopens interest.'}
                     </div>
                   </Link>
                 </li>

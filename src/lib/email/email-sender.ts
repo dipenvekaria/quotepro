@@ -20,13 +20,16 @@ interface EmailResult {
 }
 
 export async function sendEmail(options: EmailOptions): Promise<EmailResult> {
+  if (!resend) {
+    return { success: false, error: 'Email is not configured (RESEND_API_KEY missing)' }
+  }
   try {
     const { data, error } = await resend.emails.send({
-      from: options.from || 'Field Genie <onboarding@resend.dev>',
+      from: options.from || 'QuotePro <onboarding@resend.dev>',
       to: options.to,
       subject: options.subject,
       html: options.html,
-      reply_to: options.replyTo,
+      replyTo: options.replyTo,
       attachments: options.attachments,
     })
 

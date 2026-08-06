@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useActionState, useEffect } from 'react'
 import { ArrowRight, Building2, CheckCircle2 } from 'lucide-react'
@@ -9,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
+import { signOut } from '@/app/auth/actions'
 import { bootstrapCompany, type BootstrapCompanyState } from './actions'
 
 const initial: BootstrapCompanyState = { ok: false }
@@ -87,8 +87,8 @@ export default function OnboardingPage() {
                   {[
                     'A starter catalog (labor, trip fee, permits) — edit or replace anytime',
                     '3 team roles: owner, office, technician',
-                    'Free SOC2-grade encryption + daily backups',
-                    'AI quote generation ready — just add a Gemini API key',
+                    'Encrypted data with automatic backups',
+                    'AI-assisted quote drafting built in',
                   ].map((f) => (
                     <li key={f} className="flex items-start gap-1.5">
                       <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
@@ -101,9 +101,11 @@ export default function OnboardingPage() {
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            <Link href="/login" className="text-xs text-muted-foreground hover:text-foreground">
-              Sign out
-            </Link>
+            <form action={signOut}>
+              <button type="submit" className="text-xs text-muted-foreground hover:text-foreground">
+                Sign out
+              </button>
+            </form>
             <Button
               type="submit"
               disabled={pending}

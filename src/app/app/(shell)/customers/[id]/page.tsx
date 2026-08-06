@@ -180,7 +180,7 @@ export default async function CustomerDetailPage({
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <StatusBadge status={w.status} />
+                          <StatusBadge status={w.status as Parameters<typeof StatusBadge>[0]['status']} />
                           <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
                             {w.kind}
                           </span>

@@ -130,7 +130,7 @@ export default async function PipelinePage() {
                       status={item.status}
                       jobName={item.job_name}
                       description={item.description}
-                      customer={customerMap.get(item.customer_id) ?? 'Unknown customer'}
+                      customer={customerMap.get(item.customer_id ?? '') ?? 'Unknown customer'}
                       total={Number(item.total ?? 0)}
                       updatedAt={item.updated_at}
                     />

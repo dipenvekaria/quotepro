@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error('RESEND_API_KEY not found')
-}
+// Best-effort email: don't throw at import so the app builds and runs without
+// RESEND_API_KEY configured (emails are simply skipped). Callers guard on null.
+const apiKey = process.env.RESEND_API_KEY?.trim()
 
-export const resend = new Resend(process.env.RESEND_API_KEY)
+export const resend = apiKey ? new Resend(apiKey) : null
