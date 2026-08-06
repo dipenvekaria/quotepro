@@ -57,4 +57,27 @@ export async function withTransaction<T>(fn: (q: TxQuery) => Promise<T>): Promis
   }
 }
 
+// Like withTransaction, but first sets the Supabase auth context
+// (request.jwt.claims) so SQL functions using auth.uid() resolve to `userId`.
+// Needed for RPCs like create_work_item_with_customer / bootstrap_company that
+// read auth.uid() internally (NULL under the raw superuser connection otherwise).
+export async function withUser<T>(userId: string, fn: (q: TxQuery) => Promise<T>): Promise<T> {
+  const client = await pool.connect()
+  try {
+    await client.query('begin')
+    await client.query("select set_config('request.jwt.claims', $1, true)", [
+      JSON.stringify({ sub: userId, role: 'authenticated' }),
+    ])
+    const q: TxQuery = async (text, params = []) => (await client.query(text, params)).rows
+    const result = await fn(q)
+    await client.query('commit')
+    return result
+  } catch (err) {
+    await client.query('rollback')
+    throw err
+  } finally {
+    client.release()
+  }
+}
+
 export { pool }

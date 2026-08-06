@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
-import { query, withTransaction } from '@/lib/db'
+import { query, withTransaction, withUser } from '@/lib/db'
 
 // -----------------------------------------------------------------------------
 // Create a draft quote (with customer upsert) via the atomic RPC.
@@ -39,27 +39,29 @@ export async function createDraftQuote(input: CreateDraftInput) {
 
   let workItemId: string | undefined
   try {
-    const rows = await query<{ id: string }>(
-      `select create_work_item_with_customer(
-         p_company_id => $1,
-         p_customer_name => $2,
-         p_customer_phone => $3,
-         p_customer_email => $4,
-         p_address => $5,
-         p_description => $6,
-         p_status => $7::work_item_status
-       ) as id`,
-      [
-        companyId,
-        parsed.data.customer_name,
-        parsed.data.customer_phone || null,
-        parsed.data.customer_email || null,
-        parsed.data.address || null,
-        parsed.data.description,
-        'quote_draft',
-      ],
-    )
-    workItemId = rows[0]?.id
+    workItemId = await withUser(user.id, async (q) => {
+      const rows = await q<{ id: string }>(
+        `select create_work_item_with_customer(
+           p_company_id => $1,
+           p_customer_name => $2,
+           p_customer_phone => $3,
+           p_customer_email => $4,
+           p_address => $5,
+           p_description => $6,
+           p_status => $7::work_item_status
+         ) as id`,
+        [
+          companyId,
+          parsed.data.customer_name,
+          parsed.data.customer_phone || null,
+          parsed.data.customer_email || null,
+          parsed.data.address || null,
+          parsed.data.description,
+          'quote_draft',
+        ],
+      )
+      return rows[0]?.id
+    })
   } catch (e) {
     return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to create quote' }
   }

@@ -5,7 +5,8 @@ import { z } from 'zod'
 
 import { env } from '@/lib/env'
 import { sendInvoiceEmail } from '@/lib/email/senders'
-import { sbServer } from '@/lib/supabase/untyped'
+import { getSession } from '@/lib/auth/session'
+import { query, withTransaction } from '@/lib/db'
 
 // ---------------------------------------------------------------------------
 
@@ -14,21 +15,30 @@ type InvoiceStub = { id: string; public_token: string; invoice_number: string }
 export async function convertToInvoice(
   workItemId: string,
 ): Promise<{ ok: true; data: InvoiceStub } | { ok: false; error: string }> {
-  const supabase = await sbServer()
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+  const { companyId } = session
 
-  const { data: existing } = await supabase
-    .from('invoices')
-    .select('id, public_token, invoice_number')
-    .eq('work_item_id', workItemId)
-    .maybeSingle()
-  if (existing) return { ok: true, data: existing as InvoiceStub }
+  const [existing] = await query<InvoiceStub>(
+    `select id, public_token, invoice_number from invoices
+      where work_item_id = $1 and company_id = $2 limit 1`,
+    [workItemId, companyId],
+  )
+  if (existing) return { ok: true, data: existing }
 
-  const { data: work, error: workErr } = await supabase
-    .from('work_items')
-    .select('id, company_id, customer_id, subtotal, tax_amount, total, invoice_number')
-    .eq('id', workItemId)
-    .maybeSingle()
-  if (workErr) return { ok: false, error: workErr.message }
+  const [work] = await query<{
+    id: string
+    company_id: string
+    customer_id: string | null
+    subtotal: number | null
+    tax_amount: number | null
+    total: number | null
+    invoice_number: string | null
+  }>(
+    `select id, company_id, customer_id, subtotal, tax_amount, total, invoice_number
+       from work_items where id = $1 and company_id = $2 limit 1`,
+    [workItemId, companyId],
+  )
   if (!work) return { ok: false, error: 'Work item not found' }
 
   const invoiceNumber =
@@ -38,30 +48,35 @@ export async function convertToInvoice(
   const due = new Date()
   due.setDate(due.getDate() + 14)
 
-  const { data: created, error: insErr } = await supabase
-    .from('invoices')
-    .insert({
-      company_id: work.company_id,
-      work_item_id: work.id,
-      customer_id: work.customer_id,
-      invoice_number: invoiceNumber,
-      subtotal: work.subtotal,
-      tax_amount: work.tax_amount,
-      total: work.total,
-      amount_paid: 0,
-      status: 'draft',
-      due_date: due.toISOString().slice(0, 10),
+  let created: InvoiceStub | undefined
+  try {
+    created = await withTransaction(async (q) => {
+      const rows = await q<InvoiceStub>(
+        `insert into invoices
+           (company_id, work_item_id, customer_id, invoice_number, subtotal, tax_amount, total, amount_paid, status, due_date)
+         values ($1, $2, $3, $4, $5, $6, $7, 0, 'draft'::invoice_status, $8)
+         returning id, public_token, invoice_number`,
+        [
+          work.company_id,
+          work.id,
+          work.customer_id,
+          invoiceNumber,
+          work.subtotal,
+          work.tax_amount,
+          work.total,
+          due.toISOString().slice(0, 10),
+        ],
+      )
+      await q(`update work_items set invoice_number = $1 where id = $2`, [invoiceNumber, work.id])
+      return rows[0]
     })
-    .select('id, public_token, invoice_number')
-    .single()
-
-  if (insErr) return { ok: false, error: insErr.message }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Failed to create invoice' }
+  }
   if (!created) return { ok: false, error: 'Insert returned no row' }
 
-  await supabase.from('work_items').update({ invoice_number: invoiceNumber }).eq('id', work.id)
-
   revalidatePath(`/app/pipeline/${workItemId}`)
-  return { ok: true, data: created as InvoiceStub }
+  return { ok: true, data: created }
 }
 
 // ---------------------------------------------------------------------------
@@ -71,44 +86,58 @@ type SendInvoiceResult =
   | { ok: false; error: string }
 
 export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult> {
-  const supabase = await sbServer()
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+  const { companyId } = session
 
-  const { data: inv, error: fetchErr } = await supabase
-    .from('invoices')
-    .select(`
-      id, invoice_number, total, amount_paid, status, sent_at, due_date, public_token,
-      customers (name, email),
-      companies (name, email)
-    `)
-    .eq('id', invoiceId)
-    .maybeSingle()
-  if (fetchErr) return { ok: false, error: fetchErr.message }
+  const [inv] = await query<{
+    id: string
+    invoice_number: string
+    total: number | null
+    amount_paid: number | null
+    status: string
+    sent_at: string | null
+    due_date: string | null
+    public_token: string
+    customer_name: string | null
+    customer_email: string | null
+    company_name: string | null
+    company_email: string | null
+  }>(
+    `select i.id, i.invoice_number, i.total, i.amount_paid, i.status, i.sent_at, i.due_date, i.public_token,
+            c.name as customer_name, c.email as customer_email,
+            co.name as company_name, co.email as company_email
+       from invoices i
+       left join customers c on c.id = i.customer_id
+       left join companies co on co.id = i.company_id
+      where i.id = $1 and i.company_id = $2
+      limit 1`,
+    [invoiceId, companyId],
+  )
   if (!inv) return { ok: false, error: 'Not found' }
 
   const now = new Date().toISOString()
-  await supabase
-    .from('invoices')
-    .update({
-      status: inv.status === 'draft' ? 'sent' : inv.status,
-      sent_at: inv.sent_at ?? now,
-    })
-    .eq('id', inv.id)
+  await query(
+    `update invoices
+        set status = case when status = 'draft' then 'sent'::invoice_status else status end,
+            sent_at = coalesce(sent_at, $2)
+      where id = $1 and company_id = $3`,
+    [inv.id, now, companyId],
+  )
 
   let emailResult: 'sent' | 'skipped' | 'error' = 'skipped'
-  const cust = inv.customers as { name: string; email: string | null } | null
-  const comp = inv.companies as { name: string; email: string | null } | null
-  if (cust?.email) {
+  if (inv.customer_email) {
     const publicUrl = `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/i/${inv.public_token}`
     try {
       const res = await sendInvoiceEmail({
-        to: cust.email,
-        customerName: cust.name,
+        to: inv.customer_email,
+        customerName: inv.customer_name ?? '',
         invoiceNumber: inv.invoice_number,
-        amountDue: Number(inv.total) - Number(inv.amount_paid ?? 0),
+        amountDue: Number(inv.total ?? 0) - Number(inv.amount_paid ?? 0),
         publicUrl,
         dueDate: inv.due_date ? new Date(inv.due_date) : null,
-        fromLabel: comp?.name,
-        replyTo: comp?.email ?? undefined,
+        fromLabel: inv.company_name ?? undefined,
+        replyTo: inv.company_email ?? undefined,
       })
       emailResult = res.ok && !('skipped' in res && res.skipped) ? 'sent' : res.ok ? 'skipped' : 'error'
     } catch {
@@ -117,7 +146,7 @@ export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult>
   }
 
   revalidatePath(`/app/pipeline`)
-  return { ok: true, data: { public_token: inv.public_token as string, email: emailResult } }
+  return { ok: true, data: { public_token: inv.public_token, email: emailResult } }
 }
 
 // ---------------------------------------------------------------------------
@@ -138,38 +167,55 @@ export async function recordPayment(input: RecordPaymentInput) {
     return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
   }
 
-  const supabase = await sbServer()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { ok: false as const, error: 'Not authenticated' }
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const { userId, companyId } = session
 
-  const { data: inv } = await supabase
-    .from('invoices')
-    .select('id, total, amount_paid, work_item_id')
-    .eq('id', parsed.data.invoice_id)
-    .maybeSingle()
+  const [inv] = await query<{
+    id: string
+    total: number | null
+    amount_paid: number | null
+    work_item_id: string | null
+  }>(
+    `select id, total, amount_paid, work_item_id from invoices
+      where id = $1 and company_id = $2 limit 1`,
+    [parsed.data.invoice_id, companyId],
+  )
   if (!inv) return { ok: false as const, error: 'Invoice not found' }
 
-  const { error: payErr } = await supabase.from('payments').insert({
-    invoice_id: parsed.data.invoice_id,
-    amount: parsed.data.amount,
-    method: parsed.data.method,
-    reference_number: parsed.data.reference_number ?? null,
-    notes: parsed.data.notes ?? null,
-    recorded_by: user.id,
-  })
-  if (payErr) return { ok: false as const, error: payErr.message }
-
   const newPaid = Number(inv.amount_paid ?? 0) + parsed.data.amount
-  const total = Number(inv.total)
+  const total = Number(inv.total ?? 0)
   const newStatus: 'paid' | 'partial' = newPaid >= total ? 'paid' : 'partial'
 
-  const invPatch: Record<string, unknown> = {
-    amount_paid: newPaid,
-    status: newStatus,
+  try {
+    await withTransaction(async (q) => {
+      await q(
+        `insert into payments (invoice_id, amount, method, reference_number, notes, recorded_by)
+         values ($1, $2, $3::payment_method, $4, $5, $6)`,
+        [
+          parsed.data.invoice_id,
+          parsed.data.amount,
+          parsed.data.method,
+          parsed.data.reference_number ?? null,
+          parsed.data.notes ?? null,
+          userId,
+        ],
+      )
+      if (newStatus === 'paid') {
+        await q(
+          `update invoices set amount_paid = $1, status = 'paid'::invoice_status, paid_at = $2 where id = $3`,
+          [newPaid, new Date().toISOString(), inv.id],
+        )
+      } else {
+        await q(
+          `update invoices set amount_paid = $1, status = 'partial'::invoice_status where id = $2`,
+          [newPaid, inv.id],
+        )
+      }
+    })
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to record payment' }
   }
-  if (newStatus === 'paid') invPatch.paid_at = new Date().toISOString()
-
-  await supabase.from('invoices').update(invPatch).eq('id', inv.id)
 
   revalidatePath(`/app/pipeline`)
   if (inv.work_item_id) revalidatePath(`/app/pipeline/${inv.work_item_id}`)

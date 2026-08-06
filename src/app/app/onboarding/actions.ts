@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { withUser } from '@/lib/db'
 
 const inputSchema = z.object({
   name: z.string().min(1, 'Company name is required').max(200),
@@ -29,16 +30,35 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
   }
 
   const supabase = await createClient()
-  const { data, error } = await supabase.rpc('bootstrap_company', {
-    p_name: parsed.data.name,
-    p_phone: parsed.data.phone || null,
-    p_email: parsed.data.email || null,
-    p_address: parsed.data.address || null,
-    p_seed_catalog: true,
-  })
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { ok: false, error: 'Not authenticated' }
 
-  if (error) return { ok: false, error: error.message }
-  if (!data) return { ok: false, error: 'Unknown error' }
+  let companyId: string | undefined
+  try {
+    companyId = await withUser(user.id, async (q) => {
+      const rows = await q<{ id: string }>(
+        `select bootstrap_company(
+           p_name => $1,
+           p_phone => $2,
+           p_email => $3,
+           p_address => $4,
+           p_seed_catalog => $5
+         ) as id`,
+        [
+          parsed.data.name,
+          parsed.data.phone || null,
+          parsed.data.email || null,
+          parsed.data.address || null,
+          true,
+        ],
+      )
+      return rows[0]?.id
+    })
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Failed to create company' }
+  }
+
+  if (!companyId) return { ok: false, error: 'Unknown error' }
 
   revalidatePath('/app')
   return { ok: true }
