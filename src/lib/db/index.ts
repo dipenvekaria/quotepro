@@ -1,4 +1,8 @@
-import { Pool, type QueryResultRow } from 'pg'
+import { Pool, types, type QueryResultRow } from 'pg'
+
+// pg returns numeric/decimal (OID 1700) as strings — parse to number so money
+// columns behave like the Supabase client's responses did.
+types.setTypeParser(1700, (v) => (v === null ? null : Number(v)))
 
 // Raw Postgres access (no ORM). DATABASE_URL points at local Postgres in dev and
 // Cloud SQL in prod (via the Cloud SQL Connector / private IP). Tenant scoping

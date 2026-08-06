@@ -12,32 +12,29 @@ import {
   Zap,
 } from 'lucide-react'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 import { StripeConnect } from '../settings/stripe-connect'
 
 // ---------------------------------------------------------------------------
 
 export default async function IntegrationsPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { companyId, role } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id, role')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
-
-  const { data: company } = await supabase
-    .from('companies')
-    .select('stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees')
-    .eq('id', profile.company_id)
-    .maybeSingle()
-
+  const companyRows = await query<{
+    stripe_account_id: string | null
+    stripe_charges_enabled: boolean | null
+    stripe_details_submitted: boolean | null
+    pass_card_fees: boolean | null
+  }>(
+    `select stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees
+       from companies where id = $1 limit 1`,
+    [companyId],
+  )
+  const company = companyRows[0]
   if (!company) redirect('/app/onboarding')
-  const canEdit = profile.role === 'owner' || profile.role === 'admin'
+  const canEdit = role === 'owner' || role === 'admin'
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-10 lg:py-8">

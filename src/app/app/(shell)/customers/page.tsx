@@ -1,24 +1,12 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 
 export default async function CustomersPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!profile?.company_id) redirect('/app/onboarding')
-  const companyId = profile.company_id as string
+  const { companyId } = await requireSession()
 
   // Data via the raw-Postgres layer. company_id is enforced here because this
   // connection is not RLS-bound.

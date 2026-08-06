@@ -1,33 +1,31 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { Package, Plus } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
 
 export default async function CatalogPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { companyId } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!profile?.company_id) redirect('/app/onboarding')
-
-  const { data: items } = await supabase
-    .from('catalog_items')
-    .select('id, name, description, category, base_price, unit, tags, is_active')
-    .eq('company_id', profile.company_id)
-    .order('category', { ascending: true, nullsFirst: false })
-    .order('name', { ascending: true })
-    .limit(500)
-
-  const list = items ?? []
+  const list = await query<{
+    id: string
+    name: string
+    description: string | null
+    category: string | null
+    base_price: number
+    unit: string | null
+    tags: string[] | null
+    is_active: boolean
+  }>(
+    `select id, name, description, category, base_price, unit, tags, is_active
+       from catalog_items
+      where company_id = $1
+      order by category asc nulls last, name asc
+      limit 500`,
+    [companyId],
+  )
 
   // group by category
   const grouped: Record<string, typeof list> = {}
