@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { PageContainer, PageHeader, Section } from '@/components/shared/page'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { ForwardMark, Logo, LogoTile, RiseMark, RivetMark } from '@/components/brand/logo'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -65,6 +66,59 @@ export default function BrandPage() {
       />
 
       <div className="mt-8 space-y-6">
+        {/* Logo */}
+        <Section
+          title="Logo"
+          description="One mark, three directions. Drawn on currentColor so it works on brand, mono, or inverted — favicon to hero."
+        >
+          <div className="space-y-8">
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                { key: 'rise', label: 'Rise', note: 'Win the job · growth', mark: <RiseMark className="h-7 w-7" /> },
+                { key: 'rivet', label: 'Rivet', note: 'Sturdy · trade', mark: <RivetMark className="h-7 w-7" /> },
+                { key: 'forward', label: 'Forward', note: 'Fast', mark: <ForwardMark className="h-7 w-7" /> },
+              ].map((c) => (
+                <div
+                  key={c.key}
+                  className="flex flex-col items-center gap-3 rounded-xl border border-border/70 bg-card p-6"
+                >
+                  <LogoTile className="h-14 w-14">{c.mark}</LogoTile>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold">{c.label}</div>
+                    <div className="text-xs text-muted-foreground">{c.note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="flex flex-col gap-5 rounded-xl border border-border/70 bg-card p-6">
+                <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Lockup &amp; scale
+                </div>
+                <Logo name="Rivet" mark={<RiseMark className="h-5 w-5" />} />
+                <div className="flex items-end gap-4">
+                  <LogoTile className="h-6 w-6">
+                    <RiseMark className="h-4 w-4" />
+                  </LogoTile>
+                  <LogoTile className="h-8 w-8">
+                    <RiseMark className="h-5 w-5" />
+                  </LogoTile>
+                  <LogoTile className="h-12 w-12">
+                    <RiseMark className="h-7 w-7" />
+                  </LogoTile>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-4 rounded-xl border border-border/70 bg-foreground p-6">
+                <span className="inline-grid h-12 w-12 place-items-center rounded-[28%] bg-background text-foreground">
+                  <RiseMark className="h-7 w-7" />
+                </span>
+                <span className="text-lg font-semibold tracking-tight text-background">Rivet</span>
+              </div>
+            </div>
+          </div>
+        </Section>
+
         {/* Brand + voice */}
         <Section title="Brand">
           <div className="flex flex-wrap items-center gap-6">
