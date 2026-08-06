@@ -88,7 +88,7 @@ export default function OnboardingPage() {
                     'A starter catalog (labor, trip fee, permits) — edit or replace anytime',
                     '3 team roles: owner, office, technician',
                     'Encrypted data with automatic backups',
-                    'AI-assisted quote drafting built in',
+                    'One-click quote drafting built in',
                   ].map((f) => (
                     <li key={f} className="flex items-start gap-1.5">
                       <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />

@@ -65,7 +65,7 @@ export default async function CatalogPage() {
           <EmptyState
             icon={Package}
             title="Your catalog is empty"
-            description="Add items your business sells so AI can ground quotes in real pricing."
+            description="Add the items your business sells so every quote uses your real pricing."
           />
         </div>
       ) : (

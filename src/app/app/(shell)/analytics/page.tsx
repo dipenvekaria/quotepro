@@ -193,10 +193,10 @@ export default async function AnalyticsPage() {
           <div className="p-5">
             <div className="text-3xl font-semibold tabular">{fmtMoney(pipelineValue)}</div>
             <div className="mt-1 text-xs text-muted-foreground">Quote-sent + won + in-progress</div>
-            <div className="mt-4 rounded-lg border border-primary/20 bg-gradient-to-br from-primary/10 to-transparent p-3">
+            <div className="mt-4 rounded-lg border border-border/70 bg-muted/40 p-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
-                <span className="text-xs font-medium">AI insight</span>
+                <span className="text-xs font-medium">Insight</span>
               </div>
               <p className="mt-1.5 text-xs text-muted-foreground">
                 {acceptanceRate >= 40

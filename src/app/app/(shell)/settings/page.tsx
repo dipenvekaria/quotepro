@@ -186,23 +186,6 @@ export default async function SettingsPage() {
           </Link>
         </div>
       </section>
-
-      {/* AI (mock) */}
-      <section className="mt-6 mb-10 rounded-xl border border-primary/20 bg-gradient-to-br from-primary/8 via-primary/4 to-transparent p-5">
-        <div className="flex items-center gap-2">
-          <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-3.5 w-3.5" />
-          </div>
-          <h2 className="text-sm font-semibold">AI configuration</h2>
-        </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The AI backend at{' '}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">python-backend/</code>{' '}
-          is grounded on your catalog. Real Gemini generation activates when{' '}
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-xs">GEMINI_API_KEY</code>{' '}
-          is set; otherwise it falls back to a keyword-matched preview using your catalog items.
-        </p>
-      </section>
     </div>
   )
 }

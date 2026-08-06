@@ -186,7 +186,7 @@ export default function LoginPage() {
           <div className="flex justify-between">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/90 backdrop-blur">
               <Sparkles className="h-3.5 w-3.5 text-cyan-300" />
-              AI-powered quoting for the trades
+              Quoting that wins more jobs
             </div>
           </div>
 

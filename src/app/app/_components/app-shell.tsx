@@ -248,7 +248,7 @@ function TopBar({
       {/* Search (hidden on mobile) */}
       <button className="group hidden max-w-md flex-1 items-center gap-2 rounded-lg border border-border bg-background px-3 py-1.5 text-left text-sm text-muted-foreground shadow-sm transition-colors hover:border-border/80 md:flex">
         <Search className="h-4 w-4" />
-        <span className="flex-1">Search or ask AI…</span>
+        <span className="flex-1">Search…</span>
         <kbd className="flex items-center gap-0.5 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
           <Command className="h-3 w-3" />K
         </kbd>

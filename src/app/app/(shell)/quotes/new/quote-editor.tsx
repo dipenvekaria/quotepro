@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
 import {
   ArrowLeft,
-  Bot,
   Loader2,
   Package,
   Plus,
@@ -259,7 +258,7 @@ export function QuoteEditor({
             className="h-9 gap-1.5 border-primary/40 text-primary hover:bg-primary/5"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            Generate with AI
+            Draft quote
           </Button>
           <Button onClick={save} disabled={saving} className="h-9 gap-1.5 shadow-sm">
             {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
@@ -334,7 +333,7 @@ export function QuoteEditor({
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
                 <p className="text-xs text-muted-foreground">
-                  This is what the AI grounds line items on. Be as specific as you'd tell a colleague.
+                  This is what we use to draft line items. Be as specific as you'd tell a colleague.
                 </p>
               </FieldRow>
             </div>
@@ -369,10 +368,10 @@ export function QuoteEditor({
 
             {items.length === 0 ? (
               <div className="px-5 py-12 text-center">
-                <Bot className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
+                <Sparkles className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
                 <p className="text-sm font-medium">No line items yet</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Add from your catalog, insert a blank row, or generate with AI.
+                  Add from your catalog, insert a blank row, or draft one automatically.
                 </p>
               </div>
             ) : (
@@ -424,15 +423,15 @@ export function QuoteEditor({
             </p>
           </div>
 
-          <div className="mt-4 rounded-xl border border-primary/20 bg-gradient-to-br from-primary/8 via-primary/4 to-transparent p-4">
+          <div className="mt-4 rounded-xl border border-border/70 bg-muted/40 p-4">
             <div className="flex items-center gap-2">
               <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
-                <Bot className="h-3.5 w-3.5" />
+                <Sparkles className="h-3.5 w-3.5" />
               </div>
-              <div className="text-sm font-semibold">AI ready</div>
+              <div className="text-sm font-semibold">One-click drafting</div>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Grounded on your {catalog.length} catalog items · returns real prices with sources.
+              Drafts a quote from your {catalog.length} catalog items with real prices — in seconds.
             </p>
           </div>
         </aside>
@@ -620,11 +619,11 @@ function AiPanel({
       <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl">
         <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3">
           <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
-            <Bot className="h-3.5 w-3.5" />
+            <Sparkles className="h-3.5 w-3.5" />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold">Generate quote with AI</div>
-            <div className="text-[11px] text-muted-foreground">gemini-2.0-flash · grounded on catalog</div>
+            <div className="text-sm font-semibold">Draft this quote</div>
+            <div className="text-[11px] text-muted-foreground">Grounded in your catalog</div>
           </div>
           <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-muted">
             <X className="h-3.5 w-3.5" />
@@ -635,7 +634,7 @@ function AiPanel({
             autoFocus
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder={suggestedPrompt || 'Describe the job in plain English — the AI will build the quote.'}
+            placeholder={suggestedPrompt || "Describe the job in plain English — we'll build the quote."}
             rows={5}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />

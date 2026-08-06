@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s · QuotePro",
   },
   description:
-    "AI-powered quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades.",
+    "Quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
