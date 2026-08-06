@@ -1,45 +1,40 @@
-import { redirect } from 'next/navigation'
-
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 
 import { QuoteEditor, type CatalogItem } from './quote-editor'
 
 export default async function NewQuotePage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { companyId } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id, profile')
-    .eq('id', user.id)
-    .maybeSingle()
-
-  if (!profile?.company_id) redirect('/app/onboarding')
-
-  const { data: company } = await supabase
-    .from('companies')
-    .select('settings')
-    .eq('id', profile.company_id)
-    .maybeSingle()
+  const [company] = await query<{ settings: Record<string, unknown> | null }>(
+    `select settings from companies where id = $1 limit 1`,
+    [companyId],
+  )
 
   const settings = (company?.settings ?? {}) as { tax_rate?: number }
   const defaultTaxRate = settings.tax_rate ?? 8.5
 
-  const { data: catalog } = await supabase
-    .from('catalog_items')
-    .select('id, name, description, category, base_price, unit')
-    .eq('company_id', profile.company_id)
-    .eq('is_active', true)
-    .order('category', { ascending: true, nullsFirst: false })
-    .order('name', { ascending: true })
-    .limit(500)
+  const catalog = await query<{
+    id: string
+    name: string
+    description: string | null
+    category: string | null
+    base_price: number
+    unit: string | null
+  }>(
+    `select id, name, description, category, base_price, unit
+       from catalog_items
+      where company_id = $1 and is_active = true
+      order by category asc nulls last, name asc
+      limit 500`,
+    [companyId],
+  )
 
   return (
     <QuoteEditor
-      companyId={profile.company_id}
+      companyId={companyId}
       defaultTaxRate={defaultTaxRate}
-      catalog={(catalog ?? []) as CatalogItem[]}
+      catalog={catalog as CatalogItem[]}
     />
   )
 }

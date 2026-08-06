@@ -34,4 +34,27 @@ export async function query<T extends QueryResultRow = QueryResultRow>(
   return result.rows
 }
 
+// Query fn bound to a single transaction client.
+export type TxQuery = <T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: unknown[],
+) => Promise<T[]>
+
+// Run `fn` inside a BEGIN/COMMIT transaction; ROLLBACK on any throw.
+export async function withTransaction<T>(fn: (q: TxQuery) => Promise<T>): Promise<T> {
+  const client = await pool.connect()
+  try {
+    await client.query('begin')
+    const q: TxQuery = async (text, params = []) => (await client.query(text, params)).rows
+    const result = await fn(q)
+    await client.query('commit')
+    return result
+  } catch (err) {
+    await client.query('rollback')
+    throw err
+  } finally {
+    client.release()
+  }
+}
+
 export { pool }

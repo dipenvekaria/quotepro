@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { query, withTransaction } from '@/lib/db'
 
 // -----------------------------------------------------------------------------
 // Create a draft quote (with customer upsert) via the atomic RPC.
@@ -29,24 +30,40 @@ export async function createDraftQuote(input: CreateDraftInput) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { ok: false as const, error: 'Not authenticated' }
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) return { ok: false as const, error: 'No company' }
+  const prof = await query<{ company_id: string | null }>(
+    'select company_id from users where id = $1 limit 1',
+    [user.id],
+  )
+  const companyId = prof[0]?.company_id
+  if (!companyId) return { ok: false as const, error: 'No company' }
 
-  const { data: workItemId, error } = await supabase.rpc('create_work_item_with_customer', {
-    p_company_id: profile.company_id,
-    p_customer_name: parsed.data.customer_name,
-    p_customer_phone: parsed.data.customer_phone || null,
-    p_customer_email: parsed.data.customer_email || null,
-    p_address: parsed.data.address || null,
-    p_description: parsed.data.description,
-    p_status: 'quote_draft',
-  })
+  let workItemId: string | undefined
+  try {
+    const rows = await query<{ id: string }>(
+      `select create_work_item_with_customer(
+         p_company_id => $1,
+         p_customer_name => $2,
+         p_customer_phone => $3,
+         p_customer_email => $4,
+         p_address => $5,
+         p_description => $6,
+         p_status => $7::work_item_status
+       ) as id`,
+      [
+        companyId,
+        parsed.data.customer_name,
+        parsed.data.customer_phone || null,
+        parsed.data.customer_email || null,
+        parsed.data.address || null,
+        parsed.data.description,
+        'quote_draft',
+      ],
+    )
+    workItemId = rows[0]?.id
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to create quote' }
+  }
 
-  if (error) return { ok: false as const, error: error.message }
   if (!workItemId) return { ok: false as const, error: 'No id returned' }
 
   revalidatePath('/app/pipeline')
@@ -82,48 +99,72 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   }
 
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { ok: false as const, error: 'Not authenticated' }
 
-  // Delete existing items + insert new (simplest correct approach)
-  const { error: delErr } = await supabase
-    .from('quote_items')
-    .delete()
-    .eq('work_item_id', parsed.data.work_item_id)
+  const prof = await query<{ company_id: string | null }>(
+    'select company_id from users where id = $1 limit 1',
+    [user.id],
+  )
+  const companyId = prof[0]?.company_id
+  if (!companyId) return { ok: false as const, error: 'No company' }
 
-  if (delErr) return { ok: false as const, error: delErr.message }
+  // Ownership check — pg bypasses RLS, so scope the work item to the company.
+  const owns = await query<{ id: string }>(
+    'select id from work_items where id = $1 and company_id = $2 limit 1',
+    [parsed.data.work_item_id, companyId],
+  )
+  if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
 
-  if (parsed.data.items.length) {
-    const rows = parsed.data.items.map((i) => ({
-      work_item_id: parsed.data.work_item_id,
-      name: i.name,
-      description: i.description ?? null,
-      quantity: i.quantity,
-      unit_price: i.unit_price,
-      sort_order: i.sort_order,
-      is_upsell: i.is_upsell ?? false,
-      is_discount: i.is_discount ?? false,
-    }))
-
-    const { error: insErr } = await supabase.from('quote_items').insert(rows)
-    if (insErr) return { ok: false as const, error: insErr.message }
-  }
-
-  // Recalculate work_item totals
   const subtotal = parsed.data.items.reduce((s, i) => s + i.quantity * i.unit_price, 0)
   const taxRate = parsed.data.tax_rate ?? 8.5
   const taxAmount = Math.round(subtotal * taxRate) / 100
   const total = subtotal + taxAmount
 
-  const { error: updErr } = await supabase
-    .from('work_items')
-    .update({
-      subtotal: Number(subtotal.toFixed(2)),
-      tax_rate: taxRate,
-      tax_amount: Number(taxAmount.toFixed(2)),
-      total: Number(total.toFixed(2)),
-    })
-    .eq('id', parsed.data.work_item_id)
+  try {
+    await withTransaction(async (q) => {
+      await q('delete from quote_items where work_item_id = $1', [parsed.data.work_item_id])
 
-  if (updErr) return { ok: false as const, error: updErr.message }
+      if (parsed.data.items.length) {
+        const values: unknown[] = []
+        const tuples = parsed.data.items.map((i, idx) => {
+          const b = idx * 8
+          values.push(
+            parsed.data.work_item_id,
+            i.name,
+            i.description ?? null,
+            i.quantity,
+            i.unit_price,
+            i.sort_order,
+            i.is_upsell ?? false,
+            i.is_discount ?? false,
+          )
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8})`
+        })
+        await q(
+          `insert into quote_items
+             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount)
+           values ${tuples.join(', ')}`,
+          values,
+        )
+      }
+
+      await q(
+        `update work_items
+            set subtotal = $1, tax_rate = $2, tax_amount = $3, total = $4
+          where id = $5`,
+        [
+          Number(subtotal.toFixed(2)),
+          taxRate,
+          Number(taxAmount.toFixed(2)),
+          Number(total.toFixed(2)),
+          parsed.data.work_item_id,
+        ],
+      )
+    })
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to save line items' }
+  }
 
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/quotes/${parsed.data.work_item_id}`)
