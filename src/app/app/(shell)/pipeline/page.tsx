@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { Filter, Inbox, Plus } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { StatusBadge } from '@/components/shared/status-badge'
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
 
 type Column = {
@@ -22,32 +22,36 @@ const COLUMNS: Column[] = [
 ]
 
 export default async function PipelinePage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  const { companyId } = await requireSession()
 
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
+  const workItems = await query<{
+    id: string
+    status: string
+    kind: string | null
+    job_name: string | null
+    description: string | null
+    total: number
+    customer_id: string | null
+    customer_name: string | null
+    created_at: string
+    updated_at: string
+  }>(
+    `select w.id, w.status, w.kind, w.job_name, w.description, w.total,
+            w.customer_id, c.name as customer_name, w.created_at, w.updated_at
+       from work_items w
+       left join customers c on c.id = w.customer_id
+      where w.company_id = $1
+        and w.status <> 'archived'
+      order by w.updated_at desc
+      limit 500`,
+    [companyId],
+  )
 
-  if (!profile?.company_id) redirect('/app/onboarding')
-  const companyId = profile.company_id as string
-
-  const { data: workItems } = await supabase
-    .from('work_items')
-    .select('id, status, kind, job_name, description, total, customer_id, created_at, updated_at')
-    .eq('company_id', companyId)
-    .neq('status', 'archived')
-    .order('updated_at', { ascending: false })
-    .limit(500)
-
-  const customerIds = Array.from(new Set((workItems ?? []).map((w) => w.customer_id).filter(Boolean)))
-  const { data: customers } = customerIds.length
-    ? await supabase.from('customers').select('id, name').in('id', customerIds)
-    : { data: [] as { id: string; name: string }[] }
-  const customerMap = new Map((customers ?? []).map((c) => [c.id, c.name]))
+  const customerMap = new Map(
+    workItems
+      .filter((w) => w.customer_id)
+      .map((w) => [w.customer_id as string, w.customer_name ?? '']),
+  )
 
   const grouped = COLUMNS.reduce<Record<string, typeof workItems>>((acc, col) => {
     acc[col.key] = (workItems ?? []).filter((w) => col.statuses.includes(w.status as string))

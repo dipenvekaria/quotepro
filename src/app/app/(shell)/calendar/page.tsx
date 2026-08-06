@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Calendar, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 
-import { createClient } from '@/lib/supabase/server'
+import { requireSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { EmptyState } from '@/components/shared/empty-state'
 import { cn } from '@/lib/utils'
@@ -25,16 +25,7 @@ export default async function CalendarPage({
 }: {
   searchParams: Promise<{ view?: string; date?: string; week?: string }>
 }) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  const { data: profile } = await supabase
-    .from('users')
-    .select('company_id')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) redirect('/app/onboarding')
+  const { companyId } = await requireSession()
 
   // View (week | month) + anchor date from the query string.
   const params = await searchParams
@@ -50,20 +41,41 @@ export default async function CalendarPage({
   const rangeEnd = new Date(rangeStart)
   rangeEnd.setDate(rangeEnd.getDate() + (view === 'month' ? 42 : 7))
 
-  const { data: jobs } = await supabase
-    .from('work_items')
-    .select(`
-      id, status, scheduled_start, total,
-      customers!work_items_customer_id_fkey (name),
-      addresses:customer_addresses!work_items_address_id_fkey (address, city, state)
-    `)
-    .eq('company_id', profile.company_id)
-    .not('scheduled_start', 'is', null)
-    .gte('scheduled_start', rangeStart.toISOString())
-    .lt('scheduled_start', rangeEnd.toISOString())
-    .order('scheduled_start', { ascending: true })
+  const rows = await query<{
+    id: string
+    status: string
+    scheduled_start: string
+    total: number
+    customer_name: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+  }>(
+    `select w.id, w.status, w.scheduled_start, w.total,
+            c.name as customer_name,
+            a.address, a.city, a.state
+       from work_items w
+       left join customers c on c.id = w.customer_id
+       left join customer_addresses a on a.id = w.address_id
+      where w.company_id = $1
+        and w.scheduled_start is not null
+        and w.scheduled_start >= $2
+        and w.scheduled_start < $3
+      order by w.scheduled_start asc`,
+    [companyId, rangeStart.toISOString(), rangeEnd.toISOString()],
+  )
 
-  const list = (jobs ?? []) as unknown as ScheduledJob[]
+  const list: ScheduledJob[] = rows.map((r) => ({
+    id: r.id,
+    status: r.status,
+    scheduled_start: r.scheduled_start,
+    total: r.total,
+    customers: r.customer_name ? { name: r.customer_name } : null,
+    addresses:
+      r.address || r.city || r.state
+        ? { address: r.address, city: r.city, state: r.state }
+        : null,
+  }))
 
   const jobsByDay: Record<string, ScheduledJob[]> = {}
   for (const j of list) {
