@@ -52,11 +52,11 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-muted flex items-center justify-center p-4">
         <Card className="max-w-2xl w-full">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="animate-spin h-12 w-12 border-4 border-green-500 border-t-transparent rounded-full mx-auto"></div>
+              <div className="animate-spin h-12 w-12 border-4 border-foreground border-t-transparent rounded-full mx-auto"></div>
               <p className="mt-4 text-muted-foreground">Loading...</p>
             </div>
           </CardContent>
@@ -66,14 +66,14 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-muted flex items-center justify-center p-4">
       <Card className="max-w-2xl w-full shadow-xl">
         <CardContent className="pt-8 pb-8 px-6 sm:px-12">
           <div className="text-center space-y-6">
             {/* Success Icon */}
             <div className="flex justify-center">
-              <div className="bg-green-100 rounded-full p-4">
-                <CheckCircle className="h-16 w-16 text-green-600" />
+              <div className="bg-muted rounded-full p-4">
+                <CheckCircle className="h-16 w-16 text-foreground" />
               </div>
             </div>
 
@@ -93,7 +93,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
                 <div className="text-sm text-muted-foreground">
                   Quote #{quote.quote_number}
                 </div>
-                <div className="text-sm font-bold text-[#2563eb]">
+                <div className="text-sm font-bold text-foreground">
                   ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
                 {quote.customer_name && (
@@ -105,21 +105,21 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
             )}
 
             {/* Next Steps */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
+            <div className="bg-muted border border-border rounded-lg p-6 space-y-4">
               <h2 className="font-bold text-sm text-gray-900">
                 What happens next?
               </h2>
               <ul className="text-left space-y-3 text-gray-700">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-600 font-bold mt-0.5">1.</span>
+                  <span className="text-foreground font-bold mt-0.5">1.</span>
                   <span>We'll call you shortly to schedule the work</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-600 font-bold mt-0.5">2.</span>
+                  <span className="text-foreground font-bold mt-0.5">2.</span>
                   <span>Our team will confirm the date and time that works best for you</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-600 font-bold mt-0.5">3.</span>
+                  <span className="text-foreground font-bold mt-0.5">3.</span>
                   <span>We'll arrive on time and complete the job to your satisfaction</span>
                 </li>
               </ul>

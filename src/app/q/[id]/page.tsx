@@ -55,14 +55,14 @@ export default async function PublicQuotePage({
 // ---------------------------------------------------------------------------
 
 export function generateMetadata() {
-  return { title: 'Quote — QuotePro' }
+  return { title: 'Quote — Rivet' }
 }
 
 // Custom 404 lives in app/not-found.tsx; we still export a small fallback link.
 export function NotFoundLink() {
   return (
     <Link href="/" className="text-primary hover:underline">
-      Go to QuotePro
+      Go to Rivet
     </Link>
   )
 }

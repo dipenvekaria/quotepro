@@ -58,5 +58,5 @@ export default async function PublicInvoicePage({
 }
 
 export function generateMetadata() {
-  return { title: 'Invoice — QuotePro' }
+  return { title: 'Invoice — Rivet' }
 }

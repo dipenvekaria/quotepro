@@ -327,7 +327,7 @@ export function InvoiceViewer({
             </div>
           </div>
           <div className="mt-6 text-center text-[10px] text-muted-foreground">
-            Powered by <span className="font-medium text-foreground">QuotePro</span>
+            Powered by <span className="font-medium text-foreground">Rivet</span>
           </div>
         </footer>
       </main>

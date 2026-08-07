@@ -250,7 +250,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
         {canAct && (
           <section className="mt-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent p-6 shadow-sm">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
+              <Check className="h-4 w-4 text-primary" />
               <h2 className="text-sm font-semibold">Ready to move forward?</h2>
             </div>
             <p className="mt-2 max-w-lg text-sm text-muted-foreground">
@@ -316,7 +316,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
             </div>
           </div>
           <div className="mt-6 text-center text-[10px] text-muted-foreground">
-            Powered by <span className="font-medium text-foreground">QuotePro</span>
+            Powered by <span className="font-medium text-foreground">Rivet</span>
           </div>
         </footer>
       </main>

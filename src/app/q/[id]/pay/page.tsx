@@ -76,7 +76,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-foreground" />
       </div>
     )
   }
@@ -116,7 +116,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
 
         {/* Main Card */}
         <Card>
-          <CardHeader className="bg-blue-50">
+          <CardHeader className="bg-muted">
             <CardTitle className="flex items-center justify-between">
               <span>Invoice Details</span>
               {isPaid && (
@@ -184,11 +184,11 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
                   ${(quote.tax_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
-              <div className="flex justify-between items-center bg-blue-50 p-4 rounded-lg">
+              <div className="flex justify-between items-center bg-muted p-4 rounded-lg">
                 <span className="text-sm font-bold">
                   {isPaid ? 'Total Paid' : 'Amount Due'}
                 </span>
-                <span className="text-sm font-bold text-blue-600">
+                <span className="text-sm font-bold text-foreground">
                   ${(quote.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
@@ -200,7 +200,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
                 <Button
                   onClick={handlePayNow}
                   disabled={paying}
-                  className="flex-1 bg-blue-700 hover:bg-blue-800 text-white h-12 text-sm"
+                  className="flex-1 h-12 text-sm"
                 >
                   {paying ? (
                     <>

@@ -3,25 +3,22 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { RivetMark } from '@/components/brand/logo'
 import Link from 'next/link'
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-neutral-950">
       {/* Header */}
-      <header className="bg-[#0F172A] border-b border-white/10">
+      <header className="bg-black border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-center justify-between">
             <Link href="/">
-              <div className="flex items-center gap-2">
-                <img 
-                  src="/thefieldgenie.png" 
-                  alt="The Field Genie" 
-                  className="h-14 w-auto object-contain"
-                />
-                <p className="text-[#2563eb] text-xs sm:text-sm font-bold">
-                  Stop losing jobs to slow quotes.
-                </p>
+              <div className="flex items-center gap-2.5">
+                <span className="inline-grid h-9 w-9 place-items-center rounded-[28%] bg-white text-gray-900">
+                  <RivetMark className="h-5 w-5" />
+                </span>
+                <span className="text-lg font-semibold tracking-tight text-white">Rivet</span>
               </div>
             </Link>
             <Link href="/login">
@@ -42,7 +39,7 @@ export default function PricingPage() {
           <p className="text-sm sm:text-sm text-gray-300 mb-4 sm:mb-6">
             Choose the plan that fits your business
           </p>
-          <div className="inline-block bg-[#2563eb] text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-sm">
+          <div className="inline-block bg-white text-gray-900 px-4 py-2 rounded-lg font-bold text-sm sm:text-sm">
             30 quotes free trial
           </div>
         </div>
@@ -65,9 +62,9 @@ export default function PricingPage() {
                   <span className="text-gray-400 text-sm sm:text-sm">/month</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[#2563eb] font-bold text-sm sm:text-sm">$79/mo</span>
+                  <span className="text-white font-bold text-sm sm:text-sm">$79/mo</span>
                   <span className="text-gray-400 text-sm">billed annually</span>
-                  <Badge className="bg-green-600 text-white text-xs">Save 20%</Badge>
+                  <Badge className="bg-white/10 text-white text-xs">Save 20%</Badge>
                 </div>
               </div>
 
@@ -90,17 +87,17 @@ export default function PricingPage() {
           </Card>
 
           {/* Pro Plan */}
-          <Card className="border-4 border-[#2563eb] bg-gray-800 relative">
+          <Card className="border-4 border-white/60 bg-gray-800 relative">
             {/* Popular Badge */}
-            <div className="absolute top-0 right-0 bg-[#2563eb] text-white px-3 sm:px-6 py-1 sm:py-2 text-xs sm:text-sm font-bold">
+            <div className="absolute top-0 right-0 bg-white text-gray-900 px-3 sm:px-6 py-1 sm:py-2 text-xs sm:text-sm font-bold">
               74% CHOOSE THIS
             </div>
 
             <CardHeader className="pt-10 sm:pt-12 pb-4">
               <CardTitle className="text-sm sm:text-sm font-bold text-white mb-2">Pro</CardTitle>
               <div className="flex items-center gap-2 mb-2 flex-wrap">
-                <Badge className="bg-[#2563eb] text-white text-xs">Most popular</Badge>
-                <Badge className="bg-green-600 text-white text-xs">Best for contractors</Badge>
+                <Badge className="bg-white text-gray-900 text-xs">Most popular</Badge>
+                <Badge className="bg-white/10 text-white text-xs">Best for contractors</Badge>
               </div>
               <CardDescription className="text-gray-300 text-sm sm:text-sm">
                 Best for contractors who write 10+ quotes/week
@@ -114,9 +111,9 @@ export default function PricingPage() {
                   <span className="text-gray-400 text-sm sm:text-sm">/month</span>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[#2563eb] font-bold text-sm sm:text-sm">$149/mo</span>
+                  <span className="text-white font-bold text-sm sm:text-sm">$149/mo</span>
                   <span className="text-gray-400 text-sm">billed annually</span>
-                  <Badge className="bg-green-600 text-white text-xs">Save 25%</Badge>
+                  <Badge className="bg-white/10 text-white text-xs">Save 25%</Badge>
                 </div>
               </div>
 
@@ -133,7 +130,7 @@ export default function PricingPage() {
               </div>
 
               <Link href="/login" className="block">
-                <Button className="w-full h-12 sm:h-14 text-sm sm:text-sm font-bold bg-[#2563eb] hover:bg-[#2563eb]/90 text-white">
+                <Button className="w-full h-12 sm:h-14 text-sm sm:text-sm font-bold bg-white text-gray-900 hover:bg-gray-100">
                   Start Free Trial
                 </Button>
               </Link>
@@ -142,7 +139,7 @@ export default function PricingPage() {
         </div>
 
         {/* Trust Badges */}
-        <div className="bg-[#0F172A] rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto border border-white/10">
+        <div className="bg-black rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto border border-white/10">
           <div className="grid sm:grid-cols-3 gap-6 text-center">
             <div className="space-y-2">
               <h3 className="text-white font-bold text-sm sm:text-sm">14-day free trial</h3>
@@ -168,7 +165,7 @@ export default function PricingPage() {
             Join thousands of contractors winning more work
           </p>
           <Link href="/login">
-            <Button className="h-14 sm:h-16 px-8 sm:px-12 text-sm sm:text-sm font-bold bg-[#2563eb] hover:bg-[#2563eb]/90 text-white">
+            <Button className="h-14 sm:h-16 px-8 sm:px-12 text-sm sm:text-sm font-bold bg-white text-gray-900 hover:bg-gray-100">
               Start Your Free Trial
             </Button>
           </Link>
@@ -176,10 +173,10 @@ export default function PricingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#0F172A] border-t border-white/10 mt-16 sm:mt-24 py-6 sm:py-8">
+      <footer className="bg-black border-t border-white/10 mt-16 sm:mt-24 py-6 sm:py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-gray-400 text-sm">
-            <p>&copy; 2025 The Field Genie. All rights reserved.</p>
+            <p>&copy; 2026 Rivet. All rights reserved.</p>
             <p className="mt-2">Built for contractors who want to close jobs faster.</p>
           </div>
         </div>
