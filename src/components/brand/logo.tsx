@@ -29,20 +29,13 @@ export function RiseMark({ className, ...props }: MarkProps) {
   )
 }
 
-// "Rivet" — a fastener head. Reads: sturdy, holds the whole job together.
+// "Rivet" — a plate fastened with two rivets. Industrial, sturdy, unmistakable.
 export function RivetMark({ className, ...props }: MarkProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      className={className}
-      aria-hidden
-      {...props}
-    >
-      <rect x="3.5" y="3.5" width="17" height="17" rx="5.5" />
-      <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden {...props}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5.5" stroke="currentColor" strokeWidth={2} />
+      <circle cx="9" cy="9" r="1.7" fill="currentColor" />
+      <circle cx="15" cy="15" r="1.7" fill="currentColor" />
     </svg>
   )
 }
@@ -145,7 +138,7 @@ export function BrandMark({
 }) {
   return (
     <LogoTile className={cn(tile, className)}>
-      <RiseMark className={mark} />
+      <RivetMark className={mark} />
     </LogoTile>
   )
 }

@@ -96,22 +96,22 @@ export default function BrandPage() {
                 <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Lockup &amp; scale
                 </div>
-                <Logo name="Rivet" mark={<RiseMark className="h-5 w-5" />} />
+                <Logo name="Rivet" mark={<RivetMark className="h-5 w-5" />} />
                 <div className="flex items-end gap-4">
                   <LogoTile className="h-6 w-6">
-                    <RiseMark className="h-4 w-4" />
+                    <RivetMark className="h-4 w-4" />
                   </LogoTile>
                   <LogoTile className="h-8 w-8">
-                    <RiseMark className="h-5 w-5" />
+                    <RivetMark className="h-5 w-5" />
                   </LogoTile>
                   <LogoTile className="h-12 w-12">
-                    <RiseMark className="h-7 w-7" />
+                    <RivetMark className="h-7 w-7" />
                   </LogoTile>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-4 rounded-xl border border-border/70 bg-foreground p-6">
                 <span className="inline-grid h-12 w-12 place-items-center rounded-[28%] bg-background text-foreground">
-                  <RiseMark className="h-7 w-7" />
+                  <RivetMark className="h-7 w-7" />
                 </span>
                 <span className="text-lg font-semibold tracking-tight text-background">Rivet</span>
               </div>
