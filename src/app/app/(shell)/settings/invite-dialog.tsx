@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Check, Copy, Loader2, UserPlus, X } from 'lucide-react'
 
@@ -18,6 +18,11 @@ export function InviteTeammateDialog() {
   const [busy, setBusy] = useState(false)
   const [link, setLink] = useState<string | null>(null)
   const [emailed, setEmailed] = useState(false)
+
+  // Auto-open when arriving from the dashboard setup checklist (/app/settings?invite=1)
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('invite')) setOpen(true)
+  }, [])
 
   function reset() {
     setOpen(false)

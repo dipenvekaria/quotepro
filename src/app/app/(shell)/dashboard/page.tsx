@@ -280,7 +280,7 @@ export default async function DashboardPage() {
                   Add catalog items
                 </Link>
                 <Link
-                  href="/app/settings"
+                  href="/app/settings?invite=1#team"
                   className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted"
                 >
                   <Users className="h-3 w-3" />

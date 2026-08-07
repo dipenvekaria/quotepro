@@ -101,7 +101,7 @@ export default async function SettingsPage() {
       </section>
 
       {/* Team */}
-      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
+      <section id="team" className="mt-6 scroll-mt-24 rounded-xl border border-border/70 bg-card shadow-sm">
         <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
