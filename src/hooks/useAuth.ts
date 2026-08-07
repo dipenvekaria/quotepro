@@ -15,6 +15,10 @@ export function useAuth() {
     e.preventDefault()
     setIsLoading(true)
 
+    // Honor ?next= (e.g. team invite links) so we return there after auth.
+    const nextParam = new URLSearchParams(window.location.search).get('next')
+    const dest = nextParam && nextParam.startsWith('/') ? nextParam : '/app'
+
     try {
       if (isSignUp) {
         const { data, error } = await supabase.auth.signUp({
@@ -31,7 +35,7 @@ export function useAuth() {
         // returns a session immediately. Redirect straight into onboarding.
         if (data.session) {
           toast.success('Welcome to Rivet!')
-          router.push('/app')
+          router.push(dest)
           router.refresh()
         } else {
           // Confirmation-required project — nudge to check email.
@@ -45,7 +49,7 @@ export function useAuth() {
 
         if (error) throw error
         toast.success('Welcome back!')
-        router.push('/app')
+        router.push(dest)
         router.refresh()
       }
     } catch (error: unknown) {

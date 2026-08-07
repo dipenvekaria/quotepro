@@ -1,11 +1,13 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowRight, Building2, CreditCard, Sparkles, Users } from 'lucide-react'
+import { ArrowRight, Building2, CreditCard, Mail, Users } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
+import { ROLE_LABEL } from '@/lib/team-personas'
 
 import { SettingsForm } from './settings-form'
+import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 
 // ---------------------------------------------------------------------------
 
@@ -48,9 +50,23 @@ export default async function SettingsPage() {
     [companyId],
   )
 
+  const pendingInvites = await query<{
+    id: string
+    email: string
+    role: string
+    created_at: string
+  }>(
+    `select id, email, role, created_at
+       from invitations
+      where company_id = $1 and status = 'pending' and expires_at > now()
+      order by created_at desc`,
+    [companyId],
+  )
+
   if (!company) redirect('/app/onboarding')
 
   const canEdit = role === 'owner' || role === 'admin'
+  const canManageTeam = role === 'owner' || role === 'office'
   const settings = (company.settings ?? {}) as { tax_rate?: number }
 
   return (
@@ -94,15 +110,7 @@ export default async function SettingsPage() {
               {teammates?.length ?? 0}
             </span>
           </div>
-          {canEdit && (
-            <button
-              disabled
-              className="rounded-md border border-dashed border-border px-2.5 py-1 text-xs text-muted-foreground"
-              title="Invite flow coming next"
-            >
-              Invite teammate
-            </button>
-          )}
+          {canManageTeam && <InviteTeammateDialog />}
         </header>
         <ul className="divide-y divide-border/70">
           {(teammates ?? []).map((t) => {
@@ -137,6 +145,27 @@ export default async function SettingsPage() {
             )
           })}
         </ul>
+        {canManageTeam && pendingInvites.length > 0 && (
+          <div className="border-t border-border/70 px-5 py-3">
+            <div className="mb-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              Pending invites
+            </div>
+            <ul className="space-y-2">
+              {pendingInvites.map((inv) => (
+                <li key={inv.id} className="flex items-center justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                    <span className="truncate text-sm">{inv.email}</span>
+                    <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                      {ROLE_LABEL[inv.role as keyof typeof ROLE_LABEL] ?? inv.role}
+                    </span>
+                  </div>
+                  <RevokeInviteButton id={inv.id} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       {/* Billing (mock) */}

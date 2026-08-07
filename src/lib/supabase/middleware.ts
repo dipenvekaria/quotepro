@@ -31,7 +31,7 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Allow public routes
-  const publicRoutes = ['/login', '/auth', '/pricing', '/preview', '/q/', '/i/', '/signup', '/forgot-password']
+  const publicRoutes = ['/login', '/auth', '/pricing', '/preview', '/q/', '/i/', '/join', '/signup', '/forgot-password']
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
   // Protected routes
