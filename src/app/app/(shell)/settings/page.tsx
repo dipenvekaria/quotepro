@@ -38,15 +38,17 @@ export default async function SettingsPage() {
 
   const teammates = await query<{
     id: string
+    email: string | null
     role: string
     profile: Record<string, unknown> | null
     is_active: boolean
     last_login_at: string | null
   }>(
-    `select id, role, profile, is_active, last_login_at
-       from users
-      where company_id = $1
-      order by role asc`,
+    `select u.id, au.email, u.role, u.profile, u.is_active, u.last_login_at
+       from users u
+       left join auth.users au on au.id = u.id
+      where u.company_id = $1
+      order by u.role asc`,
     [companyId],
   )
 
@@ -115,24 +117,27 @@ export default async function SettingsPage() {
         <ul className="divide-y divide-border/70">
           {(teammates ?? []).map((t) => {
             const p = t.profile as { full_name?: string } | null
-            const name = p?.full_name || 'Teammate'
+            const emailName = t.email ? t.email.split('@')[0].replace(/[._-]+/g, ' ') : ''
+            const name = p?.full_name || emailName || 'Teammate'
             const initials = (name || '?')
               .split(' ')
+              .filter(Boolean)
               .slice(0, 2)
               .map((s: string) => s.charAt(0))
               .join('')
               .toUpperCase()
+            const subtitle =
+              t.email ||
+              (t.last_login_at ? `Last active ${new Date(t.last_login_at).toLocaleDateString()}` : 'Invited')
             return (
-              <li key={t.id} className="flex items-center justify-between px-5 py-3">
-                <div className="flex items-center gap-3">
-                  <div className="grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+              <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                     {initials}
                   </div>
-                  <div>
-                    <div className="text-sm font-medium">{name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {t.last_login_at ? `Last active ${new Date(t.last_login_at as string).toLocaleDateString()}` : 'Invited'}
-                    </div>
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium capitalize">{name}</div>
+                    <div className="truncate text-xs text-muted-foreground">{subtitle}</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
