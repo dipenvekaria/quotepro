@@ -95,7 +95,7 @@ If the diff includes one: `supabase db reset` from scratch (not an incremental a
 
 ## The PR
 
-Branch off `rebuild/main`. One concern.
+Branch off `main`. One concern.
 
 ```
 fix(pipeline): detail 404 when work item has no address

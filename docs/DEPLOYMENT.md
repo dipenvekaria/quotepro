@@ -9,14 +9,14 @@ of something already running. See [LAUNCH_PLAN.md](LAUNCH_PLAN.md) for sequencin
 ```
 Vercel                    Railway                  Supabase Cloud
 Next.js 16          →     ai_backend.py       →    Postgres + Auth + Storage
-rebuild/main              FastAPI + Gemini         migrations from repo
+main              FastAPI + Gemini         migrations from repo
 ```
 
 | Environment | Frontend | Backend | Database |
 | --- | --- | --- | --- |
 | Local | `npm run dev` | `uvicorn` :8000 | `supabase start` |
 | Preview | Vercel preview per PR | Railway PR env | staging project |
-| Production | Vercel, `rebuild/main` | Railway, `rebuild/main` | production project |
+| Production | Vercel, `main` | Railway, `main` | production project |
 
 Preview and production must use **different Supabase projects**. A shared database means a
 preview deploy can corrupt live contractor data.
@@ -44,7 +44,7 @@ Also required:
 
 ## Frontend (Vercel)
 
-Root directory `/`, production branch `rebuild/main`, framework preset Next.js.
+Root directory `/`, production branch `main`, framework preset Next.js.
 
 Environment variables:
 

@@ -168,7 +168,7 @@ in `CLEANUP_PLAN.md`.
 
 ## Git
 
-Branch off `rebuild/main`. `main` is pre-rebuild and should not be touched.
+Branch off `main`. It is the only branch.
 
 Conventional commits, terse subject, no body unless it earns one:
 

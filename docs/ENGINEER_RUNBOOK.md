@@ -3,7 +3,7 @@
 **Start here.** Everything you need to do, in order, from a fresh machine to a merged pull
 request. Follow it top to bottom — later steps assume the earlier ones. Budget half a day.
 
-_Rev. 2026-08-07 · branch `rebuild/main`_
+_Rev. 2026-08-07 · branch `main`_
 
 ---
 
@@ -28,7 +28,7 @@ Docker Desktop must be installed and running — `supabase start` needs it.
 ```bash
 git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet
 cd ~/code/rivet
-git switch rebuild/main
+git switch main
 ```
 
 **This is not a style preference.** The original working copy lives in iCloud Drive, and during
@@ -36,7 +36,7 @@ setup for this handover a complete 778-package `npm install` was silently evicte
 within minutes of finishing. `rsync` copied source files as **0 bytes**. `git` history walks hang
 for minutes. Clone somewhere local.
 
-Note the branch: **`rebuild/main`**, not `main`. `main` is the pre-rebuild application.
+There is one branch: **`main`**. The pre-rebuild application is preserved under the tag `pre-rebuild-main`.
 
 ---
 
@@ -192,7 +192,7 @@ Then check by hand:
 
 ### 12. Open it
 
-Branch off `rebuild/main`, one concern per PR, terse conventional commit:
+Branch off `main`, one concern per PR, terse conventional commit:
 `refactor(cleanup): remove legacy (dashboard) route group`
 
 The PR template asks what you verified — answer honestly. *"Tested at 375px as office role,
@@ -210,7 +210,7 @@ The two tracks touch almost no common files, which is the point.
 | Hosted Supabase, Vercel, Railway, secrets | Phase 3 — pnpm, biome, vitest; make CI real |
 | Stripe live-mode prep, email deliverability | Phase 4 — tenancy and money tests |
 
-Small PRs off `rebuild/main`, each getting an automatic Vercel preview. Non-obvious decisions
+Small PRs off `main`, each getting an automatic Vercel preview. Non-obvious decisions
 become a one-page ADR in [`adr/`](adr/). When behaviour changes, the doc describing it changes in
 the same PR — these docs are also the context Claude Code loads, so a stale one misleads every
 agent session either of you runs.

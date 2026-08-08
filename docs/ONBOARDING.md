@@ -37,10 +37,10 @@ walks for minutes. Clone somewhere local:
 ```bash
 git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet
 cd ~/code/rivet
-git switch rebuild/main      # the live branch — `main` is pre-rebuild
+git switch main
 ```
 
-`rebuild/main` is where all current work lives. Do not branch off `main`.
+All work happens on `main`. The pre-rebuild history is tagged `pre-rebuild-main` if you ever need it.
 
 ### 2. Install the toolchain
 
@@ -177,7 +177,7 @@ purpose and each one makes the codebase measurably easier for the next person.
 
 Working agreement:
 
-- Branch off `rebuild/main`. Small PRs, one concern each.
+- Branch off `main`. Small PRs, one concern each.
 - `npx tsc --noEmit` passes on live code before you open it. The `rivet-ship` skill lists the
   full gate.
 - Terse commits: `fix(pipeline): detail 404 on missing address`. No summary paragraphs.

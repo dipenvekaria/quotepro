@@ -1,6 +1,6 @@
 # Codebase Map
 
-_Verified against the working tree on 2026-08-07, branch `rebuild/main`._
+_Verified against the working tree on 2026-08-07, branch `main`._
 
 The repo carries a full pre-rebuild application alongside the current one. Roughly 10,400
 lines are live; a larger volume is dead. Nothing has been deleted yet — deletion is sequenced

@@ -33,7 +33,7 @@ generation · Resend, Stripe Connect, SignNow.
 ## Quick start
 
 ```bash
-git switch rebuild/main      # the live branch — `main` is pre-rebuild
+git switch main
 npm install
 supabase start               # needs Docker
 supabase db reset            # migrations + demo seed
@@ -78,7 +78,7 @@ longer exists. History, not instruction.
 
 ## Contributing
 
-Branch off `rebuild/main`. Small PRs, one concern each. `npx tsc --noEmit` clean on live code
+Branch off `main`. Small PRs, one concern each. `npx tsc --noEmit` clean on live code
 before you open one. Terse commits. Non-obvious decisions get an ADR.
 
 Working with Claude Code: `CLAUDE.md` loads automatically, and `.claude/skills/` holds six

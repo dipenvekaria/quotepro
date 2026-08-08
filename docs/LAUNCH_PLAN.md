@@ -17,7 +17,7 @@ Nothing else is real until this is done. Roughly a week of focused work.
 
 - [ ] **Provision hosted Supabase** — separate `production` and `staging` projects. Run the four
       migrations. Do *not* run the seed against production.
-- [ ] **Deploy the frontend to Vercel** from `rebuild/main`. Preview deploys on PRs.
+- [ ] **Deploy the frontend to Vercel** from `main`. Preview deploys on PRs.
 - [ ] **Deploy `ai_backend.py` to Railway** (`railway.json` exists). Stable HTTPS URL.
 - [ ] **Domain, DNS, TLS.** Decide the production domain — this is also the Rivet naming
       decision made concrete.

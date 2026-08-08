@@ -1,6 +1,6 @@
 # Architecture
 
-_Current as of 2026-08-07, branch `rebuild/main`. Supersedes the pre-rebuild version of this
+_Current as of 2026-08-07, branch `main`. Supersedes the pre-rebuild version of this
 file and everything under `docs/rebuild/`._
 
 ## Shape

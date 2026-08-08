@@ -1,6 +1,6 @@
 # Product Review — Rivet and the Competitive Field
 
-_2026-08-07. Reviewed against the live code on `rebuild/main`, and against published pricing and
+_2026-08-07. Reviewed against the live code on `main`, and against published pricing and
 feature information for Jobber, Housecall Pro, ServiceM8, QuoteIQ, xBuild and Deep Lawn._
 
 ## The verdict, in three lines

@@ -203,7 +203,7 @@ describes a system that no longer exists. Treat it as history, not instruction.
 
 ## Working agreement
 
-- Branch off `rebuild/main` (the live branch; `main` is pre-rebuild). Small PRs.
+- Branch off `main`. Small PRs.
 - Read `docs/CODEBASE_MAP.md` before editing an unfamiliar directory.
 - `tsc --noEmit` must pass on live code before you open a PR — see the `rivet-ship` skill.
 - Record non-obvious decisions as an ADR in `docs/adr/`.

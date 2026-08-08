@@ -57,7 +57,7 @@ subscription or API billing covers usage.
 ```bash
 git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet
 cd ~/code/rivet
-git switch rebuild/main
+git switch main
 ```
 
 Two things that matter here:
@@ -66,8 +66,8 @@ Two things that matter here:
 where iCloud syncs every file operation. Installs crawl and `git` history walks can hang for
 minutes. Clone somewhere local.
 
-**`rebuild/main`, not `main`.** `main` is the pre-rebuild application. All current work is on
-`rebuild/main`.
+**`main`** is the only branch. The pre-rebuild app is tagged `pre-rebuild-main`. All current work is on
+`main`.
 
 ## 4. Start Claude from the repo root
 

@@ -9,7 +9,7 @@ Short version:
 
 ```bash
 git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet   # NOT in iCloud Drive
-cd ~/code/rivet && git switch rebuild/main                            # NOT main
+cd ~/code/rivet && git switch main                            # NOT main
 npm install
 cp .env.example .env.local        # fill in the three values from `supabase status`
 npm run db:start && npm run db:reset
@@ -56,7 +56,7 @@ local testing against a single seeded company.
 
 ## Branches and PRs
 
-Branch off **`rebuild/main`**. `main` is the pre-rebuild app and should not be touched.
+Branch off **`main`**. It is the only branch.
 
 One concern per PR. Terse conventional commits:
 

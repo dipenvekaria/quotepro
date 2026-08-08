@@ -463,7 +463,7 @@
     <dl class="meta">
       <div><dt>Audience</dt><dd>Engineers</dd></div>
       <div><dt>Stage</dt><dd>Pre-launch</dd></div>
-      <div><dt>Branch</dt><dd>rebuild/main</dd></div>
+      <div><dt>Branch</dt><dd>main</dd></div>
       <div><dt>Live code</dt><dd>~10,400 LOC</dd></div>
       <div><dt>Revised</dt><dd>2026-08-07</dd></div>
     </dl>
@@ -1172,7 +1172,7 @@ const rows = await query&lt;Row&gt;(
           every file operation — installs crawl and git history walks can hang for minutes.
         </p>
 
-        <pre><code>git switch rebuild/main   <span class="cmt"># the live branch; `main` is pre-rebuild</span>
+        <pre><code>git switch main   <span class="cmt"># the live branch; `main` is pre-rebuild</span>
 npm install
 supabase start            <span class="cmt"># Postgres :54322 · API :54321 · Studio :54323</span>
 supabase db reset         <span class="cmt"># migrations + demo seed</span>
@@ -1203,7 +1203,7 @@ cd python-backend &amp;&amp; uvicorn ai_backend:app --reload --port 8000</code><
 
         <h3>Working agreement</h3>
         <ul>
-          <li>Branch off <code>rebuild/main</code>. Small PRs, one concern each.</li>
+          <li>Branch off <code>main</code>. Small PRs, one concern each.</li>
           <li><code>tsc --noEmit</code> clean on live code before opening.</li>
           <li>Terse commits — <code>fix(pipeline): detail 404 on missing address</code>. No summary paragraphs.</li>
           <li>No new markdown files unless asked. The repo has roughly 140 and most are misleading.</li>
@@ -1239,7 +1239,7 @@ claude
 
 <span class="cmt"># 3 · clone OUTSIDE iCloud Drive, onto the live branch</span>
 git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet
-cd ~/code/rivet &amp;&amp; git switch rebuild/main
+cd ~/code/rivet &amp;&amp; git switch main
 
 <span class="cmt"># 4 · start Claude FROM THE REPO ROOT — this is the step people get wrong</span>
 claude</code></pre>
@@ -1320,7 +1320,7 @@ claude</code></pre>
   <footer>
     <span>Rivet — Engineering Primer</span>
     <span>Rev. 2026-08-07</span>
-    <span>Branch rebuild/main</span>
+    <span>Branch main</span>
     <span>Formerly QuotePro</span>
   </footer>
 

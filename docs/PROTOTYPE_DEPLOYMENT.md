@@ -115,9 +115,8 @@ Verify: `curl -X POST https://<railway>/api/ai/generate-quote -d '{}'` returns 4
 Half a day, mostly clicking.
 
 1. **GitHub** — add the engineer as a collaborator on `dipenvekaria/quotepro`.
-2. **Set `rebuild/main` as the default branch.** It is the live branch; `main` is pre-rebuild
-   and a new collaborator will otherwise branch off the wrong one on day one.
-3. **Protect `rebuild/main`** — require a PR, require CI to pass once CI actually works
+2. **`main` is the only branch.** The pre-rebuild history is tagged `pre-rebuild-main`.
+3. **Protect `main`** — require a PR, require CI to pass once CI actually works
    (Cleanup Phase 3). For two people, one approval is enough; don't make it heavier than that.
 4. **Vercel, Railway, Supabase** — invite the engineer to each. All three have free-tier seats
    that cover this.
@@ -186,7 +185,7 @@ keyword matcher.** Set an alert on it.
 
 Two hours.
 
-Vercel project, production branch `rebuild/main`, framework preset Next.js.
+Vercel project, production branch `main`, framework preset Next.js.
 
 ```
 NEXT_PUBLIC_SUPABASE_URL       https://<ref>.supabase.co
@@ -247,7 +246,7 @@ and getting Claude Code loaded with the project context.
 The three things worth saying out loud, because they're the ones that cost real time:
 
 1. **Clone outside iCloud Drive.** `~/code/rivet`.
-2. **`rebuild/main`, not `main`.**
+2. **`main`** — the only branch.
 3. **Half the repo is dead code.** [CODEBASE_MAP.md](CODEBASE_MAP.md) says which half. This is
    the single highest-value thing they can read.
 
@@ -276,7 +275,7 @@ the point:
 | Then: full JWT auth on the AI backend | Then: Phase 3 — pnpm/biome/vitest, make CI real |
 | Then: Stripe live-mode prep, email domain auth | Then: Phase 4 — tenancy and money tests |
 
-**Rhythm.** Small PRs off `rebuild/main`, each with a preview deploy Vercel generates
+**Rhythm.** Small PRs off `main`, each with a preview deploy Vercel generates
 automatically. `npx tsc --noEmit` clean before opening — the `rivet-ship` skill has the full
 gate. Anything non-obvious becomes an ADR in `docs/adr/`.
 
