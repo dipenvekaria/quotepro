@@ -190,6 +190,8 @@ Invoke by name:
 | [`docs/PRODUCT_REVIEW.md`](docs/PRODUCT_REVIEW.md) | Product gaps and v1 scope. **Note: there is no way to create a catalog item, so a new account cannot generate a quote.** |
 | [`docs/COMPETITIVE_ANALYSIS.md`](docs/COMPETITIVE_ANALYSIS.md) | Jobber, Housecall Pro, QuoteIQ, ServiceTitan, AI-native entrants, market economics |
 | [`docs/LAUNCH_PLAN.md`](docs/LAUNCH_PLAN.md) | Sequenced path to production |
+| [`docs/GTM_PRODUCT_CHECKLIST.md`](docs/GTM_PRODUCT_CHECKLIST.md) | Feature gaps vs competitors; the launch gate |
+| [`docs/GTM_BUSINESS_CHECKLIST.md`](docs/GTM_BUSINESS_CHECKLIST.md) | Legal, compliance, marketing, billing, support |
 | [`docs/CLEANUP_PLAN.md`](docs/CLEANUP_PLAN.md) | Debt paydown, in order |
 | [`docs/adr/`](docs/adr/) | Decisions and their rationale |
 | [`docs/Rivet-Engineering-Primer.pdf`](docs/Rivet-Engineering-Primer.pdf) | Shareable 12-page condensation of all of the above |

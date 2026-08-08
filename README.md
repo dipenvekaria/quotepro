@@ -66,6 +66,8 @@ Environment setup and the failure modes you'll hit are in
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Railway + Supabase Cloud |
 | [`docs/PROTOTYPE_DEPLOYMENT.md`](docs/PROTOTYPE_DEPLOYMENT.md) | Current focus — deploy the prototype, onboard a second engineer |
 | [`docs/LAUNCH_PLAN.md`](docs/LAUNCH_PLAN.md) | Sequenced path to production |
+| [`docs/GTM_PRODUCT_CHECKLIST.md`](docs/GTM_PRODUCT_CHECKLIST.md) | Feature gaps vs competitors; the launch gate |
+| [`docs/GTM_BUSINESS_CHECKLIST.md`](docs/GTM_BUSINESS_CHECKLIST.md) | Legal, compliance, marketing, billing, support |
 | [`docs/CLEANUP_PLAN.md`](docs/CLEANUP_PLAN.md) | Debt paydown, in order |
 | [`docs/adr/`](docs/adr/) | Decisions and rationale |
 | [`docs/Rivet-Engineering-Primer.pdf`](docs/Rivet-Engineering-Primer.pdf) | The above, condensed into one shareable 12-page document |
