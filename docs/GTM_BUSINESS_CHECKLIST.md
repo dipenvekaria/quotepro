@@ -5,8 +5,8 @@ _Everything that isn't product. Companion to
 
 > **Not legal advice.** This is an engineer's checklist of what to get in front of a lawyer and
 > an accountant. Two items — SMS consent and call recording — carry real statutory penalties and
-> are flagged accordingly. Budget $2–4K of your $10K for a startup lawyer; it is the highest-ROI
-> money you will spend.
+> are flagged accordingly. Budget for a startup lawyer — it is the highest-ROI money we will
+> spend before launch.
 
 Priority: **P0** before taking money · **P1** before real marketing · **P2** fast-follow.
 

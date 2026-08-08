@@ -1,7 +1,7 @@
 # Session Log — 2026-08-07/08
 
-A record of what was decided, what was found, and what's still open. Written so that both Dipen
-and a new engineer can reconstruct the reasoning without the transcript.
+A record of what was decided, what was found, and what's still open, so anyone joining can
+reconstruct the reasoning without the transcript.
 
 ---
 
@@ -45,8 +45,8 @@ Added real `package.json` scripts and `tsconfig.ci.json`.
 | 5 | **Repo moved to `~/code/rivet`** | iCloud was actively corrupting it — see §3. |
 | 6 | **Build Rivet as a platform**, not a standalone utility | A price-book extraction tool has no recurring revenue and no retention, and document extraction is commoditised. |
 | 7 | **Go upmarket: multi-truck shops, one trade (HVAC)** | QuoteIQ owns the solo-operator segment through distribution that can't be matched. |
-| 8 | **Pricing: Core $199 / Pro $349, flat** | No per-seat, no AI credits. 200 customers ≈ $600K ARR ≈ the stated goal. |
-| 9 | **Don't raise venture money** | A seed round makes "a few million and retire" structurally impossible. |
+| 8 | **Pricing: Core $199 / Pro $349, flat** | No per-seat, no AI credits. 200 customers ≈ $600K ARR. |
+| 9 | **Don't raise venture money** | We are building a profitable independent company; a seed round forecloses that outcome. |
 | 10 | **Missed-call text-back before AI voice** | Same $26B problem, async and reliable, no 24/7 uptime obligation. |
 
 ---
@@ -97,7 +97,7 @@ is not a differentiator — they ship photo + voice estimating on every plan fro
 Estimated revenue **$4–7M ARR from ~5,000–8,000 paying customers** (40,000 "users" is cumulative
 signups; there is no free tier).
 
-**The consequence:** you cannot out-feature them, and you don't need to. They have 40,000
+**The consequence:** out-featuring them is not possible and not necessary. They have 40,000
 customers; the plan needs 200.
 
 ### Type-checking was cleaner than assumed
@@ -115,13 +115,12 @@ repair.
 Recorded because the reasoning matters more than the conclusions:
 
 - **"Rivet wins on AI quoting"** — wrong. QuoteIQ ships more of it for less.
-- **"Ship a price-book utility instead of the platform"** — wrong, and Dipen caught it. Document
-  extraction is commoditised, and a one-time tool contradicts the recurring-revenue model in the
-  same document.
+- **"Ship a price-book utility instead of the platform"** — wrong. Document extraction is
+  commoditised, and a one-time tool contradicts the recurring-revenue model in the same document.
 - **"No contractor will trust two strangers"** — overstated. Written when the assumption was zero
   industry access; warm introductions largely solve it.
-- **"Flat pricing around $99"** — wrong for the goal. $600K ARR at $99 is 500 customers; at $299
-  it's 168. For two part-time people that difference decides whether the business is runnable.
+- **"Flat pricing around $99"** — wrong. $600K ARR at $99 is 500 customers; at $299 it's 168.
+  For a small part-time team that difference decides whether the business is operable.
 - **"`npm run typecheck` passes"** (first claim) — was meaningless. The verification copy
   contained **zero `.ts` files** because iCloud had evicted them. Re-verified properly afterwards.
 
@@ -141,7 +140,7 @@ Recorded because the reasoning matters more than the conclusions:
 7. Rotate every key; manual tenancy audit; tested backup restore
 8. Trademark clearance on "Rivet" — a common word, likely conflicts
 9. TCPA consent flow before any SMS ships ($500–1,500 per message exposure)
-10. Founder agreement with equity split and vesting
+10. Tested backup restore, not just backups enabled
 
 **Decisions still to make**
 - Which trade to specialise in — let the contractors who respond decide, not a spreadsheet

@@ -1,19 +1,20 @@
-# Strategy — Making Rivet Win From Where You Actually Are
+# Strategy — How Rivet Wins
 
 _2026-08-07. Written against the research in [COMPETITIVE_ANALYSIS.md](COMPETITIVE_ANALYSIS.md)
 and the product state in [PRODUCT_REVIEW.md](PRODUCT_REVIEW.md)._
 
-**Your constraints:** $10K total. Two people, nights and weekends. A small number of contractors
-you can call and get to test things. **Goal: a few million and retire — not a public company.**
+**Our constraints:** a two-person team working part-time, a small budget, no distribution, and a
+handful of contractors we can call for feedback. **We are building a profitable, independent
+business — not raising venture capital.**
 
-Those constraints are not a footnote — they determine the answer. Most of what I found in the
-research is unavailable to you, and pretending otherwise would waste your $10K.
+Those constraints are not a footnote — they determine the answer. Most of what the research turns
+up is unavailable to a team this size, and pretending otherwise wastes the budget.
 
-One distinction to hold onto throughout: **a few contractors you can call is validation access,
+One distinction to hold onto throughout: **a few contractors we can call is validation access,
 not distribution.** It is enough to find out whether a wedge is real, which is worth more than
-anything else you have right now. It is not enough to build a business on — five friendly
-contractors will not become 500 customers, and treating early enthusiasm from people who like
-you as market demand is the most common way this goes wrong. Use them to learn, not to project.
+anything else we have. It is not enough to build a business on — five friendly contractors will
+not become 500 customers, and treating early enthusiasm from people who know us as market demand
+is the most common way this goes wrong. Use them to learn, not to project.
 
 ---
 
@@ -29,20 +30,20 @@ for this — it validates a product, it doesn't open an institutional door. Genu
 wrong founders for it today.
 
 **Competing on AI voice / missed calls.** $26B/year leak, the biggest quantified pain in the
-category. Avoca raised $125M at a $1B valuation in April. You cannot enter this with $10K.
+category. Avoca raised $125M at a $1B valuation in April. Not enterable at our scale.
 
 **Payments or fintech as the moat.** This is how ServiceTitan actually makes money — 25% of
 revenue, ~55bps on volume. But a take rate on payments only matters at volume. At 20 customers
 it's a rounding error. It's an outcome of scale, not a path to it.
 
 **A pricing-data network effect.** Real, defensible, and exactly what Housecall Pro is starting
-to build. It requires thousands of contractors first. Chicken and egg, and you don't have the egg.
+to build. It requires thousands of contractors first. Chicken and egg, and we don't have the egg.
 
-**Venture money at all.** You've said the goal is a few million and out. Raising makes that
-outcome structurally impossible — see §2. This one isn't ruled out by your constraints; it's ruled
-out by your goal, which is a better reason.
+**Venture money at all.** We are building a profitable independent company, and raising forecloses
+that — see §2. This one isn't ruled out by our constraints; it's ruled out by the kind of company
+we want, which is a better reason.
 
-### The one real risk you are choosing to accept
+### The one real risk we are choosing to accept
 
 Not ruled out — but eyes open, because it's the thing most likely to kill this.
 
@@ -60,57 +61,55 @@ Treat referenceability as a product requirement, not a marketing afterthought.
 
 ---
 
-## 2. The goal: a few million, then out
+## 2. The business model
 
-That's the target, and it settles more than it sounds like. Three consequences follow
-immediately, and two of them contradict conventional startup advice.
+We are building a profitable independent company rather than chasing scale. Three consequences
+follow, and two of them contradict conventional startup advice.
 
 ### Do not raise venture money
 
 This is the most important structural decision in the document, and it's easy to get wrong
 because raising feels like progress.
 
-A seed round makes "a few million and retire" **structurally impossible**. Investors underwrite a
-$100M+ outcome; a $4M sale returns nothing to a fund and they will block it. Liquidation
-preferences mean that in a modest exit, preferred shareholders are paid first and the founders
-can walk away with close to zero from a sale that would otherwise have changed your life.
+A seed round forecloses the outcome we actually want. Investors underwrite a $100M+ outcome; a
+modest sale returns nothing to a fund and they will block it. Liquidation preferences mean that in
+a small exit, preferred shareholders are paid first.
 
-Bootstrapping keeps every option: sell at $3M, sell at $30M, or never sell and take the profit.
+Bootstrapping keeps every option open: sell small, sell large, or never sell and take the profit.
 Raising keeps exactly one.
 
-$10K and two people's weekends is enough to find out whether this works. Keep it that way.
+A small budget and part-time hours are enough to find out whether this works. Keep it that way
+until the answer is yes.
 
-### The actual math
+### The revenue math
 
-Small vertical SaaS sells for roughly **3–6x ARR**, higher with clean books, low churn and low
-owner dependence. So:
+Customers needed to reach a given ARR, by price point:
 
-| ARR | Likely sale price | Customers at $99/mo | at $199/mo | at $299/mo |
-| --- | --- | --- | --- | --- |
-| $300K | $1–1.8M | 250 | 125 | 84 |
-| $600K | $2–3.6M | 500 | 250 | 168 |
-| $1M | $3–6M | 840 | 420 | 280 |
+| ARR | at $99/mo | at $199/mo | at $299/mo |
+| --- | --- | --- | --- |
+| $300K | 250 | 125 | 84 |
+| $600K | 500 | 250 | **168** |
+| $1M | 840 | 420 | 280 |
 
-**Read the right-hand columns.** $600K ARR is 500 customers at $99 or **168 at $299**. Same
-outcome, a third of the support load, a third of the churn surface, a third of the onboarding.
+**Read the right-hand column.** $600K ARR is 500 customers at $99 or **168 at $299**. Same
+revenue, a third of the support load, a third of the churn surface, a third of the onboarding.
 
-For two people working evenings, that difference is not an optimisation — it's the difference
-between a business you can actually run and one that quietly consumes every weekend until you
-resent it.
+For a two-person part-time team that difference is not an optimisation — it decides whether the
+business is operable at all. Small vertical SaaS is typically valued at 3–6x ARR, so the same
+revenue also builds the same asset either way.
 
 ### So: charge more, serve fewer
 
-I earlier suggested flat pricing around $99. **Given this goal, that's wrong.** Correct it to
-**$199–299/month, flat, whole team, unlimited AI.**
+Price at **$199–299/month, flat, whole team, unlimited AI** — not $99.
 
 The justification is easy: an HVAC contractor's average job is several thousand dollars. If the
 software wins them one extra job a year it has paid for itself many times over. Contractors do
 not buy on price; they buy on whether it makes or saves them money, and cheap software reads as
 unserious to someone running a $2M business.
 
-Racing QuoteIQ to $29.99 is a losing game anyway — they have funding and you have weekends.
-Competing at $299 against Jobber's $199-for-5-users, with flat pricing and no per-seat maths, is
-a fight you can actually win.
+Racing QuoteIQ to $29.99 is unwinnable — low price demands volume, and volume demands
+distribution we do not have. Competing at $299 against Jobber's $199-for-5-users, with flat
+pricing and no per-seat maths, is a fight we can win.
 
 ### Who buys you
 
@@ -119,12 +118,12 @@ Housecall Pro, ServiceTitan (public and acquisitive), FieldPulse, plus the PE pl
 up the trades. They buy niche tools with genuine usage to fill product gaps.
 
 Building for acquisition means: one thing done exceptionally well, clean recurring revenue, low
-churn, and **not being dependent on you personally**. It does not mean building a broad platform
-— a broad, mediocre platform is the least acquirable thing you could make, because every
-potential buyer already has one.
+churn, and **not being dependent on any one person**. It does not mean building a broad platform
+— a broad, mediocre platform is the least acquirable thing we could make, because every potential
+buyer already has one.
 
-**Realistic timeline: 3–5 years.** That is a long time on nights and weekends, which is another
-argument for a product with low support burden.
+**Realistic timeline: 3–5 years**, which is another argument for a product with a low support
+burden.
 
 ---
 ## 3. The decision: build Rivet
@@ -172,8 +171,8 @@ organic reach into an audience they had spent a decade building.
 So the four things you cannot out-build:
 
 1. **Their distribution.** 1.3M contractors who already trust them. They ship a feature and
-   announce it to an audience at no cost. You have $10K and no list. This is not a gap you close
-   with product.
+   announce it to an audience at no cost. We have no list and no ad budget. This is not a gap
+   closed with product.
 2. **Their credibility.** They *are* contractors — two decades in the field. In the trades that
    is worth more than any feature, and you cannot acquire it. When Mike Vidan says software is
    good, contractors believe him because he ran their business.
@@ -484,10 +483,10 @@ At **200 customers on a 60/40 Core/Pro mix**:
 | Stripe fees | −$1,562 |
 | **Gross profit** | **$43,261/mo — 84% margin** |
 | Infra + tools | −$1,900 |
-| **Net** | **$41,361/mo → ~$496K/year → ~$248K each** |
+| **Net** | **$41,361/mo → ~$496K/year** |
 | Business value at 4–6x ARR | **$2.5M–3.7M** |
 
-That is your stated goal, reached at 200 customers. The whole plan is arithmetic from here.
+A profitable, independent business at 200 customers. The whole plan is arithmetic from here.
 
 ### The number that actually matters
 
@@ -506,23 +505,21 @@ strongest argument for pricing high, and it connects directly to §4e.
 
 ---
 
-## 4e. Selling when you are not a salesman
+## 4e. How we sell
 
-You said you're not a salesman and not a native English speaker. Both are real, both are common
-among successful B2B founders, and neither is the constraint you think it is. But it does change
-*how* you should sell.
+Neither of us is a salesperson, and we don't need to become one. Engineers sell B2B software
+successfully all the time — but the process has to be designed for it rather than improvised.
 
 ### What selling actually is here
 
-You are not persuading a stranger to buy something they don't want. You are talking to a
-contractor who already loses jobs to slow quotes, and showing them software that fixes it.
+We are not persuading a stranger to buy something they don't want. We are talking to a contractor
+who already loses jobs to slow quotes, and showing them software that fixes it.
 
-The job is **diagnosis, not performance.** Ask about their business, listen, then show. Fluency
-and charisma are irrelevant to that. Being genuinely curious about someone's business is not a
-language skill.
+The job is **diagnosis, not performance.** Ask about their business, listen, then show. Charisma
+is irrelevant to that.
 
-The most effective sentence in this entire process is *"Can you walk me through the last quote
-you sent?"* — and then silence. You do not need perfect English to say that.
+The most effective sentence in the entire process is *"Can you walk me through the last quote you
+sent?"* — and then silence.
 
 ### Design the process so it doesn't need charisma
 
@@ -558,20 +555,19 @@ For the first ten, you never have to sell at all. You say:
 > myself. In exchange I'd like your honest feedback and, if you end up liking it, a
 > testimonial."*
 
-That is an invitation, not a pitch. It's easy to say, easy to say in any accent, and it's true.
+That is an invitation, not a pitch. It is easy to say, and it is true.
 
 ### Two things worth considering
 
-**Your friend.** If either of you is more comfortable talking to people, split the roles
-deliberately — one builds, one talks. It's the most common and most effective founder split
-there is.
+**Split the roles deliberately.** If one of us is more comfortable talking to customers, that
+person should own the conversations while the other builds. It is the most common and most
+effective split on a two-person team.
 
-**Your other language.** If you speak a language with a significant contractor population in the
-US — Spanish above all, but not only — that is a genuine and underserved wedge. The trades employ
-an enormous number of non-native English speakers, many of them business owners, and essentially
-all field-service software is English-only. Being a native speaker of that language would be a
-distribution advantage no competitor can copy, and it turns the thing you framed as a weakness
-into the moat. Worth thinking about seriously before you settle on a segment.
+**Language as a wedge.** The US trades employ an enormous number of non-native English speakers,
+many of them business owners, and essentially all field-service software is English-only. If we
+can serve a language community natively — Spanish above all — that is an underserved segment and
+a distribution advantage no competitor can easily copy. Worth considering before we settle on a
+target segment.
 
 ---
 
@@ -648,7 +644,8 @@ Keep building it — but finish before you extend.
 - **Finish the catalog work.** Blocking everything.
 - **Deploy and lock down the AI backend.** Currently unauthenticated with `company_id` from the
   request body.
-- **Cleanup Phase 1** — your friend's first task, and it makes everything after it faster.
+- **Cleanup Phase 1** — a good first task for a new contributor, and it makes everything after
+  it faster.
 - **Then stop adding surface area** and start adding revenue features from §4.
 
 ---
