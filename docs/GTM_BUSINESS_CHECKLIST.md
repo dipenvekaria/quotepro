@@ -31,16 +31,13 @@ Priority: **P0** before taking money · **P1** before real marketing · **P2** f
 | # | Item | Priority |
 | --- | --- | --- |
 | 2.1 | Form the entity (Delaware LLC or C-Corp — LLC is simpler and right if you are not raising) | **P0** |
-| 2.2 | **Founder agreement with your friend — equity split, vesting, what happens if someone leaves** | **P0** |
 | 2.3 | EIN, business bank account, business card | **P0** |
 | 2.4 | Accounting (Wave free / QuickBooks / Bench) | **P1** |
 | 2.5 | **SaaS sales tax** — many US states now tax SaaS, and economic nexus triggers at ~$100K or 200 transactions per state | **P1** |
 | 2.6 | Automate it (Stripe Tax, Anrok, TaxJar) before you have customers in 10 states | **P1** |
 | 2.7 | Track ARR, MRR, churn, CAC from customer #1 | **P1** |
 
-**On the founder agreement:** you and your friend are both putting in evenings. Write down the
-split and the vesting *now*, while you like each other. Unvested equity in a founder who walks
-away after six months is the single most common way two-person companies die.
+
 
 ---
 
@@ -204,7 +201,7 @@ feature list for a contractor deciding whether to trust unknown software.
 
 ## 11. Launch gate
 
-- [ ] Trademark cleared, entity formed, founder agreement signed
+- [ ] Trademark cleared, entity formed
 - [ ] ToS, Privacy Policy and AI disclaimer live and lawyer-reviewed
 - [ ] TCPA consent flow built and reviewed **before** any SMS ships
 - [ ] Every key rotated; tenancy audit done; scratch routes removed
@@ -228,4 +225,5 @@ Everything above matters. These are the ones that cause real damage:
 3. **Rivet's own billing** — no revenue without it, and it's easy to keep deferring.
 4. **The "SOC 2 in progress" claim** — misrepresenting a security certification to businesses
    handling customer payment data.
-5. **The founder agreement** — write it while you and your friend still like each other.
+5. **The AI output disclaimer** — a hallucinated price the customer accepts is a contract the
+   contractor has to honour. Make it explicit that generated quotes are drafts requiring review.
