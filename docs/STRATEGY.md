@@ -652,10 +652,10 @@ Keep building it — but finish before you extend.
 
 ## 9. The honest summary
 
-You're choosing to compete on execution against four funded companies, in a market where you have
-no distribution and limited hours. That is hard, and I won't pretend the odds are good.
+We are competing on execution against four funded companies, in a market where we have no
+distribution and limited hours. That is genuinely hard and the odds should not be oversold.
 
-But the target is $600K ARR and a few million at exit — not category dominance. That needs
+But the target is a profitable independent business, not category dominance. $600K ARR needs
 roughly **200 contractors** at $299/month. Two hundred customers is a reachable number for a
 focused product with warm referrals in one trade. It does not require beating Jobber; it requires
 being obviously better for a specific contractor than the alternative they'd otherwise pick.
