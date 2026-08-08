@@ -246,18 +246,71 @@ different conversation from "our software is easier to use."
 
 ### Lever 2 — Ten minutes to value
 
-Onboarding is where every competitor is weak and where you can be dramatically better. Their
-setup takes hours; contractors abandon it.
+Onboarding is where every competitor is weak and where we can be dramatically better. Their setup
+takes hours; contractors abandon it there.
 
-- **AI catalog ingestion belongs here.** Your instinct was right that it's not a *business*. As
-  an onboarding step inside Rivet it's excellent — it fixes the fatal activation bug, it's a
-  genuine wow moment in a demo, and nobody has to trust a stranger with anything to experience it.
-  Same technology, correct placement.
-- **Per-trade starter catalogs** so a new account is never empty.
-- **Target: signup to first real quote in under ten minutes.** Time it. Make it a number you
-  track.
+- **AI catalog ingestion belongs here.** It is not a business on its own, but as an onboarding
+  step it is excellent — it fixes the fatal activation bug, it is a genuine wow moment in a demo,
+  and nobody has to trust a stranger with anything to experience it.
+- **A starter catalog** so a new account is never empty. Design detail below.
+- **Target: signup to first real quote in under ten minutes.** Time it. Track it as a number.
 
-Then say it out loud in marketing, because it's a claim none of them can make.
+Then say it out loud in marketing, because it is a claim none of them can make.
+
+#### The starter catalog: ship the pricing model, not the prices
+
+A flat-rate price book is really `task time × labor rate + materials × markup`. Task times are
+relatively stable across regions. **Prices are not** — labor rates vary two to three times
+between markets.
+
+So ship the durable half and ask for the rest. At onboarding:
+
+1. What is your hourly labor rate?
+2. What is your materials markup?
+3. What is your diagnostic / service call fee?
+4. Residential, commercial, or both?
+
+Then compute every item from those numbers. The contractor lands on a catalog of 100+ items
+priced at **their own rates**, and we never invent a price. Onboarding becomes four fields
+instead of 150.
+
+**Why this matters beyond convenience.** If we ship guessed prices and a contractor sends a quote
+from one, the homeowner accepts, and the real cost is higher — they are contractually bound to
+do the job at a loss, because of us. Shipping the model rather than the numbers removes that
+exposure entirely, and produces a better demo: the output is visibly theirs on first use.
+
+**Sourcing the content — and one legal trap.** Do not derive content from Profit Rhino / Callahan
+Roach or similar. Their price book content *is* their product; they sell it by subscription and
+Housecall Pro licenses it rather than building its own. Copying task lists, descriptions or the
+compilation structure is copyright infringement, and the owner is an EverCommerce subsidiary.
+
+Legitimate sources, best first:
+
+1. **Our design-partner contractors' own price books**, anonymised and aggregated. Real data,
+   freely given, and it makes them invested in the product.
+2. Manufacturer service literature and published labor-unit standards.
+3. Our own research for category structure — individual item names are not protectable, a
+   compiled book is.
+
+**Scope for HVAC residential**, roughly 100–150 items: diagnostics · cooling repairs (capacitor,
+contactor, compressor, TXV, coil, refrigerant) · heating repairs (igniter, flame sensor, inducer,
+heat exchanger, gas valve) · maintenance and tune-ups · indoor air quality · equipment
+replacement by tonnage · ductwork · thermostats · **maintenance agreements** · upsells (surge
+protector, float switch, drain treatment).
+
+Two of those carry disproportionate weight. **Maintenance agreements** are how HVAC shops make
+money and are what raises the owner's exit multiple. **Upsells** raise average ticket and pair
+directly with the good/better/best feature already in the schema.
+
+**Sequencing.** This only works once catalog CRUD and import exist. Today there is no way to
+create *or edit* a catalog item, so a starter catalog would drop a contractor into 150 rows they
+cannot change. Build CRUD first — §1 of
+[GTM_PRODUCT_CHECKLIST.md](GTM_PRODUCT_CHECKLIST.md) — then this sits on top of it.
+
+**On matching QuoteIQ's "100+ trades".** Their claim is thinner than it sounds: their AI prices
+from *the contractor's own* catalog, so it is a market-coverage claim, not 100 curated price
+books. We get the same breadth honestly through ingestion — the contractor's own pricing,
+extracted from their old quotes — with none of the liability and no per-trade content work.
 
 ### Lever 3 — Flat pricing, and say it loudly
 
