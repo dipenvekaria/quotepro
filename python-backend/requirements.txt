@@ -1,42 +1,20 @@
-# QuotePro Python Backend Dependencies
+# Rivet AI service — what ai_backend.py actually imports.
+#
+# This file previously held a 100+ package pip freeze (google-adk, alembic,
+# opentelemetry, arq, …) covering three backend generations that were built
+# during the rebuild and never wired up. Only ai_backend.py runs; see
+# docs/CODEBASE_MAP.md. The old freeze is in git history if you ever need it.
+#
+#   python3 -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+#   uvicorn ai_backend:app --reload --port 8000
 
-# FastAPI and server
-fastapi==0.115.5
-uvicorn[standard]==0.32.1
-python-multipart==0.0.19
-
-# Environment variables
+fastapi==0.118.3
+uvicorn[standard]==0.38.0
+pydantic==2.12.5
 python-dotenv==1.0.1
-
-# AI/ML
-google-generativeai>=0.8.5
-google-adk==1.20.0
-
-# Database
 supabase==2.10.0
 
-# Data validation
-pydantic==2.10.3
-pydantic-settings==2.6.1
-
-# File processing (CSV/Excel)
-pandas==2.2.3
-openpyxl==3.1.5
-
-# HTTP requests
-httpx>=0.26,<0.28
-requests==2.32.3
-
-# System monitoring
-psutil==6.1.0
-
-# Security
-python-jose[cryptography]==3.3.0
-PyJWT==2.8.0
-slowapi==0.1.9
-bleach==6.1.0
-
-# Testing
-pytest==8.0.0
-pytest-asyncio==0.23.3
-pytest-cov==4.1.0
+# Unified Google GenAI SDK — targets AI Studio (API key) or Vertex AI (ADC).
+# Imported lazily: the service starts and serves mock quotes without a key.
+google-genai==1.53.0

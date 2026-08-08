@@ -1,198 +1,155 @@
-# QuoteBuilder Pro - Deployment Guide
+# Deployment
 
-## 🚀 Step-by-Step Deployment to Vercel
+**Target topology: Vercel + Railway + Supabase Cloud.** Decision and alternatives considered in
+[`adr/0005-hosting-vercel-railway-supabase.md`](adr/0005-hosting-vercel-railway-supabase.md).
 
-### 1. Supabase Setup
+_Nothing below is provisioned yet._ This is the runbook for standing it up, not a description
+of something already running. See [LAUNCH_PLAN.md](LAUNCH_PLAN.md) for sequencing.
 
-1. **Create a Supabase Project**
-   - Go to [supabase.com](https://supabase.com) and create a free account
-   - Create a new project
-   - Note your project URL and anon key
+```
+Vercel                    Railway                  Supabase Cloud
+Next.js 16          →     ai_backend.py       →    Postgres + Auth + Storage
+rebuild/main              FastAPI + Gemini         migrations from repo
+```
 
-2. **Run Database Migration**
-   - Go to SQL Editor in your Supabase dashboard
-   - Copy the entire content from `supabase/migrations/001_initial_schema.sql`
-   - Paste and run the query
+| Environment | Frontend | Backend | Database |
+| --- | --- | --- | --- |
+| Local | `npm run dev` | `uvicorn` :8000 | `supabase start` |
+| Preview | Vercel preview per PR | Railway PR env | staging project |
+| Production | Vercel, `rebuild/main` | Railway, `rebuild/main` | production project |
 
-3. **Create Storage Bucket**
-   - Go to Storage in Supabase dashboard
-   - Create a new bucket called `logos`
-   - Make it **public**
-   - Set policies to allow uploads from authenticated users
+Preview and production must use **different Supabase projects**. A shared database means a
+preview deploy can corrupt live contractor data.
 
-4. **Configure Email Auth**
-   - Go to Authentication > Settings
-   - Set Site URL to your app URL (e.g., `https://yourapp.vercel.app`)
-   - Add redirect URLs for auth callbacks
+## Database
 
-### 2. Get API Keys
+Two projects: `rivet-staging` and `rivet-production`.
 
-**Groq (Free Tier Available)**
-- Visit [console.groq.com](https://console.groq.com)
-- Sign up and create an API key
-- Free tier includes generous limits
+```bash
+supabase link --project-ref <ref>
+supabase db push                 # applies supabase/migrations/*.sql
+```
 
-**Twilio**
-- Sign up at [twilio.com](https://twilio.com)
-- Get a phone number
-- Copy Account SID and Auth Token
+Never run `supabase/seed.sql` against production — it creates demo users with a known password.
 
-**Dropbox Sign**
-- Sign up at [sign.dropbox.com](https://sign.dropbox.com)
-- Get API key from settings
+Also required:
 
-**Lemon Squeezy**
-- Create account at [lemonsqueezy.com](https://lemonsqueezy.com)
-- Create a store
-- Get API key and Store ID
+- **Point-in-time recovery on.** Then actually test a restore into staging. An untested backup
+  is not a backup.
+- **Auth redirect URLs** for the production domain, and Google OAuth authorised origins.
+- **Email templates** branded, sending through Resend rather than Supabase's default sender.
+- **Connection pooling.** The `pg` pool is `max: 5` per instance; Vercel serverless multiplies
+  that by concurrency. Use Supabase's pooler (port 6543, transaction mode) for `DATABASE_URL` in
+  production, not the direct 5432 connection.
 
-### 3. Deploy to Vercel
+## Frontend (Vercel)
 
-1. **Push to GitHub**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin YOUR_GITHUB_REPO_URL
-   git push -u origin main
-   ```
+Root directory `/`, production branch `rebuild/main`, framework preset Next.js.
 
-2. **Import to Vercel**
-   - Go to [vercel.com](https://vercel.com)
-   - Click "Import Project"
-   - Select your GitHub repository
-   - Configure environment variables (see below)
-   - Deploy!
+Environment variables:
 
-3. **Environment Variables in Vercel**
+```
+NEXT_PUBLIC_SUPABASE_URL          https://<ref>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+NEXT_PUBLIC_APP_URL               https://<domain>
+NEXT_PUBLIC_BACKEND_URL           https://<railway-app>.up.railway.app
+SUPABASE_SERVICE_ROLE_KEY         server only
+DATABASE_URL                      pooler connection string
+RESEND_API_KEY
+RESEND_FROM_EMAIL
+STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET
+STRIPE_PLATFORM_FEE_BPS
+DROPBOX_SIGN_API_KEY
+NEXT_PUBLIC_SENTRY_DSN
+```
 
-   Go to Project Settings > Environment Variables and add:
+`src/lib/env.ts` validates these at boot with Zod and fails loudly on a missing required var —
+which is the behaviour you want. Don't work around it.
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-   GROQ_API_KEY=your_groq_key
-   OPENROUTER_API_KEY=your_openrouter_key (optional)
-   TWILIO_ACCOUNT_SID=your_twilio_sid
-   TWILIO_AUTH_TOKEN=your_twilio_token
-   TWILIO_PHONE_NUMBER=your_twilio_number
-   DROPBOX_SIGN_API_KEY=your_dropbox_key
-   DROPBOX_SIGN_CLIENT_ID=your_dropbox_client_id
-   LEMON_SQUEEZY_API_KEY=your_ls_key
-   LEMON_SQUEEZY_STORE_ID=your_ls_store_id
-   LEMON_SQUEEZY_WEBHOOK_SECRET=your_ls_webhook
-   NEXT_PUBLIC_APP_URL=https://yourapp.vercel.app
-   ```
+Before the first production deploy, remove `typescript: { ignoreBuildErrors: true }` from
+`next.config.ts`. It exists only because the dead `(dashboard)` tree doesn't compile; shipping
+with it on means a real type error can reach production silently. Phase 1 of
+[CLEANUP_PLAN.md](CLEANUP_PLAN.md) clears the way.
 
-### 4. Post-Deployment Setup
+## Backend (Railway)
 
-1. **Update Supabase Site URL**
-   - Go back to Supabase > Authentication > Settings
-   - Update Site URL to your Vercel URL
-   - Add to Redirect URLs: `https://yourapp.vercel.app/auth/callback`
+`python-backend/railway.json` and `Procfile` exist. Root directory `python-backend`, start
+command:
 
-2. **Test the Flow**
-   - Sign up for an account
-   - Complete onboarding
-   - Create a test quote
-   - Test AI generation
-   - Test PDF download
+```
+uvicorn ai_backend:app --host 0.0.0.0 --port $PORT
+```
 
-3. **Set Up Lemon Squeezy Products**
-   - Create three products in Lemon Squeezy:
-     - Starter: $129/mo
-     - Pro: $199/mo
-     - Enterprise: $329/mo
-   - Enable 14-day free trial
+Environment:
 
-### 5. Custom Domain (Optional)
+```
+SUPABASE_URL                      https://<ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY
+GEMINI_API_KEY
+GEMINI_MODELS                     gemini-2.5-flash,gemini-flash-latest,gemini-2.5-flash-lite
+ALLOWED_ORIGINS                   https://<domain>
+```
 
-1. Go to Vercel project settings
-2. Add your custom domain
-3. Update DNS records as instructed
-4. Update `NEXT_PUBLIC_APP_URL` environment variable
-5. Update Supabase redirect URLs
+Health check `GET /health`. The response includes `ai_mode` — `gemini`, `vertex:<region>`, or
+`mock`. **If production ever reports `mock`, quotes are being generated by a keyword matcher.**
+Alert on it.
 
-### 6. Monitoring & Analytics
+### Lock this down before it goes public
 
-- Enable Vercel Analytics in project settings
-- Monitor Supabase usage in dashboard
-- Check Groq API usage limits
-- Set up error tracking (Sentry recommended)
+As written, `ai_backend.py` sets `allow_origins=["*"]` and has **no authentication on
+`POST /api/ai/generate-quote`**. The endpoint takes a `company_id` in the request body and
+returns that company's catalog-derived pricing. Deployed as-is, anyone who finds the URL can
+read any tenant's pricing and burn your Gemini quota.
 
-## 🧪 Testing Checklist
+Required before the backend is publicly reachable:
 
-- [ ] Sign up and login works
-- [ ] Onboarding flow completes
-- [ ] Default pricing items load
-- [ ] New quote creation works
-- [ ] AI quote generation works
-- [ ] Photo upload works
-- [ ] PDF generation works
-- [ ] SMS sending works (with real Twilio credentials)
-- [ ] Dashboard displays correctly
-- [ ] PWA can be installed on mobile
-- [ ] Dark mode toggle works
+1. Verify a Supabase JWT on every request (`SUPABASE_JWT_SECRET`).
+2. Derive `company_id` from the token — never trust the body.
+3. Restrict CORS to the production origin.
+4. Rate-limit per user.
 
-## 🐛 Common Issues
+This is P0 in [LAUNCH_PLAN.md](LAUNCH_PLAN.md).
 
-**Issue: AI generation fails**
-- Check Groq API key is valid
-- Verify pricing catalog has items
-- Check API quota limits
+If you'd rather not expose it at all: proxy through a Next.js route handler and keep Railway
+private. That trades a network hop for a smaller attack surface, and is a reasonable call.
 
-**Issue: Authentication redirect fails**
-- Verify Supabase Site URL is correct
-- Check redirect URLs include /auth/callback
-- Ensure NEXT_PUBLIC_APP_URL is set
+## Vertex AI
 
-**Issue: File upload fails**
-- Confirm logos bucket exists in Supabase
-- Verify bucket is set to public
-- Check storage policies
+`ai_backend.py` supports Vertex through the unified `google-genai` SDK. Set
+`GOOGLE_GENAI_USE_VERTEXAI=true`, `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION` and provide
+Application Default Credentials. Railway makes ADC awkward — if you want Vertex, run the backend
+on Cloud Run instead, where the service identity is native. AI Studio API keys are fine to start.
 
-**Issue: SMS not sending**
-- Verify Twilio credentials
-- Check phone number format
-- Ensure Twilio account has balance
+## CI/CD
 
-## 📈 Scaling Tips
+`.github/workflows/ci.yml` describes the target pipeline (pnpm, biome, vitest, uv, ruff,
+pytest). It cannot pass today — none of that toolchain is installed. Phase 3 of
+[CLEANUP_PLAN.md](CLEANUP_PLAN.md) fixes it.
 
-1. **Database Performance**
-   - Add indexes for frequently queried fields
-   - Use Supabase connection pooling
-   - Consider read replicas for high traffic
+`.github/workflows/{test,deploy}.yml` are pre-rebuild and reference scripts that no longer
+exist. Delete them; Vercel and Railway both deploy on push natively.
 
-2. **API Rate Limits**
-   - Implement caching for pricing catalogs
-   - Add rate limiting middleware
-   - Monitor Groq API usage
+## Rollback
 
-3. **Cost Optimization**
-   - Use Supabase free tier initially
-   - Monitor Vercel bandwidth usage
-   - Optimize images and assets
-   - Consider CDN for static assets
+- **Frontend** — Vercel: promote the previous deployment. Instant.
+- **Backend** — Railway: redeploy the previous image.
+- **Database** — migrations are forward-only. A bad migration needs a compensating migration,
+  not a revert. Test every migration on staging first. PITR is the last resort and it costs
+  data.
 
-## 🔒 Security Checklist
+## Domain and DNS
 
-- [ ] All environment variables are secure
-- [ ] RLS policies are enabled on all tables
-- [ ] File uploads are validated
-- [ ] API routes have proper authentication
-- [ ] HTTPS is enforced
-- [ ] CORS is properly configured
+- Apex + `www` → Vercel.
+- `api.<domain>` → Railway, or keep it internal behind a Next.js proxy.
+- Resend needs SPF, DKIM, and DMARC records on the sending domain. Without them, quote emails
+  land in spam — a silent failure that looks like customers ignoring quotes.
 
-## 📞 Support
+## Secrets
 
-For issues or questions:
-- Check the troubleshooting section above
-- Review Supabase logs
-- Check Vercel deployment logs
-- Contact support@quotebuilder.pro
+Vercel and Railway environment stores only. Nothing in the repo, nothing in `.env.local` in
+production.
 
----
-
-**You're ready to launch! 🚀**
+**Rotate every key before launch.** Gemini, Supabase service role, Resend, Stripe, SignNow —
+all of them have lived in tunnel-facing dev configs and been shared during handoff. Treat them
+as compromised. Rotate again on any team change.

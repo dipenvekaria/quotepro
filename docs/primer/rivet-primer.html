@@ -1,0 +1,1327 @@
+<title>Rivet — Engineering Primer</title>
+
+<style>
+  /* ===================================================================
+     Rivet Engineering Primer
+     Palette derives from the product's own tokens (src/app/globals.css):
+     monochrome ink on paper, neutrals carrying a faint violet bias
+     (oklch hue 285) so the greys read as chosen rather than inherited.
+     Semantic colour appears only where it encodes real state.
+     =================================================================== */
+
+  :root {
+    --paper:        #FDFDFE;
+    --surface:      #F5F5F7;
+    --surface-2:    #EDEDF1;
+    --ink:          #131318;
+    --ink-2:        #3B3B45;
+    --muted:        #71717E;
+    --rule:         #E3E3E9;
+    --rule-strong:  #C6C6D0;
+    --live:         #1C6B46;
+    --live-bg:      #E6F2EB;
+    --dead:         #9A3A3A;
+    --dead-bg:      #F7E9E9;
+    --open:         #7A5A12;
+    --open-bg:      #F6EFDD;
+
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+    --gutter: 8.5rem;
+    --col: 67ch;
+    --gap: 2.75rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:       #0E0E12;
+      --surface:     #16161B;
+      --surface-2:   #1E1E25;
+      --ink:         #F4F4F7;
+      --ink-2:       #C2C2CC;
+      --muted:       #8A8A96;
+      --rule:        #27272F;
+      --rule-strong: #3B3B46;
+      --live:        #62C08D;
+      --live-bg:     #142219;
+      --dead:        #E28787;
+      --dead-bg:     #241416;
+      --open:        #D9B45C;
+      --open-bg:     #221C10;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:       #0E0E12;
+    --surface:     #16161B;
+    --surface-2:   #1E1E25;
+    --ink:         #F4F4F7;
+    --ink-2:       #C2C2CC;
+    --muted:       #8A8A96;
+    --rule:        #27272F;
+    --rule-strong: #3B3B46;
+    --live:        #62C08D;
+    --live-bg:     #142219;
+    --dead:        #E28787;
+    --dead-bg:     #241416;
+    --open:        #D9B45C;
+    --open-bg:     #221C10;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.004em;
+  }
+
+  .sheet {
+    max-width: calc(var(--gutter) + var(--col) + var(--gap) + 4rem);
+    margin: 0 auto;
+    padding: 0 2rem 7rem;
+  }
+
+  /* ---- Title block: the corner of a fabrication drawing --------------- */
+
+  .titleblock {
+    border-bottom: 1.5px solid var(--ink);
+    padding: 4.5rem 0 0;
+    margin-bottom: 3.5rem;
+  }
+
+  .mark-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .mark-row svg { display: block; }
+
+  .wordmark {
+    font-size: 1.05rem;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .titleblock h1 {
+    font-size: clamp(2.4rem, 6.5vw, 3.75rem);
+    line-height: 1.02;
+    font-weight: 680;
+    letter-spacing: -0.035em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+
+  .standfirst {
+    font-size: 1.115rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 56ch;
+    margin: 0 0 2.75rem;
+    text-wrap: pretty;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+  }
+
+  .meta div {
+    padding: 0.9rem 1rem 0.9rem 0;
+    border-right: 1px solid var(--rule);
+  }
+  .meta div:last-child { border-right: 0; }
+  .meta dt {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin: 0 0 0.3rem;
+  }
+  .meta dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---- Section grid: annotation gutter + reading column --------------- */
+
+  section {
+    display: grid;
+    grid-template-columns: var(--gutter) minmax(0, var(--col));
+    gap: 0 var(--gap);
+    padding: 3.25rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  section:first-of-type { border-top: 0; padding-top: 0; }
+
+  .note {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    line-height: 1.65;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    padding-top: 0.55rem;
+    position: sticky;
+    top: 1.75rem;
+    align-self: start;
+  }
+  .note b {
+    display: block;
+    color: var(--ink-2);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.55rem;
+  }
+
+  .col { min-width: 0; }
+
+  h2 {
+    font-size: clamp(1.45rem, 3.2vw, 1.85rem);
+    line-height: 1.16;
+    font-weight: 640;
+    letter-spacing: -0.026em;
+    margin: 0 0 1.15rem;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    font-weight: 620;
+    letter-spacing: -0.014em;
+    margin: 2.35rem 0 0.7rem;
+  }
+
+  p { margin: 0 0 1.15rem; text-wrap: pretty; }
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--ink); text-decoration-color: var(--rule-strong); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+  strong { font-weight: 620; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.855em;
+    background: var(--surface-2);
+    padding: 0.1em 0.34em;
+    border-radius: 3px;
+    letter-spacing: -0.01em;
+  }
+
+  ul, ol { margin: 0 0 1.15rem; padding-left: 1.15rem; }
+  li { margin-bottom: 0.5rem; }
+  li::marker { color: var(--muted); }
+
+  /* ---- Pull quote / the one rule ------------------------------------- */
+
+  .rule-box {
+    border: 1.5px solid var(--ink);
+    padding: 1.6rem 1.75rem;
+    margin: 0 0 1.4rem;
+    background: var(--surface);
+  }
+  .rule-box p:first-child {
+    font-size: 1.12rem;
+    font-weight: 600;
+    letter-spacing: -0.018em;
+    line-height: 1.42;
+  }
+  .rule-box p:last-child { margin-bottom: 0; }
+
+  /* ---- Lifecycle rail ------------------------------------------------- */
+
+  .rail {
+    margin: 0 0 1.35rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .rail-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.55rem;
+    font-family: var(--mono);
+    font-size: 0.715rem;
+    margin-bottom: 0.9rem;
+  }
+  .rail-row:last-child { margin-bottom: 0; }
+  .rail-label {
+    flex: 0 0 100%;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.63rem;
+    margin-bottom: 0.15rem;
+  }
+  .node {
+    border: 1px solid var(--rule-strong);
+    padding: 0.24rem 0.55rem;
+    border-radius: 3px;
+    background: var(--paper);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+  }
+  .node.term { border-color: var(--ink); font-weight: 500; }
+  .arrow { color: var(--muted); }
+
+  /* ---- Figures -------------------------------------------------------- */
+
+  figure { margin: 0 0 1.5rem; }
+  .frame { overflow-x: auto; padding-bottom: 0.2rem; }
+  figure svg {
+    display: block;
+    width: 100%;
+    min-width: 460px;
+    height: auto;
+  }
+  figcaption {
+    font-family: var(--mono);
+    font-size: 0.655rem;
+    line-height: 1.65;
+    color: var(--muted);
+    letter-spacing: 0.008em;
+    margin-top: 0.85rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--rule);
+  }
+  figcaption b { color: var(--ink-2); font-weight: 500; }
+
+  .d-box  { fill: var(--surface); stroke: var(--rule-strong); stroke-width: 1; }
+  .d-key  { fill: var(--surface-2); stroke: currentColor; stroke-width: 1.5; }
+  .d-t    { fill: var(--ink); font-family: var(--mono); font-size: 12px; letter-spacing: -0.01em; }
+  .d-s    { fill: var(--muted); font-family: var(--mono); font-size: 10px; }
+  .d-lab  { fill: var(--muted); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.07em; }
+  .d-line { stroke: currentColor; stroke-width: 1.3; fill: none; }
+  .d-line.thick { stroke-width: 2.2; }
+  .d-line.dash  { stroke-dasharray: 4 3; }
+  .d-warn { stroke: var(--dead); stroke-width: 1.5; fill: none; }
+  .d-warn-t { fill: var(--dead); font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; }
+
+  /* ---- Tables --------------------------------------------------------- */
+
+  .scroll { overflow-x: auto; margin: 0 0 1.35rem; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.845rem;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.62rem 0.9rem 0.62rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+  }
+  td code { background: none; padding: 0; font-size: 0.82rem; }
+  tr:last-child td { border-bottom: 0; }
+
+  /* ---- Status flags: colour used only to encode state ----------------- */
+
+  .flag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 0.16rem 0.42rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .flag.live { color: var(--live); background: var(--live-bg); }
+  .flag.dead { color: var(--dead); background: var(--dead-bg); }
+  .flag.open { color: var(--open); background: var(--open-bg); }
+
+  /* ---- Code block ----------------------------------------------------- */
+
+  pre {
+    font-family: var(--mono);
+    font-size: 0.775rem;
+    line-height: 1.72;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.05rem 1.2rem;
+    overflow-x: auto;
+    margin: 0 0 1.35rem;
+    letter-spacing: -0.008em;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .cmt { color: var(--muted); }
+
+  /* ---- Definition rows ------------------------------------------------ */
+
+  .rows { border-top: 1px solid var(--rule-strong); margin: 0 0 1.35rem; }
+  .row {
+    display: grid;
+    grid-template-columns: minmax(7rem, 12.5rem) minmax(0, 1fr);
+    gap: 0 1.4rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .row dt {
+    font-family: var(--mono);
+    font-size: 0.73rem;
+    letter-spacing: -0.01em;
+    color: var(--ink-2);
+    padding-top: 0.14rem;
+    min-width: 0;
+    /* Long paths (.claude/settings.local.json) must wrap inside the column
+       rather than bleed across the gap into the definition text. */
+    overflow-wrap: anywhere;
+  }
+  .row dd { margin: 0; font-size: 0.92rem; line-height: 1.55; }
+
+  /* ---- Footer --------------------------------------------------------- */
+
+  footer {
+    border-top: 1.5px solid var(--ink);
+    margin-top: 3.5rem;
+    padding-top: 1.4rem;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---- Narrow --------------------------------------------------------- */
+
+  @media (max-width: 860px) {
+    .sheet { padding: 0 1.35rem 4.5rem; }
+    .titleblock { padding-top: 3rem; margin-bottom: 2.5rem; }
+    section {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+      padding: 2.5rem 0;
+    }
+    .note {
+      position: static;
+      padding: 0 0 1.15rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 1.5rem;
+    }
+    .note b { display: inline; margin: 0 0.6rem 0 0; }
+    .row { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; }
+    .meta div { border-right: 0; border-bottom: 1px solid var(--rule); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div class="sheet">
+
+  <header class="titleblock">
+    <div class="mark-row">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5.5" stroke="currentColor" stroke-width="2"></rect>
+        <circle cx="9" cy="9" r="1.7" fill="currentColor"></circle>
+        <circle cx="15" cy="15" r="1.7" fill="currentColor"></circle>
+      </svg>
+      <span class="wordmark">Rivet</span>
+    </div>
+
+    <h1>Everything you need to build on Rivet</h1>
+
+    <p class="standfirst">
+      Field-service software for trades contractors. This is the orientation document — what the
+      product is, the one idea the whole codebase is built around, which half of the repository
+      is real, and the rule you cannot get wrong.
+    </p>
+
+    <dl class="meta">
+      <div><dt>Audience</dt><dd>Engineers</dd></div>
+      <div><dt>Stage</dt><dd>Pre-launch</dd></div>
+      <div><dt>Branch</dt><dd>rebuild/main</dd></div>
+      <div><dt>Live code</dt><dd>~10,400 LOC</dd></div>
+      <div><dt>Revised</dt><dd>2026-08-07</dd></div>
+    </dl>
+  </header>
+
+  <main>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Problem</b>Quoting speed decides who wins the job.</div>
+      <div class="col">
+        <h2>What Rivet is</h2>
+        <p>
+          A contractor finishes a site visit at 4pm. The quote gets written that evening, or the
+          next morning, or on Monday. By the time it lands, the homeowner has already signed with
+          whoever answered fastest. Trades businesses lose work to latency, not to price.
+        </p>
+        <p>
+          Rivet collapses that gap. The contractor describes the job in a sentence — <em>replace
+          3-ton AC unit, add UV light</em> — and AI drafts a quote from their own price catalog,
+          with the right tax, in seconds. They adjust it on their phone in the driveway. The
+          customer opens a link, accepts, and pays. The same record then becomes the scheduled
+          job and the invoice.
+        </p>
+        <p>
+          The market is HVAC, plumbing, electrical, roofing, and landscaping — businesses with
+          two to twenty people, where the owner is still in the field and quoting is overhead
+          taken out of evenings.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Core idea</b>One row, not three. Every architectural choice follows from this.</div>
+      <div class="col">
+        <h2>One record, whole lifecycle</h2>
+        <p>
+          Most field-service software models leads, quotes, and jobs as separate tables and copies
+          data between them. Rivet doesn't. A single <code>work_items</code> row <em>is</em> the
+          lead, then the quote, then the job, then the archived record. Its
+          <code>status</code> column moves; the row never does.
+        </p>
+
+        <div class="rail">
+          <div class="rail-row">
+            <span class="rail-label">Primary path</span>
+            <span class="node">lead</span><span class="arrow">→</span>
+            <span class="node">quote_draft</span><span class="arrow">→</span>
+            <span class="node">quote_sent</span><span class="arrow">→</span>
+            <span class="node">quote_viewed</span><span class="arrow">→</span>
+            <span class="node">quote_accepted</span><span class="arrow">→</span>
+            <span class="node">job_scheduled</span><span class="arrow">→</span>
+            <span class="node">job_in_progress</span><span class="arrow">→</span>
+            <span class="node term">job_completed</span>
+          </div>
+          <div class="rail-row">
+            <span class="rail-label">Exits</span>
+            <span class="node">quote_rejected</span>
+            <span class="node">quote_expired</span>
+            <span class="node">job_cancelled</span>
+            <span class="node term">archived</span>
+          </div>
+        </div>
+
+        <p>
+          Converting a lead to a quote is <code>UPDATE status = 'quote_draft'</code>. No row copy.
+          That one property buys a lot: the link you already sent the customer keeps working, the
+          activity log stays continuous, ids stay stable for the audit trail, and analytics is one
+          <code>GROUP BY</code> instead of a three-way union.
+        </p>
+        <p>
+          The cost is a wide table — roughly forty columns, many meaningful at only one stage.
+          <code>scheduled_start</code> means nothing on a lead; <code>sent_at</code> means nothing
+          on a job. That's an accepted trade, and a generated <code>kind</code> column
+          (<code>lead｜quote｜job｜archived</code>) keeps board filters and indexes cheap.
+        </p>
+        <p>
+          Around it sit <code>companies</code> (the tenant root), <code>users</code>,
+          <code>customers</code>, <code>catalog_items</code> (the contractor's price book),
+          <code>quote_items</code>, <code>invoices</code>, and <code>payments</code>. Seventeen
+          tables in total.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Stack</b>Two runtimes, one database. Everything else is a library or a vendor.</div>
+      <div class="col">
+        <h2>The stack</h2>
+        <p>
+          Two deployable units: a Next.js application and a small Python AI service. One
+          Postgres database behind both. Nothing else runs.
+        </p>
+
+        <figure>
+          <div class="frame">
+            <svg viewBox="0 0 556 330" role="img"
+                 aria-label="System topology. Contractor and customer browsers reach the Next.js server; the Next.js server queries Postgres directly over a pg connection pool, verifies identity against Supabase Auth, and calls a FastAPI service that reads the catalog from Postgres and prompts Gemini.">
+              <defs>
+                <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="currentColor"></path>
+                </marker>
+              </defs>
+
+              <!-- clients -->
+              <rect class="d-box" x="8" y="40" width="110" height="46" rx="5"></rect>
+              <text class="d-t" x="63" y="62" text-anchor="middle">Contractor</text>
+              <text class="d-s" x="63" y="76" text-anchor="middle">phone · desktop</text>
+
+              <rect class="d-box" x="8" y="148" width="110" height="46" rx="5"></rect>
+              <text class="d-t" x="63" y="170" text-anchor="middle">Customer</text>
+              <text class="d-s" x="63" y="184" text-anchor="middle">no account</text>
+
+              <!-- app -->
+              <rect class="d-key" x="170" y="30" width="160" height="180" rx="6"></rect>
+              <text class="d-t" x="250" y="55" text-anchor="middle">Next.js 16</text>
+              <text class="d-s" x="250" y="72" text-anchor="middle">Vercel</text>
+              <line class="d-line" x1="186" y1="86" x2="314" y2="86" opacity="0.35"></line>
+              <text class="d-s" x="250" y="108" text-anchor="middle">Server Components</text>
+              <text class="d-s" x="250" y="126" text-anchor="middle">Server Actions</text>
+              <text class="d-s" x="250" y="144" text-anchor="middle">React 19 · Tailwind 4</text>
+              <text class="d-s" x="250" y="162" text-anchor="middle">@react-pdf · Resend</text>
+              <text class="d-s" x="250" y="180" text-anchor="middle">/q/{token} · /i/{token}</text>
+
+              <!-- data -->
+              <rect class="d-key" x="390" y="30" width="150" height="80" rx="6"></rect>
+              <text class="d-t" x="465" y="55" text-anchor="middle">Postgres 17</text>
+              <text class="d-s" x="465" y="72" text-anchor="middle">Supabase Cloud</text>
+              <text class="d-s" x="465" y="90" text-anchor="middle">17 tables · pgvector</text>
+
+              <rect class="d-box" x="390" y="142" width="150" height="56" rx="5"></rect>
+              <text class="d-t" x="465" y="166" text-anchor="middle">FastAPI</text>
+              <text class="d-s" x="465" y="184" text-anchor="middle">Railway</text>
+
+              <rect class="d-box" x="390" y="236" width="150" height="50" rx="5"></rect>
+              <text class="d-t" x="465" y="258" text-anchor="middle">Gemini 2.5 Flash</text>
+              <text class="d-s" x="465" y="274" text-anchor="middle">google-genai</text>
+
+              <rect class="d-box" x="170" y="250" width="160" height="52" rx="5"></rect>
+              <text class="d-t" x="250" y="272" text-anchor="middle">Supabase Auth</text>
+              <text class="d-s" x="250" y="288" text-anchor="middle">cookies · OAuth</text>
+
+              <!-- edges -->
+              <line class="d-line" x1="118" y1="63" x2="164" y2="63" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="141" y="54" text-anchor="middle">session</text>
+
+              <line class="d-line" x1="118" y1="171" x2="164" y2="171" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="141" y="162" text-anchor="middle">token</text>
+
+              <line class="d-line thick" x1="330" y1="62" x2="384" y2="62" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="357" y="52" text-anchor="middle">SQL</text>
+              <text class="d-lab" x="357" y="80" text-anchor="middle">pg pool</text>
+
+              <line class="d-line" x1="330" y1="170" x2="384" y2="170" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="357" y="161" text-anchor="middle">generate</text>
+
+              <line class="d-line dash" x1="430" y1="142" x2="430" y2="116" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="422" y="132" text-anchor="end">catalog</text>
+
+              <line class="d-line" x1="465" y1="198" x2="465" y2="230" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="473" y="218" text-anchor="start">prompt</text>
+
+              <line class="d-line dash" x1="250" y1="210" x2="250" y2="244" marker-end="url(#ar)"></line>
+              <text class="d-lab" x="258" y="231" text-anchor="start">verify JWT</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>The load-bearing edge is the thick one.</b> Reads and writes go straight from the
+            Next.js server to Postgres over a connection pool — there is no API tier between
+            them. Supabase is contacted only to verify identity (dashed). The AI service is a
+            side call on the quote path, not in the request path for anything else.
+          </figcaption>
+        </figure>
+
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Layer</th><th>Choice</th><th>State</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Framework</td><td><code>Next.js 16</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>App Router, React Compiler on, security headers in <code>next.config.ts</code></td>
+              </tr>
+              <tr>
+                <td>UI</td><td><code>React 19 · Tailwind 4 · shadcn/ui</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>19 primitives in <code>src/components/ui</code>; monochrome tokens in <code>globals.css</code></td>
+              </tr>
+              <tr>
+                <td>Language</td><td><code>TypeScript strict</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Build errors ignored only because the dead tree doesn't compile</td>
+              </tr>
+              <tr>
+                <td>Validation</td><td><code>Zod · React Hook Form</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Also validates env vars and the AI service response contract</td>
+              </tr>
+              <tr>
+                <td>Database</td><td><code>Postgres 17</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Via <code>node-postgres</code>, parameterized SQL, no ORM</td>
+              </tr>
+              <tr>
+                <td>Auth</td><td><code>Supabase Auth</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td><code>@supabase/ssr</code> cookies, Google OAuth. Identity only, never data.</td>
+              </tr>
+              <tr>
+                <td>AI</td><td><code>FastAPI · google-genai · Gemini</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Grounded on the catalog, model fallback chain, mock fallback</td>
+              </tr>
+              <tr>
+                <td>PDF</td><td><code>@react-pdf/renderer</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Server-rendered quote and invoice documents</td>
+              </tr>
+              <tr>
+                <td>Email</td><td><code>Resend · React Email</code></td>
+                <td><span class="flag live">In use</span></td>
+                <td>Templates in <code>src/emails</code>. Domain auth not yet configured.</td>
+              </tr>
+              <tr>
+                <td>Payments</td><td><code>Stripe Connect Express</code></td>
+                <td><span class="flag open">Test mode</span></td>
+                <td>Checkout and card-fee pass-through wired; live keys pending</td>
+              </tr>
+              <tr>
+                <td>E-signature</td><td><code>SignNow / Dropbox Sign</code></td>
+                <td><span class="flag open">Test mode</span></td>
+                <td>Falls back to instant acceptance if signing fails</td>
+              </tr>
+              <tr>
+                <td>Retrieval</td><td><code>pgvector · tsvector</code></td>
+                <td><span class="flag dead">Not wired</span></td>
+                <td>Schema and <code>match_documents()</code> exist; nothing calls them</td>
+              </tr>
+              <tr>
+                <td>Billing</td><td><code>LemonSqueezy</code></td>
+                <td><span class="flag dead">Not wired</span></td>
+                <td>How Rivet itself would be charged for. Does not exist yet.</td>
+              </tr>
+              <tr>
+                <td>Hosting</td><td><code>Vercel · Railway · Supabase</code></td>
+                <td><span class="flag open">Decided</span></td>
+                <td>Not provisioned. Nothing is deployed anywhere today.</td>
+              </tr>
+              <tr>
+                <td>Tooling</td><td><code>pnpm · biome · vitest · uv · ruff</code></td>
+                <td><span class="flag open">Target</span></td>
+                <td>Repo currently runs npm + eslint with no test runner</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Data flow</b>One quote, front to back. Six hops, two runtimes.</div>
+      <div class="col">
+        <h2>How a quote moves through the system</h2>
+        <p>
+          This is the path worth tracing on your first day. It touches the data layer, tenancy,
+          server actions, the AI service, and the public surface — once you can narrate it, you
+          can work anywhere in the codebase.
+        </p>
+
+        <figure>
+          <div class="frame">
+            <svg viewBox="0 0 520 416" role="img"
+                 aria-label="Quote data flow in six steps: the new-quote page, the createDraftQuote server action, an atomic SQL function creating customer and work item, the AI generate-quote call, the saveLineItems write, and the public token page where the customer accepts.">
+              <defs>
+                <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="currentColor"></path>
+                </marker>
+              </defs>
+
+              <text class="d-lab" x="64" y="38" text-anchor="end">BROWSER</text>
+              <rect class="d-box" x="76" y="8" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="31">/app/quotes/new</text>
+              <text class="d-s" x="92" y="48">Contractor describes the job in one sentence</text>
+              <line class="d-line" x1="294" y1="60" x2="294" y2="72" marker-end="url(#ar2)"></line>
+
+              <text class="d-lab" x="64" y="106" text-anchor="end">SERVER</text>
+              <rect class="d-box" x="76" y="76" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="99">createDraftQuote()</text>
+              <text class="d-s" x="92" y="116">Zod-validated action · session gives company_id</text>
+              <line class="d-line" x1="294" y1="128" x2="294" y2="140" marker-end="url(#ar2)"></line>
+
+              <text class="d-lab" x="64" y="174" text-anchor="end">POSTGRES</text>
+              <rect class="d-key" x="76" y="144" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="167">create_work_item_with_customer()</text>
+              <text class="d-s" x="92" y="184">Customer, address, work item — one transaction</text>
+              <line class="d-line" x1="294" y1="196" x2="294" y2="208" marker-end="url(#ar2)"></line>
+
+              <text class="d-lab" x="64" y="242" text-anchor="end">AI SERVICE</text>
+              <rect class="d-key" x="76" y="212" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="235">POST /api/ai/generate-quote</text>
+              <text class="d-s" x="92" y="252">Gemini, grounded strictly on catalog_items</text>
+              <line class="d-line" x1="294" y1="264" x2="294" y2="276" marker-end="url(#ar2)"></line>
+
+              <text class="d-lab" x="64" y="310" text-anchor="end">SERVER</text>
+              <rect class="d-box" x="76" y="280" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="303">saveLineItems()</text>
+              <text class="d-s" x="92" y="320">Replace-all write · subtotal, tax, total recomputed</text>
+              <line class="d-line" x1="294" y1="332" x2="294" y2="344" marker-end="url(#ar2)"></line>
+
+              <text class="d-lab" x="64" y="378" text-anchor="end">PUBLIC</text>
+              <rect class="d-key" x="76" y="348" width="436" height="52" rx="5"></rect>
+              <text class="d-t" x="92" y="371">/q/{public_token}</text>
+              <text class="d-s" x="92" y="388">Customer views, accepts, signs, pays — no login</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>Status changes, the row doesn't.</b> Steps 3 through 6 all act on the same
+            <code>work_items</code> row: <code>quote_draft</code> → <code>quote_sent</code> →
+            <code>quote_viewed</code> → <code>quote_accepted</code>. Scheduling and invoicing
+            continue on that same row, which is why the link in step 6 keeps working for the life
+            of the job.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Rationale</b>Why the code looks the way it does.</div>
+      <div class="col">
+        <h2>Three choices that explain the code</h2>
+
+        <h3>Postgres directly, not through an ORM</h3>
+        <p>
+          Every read and write goes through a <code>pg</code> pool and parameterized SQL —
+          <code>src/lib/db/index.ts</code>. No Drizzle, no Prisma, no Supabase query builder.
+        </p>
+        <p>
+          Supabase is still the database host and still owns authentication. It is not the data
+          layer. PostgREST forced awkward shapes on multi-table reads — embeds that break
+          silently when a column is renamed, which caused two production 404s — and joins were
+          being emulated in TypeScript. Plain SQL also keeps the door open to move off Supabase
+          without rewriting the application.
+        </p>
+        <p>
+          Two things in that file surprise people: <code>numeric</code> is parsed to a JS
+          <code>number</code> so money arithmetic works, and timestamps come back as raw ISO
+          strings rather than <code>Date</code> objects.
+        </p>
+
+        <h3>Server Actions for writes, Server Components for reads</h3>
+        <p>
+          There is no REST API for the product. A route directory owns its own data access: a
+          <code>page.tsx</code> that queries and renders, an <code>actions.ts</code> holding
+          <code>'use server'</code> mutations, and client components only where there's
+          interaction.
+        </p>
+        <p>
+          Actions never throw to the client. They validate with Zod, verify ownership, mutate,
+          revalidate the affected paths, and return
+          <code>{ ok: true, data } | { ok: false, error }</code>. Errors surface as toasts, not
+          error boundaries. A page render is one server-side round trip to Postgres — no client
+          fetch layer, no cache to invalidate, no API schema to keep in sync.
+        </p>
+
+        <h3>Public links are tokens, not ids</h3>
+        <p>
+          <code>/q/{token}</code> and <code>/i/{token}</code> are the only unauthenticated routes
+          that read data. The token is 128 random bits on the work item, never its UUID, so links
+          can't be enumerated. These routes use the service-role client because there is no
+          session to scope by — the token <em>is</em> the authorisation. That's a deliberate
+          exception, not an oversight.
+        </p>
+        <p>
+          It is also the surface customers judge the product on, often the only screen they ever
+          see. It should feel like Stripe Checkout.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Critical</b>No framework catches a missed tenant filter. Nothing does.</div>
+      <div class="col">
+        <h2>The rule you cannot get wrong</h2>
+
+        <div class="rule-box">
+          <p>The <code>pg</code> pool connects as superuser and bypasses Row Level Security.</p>
+          <p>
+            RLS policies exist on every table and are correct — but they protect the
+            <code>anon</code> and <code>authenticated</code> Postgres roles, not your queries.
+            Application-level scoping is the primary control, and it is manual.
+          </p>
+        </div>
+
+        <figure>
+          <div class="frame">
+            <svg viewBox="0 0 600 306" role="img"
+                 aria-label="Three data paths into Postgres. Server components using the pg pool and public token routes using the service-role client both bypass row level security; only the browser anon client is stopped by it.">
+              <defs>
+                <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="currentColor"></path>
+                </marker>
+                <marker id="ar3w" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="var(--dead)"></path>
+                </marker>
+              </defs>
+
+              <!-- lane 1 -->
+              <rect class="d-key" x="6" y="28" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="81" y="49" text-anchor="middle">Server Action</text>
+              <text class="d-s" x="81" y="65" text-anchor="middle">Server Component</text>
+
+              <rect class="d-box" x="190" y="28" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="265" y="49" text-anchor="middle">pg pool</text>
+              <text class="d-s" x="265" y="65" text-anchor="middle">superuser</text>
+
+              <line class="d-line" x1="156" y1="52" x2="184" y2="52" marker-end="url(#ar3)"></line>
+              <polyline class="d-warn" points="340,52 400,52 440,104" marker-end="url(#ar3w)"></polyline>
+              <text class="d-warn-t" x="404" y="42">bypasses</text>
+
+              <!-- lane 2 -->
+              <rect class="d-key" x="6" y="118" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="81" y="139" text-anchor="middle">/q/{token}</text>
+              <text class="d-s" x="81" y="155" text-anchor="middle">public route</text>
+
+              <rect class="d-box" x="190" y="118" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="265" y="139" text-anchor="middle">service-role</text>
+              <text class="d-s" x="265" y="155" text-anchor="middle">PostgREST</text>
+
+              <line class="d-line" x1="156" y1="142" x2="184" y2="142" marker-end="url(#ar3)"></line>
+              <polyline class="d-warn" points="340,142 400,142 440,142" marker-end="url(#ar3w)"></polyline>
+              <text class="d-warn-t" x="404" y="132">bypasses</text>
+
+              <!-- lane 3 -->
+              <rect class="d-box" x="6" y="212" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="81" y="233" text-anchor="middle">Browser client</text>
+              <text class="d-s" x="81" y="249" text-anchor="middle">anon key</text>
+
+              <rect class="d-box" x="190" y="212" width="150" height="48" rx="5"></rect>
+              <text class="d-t" x="265" y="233" text-anchor="middle">PostgREST</text>
+              <text class="d-s" x="265" y="249" text-anchor="middle">authenticated</text>
+
+              <line class="d-line" x1="156" y1="236" x2="184" y2="236" marker-end="url(#ar3)"></line>
+              <line class="d-line" x1="340" y1="236" x2="396" y2="236"></line>
+              <line class="d-line thick" x1="400" y1="224" x2="400" y2="248"></line>
+              <text class="d-lab" x="392" y="226" text-anchor="end">stopped</text>
+
+              <!-- RLS barrier -->
+              <line class="d-line dash" x1="410" y1="10" x2="410" y2="286" opacity="0.55"></line>
+              <text class="d-lab" x="410" y="300" text-anchor="middle">ROW LEVEL SECURITY</text>
+
+              <!-- tables -->
+              <rect class="d-key" x="446" y="98" width="148" height="88" rx="6"></rect>
+              <text class="d-t" x="520" y="128" text-anchor="middle">Postgres</text>
+              <text class="d-s" x="520" y="146" text-anchor="middle">work_items</text>
+              <text class="d-s" x="520" y="162" text-anchor="middle">customers · invoices</text>
+              <text class="d-s" x="520" y="178" text-anchor="middle">catalog_items</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>Both application paths go around the policy layer.</b> For server code the real
+            boundary is the <code>where company_id = $n</code> clause you write; for the public
+            route it is the unguessable 128-bit token. Row Level Security only stops the path the
+            application doesn't use.
+          </figcaption>
+        </figure>
+
+        <p>
+          So: every statement touching company data carries <code>company_id</code>, and every
+          mutation verifies the target row belongs to the caller's company before it writes. A
+          missing clause is a cross-tenant data leak that compiles, passes review, and looks fine
+          in local testing against a single seeded company.
+        </p>
+
+        <pre><code><span class="cmt">// Right</span>
+const { companyId } = await requireSession()
+const rows = await query&lt;Row&gt;(
+  'select id, total from work_items where id = $1 and company_id = $2',
+  [id, companyId],
+)
+
+<span class="cmt">// Wrong — returns another contractor's quote</span>
+const rows = await query&lt;Row&gt;(
+  'select id, total from work_items where id = $1',
+  [id],
+)</code></pre>
+
+        <p>
+          Two session helpers exist, and the distinction matters: <code>requireSession()</code>
+          redirects and belongs in pages; <code>getSession()</code> returns null and belongs in
+          actions. Both verify the JWT through Supabase, then read the user row via
+          <code>pg</code>.
+        </p>
+        <p>
+          One more trap: several SQL functions read <code>auth.uid()</code> internally. Under the
+          raw pool that's NULL. Those calls go inside <code>withUser(userId, …)</code>, which sets
+          the JWT claims inside the transaction first.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Read before editing</b>Roughly half the repository is unreachable pre-rebuild code that still compiles.</div>
+      <div class="col">
+        <h2>Which half is real</h2>
+        <p>
+          Rivet was rebuilt in place. The previous application was never deleted — it still
+          compiles, still imports the old Supabase data layer, and still turns up in every grep.
+          Editing it is the most common way to waste a day here.
+        </p>
+        <p>
+          The classification below was derived by tracing every route reachable from the root
+          page and middleware, then computing the transitive import closure. Anything outside it
+          is dead.
+        </p>
+
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr><th>Path</th><th>State</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>src/app/app/**</code></td>
+                <td><span class="flag live">Live</span></td>
+                <td>The entire signed-in product — dashboard, pipeline, quotes, calendar, customers, catalog, analytics, settings</td>
+              </tr>
+              <tr>
+                <td><code>src/app/{q,i,join,login,auth}/**</code></td>
+                <td><span class="flag live">Live</span></td>
+                <td>Public quote and invoice viewers, invitations, auth</td>
+              </tr>
+              <tr>
+                <td><code>src/lib/{db,auth,email,pdf,stripe}</code></td>
+                <td><span class="flag live">Live</span></td>
+                <td>Data layer, session helpers, Resend, PDF rendering, Connect</td>
+              </tr>
+              <tr>
+                <td><code>src/components/{ui,brand,shared}</code></td>
+                <td><span class="flag live">Live</span></td>
+                <td>19 shadcn primitives, logo system, page scaffolding</td>
+              </tr>
+              <tr>
+                <td><code>python-backend/ai_backend.py</code></td>
+                <td><span class="flag live">Live</span></td>
+                <td>340 lines. The only Python file that runs.</td>
+              </tr>
+              <tr>
+                <td><code>src/app/(dashboard)/**</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>Pre-rebuild UI. Unreachable. The sole reason strict builds are disabled.</td>
+              </tr>
+              <tr>
+                <td><code>src/app/api/**</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>Old REST layer, replaced by Server Actions. Except <code>/api/vitals</code>.</td>
+              </tr>
+              <tr>
+                <td><code>src/components/{features,queues,navigation,calendar,ai}</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>Old UI systems, including duplicate component pairs</td>
+              </tr>
+              <tr>
+                <td><code>src/hooks/**</code>, <code>src/features/{work-items,catalog,ai}</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>React Query hooks and rebuild-era code that was never wired up</td>
+              </tr>
+              <tr>
+                <td><code>python-backend/{src,app,api,services}</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>Three further backend generations. See the note below.</td>
+              </tr>
+              <tr>
+                <td><code>supabase/migrations/legacy/**</code></td>
+                <td><span class="flag dead">Dead</span></td>
+                <td>Includes <code>EMERGENCY_DISABLE_RLS.sql</code>. Never run these.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          One consequence worth stating plainly: <code>next.config.ts</code> sets
+          <code>typescript: { ignoreBuildErrors: true }</code> purely because the dead tree
+          doesn't compile. That is not permission to ship type errors — <code>tsc --noEmit</code>
+          is the real gate, and deleting the dead tree is what lets the flag come off.
+        </p>
+        <p>
+          The most interesting dead code is <code>python-backend/src/quotepro/</code>: a complete,
+          tested FastAPI application with multi-agent routing, hybrid RAG over pgvector,
+          Postgres-backed sessions, and a background indexer — built during the rebuild and never
+          connected. Whether to adopt or delete it is an open decision.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Model policy</b>Google Gemini only. Standing decision, not a default.</div>
+      <div class="col">
+        <h2>How the AI works</h2>
+        <p>
+          A single FastAPI endpoint. It fetches the company's active catalog items, builds a
+          grounded prompt, and calls Gemini through the unified <code>google-genai</code> SDK —
+          the same client targets AI Studio via API key or Vertex AI via application credentials.
+        </p>
+        <p>
+          <strong>Grounding is the whole game.</strong> The system prompt forbids inventing line
+          items. That constraint is load-bearing: a hallucinated price is one the contractor is
+          contractually on the hook for once the customer accepts. Quote quality is therefore a
+          function of catalog quality, not model cleverness — which is why catalog import and
+          onboarding matter more to output than any prompt tweak.
+        </p>
+        <p>
+          Two fallbacks, both deliberate. The model chain is tried in order, so a quota limit on
+          the newest Flash model degrades instead of failing. If every model fails, a keyword
+          matcher over the catalog returns plausible line items and flags the response as
+          <code>mock</code> — the UI stays fully exercisable offline, and a Gemini outage doesn't
+          take quoting down. Production should alert whenever that flag appears.
+        </p>
+        <p>
+          Settings are fixed: temperature at or below 0.2, JSON response type whenever output is
+          parsed, response schema where the SDK supports one. Money and structured output must be
+          deterministic. Prompts live as markdown in <code>prompts/</code>, not as string literals
+          in Python, so behaviour can be edited and diffed without touching code.
+        </p>
+
+        <div class="rule-box">
+          <p><span class="flag open">Open risk</span> The AI service currently has no authentication and permits all origins.</p>
+          <p>
+            It accepts <code>company_id</code> in the request body and returns that company's
+            catalog-derived pricing. Deployed publicly as-is, anyone who finds the URL can read
+            any tenant's pricing and exhaust the Gemini quota. Fixing this — verify the JWT,
+            derive <code>company_id</code> from the token, lock CORS, rate-limit — blocks launch.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Honest status</b>Works end to end locally. Not deployed anywhere.</div>
+      <div class="col">
+        <h2>Where it actually stands</h2>
+        <p>
+          The application works. You can sign up, build a catalog, generate a quote, send it,
+          watch a customer accept it, schedule the job, invoice it, and record payment. That whole
+          loop runs today — against a local database, on a laptop.
+        </p>
+
+        <dl class="rows">
+          <div class="row">
+            <dt>Product</dt>
+            <dd>Complete quote-to-cash loop. Dashboard, pipeline board, calendar, customers, catalog, analytics, team invitations with role personas.</dd>
+          </div>
+          <div class="row">
+            <dt>Infrastructure</dt>
+            <dd>None. Local Supabase behind disposable Cloudflare tunnels. No production database, no deployment, no domain.</dd>
+          </div>
+          <div class="row">
+            <dt>Payments</dt>
+            <dd>Stripe Connect wired, test mode. Rivet's own billing — plans, checkout, entitlement gating — does not exist yet.</dd>
+          </div>
+          <div class="row">
+            <dt>Email</dt>
+            <dd>Resend wired. Domain authentication (SPF, DKIM, DMARC) not configured, so production quotes would land in spam.</dd>
+          </div>
+          <div class="row">
+            <dt>Tests</dt>
+            <dd>None. <code>tsc --noEmit</code> is the only automated check. CI describes a toolchain that isn't installed.</dd>
+          </div>
+          <div class="row">
+            <dt>Front door</dt>
+            <dd>No landing page. The root path redirects straight to login.</dd>
+          </div>
+        </dl>
+
+        <p>
+          The sequenced path to production runs roughly six weeks: hosted infrastructure and dead
+          code removal in parallel, then security and correctness, then Stripe live mode and
+          billing, then the landing page and observability. Deleting the dead tree and standing up
+          hosted Supabase are complementary — the first is what lets a strict production build
+          pass, the second is what lets more than one person work on it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Setup</b>Two required processes. Third only for AI.</div>
+      <div class="col">
+        <h2>Getting productive</h2>
+        <p>
+          Clone somewhere local first. The repository currently lives in iCloud Drive, which syncs
+          every file operation — installs crawl and git history walks can hang for minutes.
+        </p>
+
+        <pre><code>git switch rebuild/main   <span class="cmt"># the live branch; `main` is pre-rebuild</span>
+npm install
+supabase start            <span class="cmt"># Postgres :54322 · API :54321 · Studio :54323</span>
+supabase db reset         <span class="cmt"># migrations + demo seed</span>
+npm run dev               <span class="cmt"># → localhost:3000</span>
+
+<span class="cmt"># quote generation only:</span>
+cd python-backend &amp;&amp; uvicorn ai_backend:app --reload --port 8000</code></pre>
+
+        <p>
+          The seed creates one demo company with fifteen work items spread across the lifecycle,
+          and three logins — owner, office, and technician, all <code>demo1234</code>. Test with
+          more than one. Permission bugs only appear when you switch roles.
+        </p>
+        <p>
+          Two things will bite you on first run. <code>node_modules</code> may be a symlink
+          pointing at a directory that doesn't exist — an iCloud workaround; delete it and
+          reinstall. And the inherited environment file points at expired tunnel URLs; replace
+          them with localhost.
+        </p>
+
+        <h3>Then trace one flow</h3>
+        <p>
+          Create a quote in the UI and follow it through the code, hop by hop, against the
+          six-step diagram above. Open the pipeline detail page, then pull the
+          <code>public_token</code> out of the database and open <code>/q/&lt;token&gt;</code> in a
+          private window — that's the screen your customer sees, and it's the one that sells.
+        </p>
+
+        <h3>Working agreement</h3>
+        <ul>
+          <li>Branch off <code>rebuild/main</code>. Small PRs, one concern each.</li>
+          <li><code>tsc --noEmit</code> clean on live code before opening.</li>
+          <li>Terse commits — <code>fix(pipeline): detail 404 on missing address</code>. No summary paragraphs.</li>
+          <li>No new markdown files unless asked. The repo has roughly 140 and most are misleading.</li>
+          <li>Non-obvious decisions get a one-page ADR: context, decision, consequences, date.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Agent setup</b>Fifteen minutes. Do it before your first real task.</div>
+      <div class="col">
+        <h2>Setting up Claude Code</h2>
+        <p>
+          The project context, the coding rules, and the repeatable workflows are committed to
+          the repository rather than living in anyone's head or chat history. A clone brings
+          them with it, so no one has to re-explain Rivet to an agent.
+        </p>
+
+        <dl class="rows">
+          <div class="row"><dt>CLAUDE.md</dt><dd>Loads automatically. Product summary, live/dead code map, tenancy rule, commands, traps.</dd></div>
+          <div class="row"><dt>.claude/skills/</dt><dd>Six project skills — <code>rivet-dev</code>, <code>rivet-data</code>, <code>rivet-migration</code>, <code>rivet-ui</code>, <code>rivet-ai</code>, <code>rivet-ship</code>.</dd></div>
+          <div class="row"><dt>.claude/settings.json</dt><dd>The team's plugin set, so every machine has the same tooling. Committed.</dd></div>
+          <div class="row"><dt>.claude/settings.local.json</dt><dd>Your personal permission allowlist. Gitignored.</dd></div>
+        </dl>
+
+        <h3>The steps</h3>
+        <pre><code><span class="cmt"># 1 · install</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="cmt"># 2 · authenticate (first run walks you through sign-in)</span>
+claude
+
+<span class="cmt"># 3 · clone OUTSIDE iCloud Drive, onto the live branch</span>
+git clone https://github.com/dipenvekaria/quotepro.git ~/code/rivet
+cd ~/code/rivet &amp;&amp; git switch rebuild/main
+
+<span class="cmt"># 4 · start Claude FROM THE REPO ROOT — this is the step people get wrong</span>
+claude</code></pre>
+
+        <p>
+          Then confirm it worked. <code>/context</code> should list <code>CLAUDE.md</code> among
+          the loaded files, and <code>/rivet-dev</code> should resolve. If the skills aren't
+          found, you started Claude from the wrong directory — <code>CLAUDE.md</code> loads from
+          the working directory and its parents, so launching from a parent silently gives you
+          an agent with no project context at all.
+        </p>
+        <p>
+          The real test is asking something only the repo context can answer — <em>which parts
+          of this codebase are dead?</em> A correctly configured session names the
+          <code>(dashboard)</code> tree, most of <code>src/app/api</code>, and three of the four
+          Python backends. One that starts grepping around is not loading the context.
+        </p>
+
+        <h3>Staying in sync</h3>
+        <p>
+          Because the files are the source of truth, keeping everyone aligned is a matter of
+          updating them rather than telling each other things. If Claude gets something wrong
+          about the project and you correct it in chat, that correction dies with the session —
+          put it in <code>CLAUDE.md</code> or the relevant skill and commit it. A new repeatable
+          workflow becomes a new skill under <code>.claude/skills/</code>, and it's on
+          everyone's machine at their next pull.
+        </p>
+        <p>
+          Of the six skills, <code>rivet-data</code> is the one that earns its place most. The
+          <code>pg</code> pool bypasses row level security, so tenant scoping is enforced by hand
+          in every query — an agent that hasn't read that skill will write a plausible-looking
+          query that leaks another contractor's data.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <section>
+      <div class="note"><b>Reference</b>In the repo. Written 2026-08-07 and verified against the working tree.</div>
+      <div class="col">
+        <h2>Where the detail lives</h2>
+        <p>
+          Everything above is the orientation layer. The repository carries the full versions, and
+          they are the ones kept current.
+        </p>
+
+        <dl class="rows">
+          <div class="row"><dt>CLAUDE.md</dt><dd>Agent context — rules, live/dead map, conventions. Loads automatically in Claude Code.</dd></div>
+          <div class="row"><dt>docs/ONBOARDING.md</dt><dd>Day one through first PR, with the failure modes spelled out.</dd></div>
+          <div class="row"><dt>docs/CLAUDE_CODE_SETUP.md</dt><dd>Full agent setup, plugin set, and how the team stays in sync.</dd></div>
+          <div class="row"><dt>docs/CODEBASE_MAP.md</dt><dd>Every directory classified live or dead, with reasoning.</dd></div>
+          <div class="row"><dt>docs/ARCHITECTURE.md</dt><dd>How the pieces fit and why each choice was made.</dd></div>
+          <div class="row"><dt>docs/DATA_MODEL.md</dt><dd>Schema, lifecycle, views, functions, RLS.</dd></div>
+          <div class="row"><dt>docs/CONVENTIONS.md</dt><dd>Formatting, naming, data access, server actions, comments, git.</dd></div>
+          <div class="row"><dt>docs/DEPLOYMENT.md</dt><dd>Vercel, Railway, Supabase Cloud — the runbook, not a description.</dd></div>
+          <div class="row"><dt>docs/LAUNCH_PLAN.md</dt><dd>Sequenced path to production, P0 through P2.</dd></div>
+          <div class="row"><dt>docs/CLEANUP_PLAN.md</dt><dd>Debt paydown in dependency order.</dd></div>
+          <div class="row"><dt>docs/adr/</dt><dd>Decisions and their rationale, including the ones taken this week.</dd></div>
+        </dl>
+
+        <p>
+          Six project skills live in <code>.claude/skills/</code> and give Claude Code the right
+          instincts here: <code>rivet-dev</code> for running the stack, <code>rivet-data</code>
+          for queries and tenancy, <code>rivet-migration</code> for schema changes,
+          <code>rivet-ui</code> for the design system, <code>rivet-ai</code> for the model layer,
+          and <code>rivet-ship</code> for pre-PR verification.
+        </p>
+        <p>
+          Anything under <code>docs/archive/</code>, <code>docs/rebuild/</code>, or
+          <code>REBUILD.md</code> describes a system that no longer exists. History, not
+          instruction.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>Rivet — Engineering Primer</span>
+    <span>Rev. 2026-08-07</span>
+    <span>Branch rebuild/main</span>
+    <span>Formerly QuotePro</span>
+  </footer>
+
+</div>

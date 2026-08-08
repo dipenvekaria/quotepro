@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...but the templates must ship, or a fresh clone has nothing to copy from.
+!.env.example
+!python-backend/.env.example
 
 # vercel
 .vercel
@@ -58,6 +61,9 @@ docs/archive/
 *.log
 *.tmp
 *.swp
+
+# iCloud: keep real deps local, out of iCloud sync (node_modules -> node_modules.nosync)
+*.nosync
 *.swo
 *~
 
@@ -66,6 +72,11 @@ docs/archive/
 .idea/
 *.sublime-*
 
+# Claude Code — share the team config, keep personal overrides local.
+# .claude/settings.json and .claude/skills/ ARE committed on purpose: they are
+# how every engineer gets the same plugins, skills, and project context.
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db
@@ -73,3 +84,11 @@ Thumbs.db
 # Generated PDFs (local testing)
 /generated-pdfs/
 *.pdf
+# ...except the primer, which is a versioned deliverable. Named explicitly so a
+# stray browser "Save as PDF" dropped into docs/ can't get committed alongside it.
+!docs/Rivet-Engineering-Primer.pdf
+
+# Primer build intermediates — regenerate with docs/primer/build-pdf.py
+docs/primer/rivet-primer-print.html
+docs/primer/_preview.html
+docs/primer/pages/
