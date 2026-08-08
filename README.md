@@ -70,6 +70,7 @@ Environment setup and the failure modes you'll hit are in
 | [`docs/GTM_BUSINESS_CHECKLIST.md`](docs/GTM_BUSINESS_CHECKLIST.md) | Legal, compliance, marketing, billing, support |
 | [`docs/CLEANUP_PLAN.md`](docs/CLEANUP_PLAN.md) | Debt paydown, in order |
 | [`docs/adr/`](docs/adr/) | Decisions and rationale |
+| [`docs/SESSION_LOG_2026-08-07.md`](docs/SESSION_LOG_2026-08-07.md) | Decisions, findings and open items from the handover session |
 | [`docs/Rivet-Engineering-Primer.pdf`](docs/Rivet-Engineering-Primer.pdf) | The above, condensed into one shareable 12-page document |
 
 The primer is generated from [`docs/primer/rivet-primer.html`](docs/primer/rivet-primer.html).

@@ -194,6 +194,7 @@ Invoke by name:
 | [`docs/GTM_BUSINESS_CHECKLIST.md`](docs/GTM_BUSINESS_CHECKLIST.md) | Legal, compliance, marketing, billing, support |
 | [`docs/CLEANUP_PLAN.md`](docs/CLEANUP_PLAN.md) | Debt paydown, in order |
 | [`docs/adr/`](docs/adr/) | Decisions and their rationale |
+| [`docs/SESSION_LOG_2026-08-07.md`](docs/SESSION_LOG_2026-08-07.md) | Decisions, findings and open items from the handover session |
 | [`docs/Rivet-Engineering-Primer.pdf`](docs/Rivet-Engineering-Primer.pdf) | Shareable 12-page condensation of all of the above |
 
 The primer's source is `docs/primer/rivet-primer.html` (also published as a web artifact).
