@@ -284,6 +284,56 @@ copy, the screenshots you show. Nothing in the schema changes.
 they're enthusiastic, be a plumbing company. As an outsider, your read on which trade to serve is
 worse than the signal from who actually responds.
 
+### Which trades, and how many there are
+
+The useful fact is not how many trades exist — it's how concentrated the addressable market is.
+
+| Trade (NAICS) | US businesses | Annual revenue |
+| --- | --- | --- |
+| **Plumbing + HVAC (238220)** | ~89,000–105,000 establishments | HVAC alone **$156.2B** — the largest single trade |
+| **Electrical (238210)** | ~56,000–82,000 firms | — |
+| Roofing | — | $53B |
+| Painting | — | $45B |
+| All US home services | — | $543B–842B depending on definition |
+
+_Counts vary by source depending on whether non-employer businesses are included; treat them as
+orders of magnitude, not precise figures._
+
+**The single most useful thing in that table:** plumbing and HVAC share one NAICS code (238220)
+because so many companies do both. Targeting HVAC captures a large share of plumbing for free —
+the same business, the same buyer, the same price book. We do not have to choose between them.
+
+Add electrical and you have **MEP** (mechanical, electrical, plumbing), the natural cluster the
+industry already recognises — and the segment RIVET Work explicitly sells to.
+
+**Recommended sequence:**
+
+1. **HVAC first.** Largest trade by revenue, highest ticket, strongest flat-rate price-book
+   culture, and maintenance agreements are already how these businesses make money.
+2. **Plumbing follows automatically** — same NAICS code, frequently the same company.
+3. **Electrical third.** Same MEP cluster, similar quoting workflow, minimal product change.
+
+**Deliberately not first:**
+
+- **Landscaping / lawn** — several hundred thousand businesses but overwhelmingly one- and
+  two-person operations at low ticket. This is QuoteIQ's home turf and their founders' own
+  background. Attacking it means fighting their distribution on their ground.
+- **Roofing** — measurement- and aerial-imagery-driven rather than price-book-driven, and xBuild
+  raised $19M there in January 2026.
+- **Cleaning, pest control** — recurring-visit businesses with a different core workflow. Quoting
+  is not their bottleneck.
+
+### The number that puts this in perspective
+
+MEP is roughly **175,000 US businesses**. Most are one- or two-person operations, too small for
+a $199–349/month product. The 5–19 employee band — the multi-truck shops we are targeting — is
+plausibly **40,000–50,000 businesses**.
+
+We need **200**. That is around **0.4% of the addressable segment**, in one trade, and we can
+reach it through referrals in a single metro area.
+
+The market is not the constraint. Distribution is.
+
 ---
 
 ## 4b. Should Rivet become a mobile app?
