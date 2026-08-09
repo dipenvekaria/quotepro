@@ -66,6 +66,10 @@ const serverEnvSchema = z.object({
   DROPBOX_SIGN_API_KEY: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
   BACKEND_INTERNAL_URL: z.string().url().default('http://localhost:8000'),
+  // Shared secret sent as X-Rivet-Key on every AI-service call. The service
+  // rejects /api/* without it, which is what keeps the backend unreachable by
+  // anyone who finds its URL.
+  RIVET_BACKEND_SECRET: z.string().min(1).default('dev-local-secret-change-me'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 

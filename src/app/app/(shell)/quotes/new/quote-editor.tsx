@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
-import { createDraftQuote, saveLineItems } from './actions'
+import { createDraftQuote, generateQuoteItems, saveLineItems } from './actions'
 
 // -----------------------------------------------------------------------------
 
@@ -126,57 +126,34 @@ export function QuoteEditor({
     }
     const prompt = aiPrompt.trim() || description
     startAi(async () => {
-      try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
-        const res = await fetch(`${backendUrl}/api/ai/generate-quote`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            company_id: companyId,
-            description: prompt,
-            customer_name: customerName || 'Prospect',
-            customer_address: address || undefined,
-            existing_items: [],
-          }),
-        })
-        if (!res.ok) {
-          const body = await res.text()
-          throw new Error(body.slice(0, 200))
-        }
-        const data = (await res.json()) as {
-          line_items: Array<{
-            name: string
-            description?: string | null
-            quantity: number
-            unit_price: number
-            is_upsell?: boolean
-            is_discount?: boolean
-          }>
-          tax_rate?: number
-        }
-        setItems(
-          data.line_items.map((li) => ({
-            key: crypto.randomUUID(),
-            name: li.name,
-            description: li.description ?? '',
-            quantity: li.quantity,
-            unit_price: li.unit_price,
-            is_upsell: li.is_upsell,
-            is_discount: li.is_discount,
-          })),
-        )
-        if (typeof data.tax_rate === 'number') setTaxRate(data.tax_rate)
-        toast.success(`Generated ${data.line_items.length} items`)
-        setAiOpen(false)
-      } catch (e) {
-        toast.error(
-          e instanceof Error && e.message.includes('fetch')
-            ? 'Backend not running. Start python-backend on :8000.'
-            : e instanceof Error
-              ? e.message
-              : 'AI generation failed',
-        )
+      // company_id is derived from the session inside the action — never sent
+      // from here. See actions.ts.
+      const res = await generateQuoteItems({
+        description: prompt,
+        customer_name: customerName || undefined,
+        customer_address: address || undefined,
+      })
+
+      if (!res.ok) {
+        toast.error(res.error)
+        return
       }
+
+      const data = res.data
+      setItems(
+        data.line_items.map((li) => ({
+          key: crypto.randomUUID(),
+          name: li.name,
+          description: li.description ?? '',
+          quantity: li.quantity,
+          unit_price: li.unit_price,
+          is_upsell: li.is_upsell,
+          is_discount: li.is_discount,
+        })),
+      )
+      if (typeof data.tax_rate === 'number') setTaxRate(data.tax_rate)
+      toast.success(`Generated ${data.line_items.length} items`)
+      setAiOpen(false)
     })
   }
 
