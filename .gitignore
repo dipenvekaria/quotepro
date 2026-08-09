@@ -35,6 +35,12 @@ yarn-error.log*
 # ...but the templates must ship, or a fresh clone has nothing to copy from.
 !.env.example
 !python-backend/.env.example
+!.env.production.example
+
+# Supabase CLI scratch state: which project this machine is linked to, cached
+# service versions. Machine-local — committing it makes two engineers fight over
+# whose project ref wins.
+supabase/.temp/
 
 # vercel
 .vercel
