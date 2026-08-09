@@ -4,7 +4,89 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { getSession } from '@/lib/auth/session'
+import { envServer } from '@/lib/env'
 import { query, withTransaction, withUser } from '@/lib/db'
+
+// -----------------------------------------------------------------------------
+// AI quote generation.
+//
+// This runs server-side deliberately. The browser used to call the FastAPI
+// service directly with a client-supplied company_id, which meant changing one
+// value in devtools returned another tenant's catalog-derived pricing, and no
+// amount of frontend access control could cover a backend on a second origin.
+// company_id now comes from the session and never from the caller.
+// -----------------------------------------------------------------------------
+
+const generateSchema = z.object({
+  description: z.string().min(3).max(4000),
+  customer_name: z.string().max(200).optional(),
+  customer_address: z.string().max(500).optional(),
+})
+
+const aiLineItemSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().nullable().optional(),
+  quantity: z.coerce.number(),
+  unit_price: z.coerce.number(),
+  is_upsell: z.boolean().optional(),
+  is_discount: z.boolean().optional(),
+})
+
+const aiResponseSchema = z.object({
+  line_items: z.array(aiLineItemSchema),
+  tax_rate: z.number().optional(),
+  reasoning: z.string().optional(),
+  mode: z.string().optional(),
+})
+
+export type GenerateQuoteInput = z.infer<typeof generateSchema>
+
+export async function generateQuoteItems(input: unknown) {
+  const parsed = generateSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const { BACKEND_INTERNAL_URL, RIVET_BACKEND_SECRET } = envServer()
+
+  let res: Response
+  try {
+    res = await fetch(`${BACKEND_INTERNAL_URL}/api/ai/generate-quote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Rivet-Key': RIVET_BACKEND_SECRET,
+      },
+      body: JSON.stringify({
+        company_id: session.companyId,
+        description: parsed.data.description,
+        customer_name: parsed.data.customer_name || 'Prospect',
+        customer_address: parsed.data.customer_address || undefined,
+        existing_items: [],
+      }),
+      cache: 'no-store',
+    })
+  } catch {
+    return { ok: false as const, error: 'AI service unreachable. Is the backend running?' }
+  }
+
+  if (res.status === 400) {
+    return {
+      ok: false as const,
+      error: 'No pricing items in your catalog yet — add some before generating a quote.',
+    }
+  }
+  if (!res.ok) return { ok: false as const, error: 'Quote generation failed. Try again.' }
+
+  const body = aiResponseSchema.safeParse(await res.json().catch(() => null))
+  if (!body.success) return { ok: false as const, error: 'AI service returned an unexpected response.' }
+
+  return { ok: true as const, data: body.data }
+}
 
 // -----------------------------------------------------------------------------
 // Create a draft quote (with customer upsert) via the atomic RPC.

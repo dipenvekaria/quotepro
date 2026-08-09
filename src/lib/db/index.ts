@@ -12,15 +12,23 @@ types.setTypeParser(1082, asRawString) // date
 types.setTypeParser(1114, asRawString) // timestamp (without time zone)
 types.setTypeParser(1184, asRawString) // timestamptz
 
-// Raw Postgres access (no ORM). DATABASE_URL points at local Postgres in dev and
-// Cloud SQL in prod (via the Cloud SQL Connector / private IP). Tenant scoping
-// (company_id) must be enforced in each query — this connection is not RLS-bound.
+// Raw Postgres access (no ORM). Tenant scoping (company_id) must be enforced in
+// each query — this connection is not RLS-bound.
+//
+// DATABASE_URL is what we set by hand (local dev, Railway). POSTGRES_URL is what
+// Vercel's Supabase integration provisions automatically, already pointed at the
+// transaction-mode pooler. Falling back to it means a Vercel deploy works without
+// hand-copying a connection string that contains the database password.
+// Never use POSTGRES_URL_NON_POOLING here: the direct endpoint is IPv6-only and
+// serverless concurrency exhausts it.
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL
+
 const globalForDb = globalThis as unknown as { __pgPool?: Pool }
 
 const pool =
   globalForDb.__pgPool ??
   new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString,
     max: 5,
   })
 

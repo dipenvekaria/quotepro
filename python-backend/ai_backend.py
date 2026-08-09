@@ -14,8 +14,9 @@ import re
 from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from supabase import Client, create_client
 
@@ -75,13 +76,32 @@ if USE_REAL_AI:
 # App
 # ---------------------------------------------------------------------------
 
-app = FastAPI(title="QuotePro AI backend", version="0.2.0")
+app = FastAPI(title="Rivet AI backend", version="0.3.0")
+
+# Shared secret set on both this service and the Next.js app. Quote generation
+# goes through a server action, so no browser ever calls /api/* directly.
+BACKEND_SECRET = os.getenv("RIVET_BACKEND_SECRET", "").strip()
+
+# Empty by default: with the browser out of the picture there is no legitimate
+# cross-origin caller. Set ALLOWED_ORIGINS only for local curl/Swagger work.
+ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["POST"],
+    allow_headers=["Content-Type", "X-Rivet-Key"],
 )
+
+
+@app.middleware("http")
+async def require_secret(request: Request, call_next):
+    """Reject /api/* without the shared secret. /health stays open for Railway."""
+    if request.url.path.startswith("/api/"):
+        if not BACKEND_SECRET:
+            return JSONResponse({"detail": "server misconfigured"}, status_code=503)
+        if request.headers.get("x-rivet-key") != BACKEND_SECRET:
+            return JSONResponse({"detail": "unauthorized"}, status_code=401)
+    return await call_next(request)
 
 # ---------------------------------------------------------------------------
 # Schemas
