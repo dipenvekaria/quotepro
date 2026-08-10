@@ -24,19 +24,36 @@ types.setTypeParser(1184, asRawString) // timestamptz
 const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL
 
 // Supabase's pooler presents a chain Node doesn't trust, and pg now treats
-// sslmode=require as verify-full — so a hosted connection dies with
-// SELF_SIGNED_CERT_IN_CHAIN and every page 500s. Skip chain verification for
-// remote hosts; the connection is still TLS-encrypted, it just isn't verified
-// against a CA. Hardening this properly means shipping Supabase's CA cert and
-// moving to verify-full.
+// sslmode=require as verify-full, so a hosted connection dies with
+// SELF_SIGNED_CERT_IN_CHAIN and every page 500s.
+//
+// Passing `ssl: { rejectUnauthorized: false }` alongside a connectionString does
+// NOT fix it: pg parses sslmode out of the string and that parsed value wins.
+// The mode has to be rewritten in the string itself. `no-verify` keeps TLS on
+// and skips chain verification.
+//
+// Hardening properly means shipping Supabase's CA cert and using verify-full.
 const isLocal = /localhost|127\.0\.0\.1/.test(connectionString ?? '')
+
+function withoutCertVerification(url: string | undefined) {
+  if (!url || isLocal) return url
+  try {
+    const u = new URL(url)
+    u.searchParams.set('sslmode', 'no-verify')
+    return u.toString()
+  } catch {
+    // Not URL-parseable — fall back to a plain query-param append.
+    const sep = url.includes('?') ? '&' : '?'
+    return `${url.replace(/([?&])sslmode=[^&]*/, '$1')}${sep}sslmode=no-verify`
+  }
+}
 
 const globalForDb = globalThis as unknown as { __pgPool?: Pool }
 
 const pool =
   globalForDb.__pgPool ??
   new Pool({
-    connectionString,
+    connectionString: withoutCertVerification(connectionString),
     max: 5,
     ssl: isLocal ? undefined : { rejectUnauthorized: false },
   })
