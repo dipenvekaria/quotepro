@@ -113,7 +113,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
               href={`/q/${quote.public_token}/pdf`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-[11px] font-medium hover:bg-muted"
+              className="inline-flex h-11 items-center gap-1 rounded-md border border-border bg-background px-3 text-xs font-medium transition-all hover:bg-muted active:scale-[0.97] active:bg-muted lg:h-8 lg:px-2.5 lg:text-[11px]"
             >
               <Download className="h-3 w-3" />
               PDF
@@ -260,13 +260,14 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
             <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
               <button
                 onClick={() => setDeclineOpen(true)}
-                className="inline-flex h-10 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium hover:bg-muted"
+                className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background px-4 text-sm font-medium transition-all hover:bg-muted active:scale-[0.97] active:bg-muted lg:h-10"
               >
                 Not now
               </button>
               <Button
+                size="lg"
                 onClick={() => setSignOpen(true)}
-                className="h-10 gap-1.5 shadow-sm"
+                className="gap-1.5 shadow-sm"
               >
                 <Check className="h-4 w-4" />
                 Approve quote · {fmtMoney(quote.total)}

@@ -1,5 +1,4 @@
 // Quote Acceptance Success Page
-// @ts-nocheck - Supabase type generation pending
 'use client'
 
 import { useEffect, useState } from 'react'
