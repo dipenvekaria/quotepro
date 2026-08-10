@@ -23,6 +23,14 @@ types.setTypeParser(1184, asRawString) // timestamptz
 // serverless concurrency exhausts it.
 const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL
 
+// Supabase's pooler presents a chain Node doesn't trust, and pg now treats
+// sslmode=require as verify-full — so a hosted connection dies with
+// SELF_SIGNED_CERT_IN_CHAIN and every page 500s. Skip chain verification for
+// remote hosts; the connection is still TLS-encrypted, it just isn't verified
+// against a CA. Hardening this properly means shipping Supabase's CA cert and
+// moving to verify-full.
+const isLocal = /localhost|127\.0\.0\.1/.test(connectionString ?? '')
+
 const globalForDb = globalThis as unknown as { __pgPool?: Pool }
 
 const pool =
@@ -30,6 +38,7 @@ const pool =
   new Pool({
     connectionString,
     max: 5,
+    ssl: isLocal ? undefined : { rejectUnauthorized: false },
   })
 
 if (process.env.NODE_ENV !== 'production') globalForDb.__pgPool = pool
