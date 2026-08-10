@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
@@ -12,6 +12,7 @@ import {
   Command,
   Home,
   Inbox,
+  Loader2,
   LogOut,
   Menu,
   Package,
@@ -21,6 +22,7 @@ import {
   Settings,
   Users,
   X,
+  type LucideIcon,
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -41,6 +43,29 @@ const NAV = [
   { href: '/app/analytics',    label: 'Analytics',    icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug },
 ]
+
+// Mobile-first sizing. A technician taps this standing in a driveway, so rows
+// clear the 44px minimum on touch and only shrink to the compact desktop scale
+// at lg. `active:` matters more than `hover:` here — hover does not exist on
+// touch, and globals.css clears the tap highlight, so without it a tap gives no
+// feedback whatsoever.
+const NAV_ITEM =
+  'flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] transition-[background-color,transform] active:scale-[0.98] lg:min-h-0 lg:gap-2.5 lg:py-1.5 lg:text-sm'
+const NAV_ITEM_ACTIVE = 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+const NAV_ITEM_IDLE =
+  'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground'
+
+// Swaps the icon for a spinner while the destination is being fetched. App
+// Router navigation is a server round-trip; without this the row just sits
+// there and people tap it again.
+function NavIcon({ icon: Icon }: { icon: LucideIcon }) {
+  const { pending } = useLinkStatus()
+  return pending ? (
+    <Loader2 className="h-4 w-4 shrink-0 animate-spin" role="status" aria-label="Loading" />
+  ) : (
+    <Icon className="h-4 w-4 shrink-0" aria-hidden />
+  )
+}
 
 // ---------------------------------------------------------------------------
 
@@ -147,7 +172,7 @@ function Sidebar({
         {onClose && (
           <button
             onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-lg text-muted-foreground hover:bg-muted lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground transition-transform hover:bg-muted active:scale-95 active:bg-muted lg:hidden"
             aria-label="Close menu"
           >
             <X className="h-4 w-4" />
@@ -163,14 +188,10 @@ function Sidebar({
             <Link
               key={n.href}
               href={n.href}
-              className={cn(
-                'flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm transition-colors',
-                active
-                  ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
-                  : 'text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
-              )}
+              aria-current={active ? 'page' : undefined}
+              className={cn(NAV_ITEM, active ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE)}
             >
-              <n.icon className="h-4 w-4" />
+              <NavIcon icon={n.icon} />
               <span className="flex-1 truncate">{n.label}</span>
             </Link>
           )
@@ -180,14 +201,14 @@ function Sidebar({
       <div className="mt-auto space-y-0.5 pt-4">
         <Link
           href="/app/settings"
+          aria-current={pathname.startsWith('/app/settings') ? 'page' : undefined}
           className={cn(
-            'flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-sm',
-            pathname.startsWith('/app/settings')
-              ? 'bg-sidebar-accent font-medium'
-              : 'text-sidebar-foreground/80 hover:bg-sidebar-accent',
+            NAV_ITEM,
+            pathname.startsWith('/app/settings') ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE,
           )}
         >
-          <Settings className="h-4 w-4" /> Settings
+          <NavIcon icon={Settings} />
+          <span className="flex-1 truncate">Settings</span>
         </Link>
         <div className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm">
           <div className="grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground">
@@ -227,7 +248,7 @@ function TopBar({
       {/* Mobile menu button */}
       <button
         onClick={onOpenMobileNav}
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground lg:hidden"
+        className="grid h-11 shrink-0 w-11 place-items-center rounded-lg text-muted-foreground transition-[background-color,transform] hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted active:text-foreground lg:h-9 lg:w-9 lg:hidden"
         aria-label="Open menu"
       >
         <Menu className="h-4 w-4" />
@@ -252,17 +273,17 @@ function TopBar({
 
       <div className="ml-auto flex items-center gap-1">
         {/* Search icon on mobile */}
-        <button className="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground md:hidden">
+        <button className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground transition-[background-color,transform] hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted active:text-foreground lg:h-9 lg:w-9 md:hidden">
           <Search className="h-4 w-4" />
         </button>
 
-        <button className="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground">
+        <button className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground transition-[background-color,transform] hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted active:text-foreground lg:h-9 lg:w-9">
           <Bell className="h-4 w-4" />
         </button>
 
         <Link
           href="/app/quotes/new"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-2.5 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90 sm:px-3"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2.5 text-[15px] font-medium text-primary-foreground shadow-sm transition-transform hover:opacity-90 active:scale-95 sm:px-3 lg:min-h-0 lg:py-1.5 lg:text-sm"
         >
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline">New quote</span>
@@ -271,7 +292,7 @@ function TopBar({
         <div className="relative">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="ml-1 flex items-center gap-1 rounded-lg px-1 py-1 hover:bg-muted sm:ml-2 sm:gap-1.5 sm:px-1.5"
+            className="ml-1 flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-lg px-1 py-1 transition-transform hover:bg-muted active:scale-95 active:bg-muted sm:ml-2 sm:gap-1.5 sm:px-1.5 lg:min-h-0 lg:min-w-0"
           >
             <div className="grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground">
               <span className="text-xs font-semibold">{initials}</span>
@@ -299,7 +320,7 @@ function UserMenu({ email, onClose }: { email: string; onClose: () => void }) {
         <Link
           href="/app/settings"
           onClick={onClose}
-          className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+          className="flex min-h-11 items-center gap-2 rounded-md px-2 py-2.5 text-[15px] transition-[background-color,transform] hover:bg-muted active:scale-[0.98] active:bg-muted lg:min-h-0 lg:py-1.5 lg:text-sm"
         >
           <Settings className="h-4 w-4" /> Settings
         </Link>
@@ -318,9 +339,13 @@ function SignOutButton() {
       type="submit"
       disabled={pending}
       variant="ghost"
-      className="w-full justify-start gap-2 px-2 py-1.5 text-sm font-normal"
+      className="min-h-11 w-full justify-start gap-2 px-2 py-2.5 text-[15px] font-normal active:scale-[0.98] lg:min-h-0 lg:py-1.5 lg:text-sm"
     >
-      <LogOut className="h-4 w-4" />
+      {pending ? (
+        <Loader2 className="h-4 w-4 animate-spin" role="status" aria-label="Signing out" />
+      ) : (
+        <LogOut className="h-4 w-4" aria-hidden />
+      )}
       {pending ? 'Signing out…' : 'Sign out'}
     </Button>
   )
