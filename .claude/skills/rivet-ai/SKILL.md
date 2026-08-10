@@ -100,19 +100,23 @@ def thing(req: ThingRequest) -> ThingResponse:
     ...
 ```
 
-Pydantic models for request and response, always. Mirror the response shape as a Zod schema in
-`src/types/api.ts` so the frontend validates what it receives — `src/lib/ai/client.ts` rejects
-anything that doesn't match, which is how you find a contract drift immediately instead of three
-screens later.
+Pydantic models for request and response, always. Validate the response on the frontend with Zod
+in the server action that calls it — `generateQuoteItems` in
+`src/app/app/(shell)/quotes/new/actions.ts` is the pattern. That is how contract drift surfaces
+immediately instead of three screens later.
+
+(`src/lib/ai/client.ts` and `src/types/api.ts` used to be cited here. Both were dead — imported
+only by the unwired `src/features/ai/**`, and `types/api.ts` mirrored the *dead* Python backend's
+schemas. Deleted 2026-08-09.)
 
 ## Security — read before deploying
 
-`ai_backend.py` currently sets `allow_origins=["*"]` and has **no authentication**. The endpoint
-takes `company_id` from the request body and returns that company's catalog-derived pricing.
+As of 2026-08-09 the service requires a shared secret (`X-Rivet-Key`, matching
+`RIVET_BACKEND_SECRET` on both sides) on every `/api/*` request, CORS defaults to empty, and
+`company_id` comes from the session inside a server action rather than from the caller.
 
-Deployed publicly as-is, anyone who finds the URL can read any tenant's pricing and exhaust your
-Gemini quota. This is the most serious open issue in the codebase and it is P0 in
-`docs/LAUNCH_PLAN.md`.
+That is an internal-prototype measure, not the end state. One server action is still the only
+thing between a request and any tenant's pricing.
 
 Any work in this file should move it toward:
 

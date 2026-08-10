@@ -3,7 +3,7 @@
 _Source of truth: `supabase/migrations/00000000000000_baseline.sql` (1,114 lines) plus three
 incremental migrations. Verified 2026-08-07._
 
-17 tables, 5 views, 5 enums. Everything hangs off `companies`.
+18 tables, 5 views, 5 enums. Everything hangs off `companies`.
 
 ```
 companies ──┬── users ────────────────── auth.users (Supabase)
@@ -163,9 +163,8 @@ Four apply, in `supabase/migrations/`:
 20260806000000_team_invitations.sql
 ```
 
-`supabase/migrations/legacy/` holds 30+ pre-rebuild files including `EMERGENCY_DISABLE_RLS.sql`
-and `TEMP_BYPASS_RLS.sql`. They are not applied by `supabase db reset` and must never be run
-against any database. Deleting them is a cleanup task.
+`supabase/migrations/legacy/` — 35 pre-rebuild files including `EMERGENCY_DISABLE_RLS.sql` and
+`TEMP_BYPASS_RLS.sql` — was deleted on 2026-08-09. It is in git history if ever needed.
 
 New migrations: `YYYYMMDDHHMMSS_description.sql`, forward-only, idempotent where practical.
 The `rivet-migration` skill has the full procedure.
