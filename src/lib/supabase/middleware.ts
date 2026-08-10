@@ -34,8 +34,16 @@ export async function updateSession(request: NextRequest) {
   const publicRoutes = ['/login', '/auth', '/pricing', '/preview', '/q/', '/i/', '/join', '/signup', '/forgot-password']
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
+  // An auth callback lands with ?code= (PKCE) or ?token_hash= (email OTP) and no
+  // session yet — establishing the session is precisely what the code is for.
+  // Redirecting to /login clones the URL, so the code survives on a page that
+  // never exchanges it and the email link silently fails. Let these through to
+  // whatever calls exchangeCodeForSession.
+  const hasAuthCode =
+    request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('token_hash')
+
   // Protected routes
-  if (!user && !isPublicRoute) {
+  if (!user && !isPublicRoute && !hasAuthCode) {
     // Get the actual origin from headers (for ngrok/tunnels)
     const forwardedHost = request.headers.get('x-forwarded-host')
     const forwardedProto = request.headers.get('x-forwarded-proto')
