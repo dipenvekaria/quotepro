@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { createClient } from '@/lib/supabase/server'
 import { getSession } from '@/lib/auth/session'
 import { envServer } from '@/lib/env'
 import { query, withTransaction, withUser } from '@/lib/db'
@@ -108,20 +107,13 @@ export async function createDraftQuote(input: CreateDraftInput) {
     return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
   }
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { ok: false as const, error: 'Not authenticated' }
-
-  const prof = await query<{ company_id: string | null }>(
-    'select company_id from users where id = $1 limit 1',
-    [user.id],
-  )
-  const companyId = prof[0]?.company_id
-  if (!companyId) return { ok: false as const, error: 'No company' }
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const { companyId, userId } = session
 
   let workItemId: string | undefined
   try {
-    workItemId = await withUser(user.id, async (q) => {
+    workItemId = await withUser(userId, async (q) => {
       const rows = await q<{ id: string }>(
         `select create_work_item_with_customer(
            p_company_id => $1,
@@ -145,7 +137,9 @@ export async function createDraftQuote(input: CreateDraftInput) {
       return rows[0]?.id
     })
   } catch (e) {
-    return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to create quote' }
+    // Never surface raw Postgres text to the client — it leaks schema.
+    console.error('createDraftQuote failed', e)
+    return { ok: false as const, error: 'Could not create the quote. Please try again.' }
   }
 
   if (!workItemId) return { ok: false as const, error: 'No id returned' }
@@ -182,16 +176,9 @@ export async function saveLineItems(input: SaveLineItemsInput) {
     return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
   }
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { ok: false as const, error: 'Not authenticated' }
-
-  const prof = await query<{ company_id: string | null }>(
-    'select company_id from users where id = $1 limit 1',
-    [user.id],
-  )
-  const companyId = prof[0]?.company_id
-  if (!companyId) return { ok: false as const, error: 'No company' }
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const { companyId } = session
 
   // Ownership check — pg bypasses RLS, so scope the work item to the company.
   const owns = await query<{ id: string }>(
@@ -201,7 +188,21 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
 
   const subtotal = parsed.data.items.reduce((s, i) => s + i.quantity * i.unit_price, 0)
-  const taxRate = parsed.data.tax_rate ?? 8.5
+
+  // An explicit rate wins; otherwise use the company's configured one. This
+  // previously fell back to a hardcoded 8.5, which silently reset the rate for
+  // any company that had set something else — wrong tax on a real quote.
+  let taxRate = parsed.data.tax_rate
+  if (taxRate === undefined) {
+    const rows = await query<{ tax_rate: number | null }>(
+      `select (settings->>'tax_rate')::numeric as tax_rate
+         from companies
+        where id = $1`,
+      [companyId],
+    )
+    taxRate = Number(rows[0]?.tax_rate ?? 8.5)
+  }
+
   const taxAmount = Math.round(subtotal * taxRate) / 100
   const total = subtotal + taxAmount
 
@@ -247,7 +248,8 @@ export async function saveLineItems(input: SaveLineItemsInput) {
       )
     })
   } catch (e) {
-    return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to save line items' }
+    console.error('saveLineItems failed', e)
+    return { ok: false as const, error: 'Could not save the line items. Please try again.' }
   }
 
   revalidatePath('/app/pipeline')

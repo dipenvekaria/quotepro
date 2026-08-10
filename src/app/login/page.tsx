@@ -240,18 +240,18 @@ export default function LoginPage() {
           </div>
 
           {/* Stats / trust row */}
-          <div className="grid max-w-md grid-cols-3 gap-4 border-t border-white/10 pt-6">
+          {/* Claims here must be true. A "SOC 2 — In progress" tile was removed:
+              implying a security certification you do not hold, to businesses
+              handling customer payment data, is a misrepresentation. The two
+              below describe the pricing model, which is verifiable. */}
+          <div className="grid max-w-md grid-cols-2 gap-4 border-t border-white/10 pt-6">
             <div>
-              <div className="text-2xl font-semibold text-white">2.4s</div>
-              <div className="mt-0.5 text-[11px] text-slate-400">Avg. quote draft</div>
+              <div className="text-2xl font-semibold text-white">Flat</div>
+              <div className="mt-0.5 text-[11px] text-slate-400">No per-seat billing</div>
             </div>
             <div>
-              <div className="text-2xl font-semibold text-white">3×</div>
-              <div className="mt-0.5 text-[11px] text-slate-400">Faster quotes</div>
-            </div>
-            <div>
-              <div className="text-2xl font-semibold text-white">SOC 2</div>
-              <div className="mt-0.5 text-[11px] text-slate-400">In progress</div>
+              <div className="text-2xl font-semibold text-white">Unlimited</div>
+              <div className="mt-0.5 text-[11px] text-slate-400">Users and AI quotes</div>
             </div>
           </div>
         </div>

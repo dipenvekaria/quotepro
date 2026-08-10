@@ -261,46 +261,7 @@ export function getRoleDescription(role: UserRole): string {
   return descriptions[role]
 }
 
-/**
- * Available tabs for each role
- */
-export function getAvailableTabs(role: UserRole | null | undefined): string[] {
-  const perms = getPermissions(role)
-  
-  const tabs: string[] = []
-  
-  // Work tab - everyone can see (filtered by permissions)
-  tabs.push('work')
-  
-  // Leads & Quotes - not for technicians
-  if (perms.canViewAllLeads || perms.canViewOwnLeads) {
-    tabs.push('leads-quotes')
-  }
-  
-  // Calendar - owner, office, sales can see
-  if (perms.canViewFullCalendar) {
-    tabs.push('calendar')
-  }
-  
-  // Settings - owner only
-  if (perms.canManageSettings) {
-    tabs.push('settings')
-  }
-  
-  return tabs
-}
-
-/**
- * Get default route for role
- */
-export function getDefaultRoute(role: UserRole | null | undefined): string {
-  const perms = getPermissions(role)
-  
-  // Technicians start on Work tab
-  if (!perms.canViewAllLeads && !perms.canViewOwnLeads) {
-    return '/work'
-  }
-  
-  // Others start on Leads & Quotes
-  return '/leads-and-quotes/leads'
-}
+// getAvailableTabs() and getDefaultRoute() were removed on 2026-08-10. Nothing
+// imported them, and they returned routes from the pre-rebuild app — '/work'
+// and '/leads-and-quotes/leads' — which have not existed since the (dashboard)
+// tree was deleted. The live shell derives its nav from NAV in app-shell.tsx.
