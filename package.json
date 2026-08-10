@@ -7,7 +7,7 @@
     "dev:api": "cd python-backend && .venv/bin/uvicorn ai_backend:app --reload --port 8000",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc -p tsconfig.ci.json --noEmit",
+    "typecheck": "tsc --noEmit",
     "typecheck:all": "tsc --noEmit",
     "lint": "eslint",
     "db:start": "supabase start",

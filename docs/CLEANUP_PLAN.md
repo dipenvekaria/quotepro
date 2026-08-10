@@ -8,7 +8,7 @@ Do these in order. Phase 1 is what makes every later phase safe.
 
 ---
 
-## Phase 1 — Delete the dead tree
+## Phase 1 — Delete the dead tree ✅ DONE 2026-08-09
 
 **Why first:** roughly half the repo is pre-rebuild code that still compiles and still imports
 the old data layer. It is the reason `ignoreBuildErrors` is on, the reason grep results are
@@ -40,6 +40,11 @@ running `npx tsc --noEmit` after each step:
 
 **Done when:** `next.config.ts` no longer needs `typescript: { ignoreBuildErrors: true }` and
 `npm run build` passes with it removed.
+
+**Outcome (2026-08-09):** 124 files and ~19,600 lines removed in one pass. `ignoreBuildErrors`
+is off, `tsconfig.ci.json` is deleted (its exclude list had emptied), `npm run typecheck` is now
+plain `tsc --noEmit` and reports **0 errors**, and `npm run build` passes without suppressions.
+The frontend has no dead tree left; Phase 2 (the Python backends) is untouched.
 
 Do it as one PR per numbered step. A single 200-file delete is unreviewable.
 

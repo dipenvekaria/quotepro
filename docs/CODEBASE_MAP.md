@@ -1,10 +1,12 @@
 # Codebase Map
 
-_Verified against the working tree on 2026-08-07, branch `main`._
+_Verified against the working tree on 2026-08-09, branch `main`, after Cleanup Phase 1._
 
-The repo carries a full pre-rebuild application alongside the current one. Roughly 10,400
-lines are live; a larger volume is dead. Nothing has been deleted yet — deletion is sequenced
-in [CLEANUP_PLAN.md](CLEANUP_PLAN.md). Until then, **this file is the authority on what runs**.
+The pre-rebuild frontend was deleted on 2026-08-09 — 124 files, ~19,600 lines. **Everything
+under `src/` now runs.** `tsc --noEmit` passes with no exclusions and `ignoreBuildErrors` is off.
+
+One dead tree remains: `python-backend/{src,app,api,services,db,config}/**`, whose fate is
+Cleanup Phase 2.
 
 How the classification was made: every route reachable from `src/app/page.tsx`,
 `src/middleware.ts`, and the `/app` shell was traced, then the transitive import closure of
@@ -81,27 +83,33 @@ those files was computed. Anything outside that closure is dead.
 
 ---
 
-## Dead — do not edit, do not copy patterns from
+## Dead — one tree left
 
 | Path | Why it's dead | Notes |
 | --- | --- | --- |
-| `src/app/(dashboard)/**` | Pre-rebuild UI, superseded by `src/app/app/(shell)`. | Unreachable — no link or redirect points at it. Several files carry `@ts-nocheck`. **This tree is the sole reason `ignoreBuildErrors` is on.** |
-| `src/app/api/**` except `vitals/` | Old REST layer replaced by Server Actions. | Still imports the Supabase data client. |
-| `src/app/onboarding/` (root) | Superseded by `src/app/app/onboarding/`. | `@ts-nocheck`. Nothing redirects here. |
-| `src/app/dashboard/`, `src/app/settings/`, `src/app/pricing/`, `src/app/preview/`, `src/app/theme-test/`, `src/app/logo-test/`, `src/app/logo-backgrounds/`, `src/app/premium-logos/` | Scratch and experiment routes. | Publicly routable in production. Removing them is a launch-blocking task. |
-| `src/components/features/**` | Old feature components (leads, quotes, pay, settings, work). | |
-| `src/components/{queues,navigation,calendar,ai,dialogs,guards}/**` | Old UI systems. | Includes duplicate pairs like `dashboard-nav` vs `dashboard-navigation`. |
-| `src/components/*.tsx` at root, except `error-boundary`, `hide-devtools`, `network-status` | Pre-rebuild widgets, plus `field-genie-logo` and `logo-options` from earlier branding rounds. | 20 files. |
-| `src/hooks/**` | React-Query hooks against the old schema. | Only `useAuth` and `useOnboarding` are imported, and only by dead routes. |
-| `src/features/{work-items,catalog,ai}/**` | Written during the rebuild, never wired up. | `work-items/queries.ts` still uses the Supabase client, contradicting the `pg` data layer. `work-items/schemas.ts` is the one exception — `status-badge.tsx` imports its `WorkItemStatus` type. |
-| `src/lib/{api,hooks,dashboard-context,default-pricing,prompts,roles,invoice-number,auto-index-catalog,theme-config}` | Superseded. | `src/lib/roles.ts` is the old 2-role model; `src/lib/permissions.ts` is the live 4-role one. |
-| `src/types/{database.types,database.new}.ts` | Generated against schemas that no longer match. | Regenerating these is a cleanup task. |
-| `python-backend/src/quotepro/**` | A complete, well-structured FastAPI app (38 files: ADK agents, RAG, sessions, workers) that **was never wired up**. | The most valuable dead code in the repo. Decide explicitly whether to adopt or delete — see CLEANUP_PLAN. |
-| `python-backend/{app,api,services,db,config}/**` | Two further generations of the backend. | |
-| `python-backend/*.py` at root except `ai_backend.py` | `main.py`, `auto_indexer.py`, `catalog_indexer.py`, `quote_indexer.py`, `tax_rates.py`, `check_db.py`. | `start-backend.sh` still points at `main.py` and a hardcoded `/Users/dipen/` path. |
-| `supabase/migrations/legacy/**` | 30+ pre-rebuild migrations including `EMERGENCY_DISABLE_RLS.sql`, `TEMP_BYPASS_RLS.sql`, `ADD_YOURSELF_AS_OWNER.sql`. | Not applied by `supabase db reset`. Dangerous if ever run. |
-| `emails/quote-sent.tsx` (repo root) | Duplicate of `src/emails/QuoteSentEmail.tsx`. | |
-| `scripts/*.sh` (most) | One-off theme and migration scripts from earlier passes. | `sync-tunnels.sh` and `verify-rls.ts` are still useful. |
+| `python-backend/src/quotepro/**` | A complete, well-structured FastAPI app (38 files: ADK agents, RAG, sessions, workers) that **was never wired up**. | The most valuable dead code in the repo. Adopt or delete — Cleanup Phase 2. |
+| `python-backend/{app,api,services,db,config}/**` | Two further generations of the backend. | Unambiguously superseded. |
+| `python-backend/*.py` except `ai_backend.py` | `main.py`, `auto_indexer.py`, `catalog_indexer.py`, `quote_indexer.py`, `tax_rates.py`, `check_db.py`. | |
+
+### Deleted on 2026-08-09 (Cleanup Phase 1)
+
+124 files, ~19,600 lines. In git history if ever needed:
+
+`src/app/(dashboard)/**` · the root `/onboarding` (pre-Rivet "Field Genie" branding) ·
+scratch routes `/dashboard`, `/pricing`, `/preview`, `/theme-test`, `/logo-test`,
+`/logo-backgrounds`, `/premium-logos` (all publicly routable in production) ·
+`src/app/api/**` except `vitals/` · `src/hooks/**` · `src/features/{work-items,catalog,ai}/**` ·
+`src/components/{features,queues,navigation,calendar,ai,dialogs,guards}/**` ·
+`src/lib/{api,hooks,ai,dashboard-context,default-pricing,prompts,roles,invoice-number,auto-index-catalog,theme-config,toast,web-vitals}` ·
+`src/types/database.new.ts` · `supabase/migrations/legacy/**` (35 files incl.
+`EMERGENCY_DISABLE_RLS.sql`) · `tsconfig.ci.json`.
+
+**Two things nearly went wrong, worth recording.** `src/app/login/page.tsx` imported
+`useAuth` from `src/hooks/` — this file previously claimed those hooks were "only imported by
+dead routes", so following it literally would have deleted the sign-in path. `useAuth` now lives
+at `src/app/login/use-auth.ts`. And `components/shared/status-badge.tsx` imported
+`WorkItemStatus` from `src/features/work-items/schemas.ts`; that type is now declared inline in
+the badge.
 
 ## Stale documentation
 

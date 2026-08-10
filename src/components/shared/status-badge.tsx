@@ -2,7 +2,23 @@ import { type LucideIcon, CheckCircle2, Circle, Clock, FileText, Send, XCircle }
 
 import { cn } from '@/lib/utils'
 
-import type { WorkItemStatus } from '@/features/work-items/schemas'
+// Mirrors the work_item_status enum in
+// supabase/migrations/00000000000000_baseline.sql. Kept here rather than in a
+// shared module because this is the only live consumer; promote it if a second
+// one appears.
+export type WorkItemStatus =
+  | 'lead'
+  | 'quote_draft'
+  | 'quote_sent'
+  | 'quote_viewed'
+  | 'quote_accepted'
+  | 'quote_rejected'
+  | 'quote_expired'
+  | 'job_scheduled'
+  | 'job_in_progress'
+  | 'job_completed'
+  | 'job_cancelled'
+  | 'archived'
 
 type Variant = {
   label: string

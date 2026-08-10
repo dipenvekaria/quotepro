@@ -10,31 +10,27 @@ One record — a `work_item` — carries that whole lifecycle.
 
 ## Read this first
 
-The repo contains roughly **twice as much dead code as live code**. Editing the wrong tree is
-the single most common way to waste a session here. Before touching anything, check
-[`docs/CODEBASE_MAP.md`](docs/CODEBASE_MAP.md) — it lists every directory as LIVE or DEAD.
-
-The short version:
+**The dead frontend tree was deleted on 2026-08-09** (Cleanup Phase 1): 124 files, ~19,600
+lines. Everything under `src/` now runs. `tsc --noEmit` passes with **zero** exclusions and
+`ignoreBuildErrors` is off, so a type error fails the build — which is the point.
 
 | Area                                   | Status  |
 | -------------------------------------- | ------- |
 | `src/app/app/**`                       | LIVE — the entire signed-in product |
-| `src/app/{q,i,join,login,auth,onboarding}/**` | LIVE — public + auth routes |
+| `src/app/{q,i,join,login,auth}/**`     | LIVE — public + auth routes |
 | `src/lib/{db,auth,email,pdf,stripe,supabase}/**` | LIVE |
 | `src/components/{ui,brand,shared}/**`  | LIVE |
 | `src/features/invoices/**`             | LIVE |
 | `python-backend/ai_backend.py`         | LIVE — the only backend file that runs |
-| `supabase/migrations/*.sql` (4 top-level) | LIVE |
-| `src/app/(dashboard)/**`               | **DEAD** — pre-rebuild UI |
-| `src/app/api/**`                       | **DEAD** — except `/api/vitals` |
-| `src/components/{features,queues,navigation,calendar,ai}/**` | **DEAD** |
-| `src/hooks/**`, `src/features/{work-items,catalog,ai}/**` | **DEAD** |
+| `supabase/migrations/*.sql` (4)        | LIVE |
 | `python-backend/{src,app,api,services,db,config}/**` | **DEAD** — aspirational, never wired |
-| `supabase/migrations/legacy/**`        | **DEAD** |
 
-Dead code still compiles and still imports the old Supabase-client data layer, which is why
-`next.config.ts` sets `typescript: { ignoreBuildErrors: true }`. Do not take that as licence to
-ship type errors — run `tsc --noEmit` and keep live code clean.
+The Python dead tree is the only one left; deciding its fate is Cleanup Phase 2.
+[`docs/CODEBASE_MAP.md`](docs/CODEBASE_MAP.md) still has the detail.
+
+Onboarding lives at `src/app/app/onboarding/` only. The root `/onboarding` — which rendered
+pre-Rivet "Field Genie" branding — is gone, along with the scratch routes (`/theme-test`,
+`/preview`, `/pricing`, …) that were publicly routable in production.
 
 ## Stack
 
@@ -135,15 +131,20 @@ route actually needs it.
 
 ## Traps
 
-- **`node_modules` is a broken symlink** → `node_modules.nosync`, which doesn't exist. Run
-  `npm install`, then re-point the symlink (`just relink`) to keep deps out of iCloud sync.
-- **The repo lives in iCloud Drive.** Git history walks and installs are pathologically slow —
-  `git rev-list` can hang for minutes. Moving the repo to `~/code/rivet` is the first
-  recommendation in `docs/ONBOARDING.md`.
-- **`.env.local` points at expired Cloudflare quick tunnels.** For local work set
-  `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` and
-  `NEXT_PUBLIC_BACKEND_URL=http://localhost:8000`. Tunnels are only for testing on a phone;
-  `scripts/sync-tunnels.sh` regenerates them.
+- **Clone to `~/code/rivet`, never inside iCloud Drive.** The old iCloud copy actively corrupted
+  the repo — it truncated a source file to zero bytes and blocked a commit for fifteen minutes.
+  The `node_modules` → `node_modules.nosync` symlink was a workaround for that and no longer
+  applies. Plain `npm install`.
+- **`.env.local` may point at dead Cloudflare quick tunnels.** For local work set
+  `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` and `BACKEND_INTERNAL_URL=http://localhost:8000`.
+  Tunnels are only for testing on a phone; `scripts/sync-tunnels.sh` regenerates them, but note it
+  hardcodes the backend at :8001 while everything else uses :8000.
+- **Hosted Postgres needs `ssl: { rejectUnauthorized: false }`.** `pg` treats `sslmode=require`
+  as `verify-full` and Supabase's pooler chain isn't trusted, so a deploy dies with
+  `SELF_SIGNED_CERT_IN_CHAIN` on every query. Handled in `src/lib/db/index.ts`.
+- **`DATABASE_URL` is not Zod-validated.** `src/lib/env.ts` checks everything else and fails at
+  boot; this one is read straight from `process.env` and fails late, as a connection error. On
+  Vercel it falls back to `POSTGRES_URL`, which the Supabase integration provisions.
 - **Two auth surfaces.** `requireSession()` (`src/lib/auth/session.ts`) redirects and is for
   pages; `getSession()` returns null and is for actions. Both read the user row via `pg` after
   Supabase verifies the JWT.
@@ -210,3 +211,13 @@ describes a system that no longer exists. Treat it as history, not instruction.
 - Read `docs/CODEBASE_MAP.md` before editing an unfamiliar directory.
 - `tsc --noEmit` must pass on live code before you open a PR — see the `rivet-ship` skill.
 - Record non-obvious decisions as an ADR in `docs/adr/`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
