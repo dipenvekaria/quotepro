@@ -46,14 +46,21 @@ async function fetchUserTables(): Promise<string[]> {
   if (!error && data) return (data as Row[]).map((r) => r.table_name as string)
 
   // Fallback: query pg_tables via a generated RPC — user must have added it OR we introspect via information_schema.
-  const { data: viaInfo, error: infoErr } = await (service.schema('information_schema') as any)
+  const { data: viaInfo, error: infoErr } = await (service.schema('information_schema') as unknown as {
+      from: (t: string) => {
+        select: (c: string) => {
+          eq: (k: string, v: string) => { eq: (k: string, v: string) => Promise<{ data: Row[] | null; error: unknown }> }
+        }
+      }
+    })
     .from('tables')
     .select('table_name, table_schema')
     .eq('table_schema', 'public')
     .eq('table_type', 'BASE TABLE')
 
   if (infoErr) {
-    console.error('Could not introspect tables via information_schema:', infoErr.message)
+    const msg = infoErr instanceof Error ? infoErr.message : String(infoErr)
+    console.error('Could not introspect tables via information_schema:', msg)
     return []
   }
   return ((viaInfo ?? []) as Row[]).map((r) => r.table_name as string)

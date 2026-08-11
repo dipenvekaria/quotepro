@@ -60,7 +60,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
                 Join {inv!.company_name ?? 'the team'}
               </h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                You've been invited as{' '}
+                You’ve been invited as{' '}
                 <span className="font-medium text-foreground">
                   {ROLE_LABEL[inv!.role as UserRole] ?? inv!.role}
                 </span>

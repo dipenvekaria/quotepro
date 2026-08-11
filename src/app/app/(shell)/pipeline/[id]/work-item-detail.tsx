@@ -748,7 +748,7 @@ function SentModal({ publicUrl, onClose }: { publicUrl: string; onClose: () => v
         </div>
         <h2 className="mt-4 text-lg font-semibold">Quote is live</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Share this link with the customer. When they open it, we'll timestamp{' '}
+          Share this link with the customer. When they open it, we’ll timestamp{' '}
           <span className="font-medium">viewed</span> automatically.
         </p>
         <div className="mt-4 flex items-center gap-1 rounded-md border border-border bg-background p-1.5">

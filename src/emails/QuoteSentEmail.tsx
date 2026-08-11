@@ -40,7 +40,7 @@ export function QuoteSentEmail({
         <Text style={greeting}>Hi {customerName},</Text>
         
         <Text style={paragraph}>
-          Thank you for your interest! We've prepared a detailed quote for you.
+          Thank you for your interest! We’ve prepared a detailed quote for you.
           Please review the items below and let us know if you have any questions.
         </Text>
 
@@ -86,7 +86,7 @@ export function QuoteSentEmail({
         )}
 
         <Text style={helpText}>
-          Questions? Reply to this email or call us anytime. We're here to help!
+          Questions? Reply to this email or call us anytime. We’re here to help!
         </Text>
       </Section>
 

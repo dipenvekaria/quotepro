@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { ArrowUpRight, DollarSign, FileText, Sparkles, TrendingUp, Users } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
@@ -8,6 +9,9 @@ import { query } from '@/lib/db'
 export default async function AnalyticsPage() {
   const { companyId } = await requireSession()
 
+  // Server Component: this runs once per request on the server, not during a
+  // client render, so the purity rule does not apply.
+  // eslint-disable-next-line react-hooks/purity
   const now = Date.now()
   const since30 = new Date(now - 30 * 86_400_000).toISOString()
   const WEEKS = 12
@@ -250,9 +254,9 @@ export default async function AnalyticsPage() {
       <div className="rounded-xl border border-border/70 bg-card shadow-sm">
         <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
           <h2 className="text-sm font-semibold">Recently sent quotes</h2>
-          <a href="/app/pipeline" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+          <Link href="/app/pipeline" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
             Open pipeline <ArrowUpRight className="h-3 w-3" />
-          </a>
+          </Link>
         </header>
         {(recentSent ?? []).length === 0 ? (
           <div className="p-8 text-center text-sm text-muted-foreground">
