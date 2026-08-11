@@ -1,25 +1,14 @@
-import Link from 'next/link'
-import { Package, Plus } from 'lucide-react'
-
-import { EmptyState } from '@/components/shared/empty-state'
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
-import { cn } from '@/lib/utils'
+import { hasPermission, type UserRole } from '@/lib/permissions'
+
+import { CatalogManager, type CatalogItem } from './catalog-manager'
 
 export default async function CatalogPage() {
-  const { companyId } = await requireSession()
+  const { companyId, role } = await requireSession()
 
-  const list = await query<{
-    id: string
-    name: string
-    description: string | null
-    category: string | null
-    base_price: number
-    unit: string | null
-    tags: string[] | null
-    is_active: boolean
-  }>(
-    `select id, name, description, category, base_price, unit, tags, is_active
+  const items = await query<CatalogItem>(
+    `select id, name, description, category, base_price, unit, is_active
        from catalog_items
       where company_id = $1
       order by category asc nulls last, name asc
@@ -27,17 +16,12 @@ export default async function CatalogPage() {
     [companyId],
   )
 
-  // group by category
-  const grouped: Record<string, typeof list> = {}
-  for (const it of list) {
-    const cat = it.category ?? 'Uncategorized'
-    grouped[cat] ??= []
-    grouped[cat].push(it)
-  }
+  const canEdit = hasPermission(role as UserRole, 'canEditCatalog')
+  const categories = new Set(items.map((i) => i.category?.trim() || 'Uncategorized'))
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>Workspace</span>
@@ -46,90 +30,14 @@ export default async function CatalogPage() {
           </div>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Catalog</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {list.length} pricing {list.length === 1 ? 'item' : 'items'} across {Object.keys(grouped).length} categories.
+            {items.length === 0
+              ? 'Add the items your business sells so quotes use your real pricing.'
+              : `${items.length} pricing ${items.length === 1 ? 'item' : 'items'} across ${categories.size} ${categories.size === 1 ? 'category' : 'categories'}.`}
           </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground shadow-sm hover:text-foreground">
-            Import CSV
-          </button>
-          <button className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90">
-            <Plus className="h-4 w-4" />
-            Add item
-          </button>
         </div>
       </div>
 
-      {list.length === 0 ? (
-        <div className="mt-8">
-          <EmptyState
-            icon={Package}
-            title="Your catalog is empty"
-            description="Add the items your business sells so every quote uses your real pricing."
-          />
-        </div>
-      ) : (
-        <div className="mt-6 space-y-6">
-          {Object.entries(grouped).map(([category, catItems]) => (
-            <section key={category} className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
-              <header className="flex items-center justify-between border-b border-border/70 bg-muted/40 px-5 py-2.5">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  {category}
-                  <span className="rounded-full bg-background px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
-                    {catItems.length}
-                  </span>
-                </div>
-                <span className="text-xs text-muted-foreground tabular">
-                  {fmtMoney(catItems.reduce((s, i) => s + Number(i.base_price), 0))} total
-                </span>
-              </header>
-
-              <ul className="divide-y divide-border/70">
-                {catItems.map((it) => (
-                  <li
-                    key={it.id}
-                    className={cn(
-                      'grid grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-3',
-                      !it.is_active && 'opacity-50',
-                    )}
-                  >
-                    <div className="min-w-0">
-                      <div className="text-sm font-medium">{it.name}</div>
-                      {it.description && (
-                        <div className="mt-0.5 truncate text-xs text-muted-foreground">
-                          {it.description}
-                        </div>
-                      )}
-                      {it.tags && it.tags.length > 0 && (
-                        <div className="mt-1.5 flex flex-wrap items-center gap-1">
-                          {it.tags.slice(0, 4).map((t: string) => (
-                            <span
-                              key={t}
-                              className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="hidden text-right text-xs text-muted-foreground sm:block">
-                      per {it.unit}
-                    </div>
-                    <div className="text-right text-sm font-semibold tabular">
-                      {fmtMoney(Number(it.base_price))}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-      )}
+      <CatalogManager items={items} canEdit={canEdit} />
     </div>
   )
-}
-
-function fmtMoney(n: number) {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
 }
