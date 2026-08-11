@@ -94,7 +94,7 @@ analytics is one `GROUP BY` instead of a three-way union.
 
 The cost is a wide table — 40-odd columns, many only meaningful at one stage (`scheduled_start`
 on jobs, `sent_at` on quotes). That's an accepted trade. Full reasoning in
-[`rebuild/adr/0002-unified-work-items.md`](rebuild/adr/0002-unified-work-items.md).
+[`adr/0002-unified-work-items.md`](adr/0002-unified-work-items.md).
 
 ## Authentication
 

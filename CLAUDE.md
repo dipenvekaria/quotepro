@@ -202,8 +202,9 @@ The primer's source is `docs/primer/rivet-primer.html` (also published as a web 
 Edit that, then run `python3 docs/primer/build-pdf.py --verify` to regenerate the PDF — the
 `--verify` pass audits each page for the orphan-gap problem this document is prone to.
 
-Anything under `docs/archive/`, `docs/rebuild/`, `REBUILD.md`, or dated before 2026-08-07
-describes a system that no longer exists. Treat it as history, not instruction.
+`docs/archive/`, `docs/rebuild/` and `REBUILD.md` were deleted on 2026-08-11 — they described a
+system that no longer exists and shipped as agent context on every session. Anything remaining
+in `docs/` is current; if you find something that isn't, fix it or delete it.
 
 ## Working agreement
 
