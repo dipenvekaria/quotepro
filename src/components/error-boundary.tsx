@@ -46,27 +46,27 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-[400px] flex items-center justify-center p-6">
-          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+          <div className="max-w-md w-full bg-card rounded-lg shadow-lg p-8 text-center">
             <div className="flex justify-center mb-4">
               <div className="rounded-full bg-red-100 p-3">
                 <AlertTriangle className="h-8 w-8 text-red-600" />
               </div>
             </div>
             
-            <h2 className="text-sm font-bold text-gray-900 mb-2">
+            <h2 className="text-sm font-bold text-foreground mb-2">
               Something went wrong
             </h2>
             
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               We encountered an unexpected error. Please try refreshing the page.
             </p>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mb-6 text-left">
-                <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+                <summary className="cursor-pointer text-sm text-muted-foreground hover:text-muted-foreground">
                   Error details (dev only)
                 </summary>
-                <pre className="mt-2 p-3 bg-gray-100 rounded text-xs overflow-auto max-h-40">
+                <pre className="mt-2 p-3 bg-muted rounded text-xs overflow-auto max-h-40">
                   {this.state.error.message}
                   {'\n\n'}
                   {this.state.error.stack}

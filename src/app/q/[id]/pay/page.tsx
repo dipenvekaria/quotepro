@@ -117,7 +117,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
     : null
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
+    <div className="min-h-screen bg-muted py-12 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -249,7 +249,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
 
             {/* Payment Info */}
             {!isPaid && (
-              <div className="text-sm text-muted-foreground bg-gray-50 p-4 rounded-lg">
+              <div className="text-sm text-muted-foreground bg-muted p-4 rounded-lg">
                 <p className="font-bold mb-2">Accepted Payment Methods:</p>
                 <p>• Credit & Debit Cards</p>
                 <p>• Apple Pay & Google Pay</p>
