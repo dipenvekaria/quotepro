@@ -20,6 +20,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
 import { createDraftQuote, generateQuoteItems, saveLineItems } from './actions'
@@ -79,9 +80,11 @@ export function QuoteEditor({
   const [saving, startSave] = useTransition()
 
   // Totals
-  const subtotal = useMemo(() => items.reduce((s, i) => s + i.quantity * i.unit_price, 0), [items])
-  const taxAmount = useMemo(() => Math.round(subtotal * taxRate) / 100, [subtotal, taxRate])
-  const total = subtotal + taxAmount
+  // Same function the save action uses, so what is shown is what is stored.
+  const { subtotal, taxAmount, total } = useMemo(
+    () => computeTotals(items, taxRate),
+    [items, taxRate],
+  )
 
   // ---- item mutations -------------------------------------------------------
 

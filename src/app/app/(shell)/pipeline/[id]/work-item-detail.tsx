@@ -25,6 +25,7 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
 import { changeStatus, sendQuote, updateWorkItem } from './actions'
@@ -151,10 +152,11 @@ export function WorkItemDetail({
   const [sendOpen, setSendOpen] = useState(false)
   const [sentToken, setSentToken] = useState<string | null>(null)
 
-  const subtotal = useMemo(() => items.reduce((s, i) => s + i.quantity * i.unit_price, 0), [items])
   const taxRate = workItem.tax_rate
-  const taxAmount = Math.round(subtotal * taxRate) / 100
-  const total = subtotal + taxAmount
+  const { subtotal, taxAmount, total } = useMemo(
+    () => computeTotals(items, taxRate),
+    [items, taxRate],
+  )
 
   const actions = STATUS_ACTIONS[workItem.status] ?? []
   const publicUrl = typeof window === 'undefined'
