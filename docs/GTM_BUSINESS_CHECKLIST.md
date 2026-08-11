@@ -103,7 +103,7 @@ Deferred while you ship text-back first, which is exactly why that sequencing is
 | # | Item | Priority |
 | --- | --- | --- |
 | 5.1 | **Fix the unauthenticated AI backend** | **P0** |
-| 5.2 | **Manual tenancy audit** — every `query()` carries `company_id`; the `pg` pool bypasses RLS | **P0** |
+| 5.2 | ~~Manual tenancy audit~~ — **done 2026-08-10, clean.** 53 call sites, no leaks. Manual and unguarded; re-run after new data access | ✅ |
 | 5.3 | Run `scripts/verify-rls.ts` against production | **P0** |
 | 5.4 | **Rotate every key** — all have lived in tunnel-facing dev configs | **P0** |
 | 5.5 | Backups on with a **tested** restore | **P0** |
