@@ -1,7 +1,7 @@
 'use client'
 
-import { useMemo, useState, useTransition } from 'react'
-import { Loader2, Package, Pencil, Plus, Trash2 } from 'lucide-react'
+import { useMemo, useRef, useState, useTransition } from 'react'
+import { Loader2, Package, Pencil, Plus, Trash2, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -20,7 +20,12 @@ import {
 import { EmptyState } from '@/components/shared/empty-state'
 import { cn } from '@/lib/utils'
 
-import { createCatalogItem, deleteCatalogItem, updateCatalogItem } from './actions'
+import {
+  createCatalogItem,
+  deleteCatalogItem,
+  importCatalogCsv,
+  updateCatalogItem,
+} from './actions'
 
 export type CatalogItem = {
   id: string
@@ -74,6 +79,36 @@ export function CatalogManager({
   const [saving, startSave] = useTransition()
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [, startDelete] = useTransition()
+  const [importing, startImport] = useTransition()
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    // Reset immediately so picking the same file twice still fires a change.
+    e.target.value = ''
+    if (!file) return
+
+    startImport(async () => {
+      const csv = await file.text()
+      const res = await importCatalogCsv({ csv })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      const { imported, skipped, errors } = res.data
+      if (skipped === 0) {
+        toast.success(`Imported ${imported} ${imported === 1 ? 'item' : 'items'}`)
+      } else {
+        toast.warning(`Imported ${imported}, skipped ${skipped}`, {
+          description: errors
+            .slice(0, 3)
+            .map((x) => `Row ${x.row}: ${x.reason}`)
+            .join(' · '),
+          duration: 8000,
+        })
+      }
+    })
+  }
 
   const editing = Boolean(draft.id)
 
@@ -154,11 +189,31 @@ export function CatalogManager({
   return (
     <>
       {canEdit && (
-        <div className="flex items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <Button onClick={openNew} className="gap-1.5">
             <Plus className="h-4 w-4" />
             Add item
           </Button>
+          <Button
+            variant="outline"
+            className="gap-1.5"
+            onClick={() => fileRef.current?.click()}
+            disabled={importing}
+          >
+            {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+            {importing ? 'Importing…' : 'Import CSV'}
+          </Button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".csv,text/csv"
+            className="sr-only"
+            onChange={onFile}
+            aria-label="Import a CSV price list"
+          />
+          <span className="text-xs text-muted-foreground">
+            Needs a name and price column. Category, description and unit are optional.
+          </span>
         </div>
       )}
 
