@@ -21,7 +21,7 @@ export default async function PublicQuotePage({
   const { data: quote } = await admin
     .from('work_items')
     .select(`
-      id, status, description, quote_number,
+      id, status, description, quote_number, customer_summary,
       subtotal, discount_amount, tax_rate, tax_amount, total,
       sent_at, viewed_at, accepted_at, rejected_at, expires_at,
       public_token, metadata,

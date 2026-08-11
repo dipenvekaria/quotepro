@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
 import {
+  Sparkles,
   ArrowLeft,
   Calendar as CalendarIcon,
   Check,
@@ -28,7 +29,7 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
-import { changeStatus, sendQuote, updateWorkItem } from './actions'
+import { changeStatus, generateCustomerSummary, sendQuote, updateWorkItem } from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
 import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
 
@@ -148,6 +149,22 @@ export function WorkItemDetail({
   const [payOpen, setPayOpen] = useState(false)
   const [invoiceSending, startInvoiceSend] = useTransition()
   const [transitioning, startTransition_] = useTransition()
+
+  const [explaining, startExplain] = useTransition()
+
+  function writeCustomerSummary() {
+    startExplain(async () => {
+      const res = await generateCustomerSummary({ work_item_id: workItem.id })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      toast.success('Summary written', {
+        description: 'The customer will see it at the top of the quote.',
+      })
+      router.refresh()
+    })
+  }
 
   const [sendOpen, setSendOpen] = useState(false)
   const [sentToken, setSentToken] = useState<string | null>(null)
@@ -335,6 +352,22 @@ export function WorkItemDetail({
 
         {/* Action rail */}
         <div className="flex items-center gap-1.5">
+          {items.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={writeCustomerSummary}
+              disabled={explaining}
+              className="h-9 gap-1.5"
+              title="Write a plain-language explanation the customer sees on the quote"
+            >
+              {explaining ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="h-3.5 w-3.5" />
+              )}
+              <span className="hidden sm:inline">Explain for customer</span>
+            </Button>
+          )}
           {isDraft && workItem.status === 'quote_draft' ? (
             <Button
               onClick={doSend}

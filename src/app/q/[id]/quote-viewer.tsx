@@ -39,6 +39,7 @@ type Quote = {
   id: string
   status: string
   description: string | null
+  customer_summary: string | null
   quote_number: string | null
   subtotal: number
   discount_amount: number
@@ -155,6 +156,21 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
                 <p className="mt-2 max-w-lg text-sm text-muted-foreground">
                   {quote.description}
                 </p>
+              )}
+              {quote.customer_summary && (
+                <div className="mt-4 max-w-lg rounded-lg border border-border/70 bg-muted/40 p-4">
+                  <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                    What this covers
+                  </div>
+                  {quote.customer_summary
+                    .split(/\n{2,}/)
+                    .filter(Boolean)
+                    .map((para: string, i: number) => (
+                      <p key={i} className="mt-2 text-sm leading-relaxed text-foreground">
+                        {para}
+                      </p>
+                    ))}
+                </div>
               )}
             </div>
             <div className="text-right">

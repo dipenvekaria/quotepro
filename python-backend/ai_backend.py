@@ -13,6 +13,8 @@ import os
 import re
 from typing import Any
 
+from pathlib import Path
+
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -227,6 +229,25 @@ def _mock_generate(
 # Real generator (Gemini, grounded on catalog, model-fallback chain)
 # ---------------------------------------------------------------------------
 
+PROMPTS_DIR = Path(__file__).resolve().parent.parent / "prompts"
+
+
+def _load_prompt(name: str, fallback: str) -> str:
+    """Read a prompt from prompts/. Behaviour changes belong there, not here.
+
+    Falls back to the inline text if the file is missing so a packaging mistake
+    degrades to the previous behaviour instead of taking quoting down.
+    """
+    try:
+        body = (PROMPTS_DIR / name).read_text(encoding="utf-8")
+    except OSError:
+        return fallback
+    # Everything after the first `---` divider is the prompt; the preamble above
+    # it is documentation for whoever edits the file.
+    _, _, prompt = body.partition("\n---\n")
+    return (prompt or body).strip() or fallback
+
+
 _SYSTEM_PROMPT = """You are a senior HVAC / trades estimator. Build a quote grounded ONLY on the catalog provided.
 
 Rules:
@@ -351,3 +372,80 @@ def generate_quote(req: GenerateQuoteRequest) -> GenerateQuoteResponse:
         mode=mode,
         sources=sources,
     )
+
+
+# ---------------------------------------------------------------------------
+# Quote explanation — plain language for the homeowner
+# ---------------------------------------------------------------------------
+
+_EXPLAIN_FALLBACK = (
+    "You are explaining a contractor's quote to the homeowner who received it. "
+    "Write a short plain-language summary of the work based ONLY on the line "
+    "items provided. Never invent work, parts, prices or timelines. Never "
+    "restate prices. Two short paragraphs at most. Return JSON: "
+    '{"summary": "..."}'
+)
+
+
+class ExplainQuoteRequest(BaseModel):
+    company_id: str
+    job_description: str | None = None
+    company_name: str | None = None
+    line_items: list[dict[str, Any]] = Field(default_factory=list)
+
+
+class ExplainQuoteResponse(BaseModel):
+    summary: str
+    mode: str
+
+
+@app.post("/api/ai/explain-quote", response_model=ExplainQuoteResponse)
+def explain_quote(req: ExplainQuoteRequest) -> ExplainQuoteResponse:
+    """Turns line items into something a homeowner understands.
+
+    Prices are deliberately not sent to the model. They are rendered directly
+    beneath this text, and a model that cannot see them cannot contradict them —
+    which matters when the number is the thing being agreed to.
+    """
+    if not req.line_items:
+        raise HTTPException(400, "No line items to explain")
+
+    if not USE_REAL_AI:
+        # No plausible keyword fallback here: inventing an explanation is worse
+        # than showing none, so the caller decides what to do with an empty one.
+        return ExplainQuoteResponse(summary="", mode="mock")
+
+    items_text = "\n".join(
+        f"- {it.get('name') or 'Item'}"
+        + (f" — {it.get('description')}" if it.get("description") else "")
+        + (f" (qty {it.get('quantity')})" if it.get("quantity") not in (None, 1) else "")
+        for it in req.line_items[:40]
+    )
+    user_prompt = (
+        f"CONTRACTOR: {req.company_name or 'The contractor'}\n"
+        f"JOB DESCRIPTION: {req.job_description or '(none given)'}\n\n"
+        f"LINE ITEMS:\n{items_text}\n"
+    )
+
+    system = _load_prompt("quote-explanation.md", _EXPLAIN_FALLBACK)
+
+    for model_name in GEMINI_MODELS:
+        try:
+            resp = genai_client.models.generate_content(
+                model=model_name,
+                contents=user_prompt,
+                config=genai_types.GenerateContentConfig(
+                    system_instruction=system,
+                    response_mime_type="application/json",
+                    temperature=0.2,
+                ),
+            )
+            data = json.loads(resp.text or "{}")
+            summary = str(data.get("summary") or "").strip()
+            return ExplainQuoteResponse(summary=summary, mode=f"gemini:{model_name}")
+        except Exception:  # noqa: BLE001 — try the next model in the chain
+            continue
+
+    # Every model failed. An empty summary hides the section; a fabricated one
+    # would be shown to a customer as the contractor's own words.
+    return ExplainQuoteResponse(summary="", mode="mock")

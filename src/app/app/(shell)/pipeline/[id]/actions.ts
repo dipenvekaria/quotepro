@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { env } from '@/lib/env'
+import { env, envServer } from '@/lib/env'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
@@ -210,4 +210,94 @@ export async function sendQuote(id: string) {
     ok: true as const,
     data: { public_token: item.public_token, email: emailResult },
   }
+}
+
+// -----------------------------------------------------------------------------
+// Plain-language explanation for the customer
+// -----------------------------------------------------------------------------
+
+const explainSchema = z.object({ work_item_id: z.string().uuid() })
+
+/**
+ * Writes a homeowner-readable summary of the quote onto the work item.
+ *
+ * Generated on demand and stored rather than produced per page view: the
+ * customer must see the same words each time they open the link, a quote that
+ * has been accepted should keep the text it was accepted with, and generating
+ * on view would bill a model call for every visit including crawlers.
+ *
+ * Prices are deliberately not sent to the model — they are rendered directly
+ * beneath this text, and a model that cannot see them cannot contradict them.
+ */
+export async function generateCustomerSummary(input: unknown) {
+  const parsed = explainSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const { companyId } = session
+
+  const [work] = await query<{ id: string; description: string | null; company_name: string | null }>(
+    `select w.id, w.description, c.name as company_name
+       from work_items w
+       left join companies c on c.id = w.company_id
+      where w.id = $1 and w.company_id = $2
+      limit 1`,
+    [parsed.data.work_item_id, companyId],
+  )
+  if (!work) return { ok: false as const, error: 'Quote not found' }
+
+  const items = await query<{ name: string; description: string | null; quantity: number }>(
+    `select qi.name, qi.description, qi.quantity
+       from quote_items qi
+       join work_items w on w.id = qi.work_item_id
+      where qi.work_item_id = $1 and w.company_id = $2
+      order by qi.sort_order`,
+    [parsed.data.work_item_id, companyId],
+  )
+  if (items.length === 0) {
+    return { ok: false as const, error: 'Add line items before writing a summary.' }
+  }
+
+  const { BACKEND_INTERNAL_URL, RIVET_BACKEND_SECRET } = envServer()
+  let res: Response
+  try {
+    res = await fetch(`${BACKEND_INTERNAL_URL}/api/ai/explain-quote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Rivet-Key': RIVET_BACKEND_SECRET },
+      body: JSON.stringify({
+        company_id: companyId,
+        company_name: work.company_name,
+        job_description: work.description,
+        line_items: items,
+      }),
+      cache: 'no-store',
+    })
+  } catch {
+    return { ok: false as const, error: 'AI service unreachable.' }
+  }
+  if (!res.ok) return { ok: false as const, error: 'Could not write the summary. Try again.' }
+
+  const body = (await res.json().catch(() => null)) as { summary?: string } | null
+  const summary = (body?.summary ?? '').trim()
+  if (!summary) {
+    // An empty result means the model failed or had too little to work with.
+    // Showing nothing is correct; inventing an explanation is not.
+    return { ok: false as const, error: 'Not enough detail in the line items to explain.' }
+  }
+
+  try {
+    await query(
+      `update work_items set customer_summary = $1 where id = $2 and company_id = $3`,
+      [summary, parsed.data.work_item_id, companyId],
+    )
+  } catch (e) {
+    console.error('generateCustomerSummary failed', e)
+    return { ok: false as const, error: 'Could not save the summary.' }
+  }
+
+  revalidatePath(`/app/pipeline/${parsed.data.work_item_id}`)
+  return { ok: true as const, data: { summary } }
 }
