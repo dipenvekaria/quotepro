@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Not application code. Linting a JXA automation script and archived
+    // one-off scripts with the Next.js ruleset produces only noise.
+    "docs/**",
+    "scripts/archive/**",
+    "scripts/*.js",
   ]),
 ]);
 

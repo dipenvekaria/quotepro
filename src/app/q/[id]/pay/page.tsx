@@ -9,10 +9,25 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 
+type PayQuote = {
+  quote_number: string | null
+  invoice_number: string | null
+  invoice_pdf_url: string | null
+  customer_name: string | null
+  customer_email: string | null
+  customer_address: string | null
+  subtotal: number | null
+  tax_rate: number | null
+  tax_amount: number | null
+  total: number | null
+  completed_at: string | null
+  paid_at: string | null
+}
+
 export default function PayInvoicePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
-  const [quote, setQuote] = useState<any>(null)
+  const [quote, setQuote] = useState<PayQuote | null>(null)
   const [loading, setLoading] = useState(true)
   const [paying, setPaying] = useState(false)
 
@@ -88,7 +103,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
           <CardContent className="p-6 text-center">
             <h2 className="text-sm font-bold mb-2">Invoice Not Found</h2>
             <p className="text-muted-foreground">
-              The invoice you're looking for doesn't exist.
+              The invoice you’re looking for doesn’t exist.
             </p>
           </CardContent>
         </Card>
@@ -220,7 +235,11 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
                 <Button
                   variant="outline"
                   className="flex-1"
-                  onClick={() => window.open(quote.invoice_pdf_url, '_blank')}
+                  onClick={() => {
+                    // invoice_pdf_url is nullable — window.open(null) navigates
+                    // to "null" rather than doing nothing.
+                    if (quote.invoice_pdf_url) window.open(quote.invoice_pdf_url, '_blank')
+                  }}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Download Invoice PDF

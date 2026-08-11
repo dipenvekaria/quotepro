@@ -29,7 +29,7 @@ export default function OnboardingPage() {
           Company setup
         </div>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          Let's set up your workspace
+          Let’s set up your workspace
         </h1>
         <p className="mt-1 text-[15px] text-muted-foreground">
           Just a few details — takes 30 seconds. You can edit everything later in Settings.

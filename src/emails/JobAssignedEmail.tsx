@@ -40,7 +40,7 @@ export const JobAssignedEmail = ({
         <Section style={content}>
           <Text style={greeting}>Hi {technicianName},</Text>
           <Text style={paragraph}>
-            You've been assigned a new job. Here are the details:
+            You’ve been assigned a new job. Here are the details:
           </Text>
 
           {/* Job ID Badge */}

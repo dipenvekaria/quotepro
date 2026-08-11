@@ -1,3 +1,11 @@
+/** Subset of SignNow's document payload that this client actually reads. */
+export type SignNowDocumentStatus = {
+  id: string
+  status?: string
+  signatures?: Array<{ id?: string; created?: number }>
+  [key: string]: unknown
+}
+
 /**
  * SignNow API Client
  * Handles authentication and document operations with SignNow
@@ -175,7 +183,7 @@ export class SignNowClient {
   /**
    * Check document status
    */
-  async getDocumentStatus(documentId: string): Promise<any> {
+  async getDocumentStatus(documentId: string): Promise<SignNowDocumentStatus> {
     const token = await this.getAccessToken()
 
     const response = await fetch(

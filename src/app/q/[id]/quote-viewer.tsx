@@ -185,7 +185,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
         {/* Line items */}
         <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
           <header className="flex items-center justify-between border-b border-border/70 px-6 py-4">
-            <h2 className="text-sm font-semibold">What's included</h2>
+            <h2 className="text-sm font-semibold">What’s included</h2>
             <span className="text-xs text-muted-foreground">
               {nonDiscountItems.length} items
             </span>
@@ -255,7 +255,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
             </div>
             <p className="mt-2 max-w-lg text-sm text-muted-foreground">
               Approving locks in this price and lets {quote.companies?.name ?? 'us'} schedule the work.
-              You'll get a copy for your records.
+              You’ll get a copy for your records.
             </p>
             <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:items-center">
               <button
@@ -436,7 +436,7 @@ function DeclineModal({ token, onClose }: { token: string; onClose: () => void }
       <div className="w-full max-w-md rounded-2xl border border-border bg-popover p-6 shadow-2xl">
         <h2 className="text-lg font-semibold">Decline this quote</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Mind sharing why? It's optional but helps us learn.
+          Mind sharing why? It’s optional but helps us learn.
         </p>
         <textarea
           value={reason}

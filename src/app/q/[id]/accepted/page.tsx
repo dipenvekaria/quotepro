@@ -12,10 +12,21 @@ interface AcceptedPageProps {
   params: Promise<{ id: string }>
 }
 
+type AcceptedQuote = {
+  quote_number: string | null
+  customer_name: string | null
+  total: number | null
+}
+
+type AcceptedCompany = {
+  phone: string | null
+  email: string | null
+}
+
 export default function AcceptedPage({ params }: AcceptedPageProps) {
   const [quoteId, setQuoteId] = useState<string>('')
-  const [quote, setQuote] = useState<any>(null)
-  const [company, setCompany] = useState<any>(null)
+  const [quote, setQuote] = useState<AcceptedQuote | null>(null)
+  const [company, setCompany] = useState<AcceptedCompany | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -111,7 +122,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
               <ul className="text-left space-y-3 text-gray-700">
                 <li className="flex items-start gap-3">
                   <span className="text-foreground font-bold mt-0.5">1.</span>
-                  <span>We'll call you shortly to schedule the work</span>
+                  <span>We’ll call you shortly to schedule the work</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-foreground font-bold mt-0.5">2.</span>
@@ -119,7 +130,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-foreground font-bold mt-0.5">3.</span>
-                  <span>We'll arrive on time and complete the job to your satisfaction</span>
+                  <span>We’ll arrive on time and complete the job to your satisfaction</span>
                 </li>
               </ul>
             </div>

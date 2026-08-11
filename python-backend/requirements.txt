@@ -13,7 +13,10 @@ fastapi==0.118.3
 uvicorn[standard]==0.38.0
 pydantic==2.12.5
 python-dotenv==1.0.1
-supabase==2.10.0
+# 2.16.0 is the floor: 2.10.0 pins httpx<0.28, which cannot coexist with
+# google-genai's httpx>=0.28.1, and versions below 2.16.0 reject the current
+# sb_publishable_/sb_secret_ key format as "Invalid API key".
+supabase==2.16.0
 
 # Unified Google GenAI SDK — targets AI Studio (API key) or Vertex AI (ADC).
 # Imported lazily: the service starts and serves mock quotes without a key.

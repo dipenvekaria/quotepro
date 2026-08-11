@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { Check, Copy, Loader2, UserPlus, X } from 'lucide-react'
 
@@ -12,17 +12,20 @@ import { ROLE_PERSONAS } from '@/lib/team-personas'
 import { inviteTeammate, revokeInvitation } from './team-actions'
 
 export function InviteTeammateDialog() {
-  const [open, setOpen] = useState(false)
+  // Opens automatically when arriving from the dashboard setup checklist
+  // (/app/settings?invite=1). Derived at init rather than set from an effect —
+  // window is unavailable during SSR, hence the guard.
+  const [open, setOpen] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).get('invite') !== null,
+  )
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<string>('technician')
   const [busy, setBusy] = useState(false)
   const [link, setLink] = useState<string | null>(null)
   const [emailed, setEmailed] = useState(false)
 
-  // Auto-open when arriving from the dashboard setup checklist (/app/settings?invite=1)
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('invite')) setOpen(true)
-  }, [])
 
   function reset() {
     setOpen(false)

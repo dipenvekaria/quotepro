@@ -52,7 +52,7 @@ export default function SignPage({ params }: SignPageProps) {
       // SignNow failed or not configured - fall back to instant acceptance
       console.log('SignNow unavailable, falling back to instant acceptance. Response:', response.ok, 'Data:', data)
       await fallbackToInstantAcceptance(id)
-    } catch (err: any) {
+    } catch (err) {
       console.error('Signing error:', err)
       // On any error, fall back to instant acceptance
       await fallbackToInstantAcceptance(id)
@@ -75,7 +75,7 @@ export default function SignPage({ params }: SignPageProps) {
 
       // Redirect to success page
       router.push(`/q/${id}/accepted`)
-    } catch (err: any) {
+    } catch (err) {
       console.error('Acceptance error:', err)
       setError('Unable to accept quote. Please contact the company directly.')
       setIsLoading(false)

@@ -87,8 +87,10 @@ export function AppShell({
   const pathname = usePathname()
   const initials = getInitials(profile, user.email)
 
-  // Close mobile nav on route change.
+  // Close mobile nav on route change. Syncing to an external event (navigation)
+  // is what effects are for; there is no render-time value to derive this from.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     setMobileNavOpen(false)
   }, [pathname])
 

@@ -310,7 +310,7 @@ export function QuoteEditor({
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
                 <p className="text-xs text-muted-foreground">
-                  This is what we use to draft line items. Be as specific as you'd tell a colleague.
+                  This is what we use to draft line items. Be as specific as you’d tell a colleague.
                 </p>
               </FieldRow>
             </div>

@@ -148,7 +148,7 @@ export default async function IntegrationsPage() {
           <div className="min-w-0">
             <h2 className="text-sm font-semibold">Want a custom integration?</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Housecall Pro, ServiceTitan, Jobber, HubSpot, Salesforce — tell us your stack and we'll
+              Housecall Pro, ServiceTitan, Jobber, HubSpot, Salesforce — tell us your stack and we’ll
               prioritize. Every integration launches with a one-click connect and a live status card here.
             </p>
             <Link
