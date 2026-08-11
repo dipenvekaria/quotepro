@@ -16,7 +16,7 @@
 #
 # Port -> env mapping:
 #   54321  Supabase    -> NEXT_PUBLIC_SUPABASE_URL
-#   8001   ai_backend  -> NEXT_PUBLIC_BACKEND_URL
+#   8000   ai_backend  -> NEXT_PUBLIC_BACKEND_URL
 #   3000   Next app    -> printed only (open this on your phone)
 
 set -euo pipefail
@@ -25,7 +25,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="$ROOT/.env.local"
 
 SUPABASE_PORT=54321
-BACKEND_PORT=8001
+# start-backend.sh, .env.local and docs all use 8000. This said 8001, so
+# --start tunnelled a dead port and wrote it into NEXT_PUBLIC_BACKEND_URL.
+BACKEND_PORT=8000
 FRONTEND_PORT=3000
 
 START_MISSING=0

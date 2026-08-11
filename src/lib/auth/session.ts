@@ -34,7 +34,10 @@ export async function getSession(): Promise<SessionContext | null> {
     userId: user.id,
     email: user.email ?? '',
     companyId: row.company_id,
-    role: row.role ?? 'member',
+    // 'technician' is the most restricted role and what getPermissions()
+    // falls back to anyway. The previous default, 'member', is not a
+    // member of the user_role enum at all.
+    role: row.role ?? 'technician',
     profile: row.profile,
   }
 }
@@ -61,7 +64,10 @@ export async function requireSession(): Promise<SessionContext> {
     userId: user.id,
     email: user.email ?? '',
     companyId: row.company_id,
-    role: row.role ?? 'member',
+    // 'technician' is the most restricted role and what getPermissions()
+    // falls back to anyway. The previous default, 'member', is not a
+    // member of the user_role enum at all.
+    role: row.role ?? 'technician',
     profile: row.profile,
   }
 }

@@ -89,17 +89,17 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
 
             {/* Success Message */}
             <div>
-              <h1 className="text-sm font-bold text-gray-900 mb-2">
+              <h1 className="text-sm font-bold text-foreground mb-2">
                 Thank You!
               </h1>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 Your quote has been accepted.
               </p>
             </div>
 
             {/* Quote Details */}
             {quote && (
-              <div className="bg-gray-50 rounded-lg p-6 space-y-3">
+              <div className="bg-muted rounded-lg p-6 space-y-3">
                 <div className="text-sm text-muted-foreground">
                   Quote #{quote.quote_number}
                 </div>
@@ -116,10 +116,10 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
 
             {/* Next Steps */}
             <div className="bg-muted border border-border rounded-lg p-6 space-y-4">
-              <h2 className="font-bold text-sm text-gray-900">
+              <h2 className="font-bold text-sm text-foreground">
                 What happens next?
               </h2>
-              <ul className="text-left space-y-3 text-gray-700">
+              <ul className="text-left space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-3">
                   <span className="text-foreground font-bold mt-0.5">1.</span>
                   <span>We’ll call you shortly to schedule the work</span>
@@ -145,7 +145,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
                   {company.phone && (
                     <a
                       href={`tel:${company.phone}`}
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
                     >
                       <Phone className="h-4 w-4" />
                       <span className="font-bold">{company.phone}</span>
@@ -154,7 +154,7 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
                   {company.email && (
                     <a
                       href={`mailto:${company.email}`}
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
                     >
                       <Mail className="h-4 w-4" />
                       <span className="font-bold">{company.email}</span>

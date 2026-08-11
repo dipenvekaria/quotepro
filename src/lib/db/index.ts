@@ -23,6 +23,18 @@ types.setTypeParser(1184, asRawString) // timestamptz
 // serverless concurrency exhausts it.
 const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL
 
+// src/lib/env.ts validates everything else with Zod and fails loudly at boot.
+// This one is read straight from process.env, so without a check it surfaces
+// much later as an opaque connection error on whatever page happens to query
+// first. Fail here, naming the variable.
+if (!connectionString) {
+  throw new Error(
+    'Missing DATABASE_URL (or POSTGRES_URL). Local dev: ' +
+      'postgresql://postgres:postgres@127.0.0.1:54322/postgres. ' +
+      'Hosted: the Supabase transaction pooler on port 6543, never the direct connection.',
+  )
+}
+
 // Supabase's pooler presents a chain Node doesn't trust, and pg now treats
 // sslmode=require as verify-full, so a hosted connection dies with
 // SELF_SIGNED_CERT_IN_CHAIN and every page 500s.
