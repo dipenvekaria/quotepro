@@ -15,7 +15,7 @@ accepts and pays from a link. The same record then becomes the scheduled job and
 That last part is the product thesis: **one record, whole lifecycle.** A lead becomes a quote
 becomes a job becomes an invoice without ever being copied into a new row. The URL you sent
 the customer keeps working. The audit trail stays intact. Everything else in the codebase
-follows from that decision — see [`adr/0002-unified-work-items.md`](rebuild/adr/0002-unified-work-items.md).
+follows from that decision — see [`adr/0002-unified-work-items.md`](adr/0002-unified-work-items.md).
 
 Who uses it, and what they're allowed to do, is fixed in `src/lib/permissions.ts`:
 

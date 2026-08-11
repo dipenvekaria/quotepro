@@ -71,7 +71,7 @@ empty, delete the file and drop `ignoreBuildErrors` — that's the finish line f
 
 ---
 
-## Phase 2 — Decide the Python backend's future
+## Phase 2 — Decide the Python backend's future ✅ DONE 2026-08-11
 
 **The open question:** `python-backend/src/quotepro/` is a complete, well-structured FastAPI
 application — 38 files covering ADK multi-agent routing, hybrid RAG over `document_embeddings`,
@@ -134,7 +134,7 @@ No tests exist. Don't chase coverage — cover the things that lose money when t
 
 ---
 
-## Phase 5 — Structural refactors
+## Phase 5 — Structural refactors (deployment config ✅ DONE 2026-08-11)
 
 Only after the dead code is gone, because several of these get simpler once it is.
 
@@ -148,7 +148,7 @@ Only after the dead code is gone, because several of these get simpler once it i
 
 ---
 
-## Phase 6 — Documentation consolidation
+## Phase 6 — Documentation consolidation ✅ DONE 2026-08-11
 
 `CLAUDE.md` and `docs/{ONBOARDING,CODEBASE_MAP,ARCHITECTURE,DATA_MODEL,CONVENTIONS,DEPLOYMENT,LAUNCH_PLAN,CLEANUP_PLAN}.md`
 are the canonical set. Everything else is history.
@@ -164,6 +164,16 @@ are the canonical set. Everything else is history.
   rest, and point it at `CLAUDE.md`.
 
 **Target:** under 15 markdown files in the repo, every one of them true.
+
+**Outcome (2026-08-11).** `docs/` holds 18 markdown files plus 8 ADRs, all current. Deleted:
+`docs/archive/` (22 files), `docs/rebuild/`, `REBUILD.md`, and fourteen orphaned pre-rebuild
+guides that no canonical document referenced. The three real ADRs from `docs/rebuild/adr/` moved
+into `docs/adr/`, which now runs 0001–0008 in one place.
+
+Phase 2 resolved in [adr/0008](adr/0008-single-python-backend.md): `ai_backend.py` kept, the
+other three backend trees deleted (~90 files), with a record of what to retrieve from history
+and when. Phase 5's deployment-config item is done — `docker-compose.yml` and `k8s/` are gone,
+Railway is the only shape left. The file-splitting items in Phase 5 remain open.
 
 ---
 

@@ -113,15 +113,9 @@ the badge.
 
 ## Stale documentation
 
-Accurate as of the date in each file, describing a system that has since changed:
-
-- `README.md` (38 KB) and `REBUILD.md` (50 KB) — the rebuild plan and the pre-rebuild feature list.
-- `docs/rebuild/**` — mostly `_TBD_` placeholders. `DATA_MODEL.md` and `AI.md` there have real
-  content; `adr/0001`–`0003` are genuine and worth keeping.
-- `docs/archive/**` — 112 files.
-- `docs/{ARCHITECTURE,DEVELOPMENT,DEPLOYMENT,DEPLOYMENT_GUIDE,ENVIRONMENT_CONFIG,SECURITY_*,MONITORING_*,QUICK_START,SUPABASE_SETUP,ROLE_PERMISSIONS,...}.md` — pre-rebuild.
-- `.github/copilot-instructions.md` — still valid on the Gemini-only model policy and on brevity;
-  its content is carried into `CLAUDE.md`.
+None. `docs/archive/` (22 files), `docs/rebuild/`, `REBUILD.md` and fourteen orphaned
+pre-rebuild guides were deleted on 2026-08-11; the three genuine ADRs from `docs/rebuild/adr/`
+moved into `docs/adr/`. Everything left in `docs/` is current.
 
 ---
 
