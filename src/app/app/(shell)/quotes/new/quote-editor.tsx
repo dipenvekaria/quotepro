@@ -217,31 +217,34 @@ export function QuoteEditor({
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      {/* Header. Actions drop to their own row on a phone — side by side with the
+          title there is not room for a breadcrumb and two labelled buttons, and
+          the breadcrumb wraps into the title. */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-2">
           <button
             onClick={() => router.back()}
-            className="grid h-8 w-8 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+            aria-label="Go back"
+            className="-ml-2 grid h-11 w-11 shrink-0 place-items-center rounded-md text-muted-foreground transition-transform hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted lg:-ml-1 lg:h-8 lg:w-8"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <div>
-            <div className="text-xs text-muted-foreground">Workspace / New quote</div>
-            <h1 className="text-2xl font-semibold tracking-tight">Quote draft</h1>
+          <div className="min-w-0">
+            <div className="truncate text-xs text-muted-foreground">Workspace / New quote</div>
+            <h1 className="truncate text-2xl font-semibold tracking-tight">Quote draft</h1>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <Button
             onClick={() => setAiOpen(true)}
             variant="outline"
-            className="h-9 gap-1.5 border-primary/40 text-primary hover:bg-primary/5"
+            className="flex-1 gap-1.5 border-primary/40 text-primary hover:bg-primary/5 sm:flex-none"
           >
-            <Sparkles className="h-3.5 w-3.5" />
+            <Sparkles className="h-4 w-4" />
             Draft quote
           </Button>
-          <Button onClick={save} disabled={saving} className="h-9 gap-1.5 shadow-sm">
-            {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+          <Button onClick={save} disabled={saving} className="flex-1 gap-1.5 shadow-sm sm:flex-none">
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save quote
           </Button>
         </div>
