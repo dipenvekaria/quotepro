@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/session'
 import { envServer } from '@/lib/env'
 import { query, withTransaction, withUser } from '@/lib/db'
+import { computeTotals } from '@/lib/money'
 
 // -----------------------------------------------------------------------------
 // AI quote generation.
@@ -187,8 +188,6 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   )
   if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
 
-  const subtotal = parsed.data.items.reduce((s, i) => s + i.quantity * i.unit_price, 0)
-
   // An explicit rate wins; otherwise use the company's configured one. This
   // previously fell back to a hardcoded 8.5, which silently reset the rate for
   // any company that had set something else — wrong tax on a real quote.
@@ -203,8 +202,7 @@ export async function saveLineItems(input: SaveLineItemsInput) {
     taxRate = Number(rows[0]?.tax_rate ?? 8.5)
   }
 
-  const taxAmount = Math.round(subtotal * taxRate) / 100
-  const total = subtotal + taxAmount
+  const { subtotal, taxAmount, total } = computeTotals(parsed.data.items, taxRate)
 
   try {
     await withTransaction(async (q) => {
@@ -238,13 +236,7 @@ export async function saveLineItems(input: SaveLineItemsInput) {
         `update work_items
             set subtotal = $1, tax_rate = $2, tax_amount = $3, total = $4
           where id = $5`,
-        [
-          Number(subtotal.toFixed(2)),
-          taxRate,
-          Number(taxAmount.toFixed(2)),
-          Number(total.toFixed(2)),
-          parsed.data.work_item_id,
-        ],
+        [subtotal, taxRate, taxAmount, total, parsed.data.work_item_id],
       )
     })
   } catch (e) {
