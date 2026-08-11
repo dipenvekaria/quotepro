@@ -38,8 +38,12 @@ Details in [DEPLOYMENT.md](DEPLOYMENT.md).
       Require a Supabase JWT, verify `company_id` matches the caller's company, restrict CORS to
       the production origin, and rate-limit per user. **This is the most serious open issue in
       the codebase.**
-- [ ] **Tenancy audit.** Grep every `query(` call in live code and confirm each carries
-      `company_id`. The `pg` pool bypasses RLS — this is the primary control and it is manual.
+- [x] **Tenancy audit — done 2026-08-10, clean.** All 53 data-access call sites in live code
+      reviewed. Every statement touching company data is scoped by `company_id`, directly or via
+      a verified parent; every mutation verifies ownership first. The three unauthenticated
+      routes (`/q`, `/i`, `/join`) authorise by token and derive child rows from the verified
+      parent. **No leaks found.** Re-run after any new data access — this is manual and there is
+      no automated guard yet (Cleanup Phase 4, test 1).
 - [ ] **Run `scripts/verify-rls.ts`** against the production schema. Anon reads must return zero
       rows on every table.
 - [ ] **Delete the scratch routes** — `/theme-test`, `/logo-test`, `/premium-logos`,
