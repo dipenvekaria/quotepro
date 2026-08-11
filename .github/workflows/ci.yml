@@ -40,6 +40,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # The pg pool bypasses RLS, so `where company_id = $n` in each statement is
+      # the primary access control. This asserts no statement is missing one.
+      - name: Test
+        run: npm run test
+
       - name: Build
         run: npm run build
         env:
