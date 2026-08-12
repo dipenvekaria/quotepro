@@ -17,7 +17,6 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(20),
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
-  NEXT_PUBLIC_BACKEND_URL: z.string().url().default('http://localhost:8000'),
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
@@ -30,7 +29,6 @@ const rawClient = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-  NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -52,10 +50,29 @@ export const env = parseClient()
 // Server-only vars — throws if imported from a client component
 // ---------------------------------------------------------------------------
 
+/**
+ * An optional secret that may legitimately be blank.
+ *
+ * Hosting dashboards hand back `''` for a variable that exists but was never
+ * filled in, and `z.string().min(n).optional()` rejects that — which failed the
+ * whole env parse and took the app down instead of degrading the one feature
+ * the key belongs to.
+ */
+const optionalSecret = (min: number) =>
+  z.preprocess(
+    (v) => (typeof v === 'string' && v.trim() === '' ? undefined : v),
+    z.string().min(min).optional(),
+  )
+
 const serverEnvSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(20),
-  SUPABASE_JWT_SECRET: z.string().min(20).optional(),
-  GEMINI_API_KEY: z.string().min(10).optional(),
+  SUPABASE_JWT_SECRET: optionalSecret(20),
+  // Absent means AI is off: quote generation degrades to keyword matching over
+  // the catalog and the customer summary renders nothing, rather than failing.
+  GEMINI_API_KEY: optionalSecret(10),
+  // Comma-separated fallback chain, newest first. Unset uses the default in
+  // src/lib/ai/gemini.ts.
+  GEMINI_MODELS: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().email().default('no-reply@quotepro.demo'),
   TWILIO_ACCOUNT_SID: z.string().optional(),
@@ -65,11 +82,6 @@ const serverEnvSchema = z.object({
   STRIPE_PLATFORM_FEE_BPS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
-  BACKEND_INTERNAL_URL: z.string().url().default('http://localhost:8000'),
-  // Shared secret sent as X-Rivet-Key on every AI-service call. The service
-  // rejects /api/* without it, which is what keeps the backend unreachable by
-  // anyone who finds its URL.
-  RIVET_BACKEND_SECRET: z.string().min(1).default('dev-local-secret-change-me'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 

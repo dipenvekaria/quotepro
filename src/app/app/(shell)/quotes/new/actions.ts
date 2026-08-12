@@ -4,40 +4,26 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
-import { envServer } from '@/lib/env'
+import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
 
 // -----------------------------------------------------------------------------
 // AI quote generation.
 //
-// This runs server-side deliberately. The browser used to call the FastAPI
-// service directly with a client-supplied company_id, which meant changing one
-// value in devtools returned another tenant's catalog-derived pricing, and no
-// amount of frontend access control could cover a backend on a second origin.
-// company_id now comes from the session and never from the caller.
+// This runs server-side deliberately. The browser used to call the AI service
+// directly with a client-supplied company_id, which meant changing one value in
+// devtools returned another tenant's catalog-derived pricing. company_id now
+// comes from the session and never from the caller.
+//
+// Gemini is called in-process (`src/lib/ai/quote.ts`) rather than over HTTP to a
+// separate FastAPI service — see docs/adr/0009-ai-in-process.md.
 // -----------------------------------------------------------------------------
 
 const generateSchema = z.object({
   description: z.string().min(3).max(4000),
   customer_name: z.string().max(200).optional(),
   customer_address: z.string().max(500).optional(),
-})
-
-const aiLineItemSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().nullable().optional(),
-  quantity: z.coerce.number(),
-  unit_price: z.coerce.number(),
-  is_upsell: z.boolean().optional(),
-  is_discount: z.boolean().optional(),
-})
-
-const aiResponseSchema = z.object({
-  line_items: z.array(aiLineItemSchema),
-  tax_rate: z.number().optional(),
-  reasoning: z.string().optional(),
-  mode: z.string().optional(),
 })
 
 export type GenerateQuoteInput = z.infer<typeof generateSchema>
@@ -51,41 +37,24 @@ export async function generateQuoteItems(input: unknown) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
 
-  const { BACKEND_INTERNAL_URL, RIVET_BACKEND_SECRET } = envServer()
-
-  let res: Response
   try {
-    res = await fetch(`${BACKEND_INTERNAL_URL}/api/ai/generate-quote`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Rivet-Key': RIVET_BACKEND_SECRET,
-      },
-      body: JSON.stringify({
-        company_id: session.companyId,
-        description: parsed.data.description,
-        customer_name: parsed.data.customer_name || 'Prospect',
-        customer_address: parsed.data.customer_address || undefined,
-        existing_items: [],
-      }),
-      cache: 'no-store',
+    const data = await generateQuote({
+      companyId: session.companyId,
+      description: parsed.data.description,
+      customerName: parsed.data.customer_name || 'Prospect',
+      customerAddress: parsed.data.customer_address,
     })
-  } catch {
-    return { ok: false as const, error: 'AI service unreachable. Is the backend running?' }
-  }
-
-  if (res.status === 400) {
-    return {
-      ok: false as const,
-      error: 'No pricing items in your catalog yet — add some before generating a quote.',
+    return { ok: true as const, data }
+  } catch (e) {
+    if (e instanceof NoCatalogError) {
+      return {
+        ok: false as const,
+        error: 'No pricing items in your catalog yet — add some before generating a quote.',
+      }
     }
+    console.error('generateQuoteItems failed', e)
+    return { ok: false as const, error: 'Quote generation failed. Try again.' }
   }
-  if (!res.ok) return { ok: false as const, error: 'Quote generation failed. Try again.' }
-
-  const body = aiResponseSchema.safeParse(await res.json().catch(() => null))
-  if (!body.success) return { ok: false as const, error: 'AI service returned an unexpected response.' }
-
-  return { ok: true as const, data: body.data }
 }
 
 // -----------------------------------------------------------------------------

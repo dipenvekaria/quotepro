@@ -141,17 +141,20 @@ that have it are all in the dead tree and are being deleted.
 purely because the dead `(dashboard)` tree doesn't compile — it is not permission to ship type
 errors.
 
-## Python
+## AI
 
-Only `python-backend/ai_backend.py` runs. Ruff for lint and format, 4-space indent, type hints
-on public functions, Pydantic models for every request and response.
+There is no Python. Gemini is called from `src/lib/ai/` inside the server actions
+([ADR 0009](adr/0009-ai-in-process.md)).
 
 Model policy is fixed and not up for negotiation: **Google Gemini only.** No GPT, Claude, Llama,
-Mistral, or Cohere in product code. Temperature ≤ 0.2. `response_mime_type: "application/json"`
-whenever the output is parsed, with a response schema where the SDK supports one.
+Mistral, or Cohere in product code. Temperature ≤ 0.2. `responseMimeType: "application/json"`
+whenever the output is parsed, with a `responseSchema`.
 
 Prompts live in `prompts/` as markdown. Editing behaviour means editing a prompt file, not
-embedding a new string literal in Python.
+embedding a new string literal.
+
+Never let a model set a number that reaches a customer. Resolve it against the database first —
+`reconcile()` in `src/lib/ai/quote.ts` is the pattern.
 
 ## Comments
 

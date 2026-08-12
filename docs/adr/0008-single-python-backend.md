@@ -1,5 +1,9 @@
 # ADR 0008: One Python Backend — Delete the Other Three
 
+> **Superseded by [ADR 0009](0009-ai-in-process.md) (2026-08-11).** The one backend this ADR
+> chose to keep, `ai_backend.py`, has itself been deleted. There is no Python in the repo.
+
+
 **Status**: Accepted
 **Date**: 2026-08-11
 **Deciders**: @dipenvekaria

@@ -22,93 +22,23 @@ can contribute, and a rhythm for continuing the build.
 | --- | --- |
 | **Access** | Internal only. Vercel Authentication, no public signup, demo data is fine. |
 | **Databases** | Local Supabase per engineer + one shared hosted `rivet-staging`. |
-| **Hosting** | Vercel (frontend) + Railway (AI backend) + Supabase Cloud — [ADR 0005](adr/0005-hosting-vercel-railway-supabase.md). |
+| **Hosting** | Vercel + Supabase Cloud — [ADR 0005](adr/0005-hosting-vercel-railway-supabase.md), amended by [0009](adr/0009-ai-in-process.md). No separate AI service. |
 | **Stripe** | Stays in test mode. |
 | **First engineer task** | Cleanup Phase 1 — delete the dead tree. |
 
 ---
 
-## Step 0 — Move the AI call server-side
+## Step 0 — Move the AI call server-side ✅ done
 
-**Blocking. Do this before anything is deployed.** Half a day.
+The browser used to call the AI service directly with a client-supplied `company_id`, which
+meant editing one value in devtools returned another tenant's catalog-derived pricing. That
+moved into a server action, where `company_id` comes from the session.
 
-`src/app/app/(shell)/quotes/new/quote-editor.tsx:130` is a `'use client'` component that
-`fetch`es the Python backend **directly from the browser**, passing `company_id` from a
-client-side variable:
-
-```ts
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'
-const res = await fetch(`${backendUrl}/api/ai/generate-quote`, {
-  method: 'POST',
-  body: JSON.stringify({ company_id: companyId, description: prompt, ... }),
-})
-```
-
-Three consequences, and the first one is why this blocks the deploy:
-
-1. **Vercel Authentication cannot protect it.** Railway is a different origin. Password-protect
-   the frontend all you like — the backend URL sits on the open internet regardless.
-2. **`ai_backend.py` has no authentication and `allow_origins=["*"]`.** Anyone who finds the
-   URL can call it.
-3. **`company_id` is supplied by the client.** Change one value in devtools and you get another
-   company's catalog-derived pricing back. This is a cross-tenant read with no exploit required.
-
-The fix is smaller than adding JWT verification to Python, and it removes the spoofing problem
-entirely rather than mitigating it.
-
-**Frontend** — add a server action alongside the existing ones in
-`src/app/app/(shell)/quotes/new/actions.ts`:
-
-```ts
-'use server'
-
-export async function generateQuoteItems(input: { description: string; customer_name?: string; address?: string }) {
-  const session = await getSession()
-  if (!session) return { ok: false as const, error: 'Not authenticated' }
-
-  const res = await fetch(`${envServer().BACKEND_INTERNAL_URL}/api/ai/generate-quote`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Rivet-Key': envServer().RIVET_BACKEND_SECRET,
-    },
-    // company_id comes from the session — never from the caller.
-    body: JSON.stringify({ company_id: session.companyId, ...input }),
-    cache: 'no-store',
-  })
-  if (!res.ok) return { ok: false as const, error: 'Quote generation failed' }
-  return { ok: true as const, data: await res.json() }
-}
-```
-
-Then replace the `fetch` in `quote-editor.tsx` with a call to that action. The response shape
-is unchanged, so the rest of the component stays as it is.
-
-**Backend** — in `ai_backend.py`, reject anything without the shared secret and stop allowing
-browser origins (nothing calls it from a browser any more):
-
-```python
-BACKEND_SECRET = os.getenv("RIVET_BACKEND_SECRET", "")
-
-@app.middleware("http")
-async def require_secret(request, call_next):
-    if request.url.path.startswith("/api/") and request.headers.get("x-rivet-key") != BACKEND_SECRET:
-        return JSONResponse({"detail": "unauthorized"}, status_code=401)
-    return await call_next(request)
-```
-
-Keep `/health` open so Railway's health check works.
-
-**Then:** delete `NEXT_PUBLIC_BACKEND_URL` from the Vercel environment. It should not exist in
-a browser bundle again. Local dev keeps working via `BACKEND_INTERNAL_URL=http://localhost:8000`.
-
-Verify: `curl -X POST https://<railway>/api/ai/generate-quote -d '{}'` returns 401.
-
-> Full JWT verification and per-user rate limiting are still worth doing before any public
-> deployment. They're in [LAUNCH_PLAN.md](LAUNCH_PLAN.md). This step is what makes an
-> *internal* deploy safe.
+Superseded entirely on 2026-08-11: there is no AI service any more, so there is no cross-origin
+call to secure. Gemini runs in-process ([ADR 0009](adr/0009-ai-in-process.md)).
 
 ---
+
 
 ## Step 1 — Accounts and access
 
@@ -118,7 +48,7 @@ Half a day, mostly clicking.
 2. **`main` is the only branch.** The pre-rebuild history is tagged `pre-rebuild-main`.
 3. **Protect `main`** — require a PR, require CI to pass once CI actually works
    (Cleanup Phase 3). For two people, one approval is enough; don't make it heavier than that.
-4. **Vercel, Railway, Supabase** — invite the engineer to each. All three have free-tier seats
+4. **Vercel and Supabase** — invite the engineer to each. Both have free-tier seats
    that cover this.
 5. **Secrets** — put every key in a shared 1Password vault (or Bitwarden). Not Slack, not
    `.env` files over email. This is also the moment to **rotate everything**: the Gemini,
@@ -155,33 +85,7 @@ Local development is unaffected — everyone keeps running `supabase start` with
 
 ---
 
-## Step 3 — Deploy the AI backend
-
-Two hours.
-
-Railway, root directory `python-backend`, start command:
-
-```
-uvicorn ai_backend:app --host 0.0.0.0 --port $PORT
-```
-
-Environment:
-
-```
-SUPABASE_URL                 https://<ref>.supabase.co
-SUPABASE_SERVICE_ROLE_KEY    <staging service role>
-GEMINI_API_KEY               <rotated key>
-GEMINI_MODELS                gemini-2.5-flash,gemini-flash-latest,gemini-2.5-flash-lite
-RIVET_BACKEND_SECRET         <generate: openssl rand -hex 32>
-```
-
-Health check `/health`. The response includes `ai_mode` — `gemini`, `vertex:<region>`, or
-`mock`. **If it ever says `mock` in a deployed environment, quotes are being generated by a
-keyword matcher.** Set an alert on it.
-
----
-
-## Step 4 — Deploy the frontend
+## Step 3 — Deploy the app
 
 Two hours.
 
@@ -193,16 +97,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY  <anon>
 NEXT_PUBLIC_APP_URL            https://<your-vercel-domain>
 SUPABASE_SERVICE_ROLE_KEY      <service role>
 DATABASE_URL                   <pooler connection string, port 6543>
-BACKEND_INTERNAL_URL           https://<railway-app>.up.railway.app
-RIVET_BACKEND_SECRET           <same value as Railway>
+GEMINI_API_KEY                 <rotated key — server only>
 RESEND_API_KEY                 <rotated>
 RESEND_FROM_EMAIL              no-reply@<your-domain>
 STRIPE_SECRET_KEY              <test mode>
 STRIPE_WEBHOOK_SECRET          <test mode>
 ```
 
-Note what's absent: **no `NEXT_PUBLIC_BACKEND_URL`.** Step 0 removed the need for it, and
-leaving it would put the backend URL back in the browser bundle.
+Note what is absent: **no `NEXT_PUBLIC_` prefix on `GEMINI_API_KEY`.** That would ship the key
+to every browser that loads the app.
 
 `src/lib/env.ts` validates all of this with Zod at boot and fails loudly on anything missing.
 That's the behaviour you want — don't work around it.
@@ -216,7 +119,7 @@ someone outside the team.
 
 ---
 
-## Step 5 — Verify
+## Step 4 — Verify
 
 An hour, on a real phone as well as a desktop.
 
@@ -227,7 +130,7 @@ An hour, on a real phone as well as a desktop.
 - Send the quote; check the email arrives (Resend logs will tell you if it's being dropped).
 - Open `/q/<public_token>` in a private window. Accept it.
 - Schedule the job, complete it, convert to invoice, record a test payment.
-- Confirm `curl` against the Railway backend without the secret header returns **401**.
+- Confirm the generated quote reports `mode: "gemini:<model>"`, not `mock`.
 - Confirm a logged-out visitor to the Vercel URL hits the Vercel Authentication wall.
 
 If any step fails, fix it before onboarding anyone — debugging a broken deploy is a much worse
@@ -235,7 +138,7 @@ first day than a working one.
 
 ---
 
-## Step 6 — Onboard the engineer
+## Step 5 — Onboard the engineer
 
 Half a day of theirs, an hour of yours.
 
@@ -255,7 +158,7 @@ Twenty minutes, and it makes the architecture concrete in a way the docs can't.
 
 ---
 
-## Step 7 — Continue the build
+## Step 6 — Continue the build
 
 **Their first task: Cleanup Phase 1 — delete the dead tree.**
 See [CLEANUP_PLAN.md](CLEANUP_PLAN.md).
@@ -288,7 +191,6 @@ This matters more than usual here because the docs are also the agent's context 
 ## Rollback
 
 - **Frontend** — Vercel, promote the previous deployment. Instant.
-- **Backend** — Railway, redeploy the previous image.
 - **Database** — migrations are forward-only. A bad one needs a compensating migration, not a
   revert. Test every migration against a local `supabase db reset` first. PITR is the last
   resort and it costs data.

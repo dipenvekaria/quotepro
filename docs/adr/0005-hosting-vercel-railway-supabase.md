@@ -1,5 +1,10 @@
 # ADR 0005: Host on Vercel + Railway + Supabase Cloud
 
+> **Amended by [ADR 0009](0009-ai-in-process.md) (2026-08-11).** Railway is no longer part of
+> the topology — the FastAPI service it was for has been deleted and the AI runs in-process.
+> Vercel + Supabase Cloud stands.
+
+
 **Status**: Accepted
 **Date**: 2026-08-07
 **Deciders**: @dipenvekaria

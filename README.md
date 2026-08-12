@@ -27,7 +27,7 @@ editing anything.
 ## Stack
 
 Next.js 16 (App Router, React 19, TypeScript strict) · Tailwind 4 + shadcn/ui · Postgres via
-raw `pg` and parameterized SQL, no ORM · Supabase for auth · FastAPI + Google Gemini for quote
+raw `pg` and parameterized SQL, no ORM · Supabase for auth · Google Gemini for quote
 generation · Resend, Stripe Connect, SignNow.
 
 ## Quick start
@@ -40,11 +40,8 @@ supabase db reset            # migrations + demo seed
 npm run dev                  # → http://localhost:3000
 ```
 
-Quote generation additionally needs the AI service:
-
-```bash
-cd python-backend && uvicorn ai_backend:app --reload --port 8000
-```
+That is the whole stack — Gemini runs in-process. Quote generation works without a
+`GEMINI_API_KEY`, falling back to keyword-matching the catalog.
 
 Demo logins: `owner@acme.demo`, `office@acme.demo`, `tech@acme.demo` — all `demo1234`.
 
@@ -63,7 +60,7 @@ Environment setup and the failure modes you'll hit are in
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How it fits together and why |
 | [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | Schema and the work-item lifecycle |
 | [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) | How code is written here |
-| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Railway + Supabase Cloud |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Supabase Cloud |
 | [`docs/PROTOTYPE_DEPLOYMENT.md`](docs/PROTOTYPE_DEPLOYMENT.md) | Current focus — deploy the prototype, onboard a second engineer |
 | [`docs/LAUNCH_PLAN.md`](docs/LAUNCH_PLAN.md) | Sequenced path to production |
 | [`docs/GTM_PRODUCT_CHECKLIST.md`](docs/GTM_PRODUCT_CHECKLIST.md) | Feature gaps vs competitors; the launch gate |

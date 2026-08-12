@@ -202,13 +202,13 @@ ls prompts/default-system-prompt.md
 ls prompts/companies/YOUR_COMPANY_ID/system-prompt.md
 
 # View logs
-tail -f python-backend/logs.txt
+npm run dev   # prompt loading is logged on first use
 ```
 
 ## 📚 Related Documentation
 
 - Company-specific prompts: `/prompts/companies/README.md`
-- Python backend: `/python-backend/main.py` (see `load_system_prompt()` and `load_user_prompt_template()`)
+- Prompt loading: `src/lib/ai/prompts.ts`
 - API docs: `/docs/` (coming soon)
 
 ## 📝 Summary

@@ -29,10 +29,18 @@ Once the toolchain migration lands (`docs/CLEANUP_PLAN.md` Phase 3): `pnpm typec
 
 Work through these against your actual diff, not from memory.
 
-**1. Did you edit dead code?** Roughly half this repo is unreachable pre-rebuild code that still
-compiles. If your change is in `src/app/(dashboard)`, `src/components/features`, `src/hooks`,
-`src/app/api` (except vitals), or `python-backend/src|app|api|services`, stop and check
-`docs/CODEBASE_MAP.md`. This is the most common wasted-work failure here.
+**1. Did you edit dead code?** Every known dead tree has now been deleted, so this is far less
+likely than it was — but if something looks unreachable, check `docs/CODEBASE_MAP.md` before
+assuming.
+
+**Do not delete a route because nothing imports it.** `src/app/api/**` was listed as dead on
+that basis and deleted in Cleanup Phase 1; five live call sites reached it by string —
+`fetch('/api/stripe/checkout/...')` from the customer-facing "Pay now" button among them — and
+no import ever linked them. Before deleting any route, grep the repo for its *path*:
+
+```bash
+grep -rn "api/stripe/checkout" src/
+```
 
 **2. Is every query tenant-scoped?**
 
