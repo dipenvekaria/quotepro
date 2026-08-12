@@ -22,7 +22,12 @@ const nextConfig: NextConfig = {
     '/*': ['./prompts/**/*.md'],
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production",
+    // Strip console.log noise from production, but keep error and warn — this
+    // was `true`, which removes console.error too, so every deliberate failure
+    // log in the app compiled to nothing and production had no diagnostics at
+    // all. The AI fallback warnings in src/lib/ai are only useful if they survive.
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error", "warn"] } : false,
   },
   poweredByHeader: false,
   devIndicators: false,

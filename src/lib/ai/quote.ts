@@ -323,6 +323,13 @@ export async function generateQuote(input: {
     }
   }
 
+  // Mock quotes are keyword-matched, not generated. They look plausible enough
+  // that nobody notices from the UI, so this is the only signal that a customer
+  // is being shown something a model never saw. Alert on it.
+  console.warn(
+    `ai/quote: falling back to mock for company ${input.companyId} (aiEnabled=${aiEnabled()})`,
+  )
+
   const mock = mockGenerate(catalog, input.description)
   return { ...mock, tax_rate, mode: 'mock' }
 }
