@@ -11,7 +11,7 @@ _Rev. 2026-08-07 · branch `main`_
 
 ### 1. Get access
 
-Ask Dipen for: GitHub collaborator on the repo, a seat on Vercel / Railway / Supabase, and the
+Ask Dipen for: GitHub collaborator on the repo, a seat on Vercel and Supabase, and the
 shared password vault. A Gemini API key is optional — the app works without one.
 
 ### 2. Install the toolchain
@@ -60,22 +60,22 @@ chart has data.
 ```bash
 cp .env.example .env.local
 supabase status                     # copy the anon key and service_role key in
-cp python-backend/.env.example python-backend/.env
 ```
 
-Both files are commented with local defaults already filled in — you only need the two keys.
+The file is commented with local defaults already filled in — you only need the two keys.
 `src/lib/env.ts` validates everything at boot and names whatever is missing, so read the error
 rather than guessing.
 
-Leave `GEMINI_API_KEY` empty if you don't have one. The AI service falls back to a keyword
-matcher and reports `"mode": "mock"` — the whole quote flow still works offline.
+Leave `GEMINI_API_KEY` empty if you don't have one. Quote generation falls back to a keyword
+matcher and reports `mode: "mock"` — the whole flow still works offline.
 
 ### 6. Run it
 
 ```bash
-./start-frontend.sh    # → localhost:3000
-./start-backend.sh     # → localhost:8000 (creates its own venv)
+npm run dev            # → localhost:3000
 ```
+
+One process. Gemini is called in-process, so there is no backend to start.
 
 Sign in with `owner@acme.demo`, `office@acme.demo` or `tech@acme.demo` — all `demo1234`. Test
 with more than one; permission bugs only appear when you switch roles.
@@ -207,7 +207,7 @@ The two tracks touch almost no common files, which is the point.
 | Dipen — infrastructure | You — codebase |
 | --- | --- |
 | Move the AI call server-side, lock the backend | Cleanup Phase 1 — delete the dead tree |
-| Hosted Supabase, Vercel, Railway, secrets | Phase 3 — pnpm, biome, vitest; make CI real |
+| Hosted Supabase, Vercel, secrets | Phase 3 — pnpm, biome, vitest; make CI real |
 | Stripe live-mode prep, email deliverability | Phase 4 — tenancy and money tests |
 
 Small PRs off `main`, each getting an automatic Vercel preview. Non-obvious decisions
@@ -242,7 +242,7 @@ agent session either of you runs.
 | `node_modules` is a broken symlink | iCloud workaround that no longer applies. `rm -f node_modules && npm install`. |
 | Login succeeds then bounces to `/login` | Supabase URL in `.env.local` doesn't match the one that issued the cookie — usually a stale tunnel URL. Fix env, clear cookies, restart. |
 | Redirected to `/app/onboarding` | `requireSession()` sends you there when the user row has no `company_id`. Either you signed up fresh (correct) or the seed didn't apply — re-run `npm run db:reset`. |
-| Quote generation returns nothing | Check `localhost:8000/health`. If `ai_mode` is `mock`, Gemini is unavailable — that's the intended fallback, not a bug. Generation also needs active catalog items and 400s without them. |
+| Quote generation returns nothing | Check the `mode` on the result. `mock` means Gemini is unavailable — the intended fallback, not a bug. Generation also needs active catalog items and errors without them. |
 | `tsc` errors in `src/app/(dashboard)` | The dead tree. Use `npm run typecheck`, not `typecheck:all`. |
 | Claude Code doesn't know the project | You started it outside the repo root. `cd ~/code/rivet` and restart. |
 

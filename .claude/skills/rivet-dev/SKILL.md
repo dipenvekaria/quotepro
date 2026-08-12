@@ -1,19 +1,20 @@
 ---
 name: rivet-dev
-description: Use when starting, running, or debugging the Rivet local stack — "run the app", "start the dev server", "the app won't boot", "supabase won't start", screenshotting or manually testing a change in the real app. Covers the four processes, environment setup, demo logins, and the failure modes specific to this repo.
+description: Use when starting, running, or debugging the Rivet local stack — "run the app", "start the dev server", "the app won't boot", "supabase won't start", screenshotting or manually testing a change in the real app. Covers the two processes, environment setup, demo logins, and the failure modes specific to this repo.
 ---
 
 # Running Rivet Locally
 
-Three processes. Two are required.
+Two processes. Both are required.
 
 | Process | Command | Port |
 | --- | --- | --- |
 | Postgres + Auth | `supabase start` | 54321 API, 54322 DB, 54323 Studio, 54324 mail |
 | Next.js | `npm run dev` | 3000 |
-| AI backend | `cd python-backend && uvicorn ai_backend:app --reload --port 8000` | 8000 |
 
-The AI backend is only needed for quote generation. Everything else works without it.
+There is no separate AI service. Gemini is called in-process from the server actions
+(`src/lib/ai/`) — see `docs/adr/0009-ai-in-process.md`. Anything telling you to start
+`uvicorn` or `python-backend` is out of date.
 
 ## Cold start
 
@@ -22,13 +23,6 @@ npm install                  # see "node_modules symlink" below if this looks wr
 supabase start               # needs Docker Desktop running
 supabase db reset            # migrations + seed
 npm run dev
-```
-
-Then in a second terminal:
-
-```bash
-cd python-backend && uvicorn ai_backend:app --reload --port 8000
-curl localhost:8000/health   # check `ai_mode`
 ```
 
 Sign in at http://localhost:3000/login:
@@ -49,20 +43,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<supabase status>
 SUPABASE_SERVICE_ROLE_KEY=<supabase status>
 DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-```
-
-`python-backend/.env`:
-
-```bash
-SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_SERVICE_ROLE_KEY=<same>
 GEMINI_API_KEY=<optional — mock fallback without it>
-ALLOWED_ORIGINS=http://localhost:3000
 ```
 
 `src/lib/env.ts` validates with Zod and throws on a missing required var. The error names the
 variable — read it rather than guessing.
+
+Without `GEMINI_API_KEY` the app still runs: quote generation keyword-matches the catalog and
+reports `mode: "mock"`, and the customer summary comes back empty. Nothing errors, so if quotes
+look mechanical, check `mode` before blaming the prompt.
 
 ## Failure modes, in the order you'll hit them
 

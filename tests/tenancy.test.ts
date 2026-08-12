@@ -58,6 +58,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     match: "settings->>'tax_rate'",
     reason: 'where id = $1 is session.companyId',
   },
+  {
+    file: 'src/lib/ai/quote.ts',
+    match: "settings->>'tax_rate'",
+    reason: 'where id = $1 is the companyId the caller took from getSession()',
+  },
 
   // --- child rows reached through a parent already verified ----------------
   {

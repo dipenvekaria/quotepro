@@ -73,30 +73,19 @@ empty, delete the file and drop `ignoreBuildErrors` — that's the finish line f
 
 ## Phase 2 — Decide the Python backend's future ✅ DONE 2026-08-11
 
-**The open question:** `python-backend/src/quotepro/` is a complete, well-structured FastAPI
-application — 38 files covering ADK multi-agent routing, hybrid RAG over `document_embeddings`,
-Postgres-backed agent sessions, an arq indexer worker, rate limiting, OpenTelemetry. It has
-tests. It was built during the rebuild and **never wired up**. Meanwhile the 340-line
-`ai_backend.py` is what actually serves traffic.
+Resolved twice. [ADR 0008](adr/0008-single-python-backend.md) kept `ai_backend.py` and deleted
+the other three backend trees (~90 files), including the unwired `src/quotepro/` app — ADK
+multi-agent routing, hybrid RAG over `document_embeddings`, an arq indexer worker, all of it
+tested and none of it connected.
 
-This is the single largest fork in the repo and it needs an explicit decision, recorded as an
-ADR. The options:
+[ADR 0009](adr/0009-ai-in-process.md) then deleted `ai_backend.py` too. The AI moved into the
+Next.js server actions (`src/lib/ai/`) after two sessions of failing to get 450 lines of Python
+onto Railway. **There is no Python left in the repo.**
 
-| | Adopt `src/quotepro/` | Keep `ai_backend.py` |
-| --- | --- | --- |
-| Gets you | Multi-agent, RAG, chat, sessions, observability | Something you can hold in your head |
-| Costs | Redis, worker process, real ops burden, unverified code | Rebuilding features later, one at a time |
-| Right if | AI depth is the product differentiator | Shipping is the priority right now |
-
-Recommendation for a two-person team pre-launch: **keep `ai_backend.py`, delete the other three
-backend trees, and lift specific pieces from `src/quotepro/` as they earn their place** — the
-RAG retriever first, since `document_embeddings` and `match_documents()` already exist in the
-schema and would measurably improve quote quality.
-
-Whichever way it goes, delete `python-backend/{app,api,services,db,config}/` and the loose root
-`.py` files other than `ai_backend.py`. Those are unambiguously superseded.
-
-Also fix `start-backend.sh` — it points at `main.py` and a hardcoded `/Users/dipen/` path.
+The RAG opportunity survives the deletion in schema form only: `document_embeddings` and
+`match_documents()` still exist, and retrieving similar past quotes remains the highest-value
+AI improvement available. The implementation is in git history, in a language the repo no
+longer uses.
 
 ---
 
@@ -109,7 +98,6 @@ already assume it. Nothing is installed.
 1. `corepack enable`, `pnpm import` from `package-lock.json`, delete `package-lock.json`.
 2. Add biome, vitest, playwright to `devDependencies`. Remove eslint and `eslint.config.mjs`.
 3. Add real `package.json` scripts: `dev`, `build`, `typecheck`, `lint`, `format`, `test`, `e2e`.
-4. `cd python-backend && uv init && uv sync` from `requirements.txt`. Add ruff and pytest.
 5. `lefthook install`.
 6. Delete `.github/workflows/{test,deploy}.yml` — both are pre-rebuild and reference scripts
    that don't exist. Fix `ci.yml` so it passes.
@@ -144,7 +132,7 @@ Only after the dead code is gone, because several of these get simpler once it i
 - **Extract repeated query shapes.** `select company_id from users where id = $1` appears in
   most action files even though `getSession()` already returns it.
 - **Consolidate deployment config.** `docker-compose.yml`, `k8s/deployment.yaml`, `railway.json`,
-  and `Procfile` describe four different topologies. Keep Railway, delete the rest.
+  and `Procfile` describe four different topologies. All are gone.
 
 ---
 
@@ -173,7 +161,7 @@ into `docs/adr/`, which now runs 0001–0008 in one place.
 Phase 2 resolved in [adr/0008](adr/0008-single-python-backend.md): `ai_backend.py` kept, the
 other three backend trees deleted (~90 files), with a record of what to retrieve from history
 and when. Phase 5's deployment-config item is done — `docker-compose.yml` and `k8s/` are gone,
-Railway is the only shape left. The file-splitting items in Phase 5 remain open.
+Railway went too (ADR 0009) — Vercel + Supabase is the whole topology. The file-splitting items in Phase 5 remain open.
 
 ---
 
@@ -184,5 +172,5 @@ Railway is the only shape left. The file-splitting items in Phase 5 remain open.
 - **Delete the `node_modules` → `node_modules.nosync` symlink** once the repo is out of iCloud.
   It's a workaround for a problem you no longer have.
 - **`.DS_Store` files are committed** in `docs/`, `src/`, `src/components/`, `prompts/`,
-  `python-backend/`. `.gitignore` covers them but they were added before it did — `git rm --cached`.
+  `.gitignore` covers them but they were added before it did — `git rm --cached`.
 - **`generated-pdfs/`** is gitignored but present. Delete it locally.

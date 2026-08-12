@@ -16,7 +16,6 @@
       "coverage",
       "playwright-report",
       "test-results",
-      "python-backend/**",
       "supabase/migrations/legacy/**",
       "docs/archive/**",
       "src/types/database.ts",

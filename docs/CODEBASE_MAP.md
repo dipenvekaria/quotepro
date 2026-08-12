@@ -1,12 +1,22 @@
 # Codebase Map
 
-_Verified against the working tree on 2026-08-09, branch `main`, after Cleanup Phase 1._
+_Verified against the working tree on 2026-08-11, branch `main`._
 
 The pre-rebuild frontend was deleted on 2026-08-09 — 124 files, ~19,600 lines. **Everything
 under `src/` now runs.** `tsc --noEmit` passes with no exclusions and `ignoreBuildErrors` is off.
 
-One dead tree remains: `python-backend/{src,app,api,services,db,config}/**`, whose fate is
-Cleanup Phase 2.
+**No dead trees remain.** `python-backend/` was deleted on 2026-08-11 when the AI moved
+in-process ([ADR 0009](adr/0009-ai-in-process.md)), taking the last one with it.
+
+> ### This map has been wrong about live code twice
+>
+> It was built by tracing **imports**, which cannot see a route reached by a URL string.
+> `src/app/api/**` was listed as dead on that basis and deleted; five live call sites used
+> `fetch('/api/…')`, including the customer-facing "Pay now" button. `src/hooks/useAuth` was
+> nearly deleted the same way — the login page imports it.
+>
+> Before deleting anything that has a URL — a route, a public page, a webhook target — grep for
+> its **path**, not its module. An import graph is necessary evidence here, not sufficient.
 
 How the classification was made: every route reachable from `src/app/page.tsx`,
 `src/middleware.ts`, and the `/app` shell was traced, then the transitive import closure of
@@ -64,14 +74,13 @@ those files was computed. Anything outside that closure is dead.
 | `src/components/brand/logo.tsx` | `BRAND_NAME`, `BrandMark`, wordmark, logo variants. |
 | `src/components/shared/{page,empty-state,status-badge}.tsx` | Page container/header/section, empty states, status pills. |
 | `src/components/{error-boundary,hide-devtools,network-status}.tsx` | Root-layout utilities. |
-| `src/types/api.ts` | Zod schemas for the FastAPI contract. |
+| `src/lib/ai/{gemini,quote,explain,prompts}.ts` | Gemini client and model chain, quote generation with catalog reconciliation, customer summary, prompt loading. |
 
 ## Live — backend, data, config
 
 | Path | What it is |
 | --- | --- |
-| `python-backend/ai_backend.py` | **The only Python file that runs.** FastAPI, `POST /api/ai/generate-quote`, `GET /health`. Gemini via `google-genai`, model fallback chain, keyword-match mock fallback. |
-| `prompts/` | AI system prompts and templates as markdown. Behaviour changes go here. |
+| `prompts/` | AI system prompts and templates as markdown. Behaviour changes go here. Bundled via `outputFileTracingIncludes`. |
 | `supabase/migrations/00000000000000_baseline.sql` | The canonical schema. 1,114 lines, 17 tables. |
 | `supabase/migrations/20260802000001_signup_bootstrap.sql` | `bootstrap_company` RPC. |
 | `supabase/migrations/20260803000001_stripe_connect.sql` | Connect account columns. |
@@ -83,13 +92,11 @@ those files was computed. Anything outside that closure is dead.
 
 ---
 
-## Dead — one tree left
+## Dead — none
 
-| Path | Why it's dead | Notes |
-| --- | --- | --- |
-| `python-backend/src/quotepro/**` | A complete, well-structured FastAPI app (38 files: ADK agents, RAG, sessions, workers) that **was never wired up**. | The most valuable dead code in the repo. Adopt or delete — Cleanup Phase 2. |
-| `python-backend/{app,api,services,db,config}/**` | Two further generations of the backend. | Unambiguously superseded. |
-| `python-backend/*.py` except `ai_backend.py` | `main.py`, `auto_indexer.py`, `catalog_indexer.py`, `quote_indexer.py`, `tax_rates.py`, `check_db.py`. | |
+Every tree previously listed here has been deleted. If you find something that looks
+unreachable, verify it by path as well as by import (see the warning at the top), then delete
+it rather than adding it back to this list.
 
 ### Deleted on 2026-08-09 (Cleanup Phase 1)
 

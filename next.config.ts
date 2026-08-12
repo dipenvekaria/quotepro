@@ -14,6 +14,13 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
   reactStrictMode: true,
+  // The AI prompts are read from disk at runtime (src/lib/ai/prompts.ts), and
+  // Next.js cannot trace a path it only sees as a string. Without this they are
+  // missing from the serverless bundle and every prompt silently falls back to
+  // its inline default.
+  outputFileTracingIncludes: {
+    '/*': ['./prompts/**/*.md'],
+  },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },

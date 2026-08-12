@@ -4,7 +4,7 @@
 #
 # Quick tunnels (`cloudflared tunnel --url http://localhost:PORT`) get a fresh
 # random *.trycloudflare.com hostname every time they start, which repeatedly
-# leaves NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_BACKEND_URL pointing at a dead
+# leaves NEXT_PUBLIC_SUPABASE_URL pointing at a dead
 # host (the usual "login suddenly broke" cause). This script reads the CURRENT
 # public URL of each running tunnel — via its /quicktunnel metrics endpoint —
 # and rewrites the matching env vars. No copy-pasting URLs.
@@ -16,7 +16,6 @@
 #
 # Port -> env mapping:
 #   54321  Supabase    -> NEXT_PUBLIC_SUPABASE_URL
-#   8000   ai_backend  -> NEXT_PUBLIC_BACKEND_URL
 #   3000   Next app    -> printed only (open this on your phone)
 
 set -euo pipefail
@@ -25,9 +24,6 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ENV_FILE="$ROOT/.env.local"
 
 SUPABASE_PORT=54321
-# start-backend.sh, .env.local and docs all use 8000. This said 8001, so
-# --start tunnelled a dead port and wrote it into NEXT_PUBLIC_BACKEND_URL.
-BACKEND_PORT=8000
 FRONTEND_PORT=3000
 
 START_MISSING=0
@@ -104,12 +100,6 @@ if supa_url="$(resolve_tunnel "$SUPABASE_PORT")"; then
   set_env NEXT_PUBLIC_SUPABASE_URL "$supa_url"; ok "NEXT_PUBLIC_SUPABASE_URL -> $supa_url"; changed=1
 else
   warn "no Supabase tunnel on :$SUPABASE_PORT (re-run with --start). Left env unchanged."
-fi
-
-if back_url="$(resolve_tunnel "$BACKEND_PORT")"; then
-  set_env NEXT_PUBLIC_BACKEND_URL "$back_url"; ok "NEXT_PUBLIC_BACKEND_URL  -> $back_url"; changed=1
-else
-  warn "no backend tunnel on :$BACKEND_PORT (re-run with --start). Left env unchanged."
 fi
 
 if front_url="$(resolve_tunnel "$FRONTEND_PORT")"; then

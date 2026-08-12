@@ -99,7 +99,7 @@ payments are supported; `invoices.status` becomes `partial`.
 
 **`document_embeddings`** — pgvector over catalog items and past quotes, with a tsvector column
 for hybrid search. `match_documents()` RPC does cosine similarity. **Currently unused by the
-live app** — the RAG path was built but never wired to `ai_backend.py`.
+live app** — the RAG path was built but never wired to anything, and its implementation was deleted with the Python backend.
 
 **`activity_log`** — append-only audit trail.
 

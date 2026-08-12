@@ -21,12 +21,13 @@ lines. Everything under `src/` now runs. `tsc --noEmit` passes with **zero** exc
 | `src/lib/{db,auth,email,pdf,stripe,supabase}/**` | LIVE |
 | `src/components/{ui,brand,shared}/**`  | LIVE |
 | `src/features/invoices/**`             | LIVE |
-| `python-backend/ai_backend.py`         | LIVE — the only backend file that runs |
-| `supabase/migrations/*.sql` (4)        | LIVE |
-| `python-backend/{src,app,api,services,db,config}/**` | **DEAD** — aspirational, never wired |
+| `src/lib/ai/**`                        | LIVE — Gemini, in-process |
+| `supabase/migrations/*.sql` (6)        | LIVE |
 
-The Python dead tree is the only one left; deciding its fate is Cleanup Phase 2.
-[`docs/CODEBASE_MAP.md`](docs/CODEBASE_MAP.md) still has the detail.
+**There is no Python in this repo.** `python-backend/` was deleted on 2026-08-11 and the AI
+now runs in-process inside the server actions — see
+[`docs/adr/0009`](docs/adr/0009-ai-in-process.md). Every dead tree is now gone;
+[`docs/CODEBASE_MAP.md`](docs/CODEBASE_MAP.md) has the detail.
 
 Onboarding lives at `src/app/app/onboarding/` only. The root `/onboarding` — which rendered
 pre-Rivet "Field Genie" branding — is gone, along with the scratch routes (`/theme-test`,
@@ -37,12 +38,12 @@ pre-Rivet "Field Genie" branding — is gone, along with the scratch routes (`/t
 - **Frontend** — Next.js 16 App Router, React 19, TypeScript strict, Tailwind 4, shadcn/ui + Radix.
 - **Data** — Postgres, accessed with raw `pg` and parameterized SQL. No ORM. `src/lib/db/index.ts`.
 - **Auth** — Supabase Auth (cookies via `@supabase/ssr`). Auth only — not for data reads.
-- **AI** — FastAPI service (`python-backend/ai_backend.py`) calling Gemini via `google-genai`.
+- **AI** — Gemini via `@google/genai`, called in-process from server actions. `src/lib/ai/`.
 - **Integrations** — Resend (email), Stripe Connect (payments), SignNow/Dropbox Sign (e-sig),
   Twilio (SMS, not wired), LemonSqueezy (billing, not wired).
 
 Read paths are Server Components hitting `query()` directly. Write paths are Server Actions in
-`actions.ts` files colocated with the route. The FastAPI service is called only for AI.
+`actions.ts` files colocated with the route. One process runs the whole product.
 
 ## Commands
 
@@ -58,9 +59,9 @@ npm run lint                 # eslint
 
 supabase start               # local Postgres :54322, API :54321, Studio :54323
 supabase db reset            # migrations + seed (demo company, 15 work items)
-
-cd python-backend && uvicorn ai_backend:app --reload --port 8000
 ```
+
+`npm run dev` is the entire stack. There is no second service to start.
 
 `justfile` and `.github/workflows/ci.yml` describe the *target* toolchain, not the current one.
 They will fail as written. Fixing that is an early task in `docs/CLEANUP_PLAN.md`.
@@ -136,9 +137,11 @@ route actually needs it.
   The `node_modules` → `node_modules.nosync` symlink was a workaround for that and no longer
   applies. Plain `npm install`.
 - **`.env.local` may point at dead Cloudflare quick tunnels.** For local work set
-  `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` and `BACKEND_INTERNAL_URL=http://localhost:8000`.
-  Tunnels are only for testing on a phone; `scripts/sync-tunnels.sh` regenerates them, but note it
-  hardcodes the backend at :8001 while everything else uses :8000.
+  `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321`. Tunnels are only for testing on a phone;
+  `scripts/sync-tunnels.sh` regenerates them, but it still references the deleted AI service.
+- **AI degrades, it does not fail.** Without `GEMINI_API_KEY` quote generation keyword-matches
+  the catalog and reports `mode: "mock"`; the customer summary renders nothing. Neither throws,
+  so a missing key looks like poor quality rather than an outage. Check `mode`.
 - **Hosted Postgres needs `ssl: { rejectUnauthorized: false }`.** `pg` treats `sslmode=require`
   as `verify-full` and Supabase's pooler chain isn't trusted, so a deploy dies with
   `SELF_SIGNED_CERT_IN_CHAIN` on every query. Handled in `src/lib/db/index.ts`.
@@ -153,12 +156,14 @@ route actually needs it.
   `bootstrap_company`. Plain `query()` leaves `auth.uid()` NULL.
 - **numeric/timestamp parsing is customised** in `src/lib/db/index.ts` — money comes back as
   `number`, timestamps as raw ISO strings, not `Date`.
-- **`prompts/`** holds the AI system prompts as markdown. Behaviour changes belong there, not
-  inline in Python.
+- **`prompts/`** holds the AI system prompts as markdown. Behaviour changes belong there, not in
+  string literals. They reach production via `outputFileTracingIncludes` in `next.config.ts`;
+  remove that and every prompt silently falls back to its inline default.
 - **The repo contains stale GCP signals — hosting is settled and it is not GCP.** `k8s/deployment.yaml`,
-  `docker-compose.yml`, the Vertex AI toggle in `ai_backend.py`, and the commit titled
-  "GCP-native" are all from an abandoned direction. The decision is Vercel + Railway + Supabase
-  Cloud ([`docs/adr/0005`](docs/adr/0005-hosting-vercel-railway-supabase.md)). Don't propose a
+  `docker-compose.yml` and the commit titled "GCP-native" are all from an abandoned direction.
+  The decision is Vercel + Supabase Cloud
+  ([`docs/adr/0005`](docs/adr/0005-hosting-vercel-railway-supabase.md), amended by
+  [`0009`](docs/adr/0009-ai-in-process.md) — Railway is no longer part of it). Don't propose a
   GCP migration off the back of those artifacts; deleting them is Phase 5 of the cleanup plan.
 
 ## Skills
@@ -171,7 +176,7 @@ Invoke by name:
 - `rivet-data` — write a query or mutation correctly (tenancy, transactions, actions)
 - `rivet-migration` — schema change → migration → types → RLS verification
 - `rivet-ui` — the Rivet design system; build a page that matches the product
-- `rivet-ai` — change AI behaviour: prompts, models, the FastAPI service
+- `rivet-ai` — change AI behaviour: prompts, models, grounding
 - `rivet-ship` — verification gates before opening a PR
 
 ## Docs

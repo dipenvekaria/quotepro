@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-import { env, envServer } from '@/lib/env'
+import { env } from '@/lib/env'
+import { explainQuote } from '@/lib/ai/explain'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
@@ -261,27 +262,19 @@ export async function generateCustomerSummary(input: unknown) {
     return { ok: false as const, error: 'Add line items before writing a summary.' }
   }
 
-  const { BACKEND_INTERNAL_URL, RIVET_BACKEND_SECRET } = envServer()
-  let res: Response
+  let summary: string
   try {
-    res = await fetch(`${BACKEND_INTERNAL_URL}/api/ai/explain-quote`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Rivet-Key': RIVET_BACKEND_SECRET },
-      body: JSON.stringify({
-        company_id: companyId,
-        company_name: work.company_name,
-        job_description: work.description,
-        line_items: items,
-      }),
-      cache: 'no-store',
+    const result = await explainQuote({
+      companyName: work.company_name,
+      jobDescription: work.description,
+      lineItems: items,
     })
-  } catch {
-    return { ok: false as const, error: 'AI service unreachable.' }
+    summary = result.summary
+  } catch (e) {
+    console.error('generateCustomerSummary failed', e)
+    return { ok: false as const, error: 'Could not write the summary. Try again.' }
   }
-  if (!res.ok) return { ok: false as const, error: 'Could not write the summary. Try again.' }
 
-  const body = (await res.json().catch(() => null)) as { summary?: string } | null
-  const summary = (body?.summary ?? '').trim()
   if (!summary) {
     // An empty result means the model failed or had too little to work with.
     // Showing nothing is correct; inventing an explanation is not.

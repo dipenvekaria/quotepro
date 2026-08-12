@@ -89,43 +89,32 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<from `supabase status`>
 SUPABASE_SERVICE_ROLE_KEY=<from `supabase status`>
 DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+GEMINI_API_KEY=<ask Dipen — optional>
 ```
 
 If you inherited a `.env.local` with `*.trycloudflare.com` URLs in it, those are expired
 throwaway tunnels from mobile testing. Replace them with the localhost values above. Tunnels
 are only needed to open the app on a real phone; `scripts/sync-tunnels.sh` regenerates them.
 
-And `python-backend/.env`:
-
-```bash
-SUPABASE_URL=http://127.0.0.1:54321
-SUPABASE_SERVICE_ROLE_KEY=<same as above>
-GEMINI_API_KEY=<ask Dipen>
-ALLOWED_ORIGINS=http://localhost:3000
-```
-
-Without `GEMINI_API_KEY` the backend still runs — it falls back to a keyword-matching mock so
-you can exercise the whole quote flow offline. That fallback is deliberate and worth keeping.
+Without `GEMINI_API_KEY` the app still runs — quote generation falls back to a keyword-matching
+mock so you can exercise the whole flow offline. That fallback is deliberate and worth keeping.
 
 ### 6. Run it
 
-Two terminals:
-
 ```bash
-npm run dev                                                    # → :3000
-cd python-backend && uvicorn ai_backend:app --reload --port 8000
+npm run dev                  # → :3000
 ```
 
-Check `curl localhost:8000/health` — the `ai_mode` field tells you whether you're on real
-Gemini or the mock.
+That's everything. Gemini runs in-process, so there is no second service to start. Generate a
+quote and check the `mode` on the result: `gemini:<model>` means real generation, `mock` means
+the key is missing or every model failed.
 
 ## Day one, part two: read these in order
 
 1. [`../CLAUDE.md`](../CLAUDE.md) — 5 minutes. The rules that are non-negotiable.
 2. [`CODEBASE_MAP.md`](CODEBASE_MAP.md) — 15 minutes. **The most important thing you will read
-   this week.** Roughly half the repo is dead pre-rebuild code that still compiles. This file
-   tells you which half.
+   this week.** It records what is live, what was deleted and why, and the two occasions the map
+   itself was wrong about live code — read that warning before deleting anything.
 3. [`ARCHITECTURE.md`](ARCHITECTURE.md) — how the pieces fit and why.
 4. [`DATA_MODEL.md`](DATA_MODEL.md) — the `work_items` lifecycle. Everything routes through it.
 5. [`CONVENTIONS.md`](CONVENTIONS.md) — how we write code here.
@@ -137,13 +126,13 @@ src/app/app/(shell)/quotes/new/page.tsx      the form
   → quote-editor.tsx                          client-side editing
   → actions.ts::createDraftQuote              server action, Zod, withUser()
   → create_work_item_with_customer            SQL function, atomic customer+work_item
-  → ai_backend.py::generate_quote             Gemini grounded on catalog_items
+  → lib/ai/quote.ts::generateQuote            Gemini grounded on catalog_items, prices reconciled
   → actions.ts::saveLineItems                 replace-all write, recomputes totals
   → /app/pipeline/[id]                        detail, send, accept
   → /q/{public_token}                         what the customer sees
 ```
 
-That single path touches the data layer, tenancy, server actions, the AI service, and the
+That single path touches the data layer, tenancy, server actions, the AI, and the
 public surface. Once you can narrate it, you can work anywhere in the codebase.
 
 ## The one thing you must not get wrong

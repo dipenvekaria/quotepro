@@ -56,26 +56,3 @@ jobs:
           NEXT_PUBLIC_APP_URL: http://localhost:3000
           SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key-build-only
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
-          BACKEND_INTERNAL_URL: http://localhost:8000
-
-  backend:
-    name: AI service
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: python-backend
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install
-        run: pip install -r requirements.txt
-
-      # ai_backend.py raises at import time without Supabase config, so this is
-      # a syntax/dependency check rather than a boot check. Real tests land in
-      # Cleanup Phase 4.
-      - name: Compile check
-        run: python -m compileall -q ai_backend.py

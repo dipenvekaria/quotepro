@@ -33,7 +33,7 @@ features/<capability>/
 | Folder          | Status  | Notes                                                 |
 | --------------- | ------- | ----------------------------------------------------- |
 | `work-items/`   | Scaffold | Core repo for the unified `work_items` table.         |
-| `ai/`           | Scaffold | Vercel-AI-SDK-style hooks over the FastAPI backend.    |
+| `ai/`           | Scaffold | Vercel-AI-SDK-style hooks over the old AI service.    |
 | `catalog/`      | Scaffold | Catalog search + import.                              |
 | `quotes/`       | TODO    | Slice view of `work_items` where `kind='quote'`.       |
 | `leads/`        | TODO    | Slice view where `status='lead'`.                     |

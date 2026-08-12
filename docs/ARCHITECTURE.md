@@ -20,10 +20,11 @@ file and everything under `docs/rebuild/`._
                      JWT verify │                       auth.users
                             ▼                                  │
                     ┌──────────────────┐            ┌──────────▼─────────┐
-                    │  Supabase Auth   │            │  FastAPI           │
-                    │  cookies, OAuth  │            │  ai_backend.py     │
-                    └──────────────────┘            │  Gemini            │
-                                                    └────────────────────┘
+                    │  Supabase Auth   │            │  Postgres          │
+                    │  cookies, OAuth  │            │  work_items, …     │
+                    └──────────────────┘            └────────────────────┘
+
+   Gemini is called in-process from the server actions — no separate service.
 
    Resend (email) · Stripe Connect (payments) · SignNow (e-signature)
 ```
@@ -126,32 +127,34 @@ This is also the surface customers judge the product on. It should feel like Str
 
 ## AI
 
-`python-backend/ai_backend.py` is a single FastAPI file exposing `POST /api/ai/generate-quote`.
+`src/lib/ai/` runs inside the server actions. There is no AI service and no second runtime —
+that was a FastAPI app on Railway until 2026-08-11, and removing it is
+[ADR 0009](adr/0009-ai-in-process.md).
 
-It fetches the company's `catalog_items`, builds a grounded prompt, and calls Gemini through the
-unified `google-genai` SDK — which targets either AI Studio (API key) or Vertex AI (ADC), toggled
-by `GOOGLE_GENAI_USE_VERTEXAI`.
+`generateQuote()` fetches the company's `catalog_items`, builds a grounded prompt, calls Gemini
+through `@google/genai`, then reconciles the result against the catalog.
 
-Three properties are load-bearing:
+Four properties are load-bearing:
 
-- **Grounded, not generative.** The system prompt forbids inventing line items. Prices come from
-  the contractor's own catalog. A hallucinated price is a quote the contractor has to honour.
-- **Model fallback chain.** `GEMINI_MODELS` is tried in order until one succeeds, so a quota
-  limit on the newest flash model degrades instead of failing.
+- **Grounded, not generative.** The system prompt forbids inventing line items.
+- **The model does not set prices.** Every returned item is matched back to a catalog row and
+  priced from the database; anything matching nothing is dropped and logged. A hallucinated
+  price is a quote the contractor has to honour, so the model is never the source of one.
+- **Model fallback chain.** `GEMINI_MODELS` is tried in order until one succeeds, so a retired
+  model or a quota limit degrades instead of failing.
 - **Mock fallback.** If Gemini fails entirely, a keyword matcher over the catalog returns
-  plausible line items and the response's `mode` field says `mock`. The UI stays exercisable
-  offline and a Gemini outage doesn't take quoting down.
+  plausible line items and `mode` says `mock`. The UI stays exercisable offline and a Gemini
+  outage doesn't take quoting down.
 
-Model policy is fixed: **Google models only**, temperature ≤ 0.2, JSON response mime type
-whenever output is parsed. Money and structured output must be deterministic.
+Model policy is fixed: **Google models only**, temperature ≤ 0.2, JSON response mime type and a
+response schema whenever output is parsed. Money and structured output must be deterministic.
 
-Prompts live in `prompts/` as markdown, not inline in Python, so they can be edited and diffed
-without touching code.
+Prompts live in `prompts/` as markdown, not inline, so they can be edited and diffed without
+touching code.
 
-`python-backend/src/quotepro/` contains a far more sophisticated backend — ADK multi-agent
-routing, hybrid RAG over `document_embeddings`, Postgres-backed sessions, an arq indexer worker
-— that was built during the rebuild and **never wired up**. It is dead code today. Whether to
-adopt or delete it is an open decision in [`CLEANUP_PLAN.md`](CLEANUP_PLAN.md).
+Retrieval-augmented grounding over `document_embeddings` — retrieving similar past quotes rather
+than dumping the raw catalog — remains the highest-value improvement available. The schema and
+`match_documents()` RPC exist; the Python implementation was deleted unused.
 
 ## Integrations
 
