@@ -142,6 +142,9 @@ const QUOTE_SCHEMA: Schema = {
   properties: {
     line_items: {
       type: Type.ARRAY,
+      // A real quote is a handful of lines. Without a ceiling the model has
+      // walked the whole catalog into the response.
+      maxItems: '12',
       items: {
         type: Type.OBJECT,
         properties: {

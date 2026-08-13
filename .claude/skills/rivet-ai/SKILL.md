@@ -11,13 +11,20 @@ description: Use when changing anything about Rivet's AI — quote generation qu
 product code. This is a standing decision from the product owner, not a default to optimise
 away. If a task seems to need another provider, raise it — don't switch.
 
-Preference order: `gemini-flash-latest` → `gemini-2.5-flash` → `gemini-flash-lite-latest` →
-`gemini-2.5-flash-lite` → `gemini-2.0-flash`. The chain is configured via the `GEMINI_MODELS`
-env var, not hardcoded.
+Chain: `gemini-flash-latest` → `gemini-flash-lite-latest`, configured via `GEMINI_MODELS`, not
+hardcoded.
 
-`gemini-2.5-flash` used to lead this list. It now returns 404 "no longer available to new
-users" for recently issued keys, so it sits second — reachable for older keys, not costing a
-wasted round-trip on every quote.
+**Do not pin a dated Gemini model here.** The chain used to also carry `gemini-2.5-flash`,
+`gemini-2.5-flash-lite` and `gemini-2.0-flash`; all three now return 404 "no longer available",
+and each dead entry was a wasted round-trip on the way to one that works. The floating aliases
+do not expire.
+
+Every call sets `thinkingLevel: MINIMAL` and `maxOutputTokens`. Both are load-bearing:
+`gemini-flash-latest` is a thinking model, and unconstrained it took **70-230 seconds** per
+quote and once emitted 63KB of JSON before failing to parse. With them, the same quotes come
+back in **1.5-2 seconds**. `thinkingBudget: 0` is rejected outright with 400 INVALID_ARGUMENT —
+MINIMAL is as low as these models go. The response schema also caps `line_items` at 12; without
+a ceiling the model walked the whole catalog into the reply.
 
 SDK: `@google/genai` (TypeScript). Pin `< 3.0.0`; version 3 requires Node 22+ and drops APIs.
 

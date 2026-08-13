@@ -10,26 +10,20 @@
  * output is parsed. Money and JSON must be deterministic.
  */
 
-import { GoogleGenAI, Type, type Schema } from '@google/genai'
+import { GoogleGenAI, ThinkingLevel, Type, type Schema } from '@google/genai'
 
 import { envServer } from '@/lib/env'
 
 export { Type, type Schema }
 
-// Tried in order; a quota limit or a retired model degrades to the next rather
-// than failing the request.
+// Tried in order; a quota limit degrades to the next rather than failing.
 //
-// `gemini-flash-latest` leads rather than `gemini-2.5-flash`, which the API now
-// rejects with 404 "no longer available to new users" for keys issued after it
-// was retired. Keeping it first cost a wasted round-trip on every single quote.
-// It stays in the chain because older keys can still reach it.
-const DEFAULT_MODELS = [
-  'gemini-flash-latest',
-  'gemini-2.5-flash',
-  'gemini-flash-lite-latest',
-  'gemini-2.5-flash-lite',
-  'gemini-2.0-flash',
-]
+// Only the two floating aliases are left. `gemini-2.5-flash`,
+// `gemini-2.5-flash-lite` and `gemini-2.0-flash` were all in this chain and all
+// three now return 404 "no longer available" — every one of them was a wasted
+// round-trip on the path to a model that works. Pinning a dated Gemini model
+// buys nothing here and expires without warning; the aliases do not.
+const DEFAULT_MODELS = ['gemini-flash-latest', 'gemini-flash-lite-latest']
 
 export function geminiModels(): string[] {
   const configured = envServer().GEMINI_MODELS
@@ -70,6 +64,7 @@ export async function generateJson(opts: {
   contents: string
   schema: Schema
   temperature?: number
+  maxOutputTokens?: number
 }): Promise<GeminiJsonResult | null> {
   const ai = client()
   if (!ai) return null
@@ -84,6 +79,22 @@ export async function generateJson(opts: {
           responseMimeType: 'application/json',
           responseSchema: opts.schema,
           temperature: opts.temperature ?? 0,
+          // `gemini-flash-latest` resolves to a thinking model, and thinking on
+          // a schema-constrained extraction bought nothing but latency —
+          // measured 70-230s per quote, with one response reaching 63KB of JSON
+          // before it failed to parse. These tasks pick items from a supplied
+          // list; there is little to reason about.
+          //
+          // `thinkingBudget: 0` is rejected with 400 INVALID_ARGUMENT by these
+          // models — they will not turn thinking off entirely — so ask for the
+          // least of it instead.
+          thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
+          // A quote is a handful of line items; an unbounded response is what
+          // turned a 3-second call into a 4-minute one. Thinking tokens count
+          // against this budget on these models, so it has to clear the reply
+          // by a wide margin — 4096 truncated the JSON mid-object and the parse
+          // failed, which is a worse failure than a slow success.
+          maxOutputTokens: opts.maxOutputTokens ?? 16384,
         },
       })
       const raw = resp.text
