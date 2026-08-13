@@ -82,6 +82,9 @@ const serverEnvSchema = z.object({
   STRIPE_PLATFORM_FEE_BPS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
+  // Vercel sends this as `Authorization: Bearer <secret>` on scheduled runs.
+  // Unset means the cron endpoint refuses to run rather than running open.
+  CRON_SECRET: optionalSecret(16),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 

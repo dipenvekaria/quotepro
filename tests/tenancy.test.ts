@@ -130,6 +130,22 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     match: 'update invoices set',
     reason: 'invoice verified with id = $1 and company_id = $2',
   },
+
+  // --- keyed on an unguessable token rather than a session ------------------
+  {
+    file: 'src/app/join/[token]/page.tsx',
+    match: 'from invitations',
+    reason:
+      'unauthenticated invite page; the 128-bit token IS the credential and selects its own row',
+  },
+
+  // --- deliberately cross-tenant ---------------------------------------------
+  {
+    file: 'src/features/quotes/followups.ts',
+    match: 'select distinct w.company_id',
+    reason:
+      'cron enumeration: returns company ids only, never tenant data, and each id is then passed to the company-scoped sendQuoteFollowUps',
+  },
 ]
 
 /** RPCs that enforce tenancy inside the function body. */
@@ -168,8 +184,24 @@ function extractStatements(): Stmt[] {
   return out
 }
 
+/**
+ * `company_id` used as a filter, not merely mentioned.
+ *
+ * This used to be `sql.includes('company_id')`, which passed anything that so
+ * much as selected the column — `select distinct company_id from work_items`
+ * scans every tenant and satisfied it. The predicate has to be in a WHERE, a
+ * JOIN, or an INSERT column list to actually confine the statement.
+ */
+function isScoped(sql: string): boolean {
+  // where company_id = $1 / and w.company_id = c.id / company_id in (...)
+  if (/\bcompany_id\s*(=|in\s*\()/.test(sql)) return true
+  // insert into catalog_items (company_id, ...)
+  if (/insert\s+into\s+[\w."]+\s*\([^)]*\bcompany_id\b/.test(sql)) return true
+  return false
+}
+
 function isAccountedFor(s: Stmt): boolean {
-  if (s.sql.includes('company_id')) return true
+  if (isScoped(s.sql)) return true
   if (TENANT_SAFE_RPCS.some((fn) => s.sql.includes(fn))) return true
   // A user reading their own row: `from users where id = $1`
   if (/from\s+users\s+where\s+id\s*=/.test(s.sql)) return true
