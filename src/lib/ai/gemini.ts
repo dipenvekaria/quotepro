@@ -18,12 +18,19 @@ export { Type, type Schema }
 
 // Tried in order; a quota limit degrades to the next rather than failing.
 //
+// **Lite leads deliberately.** Measured against the same three jobs and the
+// same catalog, lite returns in 1.4-1.8s where flash takes 23-70s — flash is a
+// thinking model and is also the one that 503s under load. Every task here
+// picks items from a supplied list and is pinned to a response schema, which
+// lite does perfectly well; flash's extra capability buys nothing and costs a
+// contractor a minute of staring at a spinner. Flash stays as the fallback.
+//
 // Only the two floating aliases are left. `gemini-2.5-flash`,
 // `gemini-2.5-flash-lite` and `gemini-2.0-flash` were all in this chain and all
 // three now return 404 "no longer available" — every one of them was a wasted
 // round-trip on the path to a model that works. Pinning a dated Gemini model
 // buys nothing here and expires without warning; the aliases do not.
-const DEFAULT_MODELS = ['gemini-flash-latest', 'gemini-flash-lite-latest']
+const DEFAULT_MODELS = ['gemini-flash-lite-latest', 'gemini-flash-latest']
 
 export function geminiModels(): string[] {
   const configured = envServer().GEMINI_MODELS
