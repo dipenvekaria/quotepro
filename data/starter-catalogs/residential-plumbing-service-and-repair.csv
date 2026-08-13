@@ -1,102 +1,102 @@
-name,description,category,unit,price
-Standard Diagnostic Fee,Onsite troubleshooting and problem identification,Diagnostics,visit,149
-After Hours Diagnostic Fee,Emergency evening or weekend troubleshooting,Diagnostics,visit,299
-Leak Detection Service,Electronic pinpointing of hidden water leaks,Diagnostics,job,350
-Sewer Camera Inspection,Video scope inspection of main sewer line,Diagnostics,job,325
-Plumbing Labor Rate,Standard hourly labor for repairs,Labor,hour,175
-After Hours Labor Rate,Emergency hourly labor rate,Labor,hour,275
-Two-Man Labor Rate,Hourly rate for two technicians,Labor,hour,300
-Toilet Replacement,Remove and replace standard floor-mounted toilet,Toilets,each,325
-Toilet Repair Kit,"Replace fill valve, flapper, and flush valve",Toilets,each,175
-Toilet Flapper Replacement,Replace rubber tank flapper,Toilets,each,85
-Toilet Fill Valve Replacement,Replace standard toilet fill valve,Toilets,each,145
-Toilet Wax Ring Replacement,Reset toilet with new wax seal and bolts,Toilets,each,210
-Bidet Seat Installation,Install electronic bidet toilet seat,Toilets,each,220
-Urinal Replacement,Remove and replace wall-hung urinal,Toilets,each,380
-Standard Faucet Replacement,Install customer-supplied bathroom or kitchen faucet,Faucets & Sinks,each,245
-Kitchen Sink Faucet Replacement,Replace pull-down kitchen faucet,Faucets & Sinks,each,275
-Bathroom Sink Replacement,Disconnect and replace vanity sink basin,Faucets & Sinks,each,350
-Kitchen Sink Replacement,Remove and replace drop-in kitchen sink,Faucets & Sinks,each,450
-Faucet Cartridge Replacement,Replace leaking single-handle faucet cartridge,Faucets & Sinks,each,185
-Sink Pop-Up Assembly Replacement,Replace sink drain stopper and tailpiece,Faucets & Sinks,each,150
-P-Trap Replacement,Replace under-sink tubular slip-joint drainage,Faucets & Sinks,each,125
-Garbage Disposal Replacement (1/2 HP),Replace standard 1/2 horsepower food waste disposer,Garbage Disposals,each,325
-Garbage Disposal Replacement (3/4 HP),Replace heavy-duty 3/4 horsepower garbage disposal,Garbage Disposals,each,395
-Garbage Disposal Unjamming,Clear obstruction and reset jammed disposal,Garbage Disposals,each,135
-Disposal Power Cord Installation,Wire electrical cord to garbage disposal,Garbage Disposals,each,65
-Standard Water Heater Replacement (40 Gal Gas),Replace standard 40 gallon atmospheric gas water heater,Water Heaters,each,1850
-Standard Water Heater Replacement (50 Gal Gas),Replace standard 50 gallon atmospheric gas water heater,Water Heaters,each,2100
-Electric Water Heater Replacement (40 Gal),Replace 40 gallon electric water heater,Water Heaters,each,1750
-Electric Water Heater Replacement (50 Gal),Replace 50 gallon electric water heater,Water Heaters,each,1950
-Tankless Water Heater Replacement,Replace residential tankless gas water heater,Water Heaters,each,3400
-Water Heater Anode Rod Replacement,Replace sacrificial magnesium anode rod,Water Heaters,each,225
-Water Heater Thermocouple Replacement,Replace gas control safety thermocouple,Water Heaters,each,175
-Water Heater Gas Control Valve Replacement,Replace water heater gas thermostat valve,Water Heaters,each,395
-Water Heater Element Replacement,Replace upper or lower electric water heater element,Water Heaters,each,210
-Water Heater Thermostat Replacement,Replace electric water heater thermostat,Water Heaters,each,195
-Thermal Expansion Tank Installation,Install thermal expansion tank on water heater,Water Heaters,each,325
-Water Heater Pan & Drain Installation,Install safety drain pan under water heater,Water Heaters,each,250
-Tankless Water Heater Flush,Descale and flush heat exchanger with vinegar,Water Heaters,each,275
-Main Water Shut-Off Valve Replacement,Replace main incoming ball valve,Piping & Valves,each,350
-Pressure Reducing Valve Replacement,Replace main water pressure regulator,Piping & Valves,each,450
-Copper Pipe Repair (Up to 1 Inch),Cut and patch leaking copper water line,Piping & Valves,each,275
-PEX Pipe Repair,Repair section of cross-linked polyethylene pipe,Piping & Valves,each,225
-CPVC Pipe Repair,Repair section of chlorinated polyvinyl chloride pipe,Piping & Valves,each,245
-Galvanized Pipe Repair,Cut and thread galvanized steel water pipe repair,Piping & Valves,each,380
-Supply Line Replacement (Pair),Replace braided stainless steel water supply lines,Piping & Valves,each,110
-Gas Line Repair,Repair or replace section of black iron gas pipe,Piping & Valves,each,395
-Gas Shut-Off Valve Replacement,Replace appliance gas ball valve,Piping & Valves,each,210
-Hose Bibb Replacement (Standard),Replace standard outdoor wall hydrant,Piping & Valves,each,265
-Frost-Free Hose Bibb Replacement,Replace anti-siphon frost-free sillcock,Piping & Valves,each,325
-Drain Line Cleanout Installation,Install PVC access cleanout in drain line,Drain & Sewer,each,350
-Main Sewer Line Snaking,Clear main sewer blockage through cleanout,Drain & Sewer,job,350
-Main Sewer Line Hydro Jetting,High-pressure water jetting of main sewer line,Drain & Sewer,job,750
-Branch Drain Snaking,"Clear clog in sink, tub, or laundry line",Drain & Sewer,each,225
-Toilet Auger Service,Clear toilet bowl obstruction with mechanical auger,Drain & Sewer,each,145
-Main Sewer Line Replacement,Excavate and replace damaged main sewer line,Drain & Sewer,linear ft,175
-Sewer Line Trenchless Pipe Lining,Epoxy sleeve structural relining of sewer pipe,Drain & Sewer,linear ft,220
-Cast Iron Drain Section Replacement,Cut out and replace corroded cast iron drain pipe,Drain & Sewer,each,495
-Shower Drain Replacement,Replace shower waste and overflow assembly,Drain & Sewer,each,325
-Bathtub Waste and Overflow Replacement,"Replace tub shoe, waste, and overflow linkage",Drain & Sewer,each,375
-Submersible Sump Pump Replacement,Replace standard pit sump pump,Sump Pumps,each,495
-Pedestal Sump Pump Replacement,Replace pedestal style sump pump,Sump Pumps,each,450
-Battery Backup Sump System Installation,Install secondary battery backup sump pump system,Sump Pumps,each,950
-Sump Pump Check Valve Replacement,Replace discharge line swing check valve,Sump Pumps,each,125
-Sewage Ejector Pump Replacement,Replace sewage basin grinding ejector pump,Sump Pumps,each,1150
-Sump Pit Basin Replacement,Excavate and replace cracked sump pump basin,Sump Pumps,each,650
-Whole House Water Softener Installation,Install customer-supplied or supplied water softener,Water Treatment,each,750
-Whole House Carbon Filter Installation,Install whole home media filtration system,Water Treatment,each,650
-Reverse Osmosis System Installation,Install under-sink RO drinking water system,Water Treatment,each,395
-RO Filter and Membrane Replacement,"Replace sediment, carbon filters, and RO membrane",Water Treatment,each,210
-Water Softener Resin Replacement,Rebed ion exchange resin tank,Water Treatment,each,450
-UV Water Disinfection System Installation,Install ultraviolet water purification lamp system,Water Treatment,each,550
-UV Lamp Replacement,Replace ultraviolet disinfection bulb and sleeve,Water Treatment,each,195
-Shower Valve Replacement (Pressure Balance),Cut wall and replace shower mixing valve,Showers & Tubs,each,550
-Shower Cartridge Replacement,Replace single-handle shower faucet cartridge,Showers & Tubs,each,210
-Bathtub Spout Replacement,Replace standard tub spout with or without diverter,Showers & Tubs,each,135
-Showerhead Replacement,Replace shower head and arm,Showers & Tubs,each,95
-Walk-In Tub Installation,Install accessible walk-in bathtub unit,Showers & Tubs,job,2500
-Jetted Tub Pump Replacement,Replace whirlpool tub circulating pump motor,Showers & Tubs,each,650
-Washing Machine Valve Replacement,Replace laundry box supply valves,Laundry & Specialty,each,275
-Washing Machine Drain Box Installation,Recess new laundry waste box into wall,Laundry & Specialty,each,350
-Ice Maker Water Line Installation,Run supply line to refrigerator ice maker,Laundry & Specialty,each,225
-Condensate Pump Replacement,Replace HVAC or boiler condensate removal pump,Laundry & Specialty,each,250
-Instant Hot Water Dispenser Installation,Install under-sink boiling water tank and faucet,Laundry & Specialty,each,375
-Commercial Flush Valve Replacement,Replace commercial diaphragm flushometer,Commercial & Specialty,each,295
-Grease Trap Cleaning,Pump out and clean under-sink grease trap,Commercial & Specialty,each,450
-Backflow Preventer Testing,Certified test of backflow prevention assembly,Commercial & Specialty,each,175
-Backflow Preventer Repair,Rebuild backflow preventer with internal kit,Commercial & Specialty,each,395
-Emergency Pipe Thawing,Thaw frozen water supply pipes with machine,Piping & Valves,hour,250
-Seismic Gas Shut-Off Valve Installation,Install earthquake-actuated gas shutoff valve,Piping & Valves,each,450
-Plumbing Permit Fee,Municipal permit filing and processing fee,Permits & Disposal,each,125
-Fixture Haul-Away and Disposal,Remove and properly dispose of old plumbing fixtures,Permits & Disposal,each,75
-Water Heater Disposal Fee,Recycling and haul-away of old water heater tank,Permits & Disposal,each,100
-Concrete Core Drilling,Core drill concrete slab for pipe penetration,Labor,each,250
-Drywall Cut and Patch (Basic),Patch small drywall access opening made for repair,Labor,each,200
-Water Leak Repair Clamp,Install emergency stainless steel pipe repair band,Piping & Valves,each,175
-Water Hammer Arrestor Installation,Install shock absorber on water supply line,Piping & Valves,each,145
-Floor Drain Cleaning,Clear blockage in basement or garage floor drain,Drain & Sewer,each,245
-Urinal Flush Valve Repair,Replace diaphragm kit in flushometer,Toilets,each,165
-Tankless Water Heater Isolation Valve Kit,Install service valves on tankless water heater,Water Heaters,each,275
-Gas Leak Trace and Repair,Locate gas leak with sniffer and repair fitting,Diagnostics,job,350
-Whole House Plumbing Inspection,Comprehensive check of all visible pipes and fixtures,Diagnostics,visit,199
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Onsite troubleshooting and problem identification,Diagnostics,visit,149,1,0
+After Hours Diagnostic Fee,Emergency evening or weekend troubleshooting,Diagnostics,visit,299,2,0
+Leak Detection Service,Electronic pinpointing of hidden water leaks,Diagnostics,job,350,2,66.67
+Sewer Camera Inspection,Video scope inspection of main sewer line,Diagnostics,job,325,2,50
+Plumbing Labor Rate,Standard hourly labor for repairs,Labor,hour,175,1,0
+After Hours Labor Rate,Emergency hourly labor rate,Labor,hour,275,1,0
+Two-Man Labor Rate,Hourly rate for two technicians,Labor,hour,300,1,0
+Toilet Replacement,Remove and replace standard floor-mounted toilet,Toilets,each,325,1.5,93.33
+Toilet Repair Kit,"Replace fill valve, flapper, and flush valve",Toilets,each,175,0.75,53.33
+Toilet Flapper Replacement,Replace rubber tank flapper,Toilets,each,85,0.5,15
+Toilet Fill Valve Replacement,Replace standard toilet fill valve,Toilets,each,145,0.75,33.33
+Toilet Wax Ring Replacement,Reset toilet with new wax seal and bolts,Toilets,each,210,1.25,36.67
+Bidet Seat Installation,Install electronic bidet toilet seat,Toilets,each,220,1,63.33
+Urinal Replacement,Remove and replace wall-hung urinal,Toilets,each,380,1.5,126.67
+Standard Faucet Replacement,Install customer-supplied bathroom or kitchen faucet,Faucets & Sinks,each,245,1.25,60
+Kitchen Sink Faucet Replacement,Replace pull-down kitchen faucet,Faucets & Sinks,each,275,1.25,80
+Bathroom Sink Replacement,Disconnect and replace vanity sink basin,Faucets & Sinks,each,350,1.75,90
+Kitchen Sink Replacement,Remove and replace drop-in kitchen sink,Faucets & Sinks,each,450,2.25,110
+Faucet Cartridge Replacement,Replace leaking single-handle faucet cartridge,Faucets & Sinks,each,185,1,40
+Sink Pop-Up Assembly Replacement,Replace sink drain stopper and tailpiece,Faucets & Sinks,each,150,0.75,38.33
+P-Trap Replacement,Replace under-sink tubular slip-joint drainage,Faucets & Sinks,each,125,0.75,21.67
+Garbage Disposal Replacement (1/2 HP),Replace standard 1/2 horsepower food waste disposer,Garbage Disposals,each,325,1.25,113.33
+Garbage Disposal Replacement (3/4 HP),Replace heavy-duty 3/4 horsepower garbage disposal,Garbage Disposals,each,395,1.25,160
+Garbage Disposal Unjamming,Clear obstruction and reset jammed disposal,Garbage Disposals,each,135,0.75,26.67
+Disposal Power Cord Installation,Wire electrical cord to garbage disposal,Garbage Disposals,each,65,0.25,23.33
+Standard Water Heater Replacement (40 Gal Gas),Replace standard 40 gallon atmospheric gas water heater,Water Heaters,each,1850,3,966.67
+Standard Water Heater Replacement (50 Gal Gas),Replace standard 50 gallon atmospheric gas water heater,Water Heaters,each,2100,3,1133.33
+Electric Water Heater Replacement (40 Gal),Replace 40 gallon electric water heater,Water Heaters,each,1750,3,900
+Electric Water Heater Replacement (50 Gal),Replace 50 gallon electric water heater,Water Heaters,each,1950,3,1033.33
+Tankless Water Heater Replacement,Replace residential tankless gas water heater,Water Heaters,each,3400,5,1933.33
+Water Heater Anode Rod Replacement,Replace sacrificial magnesium anode rod,Water Heaters,each,225,1.25,46.67
+Water Heater Thermocouple Replacement,Replace gas control safety thermocouple,Water Heaters,each,175,1,33.33
+Water Heater Gas Control Valve Replacement,Replace water heater gas thermostat valve,Water Heaters,each,395,2,96.67
+Water Heater Element Replacement,Replace upper or lower electric water heater element,Water Heaters,each,210,1,56.67
+Water Heater Thermostat Replacement,Replace electric water heater thermostat,Water Heaters,each,195,1,46.67
+Thermal Expansion Tank Installation,Install thermal expansion tank on water heater,Water Heaters,each,325,1.5,93.33
+Water Heater Pan & Drain Installation,Install safety drain pan under water heater,Water Heaters,each,250,1.25,63.33
+Tankless Water Heater Flush,Descale and flush heat exchanger with vinegar,Water Heaters,each,275,1.5,56.67
+Main Water Shut-Off Valve Replacement,Replace main incoming ball valve,Piping & Valves,each,350,1.5,110
+Pressure Reducing Valve Replacement,Replace main water pressure regulator,Piping & Valves,each,450,2,133.33
+Copper Pipe Repair (Up to 1 Inch),Cut and patch leaking copper water line,Piping & Valves,each,275,1.25,80
+PEX Pipe Repair,Repair section of cross-linked polyethylene pipe,Piping & Valves,each,225,1,66.67
+CPVC Pipe Repair,Repair section of chlorinated polyvinyl chloride pipe,Piping & Valves,each,245,1,79.33
+Galvanized Pipe Repair,Cut and thread galvanized steel water pipe repair,Piping & Valves,each,380,2,86.67
+Supply Line Replacement (Pair),Replace braided stainless steel water supply lines,Piping & Valves,each,110,0.5,30
+Gas Line Repair,Repair or replace section of black iron gas pipe,Piping & Valves,each,395,2,96.67
+Gas Shut-Off Valve Replacement,Replace appliance gas ball valve,Piping & Valves,each,210,1,56.67
+Hose Bibb Replacement (Standard),Replace standard outdoor wall hydrant,Piping & Valves,each,265,1.25,73.33
+Frost-Free Hose Bibb Replacement,Replace anti-siphon frost-free sillcock,Piping & Valves,each,325,1.5,93.33
+Drain Line Cleanout Installation,Install PVC access cleanout in drain line,Drain & Sewer,each,350,1.75,90
+Main Sewer Line Snaking,Clear main sewer blockage through cleanout,Drain & Sewer,job,350,1.5,110
+Main Sewer Line Hydro Jetting,High-pressure water jetting of main sewer line,Drain & Sewer,job,750,3,243.33
+Branch Drain Snaking,"Clear clog in sink, tub, or laundry line",Drain & Sewer,each,225,1,66.67
+Toilet Auger Service,Clear toilet bowl obstruction with mechanical auger,Drain & Sewer,each,145,0.75,33.33
+Main Sewer Line Replacement,Excavate and replace damaged main sewer line,Drain & Sewer,linear ft,175,1,33.33
+Sewer Line Trenchless Pipe Lining,Epoxy sleeve structural relining of sewer pipe,Drain & Sewer,linear ft,220,1,63.33
+Cast Iron Drain Section Replacement,Cut out and replace corroded cast iron drain pipe,Drain & Sewer,each,495,2.5,126.67
+Shower Drain Replacement,Replace shower waste and overflow assembly,Drain & Sewer,each,325,1.75,90
+Bathtub Waste and Overflow Replacement,"Replace tub shoe, waste, and overflow linkage",Drain & Sewer,each,375,2,83.33
+Submersible Sump Pump Replacement,Replace standard pit sump pump,Sump Pumps,each,495,2,163.33
+Pedestal Sump Pump Replacement,Replace pedestal style sump pump,Sump Pumps,each,450,2,133.33
+Battery Backup Sump System Installation,Install secondary battery backup sump pump system,Sump Pumps,each,950,3,383.33
+Sump Pump Check Valve Replacement,Replace discharge line swing check valve,Sump Pumps,each,125,0.75,21.67
+Sewage Ejector Pump Replacement,Replace sewage basin grinding ejector pump,Sump Pumps,each,1150,3.5,491.67
+Sump Pit Basin Replacement,Excavate and replace cracked sump pump basin,Sump Pumps,each,650,3,176.67
+Whole House Water Softener Installation,Install customer-supplied or supplied water softener,Water Treatment,each,750,3,243.33
+Whole House Carbon Filter Installation,Install whole home media filtration system,Water Treatment,each,650,2.5,223.33
+Reverse Osmosis System Installation,Install under-sink RO drinking water system,Water Treatment,each,395,1.5,143.33
+RO Filter and Membrane Replacement,"Replace sediment, carbon filters, and RO membrane",Water Treatment,each,210,1,56.67
+Water Softener Resin Replacement,Rebed ion exchange resin tank,Water Treatment,each,450,2.5,93.33
+UV Water Disinfection System Installation,Install ultraviolet water purification lamp system,Water Treatment,each,550,2,200
+UV Lamp Replacement,Replace ultraviolet disinfection bulb and sleeve,Water Treatment,each,195,0.75,66.67
+Shower Valve Replacement (Pressure Balance),Cut wall and replace shower mixing valve,Showers & Tubs,each,550,3,116.67
+Shower Cartridge Replacement,Replace single-handle shower faucet cartridge,Showers & Tubs,each,210,1,56.67
+Bathtub Spout Replacement,Replace standard tub spout with or without diverter,Showers & Tubs,each,135,0.75,26.67
+Showerhead Replacement,Replace shower head and arm,Showers & Tubs,each,95,0.5,20
+Walk-In Tub Installation,Install accessible walk-in bathtub unit,Showers & Tubs,job,2500,10,833.33
+Jetted Tub Pump Replacement,Replace whirlpool tub circulating pump motor,Showers & Tubs,each,650,2.5,223.33
+Washing Machine Valve Replacement,Replace laundry box supply valves,Laundry & Specialty,each,275,1.25,80
+Washing Machine Drain Box Installation,Recess new laundry waste box into wall,Laundry & Specialty,each,350,1.5,110
+Ice Maker Water Line Installation,Run supply line to refrigerator ice maker,Laundry & Specialty,each,225,1.25,50
+Condensate Pump Replacement,Replace HVAC or boiler condensate removal pump,Laundry & Specialty,each,250,1,83.33
+Instant Hot Water Dispenser Installation,Install under-sink boiling water tank and faucet,Laundry & Specialty,each,375,1.5,123.33
+Commercial Flush Valve Replacement,Replace commercial diaphragm flushometer,Commercial & Specialty,each,295,1.25,93.33
+Grease Trap Cleaning,Pump out and clean under-sink grease trap,Commercial & Specialty,each,450,2,133.33
+Backflow Preventer Testing,Certified test of backflow prevention assembly,Commercial & Specialty,each,175,1,33.33
+Backflow Preventer Repair,Rebuild backflow preventer with internal kit,Commercial & Specialty,each,395,1.5,143.33
+Emergency Pipe Thawing,Thaw frozen water supply pipes with machine,Piping & Valves,hour,250,1,83.33
+Seismic Gas Shut-Off Valve Installation,Install earthquake-actuated gas shutoff valve,Piping & Valves,each,450,1.75,156.67
+Plumbing Permit Fee,Municipal permit filing and processing fee,Permits & Disposal,each,125,0,83.33
+Fixture Haul-Away and Disposal,Remove and properly dispose of old plumbing fixtures,Permits & Disposal,each,75,0.5,8.33
+Water Heater Disposal Fee,Recycling and haul-away of old water heater tank,Permits & Disposal,each,100,0.5,25
+Concrete Core Drilling,Core drill concrete slab for pipe penetration,Labor,each,250,1.5,43.33
+Drywall Cut and Patch (Basic),Patch small drywall access opening made for repair,Labor,each,200,1.25,30
+Water Leak Repair Clamp,Install emergency stainless steel pipe repair band,Piping & Valves,each,175,1,33.33
+Water Hammer Arrestor Installation,Install shock absorber on water supply line,Piping & Valves,each,145,0.75,35
+Floor Drain Cleaning,Clear blockage in basement or garage floor drain,Drain & Sewer,each,245,1.25,60
+Urinal Flush Valve Repair,Replace diaphragm kit in flushometer,Toilets,each,165,1,26.67
+Tankless Water Heater Isolation Valve Kit,Install service valves on tankless water heater,Water Heaters,each,275,1.25,80
+Gas Leak Trace and Repair,Locate gas leak with sniffer and repair fitting,Diagnostics,job,350,2,66.67
+Whole House Plumbing Inspection,Comprehensive check of all visible pipes and fixtures,Diagnostics,visit,199,1.5,8.67

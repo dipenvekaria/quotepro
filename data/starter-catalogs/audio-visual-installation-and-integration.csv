@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard AV Service Call,Initial diagnosis and troubleshooting for existing audio visual systems,Diagnostics & Service,visit,175
-AV Technician Labor Rate,"Hourly rate for standard installation, wiring, and configuration",Labor Rates,hour,125
-Master AV Integration Engineer,Hourly rate for complex programming and system commissioning,Labor Rates,hour,185
-After-Hours Emergency Service,Urgent on-site support outside normal business hours,Diagnostics & Service,hour,250
-Half-Day On-Site Labor,Four hours of dedicated on-site technician labor,Labor Rates,job,450
-Full-Day On-Site Labor,Eight hours of dedicated on-site technician labor,Labor Rates,job,850
-System Health Check and Audit,Comprehensive inspection of all AV hardware and connections,Diagnostics & Service,visit,250
-Firmware Update Service,"Updating all processors, displays, and switchers to latest firmware",Diagnostics & Service,job,200
-Remote Network Diagnostics,Remote troubleshooting of IP-based AV control and routing issues,Diagnostics & Service,hour,110
-AV Project Management,"Coordination, scheduling, and site supervision per project phase",Labor Rates,hour,140
-Basic TV Wall Mount Installation,Mounting flat panel display up to 65 inches on standard drywall,Display Mounts,each,225
-Large Format TV Wall Mount,Mounting flat panel display 70 inches and larger,Display Mounts,each,350
-Articulating TV Wall Mount,Supply and installation of full-motion articulating display bracket,Display Mounts,each,275
-Motorized Ceiling TV Lift,Installation of recessed motorized lift mechanism for flat screen,Display Mounts,job,1200
-Commercial Video Wall Mount Frame,Per-screen micro-adjustment wall mount for multi-display video wall,Display Mounts,each,180
-Projector Ceiling Mount Installation,Secure mounting and alignment of standard ceiling projector,Display Mounts,each,300
-Motorized Projection Screen,Installation and electrical hookup of motorized drop-down screen,Display Mounts,each,650
-Manual Pull-Down Projection Screen,Mounting manual screen to wall or ceiling structure,Display Mounts,each,200
-Tablet Wall Dock Installation,In-wall or surface mounting of touch control tablet with power,Display Mounts,each,150
-Display VESA Adapter Plate,Custom adapter bracket for non-standard mounting patterns,Display Mounts,each,85
-HDMI 2.0 Cable 6ft,High-speed 4K transmission cable,Cabling & Infrastructure,each,25
-HDMI 2.0 Cable 15ft,High-speed long-reach 4K transmission cable,Cabling & Infrastructure,each,50
-Active Optical HDMI Cable 50ft,Long-distance fiber optic HDMI signal run,Cabling & Infrastructure,each,220
-Cat6 Network Cable Pull,Running terminated Cat6 cable through existing pathways,Cabling & Infrastructure,linear ft,3
-Cat6a Shielded Cable Pull,High-performance shielded data cable installation,Cabling & Infrastructure,linear ft,4
-Speaker Wire 16/2 CL2,In-wall rated two-conductor audio cable,Cabling & Infrastructure,linear ft,2
-Microphone Cable XLR,Balanced audio interconnection cable 25ft,Cabling & Infrastructure,each,35
-Coaxial RG6 Cable Run,RF signal distribution cable run,Cabling & Infrastructure,linear ft,2
-Fiber Optic Patch Cable,Duplex multimode optical fiber jumper,Cabling & Infrastructure,each,45
-Structured Cabling Termination and Testing,"Punch down, connectorization, and certification per port",Cabling & Infrastructure,each,22
-In-Ceiling Speaker Installation,Cut-in and wiring of architectural speaker,Audio Systems,each,120
-In-Wall Architectural Speaker,Cut-in and mounting of flush wall speaker,Audio Systems,each,150
-Surface Mount Pendent Speaker,Hanging open-ceiling commercial speaker installation,Audio Systems,each,175
-Outdoor Weatherproof Speaker,Patio or landscape exterior speaker mounting,Audio Systems,each,160
-Powered Subwoofer Integration,"Placement, connection, and phase calibration of subwoofer",Audio Systems,each,130
-Multi-Channel Audio Amplifier,Rack mounting and wiring of distribution amplifier,Audio Systems,each,250
-Commercial Multi-Zone Mixer Amplifier,Installation and paging input configuration,Audio Systems,each,320
-Digital Signal Processor (DSP),Audio matrix and acoustic echo cancellation programming,Audio Systems,job,600
-Wireless Microphone System,"Receiver setup, antenna distribution, and mic pairing",Audio Systems,each,280
-Boundary Table Microphone,Surface-mounted conference table mic installation,Audio Systems,each,140
-Laser Projector Replacement,Swap and optical alignment of commercial projector,Video Systems,each,450
-Commercial LED Display Panel,Replacement or new install of professional commercial monitor,Video Systems,each,300
-Matrix Switcher 4x4,HDMI routing matrix installation and EDID management,Video Systems,each,350
-Matrix Switcher 8x8,Large scale video routing matrix setup and configuration,Video Systems,each,600
-AV-over-IP Transmitter Unit,Network encoder for video distribution over ethernet,Video Systems,each,125
-AV-over-IP Receiver Unit,Network decoder for display side video extraction,Video Systems,each,125
-Document Camera Integration,Desktop or surface mounted presenter camera setup,Video Systems,each,110
-PTZ Conference Camera,Pan-tilt-zoom camera mounting and control configuration,Video Systems,each,250
-Video Scaler and Converter,Resolution translation and signal format conversion box,Video Systems,each,150
-Blu-ray / Media Player,Source component rack mounting and network setup,Video Systems,each,90
-Conference Room Soundbar,All-in-one audio bar wall or display mounting,Collaboration & Conferencing,each,200
-USB PTZ Camera Kit,Huddle room camera installation with USB extension,Collaboration & Conferencing,each,220
-All-in-One Video Bar,"Integrated camera, mic, and speakerbar system setup",Collaboration & Conferencing,each,300
-Room Scheduling Touch Panel,Outside-door calendar display mounting and PoE wiring,Collaboration & Conferencing,each,250
-Wireless Presentation Gateway,AirPlay and Miracast sharing puck hardware configuration,Collaboration & Conferencing,each,180
-USB Extension over Cat6,Transmitter and receiver pair for remote camera extension,Collaboration & Conferencing,each,220
-Boundary Mic Table Puck,Flush-mount push-to-mute conference microphone,Collaboration & Conferencing,each,160
-Codec Integration Module,Primary UC platform hardware rack mount and provisioning,Collaboration & Conferencing,job,450
-Dual Display Video Conference Kit,Dual screen mount and codec setup for hybrid meetings,Collaboration & Conferencing,job,750
-Ceiling Microphone Array,Beamforming microphone array installation and tuning,Collaboration & Conferencing,each,550
-Control System Processor,Master automation processor hardware and basic input setup,Control & Automation,each,400
-Touch Panel Custom Programming,GUI design and macro logic programming per interface page,Control & Automation,hour,160
-Keypad Controller Installation,Programmable wall button station flush mounting and wiring,Control & Automation,each,175
-Lighting Control Integration,Interface module setup for third-party lighting systems,Control & Automation,job,350
-Motorized Shade Integration,Motor control interface and trigger configuration,Control & Automation,job,350
-Occupancy Sensor Integration,Auto-shutoff sensor wiring for energy management,Control & Automation,each,150
-Relay Control Module,"Low-voltage relay trigger for screens, lifts, and drapery",Control & Automation,each,130
-IR Emitter Stick-On,Infrared control flasher placement and testing,Control & Automation,each,45
-RS-232 Serial Control Cable,Custom pinned serial cable for legacy device control,Control & Automation,each,60
-Central Control System Commissioning,Full system macro testing and client handover training,Control & Automation,job,750
-Equipment Rack Assembly,"Unboxing, bolting, and structural build of standard floor rack","Racks, Power & Infrastructure",each,350
-Wall Mount Equipment Cabinet,Secure anchoring of hinged wall-mount rack enclosure,"Racks, Power & Infrastructure",each,275
-Rack Shelf Installation,Vented or cantilever shelf mounting in equipment rack,"Racks, Power & Infrastructure",each,40
-Rack Power Distribution Unit (PDU),Rack-mounted surge protector and power strip installation,"Racks, Power & Infrastructure",each,150
-Sequenced Power Conditioner,Timed AC power sequencing for large system turn-on,"Racks, Power & Infrastructure",each,350
-Structured Wire Management Panel,Lacing bars and vertical duct installation for clean cabling,"Racks, Power & Infrastructure",job,200
-Managed Network Switch 24-Port,PoE+ switch configuration for AV-over-IP and control,"Racks, Power & Infrastructure",each,450
-Managed Network Switch 48-Port,Enterprise-grade switch configuration and VLAN setup,"Racks, Power & Infrastructure",each,750
-Uninterruptible Power Supply (UPS),Battery backup installation and load testing for processors,"Racks, Power & Infrastructure",each,300
-Blank Rack Panel Installation,Filler panel mounting for clean thermal and aesthetic look,"Racks, Power & Infrastructure",each,25
-Low-Voltage Old-Work Mud Ring,Cut-in bracket for low-voltage cable pass-through,Hardware & Accessories,each,20
-Recessed In-Wall Power Box,Code-compliant power and cable recessed enclosure behind TV,Hardware & Accessories,each,120
-Brush Wall Plate,Cable pass-through faceplate for clean wire entry,Hardware & Accessories,each,25
-Floor Box Core Drill and Fitting,Concrete core drilling and pop-up floor box installation,Hardware & Accessories,job,450
-Custom Faceplate Engraving,Laser-etched custom labeling for wall plates and switchers,Hardware & Accessories,each,75
-Velcro Cable Wrap Roll,Professional cable bundling material roll,Hardware & Accessories,each,30
-Cable Zip-Tie Mount Kit,Adhesive tie mounts and zip ties for wire management,Hardware & Accessories,job,40
-Display Screen Cleaning Kit,Professional antistatic cleaning fluid and microfiber cloth,Hardware & Accessories,each,25
-Security Fastener Kit,Tamper-proof hardware screws for public display mounts,Hardware & Accessories,job,50
-Ground Loop Isolator,Audio hum eliminator transformer box,Hardware & Accessories,each,45
-AV System Documentation Package,As-built signal flow diagrams and rack elevations PDF,Engineering & Permits,job,500
-Engineering Structural Stamp,PE stamp and calculation letter for heavy overhead loads,Engineering & Permits,job,950
-Low-Voltage Electrical Permit,Municipal permit acquisition and filing fee handling,Engineering & Permits,job,225
-Lift Rental Scissor Lift,Daily rental fee for high-ceiling access equipment,Engineering & Permits,day,350
-Lift Delivery and Pickup Fee,Freight transport charge for mobile access equipment,Engineering & Permits,job,200
-Site Safety Plan Preparation,OSHA-compliant jobsite hazard assessment document,Engineering & Permits,job,150
-Disposal of Old AV Equipment,Removal and eco-friendly recycling of legacy electronics,Engineering & Permits,job,175
-Core Drilling Dust Mitigation,HEPA vacuum shroud setup for clean indoor core drilling,Engineering & Permits,job,100
-After-Hours Access Coordination,Supervision fee for night or weekend building access,Engineering & Permits,visit,250
-AV System End-User Training,Recorded walkthrough session and instruction manual handover,Engineering & Permits,job,200
+name,description,category,unit,price,labor_hours,material_cost
+Standard AV Service Call,Initial diagnosis and troubleshooting for existing audio visual systems,Diagnostics & Service,visit,175,1,33.33
+AV Technician Labor Rate,"Hourly rate for standard installation, wiring, and configuration",Labor Rates,hour,125,1,0
+Master AV Integration Engineer,Hourly rate for complex programming and system commissioning,Labor Rates,hour,185,1,40
+After-Hours Emergency Service,Urgent on-site support outside normal business hours,Diagnostics & Service,hour,250,1,83.33
+Half-Day On-Site Labor,Four hours of dedicated on-site technician labor,Labor Rates,job,450,3.6,0
+Full-Day On-Site Labor,Eight hours of dedicated on-site technician labor,Labor Rates,job,850,6.8,0
+System Health Check and Audit,Comprehensive inspection of all AV hardware and connections,Diagnostics & Service,visit,250,1.5,43.33
+Firmware Update Service,"Updating all processors, displays, and switchers to latest firmware",Diagnostics & Service,job,200,1.6,0
+Remote Network Diagnostics,Remote troubleshooting of IP-based AV control and routing issues,Diagnostics & Service,hour,110,0.88,0
+AV Project Management,"Coordination, scheduling, and site supervision per project phase",Labor Rates,hour,140,1.12,0
+Basic TV Wall Mount Installation,Mounting flat panel display up to 65 inches on standard drywall,Display Mounts,each,225,1,66.67
+Large Format TV Wall Mount,Mounting flat panel display 70 inches and larger,Display Mounts,each,350,1.5,110
+Articulating TV Wall Mount,Supply and installation of full-motion articulating display bracket,Display Mounts,each,275,1,100
+Motorized Ceiling TV Lift,Installation of recessed motorized lift mechanism for flat screen,Display Mounts,job,1200,4,466.67
+Commercial Video Wall Mount Frame,Per-screen micro-adjustment wall mount for multi-display video wall,Display Mounts,each,180,0.6,66.67
+Projector Ceiling Mount Installation,Secure mounting and alignment of standard ceiling projector,Display Mounts,each,300,1.5,75
+Motorized Projection Screen,Installation and electrical hookup of motorized drop-down screen,Display Mounts,each,650,2,266.67
+Manual Pull-Down Projection Screen,Mounting manual screen to wall or ceiling structure,Display Mounts,each,200,1,50
+Tablet Wall Dock Installation,In-wall or surface mounting of touch control tablet with power,Display Mounts,each,150,0.8,33.33
+Display VESA Adapter Plate,Custom adapter bracket for non-standard mounting patterns,Display Mounts,each,85,0.2,40
+HDMI 2.0 Cable 6ft,High-speed 4K transmission cable,Cabling & Infrastructure,each,25,0.05,12.33
+HDMI 2.0 Cable 15ft,High-speed long-reach 4K transmission cable,Cabling & Infrastructure,each,50,0.05,29
+Active Optical HDMI Cable 50ft,Long-distance fiber optic HDMI signal run,Cabling & Infrastructure,each,220,0.2,130
+Cat6 Network Cable Pull,Running terminated Cat6 cable through existing pathways,Cabling & Infrastructure,linear ft,3,0.02,1
+Cat6a Shielded Cable Pull,High-performance shielded data cable installation,Cabling & Infrastructure,linear ft,4,0.02,1.67
+Speaker Wire 16/2 CL2,In-wall rated two-conductor audio cable,Cabling & Infrastructure,linear ft,2,0.01,0.87
+Microphone Cable XLR,Balanced audio interconnection cable 25ft,Cabling & Infrastructure,each,35,0.1,15
+Coaxial RG6 Cable Run,RF signal distribution cable run,Cabling & Infrastructure,linear ft,2,0.01,0.87
+Fiber Optic Patch Cable,Duplex multimode optical fiber jumper,Cabling & Infrastructure,each,45,0.1,21.67
+Structured Cabling Termination and Testing,"Punch down, connectorization, and certification per port",Cabling & Infrastructure,each,22,0.15,2
+In-Ceiling Speaker Installation,Cut-in and wiring of architectural speaker,Audio Systems,each,120,0.5,39
+In-Wall Architectural Speaker,Cut-in and mounting of flush wall speaker,Audio Systems,each,150,0.6,50
+Surface Mount Pendent Speaker,Hanging open-ceiling commercial speaker installation,Audio Systems,each,175,0.6,66.67
+Outdoor Weatherproof Speaker,Patio or landscape exterior speaker mounting,Audio Systems,each,160,0.6,56.67
+Powered Subwoofer Integration,"Placement, connection, and phase calibration of subwoofer",Audio Systems,each,130,0.5,46.67
+Multi-Channel Audio Amplifier,Rack mounting and wiring of distribution amplifier,Audio Systems,each,250,0.8,100
+Commercial Multi-Zone Mixer Amplifier,Installation and paging input configuration,Audio Systems,each,320,1,133.33
+Digital Signal Processor (DSP),Audio matrix and acoustic echo cancellation programming,Audio Systems,job,600,2,233.33
+Wireless Microphone System,"Receiver setup, antenna distribution, and mic pairing",Audio Systems,each,280,1,103.33
+Boundary Table Microphone,Surface-mounted conference table mic installation,Audio Systems,each,140,0.5,50
+Laser Projector Replacement,Swap and optical alignment of commercial projector,Video Systems,each,450,1.5,176.67
+Commercial LED Display Panel,Replacement or new install of professional commercial monitor,Video Systems,each,300,1,116.67
+Matrix Switcher 4x4,HDMI routing matrix installation and EDID management,Video Systems,each,350,1.2,133.33
+Matrix Switcher 8x8,Large scale video routing matrix setup and configuration,Video Systems,each,600,1.6,266.67
+AV-over-IP Transmitter Unit,Network encoder for video distribution over ethernet,Video Systems,each,125,0.5,43.33
+AV-over-IP Receiver Unit,Network decoder for display side video extraction,Video Systems,each,125,0.5,43.33
+Document Camera Integration,Desktop or surface mounted presenter camera setup,Video Systems,each,110,0.5,30
+PTZ Conference Camera,Pan-tilt-zoom camera mounting and control configuration,Video Systems,each,250,1,83.33
+Video Scaler and Converter,Resolution translation and signal format conversion box,Video Systems,each,150,0.6,50
+Blu-ray / Media Player,Source component rack mounting and network setup,Video Systems,each,90,0.4,26.67
+Conference Room Soundbar,All-in-one audio bar wall or display mounting,Collaboration & Conferencing,each,200,0.8,66.67
+USB PTZ Camera Kit,Huddle room camera installation with USB extension,Collaboration & Conferencing,each,220,0.8,80
+All-in-One Video Bar,"Integrated camera, mic, and speakerbar system setup",Collaboration & Conferencing,each,300,1,116.67
+Room Scheduling Touch Panel,Outside-door calendar display mounting and PoE wiring,Collaboration & Conferencing,each,250,1,83.33
+Wireless Presentation Gateway,AirPlay and Miracast sharing puck hardware configuration,Collaboration & Conferencing,each,180,0.6,66.67
+USB Extension over Cat6,Transmitter and receiver pair for remote camera extension,Collaboration & Conferencing,each,220,0.8,80
+Boundary Mic Table Puck,Flush-mount push-to-mute conference microphone,Collaboration & Conferencing,each,160,0.6,53.33
+Codec Integration Module,Primary UC platform hardware rack mount and provisioning,Collaboration & Conferencing,job,450,1.5,183.33
+Dual Display Video Conference Kit,Dual screen mount and codec setup for hybrid meetings,Collaboration & Conferencing,job,750,2.5,293.33
+Ceiling Microphone Array,Beamforming microphone array installation and tuning,Collaboration & Conferencing,each,550,2,200
+Control System Processor,Master automation processor hardware and basic input setup,Control & Automation,each,400,1.5,141.67
+Touch Panel Custom Programming,GUI design and macro logic programming per interface page,Control & Automation,hour,160,1.28,0
+Keypad Controller Installation,Programmable wall button station flush mounting and wiring,Control & Automation,each,175,0.8,50
+Lighting Control Integration,Interface module setup for third-party lighting systems,Control & Automation,job,350,1.5,110
+Motorized Shade Integration,Motor control interface and trigger configuration,Control & Automation,job,350,1.5,110
+Occupancy Sensor Integration,Auto-shutoff sensor wiring for energy management,Control & Automation,each,150,0.8,33.33
+Relay Control Module,"Low-voltage relay trigger for screens, lifts, and drapery",Control & Automation,each,130,0.6,36.67
+IR Emitter Stick-On,Infrared control flasher placement and testing,Control & Automation,each,45,0.2,13.33
+RS-232 Serial Control Cable,Custom pinned serial cable for legacy device control,Control & Automation,each,60,0.2,20
+Central Control System Commissioning,Full system macro testing and client handover training,Control & Automation,job,750,4.5,116.67
+Equipment Rack Assembly,"Unboxing, bolting, and structural build of standard floor rack","Racks, Power & Infrastructure",each,350,1.5,111.67
+Wall Mount Equipment Cabinet,Secure anchoring of hinged wall-mount rack enclosure,"Racks, Power & Infrastructure",each,275,1.2,83.33
+Rack Shelf Installation,Vented or cantilever shelf mounting in equipment rack,"Racks, Power & Infrastructure",each,40,0.2,10
+Rack Power Distribution Unit (PDU),Rack-mounted surge protector and power strip installation,"Racks, Power & Infrastructure",each,150,0.4,66.67
+Sequenced Power Conditioner,Timed AC power sequencing for large system turn-on,"Racks, Power & Infrastructure",each,350,1,150
+Structured Wire Management Panel,Lacing bars and vertical duct installation for clean cabling,"Racks, Power & Infrastructure",job,200,1,50
+Managed Network Switch 24-Port,PoE+ switch configuration for AV-over-IP and control,"Racks, Power & Infrastructure",each,450,1.2,200
+Managed Network Switch 48-Port,Enterprise-grade switch configuration and VLAN setup,"Racks, Power & Infrastructure",each,750,1.8,350
+Uninterruptible Power Supply (UPS),Battery backup installation and load testing for processors,"Racks, Power & Infrastructure",each,300,0.6,146.67
+Blank Rack Panel Installation,Filler panel mounting for clean thermal and aesthetic look,"Racks, Power & Infrastructure",each,25,0.15,4.33
+Low-Voltage Old-Work Mud Ring,Cut-in bracket for low-voltage cable pass-through,Hardware & Accessories,each,20,0.1,5
+Recessed In-Wall Power Box,Code-compliant power and cable recessed enclosure behind TV,Hardware & Accessories,each,120,0.6,29.33
+Brush Wall Plate,Cable pass-through faceplate for clean wire entry,Hardware & Accessories,each,25,0.15,4.33
+Floor Box Core Drill and Fitting,Concrete core drilling and pop-up floor box installation,Hardware & Accessories,job,450,1.8,150
+Custom Faceplate Engraving,Laser-etched custom labeling for wall plates and switchers,Hardware & Accessories,each,75,0.2,33.33
+Velcro Cable Wrap Roll,Professional cable bundling material roll,Hardware & Accessories,each,30,0.05,15.67
+Cable Zip-Tie Mount Kit,Adhesive tie mounts and zip ties for wire management,Hardware & Accessories,job,40,0.1,18.33
+Display Screen Cleaning Kit,Professional antistatic cleaning fluid and microfiber cloth,Hardware & Accessories,each,25,0.05,12.33
+Security Fastener Kit,Tamper-proof hardware screws for public display mounts,Hardware & Accessories,job,50,0.1,25
+Ground Loop Isolator,Audio hum eliminator transformer box,Hardware & Accessories,each,45,0.2,13.33
+AV System Documentation Package,As-built signal flow diagrams and rack elevations PDF,Engineering & Permits,job,500,3,83.33
+Engineering Structural Stamp,PE stamp and calculation letter for heavy overhead loads,Engineering & Permits,job,950,2,466.67
+Low-Voltage Electrical Permit,Municipal permit acquisition and filing fee handling,Engineering & Permits,job,225,0.5,110
+Lift Rental Scissor Lift,Daily rental fee for high-ceiling access equipment,Engineering & Permits,day,350,0.5,193.33
+Lift Delivery and Pickup Fee,Freight transport charge for mobile access equipment,Engineering & Permits,job,200,0.5,93.33
+Site Safety Plan Preparation,OSHA-compliant jobsite hazard assessment document,Engineering & Permits,job,150,1,16.67
+Disposal of Old AV Equipment,Removal and eco-friendly recycling of legacy electronics,Engineering & Permits,job,175,1,33.33
+Core Drilling Dust Mitigation,HEPA vacuum shroud setup for clean indoor core drilling,Engineering & Permits,job,100,0.5,25
+After-Hours Access Coordination,Supervision fee for night or weekend building access,Engineering & Permits,visit,250,1.5,43.33
+AV System End-User Training,Recorded walkthrough session and instruction manual handover,Engineering & Permits,job,200,1.6,0

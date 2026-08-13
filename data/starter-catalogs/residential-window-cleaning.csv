@@ -1,99 +1,99 @@
-name,description,category,unit,price
-Standard Window Cleaning Exterior,Exterior glass washing for standard single pane windows.,Exterior Windows,each,8
-Standard Window Cleaning Interior,Interior glass washing for standard single pane windows.,Interior Windows,each,9
-French Pane Window Exterior,Exterior detailed washing for multi-pane French windows.,Exterior Windows,each,12
-French Pane Window Interior,Interior detailed washing for multi-pane French windows.,Interior Windows,each,14
-Picture Window Exterior,Exterior washing for large fixed picture windows.,Exterior Windows,each,25
-Picture Window Interior,Interior washing for large fixed picture windows.,Interior Windows,each,28
-Sliding Glass Door Cleaning,Both sides glass washing for sliding patio doors.,Doors,each,20
-Storm Door Cleaning,Both sides glass washing for removable storm doors.,Doors,each,18
-Skylight Cleaning Exterior,Exterior washing for accessible flat or dome skylights.,Specialty Glass,each,35
-Skylight Cleaning Interior,Interior washing for accessible flat or dome skylights.,Specialty Glass,each,40
-Transom Window Cleaning,Washing for small accent windows above doors.,Specialty Glass,each,10
-Basement Hopper Window Cleaning,Washing for small ground level hopper windows.,Specialty Glass,each,12
-Screen Cleaning Basic,Wipe down and dust removal for standard window screens.,Screens,each,4
-Screen Deep Wash,Soap and water pressure rinse for heavily soiled screens.,Screens,each,7
-Screen Repair Mesh Replacement,New fiberglass mesh and spline installed in frame.,Screens,each,25
-Screen Frame Repair,Corner re-pinning or bending adjustment for metal frames.,Screens,each,15
-Solar Screen Cleaning,Specialized gentle cleaning for dark exterior solar screens.,Screens,each,9
-Track Cleaning Standard,Brush and vacuum debris from standard window tracks.,Tracks and Sills,each,5
-Track Deep Steam Cleaning,High pressure steam cleaning for heavily caked tracks.,Tracks and Sills,each,12
-Sill Wipe Down,Wiping clean interior window sills and ledges.,Tracks and Sills,each,3
-Hard Water Stain Removal Chemical,Acid treatment for mineral deposit removal on glass.,Restoration,sq ft,3
-Paint Removal Glass Scraping,Razor blade scraping of paint overspray on glass.,Restoration,each,8
-Silicone Caulk Removal Glass,Chemical and manual removal of stray silicone from glass.,Restoration,each,15
-Solar Panel Cleaning,Pure water brush washing for residential solar panels.,Solar Panels,each,18
-Gutter Cleaning Single Story,Hand clearing of leaves and debris from gutters.,Gutters,linear ft,2
-Gutter Cleaning Two Story,Hand clearing of leaves and debris from upper gutters.,Gutters,linear ft,3
-Downspout Flushing,Clearing blockages with water pressure in downspouts.,Gutters,each,15
-Gutter Guard Installation,Snap-in aluminum mesh gutter guard installation.,Gutters,linear ft,5
-Pressure Washing Driveway,Surface cleaner washing for concrete driveways.,Pressure Washing,sq ft,0.35
-Pressure Washing Walkway,Surface cleaning for concrete walkways and paths.,Pressure Washing,sq ft,0.4
-Pressure Washing Patio,Pressure washing for stone or concrete patios.,Pressure Washing,sq ft,0.45
-Pressure Washing Pool Deck,Non-slip surface washing for pool surrounds.,Pressure Washing,sq ft,0.5
-Soft Washing Stucco Siding,Low pressure chemical wash for exterior stucco walls.,Pressure Washing,sq ft,0.55
-Soft Washing Vinyl Siding,Low pressure soap application and rinse for vinyl siding.,Pressure Washing,sq ft,0.4
-Pressure Washing Brick Exterior,Controlled pressure wash for exterior brick walls.,Pressure Washing,sq ft,0.45
-Patio Furniture Wipe Down,Hose rinse and wipe down for outdoor table and chairs.,Add-on Services,job,75
-Chandelier Cleaning,Hand washing and polishing of hanging crystal chandeliers.,Specialty Interior,each,150
-Mirror Cleaning Large,Streak-free washing for large wall-mounted mirrors.,Specialty Interior,each,20
-Ceiling Fan Dusting,Dry and wet wiping of fan blades and light fixtures.,Specialty Interior,each,25
-High Dusting Vents and Ledges,Removal of dust from high interior architectural elements.,Specialty Interior,hour,85
-Service Call Dispatch Fee,Standard trip fee for site visit and physical quote.,Administrative,visit,50
-After Hours Emergency Fee,Surcharge for immediate or weekend urgent service.,Administrative,visit,150
-Multi-Story Surcharge,Additional labor fee for windows above two stories.,Administrative,hour,40
-Difficult Access Fee,Surcharge for windows over obstacles like large bushes.,Administrative,each,15
-Hourly Labor Rate General,Standard labor rate for miscellaneous technician tasks.,Labor,hour,75
-Two-Person Crew Hourly Rate,Labor rate for a paired technician crew on site.,Labor,hour,130
-Debris Disposal Fee,Haul away fee for gutter debris and old screens.,Disposal,job,35
-Eco Disposal Surcharge,Environmental disposal fee for wash water runoff control.,Disposal,job,25
-Permit Fee Local,Municipal street occupancy permit for boom truck usage.,Permits,each,100
-Standard Window Cleaning Exterior Sizing Tier 1,Exterior glass washing for small single hung windows.,Exterior Windows,each,6
-Standard Window Cleaning Exterior Sizing Tier 2,Exterior glass washing for medium single hung windows.,Exterior Windows,each,7
-Standard Window Cleaning Exterior Sizing Tier 3,Exterior glass washing for large single hung windows.,Exterior Windows,each,10
-Standard Window Cleaning Interior Sizing Tier 1,Interior glass washing for small single hung windows.,Interior Windows,each,7
-Standard Window Cleaning Interior Sizing Tier 2,Interior glass washing for medium single hung windows.,Interior Windows,each,8
-Standard Window Cleaning Interior Sizing Tier 3,Interior glass washing for large single hung windows.,Interior Windows,each,11
-Casement Window Exterior,Exterior washing for crank-out casement windows.,Exterior Windows,each,9
-Casement Window Interior,Interior washing for crank-out casement windows.,Interior Windows,each,10
-Awning Window Exterior,Exterior washing for top-hinged awning windows.,Exterior Windows,each,9
-Awning Window Interior,Interior washing for top-hinged awning windows.,Interior Windows,each,10
-Jalousie Window Cleaning,Detailed cleaning for multi-louvered glass slat windows.,Specialty Glass,each,18
-Garden Window Exterior,Exterior multi-angled glass washing for greenhouse windows.,Specialty Glass,each,30
-Garden Window Interior,Interior multi-angled glass washing for greenhouse windows.,Specialty Glass,each,35
-Egress Well Window Cleaning,Washing of basement egress well windows and covers.,Specialty Glass,each,22
-Glass Balustrade Exterior,Exterior washing for glass deck railings.,Specialty Glass,linear ft,6
-Glass Balustrade Interior,Interior washing for glass deck railings.,Specialty Glass,linear ft,6
-Double French Door Cleaning,Both sides glass washing for paired French doors.,Doors,each,35
-Screen Rescreening Pet Mesh,Heavy duty claw resistant mesh installed in frame.,Screens,each,40
-Screen Rescreening Aluminum Mesh,Traditional charcoal aluminum mesh installed in frame.,Screens,each,30
-New Custom Screen Build,Fabrication of new aluminum framed window screen.,Screens,each,55
-Screen Latch Replacement,Plastic or metal plunger latch replacement on screen.,Screens,each,8
-Screen Pull Tab Replacement,Installation of new plastic pull tabs on screens.,Screens,each,5
-Sill Restoration Painting,Touch-up exterior paint on damaged wood window sills.,Tracks and Sills,each,45
-Weep Hole Clearing,Unclogging drainage weep holes in vinyl window frames.,Tracks and Sills,each,6
-Hard Water Stain Removal Buffing,Mechanical cerium oxide pad buffing for severe mineral scale.,Restoration,sq ft,6
-Scratch Removal Glass Buffing,Light glass scratch repair via professional polishing kit.,Restoration,each,120
-Sticker Residue Removal,Removal of adhesive labels and tape residue from glass.,Restoration,each,12
-Solar Panel Bird Proofing Mesh,Installation of critter guard wire mesh around solar array.,Solar Panels,linear ft,12
-Gutter Sealing Leak Repair,Application of polyurethane sealant to leaking gutter joints.,Gutters,each,30
-Gutter Spike Re-anchoring,Nailing loose gutter spikes back into fascia boards.,Gutters,each,10
-Downspout Extension Installation,Adding plastic splash block or flexible pipe extension.,Gutters,each,20
-Pressure Washing Fence Wood,Low pressure wash for wooden privacy fences.,Pressure Washing,sq ft,0.35
-Pressure Washing Fence Vinyl,Pressure wash for vinyl fencing and gates.,Pressure Washing,sq ft,0.3
-Pressure Washing Garage Floor,Degreasing and surface cleaning of enclosed garage slabs.,Pressure Washing,sq ft,0.45
-Pressure Washing Awning Fabric,Gentle wash and rinse for canvas window awnings.,Pressure Washing,sq ft,0.6
-Pressure Washing Patio Cover,Washing overhead patio covers and pergolas.,Pressure Washing,sq ft,0.5
-Exterior Light Fixture Cleaning,Wiping bugs and dust from outdoor porch lights.,Add-on Services,each,15
-Solar Light Panel Wipe,Cleaning small decorative solar landscape lights.,Add-on Services,each,5
-Mailbox Exterior Wash,Hose down and wipe clean for residential mailboxes.,Add-on Services,each,10
-Trash Bin Pressure Wash,High pressure interior and exterior sanitizing wash for bins.,Add-on Services,each,25
-Holiday Light Hanging Labor,Installation of customer provided holiday lights.,Add-on Services,hour,95
-Holiday Light Removal,Take down and coil of holiday lighting at season end.,Add-on Services,hour,85
-Interior Sill Dusting Quick,Dry wipe of interior sills without full wash.,Interior Windows,each,2
-Blind Dusting Add-on,Wiping individual slats on mini or faux wood blinds.,Specialty Interior,each,10
-Interior Partition Glass Cleaning,Cleaning indoor glass office or room dividers.,Specialty Interior,sq ft,2
-Mirror Beveled Edge Polishing,Special care polishing for delicate beveled mirror edges.,Specialty Interior,each,25
-Commercial Grade Deodorizer Spray,Application of pleasant scent after deep cleaning service.,Add-on Services,job,15
-Parking Fee Urban Zone,Reimbursement for paid downtown parking structures.,Administrative,visit,20
-Late Cancellation Fee,Fee charged for cancellations under 24 hours notice.,Administrative,visit,75
+name,description,category,unit,price,labor_hours,material_cost
+Standard Window Cleaning Exterior,Exterior glass washing for standard single pane windows.,Exterior Windows,each,8,0.05,1.15
+Standard Window Cleaning Interior,Interior glass washing for standard single pane windows.,Interior Windows,each,9,0.06,1.05
+French Pane Window Exterior,Exterior detailed washing for multi-pane French windows.,Exterior Windows,each,12,0.08,1.45
+French Pane Window Interior,Interior detailed washing for multi-pane French windows.,Interior Windows,each,14,0.09,1.55
+Picture Window Exterior,Exterior washing for large fixed picture windows.,Exterior Windows,each,25,0.16,3.2
+Picture Window Interior,Interior washing for large fixed picture windows.,Interior Windows,each,28,0.18,3.45
+Sliding Glass Door Cleaning,Both sides glass washing for sliding patio doors.,Doors,each,20,0.13,2.5
+Storm Door Cleaning,Both sides glass washing for removable storm doors.,Doors,each,18,0.11,2.35
+Skylight Cleaning Exterior,Exterior washing for accessible flat or dome skylights.,Specialty Glass,each,35,0.22,4.5
+Skylight Cleaning Interior,Interior washing for accessible flat or dome skylights.,Specialty Glass,each,40,0.26,4.85
+Transom Window Cleaning,Washing for small accent windows above doors.,Specialty Glass,each,10,0.06,1.65
+Basement Hopper Window Cleaning,Washing for small ground level hopper windows.,Specialty Glass,each,12,0.08,1.45
+Screen Cleaning Basic,Wipe down and dust removal for standard window screens.,Screens,each,4,0.02,0.65
+Screen Deep Wash,Soap and water pressure rinse for heavily soiled screens.,Screens,each,7,0.04,1.2
+Screen Repair Mesh Replacement,New fiberglass mesh and spline installed in frame.,Screens,each,25,0.12,6.8
+Screen Frame Repair,Corner re-pinning or bending adjustment for metal frames.,Screens,each,15,0.08,3.5
+Solar Screen Cleaning,Specialized gentle cleaning for dark exterior solar screens.,Screens,each,9,0.06,1.05
+Track Cleaning Standard,Brush and vacuum debris from standard window tracks.,Tracks and Sills,each,5,0.03,0.75
+Track Deep Steam Cleaning,High pressure steam cleaning for heavily caked tracks.,Tracks and Sills,each,12,0.07,1.95
+Sill Wipe Down,Wiping clean interior window sills and ledges.,Tracks and Sills,each,3,0.02,0.35
+Hard Water Stain Removal Chemical,Acid treatment for mineral deposit removal on glass.,Restoration,sq ft,3,0.015,0.75
+Paint Removal Glass Scraping,Razor blade scraping of paint overspray on glass.,Restoration,each,8,0.05,1.15
+Silicone Caulk Removal Glass,Chemical and manual removal of stray silicone from glass.,Restoration,each,15,0.09,2.5
+Solar Panel Cleaning,Pure water brush washing for residential solar panels.,Solar Panels,each,18,0.11,2.5
+Gutter Cleaning Single Story,Hand clearing of leaves and debris from gutters.,Gutters,linear ft,2,0.012,0.33
+Gutter Cleaning Two Story,Hand clearing of leaves and debris from upper gutters.,Gutters,linear ft,3,0.018,0.53
+Downspout Flushing,Clearing blockages with water pressure in downspouts.,Gutters,each,15,0.09,2.5
+Gutter Guard Installation,Snap-in aluminum mesh gutter guard installation.,Gutters,linear ft,5,0.02,2.2
+Pressure Washing Driveway,Surface cleaner washing for concrete driveways.,Pressure Washing,sq ft,0.35,0.002,0.14
+Pressure Washing Walkway,Surface cleaning for concrete walkways and paths.,Pressure Washing,sq ft,0.4,0.003,0.16
+Pressure Washing Patio,Pressure washing for stone or concrete patios.,Pressure Washing,sq ft,0.45,0.003,0.18
+Pressure Washing Pool Deck,Non-slip surface washing for pool surrounds.,Pressure Washing,sq ft,0.5,0.003,0.2
+Soft Washing Stucco Siding,Low pressure chemical wash for exterior stucco walls.,Pressure Washing,sq ft,0.55,0.003,0.25
+Soft Washing Vinyl Siding,Low pressure soap application and rinse for vinyl siding.,Pressure Washing,sq ft,0.4,0.002,0.18
+Pressure Washing Brick Exterior,Controlled pressure wash for exterior brick walls.,Pressure Washing,sq ft,0.45,0.003,0.18
+Patio Furniture Wipe Down,Hose rinse and wipe down for outdoor table and chairs.,Add-on Services,job,75,0.5,8.33
+Chandelier Cleaning,Hand washing and polishing of hanging crystal chandeliers.,Specialty Interior,each,150,1,16.67
+Mirror Cleaning Large,Streak-free washing for large wall-mounted mirrors.,Specialty Interior,each,20,0.12,3.33
+Ceiling Fan Dusting,Dry and wet wiping of fan blades and light fixtures.,Specialty Interior,each,25,0.16,3.33
+High Dusting Vents and Ledges,Removal of dust from high interior architectural elements.,Specialty Interior,hour,85,1,0
+Service Call Dispatch Fee,Standard trip fee for site visit and physical quote.,Administrative,visit,50,0,33.33
+After Hours Emergency Fee,Surcharge for immediate or weekend urgent service.,Administrative,visit,150,0,100
+Multi-Story Surcharge,Additional labor fee for windows above two stories.,Administrative,hour,40,0.32,0
+Difficult Access Fee,Surcharge for windows over obstacles like large bushes.,Administrative,each,15,0.1,1.67
+Hourly Labor Rate General,Standard labor rate for miscellaneous technician tasks.,Labor,hour,75,1,0
+Two-Person Crew Hourly Rate,Labor rate for a paired technician crew on site.,Labor,hour,130,1,0
+Debris Disposal Fee,Haul away fee for gutter debris and old screens.,Disposal,job,35,0,23.33
+Eco Disposal Surcharge,Environmental disposal fee for wash water runoff control.,Disposal,job,25,0,16.67
+Permit Fee Local,Municipal street occupancy permit for boom truck usage.,Permits,each,100,0,66.67
+Standard Window Cleaning Exterior Sizing Tier 1,Exterior glass washing for small single hung windows.,Exterior Windows,each,6,0.035,1.05
+Standard Window Cleaning Exterior Sizing Tier 2,Exterior glass washing for medium single hung windows.,Exterior Windows,each,7,0.042,1.15
+Standard Window Cleaning Exterior Sizing Tier 3,Exterior glass washing for large single hung windows.,Exterior Windows,each,10,0.065,1.25
+Standard Window Cleaning Interior Sizing Tier 1,Interior glass washing for small single hung windows.,Interior Windows,each,7,0.042,1.15
+Standard Window Cleaning Interior Sizing Tier 2,Interior glass washing for medium single hung windows.,Interior Windows,each,8,0.05,1.15
+Standard Window Cleaning Interior Sizing Tier 3,Interior glass washing for large single hung windows.,Interior Windows,each,11,0.07,1.45
+Casement Window Exterior,Exterior washing for crank-out casement windows.,Exterior Windows,each,9,0.06,1
+Casement Window Interior,Interior washing for crank-out casement windows.,Interior Windows,each,10,0.07,0.95
+Awning Window Exterior,Exterior washing for top-hinged awning windows.,Exterior Windows,each,9,0.06,1
+Awning Window Interior,Interior washing for top-hinged awning windows.,Interior Windows,each,10,0.07,0.95
+Jalousie Window Cleaning,Detailed cleaning for multi-louvered glass slat windows.,Specialty Glass,each,18,0.12,2
+Garden Window Exterior,Exterior multi-angled glass washing for greenhouse windows.,Specialty Glass,each,30,0.2,3.33
+Garden Window Interior,Interior multi-angled glass washing for greenhouse windows.,Specialty Glass,each,35,0.24,3.33
+Egress Well Window Cleaning,Washing of basement egress well windows and covers.,Specialty Glass,each,22,0.15,2
+Glass Balustrade Exterior,Exterior washing for glass deck railings.,Specialty Glass,linear ft,6,0.035,1.15
+Glass Balustrade Interior,Interior washing for glass deck railings.,Specialty Glass,linear ft,6,0.035,1.15
+Double French Door Cleaning,Both sides glass washing for paired French doors.,Doors,each,35,0.22,4.33
+Screen Rescreening Pet Mesh,Heavy duty claw resistant mesh installed in frame.,Screens,each,40,0.2,10
+Screen Rescreening Aluminum Mesh,Traditional charcoal aluminum mesh installed in frame.,Screens,each,30,0.16,6.67
+New Custom Screen Build,Fabrication of new aluminum framed window screen.,Screens,each,55,0.25,16.67
+Screen Latch Replacement,Plastic or metal plunger latch replacement on screen.,Screens,each,8,0.04,2
+Screen Pull Tab Replacement,Installation of new plastic pull tabs on screens.,Screens,each,5,0.03,0.83
+Sill Restoration Painting,Touch-up exterior paint on damaged wood window sills.,Tracks and Sills,each,45,0.25,9.33
+Weep Hole Clearing,Unclogging drainage weep holes in vinyl window frames.,Tracks and Sills,each,6,0.04,0.67
+Hard Water Stain Removal Buffing,Mechanical cerium oxide pad buffing for severe mineral scale.,Restoration,sq ft,6,0.03,1.4
+Scratch Removal Glass Buffing,Light glass scratch repair via professional polishing kit.,Restoration,each,120,0.8,14.67
+Sticker Residue Removal,Removal of adhesive labels and tape residue from glass.,Restoration,each,12,0.08,1.47
+Solar Panel Bird Proofing Mesh,Installation of critter guard wire mesh around solar array.,Solar Panels,linear ft,12,0.06,3
+Gutter Sealing Leak Repair,Application of polyurethane sealant to leaking gutter joints.,Gutters,each,30,0.18,5.33
+Gutter Spike Re-anchoring,Nailing loose gutter spikes back into fascia boards.,Gutters,each,10,0.06,1.67
+Downspout Extension Installation,Adding plastic splash block or flexible pipe extension.,Gutters,each,20,0.1,5
+Pressure Washing Fence Wood,Low pressure wash for wooden privacy fences.,Pressure Washing,sq ft,0.35,0.002,0.14
+Pressure Washing Fence Vinyl,Pressure wash for vinyl fencing and gates.,Pressure Washing,sq ft,0.3,0.002,0.12
+Pressure Washing Garage Floor,Degreasing and surface cleaning of enclosed garage slabs.,Pressure Washing,sq ft,0.45,0.003,0.18
+Pressure Washing Awning Fabric,Gentle wash and rinse for canvas window awnings.,Pressure Washing,sq ft,0.6,0.004,0.25
+Pressure Washing Patio Cover,Washing overhead patio covers and pergolas.,Pressure Washing,sq ft,0.5,0.003,0.2
+Exterior Light Fixture Cleaning,Wiping bugs and dust from outdoor porch lights.,Add-on Services,each,15,0.1,1.67
+Solar Light Panel Wipe,Cleaning small decorative solar landscape lights.,Add-on Services,each,5,0.03,0.83
+Mailbox Exterior Wash,Hose down and wipe clean for residential mailboxes.,Add-on Services,each,10,0.06,1.67
+Trash Bin Pressure Wash,High pressure interior and exterior sanitizing wash for bins.,Add-on Services,each,25,0.15,4.17
+Holiday Light Hanging Labor,Installation of customer provided holiday lights.,Add-on Services,hour,95,1,0
+Holiday Light Removal,Take down and coil of holiday lighting at season end.,Add-on Services,hour,85,1,0
+Interior Sill Dusting Quick,Dry wipe of interior sills without full wash.,Interior Windows,each,2,0.015,0.1
+Blind Dusting Add-on,Wiping individual slats on mini or faux wood blinds.,Specialty Interior,each,10,0.06,1.67
+Interior Partition Glass Cleaning,Cleaning indoor glass office or room dividers.,Specialty Interior,sq ft,2,0.01,0.5
+Mirror Beveled Edge Polishing,Special care polishing for delicate beveled mirror edges.,Specialty Interior,each,25,0.14,4.5
+Commercial Grade Deodorizer Spray,Application of pleasant scent after deep cleaning service.,Add-on Services,job,15,0.05,5.83
+Parking Fee Urban Zone,Reimbursement for paid downtown parking structures.,Administrative,visit,20,0,13.33
+Late Cancellation Fee,Fee charged for cancellations under 24 hours notice.,Administrative,visit,75,0,50

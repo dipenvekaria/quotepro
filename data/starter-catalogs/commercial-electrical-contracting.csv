@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Service Call,Initial dispatch and diagnostic for commercial property,Diagnostics,visit,175
-After Hours Emergency Dispatch,Emergency priority diagnostic outside normal business hours,Diagnostics,visit,350
-Master Electrician Hourly Rate,Hourly rate for complex troubleshooting and oversight,Labor,hour,145
-Journeyman Electrician Hourly Rate,Hourly rate for standard electrical installation and repair,Labor,hour,125
-Apprentice Electrician Hourly Rate,Hourly rate for assistant electrical support labor,Labor,hour,85
-Commercial Panel Inspection,Comprehensive thermal and physical electrical panel inspection,Diagnostics,job,350
-Megger Insulation Testing,High voltage insulation resistance test per circuit,Diagnostics,each,150
-Power Quality Analysis,24-hour electrical system harmonic and load logging,Diagnostics,job,950
-Circuit Tracer Service,Tracing hidden conduits and circuit mapping,Diagnostics,hour,135
-Lighting Photometric Study,Light level measurement and compliance assessment,Diagnostics,job,450
-Commercial Permit Acquisition,Filing and processing local municipal electrical permits,Permits,job,250
-Plan Review Submittal,Engineering drawing submission for municipal approval,Permits,job,400
-Electrical Utility Coordination,Coordination with power company for service changes,Permits,job,350
-Hazardous Material Disposal Fee,Disposal of fluorescent lamps and ballasts,Disposal,job,125
-Transformer Recycling Fee,Environmentally safe disposal of old dry-type transformers,Disposal,each,200
-Scrap Metal Haul Away,Removal and recycling of old conduit and wire scrap,Disposal,job,150
-20A 120V Duplex Receptacle Replacement,Commercial grade tamper-resistant receptacle swap,Wiring and Devices,each,65
-20A 250V Twist-Lock Receptacle,Heavy-duty locking receptacle installation,Wiring and Devices,each,145
-GFCI Duplex Receptacle,Commercial weather-resistant GFCI outlet replacement,Wiring and Devices,each,95
-Isolated Ground Receptacle,Dedicated orange IG receptacle for sensitive electronics,Wiring and Devices,each,110
-Single Pole Toggle Switch,Standard commercial 20A light switch replacement,Wiring and Devices,each,75
-Three-Way Toggle Switch,Multi-location lighting control switch replacement,Wiring and Devices,each,90
-Timer Switch Installation,Mechanical or digital spring wound timer switch,Wiring and Devices,each,185
-Occupancy Sensor Wall Switch,Passive infrared wall switch lighting sensor,Wiring and Devices,each,165
-Floor Box Assembly Replacement,Commercial recessed floor box and cover replacement,Wiring and Devices,each,350
-Surface Metallic Raceway,Wiremold installation for surface mounted circuits,Wiring and Devices,linear ft,28
-EMT Conduit Run 1/2 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,14
-EMT Conduit Run 3/4 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,18
-EMT Conduit Run 1 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,24
-Rigid Galvanized Conduit 1 Inch,Heavy-duty threaded exterior metal conduit,Conduit,linear ft,38
-Liquidtight Flexible Metal Conduit,Waterproof flexible conduit for equipment connections,Conduit,linear ft,22
-PVC Conduit Schedule 40 1 Inch,Underground or wet location plastic conduit,Conduit,linear ft,16
-MC Cable Run 12/2,Metal-clad commercial branch circuit wiring,Wiring and Devices,linear ft,6
-MC Cable Run 12/3,Metal-clad multi-wire branch circuit wiring,Wiring and Devices,linear ft,8
-MC Cable Run 10/3,Metal-clad heavy duty branch circuit wiring,Wiring and Devices,linear ft,11
-THHN Copper Wire Pull #12,Pulling single conductor copper wire inside conduit,Wiring and Devices,linear ft,2
-THHN Copper Wire Pull #10,Pulling single conductor copper wire inside conduit,Wiring and Devices,linear ft,3
-THHN Copper Wire Pull #rum,Pulling large feeder copper wire inside conduit,Wiring and Devices,linear ft,12
-100A 3-Phase Main Breaker,Replacement main circuit breaker in panel,Distribution,each,650
-200A 3-Phase Main Breaker,Replacement main circuit breaker in panel,Distribution,each,950
-15A 1-Pole Bolt-On Breaker,Commercial panel branch circuit breaker replacement,Distribution,each,75
-20A 1-Pole Bolt-On Breaker,Commercial panel branch circuit breaker replacement,Distribution,each,80
-20A 2-Pole Bolt-On Breaker,Commercial 208V 2-pole breaker replacement,Distribution,each,140
-30A 3-Pole Bolt-On Breaker,Commercial 3-phase motor circuit breaker replacement,Distribution,each,220
-50A 3-Pole Bolt-On Breaker,Commercial heavy equipment circuit breaker,Distribution,each,280
-Surge Protective Device,Main service panel surge suppressor installation,Distribution,each,850
-Subpanel Installation 100A,Secondary distribution panel mounting and wiring,Distribution,job,1450
-Subpanel Installation 200A,Secondary distribution panel mounting and wiring,Distribution,job,2200
-Panel Directory Re-typing,Professional typed directory inside electrical panel,Distribution,job,150
-Commercial Ground Rod Installation,Driven copper-clad ground rod with exothermic weld,Distribution,each,350
-LED Troffer Fixture 2x4,Recessed grid ceiling LED lighting panel replacement,Lighting,each,185
-LED Troffer Fixture 2x2,Recessed grid ceiling square LED light replacement,Lighting,each,155
-LED Strip Fixture 4ft,Surface or suspended linear utility shop light,Lighting,each,140
-LED High Bay Fixture 150W,Warehouse and industrial high ceiling lighting,Lighting,each,380
-LED Exit Sign with Emergency Battery,UL listed illuminated exit sign and backup pack,Lighting,each,210
-Emergency Lighting Battery Unit,Dual-head remote capable emergency light battery pack,Lighting,each,250
-Remote Emergency Lighting Head,Single swivel remote lamp head for emergency pack,Lighting,each,75
-Exterior Wall Pack LED Fixture,Building perimeter security wall pack light,Lighting,each,320
-Parking Lot Pole Light LED,Commercial pole mounted shoe box lighting fixture,Lighting,each,950
-Photocell Sensor Replacement,Dusk-to-dawn exterior lighting control sensor,Lighting,each,145
-Lighting Control Time Clock,Digital multi-channel programmable lighting timer,Lighting,each,450
-Under Cabinet LED Strip,Task lighting strip for commercial breakrooms,Lighting,linear ft,45
-Fluorescent Ballast Replacement,Electronic ballast swap inside existing fixture,Lighting,each,130
-Commercial Ceiling Fan Installation,Industrial heavy-duty ceiling fan hanging and wiring,Lighting,each,350
-Disconnect Switch 30A Non-Fused,Outdoor safety disconnect switch for HVAC equipment,Motors and HVAC,each,210
-Disconnect Switch 60A Non-Fused,Outdoor safety disconnect switch for HVAC equipment,Motors and HVAC,each,260
-Disconnect Switch 30A Fused,Fused safety disconnect switch for machinery,Motors and HVAC,each,290
-Disconnect Switch 60A Fused,Fused safety disconnect switch for machinery,Motors and HVAC,each,360
-RTU Power Whip Installation,Flexible electrical connection to rooftop unit,Motors and HVAC,each,320
-Motor Starter Replacement 5HP,Magnetic motor starter contactor assembly,Motors and HVAC,each,550
-Motor Starter Replacement 10HP,Magnetic motor starter contactor assembly,Motors and HVAC,each,750
-HVAC Control Circuit Repair,Troubleshooting and repairing low voltage HVAC wiring,Motors and HVAC,hour,135
-VFD Drive Commissioning Support,Variable frequency drive electrical connection verification,Motors and HVAC,hour,165
-Exhaust Fan Motor Replacement,Commercial bathroom or kitchen exhaust fan motor,Motors and HVAC,each,380
-Condensate Pump Hardwire,Dedicated electrical connection for HVAC condensate pump,Motors and HVAC,each,175
-Commercial Data Drop CAT6,Structured cabling run with RJ45 jack termination,Low Voltage,each,185
-Fiber Optic Cable Termination,Fusion splicing and termination of multi-mode fiber,Low Voltage,each,125
-Coaxial Cable Run,RG6 cable run for commercial video distribution,Low Voltage,linear ft,5
-Server Rack Ground Bar Kit,Telecommunications main ground bar installation,Low Voltage,job,250
-Low Voltage Relay Panel Service,Centralized low voltage lighting control relay fix,Low Voltage,hour,145
-Fire Alarm Smoke Detector Replacement,Commercial addressable smoke detector head swap,Life Safety,each,220
-Fire Alarm Horn Strobe Replacement,Audible and visual notification appliance replacement,Life Safety,each,240
-Pull Station Replacement,Manual fire alarm pull station installation,Life Safety,each,195
-Fire Alarm Panel Battery Set,Backup lead-acid batteries for fire alarm panel,Life Safety,job,320
-Flow Switch Electrical Hookup,Sprinkler system water flow switch wiring,Life Safety,each,275
-Tamper Switch Wiring,Sprinkler valve monitoring switch connection,Life Safety,each,210
-Magnetic Door Holder Installation,Fire door release electromagnet and wiring,Life Safety,each,380
-Strobe Light for Hearing Impaired,Dedicated auxiliary fire alarm strobe installation,Life Safety,each,260
-EV Charger Level 2 Commercial,Dual-port commercial electric vehicle charging station,Upsells,job,1250
-LED Retrofit Kit Upgrade,Converting existing fluorescent troffers to LED arrays,Upsells,each,95
-Whole Building Surge Protection,Service entrance heavy-duty transient voltage suppressor,Upsells,job,1150
-Smart Energy Meter Monitor,Submeter installation for tenant energy consumption tracking,Upsells,job,850
-Occupancy Sensor System Upgrade,Retrofitting open-plan office with smart sensors,Upsells,job,950
-Automatic Transfer Switch,Backup generator automatic transfer switch installation,Upsells,job,3500
-Lightning Protection System Inspection,Testing grounding and air terminal bonding,Upsells,job,750
-Phase Loss Monitor Installation,Digital phase monitor relay to protect 3-phase motors,Upsells,each,450
-LED Parking Lot Retrofit,Upgrading legacy metal halide pole heads to LED,Upsells,each,650
-Timed Exterior Lighting Control,Astronomical time clock for signage and parking lights,Upsells,job,550
-Dedicated Server Room Circuit,Isolated 30A 208V twist-lock circuit for server racks,Upsells,job,850
-Annual Preventative Maintenance Plan,Bi-annual infrared panel scan and torque check contract,Upsells,visit,1200
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial dispatch and diagnostic for commercial property,Diagnostics,visit,175,1.4,0
+After Hours Emergency Dispatch,Emergency priority diagnostic outside normal business hours,Diagnostics,visit,350,2,66.67
+Master Electrician Hourly Rate,Hourly rate for complex troubleshooting and oversight,Labor,hour,145,1.16,0
+Journeyman Electrician Hourly Rate,Hourly rate for standard electrical installation and repair,Labor,hour,125,1,0
+Apprentice Electrician Hourly Rate,Hourly rate for assistant electrical support labor,Labor,hour,85,0.68,0
+Commercial Panel Inspection,Comprehensive thermal and physical electrical panel inspection,Diagnostics,job,350,2.8,0
+Megger Insulation Testing,High voltage insulation resistance test per circuit,Diagnostics,each,150,1.2,0
+Power Quality Analysis,24-hour electrical system harmonic and load logging,Diagnostics,job,950,5,220
+Circuit Tracer Service,Tracing hidden conduits and circuit mapping,Diagnostics,hour,135,1.08,0
+Lighting Photometric Study,Light level measurement and compliance assessment,Diagnostics,job,450,3.6,0
+Commercial Permit Acquisition,Filing and processing local municipal electrical permits,Permits,job,250,2,0
+Plan Review Submittal,Engineering drawing submission for municipal approval,Permits,job,400,3.2,0
+Electrical Utility Coordination,Coordination with power company for service changes,Permits,job,350,2.8,0
+Hazardous Material Disposal Fee,Disposal of fluorescent lamps and ballasts,Disposal,job,125,0,83.33
+Transformer Recycling Fee,Environmentally safe disposal of old dry-type transformers,Disposal,each,200,0,133.33
+Scrap Metal Haul Away,Removal and recycling of old conduit and wire scrap,Disposal,job,150,1.2,0
+20A 120V Duplex Receptacle Replacement,Commercial grade tamper-resistant receptacle swap,Wiring and Devices,each,65,0.4,10
+20A 250V Twist-Lock Receptacle,Heavy-duty locking receptacle installation,Wiring and Devices,each,145,0.6,46.67
+GFCI Duplex Receptacle,Commercial weather-resistant GFCI outlet replacement,Wiring and Devices,each,95,0.5,20
+Isolated Ground Receptacle,Dedicated orange IG receptacle for sensitive electronics,Wiring and Devices,each,110,0.5,30
+Single Pole Toggle Switch,Standard commercial 20A light switch replacement,Wiring and Devices,each,75,0.5,8.33
+Three-Way Toggle Switch,Multi-location lighting control switch replacement,Wiring and Devices,each,90,0.5,18.33
+Timer Switch Installation,Mechanical or digital spring wound timer switch,Wiring and Devices,each,185,0.8,58.33
+Occupancy Sensor Wall Switch,Passive infrared wall switch lighting sensor,Wiring and Devices,each,165,0.8,45
+Floor Box Assembly Replacement,Commercial recessed floor box and cover replacement,Wiring and Devices,each,350,1.5,110
+Surface Metallic Raceway,Wiremold installation for surface mounted circuits,Wiring and Devices,linear ft,28,0.15,4.87
+EMT Conduit Run 1/2 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,14,0.08,2.93
+EMT Conduit Run 3/4 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,18,0.1,3.67
+EMT Conduit Run 1 Inch,Electrical metallic tubing installation with fittings,Conduit,linear ft,24,0.12,6
+Rigid Galvanized Conduit 1 Inch,Heavy-duty threaded exterior metal conduit,Conduit,linear ft,38,0.18,10.67
+Liquidtight Flexible Metal Conduit,Waterproof flexible conduit for equipment connections,Conduit,linear ft,22,0.12,4.67
+PVC Conduit Schedule 40 1 Inch,Underground or wet location plastic conduit,Conduit,linear ft,16,0.08,4
+MC Cable Run 12/2,Metal-clad commercial branch circuit wiring,Wiring and Devices,linear ft,6,0.03,1.47
+MC Cable Run 12/3,Metal-clad multi-wire branch circuit wiring,Wiring and Devices,linear ft,8,0.04,2
+MC Cable Run 10/3,Metal-clad heavy duty branch circuit wiring,Wiring and Devices,linear ft,11,0.05,3
+THHN Copper Wire Pull #12,Pulling single conductor copper wire inside conduit,Wiring and Devices,linear ft,2,0.01,0.87
+THHN Copper Wire Pull #10,Pulling single conductor copper wire inside conduit,Wiring and Devices,linear ft,3,0.015,1.37
+THHN Copper Wire Pull #rum,Pulling large feeder copper wire inside conduit,Wiring and Devices,linear ft,12,0.05,3.93
+100A 3-Phase Main Breaker,Replacement main circuit breaker in panel,Distribution,each,650,1.5,310
+200A 3-Phase Main Breaker,Replacement main circuit breaker in panel,Distribution,each,950,2,466.67
+15A 1-Pole Bolt-On Breaker,Commercial panel branch circuit breaker replacement,Distribution,each,75,0.4,16.67
+20A 1-Pole Bolt-On Breaker,Commercial panel branch circuit breaker replacement,Distribution,each,80,0.4,20
+20A 2-Pole Bolt-On Breaker,Commercial 208V 2-pole breaker replacement,Distribution,each,140,0.5,51.67
+30A 3-Pole Bolt-On Breaker,Commercial 3-phase motor circuit breaker replacement,Distribution,each,220,0.6,96.67
+50A 3-Pole Bolt-On Breaker,Commercial heavy equipment circuit breaker,Distribution,each,280,0.6,136.67
+Surge Protective Device,Main service panel surge suppressor installation,Distribution,each,850,1.5,443.33
+Subpanel Installation 100A,Secondary distribution panel mounting and wiring,Distribution,job,1450,6,466.67
+Subpanel Installation 200A,Secondary distribution panel mounting and wiring,Distribution,job,2200,8,800
+Panel Directory Re-typing,Professional typed directory inside electrical panel,Distribution,job,150,1.2,0
+Commercial Ground Rod Installation,Driven copper-clad ground rod with exothermic weld,Distribution,each,350,2,66.67
+LED Troffer Fixture 2x4,Recessed grid ceiling LED lighting panel replacement,Lighting,each,185,0.8,58.33
+LED Troffer Fixture 2x2,Recessed grid ceiling square LED light replacement,Lighting,each,155,0.8,38.33
+LED Strip Fixture 4ft,Surface or suspended linear utility shop light,Lighting,each,140,0.6,43.33
+LED High Bay Fixture 150W,Warehouse and industrial high ceiling lighting,Lighting,each,380,1.2,153.33
+LED Exit Sign with Emergency Battery,UL listed illuminated exit sign and backup pack,Lighting,each,210,0.8,73.33
+Emergency Lighting Battery Unit,Dual-head remote capable emergency light battery pack,Lighting,each,250,0.8,100
+Remote Emergency Lighting Head,Single swivel remote lamp head for emergency pack,Lighting,each,75,0.4,16.67
+Exterior Wall Pack LED Fixture,Building perimeter security wall pack light,Lighting,each,320,1,130
+Parking Lot Pole Light LED,Commercial pole mounted shoe box lighting fixture,Lighting,each,950,3,383.33
+Photocell Sensor Replacement,Dusk-to-dawn exterior lighting control sensor,Lighting,each,145,0.6,46.67
+Lighting Control Time Clock,Digital multi-channel programmable lighting timer,Lighting,each,450,1.5,176.67
+Under Cabinet LED Strip,Task lighting strip for commercial breakrooms,Lighting,linear ft,45,0.2,10
+Fluorescent Ballast Replacement,Electronic ballast swap inside existing fixture,Lighting,each,130,0.8,20
+Commercial Ceiling Fan Installation,Industrial heavy-duty ceiling fan hanging and wiring,Lighting,each,350,1.5,110
+Disconnect Switch 30A Non-Fused,Outdoor safety disconnect switch for HVAC equipment,Motors and HVAC,each,210,1,56.67
+Disconnect Switch 60A Non-Fused,Outdoor safety disconnect switch for HVAC equipment,Motors and HVAC,each,260,1.2,73.33
+Disconnect Switch 30A Fused,Fused safety disconnect switch for machinery,Motors and HVAC,each,290,1.2,93.33
+Disconnect Switch 60A Fused,Fused safety disconnect switch for machinery,Motors and HVAC,each,360,1.4,120
+RTU Power Whip Installation,Flexible electrical connection to rooftop unit,Motors and HVAC,each,320,1.2,113.33
+Motor Starter Replacement 5HP,Magnetic motor starter contactor assembly,Motors and HVAC,each,550,2,200
+Motor Starter Replacement 10HP,Magnetic motor starter contactor assembly,Motors and HVAC,each,750,2.5,291.67
+HVAC Control Circuit Repair,Troubleshooting and repairing low voltage HVAC wiring,Motors and HVAC,hour,135,1.08,0
+VFD Drive Commissioning Support,Variable frequency drive electrical connection verification,Motors and HVAC,hour,165,1.32,0
+Exhaust Fan Motor Replacement,Commercial bathroom or kitchen exhaust fan motor,Motors and HVAC,each,380,1.8,106.67
+Condensate Pump Hardwire,Dedicated electrical connection for HVAC condensate pump,Motors and HVAC,each,175,1,33.33
+Commercial Data Drop CAT6,Structured cabling run with RJ45 jack termination,Low Voltage,each,185,1,40
+Fiber Optic Cable Termination,Fusion splicing and termination of multi-mode fiber,Low Voltage,each,125,0.8,16.67
+Coaxial Cable Run,RG6 cable run for commercial video distribution,Low Voltage,linear ft,5,0.02,1.53
+Server Rack Ground Bar Kit,Telecommunications main ground bar installation,Low Voltage,job,250,1,83.33
+Low Voltage Relay Panel Service,Centralized low voltage lighting control relay fix,Low Voltage,hour,145,1.16,0
+Fire Alarm Smoke Detector Replacement,Commercial addressable smoke detector head swap,Life Safety,each,220,1,63.33
+Fire Alarm Horn Strobe Replacement,Audible and visual notification appliance replacement,Life Safety,each,240,1,76.67
+Pull Station Replacement,Manual fire alarm pull station installation,Life Safety,each,195,0.9,55
+Fire Alarm Panel Battery Set,Backup lead-acid batteries for fire alarm panel,Life Safety,job,320,1,133.33
+Flow Switch Electrical Hookup,Sprinkler system water flow switch wiring,Life Safety,each,275,1.2,83.33
+Tamper Switch Wiring,Sprinkler valve monitoring switch connection,Life Safety,each,210,1,56.67
+Magnetic Door Holder Installation,Fire door release electromagnet and wiring,Life Safety,each,380,1.5,130
+Strobe Light for Hearing Impaired,Dedicated auxiliary fire alarm strobe installation,Life Safety,each,260,1.1,86.67
+EV Charger Level 2 Commercial,Dual-port commercial electric vehicle charging station,Upsells,job,1250,3.5,566.67
+LED Retrofit Kit Upgrade,Converting existing fluorescent troffers to LED arrays,Upsells,each,95,0.4,30
+Whole Building Surge Protection,Service entrance heavy-duty transient voltage suppressor,Upsells,job,1150,3,516.67
+Smart Energy Meter Monitor,Submeter installation for tenant energy consumption tracking,Upsells,job,850,2.5,366.67
+Occupancy Sensor System Upgrade,Retrofitting open-plan office with smart sensors,Upsells,job,950,3,383.33
+Automatic Transfer Switch,Backup generator automatic transfer switch installation,Upsells,job,3500,10,1500
+Lightning Protection System Inspection,Testing grounding and air terminal bonding,Upsells,job,750,6,0
+Phase Loss Monitor Installation,Digital phase monitor relay to protect 3-phase motors,Upsells,each,450,1.5,176.67
+LED Parking Lot Retrofit,Upgrading legacy metal halide pole heads to LED,Upsells,each,650,2,266.67
+Timed Exterior Lighting Control,Astronomical time clock for signage and parking lights,Upsells,job,550,2,200
+Dedicated Server Room Circuit,Isolated 30A 208V twist-lock circuit for server racks,Upsells,job,850,3.5,283.33
+Annual Preventative Maintenance Plan,Bi-annual infrared panel scan and torque check contract,Upsells,visit,1200,6,300

@@ -1,106 +1,106 @@
-name,description,category,unit,price
-Standard Diagnostic Fee,Troubleshoot generator fault codes and system failure.,Diagnostics & Service,visit,175
-After-Hours Diagnostic Fee,Emergency dispatch outside normal business hours.,Diagnostics & Service,visit,350
-Annual Maintenance Inspection,"Comprehensive check of engine, electrical, and fuel systems.",Diagnostics & Service,visit,295
-Load Bank Testing,Verify generator output capacity under artificial electrical load.,Diagnostics & Service,job,650
-Firmware Update Service,Update generator control panel firmware to latest version.,Diagnostics & Service,each,150
-Battery Load Test,Test starting battery voltage and CCA capacity.,Diagnostics & Service,each,85
-Fuel Quality Analysis,Test stored diesel or gas for contamination and degradation.,Diagnostics & Service,each,220
-Insulation Resistance Test,Megger test alternator windings for insulation breakdown.,Diagnostics & Service,each,300
-Remote Monitoring Signal Check,Verify cellular or internet gateway connectivity and signal.,Diagnostics & Service,each,125
-System Commissioning Service,Initial startup and transfer switch testing for new install.,Diagnostics & Service,job,450
-Standard Electrician Labor,Hourly rate for licensed electrical technician.,Labor Rates,hour,145
-Senior Generator Tech Labor,Hourly rate for factory-certified generator technician.,Labor Rates,hour,175
-After-Hours Labor Rate,Emergency overtime hourly rate for technician labor.,Labor Rates,hour,265
-Apprentice Labor Rate,Hourly rate for assistant or apprentice technician.,Labor Rates,hour,95
-Crane Operation Service,Hourly rate for crane and operator to set large units.,Labor Rates,hour,350
-Excavation and Trenching,Hourly rate for mini-excavator and operator.,Labor Rates,hour,195
-Permit Acquisition Service,Handle local electrical and building permit applications.,Permits & Administration,job,250
-Environmental Fee,"Disposal of old fluids, filters, and hazardous materials.",Permits & Administration,job,75
-HOA Submittal Package,Prepare drawings and specs for homeowner association approval.,Permits & Administration,job,150
-Electrical Inspection Coordination,Meet municipal inspector on site for final sign-off.,Permits & Administration,job,175
-Gas Utility Coordination,Coordinate gas meter upgrade with local utility provider.,Permits & Administration,job,200
-Standard Oil Filter Replacement,Remove and replace engine oil filter during service.,Routine Maintenance,each,45
-Synthetic Oil Change,Drain and refill engine with manufacturer-spec synthetic oil.,Routine Maintenance,quart,18
-Air Filter Replacement,Replace primary engine air induction filter element.,Routine Maintenance,each,65
-Spark Plug Replacement,Replace engine spark plugs and set proper gap.,Routine Maintenance,each,35
-Fuel Filter Replacement,Replace inline or canister fuel filtration element.,Routine Maintenance,each,85
-Coolant Flush and Fill,Flush radiator and refill with 50/50 coolant mix.,Routine Maintenance,job,280
-Drive Belt Replacement,Replace alternator and water pump serpentine belt.,Routine Maintenance,each,140
-Valve Lash Adjustment,Adjust engine intake and exhaust valve clearances.,Routine Maintenance,job,350
-Crankcase Breather Maintenance,Service or replace crankcase ventilation filter.,Routine Maintenance,each,95
-Starter Motor Replacement,Replace failed electric starter motor assembly.,Repairs & Replacements,each,550
-Alternator Charging Unit Replacement,Replace engine-mounted battery charging alternator.,Repairs & Replacements,each,480
-Voltage Regulator Replacement,Replace automatic voltage regulator control board.,Repairs & Replacements,each,620
-Control Board Replacement,Replace main digital controller unit and program.,Repairs & Replacements,each,1250
-Fuel Injector Replacement,Replace faulty mechanical or electronic fuel injector.,Repairs & Replacements,each,380
-Fuel Pump Replacement,Replace electric or mechanical fuel lift pump.,Repairs & Replacements,each,420
-Radiator Replacement,Replace leaking engine coolant radiator core.,Repairs & Replacements,each,1450
-Water Pump Replacement,Replace engine coolant water pump assembly.,Repairs & Replacements,each,680
-Thermostat Replacement,Replace engine coolant temperature regulator thermostat.,Repairs & Replacements,each,195
-Exhaust Manifold Gasket Replacement,Replace leaking exhaust manifold sealing gasket.,Repairs & Replacements,each,320
-Muffler Replacement,Replace rusted or damaged exhaust silencer muffler.,Repairs & Replacements,each,450
-Governor Actuator Replacement,Replace electronic engine speed governor actuator.,Repairs & Replacements,each,750
-Oil Pressure Switch Replacement,Replace faulty oil pressure sender or switch.,Repairs & Replacements,each,165
-Coolant Temperature Sensor Replacement,Replace engine temperature sending unit.,Repairs & Replacements,each,155
-Relay and Fuse Replacement,Replace blown fuses or failed control relays.,Repairs & Replacements,each,95
-Main Circuit Breaker Replacement,Replace generator output thermal magnetic circuit breaker.,Repairs & Replacements,each,890
-Enclosure Panel Repair,Repair or replace damaged sheet metal enclosure panel.,Repairs & Replacements,each,340
-Vibration Isolator Replacement,Replace engine mount rubber vibration dampeners.,Repairs & Replacements,each,110
-Block Heater Replacement,Replace engine coolant block heater element.,Repairs & Replacements,each,290
-Battery Charger Replacement,Replace automatic float trickle battery charger.,Repairs & Replacements,each,350
-Automatic Transfer Switch Installation,Install standard 200A service-rated transfer switch.,Transfer Switches,each,1650
-Automatic Transfer Switch 400A,Install heavy-duty 400A service-rated transfer switch.,Transfer Switches,each,2850
-Manual Transfer Switch Installation,Install manual generator transfer switch panel.,Transfer Switches,each,850
-Smart Load Center Installation,Install load management module for selective circuit control.,Transfer Switches,each,1200
-Transfer Switch Control Board Replacement,Replace failed logic board in transfer switch.,Transfer Switches,each,750
-Transfer Switch Contactor Replacement,Replace main electrical operating contactor mechanism.,Transfer Switches,each,920
-Auxiliary Contact Addition,Install auxiliary switch contacts inside transfer box.,Transfer Switches,each,220
-Service Entrance Disconnect Installation,Install external emergency generator disconnect switch.,Transfer Switches,each,650
-Sub-Panel Integration,Wire critical loads sub-panel for backup power.,Transfer Switches,each,950
-Transfer Switch Signal Wire Run,Run low-voltage control wire between generator and switch.,Transfer Switches,linear ft,8
-Concrete Generator Pad Pour,Pour reinforced concrete pad for standby generator placement.,Installation & Pads,job,1250
-Composite Equipment Pad,Pre-cast composite pad for generator mounting.,Installation & Pads,each,450
-Generator Rigging and Setting,Use equipment to safely set generator onto pad.,Installation & Pads,job,850
-Tie-Down Anchor Kit,Install seismic or hurricane wind anchor kit.,Installation & Pads,job,275
-Leveling and Shimming,Level generator chassis on uneven grade pad.,Installation & Pads,job,150
-Underground Conduit Trenching,Trench ground for electrical and gas conduits up to 24 inches.,Electrical & Gas Wiring,linear ft,22
-PVC Conduit Installation,Install Schedule 40 or 80 electrical conduit.,Electrical & Gas Wiring,linear ft,12
-Rigid Metal Conduit Installation,Install threaded rigid metal conduit for outdoor runs.,Electrical & Gas Wiring,linear ft,28
-Feeder Wire Pull,Pull copper power wire through installed conduit run.,Electrical & Gas Wiring,linear ft,18
-Gas Line Piping Installation,Install black iron or PE gas pipe from meter to generator.,Electrical & Gas Wiring,linear ft,35
-Gas Pressure Regulator Installation,Install secondary gas pressure regulation device.,Electrical & Gas Wiring,each,320
-Gas Line Pressure Test,Perform pneumatic pressure test on gas piping system.,Electrical & Gas Wiring,job,200
-Ground Rod Installation,Drive copper-clad ground rod and connect bonding wire.,Electrical & Gas Wiring,each,185
-Main Service Ground Bond,Upgrade system grounding to current electrical code.,Electrical & Gas Wiring,job,275
-Junction Box and Fittings,Weatherproof outdoor junction box with compression fittings.,Electrical & Gas Wiring,each,85
-Group 26R Starting Battery,Heavy-duty maintenance-free generator starting battery.,Parts & Consumables,each,165
-Group 51 Starting Battery,Standard automotive-grade starting battery.,Parts & Consumables,each,145
-Coolant Antifreeze Gallon,Extended life concentrated ethylene glycol coolant.,Parts & Consumables,gallon,32
-Synthetic Oil Quart,Heavy-duty 5W-30 or 15W-40 synthetic engine oil.,Parts & Consumables,quart,14
-Fuel Stabilizer Additive,Gasoline fuel stabilizer treatment bottle.,Parts & Consumables,each,25
-Anti-Corrosion Battery Spray,Terminal protector spray coating application.,Parts & Consumables,each,20
-Replacement Air Filter Element,OEM paper element air filter.,Parts & Consumables,each,55
-Replacement Oil Filter,OEM spin-on engine oil filter.,Parts & Consumables,each,38
-Replacement Fuel Filter,OEM inline or canister fuel filter element.,Parts & Consumables,each,65
-Replacement Spark Plug,OEM resistor spark plug.,Parts & Consumables,each,18
-Cellular Remote Monitor Module,Cellular internet gateway for remote status tracking.,Upgrades & Accessories,each,450
-Cold Weather Kit Installation,Install battery warmer and oil pan heater blanket.,Upgrades & Accessories,job,550
-Scheduled Maintenance Plan Annual,Includes two annual service visits and priority dispatch.,Upgrades & Accessories,visit,520
-Extended Warranty Registration,Process manufacturer extended parts and labor warranty.,Upgrades & Accessories,job,150
-Enclosure Sound Attenuation Blanket,Acoustic insulation kit for quieter generator operation.,Upgrades & Accessories,job,750
-Rodent Proofing Mesh Kit,Install stainless steel mesh screens over enclosure vents.,Upgrades & Accessories,job,220
-Shed / Enclosure Louver Kit,Motorized intake and exhaust air louvers.,Upgrades & Accessories,job,1100
-LED Enclosure Service Light,Internal 12V LED light for servicing generator at night.,Upgrades & Accessories,each,175
-Surge Protector Installation,Whole-house surge protector wired at service panel.,Upgrades & Accessories,each,380
-Smart Phone App Setup,Configure client mobile device for remote monitoring alerts.,Upgrades & Accessories,job,95
-Generator Decommissioning and Removal,Disconnect and haul away old non-working generator unit.,Removal & Disposal,job,950
-Old Transfer Switch Removal,Remove and dispose of obsolete transfer switch equipment.,Removal & Disposal,each,250
-Fuel Tank Evacuation and Removal,Pump out remaining fuel and remove old storage tank.,Removal & Disposal,job,1200
-Concrete Pad Breakout and Removal,Demolish and haul away old concrete generator pad.,Removal & Disposal,job,850
-Core Drilling Foundation Wall,Core drill concrete foundation for utility entry sleeve.,Electrical & Gas Wiring,each,350
-Generator Weather Cover,Custom fitted breathable fabric storage cover.,Upgrades & Accessories,each,195
-Emergency Fuel Delivery Service,Dispatch fuel truck for emergency generator refueling.,Diagnostics & Service,job,450
-Phase Rotation Check,Verify proper electrical phase sequence for 3-phase units.,Diagnostics & Service,each,150
-Exhaust Pipe Insulation Wrap,Install thermal wrap insulation on high-temp exhaust pipe.,Repairs & Replacements,linear ft,45
-Backup Battery Smart Charger Upgrade,Upgrade standard charger to microprocessor-controlled unit.,Upgrades & Accessories,each,420
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Troubleshoot generator fault codes and system failure.,Diagnostics & Service,visit,175,1.4,0
+After-Hours Diagnostic Fee,Emergency dispatch outside normal business hours.,Diagnostics & Service,visit,350,2.8,0
+Annual Maintenance Inspection,"Comprehensive check of engine, electrical, and fuel systems.",Diagnostics & Service,visit,295,2,29.67
+Load Bank Testing,Verify generator output capacity under artificial electrical load.,Diagnostics & Service,job,650,4,100
+Firmware Update Service,Update generator control panel firmware to latest version.,Diagnostics & Service,each,150,1,16.67
+Battery Load Test,Test starting battery voltage and CCA capacity.,Diagnostics & Service,each,85,0.5,15
+Fuel Quality Analysis,Test stored diesel or gas for contamination and degradation.,Diagnostics & Service,each,220,1,63.33
+Insulation Resistance Test,Megger test alternator windings for insulation breakdown.,Diagnostics & Service,each,300,2,33.33
+Remote Monitoring Signal Check,Verify cellular or internet gateway connectivity and signal.,Diagnostics & Service,each,125,1,0
+System Commissioning Service,Initial startup and transfer switch testing for new install.,Diagnostics & Service,job,450,3,50
+Standard Electrician Labor,Hourly rate for licensed electrical technician.,Labor Rates,hour,145,1,0
+Senior Generator Tech Labor,Hourly rate for factory-certified generator technician.,Labor Rates,hour,175,1,0
+After-Hours Labor Rate,Emergency overtime hourly rate for technician labor.,Labor Rates,hour,265,1,0
+Apprentice Labor Rate,Hourly rate for assistant or apprentice technician.,Labor Rates,hour,95,1,0
+Crane Operation Service,Hourly rate for crane and operator to set large units.,Labor Rates,hour,350,2,66.67
+Excavation and Trenching,Hourly rate for mini-excavator and operator.,Labor Rates,hour,195,1.2,30
+Permit Acquisition Service,Handle local electrical and building permit applications.,Permits & Administration,job,250,2,0
+Environmental Fee,"Disposal of old fluids, filters, and hazardous materials.",Permits & Administration,job,75,0,50
+HOA Submittal Package,Prepare drawings and specs for homeowner association approval.,Permits & Administration,job,150,1.2,0
+Electrical Inspection Coordination,Meet municipal inspector on site for final sign-off.,Permits & Administration,job,175,1.4,0
+Gas Utility Coordination,Coordinate gas meter upgrade with local utility provider.,Permits & Administration,job,200,1.6,0
+Standard Oil Filter Replacement,Remove and replace engine oil filter during service.,Routine Maintenance,each,45,0.25,9.17
+Synthetic Oil Change,Drain and refill engine with manufacturer-spec synthetic oil.,Routine Maintenance,quart,18,0.072,6
+Air Filter Replacement,Replace primary engine air induction filter element.,Routine Maintenance,each,65,0.25,38.33
+Spark Plug Replacement,Replace engine spark plugs and set proper gap.,Routine Maintenance,each,35,0.25,19.17
+Fuel Filter Replacement,Replace inline or canister fuel filtration element.,Routine Maintenance,each,85,0.5,14.67
+Coolant Flush and Fill,Flush radiator and refill with 50/50 coolant mix.,Routine Maintenance,job,280,1.5,63.33
+Drive Belt Replacement,Replace alternator and water pump serpentine belt.,Routine Maintenance,each,140,0.75,31.67
+Valve Lash Adjustment,Adjust engine intake and exhaust valve clearances.,Routine Maintenance,job,350,2.5,23.33
+Crankcase Breather Maintenance,Service or replace crankcase ventilation filter.,Routine Maintenance,each,95,0.5,21.67
+Starter Motor Replacement,Replace failed electric starter motor assembly.,Repairs & Replacements,each,550,2,200
+Alternator Charging Unit Replacement,Replace engine-mounted battery charging alternator.,Repairs & Replacements,each,480,1.5,193.33
+Voltage Regulator Replacement,Replace automatic voltage regulator control board.,Repairs & Replacements,each,620,1.5,293.33
+Control Board Replacement,Replace main digital controller unit and program.,Repairs & Replacements,each,1250,2,666.67
+Fuel Injector Replacement,Replace faulty mechanical or electronic fuel injector.,Repairs & Replacements,each,380,2,86.67
+Fuel Pump Replacement,Replace electric or mechanical fuel lift pump.,Repairs & Replacements,each,420,2,113.33
+Radiator Replacement,Replace leaking engine coolant radiator core.,Repairs & Replacements,each,1450,4,633.33
+Water Pump Replacement,Replace engine coolant water pump assembly.,Repairs & Replacements,each,680,3,203.33
+Thermostat Replacement,Replace engine coolant temperature regulator thermostat.,Repairs & Replacements,each,195,1,46.67
+Exhaust Manifold Gasket Replacement,Replace leaking exhaust manifold sealing gasket.,Repairs & Replacements,each,320,2,46.67
+Muffler Replacement,Replace rusted or damaged exhaust silencer muffler.,Repairs & Replacements,each,450,1.5,176.67
+Governor Actuator Replacement,Replace electronic engine speed governor actuator.,Repairs & Replacements,each,750,2,333.33
+Oil Pressure Switch Replacement,Replace faulty oil pressure sender or switch.,Repairs & Replacements,each,165,1,26.67
+Coolant Temperature Sensor Replacement,Replace engine temperature sending unit.,Repairs & Replacements,each,155,1,20
+Relay and Fuse Replacement,Replace blown fuses or failed control relays.,Repairs & Replacements,each,95,0.5,21.67
+Main Circuit Breaker Replacement,Replace generator output thermal magnetic circuit breaker.,Repairs & Replacements,each,890,2.5,383.33
+Enclosure Panel Repair,Repair or replace damaged sheet metal enclosure panel.,Repairs & Replacements,each,340,1.5,103.33
+Vibration Isolator Replacement,Replace engine mount rubber vibration dampeners.,Repairs & Replacements,each,110,0.75,10
+Block Heater Replacement,Replace engine coolant block heater element.,Repairs & Replacements,each,290,1.5,68.33
+Battery Charger Replacement,Replace automatic float trickle battery charger.,Repairs & Replacements,each,350,1,150
+Automatic Transfer Switch Installation,Install standard 200A service-rated transfer switch.,Transfer Switches,each,1650,6,600
+Automatic Transfer Switch 400A,Install heavy-duty 400A service-rated transfer switch.,Transfer Switches,each,2850,4,1566.67
+Manual Transfer Switch Installation,Install manual generator transfer switch panel.,Transfer Switches,each,850,4,233.33
+Smart Load Center Installation,Install load management module for selective circuit control.,Transfer Switches,each,1200,5,391.67
+Transfer Switch Control Board Replacement,Replace failed logic board in transfer switch.,Transfer Switches,each,750,2,333.33
+Transfer Switch Contactor Replacement,Replace main electrical operating contactor mechanism.,Transfer Switches,each,920,2.5,406.67
+Auxiliary Contact Addition,Install auxiliary switch contacts inside transfer box.,Transfer Switches,each,220,1,63.33
+Service Entrance Disconnect Installation,Install external emergency generator disconnect switch.,Transfer Switches,each,650,3,183.33
+Sub-Panel Integration,Wire critical loads sub-panel for backup power.,Transfer Switches,each,950,4,300
+Transfer Switch Signal Wire Run,Run low-voltage control wire between generator and switch.,Transfer Switches,linear ft,8,0.05,1.17
+Concrete Generator Pad Pour,Pour reinforced concrete pad for standby generator placement.,Installation & Pads,job,1250,4,500
+Composite Equipment Pad,Pre-cast composite pad for generator mounting.,Installation & Pads,each,450,1.5,176.67
+Generator Rigging and Setting,Use equipment to safely set generator onto pad.,Installation & Pads,job,850,4,233.33
+Tie-Down Anchor Kit,Install seismic or hurricane wind anchor kit.,Installation & Pads,job,275,1,100
+Leveling and Shimming,Level generator chassis on uneven grade pad.,Installation & Pads,job,150,1,16.67
+Underground Conduit Trenching,Trench ground for electrical and gas conduits up to 24 inches.,Electrical & Gas Wiring,linear ft,22,0.12,4.67
+PVC Conduit Installation,Install Schedule 40 or 80 electrical conduit.,Electrical & Gas Wiring,linear ft,12,0.06,2.83
+Rigid Metal Conduit Installation,Install threaded rigid metal conduit for outdoor runs.,Electrical & Gas Wiring,linear ft,28,0.08,8.33
+Feeder Wire Pull,Pull copper power wire through installed conduit run.,Electrical & Gas Wiring,linear ft,18,0.06,5.83
+Gas Line Piping Installation,Install black iron or PE gas pipe from meter to generator.,Electrical & Gas Wiring,linear ft,35,0.12,10.33
+Gas Pressure Regulator Installation,Install secondary gas pressure regulation device.,Electrical & Gas Wiring,each,320,1,130
+Gas Line Pressure Test,Perform pneumatic pressure test on gas piping system.,Electrical & Gas Wiring,job,200,1.2,33.33
+Ground Rod Installation,Drive copper-clad ground rod and connect bonding wire.,Electrical & Gas Wiring,each,185,1,40
+Main Service Ground Bond,Upgrade system grounding to current electrical code.,Electrical & Gas Wiring,job,275,1.5,56.67
+Junction Box and Fittings,Weatherproof outdoor junction box with compression fittings.,Electrical & Gas Wiring,each,85,0.5,15
+Group 26R Starting Battery,Heavy-duty maintenance-free generator starting battery.,Parts & Consumables,each,165,0.25,89.17
+Group 51 Starting Battery,Standard automotive-grade starting battery.,Parts & Consumables,each,145,0.25,75.83
+Coolant Antifreeze Gallon,Extended life concentrated ethylene glycol coolant.,Parts & Consumables,gallon,32,0,21.33
+Synthetic Oil Quart,Heavy-duty 5W-30 or 15W-40 synthetic engine oil.,Parts & Consumables,quart,14,0,9.33
+Fuel Stabilizer Additive,Gasoline fuel stabilizer treatment bottle.,Parts & Consumables,each,25,0,16.67
+Anti-Corrosion Battery Spray,Terminal protector spray coating application.,Parts & Consumables,each,20,0,13.33
+Replacement Air Filter Element,OEM paper element air filter.,Parts & Consumables,each,55,0.25,31.67
+Replacement Oil Filter,OEM spin-on engine oil filter.,Parts & Consumables,each,38,0.25,21.17
+Replacement Fuel Filter,OEM inline or canister fuel filter element.,Parts & Consumables,each,65,0.25,39.17
+Replacement Spark Plug,OEM resistor spark plug.,Parts & Consumables,each,18,0.1,10.33
+Cellular Remote Monitor Module,Cellular internet gateway for remote status tracking.,Upgrades & Accessories,each,450,1.5,180
+Cold Weather Kit Installation,Install battery warmer and oil pan heater blanket.,Upgrades & Accessories,job,550,2,200
+Scheduled Maintenance Plan Annual,Includes two annual service visits and priority dispatch.,Upgrades & Accessories,visit,520,3.5,59.67
+Extended Warranty Registration,Process manufacturer extended parts and labor warranty.,Upgrades & Accessories,job,150,1,16.67
+Enclosure Sound Attenuation Blanket,Acoustic insulation kit for quieter generator operation.,Upgrades & Accessories,job,750,3,250
+Rodent Proofing Mesh Kit,Install stainless steel mesh screens over enclosure vents.,Upgrades & Accessories,job,220,1.2,46.67
+Shed / Enclosure Louver Kit,Motorized intake and exhaust air louvers.,Upgrades & Accessories,job,1100,4,391.67
+LED Enclosure Service Light,Internal 12V LED light for servicing generator at night.,Upgrades & Accessories,each,175,1,33.33
+Surge Protector Installation,Whole-house surge protector wired at service panel.,Upgrades & Accessories,each,380,1.5,130
+Smart Phone App Setup,Configure client mobile device for remote monitoring alerts.,Upgrades & Accessories,job,95,0.5,21.67
+Generator Decommissioning and Removal,Disconnect and haul away old non-working generator unit.,Removal & Disposal,job,950,5,216.67
+Old Transfer Switch Removal,Remove and dispose of obsolete transfer switch equipment.,Removal & Disposal,each,250,1.5,41.67
+Fuel Tank Evacuation and Removal,Pump out remaining fuel and remove old storage tank.,Removal & Disposal,job,1200,6,283.33
+Concrete Pad Breakout and Removal,Demolish and haul away old concrete generator pad.,Removal & Disposal,job,850,4.5,191.67
+Core Drilling Foundation Wall,Core drill concrete foundation for utility entry sleeve.,Electrical & Gas Wiring,each,350,1.5,113.33
+Generator Weather Cover,Custom fitted breathable fabric storage cover.,Upgrades & Accessories,each,195,0.25,110
+Emergency Fuel Delivery Service,Dispatch fuel truck for emergency generator refueling.,Diagnostics & Service,job,450,2,133.33
+Phase Rotation Check,Verify proper electrical phase sequence for 3-phase units.,Diagnostics & Service,each,150,1,16.67
+Exhaust Pipe Insulation Wrap,Install thermal wrap insulation on high-temp exhaust pipe.,Repairs & Replacements,linear ft,45,0.2,10
+Backup Battery Smart Charger Upgrade,Upgrade standard charger to microprocessor-controlled unit.,Upgrades & Accessories,each,420,1.5,156.67

@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Commercial Service Call Fee,Standard dispatch and travel for commercial site visit,Diagnostics & Service,visit,150
-Pest Inspection and Audit,Comprehensive facility inspection for commercial pest activity,Diagnostics & Service,visit,250
-Emergency After-Hours Dispatch,Urgent unscheduled technician dispatch outside normal hours,Diagnostics & Service,visit,350
-Food Safety Audit Prep Inspection,Pre-audit sanitation and pest vulnerability assessment,Diagnostics & Service,visit,300
-Standard Pest Control Labor,Regular hourly technician labor rate,Labor Rates,hour,115
-After-Hours Emergency Labor,Overtime hourly technician labor rate,Labor Rates,hour,175
-Specialized Sanitation Labor,Hourly rate for deep cleaning and sanitation,Labor Rates,hour,135
-Consulting and Expert Witness Labor,Specialized regulatory and compliance consultation,Labor Rates,hour,200
-Rodent Station Installation,Secure exterior tamper-resistant bait station placement,Rodent Control,each,45
-Rodent Station Service,Bait refill and inspection of exterior station,Rodent Control,each,22
-Mechanical Snap Trap Set,Interior heavy-duty snap trap placement,Rodent Control,each,18
-Multi-Catch Mouse Trap Placement,Continuous catch mechanical mouse trap deployment,Rodent Control,each,25
-Electronic Rodent Monitor Installation,Smart connected rodent sensor setup and testing,Rodent Control,each,75
-Rodent Burrow Baiting,Active exterior rodent burrow treatment,Rodent Control,each,35
-Wire Mesh Rodent Exclusion,Galvanized hardware cloth installation per opening,Rodent Control,linear ft,15
-Expanding Foam Gap Sealing,Pest-block expanding foam application for minor gaps,Rodent Control,linear ft,12
-Commercial Door Sweep Installation,Heavy-duty brush seal for rodent exclusion,Rodent Control,each,125
-Roll-up Door Brush Seal Replacement,Commercial loading dock door sweep installation,Rodent Control,linear ft,28
-PVC Strip Curtain Installation,Loading dock insect and rodent barrier strips,Rodent Control,linear ft,45
-Interior Insect Light Trap Installation,Wall-mounted glue board fly light setup,Flying Insect Control,each,150
-ILT Glue Board Replacement,Replacement of sticky boards in insect light traps,Flying Insect Control,each,15
-ILT UV Bulb Replacement,Annual replacement of ultraviolet insect attractant lamps,Flying Insect Control,each,35
-Exterior Fly Bait Station Setup,Granular fly bait station placement and service,Flying Insect Control,each,40
-Drain Treatment for Fruit Flies,Bacterial bio-enzymatic drain foaming treatment,Flying Insect Control,gallon,85
-Mosquito Mist Blower Treatment,Perimeter barrier spray for flying pest reduction,Flying Insect Control,sq ft,0.08
-Automatic Misting System Install,Perimeter insect misting system control unit setup,Flying Insect Control,job,1200
-Misting System Refill Solution,Refill of botanical insecticide for automatic system,Flying Insect Control,gallon,95
-Air Curtain Installation,Commercial overhead doorway insect barrier fan setup,Flying Insect Control,each,450
-German Cockroach Gel Bait Application,Targeted crack and crevice baiting treatment,Crawling Insect Control,visit,175
-Bed Bug Thermal Remediation Prep Inspection,Pre-heat treatment room check and resident prep verification,Crawling Insect Control,visit,200
-Bed Bug Whole Room Heat Treatment,Thermal eradication of bed bugs in commercial space,Crawling Insect Control,sq ft,2.5
-Bed Bug Mattress Encase Installation,Commercial grade zippered mattress protector setup,Crawling Insect Control,each,90
-Stored Product Pest Pheromone Trap,Pantry pest monitoring trap placement,Crawling Insect Control,each,20
-Ant Colony Direct Nest Injection,Liquid residual application to active ant harborage,Crawling Insect Control,visit,150
-Flea and Tick Interior Broadcast Spray,Carpet and baseboard treatment for fleas and ticks,Crawling Insect Control,sq ft,0.22
-Silverfish Dust Application,Attic or crawlspace silica dust treatment,Crawling Insect Control,sq ft,0.15
-Spider Web De-webging Service,Removal of webs and egg sacs up to 15 feet,Crawling Insect Control,linear ft,2
-Perimeter Liquid Residual Spray,Exterior foundation barrier treatment for crawling pests,Crawling Insect Control,linear ft,0.75
-Wood Boring Beetle Treatment,Direct injection and surface spray for wood pests,Crawling Insect Control,sq ft,0.45
-Pre-Construction Soil Termite Treatment,Horizontal liquid termiticide barrier application,Termite & Wood Destroying,sq ft,0.35
-Post-Construction Termite Trenching,Exterior soil trenching and termiticide injection,Termite & Wood Destroying,linear ft,9
-Concrete Slab Termite Drilling,Masonry drilling and chemical injection for termites,Termite & Wood Destroying,linear ft,14
-Termite Bait Station Installation,In-ground monitoring and bait station placement,Termite & Wood Destroying,each,50
-Termite Bait Station Annual Monitoring,Quarterly check and refill of termite stations,Termite & Wood Destroying,each,25
-Localized Termite Foam Injection,Drywood or subterranean termite gallery foaming,Termite & Wood Destroying,each,120
-Termite Clearance Letter (WDI),Official real estate wood destroying insect report,Termite & Wood Destroying,job,175
-Fumigation Tent Seal and Gas Setup,Full structure tarping and structural gas fumigation,Termite & Wood Destroying,sq ft,4.5
-Subterranean Termite Inspection,Detailed structural assessment for termite activity,Termite & Wood Destroying,visit,175
-Wood Replacement Damaged by Pests,Carpentry repair of structural wood affected by pests,Termite & Wood Destroying,hour,95
-Bird Netting Installation,Commercial bird exclusion netting for roofs and overhangs,Bird & Wildlife Control,sq ft,3.5
-Bird Spike Installation,Stainless steel post wire strips on ledges,Bird & Wildlife Control,linear ft,22
-Shock Track Bird Deterrent Install,Low-profile electric track for architectural ledges,Bird & Wildlife Control,linear ft,45
-Bird Wire System Installation,Post and wire tension system for parapet walls,Bird & Wildlife Control,linear ft,18
-Solar Panel Bird Guard Installation,Mesh barrier attachment around solar array perimeters,Bird & Wildlife Control,linear ft,25
-Bird Dropping Power Washing,Sanitation and power washing of roosting areas,Bird & Wildlife Control,sq ft,0.85
-Nuisance Wildlife Live Trap Placement,Humane cage trap setup for raccoons or opossums,Bird & Wildlife Control,each,120
-Wildlife Removal and Relocation,Retrieval and legal relocation of trapped animal,Bird & Wildlife Control,each,150
-Animal Entry Point Seal Up,Heavy gauge sheet metal and wood wildlife blocking,Bird & Wildlife Control,linear ft,30
-Dead Animal Extraction in Walls,Locating and removing carcass from enclosed building cavity,Bird & Wildlife Control,job,275
-Attic Deodorization and Sanitizing,Enzymatic fogging for animal urine and odor removal,Bird & Wildlife Control,sq ft,0.35
-Attic Insulation Removal and Replacement,Removal of pest-damaged insulation and re-blowing new,Bird & Wildlife Control,sq ft,2.25
-Bat Exclusion One-Way Door Install,Specialized bat exit netting and valve installation,Bird & Wildlife Control,each,175
-Snake Repellent Perimeter Application,Granular natural snake deterrent barrier treatment,Bird & Wildlife Control,linear ft,1.5
-Commercial Fumigation Permit Fee,Local municipality regulatory permit processing,Permits & Disposal,job,150
-Hazardous Material Disposal Fee,Special waste disposal fee for regulated chemicals,Permits & Disposal,job,100
-Confined Space Entry Permit,Safety compliance documentation and monitoring setup,Permits & Disposal,job,250
-Environmental Impact Assessment Fee,Mandatory ecological review for sensitive sites,Permits & Disposal,job,300
-Specialty Waste Bio-Bag Disposal,Disposal of contaminated biological waste materials,Permits & Disposal,each,45
-Lift Rental Surcharge (Scissor Lift),Daily equipment rental fee for high-reach work,Permits & Disposal,day,350
-Boom Lift Rental Surcharge,Daily equipment rental fee for multi-story exterior work,Permits & Disposal,day,650
-After-Hours Waste Hauling,Special disposal service outside standard operating hours,Permits & Disposal,job,200
-Structural Core Drilling Permit,Engineering review and municipal permit for floor drilling,Permits & Disposal,job,175
-Custom Digital Pest Dashboard Setup,Client portal configuration and historical data migration,Technology & Reporting,job,350
-Barcode Asset Tracking Tagging,QR or barcode labeling of all pest control devices,Technology & Reporting,each,5
-Regulatory Compliance Audit Report,Detailed documentation package for FDA or USDA audits,Technology & Reporting,job,150
-Third-Party Audit Liaison Service,On-site technician representation during external audits,Technology & Reporting,hour,125
-Trend Analysis and Pest Heat Map,Advanced analytics report on pest activity trends,Technology & Reporting,job,200
-Pest Logbook Binder Creation,Physical station map and SDS documentation binder,Technology & Reporting,job,75
-Monthly Maintenance Program Visit,Recurring scheduled preventative pest control service,Recurring Programs,visit,180
-Bi-Monthly Commercial Service Visit,Scheduled preventative service every two months,Recurring Programs,visit,210
-Quarterly Commercial Service Visit,Scheduled preventative service every three months,Recurring Programs,visit,275
-Food Processing Plant Weekly Service,High-frequency intense monitoring and service visit,Recurring Programs,visit,220
-Pharmaceutical Facility Sanitization Audit,Strict protocol inspection and treatment for pharma sites,Recurring Programs,visit,450
-Restaurant Kitchen Deep Clean Prevention,Intensive monthly kitchen pest prevention treatment,Recurring Programs,visit,320
-Warehouse High-Cube Rodent Defense,Large facility perimeter and interior rodent program,Recurring Programs,visit,400
-Multi-Family Apartment Complex Sweep,Multi-unit monthly pest control treatment block,Recurring Programs,visit,600
-Hotel Room Rotation Program,Quarterly preventative bed bug and pest room checks,Recurring Programs,visit,500
-Retail Strip Mall Exterior Defense,Multi-storefront exterior perimeter pest protection,Recurring Programs,visit,350
-Odor Neutralization Fogging,Enzymatic treatment for persistent organic odors,Specialty Services,sq ft,0.25
-Stored Product Pest Heat Treatment,Targeted heat remediation for food silos or containers,Specialty Services,sq ft,3.25
-Sewer Line Smoke Testing,Smoke test to locate pest entry breaks in sewer lines,Specialty Services,job,450
-Drain Line Bio-Remediation Program,Monthly automatic dosing pump installation and service,Specialty Services,each,125
-Botanical Eco-Friendly Upcharge,Green certified organic product substitution upgrade,Specialty Services,visit,50
-Fly Light Graphic Front Panel Upgrade,Custom decorative cover panel for insect light traps,Specialty Services,each,75
-Perimeter Trench Rock Installation,Decorative gravel barrier to prevent weed and pest harborage,Specialty Services,linear ft,18
-Sub-Slab Vapor Barrier Repair,Patching torn plastic vapor barriers in crawlspaces,Specialty Services,sq ft,1.5
-HVAC Condensate Drain Line Treatment,Anti-clogging tablet installation in AC drain pans,Specialty Services,each,30
-Emergency Water Extraction Assist,Drying out areas following major leak-induced pest issues,Specialty Services,hour,110
-Ultra-Low Volume (ULV) Space Fogging,Volumetric aerosol treatment for flying or crawling insects,Specialty Services,sq ft,0.12
-Commercial Pest Proofing Consultation,Comprehensive architectural design review for pest prevention,Specialty Services,hour,150
+name,description,category,unit,price,labor_hours,material_cost
+Commercial Service Call Fee,Standard dispatch and travel for commercial site visit,Diagnostics & Service,visit,150,1,16.67
+Pest Inspection and Audit,Comprehensive facility inspection for commercial pest activity,Diagnostics & Service,visit,250,2,0
+Emergency After-Hours Dispatch,Urgent unscheduled technician dispatch outside normal hours,Diagnostics & Service,visit,350,2.5,20.83
+Food Safety Audit Prep Inspection,Pre-audit sanitation and pest vulnerability assessment,Diagnostics & Service,visit,300,2.4,0
+Standard Pest Control Labor,Regular hourly technician labor rate,Labor Rates,hour,115,1,0
+After-Hours Emergency Labor,Overtime hourly technician labor rate,Labor Rates,hour,175,1,33.33
+Specialized Sanitation Labor,Hourly rate for deep cleaning and sanitation,Labor Rates,hour,135,1,6.67
+Consulting and Expert Witness Labor,Specialized regulatory and compliance consultation,Labor Rates,hour,200,1.6,0
+Rodent Station Installation,Secure exterior tamper-resistant bait station placement,Rodent Control,each,45,0.2,13.33
+Rodent Station Service,Bait refill and inspection of exterior station,Rodent Control,each,22,0.15,2
+Mechanical Snap Trap Set,Interior heavy-duty snap trap placement,Rodent Control,each,18,0.1,3.67
+Multi-Catch Mouse Trap Placement,Continuous catch mechanical mouse trap deployment,Rodent Control,each,25,0.1,8.33
+Electronic Rodent Monitor Installation,Smart connected rodent sensor setup and testing,Rodent Control,each,75,0.3,25
+Rodent Burrow Baiting,Active exterior rodent burrow treatment,Rodent Control,each,35,0.2,6.67
+Wire Mesh Rodent Exclusion,Galvanized hardware cloth installation per opening,Rodent Control,linear ft,15,0.08,3.67
+Expanding Foam Gap Sealing,Pest-block expanding foam application for minor gaps,Rodent Control,linear ft,12,0.06,3
+Commercial Door Sweep Installation,Heavy-duty brush seal for rodent exclusion,Rodent Control,each,125,0.5,43.33
+Roll-up Door Brush Seal Replacement,Commercial loading dock door sweep installation,Rodent Control,linear ft,28,0.12,8.67
+PVC Strip Curtain Installation,Loading dock insect and rodent barrier strips,Rodent Control,linear ft,45,0.2,10
+Interior Insect Light Trap Installation,Wall-mounted glue board fly light setup,Flying Insect Control,each,150,0.6,50
+ILT Glue Board Replacement,Replacement of sticky boards in insect light traps,Flying Insect Control,each,15,0.1,1.67
+ILT UV Bulb Replacement,Annual replacement of ultraviolet insect attractant lamps,Flying Insect Control,each,35,0.15,11
+Exterior Fly Bait Station Setup,Granular fly bait station placement and service,Flying Insect Control,each,40,0.2,10
+Drain Treatment for Fruit Flies,Bacterial bio-enzymatic drain foaming treatment,Flying Insect Control,gallon,85,0.3,31.67
+Mosquito Mist Blower Treatment,Perimeter barrier spray for flying pest reduction,Flying Insect Control,sq ft,0.08,0,0.04
+Automatic Misting System Install,Perimeter insect misting system control unit setup,Flying Insect Control,job,1200,4,466.67
+Misting System Refill Solution,Refill of botanical insecticide for automatic system,Flying Insect Control,gallon,95,0.2,43.33
+Air Curtain Installation,Commercial overhead doorway insect barrier fan setup,Flying Insect Control,each,450,1.5,183.33
+German Cockroach Gel Bait Application,Targeted crack and crevice baiting treatment,Crawling Insect Control,visit,175,1,33.33
+Bed Bug Thermal Remediation Prep Inspection,Pre-heat treatment room check and resident prep verification,Crawling Insect Control,visit,200,1.6,0
+Bed Bug Whole Room Heat Treatment,Thermal eradication of bed bugs in commercial space,Crawling Insect Control,sq ft,2.5,0.01,1.15
+Bed Bug Mattress Encase Installation,Commercial grade zippered mattress protector setup,Crawling Insect Control,each,90,0.3,33.33
+Stored Product Pest Pheromone Trap,Pantry pest monitoring trap placement,Crawling Insect Control,each,20,0.1,5
+Ant Colony Direct Nest Injection,Liquid residual application to active ant harborage,Crawling Insect Control,visit,150,1,16.67
+Flea and Tick Interior Broadcast Spray,Carpet and baseboard treatment for fleas and ticks,Crawling Insect Control,sq ft,0.22,0.001,0.1
+Silverfish Dust Application,Attic or crawlspace silica dust treatment,Crawling Insect Control,sq ft,0.15,0.001,0.06
+Spider Web De-webging Service,Removal of webs and egg sacs up to 15 feet,Crawling Insect Control,linear ft,2,0.012,0.33
+Perimeter Liquid Residual Spray,Exterior foundation barrier treatment for crawling pests,Crawling Insect Control,linear ft,0.75,0.004,0.3
+Wood Boring Beetle Treatment,Direct injection and surface spray for wood pests,Crawling Insect Control,sq ft,0.45,0.002,0.2
+Pre-Construction Soil Termite Treatment,Horizontal liquid termiticide barrier application,Termite & Wood Destroying,sq ft,0.35,0.002,0.15
+Post-Construction Termite Trenching,Exterior soil trenching and termiticide injection,Termite & Wood Destroying,linear ft,9,0.04,2.67
+Concrete Slab Termite Drilling,Masonry drilling and chemical injection for termites,Termite & Wood Destroying,linear ft,14,0.06,4.33
+Termite Bait Station Installation,In-ground monitoring and bait station placement,Termite & Wood Destroying,each,50,0.2,13.33
+Termite Bait Station Annual Monitoring,Quarterly check and refill of termite stations,Termite & Wood Destroying,each,25,0.15,4
+Localized Termite Foam Injection,Drywood or subterranean termite gallery foaming,Termite & Wood Destroying,each,120,0.5,38.33
+Termite Clearance Letter (WDI),Official real estate wood destroying insect report,Termite & Wood Destroying,job,175,1.2,13.33
+Fumigation Tent Seal and Gas Setup,Full structure tarping and structural gas fumigation,Termite & Wood Destroying,sq ft,4.5,0.02,2
+Subterranean Termite Inspection,Detailed structural assessment for termite activity,Termite & Wood Destroying,visit,175,1.2,13.33
+Wood Replacement Damaged by Pests,Carpentry repair of structural wood affected by pests,Termite & Wood Destroying,hour,95,0.6,13.33
+Bird Netting Installation,Commercial bird exclusion netting for roofs and overhangs,Bird & Wildlife Control,sq ft,3.5,0.012,1.55
+Bird Spike Installation,Stainless steel post wire strips on ledges,Bird & Wildlife Control,linear ft,22,0.08,8
+Shock Track Bird Deterrent Install,Low-profile electric track for architectural ledges,Bird & Wildlife Control,linear ft,45,0.15,17.67
+Bird Wire System Installation,Post and wire tension system for parapet walls,Bird & Wildlife Control,linear ft,18,0.06,6.8
+Solar Panel Bird Guard Installation,Mesh barrier attachment around solar array perimeters,Bird & Wildlife Control,linear ft,25,0.08,9.67
+Bird Dropping Power Washing,Sanitation and power washing of roosting areas,Bird & Wildlife Control,sq ft,0.85,0.003,0.35
+Nuisance Wildlife Live Trap Placement,Humane cage trap setup for raccoons or opossums,Bird & Wildlife Control,each,120,0.5,38.33
+Wildlife Removal and Relocation,Retrieval and legal relocation of trapped animal,Bird & Wildlife Control,each,150,0.8,33.33
+Animal Entry Point Seal Up,Heavy gauge sheet metal and wood wildlife blocking,Bird & Wildlife Control,linear ft,30,0.12,10
+Dead Animal Extraction in Walls,Locating and removing carcass from enclosed building cavity,Bird & Wildlife Control,job,275,1.5,58.33
+Attic Deodorization and Sanitizing,Enzymatic fogging for animal urine and odor removal,Bird & Wildlife Control,sq ft,0.35,0.001,0.15
+Attic Insulation Removal and Replacement,Removal of pest-damaged insulation and re-blowing new,Bird & Wildlife Control,sq ft,2.25,0.008,0.85
+Bat Exclusion One-Way Door Install,Specialized bat exit netting and valve installation,Bird & Wildlife Control,each,175,0.8,51.67
+Snake Repellent Perimeter Application,Granular natural snake deterrent barrier treatment,Bird & Wildlife Control,linear ft,1.5,0.004,0.6
+Commercial Fumigation Permit Fee,Local municipality regulatory permit processing,Permits & Disposal,job,150,0,100
+Hazardous Material Disposal Fee,Special waste disposal fee for regulated chemicals,Permits & Disposal,job,100,0,66.67
+Confined Space Entry Permit,Safety compliance documentation and monitoring setup,Permits & Disposal,job,250,1,83.33
+Environmental Impact Assessment Fee,Mandatory ecological review for sensitive sites,Permits & Disposal,job,300,1.5,75
+Specialty Waste Bio-Bag Disposal,Disposal of contaminated biological waste materials,Permits & Disposal,each,45,0.1,26.67
+Lift Rental Surcharge (Scissor Lift),Daily equipment rental fee for high-reach work,Permits & Disposal,day,350,0,233.33
+Boom Lift Rental Surcharge,Daily equipment rental fee for multi-story exterior work,Permits & Disposal,day,650,0,433.33
+After-Hours Waste Hauling,Special disposal service outside standard operating hours,Permits & Disposal,job,200,1,49.33
+Structural Core Drilling Permit,Engineering review and municipal permit for floor drilling,Permits & Disposal,job,175,0.5,75
+Custom Digital Pest Dashboard Setup,Client portal configuration and historical data migration,Technology & Reporting,job,350,2,66.67
+Barcode Asset Tracking Tagging,QR or barcode labeling of all pest control devices,Technology & Reporting,each,5,0.02,1.67
+Regulatory Compliance Audit Report,Detailed documentation package for FDA or USDA audits,Technology & Reporting,job,150,1,16.67
+Third-Party Audit Liaison Service,On-site technician representation during external audits,Technology & Reporting,hour,125,1,0
+Trend Analysis and Pest Heat Map,Advanced analytics report on pest activity trends,Technology & Reporting,job,200,1.2,16.67
+Pest Logbook Binder Creation,Physical station map and SDS documentation binder,Technology & Reporting,job,75,0.3,25
+Monthly Maintenance Program Visit,Recurring scheduled preventative pest control service,Recurring Programs,visit,180,1,36.67
+Bi-Monthly Commercial Service Visit,Scheduled preventative service every two months,Recurring Programs,visit,210,1.2,40
+Quarterly Commercial Service Visit,Scheduled preventative service every three months,Recurring Programs,visit,275,1.5,58.33
+Food Processing Plant Weekly Service,High-frequency intense monitoring and service visit,Recurring Programs,visit,220,1.2,46.67
+Pharmaceutical Facility Sanitization Audit,Strict protocol inspection and treatment for pharma sites,Recurring Programs,visit,450,2.4,100
+Restaurant Kitchen Deep Clean Prevention,Intensive monthly kitchen pest prevention treatment,Recurring Programs,visit,320,1.8,66.67
+Warehouse High-Cube Rodent Defense,Large facility perimeter and interior rodent program,Recurring Programs,visit,400,2,100
+Multi-Family Apartment Complex Sweep,Multi-unit monthly pest control treatment block,Recurring Programs,visit,600,3.2,133.33
+Hotel Room Rotation Program,Quarterly preventative bed bug and pest room checks,Recurring Programs,visit,500,2.5,125
+Retail Strip Mall Exterior Defense,Multi-storefront exterior perimeter pest protection,Recurring Programs,visit,350,1.8,83.33
+Odor Neutralization Fogging,Enzymatic treatment for persistent organic odors,Specialty Services,sq ft,0.25,0.001,0.16
+Stored Product Pest Heat Treatment,Targeted heat remediation for food silos or containers,Specialty Services,sq ft,3.25,0.01,1.48
+Sewer Line Smoke Testing,Smoke test to locate pest entry breaks in sewer lines,Specialty Services,job,450,2,133.33
+Drain Line Bio-Remediation Program,Monthly automatic dosing pump installation and service,Specialty Services,each,125,0.4,50
+Botanical Eco-Friendly Upcharge,Green certified organic product substitution upgrade,Specialty Services,visit,50,0.1,25
+Fly Light Graphic Front Panel Upgrade,Custom decorative cover panel for insect light traps,Specialty Services,each,75,0.2,33.33
+Perimeter Trench Rock Installation,Decorative gravel barrier to prevent weed and pest harborage,Specialty Services,linear ft,18,0.06,6.8
+Sub-Slab Vapor Barrier Repair,Patching torn plastic vapor barriers in crawlspaces,Specialty Services,sq ft,1.5,0.003,0.67
+HVAC Condensate Drain Line Treatment,Anti-clogging tablet installation in AC drain pans,Specialty Services,each,30,0.1,11.67
+Emergency Water Extraction Assist,Drying out areas following major leak-induced pest issues,Specialty Services,hour,110,0.8,8
+Ultra-Low Volume (ULV) Space Fogging,Volumetric aerosol treatment for flying or crawling insects,Specialty Services,sq ft,0.12,0.001,0.07
+Commercial Pest Proofing Consultation,Comprehensive architectural design review for pest prevention,Specialty Services,hour,150,1.2,0

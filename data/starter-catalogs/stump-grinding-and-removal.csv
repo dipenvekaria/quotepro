@@ -1,93 +1,93 @@
-name,description,category,unit,price
-Standard Stump Grinding,Grinding single stump up to 8 inches deep,Stump Grinding,each,150
-Large Stump Grinding,Grinding single stump up to 16 inches deep,Stump Grinding,each,300
-Extra Large Stump Grinding,Grinding single stump exceeding 36 inches diameter,Stump Grinding,each,550
-Surface Root Grinding,Grinding exposed surface roots extending from stump,Stump Grinding,linear ft,12
-Multi-Stem Stump Grinding,Grinding multi-trunk shrub or clustered stumps,Stump Grinding,each,225
-Shallow Depth Grinding,Grinding stump to 4 inches below grade,Stump Grinding,each,95
-Deep Root Ball Grinding,Grinding root ball structure to 24 inches depth,Stump Grinding,Stump Grinding,450
-Bamboo Root Mass Grinding,Grinding dense invasive bamboo root systems,Stump Grinding,sq ft,18
-Palm Tree Stump Grinding,Grinding fibrous palm tree stump and root mat,Stump Grinding,each,200
-Hardwood Stump Surcharge,Additional fee for dense hardwood species,Stump Grinding,each,75
-Wood Chip Removal,Hauling away all generated wood mulch and chips,Cleanup and Hauling,job,175
-Hole Backfill and Leveling,Filling grinding hole with topsoil and leveling,Cleanup and Hauling,each,120
-Topsoil Delivery and Spread,Delivering and spreading topsoil over grind site,Cleanup and Hauling,cubic yard,95
-Debris Rake and Site Clean,Raking debris and leaving site clean,Cleanup and Hauling,job,85
-Excess Chip Haul Off,Removal of excess wood chips exceeding standard volume,Cleanup and Hauling,ton,150
-Stone and Rock Surcharge,Additional labor for grinding through embedded rocks,Site Preparation,each,100
-Concrete Barrier Removal,Breaking and removing concrete around stump base,Site Preparation,job,250
-Fencing Section Removal,Temporary removal of fence to access backyard stump,Site Preparation,linear ft,15
-Gate Modification Surcharge,Hand labor for narrow gate access restrictions,Site Preparation,job,125
-Underground Utility Locate,Coordinating public utility marking prior to grinding,Site Preparation,job,50
-Grass Seed and Fertilizer,Seeding and fertilizing repaired ground area,Restoration,sq ft,1
-Sod Patch Installation,Laying fresh sod patch over filled stump hole,Restoration,sq ft,4
-Straw Mulch Blanket,Applying straw erosion blanket over seeded patch,Restoration,sq ft,2
-Erosion Control Silt Fence,Installing temporary silt fence around disturbed soil,Restoration,linear ft,8
-Wildflower Seeding,Broadcasting wildflower seed mix over disturbed earth,Restoration,sq ft,2
-Hourly Labor Rate,Standard hourly rate for manual site labor,Labor and Equipment,hour,75
-Specialized Crew Rate,Two-man crew with heavy equipment per hour,Labor and Equipment,hour,175
-Emergency Stump Removal,After-hours urgent stump removal service call,Labor and Equipment,visit,350
-Difficult Access Surcharge,Fee for carrying portable grinder long distances,Labor and Equipment,job,150
-Steep Slope Surcharge,Additional safety risk fee for sloped terrain work,Labor and Equipment,job,200
-Crane Assisted Removal,Crane rental and operator for inaccessible stumps,Labor and Equipment,day,1500
-Mini Skid Steer Rental,Daily rate for track loader with bucket attachment,Labor and Equipment,day,300
-Commercial Stump Grinding,Large scale land clearing stump removal per hour,Commercial Services,hour,250
-Right of Way Clearing,Clearing stumps along utility or road right of ways,Commercial Services,linear ft,25
-Subdivision Lot Clearing,Complete stump eradication on new construction lot,Commercial Services,job,2500
-Orchard Removal Service,Grinding multiple orchard fruit tree stumps,Commercial Services,each,110
-Golf Course Hazard Grinding,Precision grinding near turf and bunker edges,Commercial Services,hour,220
-Municipal Park Maintenance,Public park stump grinding municipal contract rate,Commercial Services,day,1200
-Storm Damage Cleanup,Grinding down storm-snapped tree bases,Commercial Services,each,180
-Root Barrier Installation,Installing plastic root barrier trench around trees,Specialty Services,linear ft,22
-Tree Injection Removal,Specialized handling of chemically treated stumps,Specialty Services,each,130
-Stump Burn-Out Prep,Drilling and preparing stump for chemical decomposition,Specialty Services,each,90
-Soil Compaction Remediation,Aerating heavily compacted soil from equipment tracks,Specialty Services,sq ft,1
-Perimeter Brush Clearing,Clearing small brush surrounding target stumps,Specialty Services,hour,95
-Permit Acquisition Fee,Processing local environmental or tree removal permits,Administrative,job,75
-Traffic Control Setup,Deploying cones and signs for roadside operations,Administrative,day,150
-Environmental Fee,Disposal and regulatory compliance fee,Administrative,job,25
-After Hours Dispatch Fee,Dispatch fee for weekend or night inquiries,Administrative,visit,100
-Carbide Tooth Replacement,Replacing worn grinder teeth per tooth,Parts and Maintenance,each,12
-Hydraulic Hose Repair,Field repair and replacement of ruptured hydraulic line,Parts and Maintenance,job,180
-Drive Belt Replacement,Replacing worn main drive belt on grinder,Parts and Maintenance,job,140
-Engine Tune-Up,"Spark plugs, air filters, and oil change for machine",Parts and Maintenance,job,220
-Tow Bar Rental,Rental of specialized towing hitch and lights,Parts and Maintenance,day,45
-Grinder Blade Sharpening,Professional sharpening of cutting wheel teeth,Parts and Maintenance,job,60
-Fuel Surcharge,Distance and equipment fuel adjustment fee,Logistics,job,35
-Long Distance Travel Fee,Travel fee for jobs outside standard service radius,Logistics,linear ft,3
-Equipment Transport Fee,Flatbed hauling fee for heavy tracked grinders,Logistics,job,125
-Stump Grinding Package Small,Up to 3 small stumps ground in one visit,Packages,job,350
-Stump Grinding Package Large,Up to 5 medium stumps ground with chip spread,Packages,job,850
-Complete Yard Reset Package,"Grinding, filling, leveling, and seeding bundle",Packages,job,1200
-Landlord Quick Clean Package,Front yard stump removal and tidy up,Packages,job,275
-Real Estate Prep Package,Grind all visible stumps and backfill holes,Packages,job,650
-Orchard Maintenance Package,Annual seasonal removal of failed fruit trees,Packages,job,950
-Root Pruning Service,Mechanical root pruning to protect foundations,Specialty Services,linear ft,14
-Surface Root Shaving,Shaving high roots without removing main stump,Stump Grinding,linear ft,9
-Pine Tree Stump Grinding,Grinding resinous pine stump and root system,Stump Grinding,each,140
-Oak Tree Stump Grinding,Grinding dense oak stump and heavy lateral roots,Stump Grinding,each,280
-Maple Tree Stump Grinding,Grinding spreading maple stump and surface roots,Stump Grinding,each,240
-Cypress Knee Removal,Grinding stubborn cypress tree knees and roots,Stump Grinding,job,190
-Cedar Tree Stump Grinding,Grinding aromatic cedar stump and shallow roots,Stump Grinding,each,160
-Willow Tree Stump Grinding,Grinding water-logged willow stump and root mat,Stump Grinding,each,260
-Birch Tree Stump Grinding,Grinding paper birch stump and root cluster,Stump Grinding,each,170
-Utility Box Clearance,Grinding roots endangering underground utility boxes,Commercial Services,job,210
-Sidewalk Lift Remediation,Grinding roots lifting concrete sidewalk slabs,Commercial Services,job,230
-Driveway Encroachment Grinding,Grinding roots pressing against asphalt driveways,Site Preparation,job,195
-Patio Foundation Root Cut,Precision root cutting near patio foundations,Site Preparation,job,165
-Retaining Wall Protection,Careful grinding near stone retaining walls,Site Preparation,job,215
-In-Ground Pool Deck Clearance,Grinding roots near pool cage and deck footings,Site Preparation,job,280
-Septic Drain Field Clearance,Hand grinding roots threatening septic drain lines,Specialty Services,job,320
-Leaching Field Root Eradication,Specialized root removal near leach fields,Specialty Services,job,380
-Well Head Protection Grinding,Safe root and stump grinding around water wells,Specialty Services,job,240
-Mulch Delivery Only,Dropping off load of fresh wood mulch chips,Cleanup and Hauling,cubic yard,35
-Heavy Debris Sorting,Separating rocks and dirt from wood chips,Cleanup and Hauling,hour,65
-Soil Compactor Rental,Daily rate for plate compactor on filled holes,Labor and Equipment,day,85
-Chainsaw Root Trimming,Pre-cutting oversized surface roots with chainsaw,Site Preparation,hour,80
-Hand Digging Surcharge,Manual excavation around fragile underground lines,Labor and Equipment,hour,70
-Safety Mat Placement,Laying protective ground mats over delicate turf,Site Preparation,job,50
-Post-Job Rinsing,Washing down adjacent hardscapes after grinding,Cleanup and Hauling,job,40
-Debris Netting Setup,Installing temporary mesh screens to block flying chips,Site Preparation,job,90
-Organic Fertilizer Additive,Mixing nitrogen fertilizer into chips to speed decay,Restoration,bag,25
-Mushroom Spawn Inoculation,Inoculating remaining root mass to accelerate rotting,Restoration,job,75
-Core Aeration Service,Aerating lawn surrounding the stump work area,Restoration,sq ft,0.5
+name,description,category,unit,price,labor_hours,material_cost
+Standard Stump Grinding,Grinding single stump up to 8 inches deep,Stump Grinding,each,150,1.2,0
+Large Stump Grinding,Grinding single stump up to 16 inches deep,Stump Grinding,each,300,2.4,0
+Extra Large Stump Grinding,Grinding single stump exceeding 36 inches diameter,Stump Grinding,each,550,4.4,0
+Surface Root Grinding,Grinding exposed surface roots extending from stump,Stump Grinding,linear ft,12,0.1,0
+Multi-Stem Stump Grinding,Grinding multi-trunk shrub or clustered stumps,Stump Grinding,each,225,1.8,0
+Shallow Depth Grinding,Grinding stump to 4 inches below grade,Stump Grinding,each,95,0.76,0
+Deep Root Ball Grinding,Grinding root ball structure to 24 inches depth,Stump Grinding,Stump Grinding,450,3.6,0
+Bamboo Root Mass Grinding,Grinding dense invasive bamboo root systems,Stump Grinding,sq ft,18,0.1,4
+Palm Tree Stump Grinding,Grinding fibrous palm tree stump and root mat,Stump Grinding,each,200,1.6,0
+Hardwood Stump Surcharge,Additional fee for dense hardwood species,Stump Grinding,each,75,0.6,0
+Wood Chip Removal,Hauling away all generated wood mulch and chips,Cleanup and Hauling,job,175,1.4,0
+Hole Backfill and Leveling,Filling grinding hole with topsoil and leveling,Cleanup and Hauling,each,120,0.5,38
+Topsoil Delivery and Spread,Delivering and spreading topsoil over grind site,Cleanup and Hauling,cubic yard,95,0.3,38
+Debris Rake and Site Clean,Raking debris and leaving site clean,Cleanup and Hauling,job,85,0.68,0
+Excess Chip Haul Off,Removal of excess wood chips exceeding standard volume,Cleanup and Hauling,ton,150,0.8,33.33
+Stone and Rock Surcharge,Additional labor for grinding through embedded rocks,Site Preparation,each,100,0.8,0
+Concrete Barrier Removal,Breaking and removing concrete around stump base,Site Preparation,job,250,2,0
+Fencing Section Removal,Temporary removal of fence to access backyard stump,Site Preparation,linear ft,15,0.12,0
+Gate Modification Surcharge,Hand labor for narrow gate access restrictions,Site Preparation,job,125,1,0
+Underground Utility Locate,Coordinating public utility marking prior to grinding,Site Preparation,job,50,0.4,0
+Grass Seed and Fertilizer,Seeding and fertilizing repaired ground area,Restoration,sq ft,1,0,0.67
+Sod Patch Installation,Laying fresh sod patch over filled stump hole,Restoration,sq ft,4,0.02,2.5
+Straw Mulch Blanket,Applying straw erosion blanket over seeded patch,Restoration,sq ft,2,0.01,1.3
+Erosion Control Silt Fence,Installing temporary silt fence around disturbed soil,Restoration,linear ft,8,0.04,2
+Wildflower Seeding,Broadcasting wildflower seed mix over disturbed earth,Restoration,sq ft,2,0,1.33
+Hourly Labor Rate,Standard hourly rate for manual site labor,Labor and Equipment,hour,75,1,0
+Specialized Crew Rate,Two-man crew with heavy equipment per hour,Labor and Equipment,hour,175,1.4,0
+Emergency Stump Removal,After-hours urgent stump removal service call,Labor and Equipment,visit,350,2.8,0
+Difficult Access Surcharge,Fee for carrying portable grinder long distances,Labor and Equipment,job,150,1.2,0
+Steep Slope Surcharge,Additional safety risk fee for sloped terrain work,Labor and Equipment,job,200,1.6,0
+Crane Assisted Removal,Crane rental and operator for inaccessible stumps,Labor and Equipment,day,1500,8,333.33
+Mini Skid Steer Rental,Daily rate for track loader with bucket attachment,Labor and Equipment,day,300,1,116.67
+Commercial Stump Grinding,Large scale land clearing stump removal per hour,Commercial Services,hour,250,2,0
+Right of Way Clearing,Clearing stumps along utility or road right of ways,Commercial Services,linear ft,25,0.2,0
+Subdivision Lot Clearing,Complete stump eradication on new construction lot,Commercial Services,job,2500,18,200
+Orchard Removal Service,Grinding multiple orchard fruit tree stumps,Commercial Services,each,110,0.88,0
+Golf Course Hazard Grinding,Precision grinding near turf and bunker edges,Commercial Services,hour,220,1.76,0
+Municipal Park Maintenance,Public park stump grinding municipal contract rate,Commercial Services,day,1200,8,133.33
+Storm Damage Cleanup,Grinding down storm-snapped tree bases,Commercial Services,each,180,1.44,0
+Root Barrier Installation,Installing plastic root barrier trench around trees,Specialty Services,linear ft,22,0.1,6.67
+Tree Injection Removal,Specialized handling of chemically treated stumps,Specialty Services,each,130,1.04,0
+Stump Burn-Out Prep,Drilling and preparing stump for chemical decomposition,Specialty Services,each,90,0.72,0
+Soil Compaction Remediation,Aerating heavily compacted soil from equipment tracks,Specialty Services,sq ft,1,0,0.67
+Perimeter Brush Clearing,Clearing small brush surrounding target stumps,Specialty Services,hour,95,0.76,0
+Permit Acquisition Fee,Processing local environmental or tree removal permits,Administrative,job,75,0.6,0
+Traffic Control Setup,Deploying cones and signs for roadside operations,Administrative,day,150,1.2,0
+Environmental Fee,Disposal and regulatory compliance fee,Administrative,job,25,0.2,0
+After Hours Dispatch Fee,Dispatch fee for weekend or night inquiries,Administrative,visit,100,0.8,0
+Carbide Tooth Replacement,Replacing worn grinder teeth per tooth,Parts and Maintenance,each,12,0.04,4.67
+Hydraulic Hose Repair,Field repair and replacement of ruptured hydraulic line,Parts and Maintenance,job,180,0.8,53.33
+Drive Belt Replacement,Replacing worn main drive belt on grinder,Parts and Maintenance,job,140,0.7,35
+Engine Tune-Up,"Spark plugs, air filters, and oil change for machine",Parts and Maintenance,job,220,1,63.33
+Tow Bar Rental,Rental of specialized towing hitch and lights,Parts and Maintenance,day,45,0,30
+Grinder Blade Sharpening,Professional sharpening of cutting wheel teeth,Parts and Maintenance,job,60,0.4,5.33
+Fuel Surcharge,Distance and equipment fuel adjustment fee,Logistics,job,35,0,23.33
+Long Distance Travel Fee,Travel fee for jobs outside standard service radius,Logistics,linear ft,3,0.02,1
+Equipment Transport Fee,Flatbed hauling fee for heavy tracked grinders,Logistics,job,125,0.8,16.67
+Stump Grinding Package Small,Up to 3 small stumps ground in one visit,Packages,job,350,2.4,33.33
+Stump Grinding Package Large,Up to 5 medium stumps ground with chip spread,Packages,job,850,6,66.67
+Complete Yard Reset Package,"Grinding, filling, leveling, and seeding bundle",Packages,job,1200,8,133.33
+Landlord Quick Clean Package,Front yard stump removal and tidy up,Packages,job,275,2,16.67
+Real Estate Prep Package,Grind all visible stumps and backfill holes,Packages,job,650,4.4,50
+Orchard Maintenance Package,Annual seasonal removal of failed fruit trees,Packages,job,950,6.8,50
+Root Pruning Service,Mechanical root pruning to protect foundations,Specialty Services,linear ft,14,0.1,0.67
+Surface Root Shaving,Shaving high roots without removing main stump,Stump Grinding,linear ft,9,0.07,0
+Pine Tree Stump Grinding,Grinding resinous pine stump and root system,Stump Grinding,each,140,1.12,0
+Oak Tree Stump Grinding,Grinding dense oak stump and heavy lateral roots,Stump Grinding,each,280,2.24,0
+Maple Tree Stump Grinding,Grinding spreading maple stump and surface roots,Stump Grinding,each,240,1.92,0
+Cypress Knee Removal,Grinding stubborn cypress tree knees and roots,Stump Grinding,job,190,1.52,0
+Cedar Tree Stump Grinding,Grinding aromatic cedar stump and shallow roots,Stump Grinding,each,160,1.28,0
+Willow Tree Stump Grinding,Grinding water-logged willow stump and root mat,Stump Grinding,each,260,2.08,0
+Birch Tree Stump Grinding,Grinding paper birch stump and root cluster,Stump Grinding,each,170,1.36,0
+Utility Box Clearance,Grinding roots endangering underground utility boxes,Commercial Services,job,210,1.68,0
+Sidewalk Lift Remediation,Grinding roots lifting concrete sidewalk slabs,Commercial Services,job,230,1.44,33.33
+Driveway Encroachment Grinding,Grinding roots pressing against asphalt driveways,Site Preparation,job,195,1.56,0
+Patio Foundation Root Cut,Precision root cutting near patio foundations,Site Preparation,job,165,1.32,0
+Retaining Wall Protection,Careful grinding near stone retaining walls,Site Preparation,job,215,1.72,0
+In-Ground Pool Deck Clearance,Grinding roots near pool cage and deck footings,Site Preparation,job,280,2.24,0
+Septic Drain Field Clearance,Hand grinding roots threatening septic drain lines,Specialty Services,job,320,2.56,0
+Leaching Field Root Eradication,Specialized root removal near leach fields,Specialty Services,job,380,3.04,0
+Well Head Protection Grinding,Safe root and stump grinding around water wells,Specialty Services,job,240,1.92,0
+Mulch Delivery Only,Dropping off load of fresh wood mulch chips,Cleanup and Hauling,cubic yard,35,0.2,20
+Heavy Debris Sorting,Separating rocks and dirt from wood chips,Cleanup and Hauling,hour,65,0.52,0
+Soil Compactor Rental,Daily rate for plate compactor on filled holes,Labor and Equipment,day,85,0.2,36.67
+Chainsaw Root Trimming,Pre-cutting oversized surface roots with chainsaw,Site Preparation,hour,80,0.64,0
+Hand Digging Surcharge,Manual excavation around fragile underground lines,Labor and Equipment,hour,70,0.56,0
+Safety Mat Placement,Laying protective ground mats over delicate turf,Site Preparation,job,50,0.4,0
+Post-Job Rinsing,Washing down adjacent hardscapes after grinding,Cleanup and Hauling,job,40,0.32,0
+Debris Netting Setup,Installing temporary mesh screens to block flying chips,Site Preparation,job,90,0.4,26.67
+Organic Fertilizer Additive,Mixing nitrogen fertilizer into chips to speed decay,Restoration,bag,25,0.05,16
+Mushroom Spawn Inoculation,Inoculating remaining root mass to accelerate rotting,Restoration,job,75,0.4,16.67
+Core Aeration Service,Aerating lawn surrounding the stump work area,Restoration,sq ft,0.5,0,0.33

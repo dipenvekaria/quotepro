@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Standard Labor Rate - Mason,Hourly rate for skilled commercial mason installation.,Labor & Supervision,hour,85
-Standard Labor Rate - Concrete Finisher,Hourly rate for commercial concrete placement and finishing.,Labor & Supervision,hour,80
-Foreman Labor Rate,Hourly rate for jobsite crew supervision and layout.,Labor & Supervision,hour,110
-General Laborer Rate,Hourly rate for site cleanup and material handling.,Labor & Supervision,hour,55
-Overtime Labor Premium,Additional hourly rate multiplier applied to weekend work.,Labor & Supervision,hour,45
-Site Visit & Consultation,Onsite evaluation and project scope assessment.,Diagnostics & Mobilization,visit,250
-Structural Engineering Assessment,Professional engineering review and stamped letter.,Diagnostics & Mobilization,job,1200
-Ground Penetrating Radar Scan,Non-destructive scanning for utilities and rebar.,Diagnostics & Mobilization,job,950
-Core Sampling & Testing,Concrete core extraction and compressive strength test.,Diagnostics & Mobilization,each,450
-Mobilization Fee,Equipment transport and crew deployment to site.,Diagnostics & Mobilization,job,500
-Standard Building Permit Processing,Municipal permit application and document handling.,Permits & Disposal,job,350
-Concrete Washout Station,"Temporary washout bin setup, maintenance, and pickup.",Permits & Disposal,job,600
-Debris Disposal - Concrete & Masonry,Roll-off dumpster rental and haul away per load.,Permits & Disposal,ton,125
-Traffic Control Setup,"Signage, cones, and lane closure setup per day.",Permits & Disposal,day,400
-SWPPP Site Management,Stormwater pollution prevention controls and maintenance.,Permits & Disposal,month,750
-Excavation and Subgrade Prep,Machine excavation and compaction for slab subbase.,Site Prep & Earthwork,sq ft,3
-Aggregate Base Course,"Crushed stone base installation and compaction, 4 inch depth.",Site Prep & Earthwork,sq ft,2
-Geotextile Fabric Installation,Stabilizing fabric placed beneath aggregate base.,Site Prep & Earthwork,sq ft,1
-Fine Grading,Precision grading of subbase prior to formwork.,Site Prep & Earthwork,sq ft,1
-Proof Roll Inspection,Heavy equipment proof roll testing of subgrade soils.,Site Prep & Earthwork,hour,175
-Standard Wood Formwork,Setup and stripping of 2x4 and 2x6 wood forms.,Formwork & Reinforcement,linear ft,6
-Steel Radius Formwork,Flexible steel forms for curved concrete edges.,Formwork & Reinforcement,linear ft,12
-Heavy Duty Steel Curb Forms,Forms for commercial curb and gutter placement.,Formwork & Reinforcement,linear ft,10
-Rebar Installation - #4 Bar,Placement and tying of grade 60 reinforcing steel.,Formwork & Reinforcement,sq ft,2
-Rebar Installation - #5 Bar,Placement and tying of heavy structural rebar.,Formwork & Reinforcement,sq ft,3
-Welded Wire Mesh Installation,Standard reinforcement wire mesh placement in slab.,Formwork & Reinforcement,sq ft,1
-Vapor Barrier Installation,15-mil vapor retarder membrane placement with taped seams.,Formwork & Reinforcement,sq ft,1
-Dowels and Tie-ins,Epoxy-anchored dowels into existing concrete slabs.,Formwork & Reinforcement,each,25
-Ready-Mix Concrete - 3000 PSI,Standard strength commercial concrete pour and finish.,Concrete Pours & Slabs,sq ft,7
-Ready-Mix Concrete - 4000 PSI,High strength commercial concrete pour and finish.,Concrete Pours & Slabs,sq ft,8
-Ready-Mix Concrete - 5000 PSI,Heavy duty industrial concrete pour and finish.,Concrete Pours & Slabs,sq ft,10
-Fiber Mesh Admixture,Synthetic fibers added to mix for crack reduction.,Concrete Pours & Slabs,sq ft,1
-Accelerating Admixture,Cold weather chemical accelerator for quick set.,Concrete Pours & Slabs,cubic yd,25
-Concrete Pump Truck Service,Boom pump mobilization and pumping fee per pour.,Concrete Pours & Slabs,job,1250
-Line Pump Rental,Trailer pump for restricted access concrete placement.,Concrete Pours & Slabs,day,750
-Heavy Duty Concrete Dolly Pad,8-inch reinforced concrete pad for commercial equipment.,Concrete Pours & Slabs,sq ft,14
-Monolithic Slab on Grade,Thickened edge monolithic foundation pour.,Concrete Pours & Slabs,sq ft,11
-Interior Warehouse Slab,Laser-screeded flat floor pour with steel trowel finish.,Concrete Pours & Slabs,sq ft,9
-Standard Broom Finish,Slip-resistant textured finish for exterior flatwork.,Concrete Finishes & Treatments,sq ft,1
-Hard Trowel Finish,Smooth mechanical power-trowel finish for interiors.,Concrete Finishes & Treatments,sq ft,1
-Salt Finish Decorative Treatment,Textured architectural finish created with rock salt.,Concrete Finishes & Treatments,sq ft,3
-Exposed Aggregate Finish,Surface retarder and wash to expose decorative stones.,Concrete Finishes & Treatments,sq ft,4
-Machine Grooved Joints,Saw-cut control joints to prevent random cracking.,Concrete Finishes & Treatments,linear ft,2
-Joint Sealant Application,Polyurethane backer rod and self-leveling joint sealant.,Concrete Finishes & Treatments,linear ft,3
-Curing Compound Application,Spray-applied membrane to retain moisture during curing.,Concrete Finishes & Treatments,sq ft,1
-Penetrating Concrete Sealer,Silane-siloxane sealer for freeze-thaw protection.,Concrete Finishes & Treatments,sq ft,1
-Acid Staining,Chemical reactive stain applied to cured concrete.,Concrete Finishes & Treatments,sq ft,4
-Standard Concrete Curb and Gutter,Machine or hand formed standard curb and gutter.,"Curbs, Gutters & Flatwork",linear ft,35
-Mountable Rolled Curb,Driveway approach rolled concrete curb profile.,"Curbs, Gutters & Flatwork",linear ft,32
-Commercial Sidewalk Pour,4-inch exterior pedestrian walkway installation.,"Curbs, Gutters & Flatwork",sq ft,8
-Heavy Duty Driveway Apron,6-inch reinforced concrete entrance approach.,"Curbs, Gutters & Flatwork",sq ft,12
-ADA Handicap Ramp Installation,Truncated domes and compliant slope concrete ramp.,"Curbs, Gutters & Flatwork",sq ft,15
-Truncated Dome Mat Only,Cast-in-place detectable warning surface plate.,"Curbs, Gutters & Flatwork",each,250
-Concrete Parking Bumpers,Precast concrete wheel stop anchored with rebar pins.,"Curbs, Gutters & Flatwork",each,125
-Standard Concrete Steps,Formed and poured structural concrete staircases.,"Curbs, Gutters & Flatwork",linear ft,150
-Standard CMU Block Laying - 8 inch,Laying standard concrete masonry units with mortar.,Masonry & Blockwork,sq ft,18
-Standard CMU Block Laying - 12 inch,Laying heavy structural 12-inch concrete masonry units.,Masonry & Blockwork,sq ft,24
-CMU Core Grouting,Filling concrete block cells with grout and vertical rebar.,Masonry & Blockwork,sq ft,9
-Brick Veneer Installation,Clay brick facing installed over steel stud backup.,Masonry & Blockwork,sq ft,22
-Split Face Block Installation,Architectural textured CMU block wall construction.,Masonry & Blockwork,sq ft,25
-Glass Block Wall Installation,Translucent architectural glass block masonry assembly.,Masonry & Blockwork,sq ft,45
-Precast Concrete Lintel Installation,Setting structural concrete lintels over wall openings.,Masonry & Blockwork,each,175
-Steel Masonry Lintel Fabrication,Custom primed angle iron lintel for brick openings.,Masonry & Blockwork,linear ft,45
-Weep Hole and Flashing Installation,Cavity wall copper flashing and weep vent installation.,Masonry & Blockwork,linear ft,12
-Stone Veneer Installation,Natural or manufactured thin stone adhered to exterior.,Stonework & Architectural,sq ft,30
-Full Bed Natural Stone Wall,Structural full-depth natural stone masonry wall.,Stonework & Architectural,sq ft,55
-Cast Stone Coping Stones,Precast architectural cap stones set on masonry walls.,Stonework & Architectural,linear ft,40
-Precast Concrete Window Sills,Cast stone sills installed beneath window openings.,Stonework & Architectural,each,110
-Limestone Column Cap,Custom cut natural limestone pier and column caps.,Stonework & Architectural,each,320
-Architectural Precast Wall Panels,Crane-set architectural precast concrete panels.,Stonework & Architectural,sq ft,65
-Retaining Wall Block - Gravity System,Interlocking segmental retaining wall block installation.,Retaining Walls & Drainage,sq ft,28
-Retaining Wall Block - Geogrid Reinforced,Engineered tall segmental wall with geogrid layers.,Retaining Walls & Drainage,sq ft,42
-Poured Concrete Retaining Wall,Reinforced cast-in-place retaining wall construction.,Retaining Walls & Drainage,sq ft,50
-French Drain Installation,"Perforated pipe, gravel trench, and filter fabric behind wall.",Retaining Walls & Drainage,linear ft,25
-Wall Drainage Board,Dimpled plastic drainage sheet applied to foundation walls.,Retaining Walls & Drainage,sq ft,3
-Weep Hole Pipe Inserts,PVC sleeve inserts through wall for water discharge.,Retaining Walls & Drainage,each,35
-Catch Basin Installation,Precast concrete catch basin box set with grate.,Retaining Walls & Drainage,each,850
-Concrete Demo - Slabs and Flatwork,Breaking and removing old concrete with hydraulic hammer.,Demolition & Concrete Repair,sq ft,4
-Concrete Demo - Foundations and Walls,Heavy breaking and removal of structural concrete.,Demolition & Concrete Repair,cubic yd,250
-Masonry Wall Demolition,Takedown and removal of brick or CMU block walls.,Demolition & Concrete Repair,sq ft,8
-Diamond Blade Concrete Sawing,Deep cutting of existing concrete slabs up to 6 inches.,Demolition & Concrete Repair,linear ft,8
-Wall Sawing,Heavy wall saw cutting for doors and windows in concrete.,Demolition & Concrete Repair,sq ft,75
-Concrete Spall Repair,Chipping out damaged concrete and patching with polymer mortar.,Demolition & Concrete Repair,sq ft,35
-Epoxy Crack Injection,Structural pressure injection of cracked concrete walls.,Demolition & Concrete Repair,linear ft,45
-Polyurethane Foam Slab Jacking,Leveling sunken concrete slabs by polyurethane foam injection.,Demolition & Concrete Repair,sq ft,12
-Mudjacking Leveling,Traditional slurry pumping beneath settled concrete slabs.,Demolition & Concrete Repair,sq ft,7
-Helical Pier Installation,Steel pier driven to load-bearing strata for foundation support.,Demolition & Concrete Repair,each,1800
-Tuckpointing - Standard Rake and Fill,Grinding out old mortar joints and repointing with fresh mortar.,Masonry Restoration & Cleaning,sq ft,12
-Historic Match Mortar Pointing,Custom blended historic lime mortar repointing.,Masonry Restoration & Cleaning,sq ft,22
-Brick Replacement,Chipping out damaged individual bricks and installing new.,Masonry Restoration & Cleaning,each,45
-Chemical Masonry Wash,Acid wash and rinse cleaning of exterior brick surfaces.,Masonry Restoration & Cleaning,sq ft,2
-Hot Water Pressure Washing,Commercial surface washing of concrete and masonry.,Masonry Restoration & Cleaning,sq ft,1
-Graffiti Removal Treatment,Chemical gel application and pressure rinse removal.,Masonry Restoration & Cleaning,sq ft,6
-Anti-Graffiti Sacrificial Coating,Clear protective coating preventing graffiti penetration.,Masonry Restoration & Cleaning,sq ft,2
-Masonry Waterproofing Sealer,Siloxane clear breathable water-repellent sealer for brick.,Masonry Restoration & Cleaning,sq ft,2
-Expansion Joint Installation,Precompressed foam expansion joint system for masonry.,Masonry Restoration & Cleaning,linear ft,28
-Lintel Rust Remediation and Painting,"Rust removal, priming, and painting of steel angle lintels.",Masonry Restoration & Cleaning,linear ft,35
-Architectural Cast Stone Repair,Patching and restoring damaged cast stone trim elements.,Masonry Restoration & Cleaning,sq ft,85
-Expansion Joint Caulking,Removal of old joint caulk and re-sealing with silicone.,Masonry Restoration & Cleaning,linear ft,7
+name,description,category,unit,price,labor_hours,material_cost
+Standard Labor Rate - Mason,Hourly rate for skilled commercial mason installation.,Labor & Supervision,hour,85,1,0
+Standard Labor Rate - Concrete Finisher,Hourly rate for commercial concrete placement and finishing.,Labor & Supervision,hour,80,1,0
+Foreman Labor Rate,Hourly rate for jobsite crew supervision and layout.,Labor & Supervision,hour,110,1,0
+General Laborer Rate,Hourly rate for site cleanup and material handling.,Labor & Supervision,hour,55,1,0
+Overtime Labor Premium,Additional hourly rate multiplier applied to weekend work.,Labor & Supervision,hour,45,0.36,0
+Site Visit & Consultation,Onsite evaluation and project scope assessment.,Diagnostics & Mobilization,visit,250,2,0
+Structural Engineering Assessment,Professional engineering review and stamped letter.,Diagnostics & Mobilization,job,1200,8,150
+Ground Penetrating Radar Scan,Non-destructive scanning for utilities and rebar.,Diagnostics & Mobilization,job,950,5,200
+Core Sampling & Testing,Concrete core extraction and compressive strength test.,Diagnostics & Mobilization,each,450,2,133.33
+Mobilization Fee,Equipment transport and crew deployment to site.,Diagnostics & Mobilization,job,500,2,166.67
+Standard Building Permit Processing,Municipal permit application and document handling.,Permits & Disposal,job,350,2,66.67
+Concrete Washout Station,"Temporary washout bin setup, maintenance, and pickup.",Permits & Disposal,job,600,2,233.33
+Debris Disposal - Concrete & Masonry,Roll-off dumpster rental and haul away per load.,Permits & Disposal,ton,125,0.5,41.67
+Traffic Control Setup,"Signage, cones, and lane closure setup per day.",Permits & Disposal,day,400,2,100
+SWPPP Site Management,Stormwater pollution prevention controls and maintenance.,Permits & Disposal,month,750,4,166.67
+Excavation and Subgrade Prep,Machine excavation and compaction for slab subbase.,Site Prep & Earthwork,sq ft,3,0.015,1.35
+Aggregate Base Course,"Crushed stone base installation and compaction, 4 inch depth.",Site Prep & Earthwork,sq ft,2,0.008,0.93
+Geotextile Fabric Installation,Stabilizing fabric placed beneath aggregate base.,Site Prep & Earthwork,sq ft,1,0.005,0.47
+Fine Grading,Precision grading of subbase prior to formwork.,Site Prep & Earthwork,sq ft,1,0.006,0.15
+Proof Roll Inspection,Heavy equipment proof roll testing of subgrade soils.,Site Prep & Earthwork,hour,175,1,33.33
+Standard Wood Formwork,Setup and stripping of 2x4 and 2x6 wood forms.,Formwork & Reinforcement,linear ft,6,0.03,2.8
+Steel Radius Formwork,Flexible steel forms for curved concrete edges.,Formwork & Reinforcement,linear ft,12,0.06,5.6
+Heavy Duty Steel Curb Forms,Forms for commercial curb and gutter placement.,Formwork & Reinforcement,linear ft,10,0.05,4.67
+Rebar Installation - #4 Bar,Placement and tying of grade 60 reinforcing steel.,Formwork & Reinforcement,sq ft,2,0.01,0.93
+Rebar Installation - #5 Bar,Placement and tying of heavy structural rebar.,Formwork & Reinforcement,sq ft,3,0.015,1.4
+Welded Wire Mesh Installation,Standard reinforcement wire mesh placement in slab.,Formwork & Reinforcement,sq ft,1,0.005,0.47
+Vapor Barrier Installation,15-mil vapor retarder membrane placement with taped seams.,Formwork & Reinforcement,sq ft,1,0.005,0.47
+Dowels and Tie-ins,Epoxy-anchored dowels into existing concrete slabs.,Formwork & Reinforcement,each,25,0.1,8.67
+Ready-Mix Concrete - 3000 PSI,Standard strength commercial concrete pour and finish.,Concrete Pours & Slabs,sq ft,7,0.03,3.07
+Ready-Mix Concrete - 4000 PSI,High strength commercial concrete pour and finish.,Concrete Pours & Slabs,sq ft,8,0.035,3.47
+Ready-Mix Concrete - 5000 PSI,Heavy duty industrial concrete pour and finish.,Concrete Pours & Slabs,sq ft,10,0.04,4.4
+Fiber Mesh Admixture,Synthetic fibers added to mix for crack reduction.,Concrete Pours & Slabs,sq ft,1,0.002,0.46
+Accelerating Admixture,Cold weather chemical accelerator for quick set.,Concrete Pours & Slabs,cubic yd,25,0.1,8.67
+Concrete Pump Truck Service,Boom pump mobilization and pumping fee per pour.,Concrete Pours & Slabs,job,1250,4,500
+Line Pump Rental,Trailer pump for restricted access concrete placement.,Concrete Pours & Slabs,day,750,2,333.33
+Heavy Duty Concrete Dolly Pad,8-inch reinforced concrete pad for commercial equipment.,Concrete Pours & Slabs,sq ft,14,0.06,6.27
+Monolithic Slab on Grade,Thickened edge monolithic foundation pour.,Concrete Pours & Slabs,sq ft,11,0.04,4.8
+Interior Warehouse Slab,Laser-screeded flat floor pour with steel trowel finish.,Concrete Pours & Slabs,sq ft,9,0.035,3.93
+Standard Broom Finish,Slip-resistant textured finish for exterior flatwork.,Concrete Finishes & Treatments,sq ft,1,0.005,0.25
+Hard Trowel Finish,Smooth mechanical power-trowel finish for interiors.,Concrete Finishes & Treatments,sq ft,1,0.006,0.17
+Salt Finish Decorative Treatment,Textured architectural finish created with rock salt.,Concrete Finishes & Treatments,sq ft,3,0.015,1.2
+Exposed Aggregate Finish,Surface retarder and wash to expose decorative stones.,Concrete Finishes & Treatments,sq ft,4,0.02,1.6
+Machine Grooved Joints,Saw-cut control joints to prevent random cracking.,Concrete Finishes & Treatments,linear ft,2,0.01,0.47
+Joint Sealant Application,Polyurethane backer rod and self-leveling joint sealant.,Concrete Finishes & Treatments,linear ft,3,0.012,1
+Curing Compound Application,Spray-applied membrane to retain moisture during curing.,Concrete Finishes & Treatments,sq ft,1,0.004,0.33
+Penetrating Concrete Sealer,Silane-siloxane sealer for freeze-thaw protection.,Concrete Finishes & Treatments,sq ft,1,0.004,0.33
+Acid Staining,Chemical reactive stain applied to cured concrete.,Concrete Finishes & Treatments,sq ft,4,0.015,1.4
+Standard Concrete Curb and Gutter,Machine or hand formed standard curb and gutter.,"Curbs, Gutters & Flatwork",linear ft,35,0.15,11
+Mountable Rolled Curb,Driveway approach rolled concrete curb profile.,"Curbs, Gutters & Flatwork",linear ft,32,0.14,9.67
+Commercial Sidewalk Pour,4-inch exterior pedestrian walkway installation.,"Curbs, Gutters & Flatwork",sq ft,8,0.035,3.47
+Heavy Duty Driveway Apron,6-inch reinforced concrete entrance approach.,"Curbs, Gutters & Flatwork",sq ft,12,0.05,5.33
+ADA Handicap Ramp Installation,Truncated domes and compliant slope concrete ramp.,"Curbs, Gutters & Flatwork",sq ft,15,0.06,6.67
+Truncated Dome Mat Only,Cast-in-place detectable warning surface plate.,"Curbs, Gutters & Flatwork",each,250,0.2,150
+Concrete Parking Bumpers,Precast concrete wheel stop anchored with rebar pins.,"Curbs, Gutters & Flatwork",each,125,0.25,63.33
+Standard Concrete Steps,Formed and poured structural concrete staircases.,"Curbs, Gutters & Flatwork",linear ft,150,0.6,50
+Standard CMU Block Laying - 8 inch,Laying standard concrete masonry units with mortar.,Masonry & Blockwork,sq ft,18,0.08,5.67
+Standard CMU Block Laying - 12 inch,Laying heavy structural 12-inch concrete masonry units.,Masonry & Blockwork,sq ft,24,0.1,7.67
+CMU Core Grouting,Filling concrete block cells with grout and vertical rebar.,Masonry & Blockwork,sq ft,9,0.035,3.07
+Brick Veneer Installation,Clay brick facing installed over steel stud backup.,Masonry & Blockwork,sq ft,22,0.09,7
+Split Face Block Installation,Architectural textured CMU block wall construction.,Masonry & Blockwork,sq ft,25,0.1,8.33
+Glass Block Wall Installation,Translucent architectural glass block masonry assembly.,Masonry & Blockwork,sq ft,45,0.18,15
+Precast Concrete Lintel Installation,Setting structural concrete lintels over wall openings.,Masonry & Blockwork,each,175,0.8,53.33
+Steel Masonry Lintel Fabrication,Custom primed angle iron lintel for brick openings.,Masonry & Blockwork,linear ft,45,0.18,15
+Weep Hole and Flashing Installation,Cavity wall copper flashing and weep vent installation.,Masonry & Blockwork,linear ft,12,0.05,3.93
+Stone Veneer Installation,Natural or manufactured thin stone adhered to exterior.,Stonework & Architectural,sq ft,30,0.12,10
+Full Bed Natural Stone Wall,Structural full-depth natural stone masonry wall.,Stonework & Architectural,sq ft,55,0.22,18
+Cast Stone Coping Stones,Precast architectural cap stones set on masonry walls.,Stonework & Architectural,linear ft,40,0.16,13.33
+Precast Concrete Window Sills,Cast stone sills installed beneath window openings.,Stonework & Architectural,each,110,0.5,30
+Limestone Column Cap,Custom cut natural limestone pier and column caps.,Stonework & Architectural,each,320,1.2,113.33
+Architectural Precast Wall Panels,Crane-set architectural precast concrete panels.,Stonework & Architectural,sq ft,65,0.25,22.33
+Retaining Wall Block - Gravity System,Interlocking segmental retaining wall block installation.,Retaining Walls & Drainage,sq ft,28,0.11,9.67
+Retaining Wall Block - Geogrid Reinforced,Engineered tall segmental wall with geogrid layers.,Retaining Walls & Drainage,sq ft,42,0.16,14.67
+Poured Concrete Retaining Wall,Reinforced cast-in-place retaining wall construction.,Retaining Walls & Drainage,sq ft,50,0.2,16.67
+French Drain Installation,"Perforated pipe, gravel trench, and filter fabric behind wall.",Retaining Walls & Drainage,linear ft,25,0.1,8.33
+Wall Drainage Board,Dimpled plastic drainage sheet applied to foundation walls.,Retaining Walls & Drainage,sq ft,3,0.01,1.13
+Weep Hole Pipe Inserts,PVC sleeve inserts through wall for water discharge.,Retaining Walls & Drainage,each,35,0.12,13.33
+Catch Basin Installation,Precast concrete catch basin box set with grate.,Retaining Walls & Drainage,each,850,3.5,283.33
+Concrete Demo - Slabs and Flatwork,Breaking and removing old concrete with hydraulic hammer.,Demolition & Concrete Repair,sq ft,4,0.015,1.4
+Concrete Demo - Foundations and Walls,Heavy breaking and removal of structural concrete.,Demolition & Concrete Repair,cubic yd,250,1,83.33
+Masonry Wall Demolition,Takedown and removal of brick or CMU block walls.,Demolition & Concrete Repair,sq ft,8,0.03,2.8
+Diamond Blade Concrete Sawing,Deep cutting of existing concrete slabs up to 6 inches.,Demolition & Concrete Repair,linear ft,8,0.03,2.8
+Wall Sawing,Heavy wall saw cutting for doors and windows in concrete.,Demolition & Concrete Repair,sq ft,75,0.3,25
+Concrete Spall Repair,Chipping out damaged concrete and patching with polymer mortar.,Demolition & Concrete Repair,sq ft,35,0.14,11.67
+Epoxy Crack Injection,Structural pressure injection of cracked concrete walls.,Demolition & Concrete Repair,linear ft,45,0.18,15
+Polyurethane Foam Slab Jacking,Leveling sunken concrete slabs by polyurethane foam injection.,Demolition & Concrete Repair,sq ft,12,0.04,4.67
+Mudjacking Leveling,Traditional slurry pumping beneath settled concrete slabs.,Demolition & Concrete Repair,sq ft,7,0.025,2.6
+Helical Pier Installation,Steel pier driven to load-bearing strata for foundation support.,Demolition & Concrete Repair,each,1800,6,680
+Tuckpointing - Standard Rake and Fill,Grinding out old mortar joints and repointing with fresh mortar.,Masonry Restoration & Cleaning,sq ft,12,0.05,3.93
+Historic Match Mortar Pointing,Custom blended historic lime mortar repointing.,Masonry Restoration & Cleaning,sq ft,22,0.1,6.67
+Brick Replacement,Chipping out damaged individual bricks and installing new.,Masonry Restoration & Cleaning,each,45,0.2,13.33
+Chemical Masonry Wash,Acid wash and rinse cleaning of exterior brick surfaces.,Masonry Restoration & Cleaning,sq ft,2,0.008,0.67
+Hot Water Pressure Washing,Commercial surface washing of concrete and masonry.,Masonry Restoration & Cleaning,sq ft,1,0.004,0.33
+Graffiti Removal Treatment,Chemical gel application and pressure rinse removal.,Masonry Restoration & Cleaning,sq ft,6,0.02,2
+Anti-Graffiti Sacrificial Coating,Clear protective coating preventing graffiti penetration.,Masonry Restoration & Cleaning,sq ft,2,0.008,0.67
+Masonry Waterproofing Sealer,Siloxane clear breathable water-repellent sealer for brick.,Masonry Restoration & Cleaning,sq ft,2,0.008,0.67
+Expansion Joint Installation,Precompressed foam expansion joint system for masonry.,Masonry Restoration & Cleaning,linear ft,28,0.11,9.33
+Lintel Rust Remediation and Painting,"Rust removal, priming, and painting of steel angle lintels.",Masonry Restoration & Cleaning,linear ft,35,0.14,11.67
+Architectural Cast Stone Repair,Patching and restoring damaged cast stone trim elements.,Masonry Restoration & Cleaning,sq ft,85,0.35,28.33
+Expansion Joint Caulking,Removal of old joint caulk and re-sealing with silicone.,Masonry Restoration & Cleaning,linear ft,7,0.025,2.6

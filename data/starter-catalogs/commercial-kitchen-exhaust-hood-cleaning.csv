@@ -1,99 +1,99 @@
-name,description,category,unit,price
-Standard Exhaust Hood Cleaning,"Perimeter clean of canopy hood, filters, and grease trough",Hood Cleaning Services,linear ft,35
-Exhaust Fan Cleaning,Degrease and pressure wash upblast exhaust fan and housing,Hood Cleaning Services,each,175
-Horizontal Duct Cleaning,Scrape and pressure wash horizontal exhaust ductwork interior,Hood Cleaning Services,linear ft,45
-Vertical Duct Cleaning,Degrease vertical exhaust ductwork interior from roof or ceiling,Hood Cleaning Services,linear ft,50
-Baffle Filter Replacement,Supply and install aluminum baffle filter 20x20,Filters & Accessories,each,45
-Stainless Steel Baffle Filter,Supply and install heavy-duty stainless steel baffle filter,Filters & Accessories,each,75
-Mesh Filter Replacement,Supply and install standard grease mesh filter,Filters & Accessories,each,30
-Grease Cup Replacement,Install new standard steel exhaust fan grease cup,Filters & Accessories,each,35
-Hinge Kit Installation,Supply and install service hinge kit on exhaust fan,Fan Maintenance,each,225
-Fan Belt Replacement,Supply and install replacement drive belt for exhaust fan,Fan Maintenance,each,95
-Exhaust Fan Motor Replacement,Remove and replace direct or belt-drive exhaust fan motor,Fan Repairs,each,550
-Fan Pillow Block Bearing Replacement,Replace worn blower shaft pillow block bearings,Fan Repairs,each,320
-Blower Wheel Replacement,Replace balanced squirrel cage blower wheel in exhaust fan,Fan Repairs,each,450
-Grease Box Box Outfall System,Install exterior grease containment box with absorbent pads,Grease Containment,each,350
-Grease Containment Pad Refill,Replace grease absorbent pads in rooftop containment system,Grease Containment,each,75
-Access Panel Installation,Cut duct and install UL-listed grease access door,Duct Modifications,each,250
-Duct Leak Patch,Weld or seal minor air leak in exhaust ductwork,Duct Modifications,job,180
-Rooftop Grease Scavenging,Power wash and clean standing grease pool on roof surface,Roof Protection,hour,150
-Rooftop Grease Membrane Protector,Install rubber grease-resistant matting around exhaust fan curb,Roof Protection,each,275
-Fire Suppression Link Replacement,Replace fusible links in hood fire suppression system,Fire Safety,each,85
-Emergency Service Call Fee,Dispatch technician for urgent after-hours emergency request,Diagnostics & Labor,visit,250
-Standard Service Call Fee,Dispatch technician for standard on-site site assessment,Diagnostics & Labor,visit,125
-After-Hours Labor Rate,Hourly rate for night or weekend service execution,Diagnostics & Labor,hour,140
-Standard Labor Rate,Hourly rate for standard daytime technician work,Diagnostics & Labor,hour,105
-Environmental Disposal Fee,Disposal of commercial kitchen grease waste per regulations,Disposal & Permits,job,65
-Municipal Permit Acquisition,Process and pull required local hood cleaning permits,Disposal & Permits,job,95
-Make-Up Air Unit Cleaning,Degrease and clean make-up air unit blower and intake,Make-Up Air Services,each,220
-Make-Up Air Filter Replacement,Supply and replace make-up air unit intake filters,Make-Up Air Services,each,40
-Make-Up Air Motor Replacement,Remove and replace make-up air unit blower motor,Make-Up Air Services,each,600
-Electrostatic Cell Cleaning,Soak and pressure wash electronic air cleaner cells,Pollution Control Units,each,125
-PCU Carbon Filter Replacement,Replace odor control carbon panels in pollution control unit,Pollution Control Units,each,180
-PCU Prefilter Replacement,Replace aluminum mesh prefilters in pollution control unit,Pollution Control Units,each,45
-Exhaust Hood Polishing,Buff and polish stainless steel exterior hood canopy surfaces,Hood Detailing,linear ft,25
-Side Curtain Panel Cleaning,Degrease and wash stainless steel side splash panels,Hood Detailing,each,50
-Grease Trough Drain Clearing,Clear clogged drain hole and pipe in hood grease trough,Minor Repairs,each,75
-Fan Electrical Disconnect Replacement,Replace weathered rooftop electrical disconnect switch,Minor Repairs,each,175
-Rooftop Fan Wiring Harness Repair,Splice and repair damaged motor whip wiring,Minor Repairs,job,130
-Fan Weather Band Replacement,Replace rubber weather stripping around fan housing base,Fan Maintenance,each,85
-Exhaust Fan Balancing,Check and adjust fan pulley alignment and tension,Fan Maintenance,each,150
-Fire Wrap Insulation Patch,Repair damaged ceramic fire wrap blanket on grease duct,Fire Safety,sq ft,45
-Compliance Sticker Placement,Apply NFPA 96 certification service sticker to hood canopy,Compliance,each,15
-Digital Photo Report Generation,Provide before and after photo documentation of cleaning,Compliance,job,50
-NFPA 96 Grease Deposition Test,Measure and document grease thickness per code requirements,Compliance,job,110
-Concession Trailer Hood Cleaning,Complete wash of small mobile food truck exhaust system,Specialty Cleaning,job,350
-Pizza Oven Hood Cleaning,Deep clean specialized direct-capture pizza oven hood system,Specialty Cleaning,linear ft,40
-Broiler Hood Heavy Degreasing,Intensive heavy-chemical soak and scrape for charbroiler hood,Specialty Cleaning,linear ft,55
-Dishwasher Exhaust Vent Cleaning,Clean steam exhaust duct and vent hood for dish area,Specialty Cleaning,job,275
-Rooftop Walkway Pad Installation,Install rubber safety walk pads to protect roof membrane,Roof Protection,each,90
-Fan Curb Extension Installation,Install metal curb extension to raise fan above roofline,Roof Protection,each,450
-Grease Diverter Installation,Install rooftop grease diverter spout on exhaust fan,Grease Containment,each,120
-High-Capacity Grease Box Upgrade,Upgrade standard cup to heavy-duty grease containment box,Grease Containment,each,295
-Exhaust Fan Guard Replacement,Replace missing or rusted safety wire mesh on fan discharge,Fan Maintenance,each,110
-Motor Pulley Replacement,Replace worn adjustable or fixed motor drive pulley,Fan Repairs,each,135
-Blower Pulley Replacement,Replace large driven blower shaft pulley,Fan Repairs,each,165
-Duct Access Panel Gasket Replacement,Replace high-temp silicone seal on duct access door,Duct Modifications,each,45
-Exhaust Duct Spin-In Collar Installation,Install new branch collar connection on main duct line,Duct Modifications,each,210
-Fire Damper Inspection and Drop Test,Inspect and manually trip mechanical fire damper,Fire Safety,each,125
-Fusible Link Bracket Replacement,Replace bent or damaged fusible link bracket inside hood,Fire Safety,each,95
-Exhaust Hood Light Fixture Repair,Replace internal vapor-proof light bulb or socket,Minor Repairs,each,95
-Exhaust Hood Glass Globe Replacement,Replace broken heat-resistant vapor-proof glass globe,Minor Repairs,each,65
-Rooftop Grease Line Clearing,Flush clogged rooftop grease drain piping with hot water,Minor Repairs,job,190
-Night Lockout Service Fee,Special coordination for facility access between midnight and 5am,Diagnostics & Labor,visit,150
-Multi-Story Lift Surcharge,Additional equipment fee for high-rise or multi-story buildings,Diagnostics & Labor,job,200
-Crane Rental Coordination,Coordinate crane service for heavy rooftop fan replacement,Diagnostics & Labor,day,750
-Hazardous Waste Neutralization,Neutralize highly acidic or caustic wash runoff per local code,Disposal & Permits,job,125
-Grease Trap Interceptor Jetting,High-pressure jetting of kitchen grease trap connection line,Disposal & Permits,job,325
-Make-Up Air Interlock Switch Repair,Repair electrical interlock between hood and make-up air unit,Make-Up Air Services,each,240
-Make-Up Air Thermostat Replacement,Replace heating or intake control thermostat on MUA unit,Make-Up Air Services,each,185
-PCU High Voltage Power Supply Repair,Diagnose and repair electronic air cleaner power pack,Pollution Control Units,job,380
-Ozone Lamp Replacement,Replace UV ozone generation lamps in pollution control system,Pollution Control Units,each,290
-Hood Canopy Seam Sealing,Apply high-temp food-grade silicone to leaking canopy weld seams,Hood Detailing,linear ft,18
-Stainless Steel Cleaner Treatment,Apply protective oil coating to prevent exterior oxidation,Hood Detailing,linear ft,12
-Secondary Fan Belt Carriage,Install spare backup drive belt mounted inside fan housing,Fan Maintenance,each,60
-Fan Shaft Replacement,Replace scored or bent steel drive shaft in exhaust fan,Fan Repairs,each,410
-Exhaust Fan Isolation Pad Kit,Replace rubber vibration dampening pads under fan curb mount,Fan Repairs,job,160
-Duct Fire Damper Fusible Link,Replace fire damper thermal release link inside ductwork,Fire Safety,each,110
-Emergency Shut-Off Switch Repair,Repair remote pull station or shunt trip electrical switch,Fire Safety,each,220
-Secondary Access Panel Installation,Install additional cleaning port on long horizontal duct run,Duct Modifications,each,230
-Duct Transition Piece Fabrication,Fabricate and install custom sheet metal duct transition,Duct Modifications,job,450
-Fire Marshal Violation Correction,Labor and materials to clear active local fire code citations,Compliance,hour,120
-Hospital Kitchen Exhaust Deep Clean,Specialized sanitizing clean for sterile healthcare facility hood,Specialty Cleaning,linear ft,60
-School Cafeteria Exhaust Hood Service,High-volume hood cleaning scheduled during district break,Specialty Cleaning,linear ft,38
-Rooftop Curb Flashing Repair,Seal flashing around roof curb to stop water leak issues,Roof Protection,job,250
-Rooftop Pitch Pocket Sealing,Pour and seal new pitch pocket compound around roof penetrations,Roof Protection,each,140
-Hinged Fan Cable Restraint Kit,Install safety service cables to prevent exhaust fan over-rotation,Fan Maintenance,each,90
-Grease Deflector Shield,Install internal baffle shield to redirect grease from fan motor,Fan Maintenance,each,130
-Exhaust Fan Centrifugal Blade Scrape,Manual hand scraping of heavy baked-on carbon from fan blades,Fan Repairs,hour,125
-Exhaust Duct Access Door Latch Replacement,Replace broken cam-lock latches on grease duct door,Duct Modifications,each,55
-Exhaust Duct Drain Plug Installation,Install threaded drain plug at lowest point of duct run,Duct Modifications,each,85
-Microswitch Replacement on Suppression System,Replace electric microswitch that shuts off gas upon discharge,Fire Safety,each,195
-Exhaust Hood Thermal Sensor Replacement,Replace heat detector sensor probe wired to fire system,Fire Safety,each,165
-Exhaust Hood Control Panel Troubleshooting,Diagnose electrical faults in hood ventilation control center,Minor Repairs,hour,130
-Replacement Fan Housing Fasteners,Supply stainless steel bolts and nuts for fan assembly,Minor Repairs,job,35
-Holiday Shift Surcharge,Service execution scheduled on recognized national holidays,Diagnostics & Labor,visit,300
-Wastewater Containment System Setup,Deploy vacuum recovery system and gutter guards for wash water,Disposal & Permits,job,110
-Make-Up Air Fan Shaft Bearing Replacement,Replace bearings on large make-up air blower assembly,Make-Up Air Services,each,280
-PCU Drain Line Flushing,Clear clogged condensate and wash-down drain line on PCU unit,Pollution Control Units,each,95
-Exhaust Hood Corner Guard Installation,Install stainless steel corner guards on hood exterior frame,Hood Detailing,each,70
+name,description,category,unit,price,labor_hours,material_cost
+Standard Exhaust Hood Cleaning,"Perimeter clean of canopy hood, filters, and grease trough",Hood Cleaning Services,linear ft,35,0.25,2
+Exhaust Fan Cleaning,Degrease and pressure wash upblast exhaust fan and housing,Hood Cleaning Services,each,175,1.25,10
+Horizontal Duct Cleaning,Scrape and pressure wash horizontal exhaust ductwork interior,Hood Cleaning Services,linear ft,45,0.3,3
+Vertical Duct Cleaning,Degrease vertical exhaust ductwork interior from roof or ceiling,Hood Cleaning Services,linear ft,50,0.35,3
+Baffle Filter Replacement,Supply and install aluminum baffle filter 20x20,Filters & Accessories,each,45,0.2,10
+Stainless Steel Baffle Filter,Supply and install heavy-duty stainless steel baffle filter,Filters & Accessories,each,75,0.15,36
+Mesh Filter Replacement,Supply and install standard grease mesh filter,Filters & Accessories,each,30,0.15,7
+Grease Cup Replacement,Install new standard steel exhaust fan grease cup,Filters & Accessories,each,35,0.2,6
+Hinge Kit Installation,Supply and install service hinge kit on exhaust fan,Fan Maintenance,each,225,1.2,50
+Fan Belt Replacement,Supply and install replacement drive belt for exhaust fan,Fan Maintenance,each,95,0.5,20
+Exhaust Fan Motor Replacement,Remove and replace direct or belt-drive exhaust fan motor,Fan Repairs,each,550,2.5,150
+Fan Pillow Block Bearing Replacement,Replace worn blower shaft pillow block bearings,Fan Repairs,each,320,2,46.67
+Blower Wheel Replacement,Replace balanced squirrel cage blower wheel in exhaust fan,Fan Repairs,each,450,2.5,93.33
+Grease Box Box Outfall System,Install exterior grease containment box with absorbent pads,Grease Containment,each,350,1.5,110
+Grease Containment Pad Refill,Replace grease absorbent pads in rooftop containment system,Grease Containment,each,75,0.2,29.33
+Access Panel Installation,Cut duct and install UL-listed grease access door,Duct Modifications,each,250,1.5,43.33
+Duct Leak Patch,Weld or seal minor air leak in exhaust ductwork,Duct Modifications,job,180,1,36.67
+Rooftop Grease Scavenging,Power wash and clean standing grease pool on roof surface,Roof Protection,hour,150,1,16.67
+Rooftop Grease Membrane Protector,Install rubber grease-resistant matting around exhaust fan curb,Roof Protection,each,275,1,100
+Fire Suppression Link Replacement,Replace fusible links in hood fire suppression system,Fire Safety,each,85,0.5,15
+Emergency Service Call Fee,Dispatch technician for urgent after-hours emergency request,Diagnostics & Labor,visit,250,2,0
+Standard Service Call Fee,Dispatch technician for standard on-site site assessment,Diagnostics & Labor,visit,125,1,0
+After-Hours Labor Rate,Hourly rate for night or weekend service execution,Diagnostics & Labor,hour,140,1,10
+Standard Labor Rate,Hourly rate for standard daytime technician work,Diagnostics & Labor,hour,105,1,0
+Environmental Disposal Fee,Disposal of commercial kitchen grease waste per regulations,Disposal & Permits,job,65,0,43.33
+Municipal Permit Acquisition,Process and pull required local hood cleaning permits,Disposal & Permits,job,95,0.5,21.67
+Make-Up Air Unit Cleaning,Degrease and clean make-up air unit blower and intake,Make-Up Air Services,each,220,1.5,20
+Make-Up Air Filter Replacement,Supply and replace make-up air unit intake filters,Make-Up Air Services,each,40,0.2,10
+Make-Up Air Motor Replacement,Remove and replace make-up air unit blower motor,Make-Up Air Services,each,600,2.5,193.33
+Electrostatic Cell Cleaning,Soak and pressure wash electronic air cleaner cells,Pollution Control Units,each,125,0.8,16.67
+PCU Carbon Filter Replacement,Replace odor control carbon panels in pollution control unit,Pollution Control Units,each,180,0.5,76.67
+PCU Prefilter Replacement,Replace aluminum mesh prefilters in pollution control unit,Pollution Control Units,each,45,0.2,10
+Exhaust Hood Polishing,Buff and polish stainless steel exterior hood canopy surfaces,Hood Detailing,linear ft,25,0.18,2
+Side Curtain Panel Cleaning,Degrease and wash stainless steel side splash panels,Hood Detailing,each,50,0.35,3
+Grease Trough Drain Clearing,Clear clogged drain hole and pipe in hood grease trough,Minor Repairs,each,75,0.5,6.67
+Fan Electrical Disconnect Replacement,Replace weathered rooftop electrical disconnect switch,Minor Repairs,each,175,1,33.33
+Rooftop Fan Wiring Harness Repair,Splice and repair damaged motor whip wiring,Minor Repairs,job,130,0.8,20
+Fan Weather Band Replacement,Replace rubber weather stripping around fan housing base,Fan Maintenance,each,85,0.4,23.33
+Exhaust Fan Balancing,Check and adjust fan pulley alignment and tension,Fan Maintenance,each,150,1,16.67
+Fire Wrap Insulation Patch,Repair damaged ceramic fire wrap blanket on grease duct,Fire Safety,sq ft,45,0.2,10
+Compliance Sticker Placement,Apply NFPA 96 certification service sticker to hood canopy,Compliance,each,15,0.1,1.67
+Digital Photo Report Generation,Provide before and after photo documentation of cleaning,Compliance,job,50,0.4,0
+NFPA 96 Grease Deposition Test,Measure and document grease thickness per code requirements,Compliance,job,110,0.8,6.67
+Concession Trailer Hood Cleaning,Complete wash of small mobile food truck exhaust system,Specialty Cleaning,job,350,2.5,23.33
+Pizza Oven Hood Cleaning,Deep clean specialized direct-capture pizza oven hood system,Specialty Cleaning,linear ft,40,0.25,3.75
+Broiler Hood Heavy Degreasing,Intensive heavy-chemical soak and scrape for charbroiler hood,Specialty Cleaning,linear ft,55,0.35,4.17
+Dishwasher Exhaust Vent Cleaning,Clean steam exhaust duct and vent hood for dish area,Specialty Cleaning,job,275,2,16.67
+Rooftop Walkway Pad Installation,Install rubber safety walk pads to protect roof membrane,Roof Protection,each,90,0.5,18.33
+Fan Curb Extension Installation,Install metal curb extension to raise fan above roofline,Roof Protection,each,450,2.5,93.33
+Grease Diverter Installation,Install rooftop grease diverter spout on exhaust fan,Grease Containment,each,120,0.8,13.33
+High-Capacity Grease Box Upgrade,Upgrade standard cup to heavy-duty grease containment box,Grease Containment,each,295,1.5,70
+Exhaust Fan Guard Replacement,Replace missing or rusted safety wire mesh on fan discharge,Fan Maintenance,each,110,0.6,23.33
+Motor Pulley Replacement,Replace worn adjustable or fixed motor drive pulley,Fan Repairs,each,135,0.8,23.33
+Blower Pulley Replacement,Replace large driven blower shaft pulley,Fan Repairs,each,165,1,26.67
+Duct Access Panel Gasket Replacement,Replace high-temp silicone seal on duct access door,Duct Modifications,each,45,0.3,4.67
+Exhaust Duct Spin-In Collar Installation,Install new branch collar connection on main duct line,Duct Modifications,each,210,1.2,40
+Fire Damper Inspection and Drop Test,Inspect and manually trip mechanical fire damper,Fire Safety,each,125,0.8,16.67
+Fusible Link Bracket Replacement,Replace bent or damaged fusible link bracket inside hood,Fire Safety,each,95,0.6,13.33
+Exhaust Hood Light Fixture Repair,Replace internal vapor-proof light bulb or socket,Minor Repairs,each,95,0.6,13.33
+Exhaust Hood Glass Globe Replacement,Replace broken heat-resistant vapor-proof glass globe,Minor Repairs,each,65,0.4,10
+Rooftop Grease Line Clearing,Flush clogged rooftop grease drain piping with hot water,Minor Repairs,job,190,1.2,26.67
+Night Lockout Service Fee,Special coordination for facility access between midnight and 5am,Diagnostics & Labor,visit,150,1.2,0
+Multi-Story Lift Surcharge,Additional equipment fee for high-rise or multi-story buildings,Diagnostics & Labor,job,200,1.5,8.33
+Crane Rental Coordination,Coordinate crane service for heavy rooftop fan replacement,Diagnostics & Labor,day,750,4,166.67
+Hazardous Waste Neutralization,Neutralize highly acidic or caustic wash runoff per local code,Disposal & Permits,job,125,0.5,43.33
+Grease Trap Interceptor Jetting,High-pressure jetting of kitchen grease trap connection line,Disposal & Permits,job,325,2,50
+Make-Up Air Interlock Switch Repair,Repair electrical interlock between hood and make-up air unit,Make-Up Air Services,each,240,1.5,36.67
+Make-Up Air Thermostat Replacement,Replace heating or intake control thermostat on MUA unit,Make-Up Air Services,each,185,1,40
+PCU High Voltage Power Supply Repair,Diagnose and repair electronic air cleaner power pack,Pollution Control Units,job,380,2.2,66.67
+Ozone Lamp Replacement,Replace UV ozone generation lamps in pollution control system,Pollution Control Units,each,290,1,110
+Hood Canopy Seam Sealing,Apply high-temp food-grade silicone to leaking canopy weld seams,Hood Detailing,linear ft,18,0.1,3.67
+Stainless Steel Cleaner Treatment,Apply protective oil coating to prevent exterior oxidation,Hood Detailing,linear ft,12,0.05,3.83
+Secondary Fan Belt Carriage,Install spare backup drive belt mounted inside fan housing,Fan Maintenance,each,60,0.4,6.67
+Fan Shaft Replacement,Replace scored or bent steel drive shaft in exhaust fan,Fan Repairs,each,410,2.5,63.33
+Exhaust Fan Isolation Pad Kit,Replace rubber vibration dampening pads under fan curb mount,Fan Repairs,job,160,1,23.33
+Duct Fire Damper Fusible Link,Replace fire damper thermal release link inside ductwork,Fire Safety,each,110,0.7,13.33
+Emergency Shut-Off Switch Repair,Repair remote pull station or shunt trip electrical switch,Fire Safety,each,220,1.4,26.67
+Secondary Access Panel Installation,Install additional cleaning port on long horizontal duct run,Duct Modifications,each,230,1.4,36.67
+Duct Transition Piece Fabrication,Fabricate and install custom sheet metal duct transition,Duct Modifications,job,450,2.5,93.33
+Fire Marshal Violation Correction,Labor and materials to clear active local fire code citations,Compliance,hour,120,0.9,5
+Hospital Kitchen Exhaust Deep Clean,Specialized sanitizing clean for sterile healthcare facility hood,Specialty Cleaning,linear ft,60,0.4,6.67
+School Cafeteria Exhaust Hood Service,High-volume hood cleaning scheduled during district break,Specialty Cleaning,linear ft,38,0.25,3.5
+Rooftop Curb Flashing Repair,Seal flashing around roof curb to stop water leak issues,Roof Protection,job,250,1.5,43.33
+Rooftop Pitch Pocket Sealing,Pour and seal new pitch pocket compound around roof penetrations,Roof Protection,each,140,0.8,26.67
+Hinged Fan Cable Restraint Kit,Install safety service cables to prevent exhaust fan over-rotation,Fan Maintenance,each,90,0.5,18.33
+Grease Deflector Shield,Install internal baffle shield to redirect grease from fan motor,Fan Maintenance,each,130,0.7,25
+Exhaust Fan Centrifugal Blade Scrape,Manual hand scraping of heavy baked-on carbon from fan blades,Fan Repairs,hour,125,1,0
+Exhaust Duct Access Door Latch Replacement,Replace broken cam-lock latches on grease duct door,Duct Modifications,each,55,0.35,8.33
+Exhaust Duct Drain Plug Installation,Install threaded drain plug at lowest point of duct run,Duct Modifications,each,85,0.5,15
+Microswitch Replacement on Suppression System,Replace electric microswitch that shuts off gas upon discharge,Fire Safety,each,195,1.2,30
+Exhaust Hood Thermal Sensor Replacement,Replace heat detector sensor probe wired to fire system,Fire Safety,each,165,1,26.67
+Exhaust Hood Control Panel Troubleshooting,Diagnose electrical faults in hood ventilation control center,Minor Repairs,hour,130,1,3.33
+Replacement Fan Housing Fasteners,Supply stainless steel bolts and nuts for fan assembly,Minor Repairs,job,35,0.2,6.67
+Holiday Shift Surcharge,Service execution scheduled on recognized national holidays,Diagnostics & Labor,visit,300,2.4,0
+Wastewater Containment System Setup,Deploy vacuum recovery system and gutter guards for wash water,Disposal & Permits,job,110,0.7,13.33
+Make-Up Air Fan Shaft Bearing Replacement,Replace bearings on large make-up air blower assembly,Make-Up Air Services,each,280,1.8,36.67
+PCU Drain Line Flushing,Clear clogged condensate and wash-down drain line on PCU unit,Pollution Control Units,each,95,0.6,13.33
+Exhaust Hood Corner Guard Installation,Install stainless steel corner guards on hood exterior frame,Hood Detailing,each,70,0.4,13.33

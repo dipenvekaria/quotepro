@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Service Call,Initial diagnostic visit and system assessment,Diagnostics and Service,visit,175
-Emergency Storm Inspection,Post-strike safety evaluation and damage report,Diagnostics and Service,visit,350
-NFPA Compliance Audit,Full system inspection for code compliance,Diagnostics and Service,visit,450
-Ground Resistance Testing,Megger testing of grounding electrode system,Diagnostics and Service,each,275
-Continuity Testing,Bonding loop and conductor continuity verification,Diagnostics and Service,hour,150
-Master Installer Hourly Labor,Certified lead technician labor rate,Labor Rates,hour,125
-Standard Technician Hourly Labor,Assistant technician labor rate,Labor Rates,hour,95
-Overtime Hourly Labor,After-hours and weekend labor rate,Labor Rates,hour,185
-Holiday Hourly Labor,Official holiday emergency labor rate,Labor Rates,hour,250
-Engineering Plan Review,Architectural lightning protection layout review,Labor Rates,hour,165
-Copper Air Terminal 10-Inch,Solid copper lightning rod 10 inches tall,Air Terminals,each,45
-Copper Air Terminal 12-Inch,Solid copper lightning rod 12 inches tall,Air Terminals,each,55
-Copper Air Terminal 18-Inch,Solid copper lightning rod 18 inches tall,Air Terminals,each,75
-Aluminum Air Terminal 10-Inch,Aluminum lightning rod 10 inches tall,Air Terminals,each,35
-Aluminum Air Terminal 12-Inch,Aluminum lightning rod 12 inches tall,Air Terminals,each,42
-Aluminum Air Terminal 18-Inch,Aluminum lightning rod 18 inches tall,Air Terminals,each,60
-Heavy Duty Air Terminal 24-Inch,Extra tall rod for high structures,Air Terminals,each,110
-Blunt Tip Air Terminal Adapter,Safety blunt tip for low clearance areas,Air Terminals,each,25
-Copper Base Air Terminal Mount,Mounting bracket for copper roof systems,Air Terminals,each,38
-Aluminum Base Air Terminal Mount,Mounting bracket for metal roof systems,Air Terminals,each,32
-Class I Bare Copper Conductor,Standard stranded copper cable for main conductors,Conductors and Cables,linear ft,6
-Class II Bare Copper Conductor,Heavy duty stranded copper cable for large structures,Conductors and Cables,linear ft,9
-Class I Bare Aluminum Conductor,Standard aluminum cable for main conductors,Conductors and Cables,linear ft,4
-Class II Bare Aluminum Conductor,Heavy duty aluminum cable for large structures,Conductors and Cables,linear ft,7
-Tinned Copper Conductor,Corrosion resistant tinned copper cable,Conductors and Cables,linear ft,8
-Primary Bonding Conductor,Flexible copper braid for equipment bonding,Conductors and Cables,linear ft,12
-Conductor Adhesive Clip,Adhesive anchor clip for membrane roofs,Fasteners and Mounts,each,8
-Standing Seam Roof Clamp,Non-penetrating clamp for metal standing seams,Fasteners and Mounts,each,18
-Slate Roof Hook Bracket,Specialty hook for slate tile roof attachment,Fasteners and Mounts,each,22
-Masonry Anchor Bolt Set,Stainless anchor bolt for concrete and brick,Fasteners and Mounts,each,14
-Lead Expansion Anchor,Expansion anchor for stone and masonry mounting,Fasteners and Mounts,each,10
-Adhesive Fastener Kit,Epoxy adhesive set for tile and stone roofs,Fasteners and Mounts,each,28
-Copper Parallel Clamp,Heavy duty parallel connector for main cables,Connectors and Splices,each,24
-Copper Tee Splice Connector,Three-way cable junction connector,Connectors and Splices,each,30
-Copper Cross Splice Connector,Four-way cable intersection connector,Connectors and Splices,each,38
-Aluminum Parallel Clamp,Aluminum parallel connector for main cables,Connectors and Splices,each,20
-Bi-Metallic Transition Connector,Joining aluminum cable to copper components safely,Connectors and Splices,each,45
-Exothermic Weld Mold Kit,Cadweld mold and charge for permanent ground connection,Connectors and Splices,each,85
-Copper Ground Rod 10-Foot,5/8 inch copper-clad steel ground rod,Grounding Electrodes,each,75
-Stainless Steel Ground Rod 10-Foot,5/8 inch solid stainless steel ground rod,Grounding Electrodes,each,140
-Copper Ground Rod 8-Foot,1/2 inch copper-clad steel ground rod,Grounding Electrodes,each,55
-Ground Rod Drive Sleeve,Drive head adapter for installation hammer drill,Grounding Electrodes,each,35
-Ground Rod Clamp Heavy Duty,High strength bronze clamp for cable to rod,Grounding Electrodes,each,22
-Radical Ground Plate,Copper ground plate for rocky soil conditions,Grounding Electrodes,each,180
-Concrete Encased Ground Ufer,Rebar bonding clamp for foundation grounding,Grounding Electrodes,each,45
-Ground Inspection Well Box,Polymer concrete flush-grade test well box,Grounding Electrodes,each,125
-Surge Protective Device Service Entrance,Main electrical panel whole-home SPD installation,Surge Protection,each,450
-Subpanel Surge Protective Device,Secondary distribution panel SPD unit,Surge Protection,each,320
-Data Line Surge Protector,Ethernet and coaxial lightning surge suppressor,Surge Protection,each,150
-HVAC Unit Surge Protector,Dedicated surge suppressor for exterior AC compressor,Surge Protection,each,220
-Low Voltage Signal Line Protector,Security and automation line surge suppressor,Surge Protection,each,175
-Structural Steel Bonding Kit,Heavy structural steel frame bonding clamp,Equipotential Bonding,each,65
-Metal Body Water Pipe Bond,Main water service line bonding clamp,Equipotential Bonding,each,40
-Gas Pipe Bonding Clamp,CSST and black iron gas line bonding assembly,Equipotential Bonding,each,55
-Chimney Bonding Assembly,Metal flue and masonry chimney bonding kit,Equipotential Bonding,each,95
-Roof Antenna Mast Bonder,Satellite dish and antenna mast bonding kit,Equipotential Bonding,each,50
-Skylight Frame Bonding Clip,Metal skylight perimeter bonding fastener,Equipotential Bonding,each,35
-Structural Column Ground Jumper,Flexible braided copper column bonding strap,Equipotential Bonding,each,60
-Residential System Installation Labor,Complete residential system installation package,System Installations,job,3500
-Commercial Low-Rise Installation Labor,Commercial flat roof system installation package,System Installations,job,7500
-Steep Slope Roof Surcharge,Additional safety rigging for roofs over 8/12 pitch,System Installations,sq ft,2
-Lightning Protection Permit Processing,Local municipal permit acquisition and filing fee,Permits and Inspections,job,250
-UL Master Label Certification Inspection,Underwriters Laboratories inspection and certification fee,Permits and Inspections,job,650
-LPI System Inspection Certificate,Lightning Protection Institute compliance certificate,Permits and Inspections,job,400
-Municipal Plan Submission Fee,Engineering document submittal to city building department,Permits and Inspections,job,175
-Existing System Storm Repair,Post-strike conductor and rod replacement labor,Repairs and Maintenance,job,1200
-Corroded Conductor Replacement,Section replacement of oxidized cable runs,Repairs and Maintenance,linear ft,18
-Loose Air Terminal Re-Securing,Re-anchoring and tightening unstable lightning rods,Repairs and Maintenance,each,65
-Broken Ground Rod Replacement,Extraction and replacement of damaged ground rod,Repairs and Maintenance,each,220
-Roof Penetration Sealing,Waterproofing membrane repair around conductor penetrations,Repairs and Maintenance,each,95
-Conductor Guard Molding 10-Foot,PVC protective guard for wall-mounted down conductors,Parts and Hardware,each,35
-Aluminum Conductor Guard 10-Foot,Heavy duty metal guard for ground level cable protection,Parts and Hardware,each,55
-Stainless Steel Banding Strap,Pole mounting band for down conductor guards,Parts and Hardware,each,15
-Bimetallic Washer Set,Prevention washers for galvanic corrosion,Parts and Hardware,each,12
-Roof Penetration Flashing Boot,EPDM rubber roof pitch pocket and flashing,Parts and Hardware,each,45
-Stainless Steel Screws Box 100,Corrosion-resistant fasteners for system mounts,Parts and Hardware,each,32
-High-Temp Silicone Sealant Tube,Weatherproofing sealant for roof anchors,Parts and Hardware,each,18
-Underground Warning Tape,Caution tape for buried lightning ground conductors,Parts and Hardware,linear ft,1
-Copper Down Conductor Guard,Heavy copper protective guard for lower wall runs,Parts and Hardware,each,75
-Tree Protection Air Terminal System,Suspended cable and rod system for heritage trees,Specialty Applications,job,2200
-Steeple Lightning Protection Package,Specialized steeple jack installation for church towers,Specialty Applications,job,4500
-Wind Turbine Grounding Kit,Slip-ring and structural grounding for wind generators,Specialty Applications,job,1800
-Solar Panel Array Bonding Kit,Frame bonding jumpers and lugs for PV systems,Specialty Applications,job,650
-Flagpole Lightning Protection Kit,Top-mounted rod and internal down conductor system,Specialty Applications,job,950
-Water Tank Lightning Protection System,Ground ring and upper terminal ring for storage tanks,Specialty Applications,job,3200
-Architectural Concealment Installation,Hidden conductor routing behind brick facade during build,Specialty Applications,linear ft,15
-High-Rise Structural Bonding Grid,Multi-tier intermediate loop bonding for skyscrapers,Specialty Applications,floor,1500
-Temporary Lightning Protection System,Interim grounding system during open construction phases,Specialty Applications,month,850
-Debris Disposal Fee,Haul away and recycling of old system components,Disposal and Cleanup,job,150
-Hazardous Material Handling Fee,Special disposal for contaminated soil around old grounds,Disposal and Cleanup,job,275
-Scaffolding Rental and Setup,Perimeter staging rental for multi-story access,Equipment Rental,week,1200
-Boom Lift Rental Daily,Articulating boom lift for high roof access,Equipment Rental,day,650
-Core Drilling Concrete Service,Diamond core drilling through foundation for ground leads,Specialty Applications,each,175
-Trenching for Ground Rings,Mechanical trenching 2 feet deep for ground wire loops,Grounding Electrodes,linear ft,12
-Backfilling and Surface Restoration,Soil compaction and turf repair after trenching,Grounding Electrodes,linear ft,8
-Annual Maintenance Contract,Yearly system inspection and resistance testing agreement,Diagnostics and Service,visit,300
-Surge Protection Maintenance Check,Testing and status verification of all home SPDs,Surge Protection,visit,150
-Rush Engineering Stamp,Expedited PE stamp on lightning protection layouts,Labor Rates,job,500
-Security Camera Lightning Isolation,Fiber optic media converter kit for camera surge isolation,Surge Protection,each,280
-Historic Building Preservation Surcharge,Careful non-destructive installation techniques for old homes,Specialty Applications,job,1100
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial diagnostic visit and system assessment,Diagnostics and Service,visit,175,1.4,0
+Emergency Storm Inspection,Post-strike safety evaluation and damage report,Diagnostics and Service,visit,350,2.8,0
+NFPA Compliance Audit,Full system inspection for code compliance,Diagnostics and Service,visit,450,3.6,0
+Ground Resistance Testing,Megger testing of grounding electrode system,Diagnostics and Service,each,275,2.2,0
+Continuity Testing,Bonding loop and conductor continuity verification,Diagnostics and Service,hour,150,1.2,0
+Master Installer Hourly Labor,Certified lead technician labor rate,Labor Rates,hour,125,1,0
+Standard Technician Hourly Labor,Assistant technician labor rate,Labor Rates,hour,95,1,0
+Overtime Hourly Labor,After-hours and weekend labor rate,Labor Rates,hour,185,1,0
+Holiday Hourly Labor,Official holiday emergency labor rate,Labor Rates,hour,250,1,0
+Engineering Plan Review,Architectural lightning protection layout review,Labor Rates,hour,165,1.32,0
+Copper Air Terminal 10-Inch,Solid copper lightning rod 10 inches tall,Air Terminals,each,45,0.1,30
+Copper Air Terminal 12-Inch,Solid copper lightning rod 12 inches tall,Air Terminals,each,55,0.1,36.67
+Copper Air Terminal 18-Inch,Solid copper lightning rod 18 inches tall,Air Terminals,each,75,0.1,50
+Aluminum Air Terminal 10-Inch,Aluminum lightning rod 10 inches tall,Air Terminals,each,35,0.1,23.33
+Aluminum Air Terminal 12-Inch,Aluminum lightning rod 12 inches tall,Air Terminals,each,42,0.1,28
+Aluminum Air Terminal 18-Inch,Aluminum lightning rod 18 inches tall,Air Terminals,each,60,0.1,40
+Heavy Duty Air Terminal 24-Inch,Extra tall rod for high structures,Air Terminals,each,110,0.15,72.33
+Blunt Tip Air Terminal Adapter,Safety blunt tip for low clearance areas,Air Terminals,each,25,0.1,16.67
+Copper Base Air Terminal Mount,Mounting bracket for copper roof systems,Air Terminals,each,38,0.15,24.33
+Aluminum Base Air Terminal Mount,Mounting bracket for metal roof systems,Air Terminals,each,32,0.15,20.33
+Class I Bare Copper Conductor,Standard stranded copper cable for main conductors,Conductors and Cables,linear ft,6,0.02,4
+Class II Bare Copper Conductor,Heavy duty stranded copper cable for large structures,Conductors and Cables,linear ft,9,0.02,6
+Class I Bare Aluminum Conductor,Standard aluminum cable for main conductors,Conductors and Cables,linear ft,4,0.02,2.67
+Class II Bare Aluminum Conductor,Heavy duty aluminum cable for large structures,Conductors and Cables,linear ft,7,0.02,4.67
+Tinned Copper Conductor,Corrosion resistant tinned copper cable,Conductors and Cables,linear ft,8,0.02,5.33
+Primary Bonding Conductor,Flexible copper braid for equipment bonding,Conductors and Cables,linear ft,12,0.03,8
+Conductor Adhesive Clip,Adhesive anchor clip for membrane roofs,Fasteners and Mounts,each,8,0.05,5
+Standing Seam Roof Clamp,Non-penetrating clamp for metal standing seams,Fasteners and Mounts,each,18,0.08,11.33
+Slate Roof Hook Bracket,Specialty hook for slate tile roof attachment,Fasteners and Mounts,each,22,0.1,13.33
+Masonry Anchor Bolt Set,Stainless anchor bolt for concrete and brick,Fasteners and Mounts,each,14,0.08,8.67
+Lead Expansion Anchor,Expansion anchor for stone and masonry mounting,Fasteners and Mounts,each,10,0.06,6.33
+Adhesive Fastener Kit,Epoxy adhesive set for tile and stone roofs,Fasteners and Mounts,each,28,0.1,17.33
+Copper Parallel Clamp,Heavy duty parallel connector for main cables,Connectors and Splices,each,24,0.1,15.33
+Copper Tee Splice Connector,Three-way cable junction connector,Connectors and Splices,each,30,0.12,19
+Copper Cross Splice Connector,Four-way cable intersection connector,Connectors and Splices,each,38,0.15,24
+Aluminum Parallel Clamp,Aluminum parallel connector for main cables,Connectors and Splices,each,20,0.1,12.67
+Bi-Metallic Transition Connector,Joining aluminum cable to copper components safely,Connectors and Splices,each,45,0.15,28.33
+Exothermic Weld Mold Kit,Cadweld mold and charge for permanent ground connection,Connectors and Splices,each,85,0.2,53.33
+Copper Ground Rod 10-Foot,5/8 inch copper-clad steel ground rod,Grounding Electrodes,each,75,0.3,46
+Stainless Steel Ground Rod 10-Foot,5/8 inch solid stainless steel ground rod,Grounding Electrodes,each,140,0.35,89.33
+Copper Ground Rod 8-Foot,1/2 inch copper-clad steel ground rod,Grounding Electrodes,each,55,0.25,34
+Ground Rod Drive Sleeve,Drive head adapter for installation hammer drill,Grounding Electrodes,each,35,0.1,22
+Ground Rod Clamp Heavy Duty,High strength bronze clamp for cable to rod,Grounding Electrodes,each,22,0.1,14
+Radical Ground Plate,Copper ground plate for rocky soil conditions,Grounding Electrodes,each,180,0.5,113.33
+Concrete Encased Ground Ufer,Rebar bonding clamp for foundation grounding,Grounding Electrodes,each,45,0.2,28
+Ground Inspection Well Box,Polymer concrete flush-grade test well box,Grounding Electrodes,each,125,0.4,75.33
+Surge Protective Device Service Entrance,Main electrical panel whole-home SPD installation,Surge Protection,each,450,1.2,200
+Subpanel Surge Protective Device,Secondary distribution panel SPD unit,Surge Protection,each,320,1,133.33
+Data Line Surge Protector,Ethernet and coaxial lightning surge suppressor,Surge Protection,each,150,0.6,50
+HVAC Unit Surge Protector,Dedicated surge suppressor for exterior AC compressor,Surge Protection,each,220,0.8,80
+Low Voltage Signal Line Protector,Security and automation line surge suppressor,Surge Protection,each,175,0.7,56.67
+Structural Steel Bonding Kit,Heavy structural steel frame bonding clamp,Equipotential Bonding,each,65,0.3,36
+Metal Body Water Pipe Bond,Main water service line bonding clamp,Equipotential Bonding,each,40,0.2,22
+Gas Pipe Bonding Clamp,CSST and black iron gas line bonding assembly,Equipotential Bonding,each,55,0.25,30
+Chimney Bonding Assembly,Metal flue and masonry chimney bonding kit,Equipotential Bonding,each,95,0.4,50
+Roof Antenna Mast Bonder,Satellite dish and antenna mast bonding kit,Equipotential Bonding,each,50,0.25,26
+Skylight Frame Bonding Clip,Metal skylight perimeter bonding fastener,Equipotential Bonding,each,35,0.2,18
+Structural Column Ground Jumper,Flexible braided copper column bonding strap,Equipotential Bonding,each,60,0.3,33
+Residential System Installation Labor,Complete residential system installation package,System Installations,job,3500,16,1000
+Commercial Low-Rise Installation Labor,Commercial flat roof system installation package,System Installations,job,7500,36,2000
+Steep Slope Roof Surcharge,Additional safety rigging for roofs over 8/12 pitch,System Installations,sq ft,2,0.01,0.8
+Lightning Protection Permit Processing,Local municipal permit acquisition and filing fee,Permits and Inspections,job,250,2,0
+UL Master Label Certification Inspection,Underwriters Laboratories inspection and certification fee,Permits and Inspections,job,650,3,183.33
+LPI System Inspection Certificate,Lightning Protection Institute compliance certificate,Permits and Inspections,job,400,2,100
+Municipal Plan Submission Fee,Engineering document submittal to city building department,Permits and Inspections,job,175,1.4,0
+Existing System Storm Repair,Post-strike conductor and rod replacement labor,Repairs and Maintenance,job,1200,6,293.33
+Corroded Conductor Replacement,Section replacement of oxidized cable runs,Repairs and Maintenance,linear ft,18,0.08,8
+Loose Air Terminal Re-Securing,Re-anchoring and tightening unstable lightning rods,Repairs and Maintenance,each,65,0.4,10
+Broken Ground Rod Replacement,Extraction and replacement of damaged ground rod,Repairs and Maintenance,each,220,1.2,46.67
+Roof Penetration Sealing,Waterproofing membrane repair around conductor penetrations,Repairs and Maintenance,each,95,0.5,22
+Conductor Guard Molding 10-Foot,PVC protective guard for wall-mounted down conductors,Parts and Hardware,each,35,0.15,11
+Aluminum Conductor Guard 10-Foot,Heavy duty metal guard for ground level cable protection,Parts and Hardware,each,55,0.15,24.33
+Stainless Steel Banding Strap,Pole mounting band for down conductor guards,Parts and Hardware,each,15,0.05,6
+Bimetallic Washer Set,Prevention washers for galvanic corrosion,Parts and Hardware,each,12,0.05,4
+Roof Penetration Flashing Boot,EPDM rubber roof pitch pocket and flashing,Parts and Hardware,each,45,0.2,13.33
+Stainless Steel Screws Box 100,Corrosion-resistant fasteners for system mounts,Parts and Hardware,each,32,0.05,17
+High-Temp Silicone Sealant Tube,Weatherproofing sealant for roof anchors,Parts and Hardware,each,18,0.05,8
+Underground Warning Tape,Caution tape for buried lightning ground conductors,Parts and Hardware,linear ft,1,0.005,0.4
+Copper Down Conductor Guard,Heavy copper protective guard for lower wall runs,Parts and Hardware,each,75,0.3,25
+Tree Protection Air Terminal System,Suspended cable and rod system for heritage trees,Specialty Applications,job,2200,10,633.33
+Steeple Lightning Protection Package,Specialized steeple jack installation for church towers,Specialty Applications,job,4500,20,1333.33
+Wind Turbine Grounding Kit,Slip-ring and structural grounding for wind generators,Specialty Applications,job,1800,8,533.33
+Solar Panel Array Bonding Kit,Frame bonding jumpers and lugs for PV systems,Specialty Applications,job,650,3,183.33
+Flagpole Lightning Protection Kit,Top-mounted rod and internal down conductor system,Specialty Applications,job,950,4.5,250
+Water Tank Lightning Protection System,Ground ring and upper terminal ring for storage tanks,Specialty Applications,job,3200,14,933.33
+Architectural Concealment Installation,Hidden conductor routing behind brick facade during build,Specialty Applications,linear ft,15,0.08,3.4
+High-Rise Structural Bonding Grid,Multi-tier intermediate loop bonding for skyscrapers,Specialty Applications,floor,1500,6,493.33
+Temporary Lightning Protection System,Interim grounding system during open construction phases,Specialty Applications,month,850,4,233.33
+Debris Disposal Fee,Haul away and recycling of old system components,Disposal and Cleanup,job,150,0,100
+Hazardous Material Handling Fee,Special disposal for contaminated soil around old grounds,Disposal and Cleanup,job,275,0,183.33
+Scaffolding Rental and Setup,Perimeter staging rental for multi-story access,Equipment Rental,week,1200,4,466.67
+Boom Lift Rental Daily,Articulating boom lift for high roof access,Equipment Rental,day,650,2,266.67
+Core Drilling Concrete Service,Diamond core drilling through foundation for ground leads,Specialty Applications,each,175,1,33.33
+Trenching for Ground Rings,Mechanical trenching 2 feet deep for ground wire loops,Grounding Electrodes,linear ft,12,0.06,3
+Backfilling and Surface Restoration,Soil compaction and turf repair after trenching,Grounding Electrodes,linear ft,8,0.04,2
+Annual Maintenance Contract,Yearly system inspection and resistance testing agreement,Diagnostics and Service,visit,300,1.6,66.67
+Surge Protection Maintenance Check,Testing and status verification of all home SPDs,Surge Protection,visit,150,0.8,33.33
+Rush Engineering Stamp,Expedited PE stamp on lightning protection layouts,Labor Rates,job,500,4,0
+Security Camera Lightning Isolation,Fiber optic media converter kit for camera surge isolation,Surge Protection,each,280,1.2,86.67
+Historic Building Preservation Surcharge,Careful non-destructive installation techniques for old homes,Specialty Applications,job,1100,6,233.33

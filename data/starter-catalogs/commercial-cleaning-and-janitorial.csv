@@ -1,91 +1,91 @@
-name,description,category,unit,price
-Standard Janitorial Labor,General cleaning labor per technician per hour,Labor,hour,45
-Supervisor Labor,On-site lead supervisor or quality control per hour,Labor,hour,65
-Specialized Floor Care Labor,"Technician for stripping, waxing, or buffing floors",Labor,hour,60
-Emergency After-Hours Labor,Urgent cleanup or emergency response per hour,Labor,hour,95
-Holiday Rate Labor,Cleaning services performed on recognized holidays,Labor,hour,110
-Day Porter Services,Dedicated daytime maintenance and upkeep per hour,Labor,hour,40
-High-Dusting Labor,"Specialized crew for rafters, vents, and high fixtures",Labor,hour,75
-Post-Construction Cleanup Labor,Heavy debris removal and fine cleaning per hour,Labor,hour,70
-Window Cleaning Labor,Interior and exterior ground-level window washing,Labor,hour,65
-Pressure Washing Labor,Exterior power washing operator and equipment,Labor,hour,85
-Standard Office Cleaning,"Trash, dusting, and vacuuming per visit",Routine Maintenance,visit,150
-Restroom Sanitation Service,Deep cleaning and disinfecting of fixtures and floors,Routine Maintenance,visit,95
-Breakroom Deep Clean,"Counters, appliances, sinks, and tables sanitized",Routine Maintenance,visit,85
-Conference Room Refresh,"Dusting, glass cleaning, and trash removal",Routine Maintenance,visit,60
-Lobby and Reception Detailed Clean,High-visibility public area detailed upkeep,Routine Maintenance,visit,110
-Medical Facility Terminal Clean,Clinical grade sanitization for healthcare spaces,Routine Maintenance,sq ft,1
-Fitness Center Sanitation,"Equipment wipe-down, locker rooms, and floors",Routine Maintenance,visit,175
-School Classroom Cleaning,"Desks, floors, and trash disposal per room",Routine Maintenance,each,25
-Retail Store Floor Maintenance,"Daily sweep, mop, and entryway mat service",Routine Maintenance,visit,130
-VTC / Video Conference Room Wipe,Delicate dusting of electronics and touchscreens,Routine Maintenance,visit,45
-Carpet Spot Treatment,Targeted stain removal for stubborn spots,Floor Care,each,35
-V‌های Floor Strip and Wax,Complete removal of old finish and apply four coats,Floor Care,sq ft,1
-Concrete Diamond Polishing,Multi-step grinding and polishing for raw concrete,Floor Care,sq ft,2
-Tile and Grout Deep Scrub,Rotary brush scrub with alkaline solution,Floor Care,sq ft,1
-Tile Grout Sealing,Protective sealer applied to clean grout lines,Floor Care,sq ft,1
-Anti-Static Floor Treatment,Specialty coating for server rooms and labs,Floor Care,sq ft,1
-Interior Window Washing,"Glass cleaning, sills, and frames inside",Window & Exterior,each,8
-Exterior Ground Window Washing,First-floor exterior glass cleaning,Window & Exterior,each,10
-Multi-Story Window Washing,Water-fed pole system for upper-level windows,Window & Exterior,sq ft,1
-Skylight Cleaning,Interior and exterior glass skylight wash,Window & Exterior,each,45
-Storefront Awning Power Wash,Canvas or vinyl awning deep wash,Window & Exterior,linear ft,12
-Loading Dock Pressure Wash,Grease and oil removal from concrete dock,Window & Exterior,job,350
-Dumpster Pad Sanitization,Hot water pressure wash and deodorizing treatment,Window & Exterior,job,250
-Graffiti Removal Service,Chemical removal and power rinse per spot,Window & Exterior,each,150
-HVAC Duct Cleaning,Supply and return vent trunk line vacuuming,Disinfection & Specialty,linear ft,8
-Air Purifier Filter Replacement,HEPA filter swap for commercial units,Disinfection & Specialty,each,60
-Upholstery Deep Cleaning,Office chair or lobby sofa steam cleaning,Disinfection & Specialty,each,45
-Cubicle Partition Washing,Fabric panel vacuum and spot clean,Disinfection & Specialty,each,30
-Blind and Shutter Cleaning,Ultrasonic or manual blind slat cleaning,Disinfection & Specialty,each,25
-Light Fixture Lens Cleaning,"Removal, wash, and reinstall of troffer lenses",Disinfection & Specialty,each,15
-Refrigerator Interior Clean,Complete washout and deodorize breakroom fridge,Disinfection & Specialty,each,75
-Oven and Microwave Deep Clean,Degreasing and scrubbing interior appliances,Disinfection & Specialty,each,65
-Biohazard Spill Cleanup,Bloodborne pathogen remediation and disposal,Disinfection & Specialty,job,450
-Jumbo Roll Toilet Paper,Case of 2-ply commercial bath tissue rolls,Consumables & Supplies,each,55
-Standard Toilet Paper,Case of standard household rolls for dispensers,Consumables & Supplies,each,45
-C-Fold Paper Towels,Case of multi-fold paper hand towels,Consumables & Supplies,each,40
-Hardwound Roll Paper Towels,Case of automated dispenser paper rolls,Consumables & Supplies,each,50
-Foam Hand Soap Refill,Case of antibacterial soap bags for dispensers,Consumables & Supplies,each,65
-Liquid Hand Soap Refill,Gallon jug of standard commercial hand soap,Consumables & Supplies,gallon,28
-Urinal Screens with Blocks,Deodorizing splash-guard screen with enzyme block,Consumables & Supplies,each,8
-Toilet Bowl Deodorizer Clips,Rim hanger or tank deodorizer block,Consumables & Supplies,each,6
-Trash Can Liners Small,Case of 10-gallon low-density trash bags,Consumables & Supplies,each,22
-Trash Can Liners Large,Case of 55-gallon heavy-duty contractor bags,Consumables & Supplies,each,45
-Disinfectant Surface Wipes,Bucket of 800 hospital-grade surface wipes,Consumables & Supplies,each,35
-Hand Sanitizer Refill,1200ml gel hand sanitizer station refill bag,Consumables & Supplies,each,42
-Entrance Mat Rental Service,Weekly swap of 3x10 heavy-duty scraper mats,Mats & Linens,visit,25
-Logo Mat Rental Service,Custom branded floor mat weekly exchange,Mats & Linens,visit,40
-Anti-Fatigue Mat Rental,Ergonomic standing mat weekly exchange,Mats & Linens,visit,30
-Restroom Linen Service,Cloth hand towel roll and uniform laundry,Mats & Linens,visit,35
-Wet Mop Head Replacement,Laundered cotton or microfiber mop head swap,Mats & Linens,each,12
-Microfiber Cloth Supply,Pack of 50 color-coded cleaning cloths,Mats & Linens,each,30
-Dispenser Installation Labor,"Mounting wall soap, towel, or tissue dispensers",Equipment & Hardware,each,25
-Paper Towel Dispenser Replacement,New mechanical or touchless dispenser unit,Equipment & Hardware,each,75
-Soap Dispenser Replacement,New wall-mounted electronic soap dispenser,Equipment & Hardware,each,60
-Toilet Paper Dispenser Replacement,High-capacity dual roll tissue dispenser unit,Equipment & Hardware,each,50
-Hand Dryer Repair,Troubleshoot and replace motor or sensor,Equipment & Hardware,each,120
-Hand Dryer Installation,Electrical hookup and wall mount for electric dryer,Equipment & Hardware,each,175
-Feminine Hygiene Dispenser Service,Sanitary napkin disposal unit service and liner,Equipment & Hardware,visit,20
-Urinal Flapper and Valve Repair,Fix running or leaking commercial flush valve,Equipment & Hardware,each,95
-Toilet Flushometer Replacement,New commercial diaphragm and handle unit,Equipment & Hardware,each,150
-Air Freshener Dispenser Install,Programmable automated aerosol unit with refill,Equipment & Hardware,each,45
-After-Hours Key Access Fee,Management of security badges and master keys,Consulting & Fees,visit,15
-Hazardous Waste Disposal Fee,Special regulatory disposal for medical waste,Consulting & Fees,job,100
-Heavy Debris Dumpster Rental,Roll-off container for post-construction cleanouts,Consulting & Fees,job,550
-Specialty Equipment Mobilization,Transport of ride-on scrubbers to remote sites,Consulting & Fees,job,125
-Security Escort Fee,Required guard service for high-security facilities,Consulting & Fees,hour,50
-Rush Service Surcharge,Next-day or same-day cleaning mobilization fee,Consulting & Fees,job,150
-Green Cleaning Certification Surcharge,100% LEED-compliant chemical and paper product use,Consulting & Fees,visit,25
-Parking and Toll Fee Allocation,Urban facility parking and transit cost recovery,Consulting & Fees,visit,20
-Storage Locker Rental,On-site lockable supply cabinet rental per month,Consulting & Fees,each,50
-Carpet Water Extraction and Drying,Emergency flood extraction and air mover setup,Emergency & Restoration,sq ft,1
-Air Mover Fan Rental,Industrial drying fan placement per unit per day,Emergency & Restoration,day,25
-Dehumidifier Rental,Commercial refrigerant dehumidifier per day,Emergency & Restoration,day,75
-Smoke Damage Residue Wipe,Chemical sponge soot removal from walls and ceilings,Emergency & Restoration,hour,85
-Ozone Odor Treatment,Machine-based shock treatment for smoke or mildew,Emergency & Restoration,day,200
-Vandalism Cleanup Service,"Paint, ink, and damage remediation per hour",Emergency & Restoration,hour,80
-Sewer Backup Sanitization,Sanitizing affected areas after black water backup,Emergency & Restoration,sq ft,2
-Pest Dropping Cleanup,HEPA vacuuming and sanitizing of rodent waste areas,Emergency & Restoration,job,250
-Glass Breakage Clean-Up,Sweeping and safe disposal of shattered commercial glass,Emergency & Restoration,hour,75
-Storm Debris Sweep,Clearing entryway leaves and windblown debris,Emergency & Restoration,hour,50
+name,description,category,unit,price,labor_hours,material_cost
+Standard Janitorial Labor,General cleaning labor per technician per hour,Labor,hour,45,0.36,0
+Supervisor Labor,On-site lead supervisor or quality control per hour,Labor,hour,65,1,0
+Specialized Floor Care Labor,"Technician for stripping, waxing, or buffing floors",Labor,hour,60,1,0
+Emergency After-Hours Labor,Urgent cleanup or emergency response per hour,Labor,hour,95,1,0
+Holiday Rate Labor,Cleaning services performed on recognized holidays,Labor,hour,110,1,0
+Day Porter Services,Dedicated daytime maintenance and upkeep per hour,Labor,hour,40,0.32,0
+High-Dusting Labor,"Specialized crew for rafters, vents, and high fixtures",Labor,hour,75,1,0
+Post-Construction Cleanup Labor,Heavy debris removal and fine cleaning per hour,Labor,hour,70,1,0
+Window Cleaning Labor,Interior and exterior ground-level window washing,Labor,hour,65,1,0
+Pressure Washing Labor,Exterior power washing operator and equipment,Labor,hour,85,1,0
+Standard Office Cleaning,"Trash, dusting, and vacuuming per visit",Routine Maintenance,visit,150,1,16.67
+Restroom Sanitation Service,Deep cleaning and disinfecting of fixtures and floors,Routine Maintenance,visit,95,0.5,23.33
+Breakroom Deep Clean,"Counters, appliances, sinks, and tables sanitized",Routine Maintenance,visit,85,0.5,16.67
+Conference Room Refresh,"Dusting, glass cleaning, and trash removal",Routine Maintenance,visit,60,0.4,6.67
+Lobby and Reception Detailed Clean,High-visibility public area detailed upkeep,Routine Maintenance,visit,110,0.6,23.33
+Medical Facility Terminal Clean,Clinical grade sanitization for healthcare spaces,Routine Maintenance,sq ft,1,0.005,0.25
+Fitness Center Sanitation,"Equipment wipe-down, locker rooms, and floors",Routine Maintenance,visit,175,1,33.33
+School Classroom Cleaning,"Desks, floors, and trash disposal per room",Routine Maintenance,each,25,0.15,4.33
+Retail Store Floor Maintenance,"Daily sweep, mop, and entryway mat service",Routine Maintenance,visit,130,0.8,20
+VTC / Video Conference Room Wipe,Delicate dusting of electronics and touchscreens,Routine Maintenance,visit,45,0.3,5
+Carpet Spot Treatment,Targeted stain removal for stubborn spots,Floor Care,each,35,0.2,6.67
+V‌های Floor Strip and Wax,Complete removal of old finish and apply four coats,Floor Care,sq ft,1,0.005,0.25
+Concrete Diamond Polishing,Multi-step grinding and polishing for raw concrete,Floor Care,sq ft,2,0.01,0.5
+Tile and Grout Deep Scrub,Rotary brush scrub with alkaline solution,Floor Care,sq ft,1,0.005,0.25
+Tile Grout Sealing,Protective sealer applied to clean grout lines,Floor Care,sq ft,1,0.005,0.25
+Anti-Static Floor Treatment,Specialty coating for server rooms and labs,Floor Care,sq ft,1,0.005,0.25
+Interior Window Washing,"Glass cleaning, sills, and frames inside",Window & Exterior,each,8,0.05,1.17
+Exterior Ground Window Washing,First-floor exterior glass cleaning,Window & Exterior,each,10,0.06,1.67
+Multi-Story Window Washing,Water-fed pole system for upper-level windows,Window & Exterior,sq ft,1,0.005,0.25
+Skylight Cleaning,Interior and exterior glass skylight wash,Window & Exterior,each,45,0.25,9.17
+Storefront Awning Power Wash,Canvas or vinyl awning deep wash,Window & Exterior,linear ft,12,0.06,2.83
+Loading Dock Pressure Wash,Grease and oil removal from concrete dock,Window & Exterior,job,350,1.5,113.33
+Dumpster Pad Sanitization,Hot water pressure wash and deodorizing treatment,Window & Exterior,job,250,1,83.33
+Graffiti Removal Service,Chemical removal and power rinse per spot,Window & Exterior,each,150,0.8,35
+HVAC Duct Cleaning,Supply and return vent trunk line vacuuming,Disinfection & Specialty,linear ft,8,0.04,2
+Air Purifier Filter Replacement,HEPA filter swap for commercial units,Disinfection & Specialty,each,60,0.2,22.67
+Upholstery Deep Cleaning,Office chair or lobby sofa steam cleaning,Disinfection & Specialty,each,45,0.25,9.17
+Cubicle Partition Washing,Fabric panel vacuum and spot clean,Disinfection & Specialty,each,30,0.15,7.33
+Blind and Shutter Cleaning,Ultrasonic or manual blind slat cleaning,Disinfection & Specialty,each,25,0.15,4.33
+Light Fixture Lens Cleaning,"Removal, wash, and reinstall of troffer lenses",Disinfection & Specialty,each,15,0.08,3.5
+Refrigerator Interior Clean,Complete washout and deodorize breakroom fridge,Disinfection & Specialty,each,75,0.4,16.67
+Oven and Microwave Deep Clean,Degreasing and scrubbing interior appliances,Disinfection & Specialty,each,65,0.35,14.17
+Biohazard Spill Cleanup,Bloodborne pathogen remediation and disposal,Disinfection & Specialty,job,450,2,133.33
+Jumbo Roll Toilet Paper,Case of 2-ply commercial bath tissue rolls,Consumables & Supplies,each,55,0.05,33.33
+Standard Toilet Paper,Case of standard household rolls for dispensers,Consumables & Supplies,each,45,0.05,26.67
+C-Fold Paper Towels,Case of multi-fold paper hand towels,Consumables & Supplies,each,40,0.05,23.33
+Hardwound Roll Paper Towels,Case of automated dispenser paper rolls,Consumables & Supplies,each,50,0.05,30
+Foam Hand Soap Refill,Case of antibacterial soap bags for dispensers,Consumables & Supplies,each,65,0.05,38.67
+Liquid Hand Soap Refill,Gallon jug of standard commercial hand soap,Consumables & Supplies,gallon,28,0.05,14.67
+Urinal Screens with Blocks,Deodorizing splash-guard screen with enzyme block,Consumables & Supplies,each,8,0.05,3.67
+Toilet Bowl Deodorizer Clips,Rim hanger or tank deodorizer block,Consumables & Supplies,each,6,0.05,2.67
+Trash Can Liners Small,Case of 10-gallon low-density trash bags,Consumables & Supplies,each,22,0.05,13
+Trash Can Liners Large,Case of 55-gallon heavy-duty contractor bags,Consumables & Supplies,each,45,0.05,28.33
+Disinfectant Surface Wipes,Bucket of 800 hospital-grade surface wipes,Consumables & Supplies,each,35,0.05,21.67
+Hand Sanitizer Refill,1200ml gel hand sanitizer station refill bag,Consumables & Supplies,each,42,0.05,25.33
+Entrance Mat Rental Service,Weekly swap of 3x10 heavy-duty scraper mats,Mats & Linens,visit,25,0.1,8.33
+Logo Mat Rental Service,Custom branded floor mat weekly exchange,Mats & Linens,visit,40,0.1,18.33
+Anti-Fatigue Mat Rental,Ergonomic standing mat weekly exchange,Mats & Linens,visit,30,0.1,11.67
+Restroom Linen Service,Cloth hand towel roll and uniform laundry,Mats & Linens,visit,35,0.1,15
+Wet Mop Head Replacement,Laundered cotton or microfiber mop head swap,Mats & Linens,each,12,0.05,6.33
+Microfiber Cloth Supply,Pack of 50 color-coded cleaning cloths,Mats & Linens,each,30,0.05,18.33
+Dispenser Installation Labor,"Mounting wall soap, towel, or tissue dispensers",Equipment & Hardware,each,25,0.2,0
+Paper Towel Dispenser Replacement,New mechanical or touchless dispenser unit,Equipment & Hardware,each,75,0.3,25
+Soap Dispenser Replacement,New wall-mounted electronic soap dispenser,Equipment & Hardware,each,60,0.25,19.17
+Toilet Paper Dispenser Replacement,High-capacity dual roll tissue dispenser unit,Equipment & Hardware,each,50,0.2,16.67
+Hand Dryer Repair,Troubleshoot and replace motor or sensor,Equipment & Hardware,each,120,0.75,17.5
+Hand Dryer Installation,Electrical hookup and wall mount for electric dryer,Equipment & Hardware,each,175,1,33.33
+Feminine Hygiene Dispenser Service,Sanitary napkin disposal unit service and liner,Equipment & Hardware,visit,20,0.1,6.67
+Urinal Flapper and Valve Repair,Fix running or leaking commercial flush valve,Equipment & Hardware,each,95,0.5,21.67
+Toilet Flushometer Replacement,New commercial diaphragm and handle unit,Equipment & Hardware,each,150,0.75,37.5
+Air Freshener Dispenser Install,Programmable automated aerosol unit with refill,Equipment & Hardware,each,45,0.25,9.17
+After-Hours Key Access Fee,Management of security badges and master keys,Consulting & Fees,visit,15,0,10
+Hazardous Waste Disposal Fee,Special regulatory disposal for medical waste,Consulting & Fees,job,100,0,66.67
+Heavy Debris Dumpster Rental,Roll-off container for post-construction cleanouts,Consulting & Fees,job,550,0,366.67
+Specialty Equipment Mobilization,Transport of ride-on scrubbers to remote sites,Consulting & Fees,job,125,0,83.33
+Security Escort Fee,Required guard service for high-security facilities,Consulting & Fees,hour,50,0.4,0
+Rush Service Surcharge,Next-day or same-day cleaning mobilization fee,Consulting & Fees,job,150,0,100
+Green Cleaning Certification Surcharge,100% LEED-compliant chemical and paper product use,Consulting & Fees,visit,25,0,16.67
+Parking and Toll Fee Allocation,Urban facility parking and transit cost recovery,Consulting & Fees,visit,20,0,13.33
+Storage Locker Rental,On-site lockable supply cabinet rental per month,Consulting & Fees,each,50,0,33.33
+Carpet Water Extraction and Drying,Emergency flood extraction and air mover setup,Emergency & Restoration,sq ft,1,0.005,0.25
+Air Mover Fan Rental,Industrial drying fan placement per unit per day,Emergency & Restoration,day,25,0,16.67
+Dehumidifier Rental,Commercial refrigerant dehumidifier per day,Emergency & Restoration,day,75,0,50
+Smoke Damage Residue Wipe,Chemical sponge soot removal from walls and ceilings,Emergency & Restoration,hour,85,0.68,0
+Ozone Odor Treatment,Machine-based shock treatment for smoke or mildew,Emergency & Restoration,day,200,0.5,91.67
+Vandalism Cleanup Service,"Paint, ink, and damage remediation per hour",Emergency & Restoration,hour,80,0.64,0
+Sewer Backup Sanitization,Sanitizing affected areas after black water backup,Emergency & Restoration,sq ft,2,0.01,0.5
+Pest Dropping Cleanup,HEPA vacuuming and sanitizing of rodent waste areas,Emergency & Restoration,job,250,1,83.33
+Glass Breakage Clean-Up,Sweeping and safe disposal of shattered commercial glass,Emergency & Restoration,hour,75,0.6,0
+Storm Debris Sweep,Clearing entryway leaves and windblown debris,Emergency & Restoration,hour,50,0.4,0

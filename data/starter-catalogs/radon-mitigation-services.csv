@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Standard Radon Test,Continuous radon monitor placement for forty-eight hours.,Testing and Diagnostics,visit,175
-Short-Term Radon Test Kit,Charcoal canister placement for screening measurement.,Testing and Diagnostics,each,50
-Radon System Diagnostic Evaluation,Troubleshooting existing mitigation system performance and pressure.,Testing and Diagnostics,hour,150
-Post-Mitigation Test,Verification test following system installation.,Testing and Diagnostics,visit,125
-Commercial Radon Testing,Multi-room continuous testing for commercial buildings.,Testing and Diagnostics,each,350
-Radon Consultation Visit,On-site assessment and mitigation design proposal.,Testing and Diagnostics,visit,100
-Soil Gas Pressure Field Extension Test,Diagnostic testing to determine sub-slab communication.,Testing and Diagnostics,job,250
-Radon Water Testing,Water sample collection for radon in well water.,Testing and Diagnostics,each,150
-Standard Labor Rate,Hourly labor rate for standard technician work.,Labor and Permits,hour,125
-After-Hours Emergency Labor,Hourly rate for emergency service calls.,Labor and Permits,hour,225
-Local Building Permit,Acquisition of municipal radon installation permit.,Labor and Permits,each,100
-System Disposal Fee,Removal and disposal of old mitigation components.,Labor and Permits,job,75
-Core Drilling Labor,Core drilling through concrete foundation floor.,Labor and Permits,each,120
-Crawlspace Excavation Labor,Digging suction pit in crawlspace soil.,Labor and Permits,hour,95
-Electrical Run Labor,Running dedicated electrical line for system fan.,Labor and Permits,hour,150
-Difficult Access Surcharge,Additional labor for restricted workspace conditions.,Labor and Permits,job,200
-Standard Radon Fan Replacement,Replacement of standard inline radon mitigation fan.,Fan Replacement and Repair,each,450
-High-Suction Radon Fan Replacement,Replacement of high-pressure radon mitigation fan.,Fan Replacement and Repair,each,525
-Commercial Radon Fan Replacement,Replacement of heavy-duty commercial radon fan.,Fan Replacement and Repair,each,850
-Fan Power Cord Replacement,Replacement of damaged fan power cord assembly.,Fan Replacement and Repair,each,85
-Fan Capacitor Replacement,Replacement of fan starting capacitor.,Fan Replacement and Repair,each,110
-Fan Bracket Replacement,Replacement of rubber mounting brackets.,Fan Replacement and Repair,each,65
-U-Tube Manometer Replacement,Replacement of broken or dry pressure gauge.,Fan Replacement and Repair,each,75
-Digital Manometer Installation,Upgrade to digital pressure monitor with alarm.,Fan Replacement and Repair,each,220
-PVC Vent Pipe Repair,Repair of cracked or separated PVC exhaust piping.,Piping and Venting,linear ft,25
-Schedule 40 PVC Pipe 3 Inch,Installation of 3-inch PVC vent pipe.,Piping and Venting,linear ft,18
-Schedule 40 PVC Pipe 4 Inch,Installation of 4-inch PVC vent pipe.,Piping and Venting,linear ft,24
-PVC Coupling Installation,Replacement or addition of PVC pipe coupling.,Piping and Venting,each,30
-PVC 90 Degree Elbow,Installation of 90-degree PVC elbow fitting.,Piping and Venting,each,35
-PVC 45 Degree Elbow,Installation of 45-degree PVC elbow fitting.,Piping and Venting,each,35
-Rubber Fernco Coupling,Flexible rubber coupling for fan connection.,Piping and Venting,each,40
-Condensate Bypass Kit,Drain line installation to prevent water in fan.,Piping and Venting,each,95
-Roof Penetration Flashing,Weatherproof flashing and storm collar for roof exit.,Roof and Wall Penetrations,each,175
-Sidewall Vent Termination,Horizontal exhaust termination through exterior wall.,Roof and Wall Penetrations,each,150
-Wall Penetration Sealing,Core drill and waterproof seal through foundation wall.,Roof and Wall Penetrations,each,130
-Roof Boot Replacement,Replacement of leaking roof penetration boot.,Roof and Wall Penetrations,each,160
-Eaves Extension Pipe,Pipe extension to clear roof overhang.,Roof and Wall Penetrations,linear ft,22
-Soffit Penetration Kit,Venting pipe through soffit with screened termination.,Roof and Wall Penetrations,each,140
-Flashing Storm Collar,Metal storm collar sealed above roof boot.,Roof and Wall Penetrations,each,45
-Exterior Wall Thimble,Protective sleeve for wall pipe penetration.,Roof and Wall Penetrations,each,65
-Sub-Slab Depressurization System,Standard complete active radon mitigation system installation.,System Installations,job,1650
-Multi-Point Sub-Slab System,Radon system with two suction pits for large footprints.,System Installations,job,2200
-Crawlspace Membrane System,Complete vapor barrier and sub-membrane depressurization.,System Installations,job,2400
-Sump Pump Radon Cover,Airtight sealed cover for existing sump pit.,System Installations,each,275
-Drain Tile Suction Connection,Tying mitigation system into internal drain tile.,System Installations,job,350
-Block Wall Suction System,Depressurization system tied into hollow block walls.,System Installations,job,1900
-Passive to Active System Upgrade,Converting existing passive radon pipe to active system.,System Installations,job,750
-Commercial System Installation,Custom engineered multi-fan commercial mitigation system.,System Installations,job,4500
-Polyethylene Vapor Barrier 6 Mil,Installation of basic crawlspace vapor retarder.,Crawlspace Solutions,sq ft,1.25
-Reinforced Vapor Barrier 20 Mil,Heavy-duty puncture-resistant crawlspace liner.,Crawlspace Solutions,sq ft,2.5
-Crawlspace Seam Tape,Chemical-resistant seam tape for vapor barrier.,Crawlspace Solutions,linear ft,1.5
-Crawlspace Wall Fasteners,Mechanical fasteners for securing liner to foundation walls.,Crawlspace Solutions,each,3
-Perimeter Trenching,Digging trenches for sub-membrane suction piping.,Crawlspace Solutions,linear ft,12
-Perforated Drainage Pipe,Corrugated perforated pipe for sub-liner airflow.,Crawlspace Solutions,linear ft,6
-Crawlspace Access Door Seal,Weatherstripping and sealing crawlspace access hatch.,Crawlspace Solutions,each,110
-Dehumidifier Drain Connection,Connecting crawlspace dehumidifier to discharge line.,Crawlspace Solutions,each,125
-Foundation Crack Injection Polyurethane,Sealing structural cracks to improve system efficiency.,Sealing and Caulking,linear ft,25
-Epoxy Crack Repair,Structural epoxy injection for foundation cracks.,Sealing and Caulking,linear ft,35
-Slab Joint Sealing,Polyurethane sealant applied to expansion joints.,Sealing and Caulking,linear ft,8
-Sump Basin Rim Sealing,Airtight silicone seal around sump pit perimeter.,Sealing and Caulking,linear ft,10
-Utility Penetration Sealing,Sealing gaps around pipes and wires entering slab.,Sealing and Caulking,each,45
-Sub-Slab Pit Patching,Concrete patching mix for suction pit restoration.,Sealing and Caulking,each,65
-Airtight Access Hatch,Replacement sealed access door for utility pit.,Sealing and Caulking,each,150
-Radon Resistant Caulk Tube,High-grade elastomeric sealant for air gaps.,Sealing and Caulking,each,22
-Dedicated Fan Disconnect Box,Weatherproof electrical shut-off switch near fan.,Electrical and Monitoring,each,135
-Radon System Alarm Installation,Audible and visual pressure failure alarm.,Electrical and Monitoring,each,160
-Continuous Radon Monitor Hardwire,Permanent digital radon monitor wall installation.,Electrical and Monitoring,each,250
-Electrical Outlet Installation,GFCI outlet installed for radon fan power.,Electrical and Monitoring,each,175
-Alarm Battery Replacement,Replacement of backup battery in radon alarm.,Electrical and Monitoring,each,35
-Wire Conduit Installation,Protective electrical conduit for exposed wiring.,Electrical and Monitoring,linear ft,12
-Smart Radon Detector Integration,Wi-Fi enabled radon sensor setup and pairing.,Electrical and Monitoring,each,220
-System Power Indicator Light,Pilot light indicator for remote fan operation check.,Electrical and Monitoring,each,75
-Downspout Style Pipe Camouflage,Decorative metal wrap to hide exterior PVC pipe.,Cosmetics and Upgrades,linear ft,15
-Custom Paint PVC Pipe,Painting exterior vent pipe to match siding color.,Cosmetics and Upgrades,linear ft,8
-Fan Noise Muffler,Acoustic silencer attachment to reduce fan sound.,Cosmetics and Upgrades,each,140
-Decorative Fan Cover,Protective aesthetic housing enclosure for exterior fan.,Cosmetics and Upgrades,each,110
-Interior Pipe Boxing,Drywall enclosure framing for interior PVC run.,Cosmetics and Upgrades,linear ft,45
-Epoxy Floor Coating Patch,Touch-up epoxy coating around core drilled areas.,Cosmetics and Upgrades,job,90
-Custom Pipe Routing Labor,Complex routing to avoid architectural obstacles.,Cosmetics and Upgrades,hour,60
-Landscape Shield Guard,Protective bollard or cage around low exterior pipe.,Cosmetics and Upgrades,each,85
-Annual Maintenance Service Plan,"Yearly system check, pressure test, and calibration.",Service Plans and Warranties,visit,150
-Extended Fan Warranty Transfer,Transferrable extended parts warranty for new owners.,Service Plans and Warranties,job,100
-Radon Guarantee Certification,Guaranteed low radon level performance certification.,Service Plans and Warranties,job,75
-Priority Service Agreement,VIP expedited scheduling for maintenance and repairs.,Service Plans and Warranties,visit,200
-Commercial Maintenance Visit,Bi-annual commercial radon system inspection.,Service Plans and Warranties,visit,300
-System Re-Inspection Letter,Documentation for real estate transaction compliance.,Service Plans and Warranties,each,125
-Filter Replacement Service,Replacement of inline air or moisture filters.,Service Plans and Warranties,each,90
-Warranty Diagnostic Call,Troubleshooting visit under active workmanship warranty.,Service Plans and Warranties,visit,75
-Radon Water Aeration System,Complete water treatment system to remove dissolved radon.,Water Radon Mitigation,job,3800
-GAC Water Filter Tank,Granular activated carbon tank for radon removal.,Water Radon Mitigation,each,1600
-Water System Exhaust Vent,Venting installation for radon water aeration unit.,Water Radon Mitigation,linear ft,20
-Water Aerator Maintenance,Cleaning and servicing radon water treatment system.,Water Radon Mitigation,visit,250
-GAC Media Replacement,Replacing carbon filter media in water treatment tank.,Water Radon Mitigation,job,650
-Water Bypass Valve Installation,Plumbing bypass valves for water filtration unit.,Water Radon Mitigation,each,180
-Ultraviolet Disinfection Add-on,UV sterilizer lamp for treated well water.,Water Radon Mitigation,each,750
-Water System Pressure Test,Testing water pressure and flow after mitigation work.,Water Radon Mitigation,visit,95
-Radon Mitigation Peer Review,Engineering review of third-party system blueprints.,Consulting and Engineering,job,500
-Radon Mitigation Blueprint Design,Custom architectural drawing for commercial system.,Consulting and Engineering,job,750
-Radon Mitigation Expert Witness,Court testimony or legal deposition regarding radon levels.,Consulting and Engineering,hour,300
+name,description,category,unit,price,labor_hours,material_cost
+Standard Radon Test,Continuous radon monitor placement for forty-eight hours.,Testing and Diagnostics,visit,175,1,33.33
+Short-Term Radon Test Kit,Charcoal canister placement for screening measurement.,Testing and Diagnostics,each,50,0,33.33
+Radon System Diagnostic Evaluation,Troubleshooting existing mitigation system performance and pressure.,Testing and Diagnostics,hour,150,1.2,0
+Post-Mitigation Test,Verification test following system installation.,Testing and Diagnostics,visit,125,1,0
+Commercial Radon Testing,Multi-room continuous testing for commercial buildings.,Testing and Diagnostics,each,350,2,66.67
+Radon Consultation Visit,On-site assessment and mitigation design proposal.,Testing and Diagnostics,visit,100,0.8,0
+Soil Gas Pressure Field Extension Test,Diagnostic testing to determine sub-slab communication.,Testing and Diagnostics,job,250,1.5,43.33
+Radon Water Testing,Water sample collection for radon in well water.,Testing and Diagnostics,each,150,0.8,33.33
+Standard Labor Rate,Hourly labor rate for standard technician work.,Labor and Permits,hour,125,1,0
+After-Hours Emergency Labor,Hourly rate for emergency service calls.,Labor and Permits,hour,225,1,66.67
+Local Building Permit,Acquisition of municipal radon installation permit.,Labor and Permits,each,100,0,66.67
+System Disposal Fee,Removal and disposal of old mitigation components.,Labor and Permits,job,75,0,50
+Core Drilling Labor,Core drilling through concrete foundation floor.,Labor and Permits,each,120,0.8,13.33
+Crawlspace Excavation Labor,Digging suction pit in crawlspace soil.,Labor and Permits,hour,95,0.76,0
+Electrical Run Labor,Running dedicated electrical line for system fan.,Labor and Permits,hour,150,1.2,0
+Difficult Access Surcharge,Additional labor for restricted workspace conditions.,Labor and Permits,job,200,1.2,33.33
+Standard Radon Fan Replacement,Replacement of standard inline radon mitigation fan.,Fan Replacement and Repair,each,450,1.5,183.33
+High-Suction Radon Fan Replacement,Replacement of high-pressure radon mitigation fan.,Fan Replacement and Repair,each,525,1.5,233.33
+Commercial Radon Fan Replacement,Replacement of heavy-duty commercial radon fan.,Fan Replacement and Repair,each,850,2.5,366.67
+Fan Power Cord Replacement,Replacement of damaged fan power cord assembly.,Fan Replacement and Repair,each,85,0.5,15
+Fan Capacitor Replacement,Replacement of fan starting capacitor.,Fan Replacement and Repair,each,110,0.8,8.67
+Fan Bracket Replacement,Replacement of rubber mounting brackets.,Fan Replacement and Repair,each,65,0.3,18
+U-Tube Manometer Replacement,Replacement of broken or dry pressure gauge.,Fan Replacement and Repair,each,75,0.3,24.67
+Digital Manometer Installation,Upgrade to digital pressure monitor with alarm.,Fan Replacement and Repair,each,220,0.8,80
+PVC Vent Pipe Repair,Repair of cracked or separated PVC exhaust piping.,Piping and Venting,linear ft,25,0.15,4.33
+Schedule 40 PVC Pipe 3 Inch,Installation of 3-inch PVC vent pipe.,Piping and Venting,linear ft,18,0.08,7.87
+Schedule 40 PVC Pipe 4 Inch,Installation of 4-inch PVC vent pipe.,Piping and Venting,linear ft,24,0.1,10.33
+PVC Coupling Installation,Replacement or addition of PVC pipe coupling.,Piping and Venting,each,30,0.15,7
+PVC 90 Degree Elbow,Installation of 90-degree PVC elbow fitting.,Piping and Venting,each,35,0.15,10.33
+PVC 45 Degree Elbow,Installation of 45-degree PVC elbow fitting.,Piping and Venting,each,35,0.15,10.33
+Rubber Fernco Coupling,Flexible rubber coupling for fan connection.,Piping and Venting,each,40,0.15,12
+Condensate Bypass Kit,Drain line installation to prevent water in fan.,Piping and Venting,each,95,0.3,38.67
+Roof Penetration Flashing,Weatherproof flashing and storm collar for roof exit.,Roof and Wall Penetrations,each,175,0.8,50
+Sidewall Vent Termination,Horizontal exhaust termination through exterior wall.,Roof and Wall Penetrations,each,150,0.6,50
+Wall Penetration Sealing,Core drill and waterproof seal through foundation wall.,Roof and Wall Penetrations,each,130,0.6,36.67
+Roof Boot Replacement,Replacement of leaking roof penetration boot.,Roof and Wall Penetrations,each,160,0.8,43.33
+Eaves Extension Pipe,Pipe extension to clear roof overhang.,Roof and Wall Penetrations,linear ft,22,0.08,8.13
+Soffit Penetration Kit,Venting pipe through soffit with screened termination.,Roof and Wall Penetrations,each,140,0.6,43.33
+Flashing Storm Collar,Metal storm collar sealed above roof boot.,Roof and Wall Penetrations,each,45,0.2,13.33
+Exterior Wall Thimble,Protective sleeve for wall pipe penetration.,Roof and Wall Penetrations,each,65,0.3,18.67
+Sub-Slab Depressurization System,Standard complete active radon mitigation system installation.,System Installations,job,1650,6,600
+Multi-Point Sub-Slab System,Radon system with two suction pits for large footprints.,System Installations,job,2200,8,800
+Crawlspace Membrane System,Complete vapor barrier and sub-membrane depressurization.,System Installations,job,2400,9,850
+Sump Pump Radon Cover,Airtight sealed cover for existing sump pit.,System Installations,each,275,1,100
+Drain Tile Suction Connection,Tying mitigation system into internal drain tile.,System Installations,job,350,1.5,113.33
+Block Wall Suction System,Depressurization system tied into hollow block walls.,System Installations,job,1900,7,683.33
+Passive to Active System Upgrade,Converting existing passive radon pipe to active system.,System Installations,job,750,3,240
+Commercial System Installation,Custom engineered multi-fan commercial mitigation system.,System Installations,job,4500,16,1666.67
+Polyethylene Vapor Barrier 6 Mil,Installation of basic crawlspace vapor retarder.,Crawlspace Solutions,sq ft,1.25,0.005,0.82
+Reinforced Vapor Barrier 20 Mil,Heavy-duty puncture-resistant crawlspace liner.,Crawlspace Solutions,sq ft,2.5,0.008,1.63
+Crawlspace Seam Tape,Chemical-resistant seam tape for vapor barrier.,Crawlspace Solutions,linear ft,1.5,0.005,0.99
+Crawlspace Wall Fasteners,Mechanical fasteners for securing liner to foundation walls.,Crawlspace Solutions,each,3,0.015,1.42
+Perimeter Trenching,Digging trenches for sub-membrane suction piping.,Crawlspace Solutions,linear ft,12,0.06,2.93
+Perforated Drainage Pipe,Corrugated perforated pipe for sub-liner airflow.,Crawlspace Solutions,linear ft,6,0.02,2.5
+Crawlspace Access Door Seal,Weatherstripping and sealing crawlspace access hatch.,Crawlspace Solutions,each,110,0.5,31.67
+Dehumidifier Drain Connection,Connecting crawlspace dehumidifier to discharge line.,Crawlspace Solutions,each,125,0.6,33.33
+Foundation Crack Injection Polyurethane,Sealing structural cracks to improve system efficiency.,Sealing and Caulking,linear ft,25,0.1,8.67
+Epoxy Crack Repair,Structural epoxy injection for foundation cracks.,Sealing and Caulking,linear ft,35,0.12,13.33
+Slab Joint Sealing,Polyurethane sealant applied to expansion joints.,Sealing and Caulking,linear ft,8,0.03,2.87
+Sump Basin Rim Sealing,Airtight silicone seal around sump pit perimeter.,Sealing and Caulking,linear ft,10,0.04,3.33
+Utility Penetration Sealing,Sealing gaps around pipes and wires entering slab.,Sealing and Caulking,each,45,0.2,13.33
+Sub-Slab Pit Patching,Concrete patching mix for suction pit restoration.,Sealing and Caulking,each,65,0.3,18.33
+Airtight Access Hatch,Replacement sealed access door for utility pit.,Sealing and Caulking,each,150,0.5,50
+Radon Resistant Caulk Tube,High-grade elastomeric sealant for air gaps.,Sealing and Caulking,each,22,0.08,8.13
+Dedicated Fan Disconnect Box,Weatherproof electrical shut-off switch near fan.,Electrical and Monitoring,each,135,0.6,40
+Radon System Alarm Installation,Audible and visual pressure failure alarm.,Electrical and Monitoring,each,160,0.7,46.67
+Continuous Radon Monitor Hardwire,Permanent digital radon monitor wall installation.,Electrical and Monitoring,each,250,1,83.33
+Electrical Outlet Installation,GFCI outlet installed for radon fan power.,Electrical and Monitoring,each,175,0.8,50
+Alarm Battery Replacement,Replacement of backup battery in radon alarm.,Electrical and Monitoring,each,35,0.2,6.67
+Wire Conduit Installation,Protective electrical conduit for exposed wiring.,Electrical and Monitoring,linear ft,12,0.05,3.93
+Smart Radon Detector Integration,Wi-Fi enabled radon sensor setup and pairing.,Electrical and Monitoring,each,220,0.8,80
+System Power Indicator Light,Pilot light indicator for remote fan operation check.,Electrical and Monitoring,each,75,0.3,24.67
+Downspout Style Pipe Camouflage,Decorative metal wrap to hide exterior PVC pipe.,Cosmetics and Upgrades,linear ft,15,0.05,5.93
+Custom Paint PVC Pipe,Painting exterior vent pipe to match siding color.,Cosmetics and Upgrades,linear ft,8,0.03,2.87
+Fan Noise Muffler,Acoustic silencer attachment to reduce fan sound.,Cosmetics and Upgrades,each,140,0.4,60
+Decorative Fan Cover,Protective aesthetic housing enclosure for exterior fan.,Cosmetics and Upgrades,each,110,0.3,48.67
+Interior Pipe Boxing,Drywall enclosure framing for interior PVC run.,Cosmetics and Upgrades,linear ft,45,0.15,17
+Epoxy Floor Coating Patch,Touch-up epoxy coating around core drilled areas.,Cosmetics and Upgrades,job,90,0.4,26.67
+Custom Pipe Routing Labor,Complex routing to avoid architectural obstacles.,Cosmetics and Upgrades,hour,60,0.48,0
+Landscape Shield Guard,Protective bollard or cage around low exterior pipe.,Cosmetics and Upgrades,each,85,0.2,36.67
+Annual Maintenance Service Plan,"Yearly system check, pressure test, and calibration.",Service Plans and Warranties,visit,150,0.8,33.33
+Extended Fan Warranty Transfer,Transferrable extended parts warranty for new owners.,Service Plans and Warranties,job,100,0.5,25
+Radon Guarantee Certification,Guaranteed low radon level performance certification.,Service Plans and Warranties,job,75,0.4,16.67
+Priority Service Agreement,VIP expedited scheduling for maintenance and repairs.,Service Plans and Warranties,visit,200,1,50
+Commercial Maintenance Visit,Bi-annual commercial radon system inspection.,Service Plans and Warranties,visit,300,1.5,75
+System Re-Inspection Letter,Documentation for real estate transaction compliance.,Service Plans and Warranties,each,125,0.6,33.33
+Filter Replacement Service,Replacement of inline air or moisture filters.,Service Plans and Warranties,each,90,0.4,26.67
+Warranty Diagnostic Call,Troubleshooting visit under active workmanship warranty.,Service Plans and Warranties,visit,75,0.6,0
+Radon Water Aeration System,Complete water treatment system to remove dissolved radon.,Water Radon Mitigation,job,3800,12,1533.33
+GAC Water Filter Tank,Granular activated carbon tank for radon removal.,Water Radon Mitigation,each,1600,3,800
+Water System Exhaust Vent,Venting installation for radon water aeration unit.,Water Radon Mitigation,linear ft,20,0.08,6.93
+Water Aerator Maintenance,Cleaning and servicing radon water treatment system.,Water Radon Mitigation,visit,250,1.2,66.67
+GAC Media Replacement,Replacing carbon filter media in water treatment tank.,Water Radon Mitigation,job,650,2.5,233.33
+Water Bypass Valve Installation,Plumbing bypass valves for water filtration unit.,Water Radon Mitigation,each,180,0.8,53.33
+Ultraviolet Disinfection Add-on,UV sterilizer lamp for treated well water.,Water Radon Mitigation,each,750,2,333.33
+Water System Pressure Test,Testing water pressure and flow after mitigation work.,Water Radon Mitigation,visit,95,0.5,21.67
+Radon Mitigation Peer Review,Engineering review of third-party system blueprints.,Consulting and Engineering,job,500,2.5,125
+Radon Mitigation Blueprint Design,Custom architectural drawing for commercial system.,Consulting and Engineering,job,750,3.5,216.67
+Radon Mitigation Expert Witness,Court testimony or legal deposition regarding radon levels.,Consulting and Engineering,hour,300,2.4,0

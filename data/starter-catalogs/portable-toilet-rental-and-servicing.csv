@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Portable Restroom Rental,Standard construction portable toilet 4-week rental,Rentals,month,135
-Deluxe Flushing Restroom Rental,Flushable portable toilet with sink 4-week rental,Rentals,month,225
-ADA Handicap Accessible Restroom,Wheelchair accessible portable restroom 4-week rental,Rentals,month,275
-Towing Trailer Restroom 2-Station,Two-station luxury trailer restroom 4-week rental,Rentals,month,1200
-Towing Trailer Restroom 4-Station,Four-station luxury trailer restroom 4-week rental,Rentals,month,2200
-Standalone Handwash Station,Dual-basin freshwater handwashing sink 4-week rental,Rentals,month,150
-Holding Tank 250-Gallon,Polyethylene low-profile waste holding tank rental,Rentals,month,175
-Holding Tank 300-Gallon,Standard heavy-duty waste holding tank rental,Rentals,month,195
-High-Rise Construction Crane Hook,Steel lifting sling and cage for portable toilets,Rentals,month,110
-Security Bar Lock Kit,Anti-theft locking security bar for portable toilet,Rentals,month,25
-Weekly Standard Servicing,"Pump out waste, recharge chemicals, restock paper",Servicing,visit,35
-Bi-Weekly Standard Servicing,"Pump, recharge, and restock twice per week",Servicing,visit,35
-Daily High-Use Servicing,Daily waste pump and paper replenishment service,Servicing,visit,50
-Event Attendant Service,On-site sanitary attendant for event maintenance,Servicing,hour,45
-Emergency Pumping Service,Unscheduled urgent waste tank pump out,Servicing,visit,175
-Holding Tank Pump Out,Pumping out standalone 250 or 300-gallon tank,Servicing,visit,125
-Freshwater Tank Refill,Replenish fresh water supply for trailer or sink,Servicing,visit,75
-Deep Sanitization Steam Clean,High-pressure hot water interior sanitizing wash,Servicing,job,95
-Deodorizer Disinfectant Charge,Extra enzymatic blue liquid chemical charge,Servicing,each,15
-Odor Eliminator Puck,Hanging long-lasting urinal deodorizer block,Servicing,each,8
-Standard Delivery Fee,Initial drop-off and placement of unit,Delivery and Pickup,each,50
-Standard Pickup Fee,Final removal and transport of unit,Delivery and Pickup,each,50
-Weekend Delivery Surcharge,Delivery performed on Saturday or Sunday,Delivery and Pickup,each,100
-After-Hours Delivery Surcharge,Delivery outside normal operating hours,Delivery and Pickup,each,150
-Difficult Placement Surcharge,Placement requiring manual carry over 50 feet,Delivery and Pickup,job,75
-Site Relocation Fee,Moving existing unit to new location on same site,Delivery and Pickup,each,65
-Stair Carry Surcharge,Transporting unit up multi-story buildings,Delivery and Pickup,each,120
-Remote Area Delivery,Delivery mileage surcharge beyond standard service radius,Delivery and Pickup,each,95
-Urgent Same-Day Delivery,Expedited delivery within 4 hours of order,Delivery and Pickup,each,175
-Unit Redirection Fee,Returning to site when customer is not ready,Delivery and Pickup,each,85
-Toilet Door Replacement,Replace broken or warped plastic restroom door,Repairs and Parts,each,145
-Door Latch Repair Kit,Replace vacant/occupied sliding latch mechanism,Repairs and Parts,each,28
-Spring Door Hinge Replacement,Install heavy-duty self-closing door spring hinges,Repairs and Parts,each,35
-Roof Replacement Panel,Replace translucent plastic roof cap on standard unit,Repairs and Parts,each,90
-Skid Base Replacement,Replace polyethylene wooden or plastic skid base runners,Repairs and Parts,each,115
-Toilet Seat Replacement,Install new heavy-duty plastic toilet seat and lid,Repairs and Parts,each,22
-Urinal Funnel Replacement,Replace molded plastic interior urinal and drain pipe,Repairs and Parts,each,45
-Toilet Paper Dispenser Replacement,Install double-roll locked toilet paper dispenser,Repairs and Parts,each,38
-Hand Sanitizer Dispenser Replacement,Install wall-mounted manual foam sanitizer pump,Repairs and Parts,each,42
-Vent Pipe Replacement,Replace roof odor stack vent pipe,Repairs and Parts,each,30
-Trailer Axle Replacement,Replace bent or damaged trailer torsion axle,Trailer Maintenance,each,450
-Trailer Tire and Wheel Assembly,Replace flat or worn trailer tire on rim,Trailer Maintenance,each,125
-Trailer Tongue Jack Replacement,Install heavy-duty swivel trailer tongue jack,Trailer Maintenance,each,85
-Trailer Coupler Replacement,Replace 2-inch or 2-5/16-inch trailer hitch coupler,Trailer Maintenance,each,95
-LED Trailer Tail Light Assembly,Replace waterproof LED running and brake light,Trailer Maintenance,each,45
-Trailer Wiring Harness Repair,Rewire 7-way or 4-way flat trailer light plug,Trailer Maintenance,hour,95
-Water Pump Replacement,Replace 12V water pressure pump in luxury trailer,Trailer Maintenance,each,210
-Waste Valve Gate Replacement,Replace 3-inch or 4-inch dump valve on waste tank,Trailer Maintenance,each,130
-Trailer Brake Pad Replacement,Replace electric trailer brake shoes and hardware,Trailer Maintenance,job,180
-Onboard Generator Service,Oil change and tune-up for trailer generator,Trailer Maintenance,job,150
-Standard Toilet Paper Rolls,Case of 96 rolls 2-ply septic-safe toilet paper,Consumables and Supplies,each,65
-Hand Sanitizer Refill Refills,Case of four 1000ml foaming hand sanitizer refills,Consumables and Supplies,each,55
-Paper Towel Rolls,Case of multi-fold paper hand towels,Consumables and Supplies,each,45
-Liquid Deodorizer Concentrate,5-gallon pail of blue chemical deodorizer liquid,Consumables and Supplies,each,85
-Bio-Enzymatic Tank Digester,Container of bacterial waste breakdown powder,Consumables and Supplies,each,60
-Hand Soap Refill Gallon,Gallon jug of antibacterial hand washing soap,Consumables and Supplies,each,35
-Urinal Screen with Block,Box of 12 deodorizing urinal screens,Consumables and Supplies,each,40
-Surface Disinfectant Spray,Gallon jug of hospital-grade surface cleaner,Consumables and Supplies,each,32
-Paper Towel Dispenser Refill,Locking surface-mounted paper towel dispenser,Consumables and Supplies,each,48
-Trash Can Rental,55-gallon plastic trash can with lid for events,Consumables and Supplies,month,25
-Graffiti Removal Treatment,Chemical removal of spray paint from plastic walls,Specialty Services,job,75
-Vandalism Damage Assessment,Detailed inspection and report for insurance claims,Specialty Services,hour,95
-Hazardous Waste Clean-up,Specialized extraction of non-standard toxic materials,Specialty Services,hour,150
-Holding Tank De-icing Service,Application of safe brine solution to frozen waste tank,Specialty Services,visit,110
-Pest Infestation Treatment,Extermination spraying for insect nests inside unit,Specialty Services,job,85
-Post-Flood Sanitation,Complete mud removal and disinfection after flooding,Specialty Services,job,200
-Special Event Stanchion Set,Set of 4 chrome stanchions with velvet ropes,Specialty Services,day,60
-Solar Lighting Kit Rental,Motion-activated solar LED light for interior unit,Specialty Services,month,30
-Spill Containment Berm,Flexible secondary containment berm for holding tanks,Specialty Services,month,90
-Heavy Duty Tie-Down Anchors,Hurricane straps and ground corkscrew anchors,Specialty Services,job,45
-Environmental Disposal Fee,Municipal wastewater treatment plant dumping fee,Permits and Environmental,gallon,0.15
-Grease Trap Waste Surcharge,Additional processing fee for contaminated gray water,Permits and Environmental,gallon,0.35
-Special Event Health Permit Filing,Administrative fee for municipal sanitation permits,Permits and Environmental,job,75
-Street Placement Permit Fee,City right-of-way obstruction permit coordination,Permits and Environmental,job,125
-EPA Waste Tracking Manifest,Regulatory documentation for commercial waste disposal,Permits and Environmental,each,35
-State Compliance Inspection,Formal health and safety inspection for compliance,Permits and Environmental,job,150
-Water Source Backflow Preventer,Rental of certified reduced pressure backflow assembly,Permits and Environmental,month,85
-Stormwater Runoff Protection Fee,Environmental compliance fee for construction sites,Permits and Environmental,month,20
-Nighttime Road Flashing Barricade,Battery-operated flashing safety light for street units,Permits and Environmental,month,25
-Containment Compliance Audit,On-site environmental safety assessment and report,Permits and Environmental,job,125
-Loss Damage Waiver,Optional coverage for accidental damage or vandalism,Insurance and Liability,month,12
-Certificate of Insurance Issuance,Additional insured certificate generation for contractors,Insurance and Liability,job,15
-Excessive Soiling Clean-up Fee,Heavy cleaning charge for units returned extremely fouled,Insurance and Liability,job,100
-Unreturned Lock Replacement Fee,Charge for missing security padlocks upon pickup,Insurance and Liability,each,25
-Missing Unit Replacement Charge,Full replacement cost for stolen or destroyed unit,Insurance and Liability,each,1500
-Abandoned Unit Retrieval Fee,Cost to recover units left in inaccessible locations,Insurance and Liability,job,250
-Late Rental Payment Penalty,Fee applied to accounts past 30 days due,Insurance and Liability,each,35
-Unauthorized Relocation Charge,Fee for moving units without notifying contractor,Insurance and Liability,job,150
-Cleaning Deposit Processing,Refundable security deposit for high-risk events,Insurance and Liability,job,100
-Contract Cancellation Fee,Fee for orders canceled within 24 hours of delivery,Insurance and Liability,job,75
-Standard Labor Hourly Rate,Technician labor rate for maintenance and repairs,Labor and Diagnostics,hour,95
-After-Hours Labor Surcharge,Emergency overtime labor rate multiplier,Labor and Diagnostics,hour,145
-Site Survey Consultation,On-site assessment for large event placement planning,Labor and Diagnostics,visit,110
-Diagnostic Trouble Call,Troubleshooting trailer electrical or plumbing systems,Labor and Diagnostics,hour,115
-Pump Truck Operator Labor,Skilled driver operating high-capacity vacuum truck,Labor and Diagnostics,hour,105
-Rigging and Hoisting Labor,Specialized labor for crane-lifted high-rise units,Labor and Diagnostics,hour,130
-Route Optimization Planning,Custom scheduling and logistical routing consultation,Labor and Diagnostics,hour,85
-Safety Compliance Training,On-site OSHA safety briefing for service crews,Labor and Diagnostics,job,150
-Equipment Cleaning Labor,Detailed hand-washing labor for heavily soiled items,Labor and Diagnostics,hour,75
-Administrative Permit Expediting,Staff time spent expediting municipal paperwork,Labor and Diagnostics,hour,65
+name,description,category,unit,price,labor_hours,material_cost
+Standard Portable Restroom Rental,Standard construction portable toilet 4-week rental,Rentals,month,135,0.2,70
+Deluxe Flushing Restroom Rental,Flushable portable toilet with sink 4-week rental,Rentals,month,225,0.3,125
+ADA Handicap Accessible Restroom,Wheelchair accessible portable restroom 4-week rental,Rentals,month,275,0.3,155
+Towing Trailer Restroom 2-Station,Two-station luxury trailer restroom 4-week rental,Rentals,month,1200,1,733.33
+Towing Trailer Restroom 4-Station,Four-station luxury trailer restroom 4-week rental,Rentals,month,2200,2,1300
+Standalone Handwash Station,Dual-basin freshwater handwashing sink 4-week rental,Rentals,month,150,0.2,80
+Holding Tank 250-Gallon,Polyethylene low-profile waste holding tank rental,Rentals,month,175,0.2,96.67
+Holding Tank 300-Gallon,Standard heavy-duty waste holding tank rental,Rentals,month,195,0.2,110
+High-Rise Construction Crane Hook,Steel lifting sling and cage for portable toilets,Rentals,month,110,0.2,53.33
+Security Bar Lock Kit,Anti-theft locking security bar for portable toilet,Rentals,month,25,0.1,10
+Weekly Standard Servicing,"Pump out waste, recharge chemicals, restock paper",Servicing,visit,35,0.2,2
+Bi-Weekly Standard Servicing,"Pump, recharge, and restock twice per week",Servicing,visit,35,0.2,2
+Daily High-Use Servicing,Daily waste pump and paper replenishment service,Servicing,visit,50,0.3,4
+Event Attendant Service,On-site sanitary attendant for event maintenance,Servicing,hour,45,0.36,0
+Emergency Pumping Service,Unscheduled urgent waste tank pump out,Servicing,visit,175,0.8,50
+Holding Tank Pump Out,Pumping out standalone 250 or 300-gallon tank,Servicing,visit,125,0.6,33.33
+Freshwater Tank Refill,Replenish fresh water supply for trailer or sink,Servicing,visit,75,0.4,16.67
+Deep Sanitization Steam Clean,High-pressure hot water interior sanitizing wash,Servicing,job,95,0.5,20
+Deodorizer Disinfectant Charge,Extra enzymatic blue liquid chemical charge,Servicing,each,15,0.05,9
+Odor Eliminator Puck,Hanging long-lasting urinal deodorizer block,Servicing,each,8,0.05,4.67
+Standard Delivery Fee,Initial drop-off and placement of unit,Delivery and Pickup,each,50,0.4,0
+Standard Pickup Fee,Final removal and transport of unit,Delivery and Pickup,each,50,0.4,0
+Weekend Delivery Surcharge,Delivery performed on Saturday or Sunday,Delivery and Pickup,each,100,0.8,0
+After-Hours Delivery Surcharge,Delivery outside normal operating hours,Delivery and Pickup,each,150,1.2,0
+Difficult Placement Surcharge,Placement requiring manual carry over 50 feet,Delivery and Pickup,job,75,0.6,0
+Site Relocation Fee,Moving existing unit to new location on same site,Delivery and Pickup,each,65,0.5,2
+Stair Carry Surcharge,Transporting unit up multi-story buildings,Delivery and Pickup,each,120,0.9,5
+Remote Area Delivery,Delivery mileage surcharge beyond standard service radius,Delivery and Pickup,each,95,0.6,13.33
+Urgent Same-Day Delivery,Expedited delivery within 4 hours of order,Delivery and Pickup,each,175,1.4,0
+Unit Redirection Fee,Returning to site when customer is not ready,Delivery and Pickup,each,85,0.6,6.67
+Toilet Door Replacement,Replace broken or warped plastic restroom door,Repairs and Parts,each,145,0.5,55
+Door Latch Repair Kit,Replace vacant/occupied sliding latch mechanism,Repairs and Parts,each,28,0.15,6
+Spring Door Hinge Replacement,Install heavy-duty self-closing door spring hinges,Repairs and Parts,each,35,0.2,6.67
+Roof Replacement Panel,Replace translucent plastic roof cap on standard unit,Repairs and Parts,each,90,0.4,26.67
+Skid Base Replacement,Replace polyethylene wooden or plastic skid base runners,Repairs and Parts,each,115,0.5,35
+Toilet Seat Replacement,Install new heavy-duty plastic toilet seat and lid,Repairs and Parts,each,22,0.1,6.33
+Urinal Funnel Replacement,Replace molded plastic interior urinal and drain pipe,Repairs and Parts,each,45,0.2,13.33
+Toilet Paper Dispenser Replacement,Install double-roll locked toilet paper dispenser,Repairs and Parts,each,38,0.2,8.67
+Hand Sanitizer Dispenser Replacement,Install wall-mounted manual foam sanitizer pump,Repairs and Parts,each,42,0.2,11.33
+Vent Pipe Replacement,Replace roof odor stack vent pipe,Repairs and Parts,each,30,0.15,7.33
+Trailer Axle Replacement,Replace bent or damaged trailer torsion axle,Trailer Maintenance,each,450,2,133.33
+Trailer Tire and Wheel Assembly,Replace flat or worn trailer tire on rim,Trailer Maintenance,each,125,0.5,41.67
+Trailer Tongue Jack Replacement,Install heavy-duty swivel trailer tongue jack,Trailer Maintenance,each,85,0.4,23.33
+Trailer Coupler Replacement,Replace 2-inch or 2-5/16-inch trailer hitch coupler,Trailer Maintenance,each,95,0.4,30
+LED Trailer Tail Light Assembly,Replace waterproof LED running and brake light,Trailer Maintenance,each,45,0.25,9
+Trailer Wiring Harness Repair,Rewire 7-way or 4-way flat trailer light plug,Trailer Maintenance,hour,95,0.6,13.33
+Water Pump Replacement,Replace 12V water pressure pump in luxury trailer,Trailer Maintenance,each,210,0.8,73.33
+Waste Valve Gate Replacement,Replace 3-inch or 4-inch dump valve on waste tank,Trailer Maintenance,each,130,0.5,46.67
+Trailer Brake Pad Replacement,Replace electric trailer brake shoes and hardware,Trailer Maintenance,job,180,1,36.67
+Onboard Generator Service,Oil change and tune-up for trailer generator,Trailer Maintenance,job,150,0.8,33.33
+Standard Toilet Paper Rolls,Case of 96 rolls 2-ply septic-safe toilet paper,Consumables and Supplies,each,65,0.05,41
+Hand Sanitizer Refill Refills,Case of four 1000ml foaming hand sanitizer refills,Consumables and Supplies,each,55,0.05,34.33
+Paper Towel Rolls,Case of multi-fold paper hand towels,Consumables and Supplies,each,45,0.05,27.67
+Liquid Deodorizer Concentrate,5-gallon pail of blue chemical deodorizer liquid,Consumables and Supplies,each,85,0.05,54.33
+Bio-Enzymatic Tank Digester,Container of bacterial waste breakdown powder,Consumables and Supplies,each,60,0.05,38
+Hand Soap Refill Gallon,Gallon jug of antibacterial hand washing soap,Consumables and Supplies,each,35,0.05,21.33
+Urinal Screen with Block,Box of 12 deodorizing urinal screens,Consumables and Supplies,each,40,0.05,24.67
+Surface Disinfectant Spray,Gallon jug of hospital-grade surface cleaner,Consumables and Supplies,each,32,0.05,19.33
+Paper Towel Dispenser Refill,Locking surface-mounted paper towel dispenser,Consumables and Supplies,each,48,0.05,30
+Trash Can Rental,55-gallon plastic trash can with lid for events,Consumables and Supplies,month,25,0.05,12.67
+Graffiti Removal Treatment,Chemical removal of spray paint from plastic walls,Specialty Services,job,75,0.4,16.67
+Vandalism Damage Assessment,Detailed inspection and report for insurance claims,Specialty Services,hour,95,0.7,4
+Hazardous Waste Clean-up,Specialized extraction of non-standard toxic materials,Specialty Services,hour,150,1,16.67
+Holding Tank De-icing Service,Application of safe brine solution to frozen waste tank,Specialty Services,visit,110,0.5,31.67
+Pest Infestation Treatment,Extermination spraying for insect nests inside unit,Specialty Services,job,85,0.4,23.33
+Post-Flood Sanitation,Complete mud removal and disinfection after flooding,Specialty Services,job,200,1,50
+Special Event Stanchion Set,Set of 4 chrome stanchions with velvet ropes,Specialty Services,day,60,0.2,20
+Solar Lighting Kit Rental,Motion-activated solar LED light for interior unit,Specialty Services,month,30,0.1,11.33
+Spill Containment Berm,Flexible secondary containment berm for holding tanks,Specialty Services,month,90,0.2,40
+Heavy Duty Tie-Down Anchors,Hurricane straps and ground corkscrew anchors,Specialty Services,job,45,0.2,13.33
+Environmental Disposal Fee,Municipal wastewater treatment plant dumping fee,Permits and Environmental,gallon,0.15,0,0.1
+Grease Trap Waste Surcharge,Additional processing fee for contaminated gray water,Permits and Environmental,gallon,0.35,0,0.23
+Special Event Health Permit Filing,Administrative fee for municipal sanitation permits,Permits and Environmental,job,75,0.6,0
+Street Placement Permit Fee,City right-of-way obstruction permit coordination,Permits and Environmental,job,125,0.8,25
+EPA Waste Tracking Manifest,Regulatory documentation for commercial waste disposal,Permits and Environmental,each,35,0.2,6.67
+State Compliance Inspection,Formal health and safety inspection for compliance,Permits and Environmental,job,150,1,16.67
+Water Source Backflow Preventer,Rental of certified reduced pressure backflow assembly,Permits and Environmental,month,85,0.3,30
+Stormwater Runoff Protection Fee,Environmental compliance fee for construction sites,Permits and Environmental,month,20,0,13.33
+Nighttime Road Flashing Barricade,Battery-operated flashing safety light for street units,Permits and Environmental,month,25,0.05,12.33
+Containment Compliance Audit,On-site environmental safety assessment and report,Permits and Environmental,job,125,0.8,16.67
+Loss Damage Waiver,Optional coverage for accidental damage or vandalism,Insurance and Liability,month,12,0,8
+Certificate of Insurance Issuance,Additional insured certificate generation for contractors,Insurance and Liability,job,15,0.1,6.67
+Excessive Soiling Clean-up Fee,Heavy cleaning charge for units returned extremely fouled,Insurance and Liability,job,100,0.5,25
+Unreturned Lock Replacement Fee,Charge for missing security padlocks upon pickup,Insurance and Liability,each,25,0,16.67
+Missing Unit Replacement Charge,Full replacement cost for stolen or destroyed unit,Insurance and Liability,each,1500,0.5,966.67
+Abandoned Unit Retrieval Fee,Cost to recover units left in inaccessible locations,Insurance and Liability,job,250,1.5,43.33
+Late Rental Payment Penalty,Fee applied to accounts past 30 days due,Insurance and Liability,each,35,0.2,6.67
+Unauthorized Relocation Charge,Fee for moving units without notifying contractor,Insurance and Liability,job,150,0.8,33.33
+Cleaning Deposit Processing,Refundable security deposit for high-risk events,Insurance and Liability,job,100,0.6,16.67
+Contract Cancellation Fee,Fee for orders canceled within 24 hours of delivery,Insurance and Liability,job,75,0.4,16.67
+Standard Labor Hourly Rate,Technician labor rate for maintenance and repairs,Labor and Diagnostics,hour,95,1,0
+After-Hours Labor Surcharge,Emergency overtime labor rate multiplier,Labor and Diagnostics,hour,145,1,13.33
+Site Survey Consultation,On-site assessment for large event placement planning,Labor and Diagnostics,visit,110,0.8,6.67
+Diagnostic Trouble Call,Troubleshooting trailer electrical or plumbing systems,Labor and Diagnostics,hour,115,0.9,3.33
+Pump Truck Operator Labor,Skilled driver operating high-capacity vacuum truck,Labor and Diagnostics,hour,105,1,0
+Rigging and Hoisting Labor,Specialized labor for crane-lifted high-rise units,Labor and Diagnostics,hour,130,1,3.33
+Route Optimization Planning,Custom scheduling and logistical routing consultation,Labor and Diagnostics,hour,85,0.7,0
+Safety Compliance Training,On-site OSHA safety briefing for service crews,Labor and Diagnostics,job,150,1,16.67
+Equipment Cleaning Labor,Detailed hand-washing labor for heavily soiled items,Labor and Diagnostics,hour,75,1,0
+Administrative Permit Expediting,Staff time spent expediting municipal paperwork,Labor and Diagnostics,hour,65,0.5,2

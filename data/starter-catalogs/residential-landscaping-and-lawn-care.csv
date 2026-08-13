@@ -1,96 +1,96 @@
-name,description,category,unit,price
-Weekly Mowing Service,"Mowing, trimming, and blowing for standard residential lots",Lawn Maintenance,visit,55
-Bi-Weekly Mowing Service,Mowing service performed every fourteen days,Lawn Maintenance,visit,70
-Residential Fertilization Program,Six-application annual granular and liquid turf fertilizer program,Lawn Maintenance,visit,85
-Post-Emergent Weed Spray,Targeted spot treatment for active broadleaf weeds,Lawn Maintenance,hour,95
-Spring Yard Clean-Up,"Removal of winter debris, sticks, and dead foliage",Seasonal Cleanups,job,350
-Fall Leaf Removal,"Raking, blowing, and curbside vacuuming of fallen leaves",Seasonal Cleanups,hour,120
-Perennial Cutback,Pruning and clearing dead perennial foliage in spring,Seasonal Cleanups,hour,90
-Gutter Cleaning Service,Debris removal from residential roof gutters and downspouts,Seasonal Cleanups,job,175
-Yard Waste Disposal,Hauling and dumping of organic yard waste materials,Seasonal Cleanups,ton,150
-Storm Debris Cleanup,Cleanup and disposal of fallen branches after storms,Seasonal Cleanups,hour,130
-Annual Flower Bed Cleanup,Clear out spent annuals and prep beds for new planting,Seasonal Cleanups,hour,85
-Winterization Blowout,Compressed air purge of irrigation lines for winter freeze protection,Irrigation Services,job,125
-Spring Irrigation Startup,"System pressurization, controller setup, and head adjustment",Irrigation Services,job,140
-Irrigation System Repair,"Troubleshooting and repair of valves, pipes, and wiring",Irrigation Services,hour,110
-Sprinkler Head Replacement,Supply and install new gear-driven or pop-up spray head,Irrigation Services,each,35
-Drip Line Repair,Fixing leaks and broken fittings in shrub bed drip lines,Irrigation Services,hour,95
-Backflow Preventer Testing,Certified annual testing of irrigation backflow assembly,Irrigation Services,each,90
-Smart Controller Installation,Install Wi-Fi enabled irrigation timer and configure zones,Irrigation Services,each,275
-Valve Box Replacement,Dig out and replace damaged irrigation valve enclosure box,Irrigation Services,each,120
-Main Line Leak Repair,Locate and splice cracked PVC or poly main water line,Irrigation Services,job,250
-Rain Sensor Installation,Mount and wire wireless rainfall shutoff sensor,Irrigation Services,each,150
-Shrub Pruning and Shaping,Hand pruning of ornamental bushes and privacy hedges,Tree & Shrub Care,hour,95
-Small Tree Pruning,Pruning ornamental trees under fifteen feet in height,Tree & Shrub Care,each,175
-Hedge Reduction,Heavy cutting back of overgrown privacy hedges,Tree & Shrub Care,linear ft,18
-Shrub Removal,Digging out and removing unwanted shrubs and root balls,Tree & Shrub Care,each,120
-Tree Fertilization,Deep root liquid fertilizer injection for mature trees,Tree & Shrub Care,each,110
-Stump Grinding,Mechanical grinding of tree stump below grade level,Tree & Shrub Care,each,250
-Evergreen Hand Pruning,"Detailed candling and shaping of pines, spruces, and junipers",Tree & Shrub Care,hour,110
-Mulch Delivery and Installation,Double shredded hardwood mulch installed at three inch depth,Hardscaping & Mulching,cubic yd,110
-Black Dyed Mulch Installation,Color-enhanced black wood mulch installed in landscape beds,Hardscaping & Mulching,cubic yd,120
-Brown Dyed Mulch Installation,Color-enhanced brown wood mulch installed in landscape beds,Hardscaping & Mulching,cubic yd,120
-Cedar Mulch Installation,Premium natural aromatic cedar mulch installed in beds,Hardscaping & Mulching,cubic yd,135
-Pine Straw Installation,Long-needle pine straw bale spread in natural planting beds,Hardscaping & Mulching,bale,18
-River Rock Installation,Decorative smooth river stone installed over weed barrier,Hardscaping & Mulching,ton,220
-Crushed Granite Installation,Decomposed granite pathway or bed aggregate installed,Hardscaping & Mulching,ton,190
-Landscape Fabric Installation,Heavy-duty woven weed suppression geotextile fabric,Hardscaping & Mulching,sq ft,1
-Metal Landscape Edging,Commercial grade aluminum or steel edging installation,Hardscaping & Mulching,linear ft,9
-Plastic Landscape Edging,Heavy duty corrugated plastic edge restraint installation,Hardscaping & Mulching,linear ft,5
-Paver Patio Construction,Interlocking concrete paver patio with base and joint sand,Hardscaping & Mulching,sq ft,28
-Paver Walkway Installation,Pedestrian walkway built with concrete pavers and base,Hardscaping & Mulching,sq ft,30
-Retaining Wall Construction,Segmental concrete retaining wall block under three feet,Hardscaping & Mulching,sq ft,45
-Paver Patio Power Washing,Surface cleaning of existing paver hardscapes,Hardscaping & Mulching,sq ft,1
-Paver Polymeric Sand Refill,Sweep and activate polymeric joint sand in pavers,Hardscaping & Mulching,sq ft,2
-Paver Sealing Service,Apply penetrating sealer to clean interlocking pavers,Hardscaping & Mulching,sq ft,2
-Natural Flagstone Patio,Dry-laid natural stone flagstone patio on crushed base,Hardscaping & Mulching,sq ft,38
-Sod Installation - Kentucky Bluegrass,"Ground prep, soil amendment, and fresh sod laying",Planting & Sod,sq ft,1
-Sod Installation - Tall Fescue,"Ground prep, grading, and fresh fescue sod installation",Planting & Sod,sq ft,1
-Sod Installation - Bermuda,Ground prep and warm-season Bermuda turf installation,Planting & Sod,sq ft,1
-Sod Installation - Zoysia,Ground prep and premium Zoysia grass sod installation,Planting & Sod,sq ft,2
-Existing Lawn Removal,Sod cutting and stripping of dead or ruined turf,Planting & Sod,sq ft,1
-Topsoil Grading and Leveling,Spreading and laser grading topsoil for positive drainage,Planting & Sod,sq ft,1
-Ornamental Tree Planting,Planting B&B or container tree up to two inch caliper,Planting & Sod,each,250
-Shrub Planting,Planting three to five gallon landscape shrub specimens,Planting & Sod,each,45
-Perennial and Flower Planting,Planting one gallon perennials or seasonal annual flowers,Planting & Sod,each,15
-Boxwood Hedge Planting,Installation of linear hedge material including soil amendment,Planting & Sod,linear ft,35
-Soil Testing Service,Laboratory soil nutrient and pH analysis with recommendations,Planting & Sod,each,65
-Erosion Control Silt Fence,Temporary sediment barrier installation for grading sites,Planting & Sod,linear ft,6
-Drainage Trenching,Digging trenches for corrugated landscape drain pipes,Drainage & Grading,linear ft,15
-French Drain Installation,"Perforated pipe, gravel, and filter fabric trench system",Drainage & Grading,linear ft,35
-Catch Basin Installation,Surface water drain basin with connected discharge pipe,Drainage & Grading,each,220
-Downspout Burial,Connecting roof downspouts to solid underground discharge pipe,Drainage & Grading,linear ft,12
-Sump Pump Discharge Line,Burying PVC discharge line away from foundation to daylight,Drainage & Grading,linear ft,14
-Dry Well Installation,Excavation and placement of gravel-filled stormwater dry well,Drainage & Grading,each,650
-Channel Drain Installation,Surface slot drain for driveways and patio aprons,Drainage & Grading,linear ft,55
-Grading Correction,Regrading soil against foundation to slope water away,Drainage & Grading,hour,130
-Low Voltage Path Light,Supply and install cast brass landscape walkway light fixture,Outdoor Lighting,each,125
-Low Voltage Spotlight,Supply and install up-light for tree or architectural feature,Outdoor Lighting,each,150
-Transformer Installation,Mount and wire multi-tap low voltage lighting transformer,Outdoor Lighting,each,275
-Landscape Lighting Repair,Troubleshooting low voltage wiring faults and replacing bulbs,Outdoor Lighting,hour,105
-Deck Step Light,Surface-mounted low voltage riser light installation,Outdoor Lighting,each,90
-Smart Lighting Timer,Wi-Fi photocell transformer timer controller upgrade,Outdoor Lighting,each,175
-Under-Cap Wall Light,Hardscape light fixture mounted under retaining wall cap,Outdoor Lighting,each,110
-Weekly Pond Maintenance,"Skimming debris, cleaning skimmer basket, checking water balance",Water Features,visit,95
-Pond Spring Opening,"Drain, pressure wash, filter clean, and refill ornamental pond",Water Features,job,450
-Pond Winterization,"Install pond netting, remove tender plants, add cold water bacteria",Water Features,job,200
-Pondless Waterfall Cleanout,"Remove stone, power wash vault, and reset basin rocks",Water Features,job,375
-Submersible Pump Replacement,Swap out failed water feature circulation pump,Water Features,each,250
-UV Clarifier Bulb Replacement,Replace ultraviolet bulb in pond algae control filter,Water Features,each,85
-Fountain Basin Maintenance,Clean out decorative fountain basin and refill with algaecide,Water Features,job,130
-Pond Leak Diagnostics,"Trace water loss in liner, waterfall spillway, or plumbing lines",Water Features,hour,120
-General Landscaping Labor,General hourly grounds maintenance and hand labor,General Labor,hour,75
-Supervisor Labor Rate,Skilled crew foreman for complex landscape installations,General Labor,hour,95
-Skid Steer Loader Service,Machine operation with operator for earth moving and grading,General Labor,hour,150
-Mini Excavator Service,Compact excavator rental with operator for trenching and digging,General Labor,hour,175
-Dump Trailer Transport Fee,Hauling materials to site or debris away to disposal facility,General Labor,job,125
-Landscape Design Consultation,On-site professional design meeting and site assessment,General Labor,visit,150
-CAD Landscape Design Plan,Detailed scale 2D landscape master drawing with plant schedule,General Labor,job,500
-Permit Acquisition Fee,Processing municipal permits for hardscape or retaining wall work,General Labor,job,150
-After-Hours Emergency Service,Priority dispatch for urgent storm damage or irrigation breaks,General Labor,hour,175
-Manual Weed Pulling,Hand weeding of landscape beds without chemical usage,General Labor,hour,65
-Bed Edging Maintenance,Hand trenching crisp vertical edges on landscape beds,General Labor,linear ft,2
-Fire Pit Construction,Pre-cast block circular wood-burning outdoor fire pit kit,Hardscaping & Mulching,job,650
-Synthetic Turf Installation,Base prep and pet-friendly artificial turf putting green or lawn,Planting & Sod,sq ft,12
-Soil Amendment Application,Incorporating compost and organic matter into depleted soil,Planting & Sod,sq ft,1
-Root Barrier Installation,Linear HDPE panel installation to protect hardscapes from roots,Tree & Shrub Care,linear ft,16
+name,description,category,unit,price,labor_hours,material_cost
+Weekly Mowing Service,"Mowing, trimming, and blowing for standard residential lots",Lawn Maintenance,visit,55,0.4,3.33
+Bi-Weekly Mowing Service,Mowing service performed every fourteen days,Lawn Maintenance,visit,70,0.5,4.67
+Residential Fertilization Program,Six-application annual granular and liquid turf fertilizer program,Lawn Maintenance,visit,85,0.4,23.33
+Post-Emergent Weed Spray,Targeted spot treatment for active broadleaf weeds,Lawn Maintenance,hour,95,1,0
+Spring Yard Clean-Up,"Removal of winter debris, sticks, and dead foliage",Seasonal Cleanups,job,350,2.5,23.33
+Fall Leaf Removal,"Raking, blowing, and curbside vacuuming of fallen leaves",Seasonal Cleanups,hour,120,1,0
+Perennial Cutback,Pruning and clearing dead perennial foliage in spring,Seasonal Cleanups,hour,90,1,0
+Gutter Cleaning Service,Debris removal from residential roof gutters and downspouts,Seasonal Cleanups,job,175,1.4,0
+Yard Waste Disposal,Hauling and dumping of organic yard waste materials,Seasonal Cleanups,ton,150,0.5,58.33
+Storm Debris Cleanup,Cleanup and disposal of fallen branches after storms,Seasonal Cleanups,hour,130,1,3.33
+Annual Flower Bed Cleanup,Clear out spent annuals and prep beds for new planting,Seasonal Cleanups,hour,85,1,0
+Winterization Blowout,Compressed air purge of irrigation lines for winter freeze protection,Irrigation Services,job,125,1,0
+Spring Irrigation Startup,"System pressurization, controller setup, and head adjustment",Irrigation Services,job,140,1.1,0
+Irrigation System Repair,"Troubleshooting and repair of valves, pipes, and wiring",Irrigation Services,hour,110,1,0
+Sprinkler Head Replacement,Supply and install new gear-driven or pop-up spray head,Irrigation Services,each,35,0.15,22
+Drip Line Repair,Fixing leaks and broken fittings in shrub bed drip lines,Irrigation Services,hour,95,1,0
+Backflow Preventer Testing,Certified annual testing of irrigation backflow assembly,Irrigation Services,each,90,0.7,0
+Smart Controller Installation,Install Wi-Fi enabled irrigation timer and configure zones,Irrigation Services,each,275,1,100
+Valve Box Replacement,Dig out and replace damaged irrigation valve enclosure box,Irrigation Services,each,120,0.6,30
+Main Line Leak Repair,Locate and splice cracked PVC or poly main water line,Irrigation Services,job,250,1.5,43.33
+Rain Sensor Installation,Mount and wire wireless rainfall shutoff sensor,Irrigation Services,each,150,0.6,50
+Shrub Pruning and Shaping,Hand pruning of ornamental bushes and privacy hedges,Tree & Shrub Care,hour,95,1,0
+Small Tree Pruning,Pruning ornamental trees under fifteen feet in height,Tree & Shrub Care,each,175,1,33.33
+Hedge Reduction,Heavy cutting back of overgrown privacy hedges,Tree & Shrub Care,linear ft,18,0.1,3.67
+Shrub Removal,Digging out and removing unwanted shrubs and root balls,Tree & Shrub Care,each,120,0.8,13.33
+Tree Fertilization,Deep root liquid fertilizer injection for mature trees,Tree & Shrub Care,each,110,0.4,40
+Stump Grinding,Mechanical grinding of tree stump below grade level,Tree & Shrub Care,each,250,1.2,66.67
+Evergreen Hand Pruning,"Detailed candling and shaping of pines, spruces, and junipers",Tree & Shrub Care,hour,110,1,0
+Mulch Delivery and Installation,Double shredded hardwood mulch installed at three inch depth,Hardscaping & Mulching,cubic yd,110,0.5,31.67
+Black Dyed Mulch Installation,Color-enhanced black wood mulch installed in landscape beds,Hardscaping & Mulching,cubic yd,120,0.5,38.33
+Brown Dyed Mulch Installation,Color-enhanced brown wood mulch installed in landscape beds,Hardscaping & Mulching,cubic yd,120,0.5,38.33
+Cedar Mulch Installation,Premium natural aromatic cedar mulch installed in beds,Hardscaping & Mulching,cubic yd,135,0.5,48.33
+Pine Straw Installation,Long-needle pine straw bale spread in natural planting beds,Hardscaping & Mulching,bale,18,0.1,7.67
+River Rock Installation,Decorative smooth river stone installed over weed barrier,Hardscaping & Mulching,ton,220,0.8,83.33
+Crushed Granite Installation,Decomposed granite pathway or bed aggregate installed,Hardscaping & Mulching,ton,190,0.8,63.33
+Landscape Fabric Installation,Heavy-duty woven weed suppression geotextile fabric,Hardscaping & Mulching,sq ft,1,0.005,0.45
+Metal Landscape Edging,Commercial grade aluminum or steel edging installation,Hardscaping & Mulching,linear ft,9,0.04,2.67
+Plastic Landscape Edging,Heavy duty corrugated plastic edge restraint installation,Hardscaping & Mulching,linear ft,5,0.02,1.67
+Paver Patio Construction,Interlocking concrete paver patio with base and joint sand,Hardscaping & Mulching,sq ft,28,0.08,12
+Paver Walkway Installation,Pedestrian walkway built with concrete pavers and base,Hardscaping & Mulching,sq ft,30,0.09,12.67
+Retaining Wall Construction,Segmental concrete retaining wall block under three feet,Hardscaping & Mulching,sq ft,45,0.14,18.33
+Paver Patio Power Washing,Surface cleaning of existing paver hardscapes,Hardscaping & Mulching,sq ft,1,0.005,0.25
+Paver Polymeric Sand Refill,Sweep and activate polymeric joint sand in pavers,Hardscaping & Mulching,sq ft,2,0.01,0.5
+Paver Sealing Service,Apply penetrating sealer to clean interlocking pavers,Hardscaping & Mulching,sq ft,2,0.008,0.67
+Natural Flagstone Patio,Dry-laid natural stone flagstone patio on crushed base,Hardscaping & Mulching,sq ft,38,0.11,16.33
+Sod Installation - Kentucky Bluegrass,"Ground prep, soil amendment, and fresh sod laying",Planting & Sod,sq ft,1,0.005,0.3
+Sod Installation - Tall Fescue,"Ground prep, grading, and fresh fescue sod installation",Planting & Sod,sq ft,1,0.005,0.3
+Sod Installation - Bermuda,Ground prep and warm-season Bermuda turf installation,Planting & Sod,sq ft,1,0.005,0.3
+Sod Installation - Zoysia,Ground prep and premium Zoysia grass sod installation,Planting & Sod,sq ft,2,0.006,0.8
+Existing Lawn Removal,Sod cutting and stripping of dead or ruined turf,Planting & Sod,sq ft,1,0.006,0.15
+Topsoil Grading and Leveling,Spreading and laser grading topsoil for positive drainage,Planting & Sod,sq ft,1,0.005,0.25
+Ornamental Tree Planting,Planting B&B or container tree up to two inch caliper,Planting & Sod,each,250,0.8,100
+Shrub Planting,Planting three to five gallon landscape shrub specimens,Planting & Sod,each,45,0.2,13.33
+Perennial and Flower Planting,Planting one gallon perennials or seasonal annual flowers,Planting & Sod,each,15,0.08,3.33
+Boxwood Hedge Planting,Installation of linear hedge material including soil amendment,Planting & Sod,linear ft,35,0.1,15
+Soil Testing Service,Laboratory soil nutrient and pH analysis with recommendations,Planting & Sod,each,65,0.4,10
+Erosion Control Silt Fence,Temporary sediment barrier installation for grading sites,Planting & Sod,linear ft,6,0.02,2.33
+Drainage Trenching,Digging trenches for corrugated landscape drain pipes,Drainage & Grading,linear ft,15,0.06,5
+French Drain Installation,"Perforated pipe, gravel, and filter fabric trench system",Drainage & Grading,linear ft,35,0.14,11.67
+Catch Basin Installation,Surface water drain basin with connected discharge pipe,Drainage & Grading,each,220,1,63.33
+Downspout Burial,Connecting roof downspouts to solid underground discharge pipe,Drainage & Grading,linear ft,12,0.05,3.83
+Sump Pump Discharge Line,Burying PVC discharge line away from foundation to daylight,Drainage & Grading,linear ft,14,0.06,4.33
+Dry Well Installation,Excavation and placement of gravel-filled stormwater dry well,Drainage & Grading,each,650,2.5,223.33
+Channel Drain Installation,Surface slot drain for driveways and patio aprons,Drainage & Grading,linear ft,55,0.22,18.33
+Grading Correction,Regrading soil against foundation to slope water away,Drainage & Grading,hour,130,1,3.33
+Low Voltage Path Light,Supply and install cast brass landscape walkway light fixture,Outdoor Lighting,each,125,0.4,50
+Low Voltage Spotlight,Supply and install up-light for tree or architectural feature,Outdoor Lighting,each,150,0.4,66.67
+Transformer Installation,Mount and wire multi-tap low voltage lighting transformer,Outdoor Lighting,each,275,1,100
+Landscape Lighting Repair,Troubleshooting low voltage wiring faults and replacing bulbs,Outdoor Lighting,hour,105,1,0
+Deck Step Light,Surface-mounted low voltage riser light installation,Outdoor Lighting,each,90,0.3,35
+Smart Lighting Timer,Wi-Fi photocell transformer timer controller upgrade,Outdoor Lighting,each,175,0.6,66.67
+Under-Cap Wall Light,Hardscape light fixture mounted under retaining wall cap,Outdoor Lighting,each,110,0.4,40
+Weekly Pond Maintenance,"Skimming debris, cleaning skimmer basket, checking water balance",Water Features,visit,95,0.7,3.33
+Pond Spring Opening,"Drain, pressure wash, filter clean, and refill ornamental pond",Water Features,job,450,2.5,43.33
+Pond Winterization,"Install pond netting, remove tender plants, add cold water bacteria",Water Features,job,200,1.2,33.33
+Pondless Waterfall Cleanout,"Remove stone, power wash vault, and reset basin rocks",Water Features,job,375,2.2,43.33
+Submersible Pump Replacement,Swap out failed water feature circulation pump,Water Features,each,250,1,83.33
+UV Clarifier Bulb Replacement,Replace ultraviolet bulb in pond algae control filter,Water Features,each,85,0.4,23.33
+Fountain Basin Maintenance,Clean out decorative fountain basin and refill with algaecide,Water Features,job,130,0.8,20
+Pond Leak Diagnostics,"Trace water loss in liner, waterfall spillway, or plumbing lines",Water Features,hour,120,1,0
+General Landscaping Labor,General hourly grounds maintenance and hand labor,General Labor,hour,75,1,0
+Supervisor Labor Rate,Skilled crew foreman for complex landscape installations,General Labor,hour,95,1,0
+Skid Steer Loader Service,Machine operation with operator for earth moving and grading,General Labor,hour,150,1,16.67
+Mini Excavator Service,Compact excavator rental with operator for trenching and digging,General Labor,hour,175,1,33.33
+Dump Trailer Transport Fee,Hauling materials to site or debris away to disposal facility,General Labor,job,125,0,83.33
+Landscape Design Consultation,On-site professional design meeting and site assessment,General Labor,visit,150,1.2,0
+CAD Landscape Design Plan,Detailed scale 2D landscape master drawing with plant schedule,General Labor,job,500,3.5,50
+Permit Acquisition Fee,Processing municipal permits for hardscape or retaining wall work,General Labor,job,150,0,100
+After-Hours Emergency Service,Priority dispatch for urgent storm damage or irrigation breaks,General Labor,hour,175,1.4,0
+Manual Weed Pulling,Hand weeding of landscape beds without chemical usage,General Labor,hour,65,1,0
+Bed Edging Maintenance,Hand trenching crisp vertical edges on landscape beds,General Labor,linear ft,2,0.01,0.5
+Fire Pit Construction,Pre-cast block circular wood-burning outdoor fire pit kit,Hardscaping & Mulching,job,650,2.5,223.33
+Synthetic Turf Installation,Base prep and pet-friendly artificial turf putting green or lawn,Planting & Sod,sq ft,12,0.03,5.5
+Soil Amendment Application,Incorporating compost and organic matter into depleted soil,Planting & Sod,sq ft,1,0.003,0.4
+Root Barrier Installation,Linear HDPE panel installation to protect hardscapes from roots,Tree & Shrub Care,linear ft,16,0.05,6.33

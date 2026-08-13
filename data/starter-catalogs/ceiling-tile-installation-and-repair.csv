@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Service Call Fee,On-site diagnostic and travel up to 30 miles.,Diagnostics & Service,visit,125
-After-Hours Emergency Dispatch,Urgent mobilization outside normal business hours.,Diagnostics & Service,visit,275
-Ceiling Inspection and Report,Comprehensive structural and grid integrity assessment.,Diagnostics & Service,hour,115
-Moisture Damage Assessment,Locate roof leak origins affecting ceiling systems.,Diagnostics & Service,hour,125
-Acoustical Testing,Sound transmission loss measurement and evaluation.,Diagnostics & Service,hour,150
-Journeyman Installer Labor,Standard installation and repair labor rate.,Labor Rates,hour,95
-Apprentice Labor,Assistance and material staging labor rate.,Labor Rates,hour,65
-Overtime Labor Surcharge,Labor multiplier for weekend and evening work.,Labor Rates,hour,60
-Lead Installer Supervision,Project coordination and crew management.,Labor Rates,hour,125
-Demo and Disposal Labor,Removal of old ceiling materials and debris.,Labor Rates,hour,85
-Standard Grid Removal,Dismantle existing suspended ceiling framework.,Removal & Disposal,sq ft,1
-Acoustical Tile Removal,Take down existing lay-in ceiling panels.,Removal & Disposal,sq ft,1
-Glue-Up Tile Removal,Scrape and remove direct-attached ceiling tiles.,Removal & Disposal,sq ft,3
-Drywall Furring Channel Removal,Strip out concealed ceiling support channels.,Removal & Disposal,linear ft,2
-Hazardous Material Containment,Poly barrier setup for dust and debris control.,Removal & Disposal,job,350
-Debris Dumpster Rental,Roll-off container for heavy tile and metal waste.,Removal & Disposal,job,650
-Minor Tile Repair,Glue and patch minor cracks or edge chips.,Repairs,each,45
-Grid Re-leveling,Adjust hanger wires to correct sagging ceiling grid.,Repairs,sq ft,2
-Bent Main Runner Repair,Straighten or reinforce damaged main tee sections.,Repairs,each,75
-Cross Tee Replacement,Swap out a single bent or broken cross tee.,Repairs,each,55
-Hanger Wire Replacement,Install new 12-gauge galvanized support wires.,Repairs,each,35
-Wall Angle Re-securing,Fasten loose perimeter molding to partition walls.,Repairs,linear ft,12
-Hold-Down Clip Installation,Install clips to secure tiles in high-wind areas.,Repairs,each,5
-Expansion Joint Repair,Fix damaged building seismic separation joints.,Repairs,linear ft,45
-Water-Damaged Tile Patching,Cut and fit matching replacement scrap sections.,Repairs,each,65
-Acoustical Sealant Application,Apply sound-blocking bead around perimeter and penetrations.,Repairs,linear ft,3
-Standard 2x2 Lay-In Installation,Install mineral fiber square lay-in ceiling panels.,Tile Installation,sq ft,3
-Standard 2x4 Lay-In Installation,Install large format mineral fiber ceiling panels.,Tile Installation,sq ft,3
-Fine Textured Ceiling Tile Install,Install premium smooth-finish acoustical ceiling tiles.,Tile Installation,sq ft,4
-Fissured Ceiling Tile Install,Install traditional commercial fissured pattern tiles.,Tile Installation,sq ft,3
-Perforated Metal Tile Install,Install metal pan acoustical ceiling tiles.,Tile Installation,sq ft,9
-Wood Veneer Ceiling Tile Install,Install high-end architectural wood finish tiles.,Tile Installation,sq ft,18
-Fiberglass High-NRC Tile Install,Install sound-absorbing high-performance fiberglass panels.,Tile Installation,sq ft,6
-Vinyl-Faced Clean Room Tile Install,Install washable vinyl-coated panels for sanitation areas.,Tile Installation,sq ft,5
-Glue-Up Acoustical Tile Install,Adhere tongue-and-groove tiles directly to hard substrate.,Tile Installation,sq ft,7
-Tegular Edge Tile Install,Install square-drop reveal edge acoustical panels.,Tile Installation,sq ft,5
-Hidden Spine Concealed Tile Install,Install concealed spline interlocking ceiling tiles.,Tile Installation,sq ft,8
-Linear Metal Ceiling Install,Install snap-in aluminum linear ceiling strips.,Tile Installation,sq ft,14
-Open Cell Ceiling Grid Install,Install architectural open baffle ceiling matrix.,Tile Installation,sq ft,12
-Custom Shape Field Cutting,Notch and cut tiles around columns and angles.,Tile Installation,each,15
-Standard 15/32 Grid Installation,Install intermediate duty exposed tee suspension system.,Grid Systems,sq ft,3
-Heavy Duty Seismic Grid Install,Install heavy duty earthquake-rated suspension framework.,Grid Systems,sq ft,5
-Narrow Face 9/16 Grid Install,Install slim-profile architectural ceiling grid system.,Grid Systems,sq ft,4
-Concealed Grid System Install,Install hidden suspension framework for flush ceilings.,Grid Systems,sq ft,6
-Corrosive Environment Grid Install,Install fiberglass or aluminum rust-proof grid system.,Grid Systems,sq ft,8
-Main Runner Replacement,Install new 12-foot main suspension tee.,Grid Systems,linear ft,4
-Perimeter Wall Angle Install,Mount L-shaped wall molding around room perimeter.,Grid Systems,linear ft,3
-Shadow Molding Installation,Install reveal-edge perimeter trim molding.,Grid Systems,linear ft,6
-Expansion Spacer Clip Install,Install seismic expansion clips in grid matrix.,Grid Systems,each,18
-Diagonal Splay Wire Install,Install seismic bracing wires per code requirements.,Grid Systems,each,45
-Mineral Fiber Tile 2x2 Box,Box of 16 standard acoustical ceiling tiles.,Materials & Parts,each,42
-Mineral Fiber Tile 2x4 Box,Box of 10 standard 2x4 acoustical ceiling tiles.,Materials & Parts,each,55
-High-NRC Fiberglass Panel Box,Box of high-performance sound absorption panels.,Materials & Parts,each,110
-Vinyl Clean Room Tile Carton,Box of washable vinyl-faced ceiling tiles.,Materials & Parts,each,85
-Fine Textured Tegular Tile Carton,Box of premium smooth reveal-edge tiles.,Materials & Parts,each,95
-Main Tee 12-Foot Section,Standard heavy-duty main runner component.,Materials & Parts,each,14
-Cross Tee 4-Foot Section,Intermediate cross tee grid component.,Materials & Parts,each,5
-Cross Tee 2-Foot Section,Short cross tee grid component.,Materials & Parts,each,3
-Perimeter Wall Molding 12-Foot,Standard wall angle trim piece.,Materials & Parts,each,11
-Hanger Wire Bundle,Coil of 100-foot 12-gauge galvanized wire.,Materials & Parts,each,35
-Grid Touch-Up Paint,Aerosol spray paint matching standard white grid.,Materials & Parts,each,22
-Hold-Down Clip Bag,Bag of 100 metal ceiling tile retention clips.,Materials & Parts,each,28
-Expansion Clip Set,Seismic expansion sleeves for grid T-bars.,Materials & Parts,each,15
-Replacement Grid Splice,Connector clip for joining cut main runners.,Materials & Parts,each,6
-Acoustical Sealant Tube,28 oz cartridge of non-hardening sound sealant.,Materials & Parts,each,18
-Recessed Light Cutout Kit,Precision hole cutting and reinforcement for cans.,Specialty & Cutouts,each,35
-HVAC Diffuser Cutout,Custom framing and cutting for supply air vents.,Specialty & Cutouts,each,45
-Sprinkler Head Escutcheon Install,Install trim rings around fire sprinkler penetrations.,Specialty & Cutouts,each,15
-Speaker and Alarm Cutout,Circular core cut for life safety devices.,Specialty & Cutouts,each,25
-Access Panel Installation,Install hinged ceiling access door in grid.,Specialty & Cutouts,each,165
-Light Fixture Independent Support,Install dedicated safety wires for lay-in fixtures.,Specialty & Cutouts,each,28
-Partition Top Track Attachment,Secure wall framing clips to ceiling grid.,Specialty & Cutouts,linear ft,14
-Curtain Track Ceiling Mount,Install heavy-duty ceiling track for cubicle curtains.,Specialty & Cutouts,linear ft,22
-Signage Hanging Clip Install,Attach T-bar clips for overhead directional signs.,Specialty & Cutouts,each,12
-Bulkhead Framing Integration,Tie suspended ceiling grid into drywall bulkhead.,Specialty & Cutouts,linear ft,35
-Building Permit Acquisition,Processing and obtaining local municipal work permits.,Permits & Compliance,job,250
-Engineering Seismic Calculation,Certified structural engineering review for ceiling loads.,Permits & Compliance,job,600
-Fire Safety Compliance Inspection,Verify drop-out tile ratings and sprinkler clearances.,Permits & Compliance,visit,175
-ADA Compliance Review,Check ceiling heights and clearance requirements.,Permits & Compliance,job,150
-After-Hours Work Permit Surcharge,Expedited municipal paperwork for night shifts.,Permits & Compliance,job,125
-Scaffolding Setup and Tear Down,Erect mobile staging for high ceiling access.,Equipment & Access,job,300
-Scissor Lift Daily Rental,Powered platform rental for expansive commercial areas.,Equipment & Access,day,220
-Boom Lift Daily Rental,Articulating lift for obstructed high-bay ceilings.,Equipment & Access,day,450
-Laser Level Setup Fee,Establish precise room-wide ceiling elevation lines.,Equipment & Access,job,75
-HEPA Air Scrubber Rental,Negative air machine for dust containment during demo.,Equipment & Access,day,110
-Anti-Microbial Tile Coating,Spray application of mold and bacteria inhibitor.,Upgrades & Options,sq ft,1
-Thermal Insulation Blanket Layer,Lay fiberglass batt insulation above ceiling tiles.,Upgrades & Options,sq ft,2
-Acoustical Backer Pad Install,Add sound dampening pads to standard panels.,Upgrades & Options,sq ft,1
-Custom Grid Color Powder Coating,Factory paint match suspension system to custom RAL color.,Upgrades & Options,sq ft,3
-Washable Scrub-Resistant Upgrade,Upgrade to heavy-duty scrubbable facility panels.,Upgrades & Options,sq ft,2
-Impact-Resistant Gymnasium Panels,Install heavy-impact abuse-resistant ceiling tiles.,Upgrades & Options,sq ft,7
-Class A Fire-Rated Barrier Upgrade,Install fire-rated membrane backing above grid.,Upgrades & Options,sq ft,4
-Dustless Demolition Upgrade,Vacuum-shrouded tool extraction during tile removal.,Upgrades & Options,sq ft,1
-Ceiling Grid LED Strip Integration,Install flush linear lighting channels in T-bar grid.,Upgrades & Options,linear ft,45
-Baffled Acoustic Cloud Upgrade,Suspend vertical sound absorption baffles from deck.,Upgrades & Options,each,125
-Water Stain Sealer Priming,Apply pigmented shellac primer to minor stain spots.,Remediation,each,35
-Minor Mold Remediation Spray,Treat localized surface mold on ceiling tiles and grid.,Remediation,sq ft,4
-Grid Rust Neutralizing Treatment,Scrape corrosion and apply rust-converting primer.,Remediation,linear ft,8
-Odor Neutralizing Treatment,Enzyme spray application for smoke or water odor.,Remediation,sq ft,1
-Post-Repair Detail Cleaning,Wipe down grid and surrounding surfaces after work.,Remediation,hour,65
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call Fee,On-site diagnostic and travel up to 30 miles.,Diagnostics & Service,visit,125,1,0
+After-Hours Emergency Dispatch,Urgent mobilization outside normal business hours.,Diagnostics & Service,visit,275,2.2,0
+Ceiling Inspection and Report,Comprehensive structural and grid integrity assessment.,Diagnostics & Service,hour,115,1,0
+Moisture Damage Assessment,Locate roof leak origins affecting ceiling systems.,Diagnostics & Service,hour,125,1,0
+Acoustical Testing,Sound transmission loss measurement and evaluation.,Diagnostics & Service,hour,150,1.2,0
+Journeyman Installer Labor,Standard installation and repair labor rate.,Labor Rates,hour,95,1,0
+Apprentice Labor,Assistance and material staging labor rate.,Labor Rates,hour,65,1,0
+Overtime Labor Surcharge,Labor multiplier for weekend and evening work.,Labor Rates,hour,60,1,0
+Lead Installer Supervision,Project coordination and crew management.,Labor Rates,hour,125,1,0
+Demo and Disposal Labor,Removal of old ceiling materials and debris.,Labor Rates,hour,85,1,0
+Standard Grid Removal,Dismantle existing suspended ceiling framework.,Removal & Disposal,sq ft,1,0.008,0
+Acoustical Tile Removal,Take down existing lay-in ceiling panels.,Removal & Disposal,sq ft,1,0.008,0
+Glue-Up Tile Removal,Scrape and remove direct-attached ceiling tiles.,Removal & Disposal,sq ft,3,0.024,0
+Drywall Furring Channel Removal,Strip out concealed ceiling support channels.,Removal & Disposal,linear ft,2,0.016,0
+Hazardous Material Containment,Poly barrier setup for dust and debris control.,Removal & Disposal,job,350,1,150
+Debris Dumpster Rental,Roll-off container for heavy tile and metal waste.,Removal & Disposal,job,650,0,433.33
+Minor Tile Repair,Glue and patch minor cracks or edge chips.,Repairs,each,45,0.3,5
+Grid Re-leveling,Adjust hanger wires to correct sagging ceiling grid.,Repairs,sq ft,2,0.016,0
+Bent Main Runner Repair,Straighten or reinforce damaged main tee sections.,Repairs,each,75,0.5,8
+Cross Tee Replacement,Swap out a single bent or broken cross tee.,Repairs,each,55,0.35,6
+Hanger Wire Replacement,Install new 12-gauge galvanized support wires.,Repairs,each,35,0.25,2
+Wall Angle Re-securing,Fasten loose perimeter molding to partition walls.,Repairs,linear ft,12,0.08,1.5
+Hold-Down Clip Installation,Install clips to secure tiles in high-wind areas.,Repairs,each,5,0.03,1
+Expansion Joint Repair,Fix damaged building seismic separation joints.,Repairs,linear ft,45,0.25,8
+Water-Damaged Tile Patching,Cut and fit matching replacement scrap sections.,Repairs,each,65,0.4,10
+Acoustical Sealant Application,Apply sound-blocking bead around perimeter and penetrations.,Repairs,linear ft,3,0.015,0.75
+Standard 2x2 Lay-In Installation,Install mineral fiber square lay-in ceiling panels.,Tile Installation,sq ft,3,0.012,1
+Standard 2x4 Lay-In Installation,Install large format mineral fiber ceiling panels.,Tile Installation,sq ft,3,0.012,1
+Fine Textured Ceiling Tile Install,Install premium smooth-finish acoustical ceiling tiles.,Tile Installation,sq ft,4,0.015,1.4
+Fissured Ceiling Tile Install,Install traditional commercial fissured pattern tiles.,Tile Installation,sq ft,3,0.012,1
+Perforated Metal Tile Install,Install metal pan acoustical ceiling tiles.,Tile Installation,sq ft,9,0.025,3.9
+Wood Veneer Ceiling Tile Install,Install high-end architectural wood finish tiles.,Tile Installation,sq ft,18,0.05,7.9
+Fiberglass High-NRC Tile Install,Install sound-absorbing high-performance fiberglass panels.,Tile Installation,sq ft,6,0.02,2.3
+Vinyl-Faced Clean Room Tile Install,Install washable vinyl-coated panels for sanitation areas.,Tile Installation,sq ft,5,0.016,2
+Glue-Up Acoustical Tile Install,Adhere tongue-and-groove tiles directly to hard substrate.,Tile Installation,sq ft,7,0.03,2.1
+Tegular Edge Tile Install,Install square-drop reveal edge acoustical panels.,Tile Installation,sq ft,5,0.016,2
+Hidden Spine Concealed Tile Install,Install concealed spline interlocking ceiling tiles.,Tile Installation,sq ft,8,0.03,2.8
+Linear Metal Ceiling Install,Install snap-in aluminum linear ceiling strips.,Tile Installation,sq ft,14,0.045,5.7
+Open Cell Ceiling Grid Install,Install architectural open baffle ceiling matrix.,Tile Installation,sq ft,12,0.04,4.8
+Custom Shape Field Cutting,Notch and cut tiles around columns and angles.,Tile Installation,each,15,0.1,1.6
+Standard 15/32 Grid Installation,Install intermediate duty exposed tee suspension system.,Grid Systems,sq ft,3,0.012,1
+Heavy Duty Seismic Grid Install,Install heavy duty earthquake-rated suspension framework.,Grid Systems,sq ft,5,0.02,1.7
+Narrow Face 9/16 Grid Install,Install slim-profile architectural ceiling grid system.,Grid Systems,sq ft,4,0.015,1.4
+Concealed Grid System Install,Install hidden suspension framework for flush ceilings.,Grid Systems,sq ft,6,0.025,1.9
+Corrosive Environment Grid Install,Install fiberglass or aluminum rust-proof grid system.,Grid Systems,sq ft,8,0.03,2.8
+Main Runner Replacement,Install new 12-foot main suspension tee.,Grid Systems,linear ft,4,0.02,1
+Perimeter Wall Angle Install,Mount L-shaped wall molding around room perimeter.,Grid Systems,linear ft,3,0.015,0.7
+Shadow Molding Installation,Install reveal-edge perimeter trim molding.,Grid Systems,linear ft,6,0.03,1.5
+Expansion Spacer Clip Install,Install seismic expansion clips in grid matrix.,Grid Systems,each,18,0.1,3.8
+Diagonal Splay Wire Install,Install seismic bracing wires per code requirements.,Grid Systems,each,45,0.3,5
+Mineral Fiber Tile 2x2 Box,Box of 16 standard acoustical ceiling tiles.,Materials & Parts,each,42,0.05,26
+Mineral Fiber Tile 2x4 Box,Box of 10 standard 2x4 acoustical ceiling tiles.,Materials & Parts,each,55,0.05,34.66
+High-NRC Fiberglass Panel Box,Box of high-performance sound absorption panels.,Materials & Parts,each,110,0.05,70
+Vinyl Clean Room Tile Carton,Box of washable vinyl-faced ceiling tiles.,Materials & Parts,each,85,0.05,53.33
+Fine Textured Tegular Tile Carton,Box of premium smooth reveal-edge tiles.,Materials & Parts,each,95,0.05,60
+Main Tee 12-Foot Section,Standard heavy-duty main runner component.,Materials & Parts,each,14,0.04,6
+Cross Tee 4-Foot Section,Intermediate cross tee grid component.,Materials & Parts,each,5,0.02,1.6
+Cross Tee 2-Foot Section,Short cross tee grid component.,Materials & Parts,each,3,0.01,1.1
+Perimeter Wall Molding 12-Foot,Standard wall angle trim piece.,Materials & Parts,each,11,0.03,4.8
+Hanger Wire Bundle,Coil of 100-foot 12-gauge galvanized wire.,Materials & Parts,each,35,0.02,21.33
+Grid Touch-Up Paint,Aerosol spray paint matching standard white grid.,Materials & Parts,each,22,0.02,13
+Hold-Down Clip Bag,Bag of 100 metal ceiling tile retention clips.,Materials & Parts,each,28,0.02,16.66
+Expansion Clip Set,Seismic expansion sleeves for grid T-bars.,Materials & Parts,each,15,0.02,8
+Replacement Grid Splice,Connector clip for joining cut main runners.,Materials & Parts,each,6,0.02,2.33
+Acoustical Sealant Tube,28 oz cartridge of non-hardening sound sealant.,Materials & Parts,each,18,0.02,10
+Recessed Light Cutout Kit,Precision hole cutting and reinforcement for cans.,Specialty & Cutouts,each,35,0.2,6.66
+HVAC Diffuser Cutout,Custom framing and cutting for supply air vents.,Specialty & Cutouts,each,45,0.25,8.66
+Sprinkler Head Escutcheon Install,Install trim rings around fire sprinkler penetrations.,Specialty & Cutouts,each,15,0.08,3.66
+Speaker and Alarm Cutout,Circular core cut for life safety devices.,Specialty & Cutouts,each,25,0.15,4.33
+Access Panel Installation,Install hinged ceiling access door in grid.,Specialty & Cutouts,each,165,0.8,46.66
+Light Fixture Independent Support,Install dedicated safety wires for lay-in fixtures.,Specialty & Cutouts,each,28,0.15,6
+Partition Top Track Attachment,Secure wall framing clips to ceiling grid.,Specialty & Cutouts,linear ft,14,0.08,2.66
+Curtain Track Ceiling Mount,Install heavy-duty ceiling track for cubicle curtains.,Specialty & Cutouts,linear ft,22,0.12,4.66
+Signage Hanging Clip Install,Attach T-bar clips for overhead directional signs.,Specialty & Cutouts,each,12,0.06,3
+Bulkhead Framing Integration,Tie suspended ceiling grid into drywall bulkhead.,Specialty & Cutouts,linear ft,35,0.2,6.66
+Building Permit Acquisition,Processing and obtaining local municipal work permits.,Permits & Compliance,job,250,2,0
+Engineering Seismic Calculation,Certified structural engineering review for ceiling loads.,Permits & Compliance,job,600,4.8,0
+Fire Safety Compliance Inspection,Verify drop-out tile ratings and sprinkler clearances.,Permits & Compliance,visit,175,1.4,0
+ADA Compliance Review,Check ceiling heights and clearance requirements.,Permits & Compliance,job,150,1.2,0
+After-Hours Work Permit Surcharge,Expedited municipal paperwork for night shifts.,Permits & Compliance,job,125,1,0
+Scaffolding Setup and Tear Down,Erect mobile staging for high ceiling access.,Equipment & Access,job,300,2,33.33
+Scissor Lift Daily Rental,Powered platform rental for expansive commercial areas.,Equipment & Access,day,220,0.2,130
+Boom Lift Daily Rental,Articulating lift for obstructed high-bay ceilings.,Equipment & Access,day,450,0.2,283.33
+Laser Level Setup Fee,Establish precise room-wide ceiling elevation lines.,Equipment & Access,job,75,0.6,0
+HEPA Air Scrubber Rental,Negative air machine for dust containment during demo.,Equipment & Access,day,110,0.1,63.33
+Anti-Microbial Tile Coating,Spray application of mold and bacteria inhibitor.,Upgrades & Options,sq ft,1,0.005,0.25
+Thermal Insulation Blanket Layer,Lay fiberglass batt insulation above ceiling tiles.,Upgrades & Options,sq ft,2,0.008,0.66
+Acoustical Backer Pad Install,Add sound dampening pads to standard panels.,Upgrades & Options,sq ft,1,0.005,0.25
+Custom Grid Color Powder Coating,Factory paint match suspension system to custom RAL color.,Upgrades & Options,sq ft,3,0.01,1.16
+Washable Scrub-Resistant Upgrade,Upgrade to heavy-duty scrubbable facility panels.,Upgrades & Options,sq ft,2,0.008,0.66
+Impact-Resistant Gymnasium Panels,Install heavy-impact abuse-resistant ceiling tiles.,Upgrades & Options,sq ft,7,0.02,2.8
+Class A Fire-Rated Barrier Upgrade,Install fire-rated membrane backing above grid.,Upgrades & Options,sq ft,4,0.012,1.6
+Dustless Demolition Upgrade,Vacuum-shrouded tool extraction during tile removal.,Upgrades & Options,sq ft,1,0.005,0.25
+Ceiling Grid LED Strip Integration,Install flush linear lighting channels in T-bar grid.,Upgrades & Options,linear ft,45,0.25,8.66
+Baffled Acoustic Cloud Upgrade,Suspend vertical sound absorption baffles from deck.,Upgrades & Options,each,125,0.6,33.33
+Water Stain Sealer Priming,Apply pigmented shellac primer to minor stain spots.,Remediation,each,35,0.2,6.66
+Minor Mold Remediation Spray,Treat localized surface mold on ceiling tiles and grid.,Remediation,sq ft,4,0.02,1
+Grid Rust Neutralizing Treatment,Scrape corrosion and apply rust-converting primer.,Remediation,linear ft,8,0.04,2
+Odor Neutralizing Treatment,Enzyme spray application for smoke or water odor.,Remediation,sq ft,1,0.005,0.25
+Post-Repair Detail Cleaning,Wipe down grid and surrounding surfaces after work.,Remediation,hour,65,0.52,0

@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Service Call,Initial on-site diagnostic and trouble isolation during normal hours,Diagnostics & Labor,visit,250
-After-Hours Emergency Service Call,Emergency dispatch outside normal working hours,Diagnostics & Labor,visit,450
-Holiday Emergency Service Call,Emergency dispatch on recognized holidays,Diagnostics & Labor,visit,650
-Standard Mechanic Labor Rate,Hourly rate for single certified elevator mechanic,Diagnostics & Labor,hour,175
-Overtime Mechanic Labor Rate,After-hours hourly rate for single certified mechanic,Diagnostics & Labor,hour,265
-Double-Time Mechanic Labor Rate,Holiday or Sunday hourly rate for single mechanic,Diagnostics & Labor,hour,350
-Helper Labor Rate,Hourly rate for apprentice or assistant technician,Diagnostics & Labor,hour,110
-Two-Man Crew Hourly Rate,Combined hourly rate for mechanic and helper,Diagnostics & Labor,hour,285
-Code Compliance Inspection,Annual state safety code inspection coordination,Inspections & Permits,visit,400
-Category 1 Full Load Safety Test,Annual safety test for hydraulic or traction elevators,Inspections & Permits,job,1200
-Category 5 Five-Year Safety Test,Comprehensive five-year load test and governor inspection,Inspections & Permits,job,2800
-Municipal Permit Filing,Filing fees and processing for local elevator permits,Inspections & Permits,job,225
-Monthly Maintenance Contract,Routine preventive maintenance visit per unit monthly,Maintenance Agreements,visit,220
-Quarterly Maintenance Contract,Comprehensive preventive maintenance visit per unit,Maintenance Agreements,visit,550
-Oil Line Replacement,Hydraulic oil supply line replacement per section,Hydraulic Systems,linear ft,145
-Hydraulic Jack Packing Replacement,Removal and replacement of cylinder packing gland,Hydraulic Systems,job,1850
-Submerged Pump Motor Replacement,Replacement of hydraulic power unit pump motor,Hydraulic Systems,each,2400
-Hydraulic Control Valve Replacement,Main control valve block replacement and calibration,Hydraulic Systems,each,3200
-Hydraulic Oil Flush and Replacement,"Drain, flush system, and refill with new oil",Hydraulic Systems,gallon,45
-Muffler Replacement,Hydraulic pulsation dampener muffler replacement,Hydraulic Systems,each,650
-Relief Valve Adjustment and Sealing,Pressure test and reset of hydraulic relief valve,Hydraulic Systems,job,380
-Tank Heater Replacement,Hydraulic oil reservoir immersion heater replacement,Hydraulic Systems,each,520
-Hand Pump Installation,Emergency manual lowering hand pump kit installation,Hydraulic Systems,each,850
-Pit Oil Recovery Service,Removal and disposal of oil accumulation in elevator pit,Hydraulic Systems,job,600
-Hoisting Rope Replacement,Set of steel suspension wire ropes replacement,Traction Systems,job,3500
-Governor Rope Replacement,Overtravel governor wire rope replacement,Traction Systems,each,450
-Machine Drive Sheave Replacement,Grooved traction sheave replacement on machine,Traction Systems,each,4200
-Deflector Sheave Replacement,Secondary overhead or pit sheave replacement,Traction Systems,each,1600
-Traction Machine Gearbox Rebuild,Worm gear and bearing overhaul on site,Traction Systems,job,5500
-Brake Coil Replacement,Electro-mechanical brake operating coil replacement,Traction Systems,each,750
-Brake Lining Replacement,Resurfacing and replacement of brake shoes,Traction Systems,job,950
-Governor Assembly Replacement,Overspeed mechanical governor device replacement,Traction Systems,each,1800
-Machine Room Blower Installation,Ventilation exhaust fan installation for motor room,Traction Systems,each,680
-Hoistway Limit Switch Replacement,Normal or terminal slow-down limit switch replacement,Electrical & Controls,each,280
-Door Interlock Switch Replacement,Safety contact interlock switch replacement,Electrical & Controls,each,320
-Car Top Inspection Station Replacement,Maintenance control station on top of elevator car,Electrical & Controls,each,650
-Traveler Cable Replacement,Multi-conductor hanging electrical cable replacement,Electrical & Controls,job,4800
-Door Operator Motor Replacement,Electric operator motor for car sliding doors,Electrical & Controls,each,1150
-Door Operator Controller Replacement,Solid-state door control board replacement,Electrical & Controls,each,1400
-Solid-State Starter Replacement,Soft-start motor control unit replacement,Electrical & Controls,each,2200
-Microprocessor Controller Board Replacement,Main elevator operational logic board replacement,Electrical & Controls,each,3800
-Transformer Replacement,Control voltage step-down transformer replacement,Electrical & Controls,each,550
-Emergency Battery Lowering Unit Replacement,UPS battery backup system for automatic homing,Electrical & Controls,each,950
-Pit Light Fixture Replacement,Vapor-proof pit illumination lamp and guard,Electrical & Controls,each,220
-Car Light Ballast Replacement,Interior cab fluorescent or LED driver ballast,Electrical & Controls,each,260
-Hall Station Pushbutton Replacement,Up or down hall call fixture push button unit,Fixtures & Signaling,each,210
-Car Operating Panel Key Switch Replacement,Independent service or fire service key switch,Fixtures & Signaling,each,290
-Floor Position Indicator Display Replacement,Digital or LCD floor arrival indicator screen,Fixtures & Signaling,each,480
-ADA Emergency Phone Unit Replacement,Hands-free two-way communication phone module,Fixtures & Signaling,each,750
-Hall Lantern Fixture Replacement,Arrival chime and direction arrow light assembly,Fixtures & Signaling,each,520
-Car Gate Switch Replacement,Collapsible gate or safety edge contact switch,Door Systems,each,290
-Door Hanger Roller Replacement,Set of eccentric rollers for car or hoistway doors,Door Systems,job,450
-Door Track Replacement,Header track for sliding entrance doors,Door Systems,linear ft,180
-Bottom Door Guide Replacement,Threshold guide shoes for sliding doors,Door Systems,job,160
-Infrared Door Edge Sensor Installation,Optic safety curtain edge protection system,Door Systems,each,980
-Closet Door Closer Replacement,Self-closing mechanical arm for swing hoistway doors,Door Systems,each,340
-Door Lock Cam Replacement,Mechanical releasing device on car top,Door Systems,each,550
-Car Sill Cleaning and Alignment,Clear debris and adjust threshold clearances,Door Systems,job,220
-Guide Rail Alignment,Plumb and torque T-rail fastenings per section,Rail & Mechanical,linear ft,45
-Roller Guide Assembly Replacement,Spring-loaded car guide roller assembly,Rail & Mechanical,each,650
-Slide Guide Shoe Replacement,Replacement of non-roller friction guide shoes,Rail & Mechanical,job,280
-Buffer Spring Replacement,Car or counterweight pit spring buffer unit,Rail & Mechanical,each,520
-Oil Buffer Rebuild,Hydraulic pit buffer seal and oil replacement,Rail & Mechanical,each,850
-Counterweight Frame Repair,Structural weld repair and weight retention check,Rail & Mechanical,job,1100
-Vibration Isolation Pad Replacement,Machine bedplate neoprene isolation pads,Rail & Mechanical,job,720
-Fire Service Phase I Key Switch Retrofit,Code-compliant firefighter recall switch installation,Upgrades & Modernization,each,1250
-Fire Service Phase II In-Car Retrofit,Firefighter operational switch and light package,Upgrades & Modernization,job,2400
-LED Interior Cab Lighting Upgrade,Conversion of incandescent fixtures to energy-saving LED,Upgrades & Modernization,job,850
-Cab Interior Wall Panel Refinishing,Laminate or wood veneer panel resurfacing,Upgrades & Modernization,job,3500
-Cab Flooring Replacement,Heavy-duty rubber or tile elevator flooring,Upgrades & Modernization,sq ft,45
-Handrail Installation,Stainless steel or brushed brass interior cab handrail,Upgrades & Modernization,linear ft,130
-Mirror Installation,Safety-backed glass mirror panel for cab interior,Upgrades & Modernization,sq ft,75
-Vandal-Resistant Fixture Package Upgrade,Heavy-duty stainless steel pushbuttons and plates,Upgrades & Modernization,job,4200
-Emergency Power Generator Interface,Transfer switch and logic integration for backup power,Upgrades & Modernization,job,2900
-Pit Ladder Installation,OSHA-compliant fixed steel access ladder in pit,Safety & Compliance,each,600
-Sump Pump Installation,Automatic pit water discharge pump with float switch,Safety & Compliance,each,1200
-Oil-Water Separator System,Discharge filtration system for elevator pit sump,Safety & Compliance,each,2500
-Machine Room Guarding Installation,Safety guards around rotating machine components,Safety & Compliance,job,750
-Hoistway Access Switch Installation,Top-of-landing access key switch for technicians,Safety & Compliance,each,580
-Safety Bulkhead Fitting Replacement,Hydraulic line bulkhead fitting replacement in pit,Hydraulic Systems,each,490
-Governor Overhaul,"Disassemble, clean, and recalibrate mechanical governor",Traction Systems,job,950
-Machine Room Sound Proofing,Acoustical insulation panels for machine room walls,Upgrades & Modernization,sq ft,22
-Door Sockets and Pivots Replacement,Bottom pivot and socket assembly for swing doors,Door Systems,each,190
-Hoistway Vent Damper Replacement,Smoke relief fire damper actuator replacement,Safety & Compliance,each,1400
-Main Line Circuit Breaker Replacement,Elevator disconnect and thermal magnetic breaker,Electrical & Controls,each,850
-Phase Monitor Relay Replacement,Voltage phase loss and reversal protection relay,Electrical & Controls,each,320
-Brake Microswitch Replacement,Brake lift verification contact switch,Traction Systems,each,210
-Encoder Replacement,Motor shaft rotational speed and position encoder,Electrical & Controls,each,980
-Load Weighing Device Calibration,Car under-car sensor adjustment for bypass load,Electrical & Controls,job,450
-Hydraulic Pressure Gauge Installation,Temporary or permanent pressure test gauge assembly,Hydraulic Systems,each,280
-Hoistway Clean Down Service,Debris and dust removal from entire elevator shaft,Maintenance Agreements,job,1100
-Guide Rail Lubrication Service,Cleaning and application of fresh rail grease,Maintenance Agreements,job,350
-Entrapment Rescue Service,Non-emergency passenger release service call,Diagnostics & Labor,visit,350
-Elevator Shutdown Notice Signage,Engraved out-of-service notification plates,Fixtures & Signaling,each,75
-Pit Stop Switch Replacement,Emergency stop pull or push switch in pit,Safety & Compliance,each,180
-Top of Car Stop Switch Replacement,Emergency stop toggle switch on car top,Safety & Compliance,each,190
-Counterweight Guard Screen Installation,Wire mesh safety screen in pit area,Safety & Compliance,job,820
-Traveling Cable Junction Box Replacement,Under-car wiring termination enclosure,Electrical & Controls,each,650
-Door Clutch Replacement,Car door drive vane and clutch assembly,Door Systems,each,780
-Hydraulic Silencer Installation,In-line fluid noise reduction muffler device,Hydraulic Systems,each,1100
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial on-site diagnostic and trouble isolation during normal hours,Diagnostics & Labor,visit,250,2,0
+After-Hours Emergency Service Call,Emergency dispatch outside normal working hours,Diagnostics & Labor,visit,450,3,50
+Holiday Emergency Service Call,Emergency dispatch on recognized holidays,Diagnostics & Labor,visit,650,4,100
+Standard Mechanic Labor Rate,Hourly rate for single certified elevator mechanic,Diagnostics & Labor,hour,175,1,0
+Overtime Mechanic Labor Rate,After-hours hourly rate for single certified mechanic,Diagnostics & Labor,hour,265,1,140
+Double-Time Mechanic Labor Rate,Holiday or Sunday hourly rate for single mechanic,Diagnostics & Labor,hour,350,1,225
+Helper Labor Rate,Hourly rate for apprentice or assistant technician,Diagnostics & Labor,hour,110,1,0
+Two-Man Crew Hourly Rate,Combined hourly rate for mechanic and helper,Diagnostics & Labor,hour,285,2,35
+Code Compliance Inspection,Annual state safety code inspection coordination,Inspections & Permits,visit,400,3,16.67
+Category 1 Full Load Safety Test,Annual safety test for hydraulic or traction elevators,Inspections & Permits,job,1200,6,300
+Category 5 Five-Year Safety Test,Comprehensive five-year load test and governor inspection,Inspections & Permits,job,2800,14,666.67
+Municipal Permit Filing,Filing fees and processing for local elevator permits,Inspections & Permits,job,225,1,66.67
+Monthly Maintenance Contract,Routine preventive maintenance visit per unit monthly,Maintenance Agreements,visit,220,1.5,23.33
+Quarterly Maintenance Contract,Comprehensive preventive maintenance visit per unit,Maintenance Agreements,visit,550,3.5,83.33
+Oil Line Replacement,Hydraulic oil supply line replacement per section,Hydraulic Systems,linear ft,145,0.8,33.33
+Hydraulic Jack Packing Replacement,Removal and replacement of cylinder packing gland,Hydraulic Systems,job,1850,10,400
+Submerged Pump Motor Replacement,Replacement of hydraulic power unit pump motor,Hydraulic Systems,each,2400,8,933.33
+Hydraulic Control Valve Replacement,Main control valve block replacement and calibration,Hydraulic Systems,each,3200,10,1300
+Hydraulic Oil Flush and Replacement,"Drain, flush system, and refill with new oil",Hydraulic Systems,gallon,45,0.2,26.67
+Muffler Replacement,Hydraulic pulsation dampener muffler replacement,Hydraulic Systems,each,650,2,266.67
+Relief Valve Adjustment and Sealing,Pressure test and reset of hydraulic relief valve,Hydraulic Systems,job,380,2.5,46.67
+Tank Heater Replacement,Hydraulic oil reservoir immersion heater replacement,Hydraulic Systems,each,520,2,186.67
+Hand Pump Installation,Emergency manual lowering hand pump kit installation,Hydraulic Systems,each,850,3,313.33
+Pit Oil Recovery Service,Removal and disposal of oil accumulation in elevator pit,Hydraulic Systems,job,600,3.5,100
+Hoisting Rope Replacement,Set of steel suspension wire ropes replacement,Traction Systems,job,3500,14,1166.67
+Governor Rope Replacement,Overtravel governor wire rope replacement,Traction Systems,each,450,2,133.33
+Machine Drive Sheave Replacement,Grooved traction sheave replacement on machine,Traction Systems,each,4200,16,1466.67
+Deflector Sheave Replacement,Secondary overhead or pit sheave replacement,Traction Systems,each,1600,6,566.67
+Traction Machine Gearbox Rebuild,Worm gear and bearing overhaul on site,Traction Systems,job,5500,20,2000
+Brake Coil Replacement,Electro-mechanical brake operating coil replacement,Traction Systems,each,750,3,246.67
+Brake Lining Replacement,Resurfacing and replacement of brake shoes,Traction Systems,job,950,4,300
+Governor Assembly Replacement,Overspeed mechanical governor device replacement,Traction Systems,each,1800,6,693.33
+Machine Room Blower Installation,Ventilation exhaust fan installation for motor room,Traction Systems,each,680,3,200
+Hoistway Limit Switch Replacement,Normal or terminal slow-down limit switch replacement,Electrical & Controls,each,280,1.5,60
+Door Interlock Switch Replacement,Safety contact interlock switch replacement,Electrical & Controls,each,320,1.5,86.67
+Car Top Inspection Station Replacement,Maintenance control station on top of elevator car,Electrical & Controls,each,650,3,186.67
+Traveler Cable Replacement,Multi-conductor hanging electrical cable replacement,Electrical & Controls,job,4800,18,1733.33
+Door Operator Motor Replacement,Electric operator motor for car sliding doors,Electrical & Controls,each,1150,4,433.33
+Door Operator Controller Replacement,Solid-state door control board replacement,Electrical & Controls,each,1400,4.5,550
+Solid-State Starter Replacement,Soft-start motor control unit replacement,Electrical & Controls,each,2200,6,966.67
+Microprocessor Controller Board Replacement,Main elevator operational logic board replacement,Electrical & Controls,each,3800,8,1866.67
+Transformer Replacement,Control voltage step-down transformer replacement,Electrical & Controls,each,550,2,200
+Emergency Battery Lowering Unit Replacement,UPS battery backup system for automatic homing,Electrical & Controls,each,950,3,386.67
+Pit Light Fixture Replacement,Vapor-proof pit illumination lamp and guard,Electrical & Controls,each,220,1,63.33
+Car Light Ballast Replacement,Interior cab fluorescent or LED driver ballast,Electrical & Controls,each,260,1,90
+Hall Station Pushbutton Replacement,Up or down hall call fixture push button unit,Fixtures & Signaling,each,210,1,56.67
+Car Operating Panel Key Switch Replacement,Independent service or fire service key switch,Fixtures & Signaling,each,290,1.2,93.33
+Floor Position Indicator Display Replacement,Digital or LCD floor arrival indicator screen,Fixtures & Signaling,each,480,2,153.33
+ADA Emergency Phone Unit Replacement,Hands-free two-way communication phone module,Fixtures & Signaling,each,750,2.5,293.33
+Hall Lantern Fixture Replacement,Arrival chime and direction arrow light assembly,Fixtures & Signaling,each,520,2,186.67
+Car Gate Switch Replacement,Collapsible gate or safety edge contact switch,Door Systems,each,290,1.2,93.33
+Door Hanger Roller Replacement,Set of eccentric rollers for car or hoistway doors,Door Systems,job,450,2,133.33
+Door Track Replacement,Header track for sliding entrance doors,Door Systems,linear ft,180,0.8,53.33
+Bottom Door Guide Replacement,Threshold guide shoes for sliding doors,Door Systems,job,160,1,23.33
+Infrared Door Edge Sensor Installation,Optic safety curtain edge protection system,Door Systems,each,980,3,400
+Closet Door Closer Replacement,Self-closing mechanical arm for swing hoistway doors,Door Systems,each,340,1.5,103.33
+Door Lock Cam Replacement,Mechanical releasing device on car top,Door Systems,each,550,2,200
+Car Sill Cleaning and Alignment,Clear debris and adjust threshold clearances,Door Systems,job,220,1.5,20
+Guide Rail Alignment,Plumb and torque T-rail fastenings per section,Rail & Mechanical,linear ft,45,0.25,9.33
+Roller Guide Assembly Replacement,Spring-loaded car guide roller assembly,Rail & Mechanical,each,650,2,266.67
+Slide Guide Shoe Replacement,Replacement of non-roller friction guide shoes,Rail & Mechanical,job,280,1.5,60
+Buffer Spring Replacement,Car or counterweight pit spring buffer unit,Rail & Mechanical,each,520,2,186.67
+Oil Buffer Rebuild,Hydraulic pit buffer seal and oil replacement,Rail & Mechanical,each,850,3,313.33
+Counterweight Frame Repair,Structural weld repair and weight retention check,Rail & Mechanical,job,1100,5,300
+Vibration Isolation Pad Replacement,Machine bedplate neoprene isolation pads,Rail & Mechanical,job,720,3,226.67
+Fire Service Phase I Key Switch Retrofit,Code-compliant firefighter recall switch installation,Upgrades & Modernization,each,1250,4,500
+Fire Service Phase II In-Car Retrofit,Firefighter operational switch and light package,Upgrades & Modernization,job,2400,8,933.33
+LED Interior Cab Lighting Upgrade,Conversion of incandescent fixtures to energy-saving LED,Upgrades & Modernization,job,850,3,313.33
+Cab Interior Wall Panel Refinishing,Laminate or wood veneer panel resurfacing,Upgrades & Modernization,job,3500,12,1333.33
+Cab Flooring Replacement,Heavy-duty rubber or tile elevator flooring,Upgrades & Modernization,sq ft,45,0.2,13.33
+Handrail Installation,Stainless steel or brushed brass interior cab handrail,Upgrades & Modernization,linear ft,130,0.5,46.67
+Mirror Installation,Safety-backed glass mirror panel for cab interior,Upgrades & Modernization,sq ft,75,0.25,29.33
+Vandal-Resistant Fixture Package Upgrade,Heavy-duty stainless steel pushbuttons and plates,Upgrades & Modernization,job,4200,12,1800
+Emergency Power Generator Interface,Transfer switch and logic integration for backup power,Upgrades & Modernization,job,2900,10,1133.33
+Pit Ladder Installation,OSHA-compliant fixed steel access ladder in pit,Safety & Compliance,each,600,2,233.33
+Sump Pump Installation,Automatic pit water discharge pump with float switch,Safety & Compliance,each,1200,4,466.67
+Oil-Water Separator System,Discharge filtration system for elevator pit sump,Safety & Compliance,each,2500,6,1133.33
+Machine Room Guarding Installation,Safety guards around rotating machine components,Safety & Compliance,job,750,3,250
+Hoistway Access Switch Installation,Top-of-landing access key switch for technicians,Safety & Compliance,each,580,2.5,186.67
+Safety Bulkhead Fitting Replacement,Hydraulic line bulkhead fitting replacement in pit,Hydraulic Systems,each,490,2,160
+Governor Overhaul,"Disassemble, clean, and recalibrate mechanical governor",Traction Systems,job,950,4,300
+Machine Room Sound Proofing,Acoustical insulation panels for machine room walls,Upgrades & Modernization,sq ft,22,0.1,9.33
+Door Sockets and Pivots Replacement,Bottom pivot and socket assembly for swing doors,Door Systems,each,190,1,43.33
+Hoistway Vent Damper Replacement,Smoke relief fire damper actuator replacement,Safety & Compliance,each,1400,4,600
+Main Line Circuit Breaker Replacement,Elevator disconnect and thermal magnetic breaker,Electrical & Controls,each,850,2.5,350
+Phase Monitor Relay Replacement,Voltage phase loss and reversal protection relay,Electrical & Controls,each,320,1.2,113.33
+Brake Microswitch Replacement,Brake lift verification contact switch,Traction Systems,each,210,1,56.67
+Encoder Replacement,Motor shaft rotational speed and position encoder,Electrical & Controls,each,980,3,400
+Load Weighing Device Calibration,Car under-car sensor adjustment for bypass load,Electrical & Controls,job,450,2,133.33
+Hydraulic Pressure Gauge Installation,Temporary or permanent pressure test gauge assembly,Hydraulic Systems,each,280,1,100
+Hoistway Clean Down Service,Debris and dust removal from entire elevator shaft,Maintenance Agreements,job,1100,6,233.33
+Guide Rail Lubrication Service,Cleaning and application of fresh rail grease,Maintenance Agreements,job,350,2,66.67
+Entrapment Rescue Service,Non-emergency passenger release service call,Diagnostics & Labor,visit,350,2.5,16.67
+Elevator Shutdown Notice Signage,Engraved out-of-service notification plates,Fixtures & Signaling,each,75,0.5,8.67
+Pit Stop Switch Replacement,Emergency stop pull or push switch in pit,Safety & Compliance,each,180,1,36.67
+Top of Car Stop Switch Replacement,Emergency stop toggle switch on car top,Safety & Compliance,each,190,1,40
+Counterweight Guard Screen Installation,Wire mesh safety screen in pit area,Safety & Compliance,job,820,3,293.33
+Traveling Cable Junction Box Replacement,Under-car wiring termination enclosure,Electrical & Controls,each,650,2.5,233.33
+Door Clutch Replacement,Car door drive vane and clutch assembly,Door Systems,each,780,3,266.67
+Hydraulic Silencer Installation,In-line fluid noise reduction muffler device,Hydraulic Systems,each,1100,4,400

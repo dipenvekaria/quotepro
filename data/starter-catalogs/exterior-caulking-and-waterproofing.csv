@@ -1,102 +1,102 @@
-name,description,category,unit,price
-Standard Diagnostic Service Call,On-site leak investigation and moisture intrusion assessment.,Diagnostics,visit,175
-Infrared Thermal Imaging Leak Survey,Thermal scan of building envelope to locate hidden moisture.,Diagnostics,hour,225
-Destructive Testing Probe,Opening wall assembly to inspect flashing and weather barrier.,Diagnostics,each,350
-Water Spray Testing,AAMA standard water spray test to verify window seal integrity.,Diagnostics,hour,250
-Core Sample Extraction,Extracting masonry core for sealant adhesion testing.,Diagnostics,each,275
-Adhesion Pull Test,Field testing sealant bond strength to building substrate.,Diagnostics,each,150
-Scaffolding Setup and Tear Down,Erecting and dismantling frame scaffolding for high work.,Access & Setup,job,1800
-Swing Stage Rigging,Installing and operating temporary suspended scaffolding system.,Access & Setup,day,650
-Boom Lift Rental and Operation,Articulating boom lift for high exterior access.,Access & Setup,day,550
-Ladder Safety Setup,Securing extension ladders with standoff stabilizers.,Access & Setup,visit,95
-Sidewalk Shed Protection,Constructing pedestrian protection canopy below work zone.,Access & Setup,linear ft,45
-Ground Protection Matting,Playing temporary mats to prevent lawn and hardscape damage.,Access & Setup,day,120
-Journeyman Caulker Labor,Standard hourly rate for skilled sealant application labor.,Labor Rates,hour,95
-Master Waterproofing Technician,Specialized labor for complex waterproofing installation.,Labor Rates,hour,125
-Overtime Labor Surcharge,Additional hourly rate multiplier for after-hours work.,Labor Rates,hour,65
-Apprentice Labor Rate,Support labor for material handling and surface prep.,Labor Rates,hour,60
-Project Supervision,On-site quality control and crew management.,Labor Rates,hour,85
-Safety Monitor Labor,Dedicated safety watch for high-angle or confined space work.,Labor Rates,hour,55
-Window Perimeter Joint Removal,Razor scraping and pulling old failing sealant from window frames.,Surface Prep & Removal,linear ft,1.75
-Expansion Joint Sealant Removal,Mechanical cutting and pulling of degraded joint sealant.,Surface Prep & Removal,linear ft,2.25
-Substrate Mechanical Grinding,Grinding joint interfaces to ensure proper sealant bonding.,Surface Prep & Removal,linear ft,1.5
-Solvent Wipe Cleaning,Wiping joint substrates with approved cleaner before priming.,Surface Prep & Removal,linear ft,0.5
-Wire Brush Masonry Prep,Removing loose debris and laitance from masonry joints.,Surface Prep & Removal,linear ft,0.75
-Sandblasting Joint Interface,Abrasive blasting of concrete joints for maximum bond.,Surface Prep & Removal,linear ft,3
-Silicone Sealant Application,Installing high-grade structural silicone joint sealant.,Sealants,linear ft,3.5
-Urethane Joint Sealant,Applying multi-component polyurethane sealant to concrete joints.,Sealants,linear ft,3.25
-Hybrid Polymer Sealant,Installing STPU sealant for multi-substrate adhesion.,Sealants,linear ft,3.4
-Fire-Rated Joint Sealant,Installing intumescent firestop silicone in rated assemblies.,Sealants,linear ft,5.5
-Traffic-Grade Expansion Joint Sealant,Installing self-leveling polyurethane sealant for parking decks.,Sealants,linear ft,6
-Precompressed Foam Sealant,Installing impregnated expanding foam tape for movement joints.,Sealants,linear ft,8.5
-Acrylic Latex Caulk Application,Applying standard latex caulk for minor non-moving gaps.,Sealants,linear ft,2
-Backer Rod Installation,Inserting closed-cell polyethylene backer rod into joints.,Sealants,linear ft,1.1
-Bond Breaker Tape Installation,Applying tape to prevent three-sided adhesion in shallow joints.,Sealants,linear ft,0.85
-Substrate Primer Application,Brushing chemical primer to enhance sealant adhesion.,Sealants,linear ft,0.95
-Through-Wall Flashing Repair,Replacing damaged metal or membrane through-wall flashing.,Flashing & Details,linear ft,45
-Window Head Flashing Installation,Installing drip cap flashing above window openings.,Flashing & Details,linear ft,22
-EIFS Termination Sealant Detail,Sealing EIFS joints at dissimilar materials and penetrations.,Flashing & Details,linear ft,4.5
-Control Joint Restoration,Complete removal and replacement of masonry control joints.,Flashing & Details,linear ft,5.25
-Copings Stone Joint Sealing,Sealing mortar joints and caps on parapet wall copings.,Flashing & Details,linear ft,6.5
-Expansion Joint Bellows Replacement,Replacing rubber mechanical expansion joint covers.,Flashing & Details,linear ft,85
-Below-Grade Sheet Membrane Waterproofing,Applying peel-and-stick waterproofing membrane to foundation walls.,Below-Grade Waterproofing,sq ft,8.5
-Liquid-Applied Waterproofing Membrane,Roller or spray application of elastomeric waterproofing coating.,Below-Grade Waterproofing,sq ft,6
-Bentonite Clay Waterproofing Panel,Installing sodium bentonite panels for subterranean protection.,Below-Grade Waterproofing,sq ft,7.25
-Drainage Board Installation,Placing protection and drainage board over foundation waterproofing.,Below-Grade Waterproofing,sq ft,2.5
-Foundation Wall Crack Injection (Epoxy),Pressure injection of structural epoxy into concrete cracks.,Below-Grade Waterproofing,linear ft,45
-Foundation Wall Crack Injection (Urethane),Low-pressure injection of expanding polyurethane for leaking cracks.,Below-Grade Waterproofing,linear ft,38
-Weep Hole Clearing and Tubing,Unclogging masonry weep holes and inserting insect screens.,Masonry & Concrete Repair,each,18
-Mortar Joint Tuckpointing,Grinding out and replacing deteriorated mortar joints.,Masonry & Concrete Repair,linear ft,12
-Spalled Concrete Patching,Chipping out damaged concrete and applying polymer repair mortar.,Masonry & Concrete Repair,sq ft,35
-Lintel Rust Remediation and Coating,Wire brushing rusted steel lintels and applying rust inhibitor.,Masonry & Concrete Repair,linear ft,28
-Stucco Crack Repair,V-grooving and patching structural cracks in stucco cladding.,Masonry & Concrete Repair,linear ft,14
-Clear Masonry Water Repellent,Spray application of breathable siloxane water repellent sealer.,Coatings & Sealers,sq ft,1.25
-Elastomeric Wall Coating Application,Applying high-build elastomeric waterproof paint to exterior walls.,Coatings & Sealers,sq ft,2.75
-Graffiti Removal and Anti-Graffiti Coating,Chemical removal of graffiti and application of protective coating.,Coatings & Sealers,sq ft,4
-Traffic Coating System (Pedestrian),Multi-layer polyurethane waterproof coating for balconies.,Coatings & Sealers,sq ft,9
-Traffic Coating System (Vehicular),Heavy-duty waterproof coating system for parking structures.,Coatings & Sealers,sq ft,11.5
-Metal Panel Seam Sealing,Sealing architectural metal panel joints with high-grade sealant.,Specialty Applications,linear ft,4.25
-Skylight Perimeter Waterproofing,Flashing and sealing skylight curbs to roof assemblies.,Specialty Applications,linear ft,24
-Roof-to-Wall Transition Sealing,Sealing junction between roofing membrane and parapet wall.,Specialty Applications,linear ft,16
-Expansion Joint Cover Plate Installation,Installing aluminum architectural joint covers over expansion joints.,Specialty Applications,linear ft,45
-Penetration Seal (Pipes and Conduits),Sealing around utility pipes penetrating exterior walls.,Specialty Applications,each,65
-Louvers and Vent Sealing,Caulking perimeter frames of exterior louvers and vents.,Specialty Applications,linear ft,3.75
-Debris Disposal Fee (Dumpster),"Disposal of old sealant, packaging, and construction waste.",Disposal & Permits,job,350
-Hazardous Material Disposal (Lead/Asbestos),Specialized disposal fees for hazardous caulk abatement.,Disposal & Permits,job,850
-Municipal Building Permit Processing,Acquiring local government permits for exterior renovation.,Disposal & Permits,job,300
-Engineering Stamp and Calculation,Structural engineer review and seal for complex tie-ins.,Disposal & Permits,job,1200
-Traffic Control Detail (Flaggers),Providing certified street flaggers for lane closures.,Disposal & Permits,day,600
-Street Obstruction Permit,City permit for sidewalk or parking lane closures.,Disposal & Permits,week,250
-Silicone Sealant 20oz Sausage (Standard),Material cost for one sausage of architectural silicone.,Materials,each,18
-Polyurethane Sealant 20oz Sausage,Material cost for one sausage of polyurethane sealant.,Materials,each,14
-Backer Rod 1-Inch Spool,Material cost for 250-foot roll of backer rod.,Materials,each,45
-Substrate Primer Quart,One quart can of specialized chemical primer.,Materials,each,55
-Epoxy Injection Resin Kit,Two-part structural epoxy injection cartridge set.,Materials,each,75
-Self-Leveling Sealant Gallon,One gallon of traffic-grade joint sealant.,Materials,gallon,95
-Compressive Foam Tape Roll,Standard roll of precompressed expanding foam sealant.,Materials,each,110
-Bond Breaker Tape Roll,Roll of pressure-sensitive polyethylene tape.,Materials,each,22
-Water Repellent Sealer 5-Gallon Pail,Pail of siloxane-based clear penetrating sealer.,Materials,each,220
-Elastomeric Coating 5-Gallon Pail,Pail of high-build waterproof wall coating.,Materials,each,185
-Annual Maintenance Inspection Plan,Yearly envelope check and minor touch-up service.,Service Agreements,visit,450
-Bi-Annual Sealant Integrity Audit,Spring and fall inspection of all moving joints and windows.,Service Agreements,visit,750
-Emergency Leak Response Retainer,Priority dispatch guarantee for severe weather leaks.,Service Agreements,job,1000
-Warranty Extension Inspection,Post-warranty comprehensive check to extend manufacturer coverage.,Service Agreements,visit,550
-Preventative Power Washing,Low-pressure hot water wash of building facade before sealing.,Surface Prep & Removal,sq ft,0.45
-Chemical Paint Stripping,Applying stripper to remove old coatings from joint interfaces.,Surface Prep & Removal,sq ft,3.5
-Masonry Acid Wash,Cleaning efflorescence and mortar smears with specialized acid.,Masonry & Concrete Repair,sq ft,0.85
-Expansion Joint Foam Insert,Installing cellular foam filler inside deep expansion joints.,Sealants,linear ft,2.5
-Concrete Joint Routing,Using diamond blade saw to widen random cracks into clean joints.,Surface Prep & Removal,linear ft,2.75
-Flashing End Dam Fabrication,Creating soldered end dams for through-wall metal flashing.,Flashing & Details,each,45
-Parapet Wall Cap Sealing,Applying heavy-duty elastomeric sealant along parapet coping stones.,Flashing & Details,linear ft,5.75
-Window Glass Pocket Sealing,Sealing internal glazing pockets of storefront framing systems.,Specialty Applications,linear ft,4.5
-Curry Wall Gasket Replacement,Replacing degraded rubber wedge gaskets in curtain wall systems.,Specialty Applications,linear ft,6.25
-Exterior Door Threshold Sealing,Applying polyurethane sealant beneath exterior commercial door thresholds.,Specialty Applications,linear ft,15
-Balcony Edge Metal Sealing,Sealing joints where balcony drip edge meets concrete slab.,Specialty Applications,linear ft,3.85
-High-Rise Rigging Tie-Back Inspection,Testing and certifying roof anchor points before swing stage use.,Access & Setup,job,400
-Temporary Enclosure Weatherproofing,Installing poly sheeting to protect open wall sections overnight.,Access & Setup,sq ft,1.15
-Core Drill Hole Patching,Filling diagnostic core holes with non-shrink hydraulic grout.,Masonry & Concrete Repair,each,65
-Stain-Free Silicone Upcharge,Premium non-staining silicone for natural stone substrates.,Materials,linear ft,1.25
-Color-Matched Custom Sealant Surcharge,Custom color matching of polyurethane sealant to unusual paint.,Materials,job,250
-HEPA Vacuum Dust Extraction,Dust containment vacuum system attached to grinding tools.,Surface Prep & Removal,hour,25
-Night Shift Premium Labor,Labor rate multiplier for overnight commercial building work.,Labor Rates,hour,50
-Post-Construction Facade Washdown,Final cleaning of building exterior after caulking completion.,Surface Prep & Removal,sq ft,0.35
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Service Call,On-site leak investigation and moisture intrusion assessment.,Diagnostics,visit,175,1,33.33
+Infrared Thermal Imaging Leak Survey,Thermal scan of building envelope to locate hidden moisture.,Diagnostics,hour,225,1.5,26.67
+Destructive Testing Probe,Opening wall assembly to inspect flashing and weather barrier.,Diagnostics,each,350,2,66.67
+Water Spray Testing,AAMA standard water spray test to verify window seal integrity.,Diagnostics,hour,250,1.5,43.33
+Core Sample Extraction,Extracting masonry core for sealant adhesion testing.,Diagnostics,each,275,1.5,56.67
+Adhesion Pull Test,Field testing sealant bond strength to building substrate.,Diagnostics,each,150,1,16.67
+Scaffolding Setup and Tear Down,Erecting and dismantling frame scaffolding for high work.,Access & Setup,job,1800,8,533.33
+Swing Stage Rigging,Installing and operating temporary suspended scaffolding system.,Access & Setup,day,650,3,183.33
+Boom Lift Rental and Operation,Articulating boom lift for high exterior access.,Access & Setup,day,550,2,200
+Ladder Safety Setup,Securing extension ladders with standoff stabilizers.,Access & Setup,visit,95,0.5,20
+Sidewalk Shed Protection,Constructing pedestrian protection canopy below work zone.,Access & Setup,linear ft,45,0.2,13.33
+Ground Protection Matting,Playing temporary mats to prevent lawn and hardscape damage.,Access & Setup,day,120,0.5,38.33
+Journeyman Caulker Labor,Standard hourly rate for skilled sealant application labor.,Labor Rates,hour,95,1,0
+Master Waterproofing Technician,Specialized labor for complex waterproofing installation.,Labor Rates,hour,125,1,0
+Overtime Labor Surcharge,Additional hourly rate multiplier for after-hours work.,Labor Rates,hour,65,1,0
+Apprentice Labor Rate,Support labor for material handling and surface prep.,Labor Rates,hour,60,1,0
+Project Supervision,On-site quality control and crew management.,Labor Rates,hour,85,1,0
+Safety Monitor Labor,Dedicated safety watch for high-angle or confined space work.,Labor Rates,hour,55,1,0
+Window Perimeter Joint Removal,Razor scraping and pulling old failing sealant from window frames.,Surface Prep & Removal,linear ft,1.75,0.01,0.5
+Expansion Joint Sealant Removal,Mechanical cutting and pulling of degraded joint sealant.,Surface Prep & Removal,linear ft,2.25,0.015,0.5
+Substrate Mechanical Grinding,Grinding joint interfaces to ensure proper sealant bonding.,Surface Prep & Removal,linear ft,1.5,0.01,0.2
+Solvent Wipe Cleaning,Wiping joint substrates with approved cleaner before priming.,Surface Prep & Removal,linear ft,0.5,0.003,0.15
+Wire Brush Masonry Prep,Removing loose debris and laitance from masonry joints.,Surface Prep & Removal,linear ft,0.75,0.005,0.08
+Sandblasting Joint Interface,Abrasive blasting of concrete joints for maximum bond.,Surface Prep & Removal,linear ft,3,0.015,0.75
+Silicone Sealant Application,Installing high-grade structural silicone joint sealant.,Sealants,linear ft,3.5,0.015,1.15
+Urethane Joint Sealant,Applying multi-component polyurethane sealant to concrete joints.,Sealants,linear ft,3.25,0.015,0.95
+Hybrid Polymer Sealant,Installing STPU sealant for multi-substrate adhesion.,Sealants,linear ft,3.4,0.015,1
+Fire-Rated Joint Sealant,Installing intumescent firestop silicone in rated assemblies.,Sealants,linear ft,5.5,0.02,1.95
+Traffic-Grade Expansion Joint Sealant,Installing self-leveling polyurethane sealant for parking decks.,Sealants,linear ft,6,0.02,2.25
+Precompressed Foam Sealant,Installing impregnated expanding foam tape for movement joints.,Sealants,linear ft,8.5,0.025,3.5
+Acrylic Latex Caulk Application,Applying standard latex caulk for minor non-moving gaps.,Sealants,linear ft,2,0.012,0.33
+Backer Rod Installation,Inserting closed-cell polyethylene backer rod into joints.,Sealants,linear ft,1.1,0.006,0.25
+Bond Breaker Tape Installation,Applying tape to prevent three-sided adhesion in shallow joints.,Sealants,linear ft,0.85,0.005,0.15
+Substrate Primer Application,Brushing chemical primer to enhance sealant adhesion.,Sealants,linear ft,0.95,0.005,0.22
+Through-Wall Flashing Repair,Replacing damaged metal or membrane through-wall flashing.,Flashing & Details,linear ft,45,0.25,8.67
+Window Head Flashing Installation,Installing drip cap flashing above window openings.,Flashing & Details,linear ft,22,0.12,4.67
+EIFS Termination Sealant Detail,Sealing EIFS joints at dissimilar materials and penetrations.,Flashing & Details,linear ft,4.5,0.025,0.93
+Control Joint Restoration,Complete removal and replacement of masonry control joints.,Flashing & Details,linear ft,5.25,0.03,0.97
+Copings Stone Joint Sealing,Sealing mortar joints and caps on parapet wall copings.,Flashing & Details,linear ft,6.5,0.035,1.5
+Expansion Joint Bellows Replacement,Replacing rubber mechanical expansion joint covers.,Flashing & Details,linear ft,85,0.35,27
+Below-Grade Sheet Membrane Waterproofing,Applying peel-and-stick waterproofing membrane to foundation walls.,Below-Grade Waterproofing,sq ft,8.5,0.04,3.73
+Liquid-Applied Waterproofing Membrane,Roller or spray application of elastomeric waterproofing coating.,Below-Grade Waterproofing,sq ft,6,0.03,2.5
+Bentonite Clay Waterproofing Panel,Installing sodium bentonite panels for subterranean protection.,Below-Grade Waterproofing,sq ft,7.25,0.035,3.1
+Drainage Board Installation,Placing protection and drainage board over foundation waterproofing.,Below-Grade Waterproofing,sq ft,2.5,0.012,0.67
+Foundation Wall Crack Injection (Epoxy),Pressure injection of structural epoxy into concrete cracks.,Below-Grade Waterproofing,linear ft,45,0.2,13.33
+Foundation Wall Crack Injection (Urethane),Low-pressure injection of expanding polyurethane for leaking cracks.,Below-Grade Waterproofing,linear ft,38,0.18,10.33
+Weep Hole Clearing and Tubing,Unclogging masonry weep holes and inserting insect screens.,Masonry & Concrete Repair,each,18,0.1,3.67
+Mortar Joint Tuckpointing,Grinding out and replacing deteriorated mortar joints.,Masonry & Concrete Repair,linear ft,12,0.06,3
+Spalled Concrete Patching,Chipping out damaged concrete and applying polymer repair mortar.,Masonry & Concrete Repair,sq ft,35,0.15,11
+Lintel Rust Remediation and Coating,Wire brushing rusted steel lintels and applying rust inhibitor.,Masonry & Concrete Repair,linear ft,28,0.12,8.67
+Stucco Crack Repair,V-grooving and patching structural cracks in stucco cladding.,Masonry & Concrete Repair,linear ft,14,0.07,3.33
+Clear Masonry Water Repellent,Spray application of breathable siloxane water repellent sealer.,Coatings & Sealers,sq ft,1.25,0.005,0.43
+Elastomeric Wall Coating Application,Applying high-build elastomeric waterproof paint to exterior walls.,Coatings & Sealers,sq ft,2.75,0.012,0.83
+Graffiti Removal and Anti-Graffiti Coating,Chemical removal of graffiti and application of protective coating.,Coatings & Sealers,sq ft,4,0.018,1.23
+Traffic Coating System (Pedestrian),Multi-layer polyurethane waterproof coating for balconies.,Coatings & Sealers,sq ft,9,0.04,2.73
+Traffic Coating System (Vehicular),Heavy-duty waterproof coating system for parking structures.,Coatings & Sealers,sq ft,11.5,0.05,3.53
+Metal Panel Seam Sealing,Sealing architectural metal panel joints with high-grade sealant.,Specialty Applications,linear ft,4.25,0.02,1.1
+Skylight Perimeter Waterproofing,Flashing and sealing skylight curbs to roof assemblies.,Specialty Applications,linear ft,24,0.12,6
+Roof-to-Wall Transition Sealing,Sealing junction between roofing membrane and parapet wall.,Specialty Applications,linear ft,16,0.08,4
+Expansion Joint Cover Plate Installation,Installing aluminum architectural joint covers over expansion joints.,Specialty Applications,linear ft,45,0.2,13.33
+Penetration Seal (Pipes and Conduits),Sealing around utility pipes penetrating exterior walls.,Specialty Applications,each,65,0.35,15
+Louvers and Vent Sealing,Caulking perimeter frames of exterior louvers and vents.,Specialty Applications,linear ft,3.75,0.02,0.83
+Debris Disposal Fee (Dumpster),"Disposal of old sealant, packaging, and construction waste.",Disposal & Permits,job,350,0,233.33
+Hazardous Material Disposal (Lead/Asbestos),Specialized disposal fees for hazardous caulk abatement.,Disposal & Permits,job,850,0,566.67
+Municipal Building Permit Processing,Acquiring local government permits for exterior renovation.,Disposal & Permits,job,300,1,116.67
+Engineering Stamp and Calculation,Structural engineer review and seal for complex tie-ins.,Disposal & Permits,job,1200,2,633.33
+Traffic Control Detail (Flaggers),Providing certified street flaggers for lane closures.,Disposal & Permits,day,600,4,66.67
+Street Obstruction Permit,City permit for sidewalk or parking lane closures.,Disposal & Permits,week,250,0.5,123.33
+Silicone Sealant 20oz Sausage (Standard),Material cost for one sausage of architectural silicone.,Materials,each,18,0.05,11.67
+Polyurethane Sealant 20oz Sausage,Material cost for one sausage of polyurethane sealant.,Materials,each,14,0.05,9
+Backer Rod 1-Inch Spool,Material cost for 250-foot roll of backer rod.,Materials,each,45,0,30
+Substrate Primer Quart,One quart can of specialized chemical primer.,Materials,each,55,0,36.67
+Epoxy Injection Resin Kit,Two-part structural epoxy injection cartridge set.,Materials,each,75,0,50
+Self-Leveling Sealant Gallon,One gallon of traffic-grade joint sealant.,Materials,gallon,95,0,63.33
+Compressive Foam Tape Roll,Standard roll of precompressed expanding foam sealant.,Materials,each,110,0,73.33
+Bond Breaker Tape Roll,Roll of pressure-sensitive polyethylene tape.,Materials,each,22,0,14.67
+Water Repellent Sealer 5-Gallon Pail,Pail of siloxane-based clear penetrating sealer.,Materials,each,220,0,146.67
+Elastomeric Coating 5-Gallon Pail,Pail of high-build waterproof wall coating.,Materials,each,185,0,123.33
+Annual Maintenance Inspection Plan,Yearly envelope check and minor touch-up service.,Service Agreements,visit,450,2.5,90
+Bi-Annual Sealant Integrity Audit,Spring and fall inspection of all moving joints and windows.,Service Agreements,visit,750,4.5,120
+Emergency Leak Response Retainer,Priority dispatch guarantee for severe weather leaks.,Service Agreements,job,1000,4,333.33
+Warranty Extension Inspection,Post-warranty comprehensive check to extend manufacturer coverage.,Service Agreements,visit,550,3,116.67
+Preventative Power Washing,Low-pressure hot water wash of building facade before sealing.,Surface Prep & Removal,sq ft,0.45,0.002,0.15
+Chemical Paint Stripping,Applying stripper to remove old coatings from joint interfaces.,Surface Prep & Removal,sq ft,3.5,0.015,1.1
+Masonry Acid Wash,Cleaning efflorescence and mortar smears with specialized acid.,Masonry & Concrete Repair,sq ft,0.85,0.004,0.23
+Expansion Joint Foam Insert,Installing cellular foam filler inside deep expansion joints.,Sealants,linear ft,2.5,0.01,0.83
+Concrete Joint Routing,Using diamond blade saw to widen random cracks into clean joints.,Surface Prep & Removal,linear ft,2.75,0.012,0.83
+Flashing End Dam Fabrication,Creating soldered end dams for through-wall metal flashing.,Flashing & Details,each,45,0.2,13.33
+Parapet Wall Cap Sealing,Applying heavy-duty elastomeric sealant along parapet coping stones.,Flashing & Details,linear ft,5.75,0.025,1.75
+Window Glass Pocket Sealing,Sealing internal glazing pockets of storefront framing systems.,Specialty Applications,linear ft,4.5,0.02,1.33
+Curry Wall Gasket Replacement,Replacing degraded rubber wedge gaskets in curtain wall systems.,Specialty Applications,linear ft,6.25,0.025,2.07
+Exterior Door Threshold Sealing,Applying polyurethane sealant beneath exterior commercial door thresholds.,Specialty Applications,linear ft,15,0.08,3.33
+Balcony Edge Metal Sealing,Sealing joints where balcony drip edge meets concrete slab.,Specialty Applications,linear ft,3.85,0.018,1.08
+High-Rise Rigging Tie-Back Inspection,Testing and certifying roof anchor points before swing stage use.,Access & Setup,job,400,2,100
+Temporary Enclosure Weatherproofing,Installing poly sheeting to protect open wall sections overnight.,Access & Setup,sq ft,1.15,0.005,0.35
+Core Drill Hole Patching,Filling diagnostic core holes with non-shrink hydraulic grout.,Masonry & Concrete Repair,each,65,0.35,15
+Stain-Free Silicone Upcharge,Premium non-staining silicone for natural stone substrates.,Materials,linear ft,1.25,0.002,0.4
+Color-Matched Custom Sealant Surcharge,Custom color matching of polyurethane sealant to unusual paint.,Materials,job,250,1,83.33
+HEPA Vacuum Dust Extraction,Dust containment vacuum system attached to grinding tools.,Surface Prep & Removal,hour,25,0.2,0
+Night Shift Premium Labor,Labor rate multiplier for overnight commercial building work.,Labor Rates,hour,50,0.4,0
+Post-Construction Facade Washdown,Final cleaning of building exterior after caulking completion.,Surface Prep & Removal,sq ft,0.35,0.002,0.07

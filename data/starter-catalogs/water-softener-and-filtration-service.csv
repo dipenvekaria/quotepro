@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Standard Diagnostic Fee,Onsite system evaluation and basic water testing,Diagnostics,visit,125
-After-Hours Diagnostic Fee,Emergency evening or weekend service call and diagnosis,Diagnostics,visit,250
-Advanced Water Lab Test,Comprehensive third-party laboratory water quality analysis,Diagnostics,each,195
-Flow Rate and Pressure Test,Measure home water pressure and peak flow rates,Diagnostics,each,85
-System Efficiency Audit,"Check salt usage, water waste, and cycle settings",Diagnostics,each,95
-Standard Labor Rate,Hourly plumbing and water treatment labor,Labor,hour,150
-Master Technician Labor Rate,Hourly rate for specialized commercial or complex residential work,Labor,hour,200
-Apprentice Labor Rate,Hourly rate for assistant technician support,Labor,hour,95
-After-Hours Labor Rate,Emergency hourly labor surcharge,Labor,hour,250
-Permit Acquisition Service,Pulling local plumbing and electrical permits,Permits & Disposal,each,150
-Old System Haul Away,Removal and recycling of old treatment equipment,Permits & Disposal,each,75
-Environmental Disposal Fee,Disposal fee for old filter media and resins,Permits & Disposal,each,50
-Plumbing Inspection Fee,Required local code inspection coordination,Permits & Disposal,each,125
-Basic Water Softener Installation,Install standard single-tank water softening system,Installations,job,450
-Dual-Tank Softener Installation,Install high-capacity alternating twin-tank water softener,Installations,job,650
-Whole-House Carbon Filter Installation,Install standard whole-house carbon filtration system,Installations,job,400
-Reverse Osmosis System Installation,Install under-sink multi-stage RO drinking water system,Installations,job,350
-UV Disinfection System Installation,Install ultraviolet bacterial water purification system,Installations,job,400
-Iron and Sulfur Filter Installation,Install specialized aeration or chemical-free iron filter,Installations,job,550
-Chemical Feed Pump Installation,Install chlorine or hydrogen peroxide injection pump,Installations,job,450
-Commercial Softener Installation,Install heavy-duty commercial scale water softening system,Installations,job,1500
-Bypass Valve Installation,Install standard three-valve bypass loop,Installations,each,175
-Drain Line Installation,Run new PVC or PEX drain line to standpipe,Installations,linear ft,15
-Power Outlet Installation,Install dedicated 120V electrical outlet near system,Installations,each,250
-Resin Bed Replacement,Replace exhausted softening resin inside mineral tank,Repairs & Rebuilding,each,375
-Control Valve Rebuild,"Replace seals, spacers, and piston in control valve",Repairs & Rebuilding,each,225
-Digital Control Head Replacement,Replace electronic timer and display assembly,Repairs & Rebuilding,each,450
-Brine Tank Replacement,Replace cracked or damaged salt storage tank,Repairs & Rebuilding,each,275
-Brine Valve Assembly Replacement,Replace safety float and brine draw valve,Repairs & Rebuilding,each,145
-Mineral Tank Replacement,Replace cracked fiberglass resin pressure tank,Repairs & Rebuilding,each,400
-Injector Nozzle Cleaning,Clean clogged brine injector and throat assembly,Repairs & Rebuilding,each,95
-Drive Motor Replacement,Replace motorized piston drive gear assembly,Repairs & Rebuilding,each,185
-Microswitch Replacement,Replace cycle control electrical microswitch,Repairs & Rebuilding,each,115
-Transformer Replacement,Replace low-voltage control power transformer,Repairs & Rebuilding,each,95
-RO Membrane Replacement,Replace reverse osmosis semi-permeable membrane,RO & Filtration Service,each,185
-RO Sediment Filter Replacement,Replace pre-filter sediment cartridge,RO & Filtration Service,each,65
-RO Carbon Filter Replacement,Replace pre and post carbon block filters,RO & Filtration Service,each,85
-RO Storage Tank Replacement,Replace under-sink pressurized bladder tank,RO & Filtration Service,each,220
-RO Faucet Replacement,Replace dedicated drinking water air-gap faucet,RO & Filtration Service,each,175
-RO Auto Shut-Off Valve Replacement,Replace hydraulic automatic tank shut-off valve,RO & Filtration Service,each,110
-RO Sanitization Service,Chemical flush and sanitize of entire RO system,RO & Filtration Service,each,125
-Whole House Cartridge Replacement,Replace standard big-blue sediment or carbon cartridge,RO & Filtration Service,each,95
-UV Lamp Replacement,Replace ultraviolet sterilization bulb,RO & Filtration Service,each,150
-UV Quartz Sleeve Replacement,Clean and replace UV glass quartz sleeve,RO & Filtration Service,each,135
-Standard Salt Delivery,Delivery and load of 4 bags of water softener salt,Maintenance,visit,95
-Bulk Salt Delivery,Delivery and load of 10 bags of water softener salt,Maintenance,visit,175
-Annual Softener Tune-Up,"Clean brine tank, check settings, test water hardness",Maintenance,visit,149
-Resin Bed Cleaner Treatment,Chemical cleaning of fouled softening resin bed,Maintenance,each,85
-Brine Tank Cleanout,Remove salt bridge and thoroughly wash brine reservoir,Maintenance,each,135
-Annual Filtration Service,Comprehensive maintenance visit for all whole-house filters,Maintenance,visit,195
-System Sanitization Flush,Chlorine bleach sterilization of softener and plumbing,Maintenance,each,120
-Pre-Filter Pressure Gauge Installation,Install inlet and outlet pressure gauges,Upgrades & Accessories,each,125
-Smart Leak Detector Installation,Install Wi-Fi enabled automatic water shut-off valve,Upgrades & Accessories,each,350
-Smart Salt Level Monitor,Install ultrasonic salt level sensor with app alert,Upgrades & Accessories,each,175
-Whole House Scale Inhibitor Addition,Install polyphosphate anti-scale cartridge system,Upgrades & Accessories,each,225
-Booster Pump Installation,Install pressure booster pump for low-flow homes,Upgrades & Accessories,each,550
-Sediment Spin-Down Filter Upgrade,Install cleanable manual flush sediment pre-filter,Upgrades & Accessories,each,250
-Air Gap Fitting Installation,Install code-compliant plumbing drainage air gap,Upgrades & Accessories,each,75
-Thermal Expansion Tank Installation,Install water heater expansion tank required for closed loops,Upgrades & Accessories,each,275
-Hardness Test Kit,Professional liquid drop water hardness test kit,Upgrades & Accessories,each,35
-Copper Pipe Modification,Modify existing copper plumbing lines for system loop,Pipes & Fittings,linear ft,45
-PEX Pipe Modification,Modify existing PEX plumbing lines for system loop,Pipes & Fittings,linear ft,30
-CPVC Pipe Modification,Modify existing CPVC plumbing lines for system loop,Pipes & Fittings,linear ft,35
-Main Water Shut-Off Valve Replacement,Replace faulty main house ball valve,Pipes & Fittings,each,220
-Pressure Reducing Valve Replacement,Replace main water pressure regulator,Pipes & Fittings,each,325
-Flex Connector Replacement,Replace braided stainless steel system connection hoses,Pipes & Fittings,pair,85
-Dielectric Union Installation,Install corrosion-preventing fittings on dissimilar metals,Pipes & Fittings,each,65
-Solder Joint Repair,Fix leaking copper solder joint,Pipes & Fittings,each,95
-Drain Saddle Valve Replacement,Replace waste drain connection clamp,Pipes & Fittings,each,55
-Grounding Clamp Installation,Install electrical continuity jumper around water treatment,Pipes & Fittings,each,45
-Commercial Softener Reseat,Rebuild large multi-port commercial control valve,Commercial Systems,each,650
-Commercial Media Rebed,Replace media in large commercial filtration tank,Commercial Systems,each,1250
-Commercial RO Membrane Wash,Chemical clean of multi-element commercial RO array,Commercial Systems,job,850
-Commercial Salt Delivery Service,Pallet delivery and load for commercial facility,Commercial Systems,visit,350
-Commercial UV System Repair,Repair commercial high-output UV disinfection rack,Commercial Systems,hour,225
-Commercial Backwash Controller Service,Program and repair industrial timer controller,Commercial Systems,each,300
-Multi-Tank Sequencing Setup,Configure multi-tank alternating control panel,Commercial Systems,each,450
-Commercial Feed Pump Rebuild,Rebuild heavy-duty chemical dosing pump head,Commercial Systems,each,275
-Industrial Pressure Tank Inspection,Inspect and recharge bladder on large pressure tank,Commercial Systems,each,250
-Commercial Water Audit,Detailed facility flow and water chemistry analysis,Commercial Systems,job,500
-Resin Cleanse Chemical,Professional resin cleaner additive bottle,Materials & Parts,each,25
-Potassium Chloride Salt Bag,Alternative 40lb potassium chloride crystal bag,Materials & Parts,each,32
-Solar Salt Bag,Standard 40lb water softener solar salt bag,Materials & Parts,each,9
-PEX Tubing Stock,Standard 3/4 inch PEX pipe material,Materials & Parts,linear ft,4
-PVC Drain Tubing,Flexible reinforced drain line tubing,Materials & Parts,linear ft,3
-O-Ring Replacement Kit,Assorted tank and valve replacement O-rings,Materials & Parts,each,20
-Teflon Tape and Dope,Thread sealant materials for pipe connections,Materials & Parts,each,12
-Brass Fitting Assortment,Connectors and adapters for plumbing lines,Materials & Parts,each,18
-Silicone Grease Tube,Food-grade lubricant for valve seals,Materials & Parts,each,15
-Zip Ties and Fasteners,Securing straps and mounting hardware,Materials & Parts,each,10
-System Relocation Service,Disconnect and move existing water system to new location,Relocation & Removal,job,650
-Temporary System Bypass Setup,Install temporary piping while system is removed for repair,Relocation & Removal,each,150
-System Decommissioning,Safely disconnect and drain system for long-term storage,Relocation & Removal,each,125
-Home Sale System Certification,Inspection and written report for real estate transaction,Diagnostics,each,175
-Well Water Shock Chlorination,Heavy shock treatment of well and pressure tank,Maintenance,job,350
-Filter Housing Wrench,Standard sump removal wrench tool,Materials & Parts,each,22
-Drain Line Flow Control Replacement,Replace internal backwash flow restrictor,Repairs & Rebuilding,each,65
-Brine Well Overflow Fitting,Replace safety overflow elbow and tubing,Repairs & Rebuilding,each,45
-System Programming and Calibration,Program custom cycle times and hardness settings,Diagnostics,each,75
-Warranty Service Dispatch,Labor coverage for manufacturer warranty part replacement,Labor,visit,125
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Onsite system evaluation and basic water testing,Diagnostics,visit,125,1,0
+After-Hours Diagnostic Fee,Emergency evening or weekend service call and diagnosis,Diagnostics,visit,250,2,0
+Advanced Water Lab Test,Comprehensive third-party laboratory water quality analysis,Diagnostics,each,195,0.5,90
+Flow Rate and Pressure Test,Measure home water pressure and peak flow rates,Diagnostics,each,85,0.5,15
+System Efficiency Audit,"Check salt usage, water waste, and cycle settings",Diagnostics,each,95,0.5,22
+Standard Labor Rate,Hourly plumbing and water treatment labor,Labor,hour,150,1,0
+Master Technician Labor Rate,Hourly rate for specialized commercial or complex residential work,Labor,hour,200,1,0
+Apprentice Labor Rate,Hourly rate for assistant technician support,Labor,hour,95,1,0
+After-Hours Labor Rate,Emergency hourly labor surcharge,Labor,hour,250,1,0
+Permit Acquisition Service,Pulling local plumbing and electrical permits,Permits & Disposal,each,150,1,16.67
+Old System Haul Away,Removal and recycling of old treatment equipment,Permits & Disposal,each,75,0.6,0
+Environmental Disposal Fee,Disposal fee for old filter media and resins,Permits & Disposal,each,50,0,33.33
+Plumbing Inspection Fee,Required local code inspection coordination,Permits & Disposal,each,125,1,0
+Basic Water Softener Installation,Install standard single-tank water softening system,Installations,job,450,2,133.33
+Dual-Tank Softener Installation,Install high-capacity alternating twin-tank water softener,Installations,job,650,3,183.33
+Whole-House Carbon Filter Installation,Install standard whole-house carbon filtration system,Installations,job,400,2,100
+Reverse Osmosis System Installation,Install under-sink multi-stage RO drinking water system,Installations,job,350,2,66.67
+UV Disinfection System Installation,Install ultraviolet bacterial water purification system,Installations,job,400,2,100
+Iron and Sulfur Filter Installation,Install specialized aeration or chemical-free iron filter,Installations,job,550,2.5,163.33
+Chemical Feed Pump Installation,Install chlorine or hydrogen peroxide injection pump,Installations,job,450,2,133.33
+Commercial Softener Installation,Install heavy-duty commercial scale water softening system,Installations,job,1500,6,500
+Bypass Valve Installation,Install standard three-valve bypass loop,Installations,each,175,1,33.33
+Drain Line Installation,Run new PVC or PEX drain line to standpipe,Installations,linear ft,15,0.1,4.67
+Power Outlet Installation,Install dedicated 120V electrical outlet near system,Installations,each,250,1,83.33
+Resin Bed Replacement,Replace exhausted softening resin inside mineral tank,Repairs & Rebuilding,each,375,2,83.33
+Control Valve Rebuild,"Replace seals, spacers, and piston in control valve",Repairs & Rebuilding,each,225,1.5,26.67
+Digital Control Head Replacement,Replace electronic timer and display assembly,Repairs & Rebuilding,each,450,2,133.33
+Brine Tank Replacement,Replace cracked or damaged salt storage tank,Repairs & Rebuilding,each,275,1.5,56.67
+Brine Valve Assembly Replacement,Replace safety float and brine draw valve,Repairs & Rebuilding,each,145,1,13.33
+Mineral Tank Replacement,Replace cracked fiberglass resin pressure tank,Repairs & Rebuilding,each,400,2,100
+Injector Nozzle Cleaning,Clean clogged brine injector and throat assembly,Repairs & Rebuilding,each,95,0.75,1
+Drive Motor Replacement,Replace motorized piston drive gear assembly,Repairs & Rebuilding,each,185,1,40
+Microswitch Replacement,Replace cycle control electrical microswitch,Repairs & Rebuilding,each,115,0.75,13.33
+Transformer Replacement,Replace low-voltage control power transformer,Repairs & Rebuilding,each,95,0.5,20
+RO Membrane Replacement,Replace reverse osmosis semi-permeable membrane,RO & Filtration Service,each,185,1,40
+RO Sediment Filter Replacement,Replace pre-filter sediment cartridge,RO & Filtration Service,each,65,0.5,1.67
+RO Carbon Filter Replacement,Replace pre and post carbon block filters,RO & Filtration Service,each,85,0.5,15
+RO Storage Tank Replacement,Replace under-sink pressurized bladder tank,RO & Filtration Service,each,220,1,63.33
+RO Faucet Replacement,Replace dedicated drinking water air-gap faucet,RO & Filtration Service,each,175,1,33.33
+RO Auto Shut-Off Valve Replacement,Replace hydraulic automatic tank shut-off valve,RO & Filtration Service,each,110,0.75,10
+RO Sanitization Service,Chemical flush and sanitize of entire RO system,RO & Filtration Service,each,125,1,0
+Whole House Cartridge Replacement,Replace standard big-blue sediment or carbon cartridge,RO & Filtration Service,each,95,0.5,22
+UV Lamp Replacement,Replace ultraviolet sterilization bulb,RO & Filtration Service,each,150,0.75,38.33
+UV Quartz Sleeve Replacement,Clean and replace UV glass quartz sleeve,RO & Filtration Service,each,135,1,6.67
+Standard Salt Delivery,Delivery and load of 4 bags of water softener salt,Maintenance,visit,95,0.5,22
+Bulk Salt Delivery,Delivery and load of 10 bags of water softener salt,Maintenance,visit,175,0.75,53.33
+Annual Softener Tune-Up,"Clean brine tank, check settings, test water hardness",Maintenance,visit,149,1,16
+Resin Bed Cleaner Treatment,Chemical cleaning of fouled softening resin bed,Maintenance,each,85,0.5,15
+Brine Tank Cleanout,Remove salt bridge and thoroughly wash brine reservoir,Maintenance,each,135,1,6.67
+Annual Filtration Service,Comprehensive maintenance visit for all whole-house filters,Maintenance,visit,195,1.2,30
+System Sanitization Flush,Chlorine bleach sterilization of softener and plumbing,Maintenance,each,120,1,0
+Pre-Filter Pressure Gauge Installation,Install inlet and outlet pressure gauges,Upgrades & Accessories,each,125,0.75,21.67
+Smart Leak Detector Installation,Install Wi-Fi enabled automatic water shut-off valve,Upgrades & Accessories,each,350,1,150
+Smart Salt Level Monitor,Install ultrasonic salt level sensor with app alert,Upgrades & Accessories,each,175,0.75,53.33
+Whole House Scale Inhibitor Addition,Install polyphosphate anti-scale cartridge system,Upgrades & Accessories,each,225,1,66.67
+Booster Pump Installation,Install pressure booster pump for low-flow homes,Upgrades & Accessories,each,550,2,200
+Sediment Spin-Down Filter Upgrade,Install cleanable manual flush sediment pre-filter,Upgrades & Accessories,each,250,1.25,63.33
+Air Gap Fitting Installation,Install code-compliant plumbing drainage air gap,Upgrades & Accessories,each,75,0.5,8.33
+Thermal Expansion Tank Installation,Install water heater expansion tank required for closed loops,Upgrades & Accessories,each,275,1.25,78.33
+Hardness Test Kit,Professional liquid drop water hardness test kit,Upgrades & Accessories,each,35,0,23.33
+Copper Pipe Modification,Modify existing copper plumbing lines for system loop,Pipes & Fittings,linear ft,45,0.25,9
+PEX Pipe Modification,Modify existing PEX plumbing lines for system loop,Pipes & Fittings,linear ft,30,0.2,3.33
+CPVC Pipe Modification,Modify existing CPVC plumbing lines for system loop,Pipes & Fittings,linear ft,35,0.2,6.67
+Main Water Shut-Off Valve Replacement,Replace faulty main house ball valve,Pipes & Fittings,each,220,1,63.33
+Pressure Reducing Valve Replacement,Replace main water pressure regulator,Pipes & Fittings,each,325,1.5,93.33
+Flex Connector Replacement,Replace braided stainless steel system connection hoses,Pipes & Fittings,pair,85,0.5,15
+Dielectric Union Installation,Install corrosion-preventing fittings on dissimilar metals,Pipes & Fittings,each,65,0.4,10
+Solder Joint Repair,Fix leaking copper solder joint,Pipes & Fittings,each,95,0.6,13.33
+Drain Saddle Valve Replacement,Replace waste drain connection clamp,Pipes & Fittings,each,55,0.4,3.33
+Grounding Clamp Installation,Install electrical continuity jumper around water treatment,Pipes & Fittings,each,45,0.3,5
+Commercial Softener Reseat,Rebuild large multi-port commercial control valve,Commercial Systems,each,650,4,100
+Commercial Media Rebed,Replace media in large commercial filtration tank,Commercial Systems,each,1250,6,333.33
+Commercial RO Membrane Wash,Chemical clean of multi-element commercial RO array,Commercial Systems,job,850,5,150
+Commercial Salt Delivery Service,Pallet delivery and load for commercial facility,Commercial Systems,visit,350,1,150
+Commercial UV System Repair,Repair commercial high-output UV disinfection rack,Commercial Systems,hour,225,1.5,26.67
+Commercial Backwash Controller Service,Program and repair industrial timer controller,Commercial Systems,each,300,1.5,75
+Multi-Tank Sequencing Setup,Configure multi-tank alternating control panel,Commercial Systems,each,450,2.5,83.33
+Commercial Feed Pump Rebuild,Rebuild heavy-duty chemical dosing pump head,Commercial Systems,each,275,1.5,63.33
+Industrial Pressure Tank Inspection,Inspect and recharge bladder on large pressure tank,Commercial Systems,each,250,1.5,43.33
+Commercial Water Audit,Detailed facility flow and water chemistry analysis,Commercial Systems,job,500,2.5,125
+Resin Cleanse Chemical,Professional resin cleaner additive bottle,Materials & Parts,each,25,0,16.67
+Potassium Chloride Salt Bag,Alternative 40lb potassium chloride crystal bag,Materials & Parts,each,32,0,21.33
+Solar Salt Bag,Standard 40lb water softener solar salt bag,Materials & Parts,each,9,0,6
+PEX Tubing Stock,Standard 3/4 inch PEX pipe material,Materials & Parts,linear ft,4,0,2.67
+PVC Drain Tubing,Flexible reinforced drain line tubing,Materials & Parts,linear ft,3,0,2
+O-Ring Replacement Kit,Assorted tank and valve replacement O-rings,Materials & Parts,each,20,0,13.33
+Teflon Tape and Dope,Thread sealant materials for pipe connections,Materials & Parts,each,12,0,8
+Brass Fitting Assortment,Connectors and adapters for plumbing lines,Materials & Parts,each,18,0,12
+Silicone Grease Tube,Food-grade lubricant for valve seals,Materials & Parts,each,15,0,10
+Zip Ties and Fasteners,Securing straps and mounting hardware,Materials & Parts,each,10,0,6.67
+System Relocation Service,Disconnect and move existing water system to new location,Relocation & Removal,job,650,4,100
+Temporary System Bypass Setup,Install temporary piping while system is removed for repair,Relocation & Removal,each,150,1,16.67
+System Decommissioning,Safely disconnect and drain system for long-term storage,Relocation & Removal,each,125,1,0
+Home Sale System Certification,Inspection and written report for real estate transaction,Diagnostics,each,175,1,33.33
+Well Water Shock Chlorination,Heavy shock treatment of well and pressure tank,Maintenance,job,350,2,66.67
+Filter Housing Wrench,Standard sump removal wrench tool,Materials & Parts,each,22,0,14.67
+Drain Line Flow Control Replacement,Replace internal backwash flow restrictor,Repairs & Rebuilding,each,65,0.4,10
+Brine Well Overflow Fitting,Replace safety overflow elbow and tubing,Repairs & Rebuilding,each,45,0.3,5
+System Programming and Calibration,Program custom cycle times and hardness settings,Diagnostics,each,75,0.6,0
+Warranty Service Dispatch,Labor coverage for manufacturer warranty part replacement,Labor,visit,125,1,0

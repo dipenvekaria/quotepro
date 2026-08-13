@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Arborist Consultation,On-site professional assessment and health evaluation,Diagnostics,visit,150
-Emergency Storm Assessment,Immediate evaluation of storm-damaged trees and structures,Diagnostics,visit,250
-Plant Health Care Diagnostic,"Inspection for disease, insect infestation, and nutrient deficiencies",Diagnostics,visit,175
-Written Arborist Report,Formal documented evaluation for insurance or legal purposes,Diagnostics,each,300
-Standard Tree Removal (Small),Complete removal of tree up to 30 feet tall,Tree Removal,each,550
-Standard Tree Removal (Medium),Complete removal of tree 31 to 60 feet tall,Tree Removal,each,1200
-Standard Tree Removal (Large),Complete removal of tree 61 to 90 feet tall,Tree Removal,each,2500
-Standard Tree Removal (Extra Large),Complete removal of tree over 90 feet tall,Tree Removal,each,4200
-Hazardous Tree Removal,Removal of compromised tree leaning over structures,Tree Removal,each,3500
-Confined Space Tree Removal,Dismantling tree in tight access urban backyards,Tree Removal,each,3000
-Crane-Assisted Tree Removal,Removal utilizing crane service for heavy lifts,Tree Removal,job,2500
-Palm Tree Removal (Small),Removal of palm tree up to 20 feet,Tree Removal,each,400
-Palm Tree Removal (Large),Removal of tall mature palm tree,Tree Removal,each,1100
-Deadwood Removal,"Pruning of dead, dying, and diseased branches over 2 inches",Pruning,each,350
-Crown Thinning,Selective branch removal to increase light penetration and air flow,Pruning,each,600
-Crown Raising,Pruning lower branches for clearance over roofs and paths,Pruning,each,450
-Crown Reduction,Overall height and spread reduction for tree containment,Pruning,each,850
-Structural Pruning (Young Tree),Training cuts to establish strong central leader,Pruning,each,200
-Vista Pruning,Strategic selective pruning to open specific sight lines,Pruning,each,700
-Utility Clearance Pruning,Pruning to clear electrical and utility lines,Pruning,each,500
-Fruit Tree Pruning,Seasonal cutback to maximize fruit production and health,Pruning,each,350
-Hedge Trimming (Per Foot),Shaping and trimming continuous shrub rows,Pruning,linear ft,12
-Palm Frond Pruning,"Removal of dead fronds, seed pods, and hanging fruit",Pruning,each,175
-Stump Grinding (Small),Grinding stump up to 12 inches in diameter below grade,Stump Grinding,each,200
-Stump Grinding (Medium),Grinding stump 13 to 24 inches in diameter below grade,Stump Grinding,each,350
-Stump Grinding (Large),Grinding stump 25 to 36 inches in diameter below grade,Stump Grinding,each,550
-Stump Grinding (Extra Large),Grinding stump over 36 inches in diameter below grade,Stump Grinding,each,800
-Surface Root Grinding,Grinding exposed surface roots extending from stump,Stump Grinding,hour,175
-Stump Hole Backfill,Filling remaining hole with topsoil and leveling grade,Stump Grinding,each,125
-Stump Grindings Haul Away,Removal of excess wood chip byproduct from site,Stump Grinding,each,150
-Manual Stump Dig-Out,Hand excavation and cutting of small stump in tight space,Stump Grinding,each,300
-Emergency Tree Removal After Hours,Urgent night or weekend crew mobilization for fallen trees,Emergency & Storm,hour,450
-Storm Debris Cleanup,Gathering and chipping fallen branches and limbs scattered on property,Emergency & Storm,hour,250
-Roof Clear of Fallen Limbs,Lifting and removing heavy branches off building structures,Emergency & Storm,hour,300
-Emergency Tree Tarping,Temporary weatherproofing of damaged roof areas pending repair,Emergency & Storm,each,350
-Crane Rental Support,Daily fee for heavy crane and operator on job site,Emergency & Storm,day,1800
-Roadway Clearance,Clearing blocked driveways or public access roads of fallen trees,Emergency & Storm,job,600
-Cable Installation (Standard),Installation of steel cable system between weak branch unions,Cabling & Bracing,each,450
-Bracing Rod Installation,Installation of threaded steel rods through weak branch crotches,Cabling & Bracing,each,350
-Dynamic Cable System,Flexible synthetic cabling system installation for younger trees,Cabling & Bracing,each,400
-Hardware Inspection and Tension Check,Maintenance check on existing structural support systems,Cabling & Bracing,each,150
-Deep Root Fertilization,Pressure injection of liquid nutrients into the root zone,Plant Health Care,each,225
-Insecticide Trunk Injection,Systemic treatment for boring insects and defoliators,Plant Health Care,each,275
-Fungicide Application,"Spray treatment for leaf spot, blight, and fungal pathogens",Plant Health Care,each,250
-Soil pH Amendment,Application of lime or sulfur to balance soil acidity,Plant Health Care,each,175
-Anti-Desiccant Spray,Protective coating applied to evergreen needles for winter protection,Plant Health Care,each,200
-Root Collar Excavation,Air-spade excavation to expose buried root flare and remove girdling roots,Plant Health Care,each,350
-Growth Regulator Application,PGR treatment to reduce canopy growth and redirect energy to roots,Plant Health Care,each,300
-Tree Planting (15 Gallon),Supply and plant a standard 15-gallon nursery tree,Planting & Relocation,each,350
-Tree Planting (24 Inch Box),Supply and plant a mature 24-inch box specimen tree,Planting & Relocation,each,850
-Tree Planting (36 Inch Box),Supply and plant a large 36-inch box specimen tree,Planting & Relocation,each,1800
-Customer-Supplied Tree Planting,Excavation and planting labor for tree provided by customer,Planting & Relocation,each,225
-Root Barrier Installation,Trenching and installing physical barrier to protect hardscapes,Planting & Relocation,linear ft,45
-Tree Spading / Relocation,Moving existing small tree to a new location on property,Planting & Relocation,each,750
-Tree Staking and Guying,Installation of support stakes and guy wires for newly planted trees,Planting & Relocation,each,95
-Standard Wood Chipping,Processing brush piles into wood chips on site,Cleanup & Hauling,hour,200
-Log Haul Away,Loading and hauling heavy un-split logs off site,Cleanup & Hauling,ton,120
-Brush Haul Away,Loading and hauling loose brush and branches off site,Cleanup & Hauling,load,250
-Firewood Cutting and Stacking,Bucking logs into firewood lengths and stacking neatly,Cleanup & Hauling,hour,150
-Site Rake and Debris Blow,"Detailed cleanup of leaves, twigs, and sawdust from turf areas",Cleanup & Hauling,hour,95
-Green Waste Disposal Fee,Disposal tipping fees charged by local municipal facility,Cleanup & Hauling,ton,75
-Municipal Tree Permit Processing,Filing paperwork and obtaining mandatory city tree removal permits,Permits & Administration,each,125
-HOA Submittal Package Preparation,Preparing documentation and photos for Homeowners Association review,Permits & Administration,each,90
-Certified Arborist Letter for City,Formal written justification for removal required by municipality,Permits & Administration,each,175
-Traffic Control Setup,"Placement of cones, signs, and flaggers for street obstruction",Permits & Administration,day,300
-Private Utility Locating Service,"Private scanning for buried irrigation, lines, and private utilities",Permits & Administration,job,350
-Standard Labor Rate (Groundsman),Hourly rate for a single ground crew worker,Labor Rates,hour,75
-Skilled Labor Rate (Climber),Hourly rate for a certified tree climber or bucket operator,Labor Rates,hour,125
-Specialist Rate (Master Arborist),Hourly rate for consulting or advanced technical rigging,Labor Rates,hour,175
-Crew Mobilization Fee,Standard truck and equipment deployment charge for small jobs,Labor Rates,visit,150
-Overtime Labor Surcharge,Additional hourly premium for work outside normal business hours,Labor Rates,hour,100
-Equipment Rental Delivery,Transportation fee for bringing specialized lifts or loaders to site,Labor Rates,each,150
-Mulch Delivery and Installation,Spreading organic wood mulch around tree rings and garden beds,Upsells & Materials,cu yd,95
-Organic Tree Ring Installation,Edging and defining a clean circular mulch bed around tree base,Upsells & Materials,each,75
-Tree Trunk Bumper Guard,Installation of plastic guard to protect young bark from lawnmowers,Upsells & Materials,each,35
-Root Feeder Stake Kit,Permanent subsurface aeration and watering tube installation,Upsells & Materials,each,65
-Burlap Tree Wrapping,Wrapping thin-barked trees for winter sunscald protection,Upsells & Materials,each,90
-Seasonal Soil Conditioning,Top-dressing soil with compost and beneficial mycorrhizal fungi,Upsells & Materials,each,130
-Wildflower Seed Spread in Tree Ring,Seeding pollinator-friendly flowers in the cleared tree basin,Upsells & Materials,each,50
-Tree Lighting Installation (Low Voltage),Mounting uplights or downlights into tree branches,Upsells & Materials,each,250
-Bough and Evergreen Cutting Bundle,Supplying cut fresh evergreen boughs for holiday decorating,Upsells & Materials,bundle,45
-Tree Health Monitoring Annual Plan,Quarterly visits and preventative treatments for high-value trees,Plant Health Care,visit,120
-Pocket Rot Treatment,Excavating localized decay cavity and applying sterilizing compound,Plant Health Care,each,200
-Leaf Scorch Remediation,Specialized root drench treatment for drought-stressed foliage,Plant Health Care,each,180
-Dwarf Conifer Pruning,Hand-candling or shearing ornamental dwarf evergreens,Pruning,each,150
-Espalier Training and Pruning,Training and pruning flat-against-wall ornamental tree forms,Pruning,each,275
-Topiary Maintenance Pruning,Precise clipping and shaping of formal geometric topiary trees,Pruning,each,225
-Bamboo Barrier Trenching,Digging and installing heavy root barrier to contain running bamboo,Planting & Relocation,linear ft,60
-Shrub Removal,Pulling and digging out overgrown landscape shrubs and rootballs,Tree Removal,each,95
-Vine and Ivy Removal from Trunk,Hand-stripping invasive climbing vines off tree bark,Pruning,hour,85
-Tree Tagging for Inventory,Numerical aluminum tagging and database cataloging of estate trees,Diagnostics,each,25
-Residency Protection Mat Placement,Laying heavy composite ground mats to protect turf from heavy trucks,Cleanup & Hauling,day,150
-Soil Compaction Relief (Vertisoling),Mechanical spiking of turf and soil underneath tree canopy,Plant Health Care,sq ft,2
-Dead Tree Standing Preservation (Wildlife Snag),Topping dead tree safely to leave a habitat snag for wildlife,Tree Removal,each,400
-Root Pruning for Hardscape Protection,Mechanical trenching and cutting of roots threatening sidewalks,Plant Health Care,linear ft,35
-Chipping Service Only (Customer Pile),Running customer-piled brush through chipper without hauling,Cleanup & Hauling,hour,175
-Log Splitting Service,Using hydraulic log splitter on customer-retained wood rounds,Cleanup & Hauling,hour,125
-Post-Construction Tree Care Audit,Evaluation of trees following nearby home building or remodeling,Diagnostics,visit,200
-Lightning Protection System,Installation of copper conductor cable and ground rod on heritage tree,Cabling & Bracing,job,1500
+name,description,category,unit,price,labor_hours,material_cost
+Arborist Consultation,On-site professional assessment and health evaluation,Diagnostics,visit,150,1.2,0
+Emergency Storm Assessment,Immediate evaluation of storm-damaged trees and structures,Diagnostics,visit,250,2,0
+Plant Health Care Diagnostic,"Inspection for disease, insect infestation, and nutrient deficiencies",Diagnostics,visit,175,1.4,0
+Written Arborist Report,Formal documented evaluation for insurance or legal purposes,Diagnostics,each,300,2.4,0
+Standard Tree Removal (Small),Complete removal of tree up to 30 feet tall,Tree Removal,each,550,4,33.33
+Standard Tree Removal (Medium),Complete removal of tree 31 to 60 feet tall,Tree Removal,each,1200,8,133.33
+Standard Tree Removal (Large),Complete removal of tree 61 to 90 feet tall,Tree Removal,each,2500,16,333.33
+Standard Tree Removal (Extra Large),Complete removal of tree over 90 feet tall,Tree Removal,each,4200,26,616.67
+Hazardous Tree Removal,Removal of compromised tree leaning over structures,Tree Removal,each,3500,22,466.67
+Confined Space Tree Removal,Dismantling tree in tight access urban backyards,Tree Removal,each,3000,19,416.67
+Crane-Assisted Tree Removal,Removal utilizing crane service for heavy lifts,Tree Removal,job,2500,12,666.67
+Palm Tree Removal (Small),Removal of palm tree up to 20 feet,Tree Removal,each,400,3,16.67
+Palm Tree Removal (Large),Removal of tall mature palm tree,Tree Removal,each,1100,8,66.67
+Deadwood Removal,"Pruning of dead, dying, and diseased branches over 2 inches",Pruning,each,350,2.5,23.33
+Crown Thinning,Selective branch removal to increase light penetration and air flow,Pruning,each,600,4.5,23.33
+Crown Raising,Pruning lower branches for clearance over roofs and paths,Pruning,each,450,3.4,13.33
+Crown Reduction,Overall height and spread reduction for tree containment,Pruning,each,850,6.4,33.33
+Structural Pruning (Young Tree),Training cuts to establish strong central leader,Pruning,each,200,1.5,8.33
+Vista Pruning,Strategic selective pruning to open specific sight lines,Pruning,each,700,5.2,33.33
+Utility Clearance Pruning,Pruning to clear electrical and utility lines,Pruning,each,500,3.8,16.67
+Fruit Tree Pruning,Seasonal cutback to maximize fruit production and health,Pruning,each,350,2.6,16.67
+Hedge Trimming (Per Foot),Shaping and trimming continuous shrub rows,Pruning,linear ft,12,0.08,1.47
+Palm Frond Pruning,"Removal of dead fronds, seed pods, and hanging fruit",Pruning,each,175,1.3,5
+Stump Grinding (Small),Grinding stump up to 12 inches in diameter below grade,Stump Grinding,each,200,1.2,33.33
+Stump Grinding (Medium),Grinding stump 13 to 24 inches in diameter below grade,Stump Grinding,each,350,2.2,50
+Stump Grinding (Large),Grinding stump 25 to 36 inches in diameter below grade,Stump Grinding,each,550,3.5,75
+Stump Grinding (Extra Large),Grinding stump over 36 inches in diameter below grade,Stump Grinding,each,800,5,116.67
+Surface Root Grinding,Grinding exposed surface roots extending from stump,Stump Grinding,hour,175,1,33.33
+Stump Hole Backfill,Filling remaining hole with topsoil and leveling grade,Stump Grinding,each,125,0.6,33.33
+Stump Grindings Haul Away,Removal of excess wood chip byproduct from site,Stump Grinding,each,150,0.8,35
+Manual Stump Dig-Out,Hand excavation and cutting of small stump in tight space,Stump Grinding,each,300,2.2,16.67
+Emergency Tree Removal After Hours,Urgent night or weekend crew mobilization for fallen trees,Emergency & Storm,hour,450,1,220
+Storm Debris Cleanup,Gathering and chipping fallen branches and limbs scattered on property,Emergency & Storm,hour,250,1,58.33
+Roof Clear of Fallen Limbs,Lifting and removing heavy branches off building structures,Emergency & Storm,hour,300,1,116.67
+Emergency Tree Tarping,Temporary weatherproofing of damaged roof areas pending repair,Emergency & Storm,each,350,1.5,110
+Crane Rental Support,Daily fee for heavy crane and operator on job site,Emergency & Storm,day,1800,4,866.67
+Roadway Clearance,Clearing blocked driveways or public access roads of fallen trees,Emergency & Storm,job,600,4,66.67
+Cable Installation (Standard),Installation of steel cable system between weak branch unions,Cabling & Bracing,each,450,2,133.33
+Bracing Rod Installation,Installation of threaded steel rods through weak branch crotches,Cabling & Bracing,each,350,1.8,86.67
+Dynamic Cable System,Flexible synthetic cabling system installation for younger trees,Cabling & Bracing,each,400,1.8,120
+Hardware Inspection and Tension Check,Maintenance check on existing structural support systems,Cabling & Bracing,each,150,1.2,0
+Deep Root Fertilization,Pressure injection of liquid nutrients into the root zone,Plant Health Care,each,225,1,66.67
+Insecticide Trunk Injection,Systemic treatment for boring insects and defoliators,Plant Health Care,each,275,1,100
+Fungicide Application,"Spray treatment for leaf spot, blight, and fungal pathogens",Plant Health Care,each,250,1,83.33
+Soil pH Amendment,Application of lime or sulfur to balance soil acidity,Plant Health Care,each,175,0.8,50
+Anti-Desiccant Spray,Protective coating applied to evergreen needles for winter protection,Plant Health Care,each,200,0.8,66.67
+Root Collar Excavation,Air-spade excavation to expose buried root flare and remove girdling roots,Plant Health Care,each,350,2.4,16.67
+Growth Regulator Application,PGR treatment to reduce canopy growth and redirect energy to roots,Plant Health Care,each,300,1.2,100
+Tree Planting (15 Gallon),Supply and plant a standard 15-gallon nursery tree,Planting & Relocation,each,350,1.2,133.33
+Tree Planting (24 Inch Box),Supply and plant a mature 24-inch box specimen tree,Planting & Relocation,each,850,2.5,366.67
+Tree Planting (36 Inch Box),Supply and plant a large 36-inch box specimen tree,Planting & Relocation,each,1800,4.5,816.67
+Customer-Supplied Tree Planting,Excavation and planting labor for tree provided by customer,Planting & Relocation,each,225,1.6,16.67
+Root Barrier Installation,Trenching and installing physical barrier to protect hardscapes,Planting & Relocation,linear ft,45,0.25,9.67
+Tree Spading / Relocation,Moving existing small tree to a new location on property,Planting & Relocation,each,750,4.5,116.67
+Tree Staking and Guying,Installation of support stakes and guy wires for newly planted trees,Planting & Relocation,each,95,0.5,22
+Standard Wood Chipping,Processing brush piles into wood chips on site,Cleanup & Hauling,hour,200,1,50
+Log Haul Away,Loading and hauling heavy un-split logs off site,Cleanup & Hauling,ton,120,0.5,38.33
+Brush Haul Away,Loading and hauling loose brush and branches off site,Cleanup & Hauling,load,250,1,83.33
+Firewood Cutting and Stacking,Bucking logs into firewood lengths and stacking neatly,Cleanup & Hauling,hour,150,1,16.67
+Site Rake and Debris Blow,"Detailed cleanup of leaves, twigs, and sawdust from turf areas",Cleanup & Hauling,hour,95,0.7,3.33
+Green Waste Disposal Fee,Disposal tipping fees charged by local municipal facility,Cleanup & Hauling,ton,75,0,50
+Municipal Tree Permit Processing,Filing paperwork and obtaining mandatory city tree removal permits,Permits & Administration,each,125,1,0
+HOA Submittal Package Preparation,Preparing documentation and photos for Homeowners Association review,Permits & Administration,each,90,0.7,0
+Certified Arborist Letter for City,Formal written justification for removal required by municipality,Permits & Administration,each,175,1.4,0
+Traffic Control Setup,"Placement of cones, signs, and flaggers for street obstruction",Permits & Administration,day,300,1,116.67
+Private Utility Locating Service,"Private scanning for buried irrigation, lines, and private utilities",Permits & Administration,job,350,0.5,193.33
+Standard Labor Rate (Groundsman),Hourly rate for a single ground crew worker,Labor Rates,hour,75,1,0
+Skilled Labor Rate (Climber),Hourly rate for a certified tree climber or bucket operator,Labor Rates,hour,125,1,0
+Specialist Rate (Master Arborist),Hourly rate for consulting or advanced technical rigging,Labor Rates,hour,175,1,0
+Crew Mobilization Fee,Standard truck and equipment deployment charge for small jobs,Labor Rates,visit,150,1,16.67
+Overtime Labor Surcharge,Additional hourly premium for work outside normal business hours,Labor Rates,hour,100,0.8,0
+Equipment Rental Delivery,Transportation fee for bringing specialized lifts or loaders to site,Labor Rates,each,150,0.8,33.33
+Mulch Delivery and Installation,Spreading organic wood mulch around tree rings and garden beds,Upsells & Materials,cu yd,95,0.5,21.67
+Organic Tree Ring Installation,Edging and defining a clean circular mulch bed around tree base,Upsells & Materials,each,75,0.4,16.67
+Tree Trunk Bumper Guard,Installation of plastic guard to protect young bark from lawnmowers,Upsells & Materials,each,35,0.15,11
+Root Feeder Stake Kit,Permanent subsurface aeration and watering tube installation,Upsells & Materials,each,65,0.2,26.67
+Burlap Tree Wrapping,Wrapping thin-barked trees for winter sunscald protection,Upsells & Materials,each,90,0.5,18.33
+Seasonal Soil Conditioning,Top-dressing soil with compost and beneficial mycorrhizal fungi,Upsells & Materials,each,130,0.6,36.67
+Wildflower Seed Spread in Tree Ring,Seeding pollinator-friendly flowers in the cleared tree basin,Upsells & Materials,each,50,0.25,12.5
+Tree Lighting Installation (Low Voltage),Mounting uplights or downlights into tree branches,Upsells & Materials,each,250,1,83.33
+Bough and Evergreen Cutting Bundle,Supplying cut fresh evergreen boughs for holiday decorating,Upsells & Materials,bundle,45,0.25,8.67
+Tree Health Monitoring Annual Plan,Quarterly visits and preventative treatments for high-value trees,Plant Health Care,visit,120,0.8,13.33
+Pocket Rot Treatment,Excavating localized decay cavity and applying sterilizing compound,Plant Health Care,each,200,1,50
+Leaf Scorch Remediation,Specialized root drench treatment for drought-stressed foliage,Plant Health Care,each,180,0.9,46.67
+Dwarf Conifer Pruning,Hand-candling or shearing ornamental dwarf evergreens,Pruning,each,150,1,16.67
+Espalier Training and Pruning,Training and pruning flat-against-wall ornamental tree forms,Pruning,each,275,1.8,33.33
+Topiary Maintenance Pruning,Precise clipping and shaping of formal geometric topiary trees,Pruning,each,225,1.5,23.33
+Bamboo Barrier Trenching,Digging and installing heavy root barrier to contain running bamboo,Planting & Relocation,linear ft,60,0.35,11.67
+Shrub Removal,Pulling and digging out overgrown landscape shrubs and rootballs,Tree Removal,each,95,0.6,13.33
+Vine and Ivy Removal from Trunk,Hand-stripping invasive climbing vines off tree bark,Pruning,hour,85,0.68,0
+Tree Tagging for Inventory,Numerical aluminum tagging and database cataloging of estate trees,Diagnostics,each,25,0.15,4.33
+Residency Protection Mat Placement,Laying heavy composite ground mats to protect turf from heavy trucks,Cleanup & Hauling,day,150,0.8,33.33
+Soil Compaction Relief (Vertisoling),Mechanical spiking of turf and soil underneath tree canopy,Plant Health Care,sq ft,2,0.01,0.47
+Dead Tree Standing Preservation (Wildlife Snag),Topping dead tree safely to leave a habitat snag for wildlife,Tree Removal,each,400,2.5,50
+Root Pruning for Hardscape Protection,Mechanical trenching and cutting of roots threatening sidewalks,Plant Health Care,linear ft,35,0.2,3.67
+Chipping Service Only (Customer Pile),Running customer-piled brush through chipper without hauling,Cleanup & Hauling,hour,175,1,33.33
+Log Splitting Service,Using hydraulic log splitter on customer-retained wood rounds,Cleanup & Hauling,hour,125,1,0
+Post-Construction Tree Care Audit,Evaluation of trees following nearby home building or remodeling,Diagnostics,visit,200,1.6,0
+Lightning Protection System,Installation of copper conductor cable and ground rod on heritage tree,Cabling & Bracing,job,1500,6,500

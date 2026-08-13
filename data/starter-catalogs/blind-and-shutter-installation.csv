@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Standard Service Call,Initial diagnostic and travel fee for local service area,Diagnostics & Service,visit,125
-After-Hours Emergency Service Call,Urgent evening or weekend dispatch fee,Diagnostics & Service,visit,250
-Warranty Inspection,Manufacturer defect inspection and claim assessment,Diagnostics & Service,visit,95
-On-Site Consultation,Design review and exact measurement session,Diagnostics & Service,visit,75
-Second-Story Premium Fee,Additional labor fee for elevated window locations,Diagnostics & Service,visit,50
-Standard Labor Rate,Hourly technician labor for repairs and adjustments,Labor Rates,hour,95
-Two-Person Installation Crew,Hourly rate for heavy or complex mounting,Labor Rates,hour,175
-Apprentice Labor Rate,Hourly rate for assistant installation technician,Labor Rates,hour,65
-Custom Modification Labor,On-site trimming or alteration work,Labor Rates,hour,110
-Overtime Labor Surcharge,Hourly labor add-on for after-hours work,Labor Rates,hour,75
-Faux Wood Blind Repair,Re-stringing or tilt mechanism replacement,Repairs,each,85
-Real Wood Blind Repair,Re-stringing and slat realignment service,Repairs,each,110
-Vertical Blind Repair,Replacement of broken vane stems or chains,Repairs,each,75
-Roller Shade Chain Repair,Beaded chain loop and clutch replacement,Repairs,each,65
-Honeycomb Shade Re-stringing,Cord loop replacement for cellular shades,Repairs,each,120
-Roman Shade Mechanism Repair,Internal cord lock and spool repair,Repairs,each,130
-Interior Shutter Louver Repair,Replacement of broken shutter louvers and pins,Repairs,each,90
-Shutter Tension Adjustment,Tightening loose shutter panels and louvers,Repairs,each,70
-Bracket Replacement,Supply and install new mounting brackets,Repairs,each,45
-Valance Clip Replacement,Replacement of hidden plastic valance clips,Repairs,each,30
-Horizontal Blind Replacement (Standard),"Removal and disposal of old blind, install new standard",Replacements,each,150
-Vertical Blind Replacement,Removal of old vertical and install new track/vanes,Replacements,each,180
-Roller Shade Replacement,Swap old roller shade with new manual unit,Replacements,each,140
-Honeycomb Shade Replacement,Swap old cellular shade with new unit,Replacements,each,165
-Wood Shutter Panel Replacement,Fabricate and install exact match shutter panel,Replacements,each,350
-Faux Wood Blind (Standard Size),Material and standard interior mount installation,Materials & Products,each,125
-Faux Wood Blind (Large Size),Material and installation for windows over 48 inches,Materials & Products,each,195
-Real Wood Blind (Standard),Premium hardwood blind supply and installation,Materials & Products,each,210
-Real Wood Blind (Large),Large format hardwood blind supply and installation,Materials & Products,each,320
-Vinyl Vertical Blind,Standard patio door vertical blind supply and install,Materials & Products,each,225
-Fabric Vertical Blind,Upgraded fabric vertical blind supply and install,Materials & Products,each,275
-Standard Roller Shade,Light-filtering manual roller shade supply and install,Materials & Products,each,160
-Blackout Roller Shade,Room-darkening vinyl roller shade supply and install,Materials & Products,each,190
-Solar Screen Shade,Exterior-viewing interior solar shade supply and install,Materials & Products,sq ft,14
-Single-Cell Honeycomb Shade,Standard insulating cellular shade supply and install,Materials & Products,each,180
-Double-Cell Honeycomb Shade,High-insulation cellular shade supply and install,Materials & Products,each,230
-Top-Down Bottom-Up Honeycomb,Flexible positioning cellular shade supply and install,Materials & Products,each,260
-Standard Roman Shade,Fabric fold-up Roman shade supply and install,Materials & Products,each,290
-Custom Woven Wood Shade,Natural bamboo or reed shade supply and install,Materials & Products,each,280
-Faux Wood Interior Shutter,Polymer interior plantation shutter supply and install,Materials & Products,sq ft,32
-Natural Wood Interior Shutter,Hardwood plantation shutter supply and install,Materials & Products,sq ft,45
-Café Style Shutter,Half-height plantation shutter supply and install,Materials & Products,sq ft,28
-Tier-on-Tier Shutter,Independent upper and lower shutter supply and install,Materials & Products,sq ft,50
-Motorized Roller Shade Upgrade,Add battery motor and programming to roller shade,Motorization,each,250
-Motorized Honeycomb Upgrade,Add battery motor to cellular shade,Motorization,each,280
-Hardwired Motor Power Supply,Low-voltage power transformer supply and install,Motorization,each,175
-Multi-Channel Remote Control,Handheld multi-shade RF remote control programming,Motorization,each,95
-Wall Switch Remote Control,Wireless wall-mounted shade controller,Motorization,each,110
-Smart Home Hub Integration,Connect motorized shades to Wi-Fi bridge or hub,Motorization,job,150
-Solar Panel Charger Kit,Rechargeable battery solar panel trickle charger,Motorization,each,90
-Motor Replacement,Swap out failed internal tubular shade motor,Motorization,each,195
-Battery Wand Replacement,AA battery tube holder for motorized blinds,Motorization,each,45
-Standard Valance Installation,Decorative matching wood or faux wood valance,Hardware & Parts,linear ft,22
-Custom Cornice Box Installation,Upholstered or wood decorative cornice box,Hardware & Parts,linear ft,55
-Hold-Down Brackets,Pair of door or window swing brackets,Hardware & Parts,each,25
-Extension Brackets,Projecting brackets for clearance over trim,Hardware & Parts,pair,35
-:,Magnetic catch kit for shutters or doors,Hardware & Parts,each,20
-Tilt Wand Replacement,Fiberglass or metal tilt wand supply,Hardware & Parts,each,15
-Continuous Cord Loop,Loop replacement for heavy shades,Hardware & Parts,each,35
-Tension Device Installation,Child safety cord tensioner mounting,Hardware & Parts,each,25
-Shutter Z-Frame Framing,Decorative trim frame for shutter openings,Hardware & Parts,linear ft,18
-Shutter L-Frame Framing,Standard mounting frame for interior shutters,Hardware & Parts,linear ft,14
-Drywall Anchor Hardware,Heavy-duty hollow wall anchors for secure mounting,Hardware & Parts,job,25
-Metal Header Board,Wood or metal sub-board for weak mounting surfaces,Hardware & Parts,linear ft,30
-Old Blind Removal and Haul-Away,Dismantle existing window treatments and dispose,Permits & Disposal,each,25
-Large Shutter Disposal Fee,Disposal fee for heavy wood shutter panels,Permits & Disposal,job,75
-Eco-Recycling Sorting Fee,Sorting recyclable metal and plastic components,Permits & Disposal,job,20
-High-Rise Delivery Fee,Logistics fee for elevator and restricted parking sites,Permits & Disposal,visit,100
-Commercial Debris Haul-Away,Dumpster fee for large commercial blind projects,Permits & Disposal,job,150
-Bay Window Installation Surcharge,Complex angling and templating for bay windows,Custom & Specialty,job,175
-Bow Window Installation Surcharge,Multi-panel curved window mounting labor,Custom & Specialty,job,225
-Arched Window Shutter,Custom fixed arched plantation shutter supply and install,Custom & Specialty,sq ft,65
-Arched Cellular Shade,Specialty shaped cellular shade for round tops,Custom & Specialty,each,350
-Skylight Shade Installation,Overhead manual skylight shade supply and install,Custom & Specialty,each,290
-Motorized Skylight Shade,Remote-controlled overhead skylight shade,Custom & Specialty,each,450
-Sliding Glass Door Panel Track,Sliding panel track blind supply and install,Custom & Specialty,each,380
-French Door Cut-Out Brackets,Specialty brackets for door handle clearance,Custom & Specialty,pair,40
-Oversized Heavy-Duty Roller,Commercial grade wide span roller shade,Custom & Specialty,each,420
-Blackout Side Channels,Aluminum side tracks to block light leakage,Custom & Specialty,linear ft,25
-Temporary Paper Shades,Disposable temporary window coverings during remodel,Upsells,each,15
-Child Safety Cleat Kit,Brass cord cleats for traditional pull cords,Upsells,pair,12
-Touch-Up Paint Kit,Matching paint or stain pen for wood shutters,Upsells,each,22
-Annual Maintenance Service,"Lubrication, tension check, and minor adjustments",Upsells,visit,125
-Dusting and Cleaning Service,Professional ultrasonic or on-site blind cleaning,Upsells,each,75
-Rush Order Processing,Expedited manufacturing and shipping priority,Upsells,job,150
-Extra Slat Package,Spare slats for future accidental damage,Upsells,job,35
-Matching Pillow Fabric Wrap,Custom fabric insert matching Roman shades,Upsells,each,85
-Smart Home Integration Setup,Programming smart assistant voice control for shades,Upsells,hour,110
-Custom Color Matching,Paint-to-sample color matching for wood shutters,Upsells,job,200
-Precision Laser Measurement,Digital laser layout for complex commercial jobs,Diagnostics & Service,job,150
-Commercial Multi-Unit Discount,Volume labor adjustment for apartment complexes,Labor Rates,hour,80
-Security Shutter Lock,Manual locking bolt kit for plantation shutters,Hardware & Parts,each,40
-Hidden Tilt Upgrade,Rear-gear hidden tilt rod for clean louver look,Materials & Products,each,35
-Split Tilt Customization,Independent upper/lower louver control split,Materials & Products,each,45
-Cordless Upgrade Surcharge,Spring-assisted cordless mechanism conversion,Replacements,each,40
-Replacement Bottom Rail,Metal or wood weighted bottom bar replacement,Repairs,linear ft,25
-Valance Return Corners,Side return pieces for outside mount valances,Hardware & Parts,pair,18
-Slat Clip Replacement,Plastic clips holding vertical vanes to carriers,Repairs,each,10
-Emergency Board-Up Window,Temporary security cover for broken glass openings,Diagnostics & Service,each,175
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial diagnostic and travel fee for local service area,Diagnostics & Service,visit,125,1,0
+After-Hours Emergency Service Call,Urgent evening or weekend dispatch fee,Diagnostics & Service,visit,250,2,0
+Warranty Inspection,Manufacturer defect inspection and claim assessment,Diagnostics & Service,visit,95,0.76,0
+On-Site Consultation,Design review and exact measurement session,Diagnostics & Service,visit,75,0.6,0
+Second-Story Premium Fee,Additional labor fee for elevated window locations,Diagnostics & Service,visit,50,0.4,0
+Standard Labor Rate,Hourly technician labor for repairs and adjustments,Labor Rates,hour,95,1,0
+Two-Person Installation Crew,Hourly rate for heavy or complex mounting,Labor Rates,hour,175,1,33.33
+Apprentice Labor Rate,Hourly rate for assistant installation technician,Labor Rates,hour,65,1,0
+Custom Modification Labor,On-site trimming or alteration work,Labor Rates,hour,110,0.88,0
+Overtime Labor Surcharge,Hourly labor add-on for after-hours work,Labor Rates,hour,75,0.6,0
+Faux Wood Blind Repair,Re-stringing or tilt mechanism replacement,Repairs,each,85,0.5,15
+Real Wood Blind Repair,Re-stringing and slat realignment service,Repairs,each,110,0.6,23.33
+Vertical Blind Repair,Replacement of broken vane stems or chains,Repairs,each,75,0.4,16.67
+Roller Shade Chain Repair,Beaded chain loop and clutch replacement,Repairs,each,65,0.3,18.33
+Honeycomb Shade Re-stringing,Cord loop replacement for cellular shades,Repairs,each,120,0.7,20
+Roman Shade Mechanism Repair,Internal cord lock and spool repair,Repairs,each,130,0.7,26.67
+Interior Shutter Louver Repair,Replacement of broken shutter louvers and pins,Repairs,each,90,0.5,18.33
+Shutter Tension Adjustment,Tightening loose shutter panels and louvers,Repairs,each,70,0.5,4.67
+Bracket Replacement,Supply and install new mounting brackets,Repairs,each,45,0.25,9.33
+Valance Clip Replacement,Replacement of hidden plastic valance clips,Repairs,each,30,0.2,3.33
+Horizontal Blind Replacement (Standard),"Removal and disposal of old blind, install new standard",Replacements,each,150,0.5,58.33
+Vertical Blind Replacement,Removal of old vertical and install new track/vanes,Replacements,each,180,0.6,70
+Roller Shade Replacement,Swap old roller shade with new manual unit,Replacements,each,140,0.5,51.67
+Honeycomb Shade Replacement,Swap old cellular shade with new unit,Replacements,each,165,0.5,68.33
+Wood Shutter Panel Replacement,Fabricate and install exact match shutter panel,Replacements,each,350,1.2,133.33
+Faux Wood Blind (Standard Size),Material and standard interior mount installation,Materials & Products,each,125,0.4,50
+Faux Wood Blind (Large Size),Material and installation for windows over 48 inches,Materials & Products,each,195,0.6,80
+Real Wood Blind (Standard),Premium hardwood blind supply and installation,Materials & Products,each,210,0.5,96.67
+Real Wood Blind (Large),Large format hardwood blind supply and installation,Materials & Products,each,320,0.8,146.67
+Vinyl Vertical Blind,Standard patio door vertical blind supply and install,Materials & Products,each,225,0.7,90
+Fabric Vertical Blind,Upgraded fabric vertical blind supply and install,Materials & Products,each,275,0.8,110
+Standard Roller Shade,Light-filtering manual roller shade supply and install,Materials & Products,each,160,0.5,65
+Blackout Roller Shade,Room-darkening vinyl roller shade supply and install,Materials & Products,each,190,0.5,85
+Solar Screen Shade,Exterior-viewing interior solar shade supply and install,Materials & Products,sq ft,14,0.05,7.8
+Single-Cell Honeycomb Shade,Standard insulating cellular shade supply and install,Materials & Products,each,180,0.5,78.33
+Double-Cell Honeycomb Shade,High-insulation cellular shade supply and install,Materials & Products,each,230,0.6,103.33
+Top-Down Bottom-Up Honeycomb,Flexible positioning cellular shade supply and install,Materials & Products,each,260,0.8,106.67
+Standard Roman Shade,Fabric fold-up Roman shade supply and install,Materials & Products,each,290,0.7,133.33
+Custom Woven Wood Shade,Natural bamboo or reed shade supply and install,Materials & Products,each,280,0.7,123.33
+Faux Wood Interior Shutter,Polymer interior plantation shutter supply and install,Materials & Products,sq ft,32,0.12,11.2
+Natural Wood Interior Shutter,Hardwood plantation shutter supply and install,Materials & Products,sq ft,45,0.15,17.67
+Café Style Shutter,Half-height plantation shutter supply and install,Materials & Products,sq ft,28,0.1,10
+Tier-on-Tier Shutter,Independent upper and lower shutter supply and install,Materials & Products,sq ft,50,0.18,19.33
+Motorized Roller Shade Upgrade,Add battery motor and programming to roller shade,Motorization,each,250,0.8,100
+Motorized Honeycomb Upgrade,Add battery motor to cellular shade,Motorization,each,280,0.8,120
+Hardwired Motor Power Supply,Low-voltage power transformer supply and install,Motorization,each,175,0.6,66.67
+Multi-Channel Remote Control,Handheld multi-shade RF remote control programming,Motorization,each,95,0.2,43.33
+Wall Switch Remote Control,Wireless wall-mounted shade controller,Motorization,each,110,0.3,48.33
+Smart Home Hub Integration,Connect motorized shades to Wi-Fi bridge or hub,Motorization,job,150,1.2,0
+Solar Panel Charger Kit,Rechargeable battery solar panel trickle charger,Motorization,each,90,0.3,35
+Motor Replacement,Swap out failed internal tubular shade motor,Motorization,each,195,0.8,63.33
+Battery Wand Replacement,AA battery tube holder for motorized blinds,Motorization,each,45,0.2,13.33
+Standard Valance Installation,Decorative matching wood or faux wood valance,Hardware & Parts,linear ft,22,0.1,6.33
+Custom Cornice Box Installation,Upholstered or wood decorative cornice box,Hardware & Parts,linear ft,55,0.25,16.33
+Hold-Down Brackets,Pair of door or window swing brackets,Hardware & Parts,each,25,0.1,8.33
+Extension Brackets,Projecting brackets for clearance over trim,Hardware & Parts,pair,35,0.1,15
+:,Magnetic catch kit for shutters or doors,Hardware & Parts,each,20,0.1,5
+Tilt Wand Replacement,Fiberglass or metal tilt wand supply,Hardware & Parts,each,15,0.1,1.67
+Continuous Cord Loop,Loop replacement for heavy shades,Hardware & Parts,each,35,0.15,11
+Tension Device Installation,Child safety cord tensioner mounting,Hardware & Parts,each,25,0.15,4.33
+Shutter Z-Frame Framing,Decorative trim frame for shutter openings,Hardware & Parts,linear ft,18,0.08,5.47
+Shutter L-Frame Framing,Standard mounting frame for interior shutters,Hardware & Parts,linear ft,14,0.06,4.4
+Drywall Anchor Hardware,Heavy-duty hollow wall anchors for secure mounting,Hardware & Parts,job,25,0.1,8.33
+Metal Header Board,Wood or metal sub-board for weak mounting surfaces,Hardware & Parts,linear ft,30,0.1,11.67
+Old Blind Removal and Haul-Away,Dismantle existing window treatments and dispose,Permits & Disposal,each,25,0.2,0
+Large Shutter Disposal Fee,Disposal fee for heavy wood shutter panels,Permits & Disposal,job,75,0.6,0
+Eco-Recycling Sorting Fee,Sorting recyclable metal and plastic components,Permits & Disposal,job,20,0.16,0
+High-Rise Delivery Fee,Logistics fee for elevator and restricted parking sites,Permits & Disposal,visit,100,0.8,0
+Commercial Debris Haul-Away,Dumpster fee for large commercial blind projects,Permits & Disposal,job,150,1.2,0
+Bay Window Installation Surcharge,Complex angling and templating for bay windows,Custom & Specialty,job,175,1.4,0
+Bow Window Installation Surcharge,Multi-panel curved window mounting labor,Custom & Specialty,job,225,1.8,0
+Arched Window Shutter,Custom fixed arched plantation shutter supply and install,Custom & Specialty,sq ft,65,0.2,26.67
+Arched Cellular Shade,Specialty shaped cellular shade for round tops,Custom & Specialty,each,350,0.8,166.67
+Skylight Shade Installation,Overhead manual skylight shade supply and install,Custom & Specialty,each,290,1,110
+Motorized Skylight Shade,Remote-controlled overhead skylight shade,Custom & Specialty,each,450,1.2,200
+Sliding Glass Door Panel Track,Sliding panel track blind supply and install,Custom & Specialty,each,380,1,166.67
+French Door Cut-Out Brackets,Specialty brackets for door handle clearance,Custom & Specialty,pair,40,0.2,10
+Oversized Heavy-Duty Roller,Commercial grade wide span roller shade,Custom & Specialty,each,420,0.8,213.33
+Blackout Side Channels,Aluminum side tracks to block light leakage,Custom & Specialty,linear ft,25,0.08,10.13
+Temporary Paper Shades,Disposable temporary window coverings during remodel,Upsells,each,15,0.1,1.67
+Child Safety Cleat Kit,Brass cord cleats for traditional pull cords,Upsells,pair,12,0.08,5
+Touch-Up Paint Kit,Matching paint or stain pen for wood shutters,Upsells,each,22,0.05,10.33
+Annual Maintenance Service,"Lubrication, tension check, and minor adjustments",Upsells,visit,125,1,0
+Dusting and Cleaning Service,Professional ultrasonic or on-site blind cleaning,Upsells,each,75,0.6,0
+Rush Order Processing,Expedited manufacturing and shipping priority,Upsells,job,150,1.2,0
+Extra Slat Package,Spare slats for future accidental damage,Upsells,job,35,0.1,15
+Matching Pillow Fabric Wrap,Custom fabric insert matching Roman shades,Upsells,each,85,0.2,40
+Smart Home Integration Setup,Programming smart assistant voice control for shades,Upsells,hour,110,0.88,0
+Custom Color Matching,Paint-to-sample color matching for wood shutters,Upsells,job,200,1.6,0
+Precision Laser Measurement,Digital laser layout for complex commercial jobs,Diagnostics & Service,job,150,1.2,0
+Commercial Multi-Unit Discount,Volume labor adjustment for apartment complexes,Labor Rates,hour,80,0.64,0
+Security Shutter Lock,Manual locking bolt kit for plantation shutters,Hardware & Parts,each,40,0.2,10
+Hidden Tilt Upgrade,Rear-gear hidden tilt rod for clean louver look,Materials & Products,each,35,0.15,11
+Split Tilt Customization,Independent upper/lower louver control split,Materials & Products,each,45,0.2,13.33
+Cordless Upgrade Surcharge,Spring-assisted cordless mechanism conversion,Replacements,each,40,0.2,10
+Replacement Bottom Rail,Metal or wood weighted bottom bar replacement,Repairs,linear ft,25,0.08,10.13
+Valance Return Corners,Side return pieces for outside mount valances,Hardware & Parts,pair,18,0.1,3.67
+Slat Clip Replacement,Plastic clips holding vertical vanes to carriers,Repairs,each,10,0.08,2.67
+Emergency Board-Up Window,Temporary security cover for broken glass openings,Diagnostics & Service,each,175,0.8,50

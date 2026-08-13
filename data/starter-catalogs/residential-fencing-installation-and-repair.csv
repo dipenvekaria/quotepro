@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Standard Service Call Fee,On-site diagnosis and repair estimate.,Service & Diagnostics,visit,125
-After-Hours Emergency Service Call,Urgent on-site evaluation outside normal hours.,Service & Diagnostics,visit,250
-Fence Line Stakeout & Layout,Locate property lines and string fence layout.,Service & Diagnostics,job,150
-Underground Utility Locate Coordination,Marking public underground utilities prior to digging.,Service & Diagnostics,job,75
-On-Site Consultation & Measuring,Detailed measure and material recommendations.,Service & Diagnostics,job,100
-Fence Installation Labor Rate,Standard per-hour labor for fencing installation.,Labor Rates,hour,85
-Fence Repair Labor Rate,Standard per-hour labor for fence repairs.,Labor Rates,hour,95
-Post Hole Digging Labor,Manual or augered hole excavation per post.,Labor Rates,hour,90
-Demolition and Removal Labor,Hourly labor for tearing down existing fence.,Labor Rates,hour,80
-Welding and Metal Fabrication Labor,Specialized labor for metal and iron fence repairs.,Labor Rates,hour,125
-Wood Privacy Fence Installation,6ft pressure-treated pine board-on-board privacy fence.,Wood Fencing,linear ft,32
-Wood Picket Fence Installation,4ft dog-ear cedar picket fence installation.,Wood Fencing,linear ft,26
-Cedar Privacy Fence Upgrade,Upgrade from pine to western red cedar material.,Wood Fencing,linear ft,12
-Horizontal Wood Slat Fence,Modern horizontal cedar slat privacy fence.,Wood Fencing,linear ft,45
-Wood Split Rail Fence,3-rail rustic wood split rail fence.,Wood Fencing,linear ft,18
-Single Wood Walk Gate,Standard 4ft wood privacy gate with hardware.,Wood Fencing,each,275
-Double Wood Driveway Gate,10ft wood double swing driveway gate with drop rod.,Wood Fencing,each,550
-Wood Post Replacement,Replace single rotten wood post in concrete.,Wood Fencing,each,160
-Wood Rail Repair,Replace damaged top or bottom wooden rail.,Wood Fencing,each,85
-Wood Picket Replacement,Replace up to three broken or missing pickets.,Wood Fencing,each,45
-Vinyl Privacy Fence Installation,6ft white vinyl tongue-and-groove privacy fence.,Vinyl Fencing,linear ft,42
-Vinyl Picket Fence Installation,4ft spaced picket vinyl fence installation.,Vinyl Fencing,linear ft,35
-Vinyl Semi-Privacy Fence,6ft vinyl fence with top lattice accent.,Vinyl Fencing,linear ft,48
-Tan Vinyl Color Upgrade,Upgrade vinyl color from white to tan or clay.,Vinyl Fencing,linear ft,6
-Single Vinyl Walk Gate,Standard 4ft vinyl gate with aluminum insert.,Vinyl Fencing,each,350
-Double Vinyl Driveway Gate,10ft vinyl double drive gate with heavy hardware.,Vinyl Fencing,each,750
-Vinyl Post Replacement,Replace damaged vinyl post anchored in concrete.,Vinyl Fencing,each,220
-Vinyl Rail Repair,Repair or replace broken vinyl top or bottom rail.,Vinyl Fencing,each,130
-Vinyl Panel Replacement,Remove and replace damaged full section of vinyl fence.,Vinyl Fencing,each,280
-Vinyl Post Cap Replacement,Replace lost or damaged external vinyl post cap.,Vinyl Fencing,each,25
-Chain Link Fence Installation,4ft galvanized chain link fence with steel posts.,Chain Link Fencing,linear ft,18
-6ft Chain Link Fence Installation,6ft galvanized chain link security fence.,Chain Link Fencing,linear ft,24
-Black Vinyl Coated Chain Link,4ft black PVC coated chain link fence system.,Chain Link Fencing,linear ft,24
-Green Vinyl Coated Chain Link,4ft green PVC coated chain link fence system.,Chain Link Fencing,linear ft,24
-Single Chain Link Walk Gate,Standard 4ft galvanized chain link walk gate.,Chain Link Fencing,each,175
-Double Chain Link Drive Gate,10ft galvanized chain link double drive gate.,Chain Link Fencing,each,380
-Chain Link Mesh Repair Section,Patch or replace up to 10ft of damaged chain link fabric.,Chain Link Fencing,job,150
-Chain Link Top Rail Replacement,Replace bent or damaged horizontal top rail tubing.,Chain Link Fencing,linear ft,12
-Chain Link Tension Wire Installation,Bottom tension wire installation for stability.,Chain Link Fencing,linear ft,3
-Chain Link Post Straightening,Realign and brace leaning steel terminal post.,Chain Link Fencing,each,95
-Ornamental Aluminum Fence Installation,5ft black aluminum ornamental security fence.,Ornamental & Iron Fencing,linear ft,48
-Wrought Iron Fence Installation,Custom fabricated heavy wrought iron security fence.,Ornamental & Iron Fencing,linear ft,75
-Aluminum Pool Code Fence,4ft pool-compliant safety aluminum fence with self-latching gate.,Ornamental & Iron Fencing,linear ft,52
-Single Aluminum Walk Gate,Standard 4ft ornamental aluminum walk gate.,Ornamental & Iron Fencing,each,380
-Double Aluminum Drive Gate,10ft ornamental aluminum double driveway gate.,Ornamental & Iron Fencing,each,950
-Iron Fence Rust Treatment & Paint,Wire brush rust and apply rust-inhibitive enamel paint.,Ornamental & Iron Fencing,linear ft,15
-Aluminum Picket Welding Repair,Weld detached vertical picket on aluminum fence.,Ornamental & Iron Fencing,each,140
-Ornamental Post Replacement,Replace damaged metal mounting post and re-anchor.,Ornamental & Iron Fencing,each,210
-Decorative Finial Replacement,Install new cast aluminum fence finial top.,Ornamental & Iron Fencing,each,20
-Driveway Gate Heavy Hinge Replacement,Heavy-duty adjustable gate hinge pair installation.,Gates & Hardware,each,120
-Gravity Latch Installation,Standard self-locking gravity gate latch.,Gates & Hardware,each,45
-Keyed Deadbolt Gate Lock,Double-sided keyed deadbolt lock for pedestrian gate.,Gates & Hardware,each,160
-Magnetic Pool Gate Latch,Magna-Latch top-pull child-safe pool gate latch.,Gates & Hardware,each,185
-Gate Spring Closer,Adjustable self-closing gate spring mechanism.,Gates & Hardware,each,75
-Drop Rod Assembly,Drop rod anchor for double swing gates.,Gates & Hardware,each,90
-Anti-Sag Gate Kit,Diagonal cable truss system to correct sagging gate.,Gates & Hardware,each,110
-Heavy Duty Cane Bolt,Foot-operated cane bolt for secure gate holding.,Gates & Hardware,each,85
-Slide Bolt Latch,Simple pad-lockable barrel bolt gate latch.,Gates & Hardware,each,50
-Heavy Duty Pivot Hinge Set,Industrial ball-bearing pivot hinges for heavy gates.,Gates & Hardware,each,220
-Existing Fence Teardown & Disposal,Remove old fence and haul away debris.,Removal & Site Prep,linear ft,8
-Heavy Brush & Vine Clearing,Clear dense brush along fence line prior to install.,Removal & Site Prep,linear ft,6
-Old Concrete Footing Extraction,Dig out and remove old concrete post footers.,Removal & Site Prep,each,55
-Tree Root Cutting & Clearing,Cut blocking tree roots along post hole line.,Removal & Site Prep,hour,95
-Grading Minor Slopes for Fence,Hand grading soil bumps to keep fence uniform.,Removal & Site Prep,linear ft,5
-Concrete Post Hole Mix,Bagged concrete mix per post hole.,Materials & Hardware,each,15
-Pressure Treated 4x4 Post,8ft pressure-treated pine 4x4 post.,Materials & Hardware,each,25
-Pressure Treated 4x6 Post,8ft pressure-treated pine 4x6 heavy post.,Materials & Hardware,each,40
-Galvanized Steel Terminal Post,Heavy gauge steel end or corner post.,Materials & Hardware,each,45
-Galvanized Steel Line Post,Standard steel intermediate line post.,Materials & Hardware,each,25
-Galvanized Post Cap,Pressed steel dome post cap.,Materials & Hardware,each,8
-Box of Galvanized Ring Shank Nails,5lb box of exterior fence nails.,Materials & Hardware,each,35
-Box of Exterior Deck Screws,1lb box of corrosion-resistant fence screws.,Materials & Hardware,each,18
-Aluminum Rail Brackets,Set of mounting brackets for metal fence panels.,Materials & Hardware,each,12
-Tension Band and Bolt Set,Hardware for attaching chain link mesh to terminal post.,Materials & Hardware,each,7
-Wood Stain Application,Apply transparent or semi-transparent stain to wood fence.,Finishing & Protection,sq ft,2
-Wood Sealer Application,Clear waterproofing sealer applied to wood fence.,Finishing & Protection,sq ft,1.5
-Solid Color Wood Stain,Apply pigmented solid color stain to wooden fence.,Finishing & Protection,sq ft,2.5
-Pressure Washing Wood Fence,Deep clean weathered wood fence prior to staining.,Finishing & Protection,sq ft,1
-Graffiti Removal Treatment,Chemical removal of graffiti from fence panels.,Finishing & Protection,job,150
-Municipal Permit Processing,Obtaining local building permit for fence installation.,Permits & Compliance,job,125
-HOA Architectural Submittal Package,Drawings and paperwork for homeowners association approval.,Permits & Compliance,job,100
-Property Survey Flag Verification,Reviewing formal survey pins during fence layout.,Permits & Compliance,job,75
-Post-Install Inspection Coordination,Scheduling and attending municipal building inspection.,Permits & Compliance,visit,95
-Property Line Dispute Mediation Fee,On-site consultation to resolve neighbor boundary issues.,Permits & Compliance,hour,150
-Solar Post Cap Lights,Decorative LED solar post cap light fixture.,Upgrades & Add-ons,each,35
-Low Voltage Post Cap Lights,Wired low-voltage LED cap light with transformer.,Upgrades & Add-ons,each,75
-Automatic Gate Operator System,Single swing electric automatic gate opener with remotes.,Upgrades & Add-ons,each,1250
-Wireless Keypad Entry,Digital wireless keypad for automated gate access.,Upgrades & Add-ons,each,275
-Safety Photo Eyes,Infrared reversing sensors for automatic driveway gate.,Upgrades & Add-ons,job,220
-Cellular Gate Intercom,Smartphone-connected video intercom for gate entry.,Upgrades & Add-ons,each,650
-Privacy Slat Inserts for Chain Link,HDPE vertical slats inserted into chain link mesh.,Upgrades & Add-ons,linear ft,6
-Wire Mesh Pet Guard Addition,Additional bottom hardware cloth for small pets.,Upgrades & Add-ons,linear ft,7
-Custom Post Trim Collar,Decorative metal or PVC trim ring for post base.,Upgrades & Add-ons,each,22
-Rot Board Upgrade,Pressure-treated ground contact kickboard for wood fence.,Upgrades & Add-ons,linear ft,5
-Temporary Construction Fence Rental,6ft temporary chain link panel rental with bases.,Temporary Fencing,linear ft,4
-Temporary Fence Delivery & Setup,Delivery and assembly of temporary rental fencing.,Temporary Fencing,job,200
-Temporary Fence Tear Down,Removal and pickup of rental temporary fence panels.,Temporary Fencing,job,150
-Security Windscreen Attachment,Mesh windscreen attached to temporary fence panels.,Temporary Fencing,linear ft,3
-Temporary Gate Panel,Swinging pedestrian gate insert for temporary fence.,Temporary Fencing,each,125
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call Fee,On-site diagnosis and repair estimate.,Service & Diagnostics,visit,125,1,0
+After-Hours Emergency Service Call,Urgent on-site evaluation outside normal hours.,Service & Diagnostics,visit,250,2,0
+Fence Line Stakeout & Layout,Locate property lines and string fence layout.,Service & Diagnostics,job,150,1.2,0
+Underground Utility Locate Coordination,Marking public underground utilities prior to digging.,Service & Diagnostics,job,75,0.6,0
+On-Site Consultation & Measuring,Detailed measure and material recommendations.,Service & Diagnostics,job,100,0.8,0
+Fence Installation Labor Rate,Standard per-hour labor for fencing installation.,Labor Rates,hour,85,1,0
+Fence Repair Labor Rate,Standard per-hour labor for fence repairs.,Labor Rates,hour,95,1,0
+Post Hole Digging Labor,Manual or augered hole excavation per post.,Labor Rates,hour,90,1,0
+Demolition and Removal Labor,Hourly labor for tearing down existing fence.,Labor Rates,hour,80,1,0
+Welding and Metal Fabrication Labor,Specialized labor for metal and iron fence repairs.,Labor Rates,hour,125,1,0
+Wood Privacy Fence Installation,6ft pressure-treated pine board-on-board privacy fence.,Wood Fencing,linear ft,32,0.12,11.47
+Wood Picket Fence Installation,4ft dog-ear cedar picket fence installation.,Wood Fencing,linear ft,26,0.1,9
+Cedar Privacy Fence Upgrade,Upgrade from pine to western red cedar material.,Wood Fencing,linear ft,12,0.04,4.67
+Horizontal Wood Slat Fence,Modern horizontal cedar slat privacy fence.,Wood Fencing,linear ft,45,0.16,16.67
+Wood Split Rail Fence,3-rail rustic wood split rail fence.,Wood Fencing,linear ft,18,0.08,5.33
+Single Wood Walk Gate,Standard 4ft wood privacy gate with hardware.,Wood Fencing,each,275,1.2,83.33
+Double Wood Driveway Gate,10ft wood double swing driveway gate with drop rod.,Wood Fencing,each,550,2.2,180
+Wood Post Replacement,Replace single rotten wood post in concrete.,Wood Fencing,each,160,0.9,33.33
+Wood Rail Repair,Replace damaged top or bottom wooden rail.,Wood Fencing,each,85,0.5,15
+Wood Picket Replacement,Replace up to three broken or missing pickets.,Wood Fencing,each,45,0.25,8.67
+Vinyl Privacy Fence Installation,6ft white vinyl tongue-and-groove privacy fence.,Vinyl Fencing,linear ft,42,0.14,16
+Vinyl Picket Fence Installation,4ft spaced picket vinyl fence installation.,Vinyl Fencing,linear ft,35,0.12,13
+Vinyl Semi-Privacy Fence,6ft vinyl fence with top lattice accent.,Vinyl Fencing,linear ft,48,0.15,18.67
+Tan Vinyl Color Upgrade,Upgrade vinyl color from white to tan or clay.,Vinyl Fencing,linear ft,6,0,4
+Single Vinyl Walk Gate,Standard 4ft vinyl gate with aluminum insert.,Vinyl Fencing,each,350,1.4,116.67
+Double Vinyl Driveway Gate,10ft vinyl double drive gate with heavy hardware.,Vinyl Fencing,each,750,2.6,283.33
+Vinyl Post Replacement,Replace damaged vinyl post anchored in concrete.,Vinyl Fencing,each,220,1.1,56.67
+Vinyl Rail Repair,Repair or replace broken vinyl top or bottom rail.,Vinyl Fencing,each,130,0.7,26.67
+Vinyl Panel Replacement,Remove and replace damaged full section of vinyl fence.,Vinyl Fencing,each,280,1,103.33
+Vinyl Post Cap Replacement,Replace lost or damaged external vinyl post cap.,Vinyl Fencing,each,25,0.15,4.33
+Chain Link Fence Installation,4ft galvanized chain link fence with steel posts.,Chain Link Fencing,linear ft,18,0.08,5.33
+6ft Chain Link Fence Installation,6ft galvanized chain link security fence.,Chain Link Fencing,linear ft,24,0.1,7.67
+Black Vinyl Coated Chain Link,4ft black PVC coated chain link fence system.,Chain Link Fencing,linear ft,24,0.09,9
+Green Vinyl Coated Chain Link,4ft green PVC coated chain link fence system.,Chain Link Fencing,linear ft,24,0.09,9
+Single Chain Link Walk Gate,Standard 4ft galvanized chain link walk gate.,Chain Link Fencing,each,175,0.9,43.33
+Double Chain Link Drive Gate,10ft galvanized chain link double drive gate.,Chain Link Fencing,each,380,1.8,103.33
+Chain Link Mesh Repair Section,Patch or replace up to 10ft of damaged chain link fabric.,Chain Link Fencing,job,150,0.9,26.67
+Chain Link Top Rail Replacement,Replace bent or damaged horizontal top rail tubing.,Chain Link Fencing,linear ft,12,0.05,3.83
+Chain Link Tension Wire Installation,Bottom tension wire installation for stability.,Chain Link Fencing,linear ft,3,0.01,1
+Chain Link Post Straightening,Realign and brace leaning steel terminal post.,Chain Link Fencing,each,95,0.75,0
+Ornamental Aluminum Fence Installation,5ft black aluminum ornamental security fence.,Ornamental & Iron Fencing,linear ft,48,0.16,18.67
+Wrought Iron Fence Installation,Custom fabricated heavy wrought iron security fence.,Ornamental & Iron Fencing,linear ft,75,0.25,29.33
+Aluminum Pool Code Fence,4ft pool-compliant safety aluminum fence with self-latching gate.,Ornamental & Iron Fencing,linear ft,52,0.18,20
+Single Aluminum Walk Gate,Standard 4ft ornamental aluminum walk gate.,Ornamental & Iron Fencing,each,380,1.5,126.67
+Double Aluminum Drive Gate,10ft ornamental aluminum double driveway gate.,Ornamental & Iron Fencing,each,950,3,380
+Iron Fence Rust Treatment & Paint,Wire brush rust and apply rust-inhibitive enamel paint.,Ornamental & Iron Fencing,linear ft,15,0.08,3.33
+Aluminum Picket Welding Repair,Weld detached vertical picket on aluminum fence.,Ornamental & Iron Fencing,each,140,0.8,26.67
+Ornamental Post Replacement,Replace damaged metal mounting post and re-anchor.,Ornamental & Iron Fencing,each,210,1,56.67
+Decorative Finial Replacement,Install new cast aluminum fence finial top.,Ornamental & Iron Fencing,each,20,0.1,5
+Driveway Gate Heavy Hinge Replacement,Heavy-duty adjustable gate hinge pair installation.,Gates & Hardware,each,120,0.6,30
+Gravity Latch Installation,Standard self-locking gravity gate latch.,Gates & Hardware,each,45,0.25,9
+Keyed Deadbolt Gate Lock,Double-sided keyed deadbolt lock for pedestrian gate.,Gates & Hardware,each,160,0.8,40
+Magnetic Pool Gate Latch,Magna-Latch top-pull child-safe pool gate latch.,Gates & Hardware,each,185,0.7,63.33
+Gate Spring Closer,Adjustable self-closing gate spring mechanism.,Gates & Hardware,each,75,0.35,20
+Drop Rod Assembly,Drop rod anchor for double swing gates.,Gates & Hardware,each,90,0.4,26.67
+Anti-Sag Gate Kit,Diagonal cable truss system to correct sagging gate.,Gates & Hardware,each,110,0.5,31.67
+Heavy Duty Cane Bolt,Foot-operated cane bolt for secure gate holding.,Gates & Hardware,each,85,0.35,26.67
+Slide Bolt Latch,Simple pad-lockable barrel bolt gate latch.,Gates & Hardware,each,50,0.25,12
+Heavy Duty Pivot Hinge Set,Industrial ball-bearing pivot hinges for heavy gates.,Gates & Hardware,each,220,0.9,73.33
+Existing Fence Teardown & Disposal,Remove old fence and haul away debris.,Removal & Site Prep,linear ft,8,0.05,1.13
+Heavy Brush & Vine Clearing,Clear dense brush along fence line prior to install.,Removal & Site Prep,linear ft,6,0.04,0.87
+Old Concrete Footing Extraction,Dig out and remove old concrete post footers.,Removal & Site Prep,each,55,0.4,3.33
+Tree Root Cutting & Clearing,Cut blocking tree roots along post hole line.,Removal & Site Prep,hour,95,0.76,0
+Grading Minor Slopes for Fence,Hand grading soil bumps to keep fence uniform.,Removal & Site Prep,linear ft,5,0.03,0.67
+Concrete Post Hole Mix,Bagged concrete mix per post hole.,Materials & Hardware,each,15,0.02,9.33
+Pressure Treated 4x4 Post,8ft pressure-treated pine 4x4 post.,Materials & Hardware,each,25,0.05,15
+Pressure Treated 4x6 Post,8ft pressure-treated pine 4x6 heavy post.,Materials & Hardware,each,40,0.08,23.33
+Galvanized Steel Terminal Post,Heavy gauge steel end or corner post.,Materials & Hardware,each,45,0.08,26.67
+Galvanized Steel Line Post,Standard steel intermediate line post.,Materials & Hardware,each,25,0.06,14
+Galvanized Post Cap,Pressed steel dome post cap.,Materials & Hardware,each,8,0.02,4
+Box of Galvanized Ring Shank Nails,5lb box of exterior fence nails.,Materials & Hardware,each,35,0,23.33
+Box of Exterior Deck Screws,1lb box of corrosion-resistant fence screws.,Materials & Hardware,each,18,0,12
+Aluminum Rail Brackets,Set of mounting brackets for metal fence panels.,Materials & Hardware,each,12,0.04,4.67
+Tension Band and Bolt Set,Hardware for attaching chain link mesh to terminal post.,Materials & Hardware,each,7,0.02,3
+Wood Stain Application,Apply transparent or semi-transparent stain to wood fence.,Finishing & Protection,sq ft,2,0.01,0.47
+Wood Sealer Application,Clear waterproofing sealer applied to wood fence.,Finishing & Protection,sq ft,1.5,0.008,0.35
+Solid Color Wood Stain,Apply pigmented solid color stain to wooden fence.,Finishing & Protection,sq ft,2.5,0.012,0.6
+Pressure Washing Wood Fence,Deep clean weathered wood fence prior to staining.,Finishing & Protection,sq ft,1,0.006,0.15
+Graffiti Removal Treatment,Chemical removal of graffiti from fence panels.,Finishing & Protection,job,150,0.8,33.33
+Municipal Permit Processing,Obtaining local building permit for fence installation.,Permits & Compliance,job,125,1,0
+HOA Architectural Submittal Package,Drawings and paperwork for homeowners association approval.,Permits & Compliance,job,100,0.8,0
+Property Survey Flag Verification,Reviewing formal survey pins during fence layout.,Permits & Compliance,job,75,0.6,0
+Post-Install Inspection Coordination,Scheduling and attending municipal building inspection.,Permits & Compliance,visit,95,0.76,0
+Property Line Dispute Mediation Fee,On-site consultation to resolve neighbor boundary issues.,Permits & Compliance,hour,150,1.2,0
+Solar Post Cap Lights,Decorative LED solar post cap light fixture.,Upgrades & Add-ons,each,35,0.1,20
+Low Voltage Post Cap Lights,Wired low-voltage LED cap light with transformer.,Upgrades & Add-ons,each,75,0.25,29.33
+Automatic Gate Operator System,Single swing electric automatic gate opener with remotes.,Upgrades & Add-ons,each,1250,3.5,553.33
+Wireless Keypad Entry,Digital wireless keypad for automated gate access.,Upgrades & Add-ons,each,275,0.8,116.67
+Safety Photo Eyes,Infrared reversing sensors for automatic driveway gate.,Upgrades & Add-ons,job,220,1,63.33
+Cellular Gate Intercom,Smartphone-connected video intercom for gate entry.,Upgrades & Add-ons,each,650,1.5,313.33
+Privacy Slat Inserts for Chain Link,HDPE vertical slats inserted into chain link mesh.,Upgrades & Add-ons,linear ft,6,0.02,2.53
+Wire Mesh Pet Guard Addition,Additional bottom hardware cloth for small pets.,Upgrades & Add-ons,linear ft,7,0.03,2.07
+Custom Post Trim Collar,Decorative metal or PVC trim ring for post base.,Upgrades & Add-ons,each,22,0.1,6.33
+Rot Board Upgrade,Pressure-treated ground contact kickboard for wood fence.,Upgrades & Add-ons,linear ft,5,0.02,2.2
+Temporary Construction Fence Rental,6ft temporary chain link panel rental with bases.,Temporary Fencing,linear ft,4,0.01,1.73
+Temporary Fence Delivery & Setup,Delivery and assembly of temporary rental fencing.,Temporary Fencing,job,200,1.2,33.33
+Temporary Fence Tear Down,Removal and pickup of rental temporary fence panels.,Temporary Fencing,job,150,1.2,0
+Security Windscreen Attachment,Mesh windscreen attached to temporary fence panels.,Temporary Fencing,linear ft,3,0.01,1.2
+Temporary Gate Panel,Swinging pedestrian gate insert for temporary fence.,Temporary Fencing,each,125,0.4,50

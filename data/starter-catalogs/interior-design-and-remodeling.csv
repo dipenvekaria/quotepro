@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Design Consultation,Initial on-site meeting to discuss scope and style.,Design & Planning,visit,250
-Concept Mood Board,Digital mood board with color palettes and materials.,Design & Planning,each,450
-3D Room Rendering,Photorealistic 3D visualization of proposed space.,Design & Planning,each,850
-Architectural Floor Plan,Detailed measured drawing of existing and new layout.,Design & Planning,each,600
-Material Specification Schedule,"Comprehensive list of finishes, hardware, and fixtures.",Design & Planning,each,400
-Lighting Design Plan,"Schematic layout for ambient, task, and accent lighting.",Design & Planning,each,350
-Finish Carpentry Labor,Skilled labor for custom woodwork and trim installation.,Labor & Supervision,hour,95
-General Remodeling Labor,"Skilled labor for framing, drywall, and general fixes.",Labor & Supervision,hour,85
-Project Management Fee,Daily on-site supervision and schedule coordination.,Labor & Supervision,day,300
-Demo and Debris Removal,Tear down of existing finishes and hauling off waste.,Labor & Supervision,job,1200
-Subfloor Leveling,Pouring self-leveling compound for uneven subfloors.,Labor & Supervision,sq ft,6
-Drywall Hanging,Installing standard gypsum board on walls and ceilings.,Drywall & Painting,sq ft,3
-Drywall Taping and Mudding,Taping joints and applying three coats of joint compound.,Drywall & Painting,sq ft,3
-Smooth Ceiling Skim Coat,Skimming popcorn ceiling flat with joint compound.,Drywall & Painting,sq ft,4
-Interior Wall Painting,Two coats of premium latex paint on walls.,Drywall & Painting,sq ft,2
-Ceiling Painting,Two coats of flat white ceiling paint.,Drywall & Painting,sq ft,2
-Trim and Door Painting,"Sanding and painting baseboards, casings, and doors.",Drywall & Painting,linear ft,5
-Wallpaper Removal,Stripping existing wallpaper and washing adhesive residue.,Drywall & Painting,sq ft,3
-Wallpaper Installation,Hanging standard pattern or grasscloth wallpaper.,Drywall & Painting,sq ft,6
-Hardwood Floor Installation,Nail-down or glue-down solid or engineered hardwood.,Flooring,sq ft,5
-LVT Flooring Installation,Click-lock luxury vinyl plank flooring installation.,Flooring,sq ft,3
-Tile Flooring Installation,Setting ceramic or porcelain tile with thin-set mortar.,Flooring,sq ft,12
-Carpet Installation,"Installing tack strips, pad, and wall-to-wall carpet.",Flooring,sq ft,2
-Floor Sanding and Refinishing,Sanding existing hardwood and applying three finish coats.,Flooring,sq ft,5
-Tile Grout Sealing,Applying penetrating sealer to newly installed tile grout.,Flooring,sq ft,1
-Baseboard Installation,Installing 5-inch MDF or wood baseboard molding.,Millwork & Trim,linear ft,6
-Crown Molding Installation,Installing primed wood or polyurethane crown molding.,Millwork & Trim,linear ft,10
-Wainscoting Installation,Installing traditional board and batten wall paneling.,Millwork & Trim,linear ft,25
-Interior Door Replacement,Hanging pre-hung hollow core or solid core door unit.,Millwork & Trim,each,250
-Pocket Door Installation,Framing and installing sliding pocket door system.,Millwork & Trim,each,750
-Custom Closet Shelving,Building custom melamine or wood closet organization system.,Millwork & Trim,linear ft,45
-Window Casing Installation,Installing trim around standard interior windows.,Millwork & Trim,each,95
-Kitchen Cabinet Removal,Carefully dismantling and removing existing upper and lower cabinets.,Kitchen Remodeling,job,800
-Kitchen Cabinet Installation,Leveling and securing stock or semi-custom kitchen cabinets.,Kitchen Remodeling,linear ft,110
-Custom Island Build,Constructing custom kitchen island base and panels.,Kitchen Remodeling,each,1500
-Quartz Countertop Templating and Install,"Professional template, fabrication, and installation of quartz slabs.",Kitchen Remodeling,sq ft,85
-Marble Countertop Installation,Setting natural marble countertops with polished edges.,Kitchen Remodeling,sq ft,110
-Kitchen Backsplash Tile,Installing ceramic or glass mosaic tile on kitchen walls.,Kitchen Remodeling,sq ft,25
-Undermount Sink Cutout and Mount,Cutting countertop and mounting single or double basin sink.,Kitchen Remodeling,each,250
-Range Hood Installation,Mounting wall-chimney or under-cabinet kitchen exhaust hood.,Kitchen Remodeling,each,300
-Bathroom Vanity Installation,"Setting vanity cabinet, top, and attaching plumbing fixtures.",Bathroom Remodeling,each,350
-Freestanding Tub Installation,Setting acrylic or cast iron tub with floor-mounted filler.,Bathroom Remodeling,each,750
-Tile Shower Pan Construction,Building custom sloped shower pan with waterproof liner.,Bathroom Remodeling,each,950
-Shower Wall Tile Installation,Waterproofing and tiling shower surround walls.,Bathroom Remodeling,sq ft,18
-Glass Shower Enclosure,Measuring and installing frameless glass shower door and panels.,Bathroom Remodeling,each,1200
-Toilet Replacement,Removing old toilet and installing new comfort-height toilet.,Bathroom Remodeling,each,220
-Niche Recessed Shower Shelf,Framing and tiling built-in shower storage niche.,Bathroom Remodeling,each,250
-Recessed LED Can Light,Installing 4-inch dimmable LED recessed light fixture.,Electrical & Lighting,each,175
-Pendant Light Installation,Hang and wire single pendant light over island or table.,Electrical & Lighting,each,150
-Chandelier Installation,Assembly and hanging of heavy chandelier requiring bracing.,Electrical & Lighting,each,350
-Under-Cabinet LED Lighting,Installing hardwired LED strip lighting under upper cabinets.,Electrical & Lighting,linear ft,35
-Outlet and Switch Replacement,Swap out standard device for decorator style in matching color.,Electrical & Lighting,each,25
-GFCI Outlet Installation,Install ground fault circuit interrupter outlet near water sources.,Electrical & Lighting,each,75
-Smart Dimmer Switch,Install app-compatible dimmer switch controlling lighting circuits.,Electrical & Lighting,each,110
-TV Wall Mount Installation,Secure flat screen mount to studs and conceal low voltage wires.,Electrical & Lighting,each,200
-Faucet and Drain Assembly,"Install sink faucet, handles, and mechanical pop-up drain.",Plumbing,each,200
-Shower Valve Replacement,Cut into wall and solder new pressure-balancing shower valve.,Plumbing,each,450
-Freestanding Tub Rough-in,Run supply and drain lines through floor for soaking tub.,Plumbing,job,600
-Ice Maker Supply Box,Install recessed water supply box for refrigerator ice maker.,Plumbing,each,250
-Dishwasher Hookup,"Connect water supply, drain hose, and power to dishwasher.",Plumbing,each,175
-Garbage Disposal Installation,Mount under-sink food waste disposer and wire to switch.,Plumbing,each,225
-HVAC Supply Vent Relocation,Reroute metal ductwork and register for new furniture layout.,HVAC & Ventilation,each,350
-Smart Thermostat Installation,Mount and configure internet-connected programmable thermostat.,HVAC & Ventilation,each,150
-Bath Exhaust Fan Installation,Install quiet ventilation fan with rigid ducting to exterior.,HVAC & Ventilation,each,400
-Custom Built-In Bookshelves,"Design, build, and paint custom wall-to-wall bookcases.",Custom Millwork & Furniture,linear ft,350
-Custom Fireplace Mantel,Fabricate and install solid wood or faux stone fireplace mantel.,Custom Millwork & Furniture,each,850
-Shiplap Wall Accent,Install tongue and groove boards on feature accent wall.,Custom Millwork & Furniture,sq ft,12
-Slatted Wood Wall Panel,Install modern acoustic wood slat panels on wall or ceiling.,Custom Millwork & Furniture,sq ft,22
-Custom Window Seat Bench,Build window seat with hinged storage lid and trim.,Custom Millwork & Furniture,each,950
-Radiator Cover Cabinet,Custom wood and metal mesh cover to hide unsightly radiator.,Custom Millwork & Furniture,each,600
-Furniture Assembly,Unpack and assemble freestanding retail furniture items.,Furniture & Staging,hour,65
-Custom Area Rug Placement,"Unroll, position, and secure large custom floor rugs.",Furniture & Staging,each,100
-Art Hanging and Placement,Level and secure framed artwork and mirrors to walls.,Furniture & Staging,hour,75
-Window Drapery Rod Installation,Mount heavy-duty drapery rods and brackets securely.,Furniture & Staging,each,120
-Curtain and Drapery Hanging,Steam and hang custom drapery panels.,Furniture & Staging,each,90
-Motorized Blinds Installation,Install smart battery or hardwired motorized window shades.,Furniture & Staging,each,175
-Home Staging Styling Day,"Final accessory placement, styling, and floral arrangement.",Furniture & Staging,day,800
-Building Permit Acquisition,Prepare drawings and process local municipal building permits.,Permits & Administration,job,350
-Architectural Plan Review Stamp,Secure structural engineer or architect stamp for project plans.,Permits & Administration,job,1200
-HOA Application Processing,Prepare and submit design packets for homeowners association approval.,Permits & Administration,job,150
-Dumpster Rental,"Drop off, 10-day rental, and pickup of 20-yard debris dumpster.",Permits & Administration,each,650
-Post-Construction Detailed Cleaning,"Deep dust removal, surface wiping, and floor vacuuming post-remodel.",Permits & Administration,sq ft,1
-Floor Protection Installation,Lay ram board and protective tape over finished floors.,Protection & Prep,sq ft,1
-Dust Barrier Containment System,Erect zipper-door plastic dust walls to isolate work areas.,Protection & Prep,job,250
-HVAC Duct Vent Sealing,Seal supply and return vents to prevent dust entering system.,Protection & Prep,job,100
-Temporary Lighting Rig,Hang temporary work lights in rooms lacking fixtures.,Protection & Prep,each,75
-Furniture Storage Wrapping,Wrap and protect remaining furniture in moving blankets and plastic.,Protection & Prep,each,50
-Acoustic Insulation Batt,Install soundproofing mineral wool insulation in interior walls.,Insulation & Sound,sq ft,3
-Soundproof Drywall Upgrade,Install mass loaded vinyl or resilient channel for sound control.,Insulation & Sound,sq ft,5
-Interior Wall Insulation Retrofit,Blow in or batts insulation into open interior partition walls.,Insulation & Sound,sq ft,2
-Pocket Door Acoustic Seal,Install perimeter brush seals to block sound transfer on sliders.,Insulation & Sound,each,120
-Threshold Sound Drop Seal,Install automatic drop-down door bottom for sound isolation.,Insulation & Sound,each,180
-Interior Hardware Package,"Install passage and privacy knobs, hinges, and door stops.",Hardware & Accents,each,45
-Cabinet Hardware Installation,Drill jigs and mount pulls and knobs on kitchen cabinets.,Hardware & Accents,each,15
-Bathroom Accessory Set,"Install towel bar, toilet paper holder, and robe hooks.",Hardware & Accents,job,200
-House Number and Plaque Mount,Install modern exterior or interior address numbers.,Hardware & Accents,job,90
-Threshold Transition Strip,Install metal or wood transition strip between different flooring.,Hardware & Accents,linear ft,25
-Air Vent Cover Upgrade,Install decorative cast iron or wood floor/wall register covers.,Hardware & Accents,each,45
-Safety Grab Bar Installation,Secure heavy-duty ADA grab bars into blocking in shower.,Hardware & Accents,each,150
-Punch List Completion,"Final detailing, touch-up paint, and minor adjustment hours.",Permits & Administration,hour,75
+name,description,category,unit,price,labor_hours,material_cost
+Design Consultation,Initial on-site meeting to discuss scope and style.,Design & Planning,visit,250,2,0
+Concept Mood Board,Digital mood board with color palettes and materials.,Design & Planning,each,450,3.6,0
+3D Room Rendering,Photorealistic 3D visualization of proposed space.,Design & Planning,each,850,6.8,0
+Architectural Floor Plan,Detailed measured drawing of existing and new layout.,Design & Planning,each,600,4.8,0
+Material Specification Schedule,"Comprehensive list of finishes, hardware, and fixtures.",Design & Planning,each,400,3.2,0
+Lighting Design Plan,"Schematic layout for ambient, task, and accent lighting.",Design & Planning,each,350,2.8,0
+Finish Carpentry Labor,Skilled labor for custom woodwork and trim installation.,Labor & Supervision,hour,95,1,0
+General Remodeling Labor,"Skilled labor for framing, drywall, and general fixes.",Labor & Supervision,hour,85,1,0
+Project Management Fee,Daily on-site supervision and schedule coordination.,Labor & Supervision,day,300,2.4,0
+Demo and Debris Removal,Tear down of existing finishes and hauling off waste.,Labor & Supervision,job,1200,6,300
+Subfloor Leveling,Pouring self-leveling compound for uneven subfloors.,Labor & Supervision,sq ft,6,0.02,3.5
+Drywall Hanging,Installing standard gypsum board on walls and ceilings.,Drywall & Painting,sq ft,3,0.015,1.7
+Drywall Taping and Mudding,Taping joints and applying three coats of joint compound.,Drywall & Painting,sq ft,3,0.02,0.3
+Smooth Ceiling Skim Coat,Skimming popcorn ceiling flat with joint compound.,Drywall & Painting,sq ft,4,0.025,0.5
+Interior Wall Painting,Two coats of premium latex paint on walls.,Drywall & Painting,sq ft,2,0.012,0.3
+Ceiling Painting,Two coats of flat white ceiling paint.,Drywall & Painting,sq ft,2,0.012,0.3
+Trim and Door Painting,"Sanding and painting baseboards, casings, and doors.",Drywall & Painting,linear ft,5,0.03,0.8
+Wallpaper Removal,Stripping existing wallpaper and washing adhesive residue.,Drywall & Painting,sq ft,3,0.02,0.3
+Wallpaper Installation,Hanging standard pattern or grasscloth wallpaper.,Drywall & Painting,sq ft,6,0.02,2.5
+Hardwood Floor Installation,Nail-down or glue-down solid or engineered hardwood.,Flooring,sq ft,5,0.02,3
+LVT Flooring Installation,Click-lock luxury vinyl plank flooring installation.,Flooring,sq ft,3,0.015,1.5
+Tile Flooring Installation,Setting ceramic or porcelain tile with thin-set mortar.,Flooring,sq ft,12,0.04,4.6
+Carpet Installation,"Installing tack strips, pad, and wall-to-wall carpet.",Flooring,sq ft,2,0.01,1
+Floor Sanding and Refinishing,Sanding existing hardwood and applying three finish coats.,Flooring,sq ft,5,0.03,0.8
+Tile Grout Sealing,Applying penetrating sealer to newly installed tile grout.,Flooring,sq ft,1,0.006,0.15
+Baseboard Installation,Installing 5-inch MDF or wood baseboard molding.,Millwork & Trim,linear ft,6,0.025,1.95
+Crown Molding Installation,Installing primed wood or polyurethane crown molding.,Millwork & Trim,linear ft,10,0.04,3.3
+Wainscoting Installation,Installing traditional board and batten wall paneling.,Millwork & Trim,linear ft,25,0.1,8.3
+Interior Door Replacement,Hanging pre-hung hollow core or solid core door unit.,Millwork & Trim,each,250,1,83.33
+Pocket Door Installation,Framing and installing sliding pocket door system.,Millwork & Trim,each,750,3,250
+Custom Closet Shelving,Building custom melamine or wood closet organization system.,Millwork & Trim,linear ft,45,0.15,17.5
+Window Casing Installation,Installing trim around standard interior windows.,Millwork & Trim,each,95,0.4,30
+Kitchen Cabinet Removal,Carefully dismantling and removing existing upper and lower cabinets.,Kitchen Remodeling,job,800,4,200
+Kitchen Cabinet Installation,Leveling and securing stock or semi-custom kitchen cabinets.,Kitchen Remodeling,linear ft,110,0.5,30
+Custom Island Build,Constructing custom kitchen island base and panels.,Kitchen Remodeling,each,1500,6,500
+Quartz Countertop Templating and Install,"Professional template, fabrication, and installation of quartz slabs.",Kitchen Remodeling,sq ft,85,0.2,37.33
+Marble Countertop Installation,Setting natural marble countertops with polished edges.,Kitchen Remodeling,sq ft,110,0.25,52.5
+Kitchen Backsplash Tile,Installing ceramic or glass mosaic tile on kitchen walls.,Kitchen Remodeling,sq ft,25,0.08,10
+Undermount Sink Cutout and Mount,Cutting countertop and mounting single or double basin sink.,Kitchen Remodeling,each,250,1,83.33
+Range Hood Installation,Mounting wall-chimney or under-cabinet kitchen exhaust hood.,Kitchen Remodeling,each,300,1.2,100
+Bathroom Vanity Installation,"Setting vanity cabinet, top, and attaching plumbing fixtures.",Bathroom Remodeling,each,350,1.4,116.67
+Freestanding Tub Installation,Setting acrylic or cast iron tub with floor-mounted filler.,Bathroom Remodeling,each,750,2,333.33
+Tile Shower Pan Construction,Building custom sloped shower pan with waterproof liner.,Bathroom Remodeling,each,950,4,300
+Shower Wall Tile Installation,Waterproofing and tiling shower surround walls.,Bathroom Remodeling,sq ft,18,0.06,7
+Glass Shower Enclosure,Measuring and installing frameless glass shower door and panels.,Bathroom Remodeling,each,1200,3,550
+Toilet Replacement,Removing old toilet and installing new comfort-height toilet.,Bathroom Remodeling,each,220,1,63.33
+Niche Recessed Shower Shelf,Framing and tiling built-in shower storage niche.,Bathroom Remodeling,each,250,1.2,66.67
+Recessed LED Can Light,Installing 4-inch dimmable LED recessed light fixture.,Electrical & Lighting,each,175,0.8,50
+Pendant Light Installation,Hang and wire single pendant light over island or table.,Electrical & Lighting,each,150,0.6,50
+Chandelier Installation,Assembly and hanging of heavy chandelier requiring bracing.,Electrical & Lighting,each,350,1.4,116.67
+Under-Cabinet LED Lighting,Installing hardwired LED strip lighting under upper cabinets.,Electrical & Lighting,linear ft,35,0.12,13
+Outlet and Switch Replacement,Swap out standard device for decorator style in matching color.,Electrical & Lighting,each,25,0.15,4.17
+GFCI Outlet Installation,Install ground fault circuit interrupter outlet near water sources.,Electrical & Lighting,each,75,0.3,25
+Smart Dimmer Switch,Install app-compatible dimmer switch controlling lighting circuits.,Electrical & Lighting,each,110,0.4,40
+TV Wall Mount Installation,Secure flat screen mount to studs and conceal low voltage wires.,Electrical & Lighting,each,200,1,50
+Faucet and Drain Assembly,"Install sink faucet, handles, and mechanical pop-up drain.",Plumbing,each,200,1,50
+Shower Valve Replacement,Cut into wall and solder new pressure-balancing shower valve.,Plumbing,each,450,2,133.33
+Freestanding Tub Rough-in,Run supply and drain lines through floor for soaking tub.,Plumbing,job,600,3,150
+Ice Maker Supply Box,Install recessed water supply box for refrigerator ice maker.,Plumbing,each,250,1.2,66.67
+Dishwasher Hookup,"Connect water supply, drain hose, and power to dishwasher.",Plumbing,each,175,0.8,50
+Garbage Disposal Installation,Mount under-sink food waste disposer and wire to switch.,Plumbing,each,225,1,66.67
+HVAC Supply Vent Relocation,Reroute metal ductwork and register for new furniture layout.,HVAC & Ventilation,each,350,2,66.67
+Smart Thermostat Installation,Mount and configure internet-connected programmable thermostat.,HVAC & Ventilation,each,150,0.6,50
+Bath Exhaust Fan Installation,Install quiet ventilation fan with rigid ducting to exterior.,HVAC & Ventilation,each,400,1.8,120
+Custom Built-In Bookshelves,"Design, build, and paint custom wall-to-wall bookcases.",Custom Millwork & Furniture,linear ft,350,1.4,116.67
+Custom Fireplace Mantel,Fabricate and install solid wood or faux stone fireplace mantel.,Custom Millwork & Furniture,each,850,3.4,283.33
+Shiplap Wall Accent,Install tongue and groove boards on feature accent wall.,Custom Millwork & Furniture,sq ft,12,0.04,4.6
+Slatted Wood Wall Panel,Install modern acoustic wood slat panels on wall or ceiling.,Custom Millwork & Furniture,sq ft,22,0.06,9.6
+Custom Window Seat Bench,Build window seat with hinged storage lid and trim.,Custom Millwork & Furniture,each,950,3.8,316.67
+Radiator Cover Cabinet,Custom wood and metal mesh cover to hide unsightly radiator.,Custom Millwork & Furniture,each,600,2.4,200
+Furniture Assembly,Unpack and assemble freestanding retail furniture items.,Furniture & Staging,hour,65,1,0
+Custom Area Rug Placement,"Unroll, position, and secure large custom floor rugs.",Furniture & Staging,each,100,0.4,33.33
+Art Hanging and Placement,Level and secure framed artwork and mirrors to walls.,Furniture & Staging,hour,75,1,0
+Window Drapery Rod Installation,Mount heavy-duty drapery rods and brackets securely.,Furniture & Staging,each,120,0.5,38.33
+Curtain and Drapery Hanging,Steam and hang custom drapery panels.,Furniture & Staging,each,90,0.4,26.67
+Motorized Blinds Installation,Install smart battery or hardwired motorized window shades.,Furniture & Staging,each,175,0.6,66.67
+Home Staging Styling Day,"Final accessory placement, styling, and floral arrangement.",Furniture & Staging,day,800,6.4,0
+Building Permit Acquisition,Prepare drawings and process local municipal building permits.,Permits & Administration,job,350,2.8,0
+Architectural Plan Review Stamp,Secure structural engineer or architect stamp for project plans.,Permits & Administration,job,1200,4,466.67
+HOA Application Processing,Prepare and submit design packets for homeowners association approval.,Permits & Administration,job,150,1.2,0
+Dumpster Rental,"Drop off, 10-day rental, and pickup of 20-yard debris dumpster.",Permits & Administration,each,650,0.5,393.33
+Post-Construction Detailed Cleaning,"Deep dust removal, surface wiping, and floor vacuuming post-remodel.",Permits & Administration,sq ft,1,0.008,0.02
+Floor Protection Installation,Lay ram board and protective tape over finished floors.,Protection & Prep,sq ft,1,0.004,0.33
+Dust Barrier Containment System,Erect zipper-door plastic dust walls to isolate work areas.,Protection & Prep,job,250,1,83.33
+HVAC Duct Vent Sealing,Seal supply and return vents to prevent dust entering system.,Protection & Prep,job,100,0.5,25
+Temporary Lighting Rig,Hang temporary work lights in rooms lacking fixtures.,Protection & Prep,each,75,0.3,25
+Furniture Storage Wrapping,Wrap and protect remaining furniture in moving blankets and plastic.,Protection & Prep,each,50,0.2,16.67
+Acoustic Insulation Batt,Install soundproofing mineral wool insulation in interior walls.,Insulation & Sound,sq ft,3,0.01,1.1
+Soundproof Drywall Upgrade,Install mass loaded vinyl or resilient channel for sound control.,Insulation & Sound,sq ft,5,0.015,2.1
+Interior Wall Insulation Retrofit,Blow in or batts insulation into open interior partition walls.,Insulation & Sound,sq ft,2,0.01,0.7
+Pocket Door Acoustic Seal,Install perimeter brush seals to block sound transfer on sliders.,Insulation & Sound,each,120,0.5,38.33
+Threshold Sound Drop Seal,Install automatic drop-down door bottom for sound isolation.,Insulation & Sound,each,180,0.6,70
+Interior Hardware Package,"Install passage and privacy knobs, hinges, and door stops.",Hardware & Accents,each,45,0.2,13.33
+Cabinet Hardware Installation,Drill jigs and mount pulls and knobs on kitchen cabinets.,Hardware & Accents,each,15,0.1,1.67
+Bathroom Accessory Set,"Install towel bar, toilet paper holder, and robe hooks.",Hardware & Accents,job,200,0.8,66.67
+House Number and Plaque Mount,Install modern exterior or interior address numbers.,Hardware & Accents,job,90,0.4,26.67
+Threshold Transition Strip,Install metal or wood transition strip between different flooring.,Hardware & Accents,linear ft,25,0.08,10
+Air Vent Cover Upgrade,Install decorative cast iron or wood floor/wall register covers.,Hardware & Accents,each,45,0.15,17.5
+Safety Grab Bar Installation,Secure heavy-duty ADA grab bars into blocking in shower.,Hardware & Accents,each,150,0.6,50
+Punch List Completion,"Final detailing, touch-up paint, and minor adjustment hours.",Permits & Administration,hour,75,1,0

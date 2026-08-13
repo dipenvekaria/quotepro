@@ -1,101 +1,101 @@
-name,description,category,unit,price
-Service Call Fee,Initial on-site diagnostic and travel fee,Diagnostics & Service,visit,125
-Emergency After-Hours Dispatch,Urgent evening or weekend service dispatch,Diagnostics & Service,visit,250
-Standard Labor Rate,Hourly rate for technician installation and repair work,Diagnostics & Service,hour,95
-Two-Man Crew Labor Rate,Hourly rate for a two-person installation crew,Diagnostics & Service,hour,175
-Awning Safety Inspection,Comprehensive structural and mechanical system check,Diagnostics & Service,each,150
-Wind Sensor Testing,Test and recalibrate automated motion sensor,Diagnostics & Service,each,110
-Manual Retractable Awning Installation,Mount standard hand-crank lateral arm awning,Installation,each,450
-Motorized Retractable Awning Installation,Mount motorized lateral arm awning to exterior wall,Installation,each,650
-Large Commercial Awning Installation,Install commercial grade multi-arm retractable awning,Installation,each,1200
-Fixed Frame Awning Installation,Install welded aluminum fixed frame awning,Installation,each,550
-Drop Arm Awning Installation,Mount window drop arm canvas awning,Installation,each,300
-Window Canopy Installation,Install rigid metal or fabric window canopy,Installation,each,250
-Freestanding Awning Installation,Assemble and anchor freestanding patio awning structure,Installation,each,850
-Roof Mount Bracket Installation,Install specialized roof mounting brackets per set,Installation,each,200
-Soffit Mount Bracket Installation,Install specialized overhang mounting brackets per set,Installation,each,180
-Extra-Long Awning Surcharge,Additional handling fee for awnings exceeding twenty feet,Installation,each,300
-Standard Tubular Motor Replacement,Replace failed internal roller tube motor,Motor & Electrical,each,450
-Heavy-Duty Tubular Motor Replacement,Replace high-torque motor for large awnings,Motor & Electrical,each,600
-Manual Override Gear Replacement,Replace internal manual crank override gearbox,Motor & Electrical,each,250
-Handheld Remote Control Replacement,Provide and program new multi-channel remote,Motor & Electrical,each,95
-Wall Switch Transmitter Installation,Install wireless surface-mounted control switch,Motor & Electrical,each,120
-Wireless Wind Sensor Replacement,Replace vibration-activated motion sensor unit,Motor & Electrical,each,220
-Sun and Wind Sensor Combo Unit,Install combination sunlight and wind automation sensor,Motor & Electrical,each,320
-External Control Box Replacement,Replace awning motor receiver control box,Motor & Electrical,each,280
-Motor Limit Switch Adjustment,Calibrate open and close stopping points,Motor & Electrical,each,85
-Low-Voltage Power Supply Replacement,Replace LED driver or low voltage transformer,Motor & Electrical,each,160
-Lateral Arm Replacement Single,Replace one damaged spring tension arm,Mechanical Repairs,each,350
-Lateral Arm Replacement Pair,Replace both spring tension arms for balance,Mechanical Repairs,pair,650
-Arm Tension Cable Adjustment,Tighten and align internal arm tension cables,Mechanical Repairs,each,120
-Roller Tube Straightening or Repair,Repair bent aluminum roller tube section,Mechanical Repairs,each,220
-Roller Tube Replacement,Replace bent or damaged main roller tube,Mechanical Repairs,each,400
-Front Bar Replacement,Replace damaged front lead rail extrusion,Mechanical Repairs,linear ft,45
-Wall Mounting Bracket Replacement,Replace damaged structural mounting bracket,Mechanical Repairs,each,90
-Awning Pitch Adjustment,Adjust slope angle for proper water runoff,Mechanical Repairs,each,110
-Crank Handle Replacement,Provide standard manual override crank handle,Mechanical Repairs,each,65
-Pivot Joint Bolt Replacement,Replace sheared or rusted arm pivot hardware,Mechanical Repairs,each,55
-Retractable Awning Fabric Replacement,Strip old fabric and install new acrylic cover,Fabric & Recovering,sq ft,8
-Fixed Frame Canvas Recover,Stretch and staple new custom canvas over fixed frame,Fabric & Recovering,sq ft,11
-Valance Replacement Standard,Replace hanging front valance with standard scalloped edge,Fabric & Recovering,linear ft,22
-Valance Replacement Custom,Replace custom-printed commercial front valance,Fabric & Recovering,linear ft,38
-Custom Graphics Application,Apply heat-transfer lettering or logos to canvas,Fabric & Recovering,linear ft,45
-Fabric Patch Repair,Apply professional adhesive canvas patch to small tear,Fabric & Recovering,each,95
-Seam Stitching Repair,Restitch unraveled weather-resistant seams on-site,Fabric & Recovering,hour,110
-Awning Hood Cover Installation,Install protective aluminum hood cover over rolled awning,Fabric & Recovering,linear ft,35
-Semi-Cassette Sealing Strip Replacement,Replace rubber weather seal on cassette housing,Fabric & Recovering,linear ft,15
-Residential Awning Deep Cleaning,Wash fabric and frame with specialized cleaning solutions,Maintenance & Care,sq ft,1.5
-Commercial Awning Deep Cleaning,High-volume washing and treatment for large awnings,Maintenance & Care,sq ft,1.25
-Fabric Water Repellent Treatment,Apply fluoropolymer waterproofing spray to canvas,Maintenance & Care,sq ft,0.85
-Seasonal Take-Down and Storage,"Remove seasonal awning, store, and reinstall in spring",Maintenance & Care,each,350
-Seasonal Take-Down Only,Detach awning for winter storage by owner,Maintenance & Care,each,200
-Seasonal Reinstallation Only,Reattach previously stored seasonal awning,Maintenance & Care,each,220
-Frame Lubrication and Tune-Up,Grease moving mechanical joints and check fasteners,Maintenance & Care,each,95
-Mold and Mildew Treatment,Apply specialized eco-friendly mildew remover to fabric,Maintenance & Care,sq ft,0.75
-Awning Removal and Disposal,Dismantle old awning and haul away debris,Removal & Disposal,each,250
-Commercial Awning Removal,Dismantle large commercial framework and haul away,Removal & Disposal,each,550
-Disposal Fee Standard,Disposal fee for old fabric and aluminum scrap,Removal & Disposal,each,75
-Disposal Fee Oversized,Disposal fee for heavy commercial steel and canvas,Removal & Disposal,each,150
-Wall Anchor Hole Patching,Fill exterior mounting holes with structural mortar,Removal & Disposal,each,60
-Siding Repair Patch,Patch vinyl or wood siding after bracket removal,Removal & Disposal,each,120
-Awning Relocation Service,Remove existing awning and reinstall at new location,Removal & Disposal,job,650
-LED Arm Lighting Kit Installation,Install integrated LED light strips on retractable arms,Upgrades & Custom,each,300
-Drop-Down Front Shade Addition,Add vertical roller shade integrated into front rail,Upgrades & Custom,linear ft,55
-Smart Home Hub Integration,Connect motorized awning to Wi-Fi bridge or smart hub,Upgrades & Custom,each,175
-Solar Panel Battery Kit,Install solar trickle charger kit for motorized awning,Upgrades & Custom,each,250
-Custom Welded Support Stanchions,Fabricate and install vertical floor support posts,Upgrades & Custom,pair,450
-Rain Hood Retrofit,Add protective metal cover to existing uncovered awning,Upgrades & Custom,linear ft,40
-Manual to Motorized Conversion,Retrofit hand-crank awning with internal tubular motor,Upgrades & Custom,each,550
-Custom Color Powder Coating,Custom paint frame to match specific exterior trim,Upgrades & Custom,job,350
-Awning Draft Blocker Flaps,Install side weather blocking panels,Upgrades & Custom,pair,180
-E-Stop Safety Switch Installation,Install manual emergency power cutoff switch,Upgrades & Custom,each,140
-Building Permit Acquisition,Pull local municipal building and zoning permits,Permits & Engineering,job,150
-Engineering Stamp and Calculations,Provide PE stamped structural drawings for commercial permits,Permits & Engineering,job,600
-HOA Compliance Documentation,Prepare material samples and drawings for association review,Permits & Engineering,job,95
-Commercial Signage Permit,Process local sign and awning permit application,Permits & Engineering,job,250
-Electrical Permit Processing,File separate permit for hardwired motorized connections,Permits & Engineering,job,125
-Site Survey and Measurement,Detailed laser measurement and structural anchor analysis,Permits & Engineering,job,100
-Rush Processing Surcharge,Expedite permitting and manufacturing timeline,Permits & Engineering,job,300
-High-Rise Lift Rental Surcharge,Daily rental fee for boom lift or scissor lift,Equipment & Access,day,400
-Scaffolding Setup and Tear Down,Erect temporary scaffolding for multi-story installation,Equipment & Access,job,350
-Ladder Safety Setup Multi-Story,Extra labor fee for complex high-reach ladder work,Equipment & Access,hour,50
-Traffic Control Setup,Deploy safety cones and signage for sidewalk blocking,Equipment & Access,job,150
-Core Drilling Concrete Wall,Drill through reinforced concrete for anchor bolts,Installation,each,75
-Stucco Wall Anchor Reinforcement,Install standoff sleeves through thick exterior stucco,Installation,each,45
-Brick Lintel Fastener Installation,Secure heavy-duty expansion anchors into brick masonry,Installation,each,35
-Thru-Bolt Backer Plate Installation,Install interior steel reinforcement backer plates,Installation,each,120
-Silicone Waterproof Sealing,Caulk and seal around bracket penetrations,Installation,linear ft,12
-Awning Cover Tie-Down Straps,Provide storm security tie-down straps per pair,Maintenance & Care,pair,45
-Replacement End Cap Set,Replace plastic or aluminum roller tube end caps,Mechanical Repairs,pair,30
-Awning Maintenance Lubricant Spray,Professional silicone dry lubricant application,Maintenance & Care,each,25
-Awning Fabric Care Kit,Take-home cleaning soap and spot remover kit,Maintenance & Care,each,40
-Replacement Crank Loop Eye,Replace gearbox attachment loop eyelet,Mechanical Repairs,each,45
-Awning Pitch Adjustment Crank,Install worm gear pitch adjustment mechanism,Mechanical Repairs,each,85
-Spring Tension Re-Tensioning,Recalibrate internal arm spring tension force,Mechanical Repairs,each,130
-Awning Inspection and Tune-Up Plan,Annual service contract including cleaning and checkup,Maintenance & Care,visit,199
-Custom Valance Fringe Trim,Add decorative cotton or nylon fringe to valance,Fabric & Recovering,linear ft,12
-Awning LED Controller Upgrade,Upgrade to color-changing RGB LED controller,Upgrades & Custom,each,110
-Heavy-Duty Wind Arm Upgrade,Upgrade standard arms to wind-rated reinforced arms,Upgrades & Custom,pair,400
-Emergency Storm Takedown Service,Rapid response crew to secure or remove before hurricane,Diagnostics & Service,job,350
-Post-Storm Damage Assessment,Inspect storm-damaged awning for insurance claim,Diagnostics & Service,each,175
-Awning Re-Alignment Service,Square up unevenly retracting lateral arms,Mechanical Repairs,each,140
+name,description,category,unit,price,labor_hours,material_cost
+Service Call Fee,Initial on-site diagnostic and travel fee,Diagnostics & Service,visit,125,1,0
+Emergency After-Hours Dispatch,Urgent evening or weekend service dispatch,Diagnostics & Service,visit,250,2,0
+Standard Labor Rate,Hourly rate for technician installation and repair work,Diagnostics & Service,hour,95,1,0
+Two-Man Crew Labor Rate,Hourly rate for a two-person installation crew,Diagnostics & Service,hour,175,1.4,0
+Awning Safety Inspection,Comprehensive structural and mechanical system check,Diagnostics & Service,each,150,1.2,0
+Wind Sensor Testing,Test and recalibrate automated motion sensor,Diagnostics & Service,each,110,0.88,0
+Manual Retractable Awning Installation,Mount standard hand-crank lateral arm awning,Installation,each,450,2.4,100
+Motorized Retractable Awning Installation,Mount motorized lateral arm awning to exterior wall,Installation,each,650,3.2,160
+Large Commercial Awning Installation,Install commercial grade multi-arm retractable awning,Installation,each,1200,6,300
+Fixed Frame Awning Installation,Install welded aluminum fixed frame awning,Installation,each,550,2.8,133.33
+Drop Arm Awning Installation,Mount window drop arm canvas awning,Installation,each,300,1.6,66.67
+Window Canopy Installation,Install rigid metal or fabric window canopy,Installation,each,250,1.4,50
+Freestanding Awning Installation,Assemble and anchor freestanding patio awning structure,Installation,each,850,4.4,200
+Roof Mount Bracket Installation,Install specialized roof mounting brackets per set,Installation,each,200,1.2,33.33
+Soffit Mount Bracket Installation,Install specialized overhang mounting brackets per set,Installation,each,180,1,36.67
+Extra-Long Awning Surcharge,Additional handling fee for awnings exceeding twenty feet,Installation,each,300,1.6,66.67
+Standard Tubular Motor Replacement,Replace failed internal roller tube motor,Motor & Electrical,each,450,1.6,166.67
+Heavy-Duty Tubular Motor Replacement,Replace high-torque motor for large awnings,Motor & Electrical,each,600,2,233.33
+Manual Override Gear Replacement,Replace internal manual crank override gearbox,Motor & Electrical,each,250,1.4,50
+Handheld Remote Control Replacement,Provide and program new multi-channel remote,Motor & Electrical,each,95,0.2,43.33
+Wall Switch Transmitter Installation,Install wireless surface-mounted control switch,Motor & Electrical,each,120,0.4,46.67
+Wireless Wind Sensor Replacement,Replace vibration-activated motion sensor unit,Motor & Electrical,each,220,0.6,96.67
+Sun and Wind Sensor Combo Unit,Install combination sunlight and wind automation sensor,Motor & Electrical,each,320,0.8,146.67
+External Control Box Replacement,Replace awning motor receiver control box,Motor & Electrical,each,280,1,103.33
+Motor Limit Switch Adjustment,Calibrate open and close stopping points,Motor & Electrical,each,85,0.68,0
+Low-Voltage Power Supply Replacement,Replace LED driver or low voltage transformer,Motor & Electrical,each,160,0.6,56.67
+Lateral Arm Replacement Single,Replace one damaged spring tension arm,Mechanical Repairs,each,350,1.4,116.67
+Lateral Arm Replacement Pair,Replace both spring tension arms for balance,Mechanical Repairs,pair,650,2.6,210
+Arm Tension Cable Adjustment,Tighten and align internal arm tension cables,Mechanical Repairs,each,120,0.96,0
+Roller Tube Straightening or Repair,Repair bent aluminum roller tube section,Mechanical Repairs,each,220,1.76,0
+Roller Tube Replacement,Replace bent or damaged main roller tube,Mechanical Repairs,each,400,1.6,133.33
+Front Bar Replacement,Replace damaged front lead rail extrusion,Mechanical Repairs,linear ft,45,0.16,16.67
+Wall Mounting Bracket Replacement,Replace damaged structural mounting bracket,Mechanical Repairs,each,90,0.4,26.67
+Awning Pitch Adjustment,Adjust slope angle for proper water runoff,Mechanical Repairs,each,110,0.88,0
+Crank Handle Replacement,Provide standard manual override crank handle,Mechanical Repairs,each,65,0.2,26.67
+Pivot Joint Bolt Replacement,Replace sheared or rusted arm pivot hardware,Mechanical Repairs,each,55,0.3,11.67
+Retractable Awning Fabric Replacement,Strip old fabric and install new acrylic cover,Fabric & Recovering,sq ft,8,0.03,4.87
+Fixed Frame Canvas Recover,Stretch and staple new custom canvas over fixed frame,Fabric & Recovering,sq ft,11,0.04,6.73
+Valance Replacement Standard,Replace hanging front valance with standard scalloped edge,Fabric & Recovering,linear ft,22,0.08,8.13
+Valance Replacement Custom,Replace custom-printed commercial front valance,Fabric & Recovering,linear ft,38,0.1,14.33
+Custom Graphics Application,Apply heat-transfer lettering or logos to canvas,Fabric & Recovering,linear ft,45,0.12,20
+Fabric Patch Repair,Apply professional adhesive canvas patch to small tear,Fabric & Recovering,each,95,0.6,13.33
+Seam Stitching Repair,Restitch unraveled weather-resistant seams on-site,Fabric & Recovering,hour,110,0.88,0
+Awning Hood Cover Installation,Install protective aluminum hood cover over rolled awning,Fabric & Recovering,linear ft,35,0.1,15
+Semi-Cassette Sealing Strip Replacement,Replace rubber weather seal on cassette housing,Fabric & Recovering,linear ft,15,0.05,5.83
+Residential Awning Deep Cleaning,Wash fabric and frame with specialized cleaning solutions,Maintenance & Care,sq ft,1.5,0.008,0.49
+Commercial Awning Deep Cleaning,High-volume washing and treatment for large awnings,Maintenance & Care,sq ft,1.25,0.006,0.42
+Fabric Water Repellent Treatment,Apply fluoropolymer waterproofing spray to canvas,Maintenance & Care,sq ft,0.85,0.004,0.31
+Seasonal Take-Down and Storage,"Remove seasonal awning, store, and reinstall in spring",Maintenance & Care,each,350,2,66.67
+Seasonal Take-Down Only,Detach awning for winter storage by owner,Maintenance & Care,each,200,1.6,0
+Seasonal Reinstallation Only,Reattach previously stored seasonal awning,Maintenance & Care,each,220,1.76,0
+Frame Lubrication and Tune-Up,Grease moving mechanical joints and check fasteners,Maintenance & Care,each,95,0.7,5
+Mold and Mildew Treatment,Apply specialized eco-friendly mildew remover to fabric,Maintenance & Care,sq ft,0.75,0.004,0.25
+Awning Removal and Disposal,Dismantle old awning and haul away debris,Removal & Disposal,each,250,1.6,33.33
+Commercial Awning Removal,Dismantle large commercial framework and haul away,Removal & Disposal,each,550,3.6,66.67
+Disposal Fee Standard,Disposal fee for old fabric and aluminum scrap,Removal & Disposal,each,75,0,50
+Disposal Fee Oversized,Disposal fee for heavy commercial steel and canvas,Removal & Disposal,each,150,0,100
+Wall Anchor Hole Patching,Fill exterior mounting holes with structural mortar,Removal & Disposal,each,60,0.48,0
+Siding Repair Patch,Patch vinyl or wood siding after bracket removal,Removal & Disposal,each,120,0.8,16.67
+Awning Relocation Service,Remove existing awning and reinstall at new location,Removal & Disposal,job,650,3.6,133.33
+LED Arm Lighting Kit Installation,Install integrated LED light strips on retractable arms,Upgrades & Custom,each,300,1.2,100
+Drop-Down Front Shade Addition,Add vertical roller shade integrated into front rail,Upgrades & Custom,linear ft,55,0.16,23.33
+Smart Home Hub Integration,Connect motorized awning to Wi-Fi bridge or smart hub,Upgrades & Custom,each,175,0.8,50
+Solar Panel Battery Kit,Install solar trickle charger kit for motorized awning,Upgrades & Custom,each,250,0.6,113.33
+Custom Welded Support Stanchions,Fabricate and install vertical floor support posts,Upgrades & Custom,pair,450,1.2,200
+Rain Hood Retrofit,Add protective metal cover to existing uncovered awning,Upgrades & Custom,linear ft,40,0.12,16.67
+Manual to Motorized Conversion,Retrofit hand-crank awning with internal tubular motor,Upgrades & Custom,each,550,2.2,183.33
+Custom Color Powder Coating,Custom paint frame to match specific exterior trim,Upgrades & Custom,job,350,1,150
+Awning Draft Blocker Flaps,Install side weather blocking panels,Upgrades & Custom,pair,180,0.6,66.67
+E-Stop Safety Switch Installation,Install manual emergency power cutoff switch,Upgrades & Custom,each,140,0.8,26.67
+Building Permit Acquisition,Pull local municipal building and zoning permits,Permits & Engineering,job,150,1.2,0
+Engineering Stamp and Calculations,Provide PE stamped structural drawings for commercial permits,Permits & Engineering,job,600,1,316.67
+HOA Compliance Documentation,Prepare material samples and drawings for association review,Permits & Engineering,job,95,0.76,0
+Commercial Signage Permit,Process local sign and awning permit application,Permits & Engineering,job,250,2,0
+Electrical Permit Processing,File separate permit for hardwired motorized connections,Permits & Engineering,job,125,1,0
+Site Survey and Measurement,Detailed laser measurement and structural anchor analysis,Permits & Engineering,job,100,0.8,0
+Rush Processing Surcharge,Expedite permitting and manufacturing timeline,Permits & Engineering,job,300,2.4,0
+High-Rise Lift Rental Surcharge,Daily rental fee for boom lift or scissor lift,Equipment & Access,day,400,0,266.67
+Scaffolding Setup and Tear Down,Erect temporary scaffolding for multi-story installation,Equipment & Access,job,350,2,66.67
+Ladder Safety Setup Multi-Story,Extra labor fee for complex high-reach ladder work,Equipment & Access,hour,50,0.4,0
+Traffic Control Setup,Deploy safety cones and signage for sidewalk blocking,Equipment & Access,job,150,1.2,0
+Core Drilling Concrete Wall,Drill through reinforced concrete for anchor bolts,Installation,each,75,0.5,8.33
+Stucco Wall Anchor Reinforcement,Install standoff sleeves through thick exterior stucco,Installation,each,45,0.3,5
+Brick Lintel Fastener Installation,Secure heavy-duty expansion anchors into brick masonry,Installation,each,35,0.24,3.33
+Thru-Bolt Backer Plate Installation,Install interior steel reinforcement backer plates,Installation,each,120,0.6,30
+Silicone Waterproof Sealing,Caulk and seal around bracket penetrations,Installation,linear ft,12,0.04,4.67
+Awning Cover Tie-Down Straps,Provide storm security tie-down straps per pair,Maintenance & Care,pair,45,0.2,13.33
+Replacement End Cap Set,Replace plastic or aluminum roller tube end caps,Mechanical Repairs,pair,30,0.1,11.67
+Awning Maintenance Lubricant Spray,Professional silicone dry lubricant application,Maintenance & Care,each,25,0.05,12.33
+Awning Fabric Care Kit,Take-home cleaning soap and spot remover kit,Maintenance & Care,each,40,0.05,25.67
+Replacement Crank Loop Eye,Replace gearbox attachment loop eyelet,Mechanical Repairs,each,45,0.2,13.33
+Awning Pitch Adjustment Crank,Install worm gear pitch adjustment mechanism,Mechanical Repairs,each,85,0.3,31.67
+Spring Tension Re-Tensioning,Recalibrate internal arm spring tension force,Mechanical Repairs,each,130,1,3.33
+Awning Inspection and Tune-Up Plan,Annual service contract including cleaning and checkup,Maintenance & Care,visit,199,1.2,32.67
+Custom Valance Fringe Trim,Add decorative cotton or nylon fringe to valance,Fabric & Recovering,linear ft,12,0.04,4.93
+Awning LED Controller Upgrade,Upgrade to color-changing RGB LED controller,Upgrades & Custom,each,110,0.5,31.67
+Heavy-Duty Wind Arm Upgrade,Upgrade standard arms to wind-rated reinforced arms,Upgrades & Custom,pair,400,1.2,166.67
+Emergency Storm Takedown Service,Rapid response crew to secure or remove before hurricane,Diagnostics & Service,job,350,2.8,0
+Post-Storm Damage Assessment,Inspect storm-damaged awning for insurance claim,Diagnostics & Service,each,175,1.4,0
+Awning Re-Alignment Service,Square up unevenly retracting lateral arms,Mechanical Repairs,each,140,1.12,0

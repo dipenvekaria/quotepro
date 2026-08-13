@@ -1,100 +1,100 @@
-name,description,category,unit,price
-Initial Stucco Consultation,On-site assessment of exterior stucco condition and damage,Diagnostics & Inspection,visit,150
-EIFS Moisture Analysis,Electronic invasive and non-invasive moisture meter testing,Diagnostics & Inspection,job,350
-Thermal Imaging Scan,Infrared camera inspection for hidden moisture intrusion behind stucco,Diagnostics & Inspection,job,450
-Destructive Testing Core Sample,Removal of small stucco section to check substrate and lath,Diagnostics & Inspection,each,250
-Structural Engineer Consultation,Coordination and oversight for severe framing damage,Diagnostics & Inspection,job,750
-Stucco Repair Labor Rate,Hourly rate for skilled journeyman plasterer,Labor Rates,hour,95
-EIFS Specialist Labor Rate,Hourly rate for certified EIFS installation and repair technician,Labor Rates,hour,110
-Stucco Apprentice Labor Rate,Hourly rate for assistant laborer and site prep,Labor Rates,hour,55
-After-Hours Emergency Labor,Urgent temporary stabilization outside normal business hours,Labor Rates,hour,175
-Project Management Fee,Daily site supervision and scheduling coordination,Labor Rates,day,200
-Hairline Crack Injection,Epoxy or elastomeric sealant injection for fine cracks,Crack & Surface Repair,linear ft,12
-Structural Crack V-Groove Repair,Routing out and patching active structural cracks,Crack & Surface Repair,linear ft,28
-Stucco Patch up to 1 Sq Ft,Small localized scratch and brown coat repair,Crack & Surface Repair,each,175
-Stucco Patch up to 4 Sq Ft,Medium localized lath and three-coat stucco repair,Crack & Surface Repair,each,380
-Control Joint Repair,Replacement of damaged zinc or PVC control joints,Crack & Surface Repair,linear ft,22
-EIFS Scratch Coat Repair,Base coat polymer repair over damaged EPS foam,Crack & Surface Repair,sq ft,18
-Woodpecker Damage Repair,Filling and meshing holes caused by birds in EIFS,Crack & Surface Repair,each,220
-Expansion Joint Sealing,Removal and replacement of failed elastomeric joint sealant,Crack & Surface Repair,linear ft,15
-EIFS Impact Damage Patch,Mesh and base coat repair for dented or punctured foam,Crack & Surface Repair,sq ft,25
-Stucco Skim Coat Application,Full surface polymer modified cementitious skim coat,Crack & Surface Repair,sq ft,6
-Traditional Stucco Removal,Demolition and disposal of old three-coat stucco and lath,Removal & Demo,sq ft,7
-EIFS System Removal,"Stripping of finish, mesh, foam board, and base coat",Removal & Demo,sq ft,6
-Water-Damaged Substrate Removal,Demolition of rotted exterior sheathing and framing members,Removal & Demo,sq ft,12
-Window Flashing Removal,Tear-out of old perimeter flashing and head flashings,Removal & Demo,linear ft,9
-Debris Disposal Fee,Dumpster rental and hauling for construction waste,Removal & Demo,job,450
-OSB Sheathing Replacement,Installation of new exterior grade oriented strand board,Substrate & Framing,sq ft,5
-Plywood Sheathing Replacement,Installation of new exterior grade plywood sheathing,Substrate & Framing,sq ft,7
-Stud Replacement,Repair or sistering of water-damaged wall studs,Substrate & Framing,linear ft,35
-House Wrap Installation,Application of weather-resistive barrier membrane,Substrate & Framing,sq ft,1
-Drainage Mat Installation,Installation of rainscreen drainage mat behind stucco,Substrate & Framing,sq ft,2
-Galvanized Metal Lath,Installation of 2.5 lb diamond mesh lath,Substrate & Framing,sq ft,2
-Self-Furred Welded Wire Lath,Heavy-duty wire lath for commercial or thick stucco applications,Substrate & Framing,sq ft,3
-Asphalt Felt Paper Layer,Double layer Grade D building paper installation,Substrate & Framing,sq ft,1
-Framing Sill Plate Repair,Replacement of rotted bottom plate framing lumber,Substrate & Framing,linear ft,45
-EPS Foam Board Installation,Adhering or mechanically fastening expanded polystyrene insulation,EIFS Installation,sq ft,4
-EIFS Base Coat with Mesh,Embedding reinforcing fiberglass mesh into acrylic base coat,EIFS Installation,sq ft,3
-EIFS Acrylic Finish Coat,Applying colored textured acrylic finish coat,EIFS Installation,sq ft,3
-Starter Track Installation,Weep screed and starter track placement for EIFS system,EIFS Installation,linear ft,12
-High-Impact Mesh Upgrade,Upgrading to heavy-duty reinforcing mesh for lower walls,EIFS Installation,sq ft,2
-EPS Foam Rasping,Sandpaper leveling of foam board joints prior to base coat,EIFS Installation,sq ft,1
-Three-Coat Stucco System,"Scratch coat, brown coat, and finish coat over lath",Traditional Stucco,sq ft,12
-Stucco Scratch Coat,First layer of Portland cement plaster applied to lath,Traditional Stucco,sq ft,4
-Stucco Brown Coat,Second leveling layer of traditional stucco,Traditional Stucco,sq ft,4
-Stucco Finish Coat - Acrylic,Colored acrylic topcoat over traditional stucco,Traditional Stucco,sq ft,4
-Stucco Finish Coat - Cementitious,Traditional colored cement sand float finish,Traditional Stucco,sq ft,5
-Stucco Dash Finish,Hand-sprayed textured dash finish application,Traditional Stucco,sq ft,4
-Stucco Spanish Lace Finish,Hand-troweled mottled architectural finish texture,Traditional Stucco,sq ft,5
-Stucco Worm Finish,Rippled or swirled aggregate texture coat,Traditional Stucco,sq ft,5
-Weep Screed Installation,Galvanized or PVC drainage screed at foundation line,Flashings & Trims,linear ft,14
-Window Head Flashing,Metal drip cap flashing installation above windows,Flashings & Trims,linear ft,18
-J-Stop Trim Installation,"PVC casing beads at doors, windows, and material transitions",Flashings & Trims,linear ft,10
-Corner Bead Installation,Galvanized outside corner reinforcement beads,Flashings & Trims,linear ft,11
-Kickout Flashing Installation,Roof-to-wall diverter flashing to prevent water intrusion,Flashings & Trims,each,95
-Through-Wall Flashing,Self-adhered membrane flashing integration,Flashings & Trims,linear ft,22
-Chimney Stucco Cap Repair,Rebuilding and sealing concrete chimney crown and stucco,Flashings & Trims,job,650
-Balcony Ledger Flashing,Flashing installation at deck and balcony tie-ins,Flashings & Trims,linear ft,30
-Stucco Sealing - Clear Siloxane,Breathable clear water-repellent sealer application,Coatings & Sealing,sq ft,2
-Elastomeric Coating Application,High-build waterproof elastomeric paint coating two coats,Coatings & Sealing,sq ft,3
-Masonry Paint Application,Standard acrylic masonry paint application,Coatings & Sealing,sq ft,2
-Color-Matched Stain Renewal,EIFS or stucco color renewal staining system,Coatings & Sealing,sq ft,2.5
-Graffiti Removal on Stucco,Chemical removal and localized color blending,Coatings & Sealing,sq ft,8
-Low-Pressure Stucco Washing,Soft wash cleaning of exterior stucco surfaces,Coatings & Sealing,sq ft,1
-Caulking Around Penetrations,"Sealing pipes, vents, and light fixtures through stucco",Coatings & Sealing,each,35
-Scaffolding Setup and Rental,Erection and dismantling of multi-story tubular scaffolding,Site Prep & Equipment,job,1200
-Pump Jack Scaffolding,Adjustable pump jack system setup for residential walls,Site Prep & Equipment,job,600
-Full Containment Poly Sheeting,"Protecting landscaping, windows, and hardscapes during work",Site Prep & Equipment,job,350
-Roof Protection System,Plywood and foam protection over shingle or tile roofs,Site Prep & Equipment,job,400
-Permit Acquisition Service,Preparing plans and pulling municipal building permits,Permits & Architecture,job,300
-Architectural Drawing Service,Drafting repair scope drawings for structural building permits,Permits & Architecture,job,850
-Third-Party Inspector Fee,Coordination of mandatory municipal or engineering inspections,Permits & Architecture,visit,250
-Stucco Quoin Accent Installation,Foam or cast stucco decorative corner blocks,Architectural Details,linear ft,35
-Stucco Window Banding,Decorative foam trim moldings around windows and doors,Architectural Details,linear ft,24
-Stucco Cornice Molding,Exterior architectural crown molding installation,Architectural Details,linear ft,45
-Stucco Column Wrap,Applying foam and stucco finish to structural posts,Architectural Details,each,550
-Decorative Medallion Installation,Mounting and finishing custom architectural foam shapes,Architectural Details,each,180
-EIFS Manufacturer Warranty Prep,Documentation and compliance check for 10-year manufacturer warranty,Warranties & Protection,job,200
-Annual Stucco Maintenance Plan,"Yearly inspection, caulking touch-up, and power wash",Warranties & Protection,visit,350
-Emergency Board-Up Service,Temporary plywood covering for major structural wall breaches,Warranties & Protection,job,400
-Portable Restroom Rental,Job site sanitation for multi-week remediation projects,Site Prep & Equipment,month,220
-Stucco Mixer Machine Rental,Gas-powered mortar mixer daily use fee,Site Prep & Equipment,day,95
-Air Compressor Rental,Pneumatic stucco sprayer compressor daily fee,Site Prep & Equipment,day,110
-Stucco Hopper Gun Setup,Pneumatic spray application tool for texture coats,Site Prep & Equipment,day,45
-Traffic Control Setup,Sidewalk closure signs and cones for urban street frontages,Site Prep & Equipment,day,175
-Mold Remediation Treatment,Anti-microbial spray application for wet wall cavities,Substrate & Framing,sq ft,4
-Termite Damaged Framing Repair,Replacement of structural members damaged by subterranean pests,Substrate & Framing,linear ft,50
-Rigid Foam Insulation Board,Continuous exterior insulation board installation,Substrate & Framing,sq ft,3
-Vapor Barrier Membrane,Peel-and-stick vapor permeable air barrier installation,Substrate & Framing,sq ft,2
-Control Joint Caulk Replacement,Cutting out old sealant in expansion joints and replacing with backer rod and polyurethane caulk,Crack & Surface Repair,linear ft,7
-Stucco Soffit Repair,Repairing or replacing vented stucco overhanging soffits,Traditional Stucco,sq ft,16
-Stucco Fascia Board Wrap,Applying stucco finish over wood or foam fascia,Traditional Stucco,linear ft,18
-Parapet Wall Stucco Repair,Repairing stucco and coping stones on flat roof parapets,Traditional Stucco,linear ft,32
-Foundation Stem Wall Stucco,Applying parge coat or textured stucco to concrete foundation,Traditional Stucco,sq ft,8
-Dryvit/EIFS Crack Routing,Grooving out cracks in synthetic stucco for mesh bridge patch,Crack & Surface Repair,linear ft,14
-Foam Shape Replacement,Removing water-logged architectural foam and gluing new piece,Architectural Details,linear ft,28
-Balcony Deck Waterproofing,Applying pedestrian traffic coating system over EIFS deck,Coatings & Sealing,sq ft,9
-Dryer Vent Stucco Penetration,Installing sealed louvered vent block with stucco trim,Flashings & Trims,each,150
-Electrical Box Stucco Mounting,Installing Arlington mounting blocks with integrated flashings,Flashings & Trims,each,125
-Plumbing Pipe Penetration Boot,Sealing exterior hose bibs and pipe penetrations,Flashings & Trims,each,85
-Final Construction Clean-Up,Detailed window cleaning and site vacuuming after stucco work,Site Prep & Equipment,job,250
+name,description,category,unit,price,labor_hours,material_cost
+Initial Stucco Consultation,On-site assessment of exterior stucco condition and damage,Diagnostics & Inspection,visit,150,1.2,0
+EIFS Moisture Analysis,Electronic invasive and non-invasive moisture meter testing,Diagnostics & Inspection,job,350,2.8,0
+Thermal Imaging Scan,Infrared camera inspection for hidden moisture intrusion behind stucco,Diagnostics & Inspection,job,450,3.6,0
+Destructive Testing Core Sample,Removal of small stucco section to check substrate and lath,Diagnostics & Inspection,each,250,2,0
+Structural Engineer Consultation,Coordination and oversight for severe framing damage,Diagnostics & Inspection,job,750,6,0
+Stucco Repair Labor Rate,Hourly rate for skilled journeyman plasterer,Labor Rates,hour,95,1,0
+EIFS Specialist Labor Rate,Hourly rate for certified EIFS installation and repair technician,Labor Rates,hour,110,1,0
+Stucco Apprentice Labor Rate,Hourly rate for assistant laborer and site prep,Labor Rates,hour,55,1,0
+After-Hours Emergency Labor,Urgent temporary stabilization outside normal business hours,Labor Rates,hour,175,1,0
+Project Management Fee,Daily site supervision and scheduling coordination,Labor Rates,day,200,1.6,0
+Hairline Crack Injection,Epoxy or elastomeric sealant injection for fine cracks,Crack & Surface Repair,linear ft,12,0.08,1.33
+Structural Crack V-Groove Repair,Routing out and patching active structural cracks,Crack & Surface Repair,linear ft,28,0.16,5.33
+Stucco Patch up to 1 Sq Ft,Small localized scratch and brown coat repair,Crack & Surface Repair,each,175,1,33.33
+Stucco Patch up to 4 Sq Ft,Medium localized lath and three-coat stucco repair,Crack & Surface Repair,each,380,2.2,66.67
+Control Joint Repair,Replacement of damaged zinc or PVC control joints,Crack & Surface Repair,linear ft,22,0.12,4.67
+EIFS Scratch Coat Repair,Base coat polymer repair over damaged EPS foam,Crack & Surface Repair,sq ft,18,0.1,3.67
+Woodpecker Damage Repair,Filling and meshing holes caused by birds in EIFS,Crack & Surface Repair,each,220,1.2,46.67
+Expansion Joint Sealing,Removal and replacement of failed elastomeric joint sealant,Crack & Surface Repair,linear ft,15,0.08,3.33
+EIFS Impact Damage Patch,Mesh and base coat repair for dented or punctured foam,Crack & Surface Repair,sq ft,25,0.14,4.67
+Stucco Skim Coat Application,Full surface polymer modified cementitious skim coat,Crack & Surface Repair,sq ft,6,0.04,0.67
+Traditional Stucco Removal,Demolition and disposal of old three-coat stucco and lath,Removal & Demo,sq ft,7,0.05,0.47
+EIFS System Removal,"Stripping of finish, mesh, foam board, and base coat",Removal & Demo,sq ft,6,0.04,0.47
+Water-Damaged Substrate Removal,Demolition of rotted exterior sheathing and framing members,Removal & Demo,sq ft,12,0.08,1.33
+Window Flashing Removal,Tear-out of old perimeter flashing and head flashings,Removal & Demo,linear ft,9,0.06,1
+Debris Disposal Fee,Dumpster rental and hauling for construction waste,Removal & Demo,job,450,0,300
+OSB Sheathing Replacement,Installation of new exterior grade oriented strand board,Substrate & Framing,sq ft,5,0.03,2.87
+Plywood Sheathing Replacement,Installation of new exterior grade plywood sheathing,Substrate & Framing,sq ft,7,0.04,4
+Stud Replacement,Repair or sistering of water-damaged wall studs,Substrate & Framing,linear ft,35,0.2,6.67
+House Wrap Installation,Application of weather-resistive barrier membrane,Substrate & Framing,sq ft,1,0.005,0.65
+Drainage Mat Installation,Installation of rainscreen drainage mat behind stucco,Substrate & Framing,sq ft,2,0.01,1.27
+Galvanized Metal Lath,Installation of 2.5 lb diamond mesh lath,Substrate & Framing,sq ft,2,0.01,1.27
+Self-Furred Welded Wire Lath,Heavy-duty wire lath for commercial or thick stucco applications,Substrate & Framing,sq ft,3,0.015,1.93
+Asphalt Felt Paper Layer,Double layer Grade D building paper installation,Substrate & Framing,sq ft,1,0.005,0.65
+Framing Sill Plate Repair,Replacement of rotted bottom plate framing lumber,Substrate & Framing,linear ft,45,0.24,10
+EPS Foam Board Installation,Adhering or mechanically fastening expanded polystyrene insulation,EIFS Installation,sq ft,4,0.02,2.4
+EIFS Base Coat with Mesh,Embedding reinforcing fiberglass mesh into acrylic base coat,EIFS Installation,sq ft,3,0.015,1.93
+EIFS Acrylic Finish Coat,Applying colored textured acrylic finish coat,EIFS Installation,sq ft,3,0.015,1.93
+Starter Track Installation,Weep screed and starter track placement for EIFS system,EIFS Installation,linear ft,12,0.06,3
+High-Impact Mesh Upgrade,Upgrading to heavy-duty reinforcing mesh for lower walls,EIFS Installation,sq ft,2,0.01,1.27
+EPS Foam Rasping,Sandpaper leveling of foam board joints prior to base coat,EIFS Installation,sq ft,1,0.008,0.27
+Three-Coat Stucco System,"Scratch coat, brown coat, and finish coat over lath",Traditional Stucco,sq ft,12,0.06,3
+Stucco Scratch Coat,First layer of Portland cement plaster applied to lath,Traditional Stucco,sq ft,4,0.02,1
+Stucco Brown Coat,Second leveling layer of traditional stucco,Traditional Stucco,sq ft,4,0.02,1
+Stucco Finish Coat - Acrylic,Colored acrylic topcoat over traditional stucco,Traditional Stucco,sq ft,4,0.02,1
+Stucco Finish Coat - Cementitious,Traditional colored cement sand float finish,Traditional Stucco,sq ft,5,0.025,1.23
+Stucco Dash Finish,Hand-sprayed textured dash finish application,Traditional Stucco,sq ft,4,0.02,1
+Stucco Spanish Lace Finish,Hand-troweled mottled architectural finish texture,Traditional Stucco,sq ft,5,0.025,1.23
+Stucco Worm Finish,Rippled or swirled aggregate texture coat,Traditional Stucco,sq ft,5,0.025,1.23
+Weep Screed Installation,Galvanized or PVC drainage screed at foundation line,Flashings & Trims,linear ft,14,0.07,3.5
+Window Head Flashing,Metal drip cap flashing installation above windows,Flashings & Trims,linear ft,18,0.09,4.5
+J-Stop Trim Installation,"PVC casing beads at doors, windows, and material transitions",Flashings & Trims,linear ft,10,0.05,2.5
+Corner Bead Installation,Galvanized outside corner reinforcement beads,Flashings & Trims,linear ft,11,0.055,2.73
+Kickout Flashing Installation,Roof-to-wall diverter flashing to prevent water intrusion,Flashings & Trims,each,95,0.5,23.33
+Through-Wall Flashing,Self-adhered membrane flashing integration,Flashings & Trims,linear ft,22,0.11,5.5
+Chimney Stucco Cap Repair,Rebuilding and sealing concrete chimney crown and stucco,Flashings & Trims,job,650,3.6,133.33
+Balcony Ledger Flashing,Flashing installation at deck and balcony tie-ins,Flashings & Trims,linear ft,30,0.15,7.33
+Stucco Sealing - Clear Siloxane,Breathable clear water-repellent sealer application,Coatings & Sealing,sq ft,2,0.01,1.27
+Elastomeric Coating Application,High-build waterproof elastomeric paint coating two coats,Coatings & Sealing,sq ft,3,0.015,1.93
+Masonry Paint Application,Standard acrylic masonry paint application,Coatings & Sealing,sq ft,2,0.01,1.27
+Color-Matched Stain Renewal,EIFS or stucco color renewal staining system,Coatings & Sealing,sq ft,2.5,0.012,1.6
+Graffiti Removal on Stucco,Chemical removal and localized color blending,Coatings & Sealing,sq ft,8,0.05,1.67
+Low-Pressure Stucco Washing,Soft wash cleaning of exterior stucco surfaces,Coatings & Sealing,sq ft,1,0.005,0.65
+Caulking Around Penetrations,"Sealing pipes, vents, and light fixtures through stucco",Coatings & Sealing,each,35,0.2,6.67
+Scaffolding Setup and Rental,Erection and dismantling of multi-story tubular scaffolding,Site Prep & Equipment,job,1200,4,466.67
+Pump Jack Scaffolding,Adjustable pump jack system setup for residential walls,Site Prep & Equipment,job,600,2,233.33
+Full Containment Poly Sheeting,"Protecting landscaping, windows, and hardscapes during work",Site Prep & Equipment,job,350,1.5,116.67
+Roof Protection System,Plywood and foam protection over shingle or tile roofs,Site Prep & Equipment,job,400,1.5,140
+Permit Acquisition Service,Preparing plans and pulling municipal building permits,Permits & Architecture,job,300,2.4,0
+Architectural Drawing Service,Drafting repair scope drawings for structural building permits,Permits & Architecture,job,850,6.8,0
+Third-Party Inspector Fee,Coordination of mandatory municipal or engineering inspections,Permits & Architecture,visit,250,2,0
+Stucco Quoin Accent Installation,Foam or cast stucco decorative corner blocks,Architectural Details,linear ft,35,0.18,8.67
+Stucco Window Banding,Decorative foam trim moldings around windows and doors,Architectural Details,linear ft,24,0.12,6
+Stucco Cornice Molding,Exterior architectural crown molding installation,Architectural Details,linear ft,45,0.24,10
+Stucco Column Wrap,Applying foam and stucco finish to structural posts,Architectural Details,each,550,3,116.67
+Decorative Medallion Installation,Mounting and finishing custom architectural foam shapes,Architectural Details,each,180,0.8,53.33
+EIFS Manufacturer Warranty Prep,Documentation and compliance check for 10-year manufacturer warranty,Warranties & Protection,job,200,1.6,0
+Annual Stucco Maintenance Plan,"Yearly inspection, caulking touch-up, and power wash",Warranties & Protection,visit,350,2,66.67
+Emergency Board-Up Service,Temporary plywood covering for major structural wall breaches,Warranties & Protection,job,400,2,100
+Portable Restroom Rental,Job site sanitation for multi-week remediation projects,Site Prep & Equipment,month,220,0,146.67
+Stucco Mixer Machine Rental,Gas-powered mortar mixer daily use fee,Site Prep & Equipment,day,95,0,63.33
+Air Compressor Rental,Pneumatic stucco sprayer compressor daily fee,Site Prep & Equipment,day,110,0,73.33
+Stucco Hopper Gun Setup,Pneumatic spray application tool for texture coats,Site Prep & Equipment,day,45,0.2,13.33
+Traffic Control Setup,Sidewalk closure signs and cones for urban street frontages,Site Prep & Equipment,day,175,0.8,53.33
+Mold Remediation Treatment,Anti-microbial spray application for wet wall cavities,Substrate & Framing,sq ft,4,0.02,1
+Termite Damaged Framing Repair,Replacement of structural members damaged by subterranean pests,Substrate & Framing,linear ft,50,0.28,10
+Rigid Foam Insulation Board,Continuous exterior insulation board installation,Substrate & Framing,sq ft,3,0.015,1.93
+Vapor Barrier Membrane,Peel-and-stick vapor permeable air barrier installation,Substrate & Framing,sq ft,2,0.01,1.27
+Control Joint Caulk Replacement,Cutting out old sealant in expansion joints and replacing with backer rod and polyurethane caulk,Crack & Surface Repair,linear ft,7,0.04,1.67
+Stucco Soffit Repair,Repairing or replacing vented stucco overhanging soffits,Traditional Stucco,sq ft,16,0.08,4
+Stucco Fascia Board Wrap,Applying stucco finish over wood or foam fascia,Traditional Stucco,linear ft,18,0.09,4.5
+Parapet Wall Stucco Repair,Repairing stucco and coping stones on flat roof parapets,Traditional Stucco,linear ft,32,0.16,8
+Foundation Stem Wall Stucco,Applying parge coat or textured stucco to concrete foundation,Traditional Stucco,sq ft,8,0.04,2
+Dryvit/EIFS Crack Routing,Grooving out cracks in synthetic stucco for mesh bridge patch,Crack & Surface Repair,linear ft,14,0.07,3.5
+Foam Shape Replacement,Removing water-logged architectural foam and gluing new piece,Architectural Details,linear ft,28,0.14,7
+Balcony Deck Waterproofing,Applying pedestrian traffic coating system over EIFS deck,Coatings & Sealing,sq ft,9,0.045,2.33
+Dryer Vent Stucco Penetration,Installing sealed louvered vent block with stucco trim,Flashings & Trims,each,150,0.8,33.33
+Electrical Box Stucco Mounting,Installing Arlington mounting blocks with integrated flashings,Flashings & Trims,each,125,0.7,28.33
+Plumbing Pipe Penetration Boot,Sealing exterior hose bibs and pipe penetrations,Flashings & Trims,each,85,0.5,16.67
+Final Construction Clean-Up,Detailed window cleaning and site vacuuming after stucco work,Site Prep & Equipment,job,250,2,0
