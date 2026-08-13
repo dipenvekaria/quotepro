@@ -30,11 +30,13 @@ export async function GET(request: Request) {
 
   let sent = 0
   let failed = 0
+  let skipped = 0
   for (const companyId of companies) {
     try {
       const r = await sendQuoteFollowUps(companyId)
       sent += r.sent
       failed += r.failed
+      skipped += r.skipped
     } catch (e) {
       failed++
       console.error(`cron/quote-followups: company ${companyId} failed`, e)
@@ -42,7 +44,7 @@ export async function GET(request: Request) {
   }
 
   console.warn(
-    `cron/quote-followups: ${companies.length} companies, ${sent} sent, ${failed} failed`,
+    `cron/quote-followups: ${companies.length} companies, ${sent} sent, ${failed} failed, ${skipped} skipped`,
   )
-  return NextResponse.json({ companies: companies.length, sent, failed })
+  return NextResponse.json({ companies: companies.length, sent, failed, skipped })
 }
