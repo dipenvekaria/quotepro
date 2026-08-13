@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Initial Color Consultation,Professional guidance on color selection and sheen,Consultation,visit,150,1.2,0
+Color Sample Application,Painting test swatches on up to three walls,Consultation,each,45,0.3,5
+Standard Interior Painting Labor,Hourly rate for general painting and prep work,Labor,hour,65,1,0
+Master Painter Labor Rate,Specialized labor for detailed trim and cabinetry work,Labor,hour,85,1,0
+After-Hours Emergency Labor,Labor for urgent or weekend rush projects,Labor,hour,125,1,0
+Standard Room Walls Painting,Painting walls of a standard bedroom or office,Walls,job,350,2.2,50
+Large Room Walls Painting,Painting walls of a large living area or great room,Walls,job,550,3.6,75
+Accent Wall Painting,Painting a single feature wall in a contrasting color,Walls,each,175,1.1,30
+Wall Surface Painting,General wall painting per square foot basis,Walls,sq ft,2,0.012,0.3
+Two-Story Wall Painting,High wall painting requiring scaffolding or extension ladders,Walls,sq ft,4,0.025,0.5
+Standard Ceiling Painting,Painting flat drywall ceiling up to 12x12 feet,Ceilings,each,220,1.4,30
+Textured Ceiling Painting,Painting popcorn or textured ceilings carefully,Ceilings,sq ft,3,0.02,0.4
+Vaulted Ceiling Painting,High vaulted or cathedral ceiling painting,Ceilings,sq ft,4,0.025,0.5
+Ceiling Stain Sealing,Applying oil-based primer to water-damaged ceiling spots,Ceilings,each,90,0.6,10
+Baseboard Painting,Painting standard baseboard molding,Trim,linear ft,3,0.02,0.3
+Crown Molding Painting,Detailed painting of installed crown molding,Trim,linear ft,5,0.035,0.5
+Door Frame Painting,Painting interior door jamb and casing on both sides,Trim,each,75,0.5,8
+Window Trim Painting,"Painting standard window sill, apron, and casing",Trim,each,85,0.55,10
+Wainscoting Painting,Painting wainscot panels and chair rail molding,Trim,linear ft,8,0.05,1.2
+Interior Door Painting,Painting both sides of a standard flush or panel door,Doors,each,125,0.8,18
+Louvered Door Painting,Detailed painting of slatted closet or louvered doors,Doors,each,175,1.2,18
+French Door Painting,Painting multi-pane glass French doors including muntins,Doors,each,220,1.5,20
+Sliding Closet Door Painting,Painting a pair of sliding closet doors,Doors,job,190,1.2,25
+Standard Kitchen Cabinet Painting,"Painting exterior of cabinet boxes, doors, and drawers",Cabinetry,job,2500,16,350
+Large Kitchen Cabinet Painting,Extensive kitchen cabinet painting including island,Cabinetry,job,3800,24.5,500
+Bathroom Vanity Painting,Painting a single bathroom vanity base and doors,Cabinetry,each,350,2.2,50
+Built-In Bookshelf Painting,Painting custom shelving units and built-in cabinets,Cabinetry,linear ft,45,0.3,5
+Kitchen Island Only Painting,Painting standalone kitchen island base and trim,Cabinetry,each,450,3,45
+Drywall Nail Pop Repair,Fixing protruding drywall nails and touching up paint,Prep and Repairs,each,25,0.18,2
+Small Drywall Patch,Repairing holes up to 4 inches in diameter,Prep and Repairs,each,75,0.5,8
+Medium Drywall Patch,Repairing holes up to 12 inches in diameter,Prep and Repairs,each,150,1,15
+Large Drywall Patch,Repairing sections up to 4x4 feet of drywall,Prep and Repairs,each,300,2,30
+Drywall Tape Seam Repair,Repairing bubbling or loose drywall tape joints,Prep and Repairs,linear ft,15,0.1,1.5
+Plaster Crack Repair,V-grooving and filling settling cracks in plaster walls,Prep and Repairs,linear ft,20,0.14,1.5
+Wallpaper Removal,Steam stripping and scraping existing wallpaper,Prep and Repairs,sq ft,3,0.02,0.2
+Wallpaper Glue Residue Washing,Washing and neutralizing residual paste after stripping,Prep and Repairs,sq ft,1,0.007,0.05
+Popcorn Ceiling Removal,Scraping and smoothing textured acoustic ceilings,Prep and Repairs,sq ft,4,0.028,0.2
+Caulking Baseboards and Trim,Applying paintable caulk along gaps in trim work,Prep and Repairs,linear ft,1,0.007,0.05
+Water Damage Stain Blocking,Applying shellac-based primer to seal stains,Prep and Repairs,sq ft,2,0.012,0.3
+Smoke Odor Sealing Primer,Applying odor-blocking primer to entire room surfaces,Prep and Repairs,sq ft,3,0.02,0.4
+Standard Wall Sanding,Sanding walls to remove imperfections and smooth surfaces,Prep and Repairs,sq ft,1,0.007,0.05
+Lead Paint Stabilization,Encapsulating lead paint per safety guidelines,Prep and Repairs,sq ft,5,0.032,0.6
+Standard Interior Primer Coat,Applying one coat of standard latex primer,Priming,sq ft,1,0.007,0.1
+PVA Drywall Primer Application,Sealing fresh drywall with high-solids PVA primer,Priming,sq ft,1,0.007,0.1
+Bonding Primer Application,Applying high-adhesion primer for slick surfaces,Priming,sq ft,2,0.014,0.15
+Oil-Based Primer Application,Applying solvent-based primer for heavy duty sealing,Priming,sq ft,2,0.014,0.15
+Staircase Spindle Painting,Detailed hand painting of individual balusters,Specialty,each,18,0.12,2
+Staircase Handrail Painting,Painting or staining wooden stair handrail,Specialty,linear ft,15,0.1,1.5
+Stair Tread Staining and Sealing,"Sanding, staining, and sealing wooden stair treads",Specialty,each,45,0.3,5
+Radiator Cover Painting,Painting metal or wooden radiator enclosures,Specialty,each,110,0.75,12
+Exposed Ceiling Beam Painting,Painting decorative wooden ceiling beams,Specialty,linear ft,12,0.08,1.2
+Fireplace Mantel Painting,Painting wooden fireplace mantel and surround,Specialty,job,150,1,15
+Brick Fireplace Painting,Applying specialized masonry paint to interior brick,Specialty,sq ft,5,0.035,0.5
+Beadboard Paneling Painting,Painting tongue and groove beadboard walls,Specialty,sq ft,3,0.02,0.3
+Interior Shutter Painting,Painting louvered interior window shutters,Specialty,each,95,0.65,10
+Closet Interior Painting,Painting walls and shelves inside standard walk-in closet,Specialty,job,200,1.3,25
+Garage Interior Walls Painting,Painting uninsulated or drywall garage interior walls,Specialty,sq ft,2,0.012,0.3
+Epoxy Garage Floor Coating,Applying multi-layer epoxy floor coating with flakes,Specialty,sq ft,6,0.035,1.1
+Basement Foundation Wall Painting,Applying masonry waterproofing paint to basement walls,Specialty,sq ft,3,0.02,0.4
+Standard Wall Paint Material,Gallon of premium interior latex wall paint,Materials,gallon,65,0,43.33
+High-End Designer Paint Material,Gallon of ultra-premium boutique interior paint,Materials,gallon,110,0,73.33
+Trim and Cabinet Enamel Material,Gallon of leveling alkyd enamel for trim work,Materials,gallon,85,0,56.67
+Ceiling Paint Material,Gallon of flat white anti-splatter ceiling paint,Materials,gallon,45,0,30
+Painter's Tape and Plastic Supply,"Consumables for masking floors, fixtures, and windows",Materials,job,50,0,33.33
+Sandpaper and Abrasives Supply,"Assorted sanding pads, blocks, and pole discs",Materials,job,30,0,20
+Drywall Joint Compound Material,Buckets of lightweight mud for patching and repairs,Materials,job,25,0,16.67
+Paint Roller Covers and Brushes,Professional grade roller sleeves and angled brushes,Materials,job,40,0,26.67
+Heavy Duty Floor Protection,Surface guard paper and canvas drop cloths per room,Protection,each,35,0.1,15
+Carpet Protection Film,Self-adhesive plastic film covering carpeted areas,Protection,sq ft,1,0.005,0.15
+Dust Barrier Containment System,ZipWall plastic containment to isolate work zones,Protection,job,120,0.6,30
+Furniture Moving Labor,Moving and covering heavy furniture within the home,Protection,hour,55,1,0
+Light Fixture Removal and Reinstall,Detaching and rehanging chandeliers or wall sconces,Protection,each,40,0.3,2
+Outlet and Switch Cover Handling,Removing and reinstalling switch plates for clean edges,Protection,job,45,0.35,1
+Post-Construction Detailed Cleaning,Vacuuming and wiping down surfaces after painting,Protection,hour,50,1,0
+Debris Disposal Fee,"Hauling away paint cans, masking, and old materials",Disposal,job,75,0.3,25
+Hazardous Waste Disposal,Proper disposal fees for oil-based paints and solvents,Disposal,job,95,0.35,35
+Interior Scaffolding Rental,"Delivery, setup, and teardown of rolling scaffolding",Equipment,day,150,0.4,65
+Airless Paint Sprayer Daily Fee,Rental and maintenance fee for professional sprayer,Equipment,day,95,0.2,43.33
+Drywall Sander Rental Fee,Electric dustless drywall sander for large surfaces,Equipment,day,85,0.2,36.67
+Air Mover Fan Rental,Industrial blower to accelerate paint and primer drying,Equipment,day,35,0.1,15
+Lead Safe Containment Setup,EPA RRP compliance barrier setup and HEPA vacuuming,Compliance,job,350,2.2,50
+Lead Testing Kit Service,On-site chemical testing for lead-based paint,Compliance,each,75,0.4,15
+Historic Home Preservation surcharge,Careful restoration methods for historic properties,Specialty,hour,95,1,0
+Color Matching Service,Spectrophotometer matching of custom paint samples,Consultation,each,25,0.15,4
+Faux Finish Technique,"Specialized rag-rolling, sponging, or color-washing",Upsells,sq ft,5,0.032,0.6
+Venetian Plaster Application,Applying and burnishing polished Venetian plaster,Upsells,sq ft,12,0.08,1.4
+Metallic Paint Accent Application,Applying specialty metallic finish to walls or trim,Upsells,sq ft,6,0.038,0.8
+Chalkboard Paint Wall,Applying durable chalkboard paint to playroom walls,Upsells,sq ft,4,0.025,0.5
+Dry-Erase Paint Wall,Applying commercial grade whiteboarding paint,Upsells,sq ft,8,0.05,1
+Stain Grade Wood Polishing,Conditioning and polishing natural wood trim surfaces,Upsells,linear ft,4,0.025,0.5
+Cabinet Hardware Replacement Labor,Installing new knobs and pulls on cabinets and drawers,Upsells,each,8,0.06,0
+Soft-Close Hinge Upgrade Labor,Replacing standard cabinet hinges with soft-close hardware,Upsells,each,12,0.09,0
+Crown Molding Installation,Carpentry labor to install new wood crown molding,Upsells,linear ft,12,0.08,1.5
+Baseboard Replacement Labor,Removing old baseboards and installing new trim,Upsells,linear ft,7,0.045,1
+Picture Frame Molding Installation,Installing decorative wall panel molding boxes,Upsells,linear ft,10,0.065,1.2
+Ceiling Medion Installation,Installing decorative polyurethane ceiling medallion,Upsells,each,95,0.65,8
+Interior Door Replacement Labor,Swapping old pre-hung or slab interior doors,Upsells,each,175,1.2,15
+Drywall Skim Coat for Smooth Walls,Applying full skim coat of mud to level rough plaster,Prep and Repairs,sq ft,3,0.02,0.3
+High-Durability Scrubbable Finish Upgrade,Upgrading to premium washable matte or satin enamel,Materials,gallon,25,0,16.67
+Low-VOC Eco-Friendly Paint Upgrade,Upgrading to zero-VOC green certified paint products,Materials,gallon,30,0,20
+Interior Brick Whitewash Treatment,Applying translucent lime wash to interior brickwork,Specialty,sq ft,4,0.025,0.5

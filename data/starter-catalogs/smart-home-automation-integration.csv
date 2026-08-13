@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Troubleshoot smart home network or device issues,Diagnostics,visit,150,1,16.67
+Advanced Network Diagnostics,Analyze Wi-Fi interference and signal strength,Diagnostics,hour,175,1,33.33
+Automation System Audit,Comprehensive review of all connected devices,Diagnostics,job,250,1.5,41.67
+Firmware Update Service,Update firmware across all smart devices,Diagnostics,hour,125,1,0
+Integration Labor Rate,Standard technician hourly labor rate,Labor,hour,125,1,0
+Master Programmer Labor Rate,Advanced programming and macro creation,Labor,hour,175,1,33.33
+After-Hours Emergency Labor,Emergency service outside normal business hours,Labor,hour,250,1,83.33
+Apprentice Labor Rate,Support technician hourly labor rate,Labor,hour,85,1,0
+Smart Hub Installation,Install and configure central control hub,Hubs & Controllers,each,200,0.5,91.67
+Advanced Touch Panel Installation,Wall-mounted touchscreen controller setup,Hubs & Controllers,each,350,1,150
+Desktop Tablet Controller Dock,Tabletop charging dock for control tablet,Hubs & Controllers,each,120,0.5,38.33
+Z-Wave USB Controller Dongle,Plug-in protocol extension dongle,Hubs & Controllers,each,75,0.25,29.17
+Zigbee Coordinator Setup,Mesh network coordinator configuration,Hubs & Controllers,each,110,0.5,31.67
+Single-Pole Smart Switch Installation,Replace standard switch with smart switch,Lighting Control,each,95,0.5,21.67
+Three-Way Smart Switch Pair,Replace standard 3-way switch circuit,Lighting Control,each,180,0.75,57.5
+Smart Dimmer Switch Installation,Install phase-adaptive smart dimmer switch,Lighting Control,each,110,0.5,31.67
+Smart Bulb Replacement,Install and pair smart color bulb,Lighting Control,each,45,0.2,26.67
+Smart LED Strip Controller,Install low-voltage LED strip driver,Lighting Control,each,150,0.5,58.33
+Keypad Scene Controller Installation,Multi-button customizable wall keypad,Lighting Control,each,220,0.75,85
+Wireless Lighting Remote Pairing,Program handheld pico remote control,Lighting Control,each,65,0.5,1.67
+Smart Deadbolt Installation,Replace mechanical deadbolt with smart lock,Access Control,each,175,0.75,55
+Smart Lever Lock Installation,Install connected door lever lock,Access Control,each,175,0.75,55
+Video Doorbell Installation,Hardwire and configure video doorbell,Access Control,each,160,0.75,45
+Doorbell Transformer Upgrade,Upgrade low-voltage transformer for video doorbell,Access Control,each,130,0.75,25
+Smart Garage Door Controller,Install opener sensor and relay module,Access Control,each,140,0.75,31.67
+Electronic Gate Relay Integration,Connect smart module to automatic gate,Access Control,each,275,1.25,80
+Biometric Reader Installation,Fingerprint access scanner configuration,Access Control,each,250,1,83.33
+Indoor Fixed Camera Installation,Mount and configure Wi-Fi security camera,Surveillance,each,110,0.5,31.67
+Outdoor Security Camera Installation,Mount and weatherproof exterior security camera,Surveillance,each,150,0.75,38.33
+PTZ Camera Setup,Pan-tilt-zoom camera installation and calibration,Surveillance,each,220,1,63.33
+Network Video Recorder Configuration,Setup NVR with local hard drive storage,Surveillance,each,300,1.5,75
+Cloud Storage Subscription Setup,Configure camera cloud backup service,Surveillance,each,75,0.5,8.33
+Smart Thermostat Installation,Replace standard thermostat with smart unit,Climate Control,each,150,0.75,38.33
+C-Wire Power Adapter Installation,Run common wire adapter for smart thermostat,Climate Control,each,110,0.75,10
+Remote Temperature Sensor Setup,Pair wireless room sensor with thermostat,Climate Control,each,65,0.25,22.5
+Smart Vent Integration,Install motorized register vent and controller,Climate Control,each,90,0.5,18.33
+HVAC Zone Controller Setup,Configure multi-zone damper automation system,Climate Control,each,350,1.5,113.33
+Motorized Roller Shade Installation,Mount and program motorized window shade,Motorized Shades,each,250,1,83.33
+Motorized Drapery Track Installation,Install curtain track and motorized carrier,Motorized Shades,linear ft,85,0.25,35
+Battery Wand Replacement for Shades,Install concealed battery tube for shades,Motorized Shades,each,75,0.25,29.17
+Solar Panel Charger for Shades,Mount trickle-charge solar panel on window frame,Motorized Shades,each,95,0.25,41.67
+Shade RF Repeater Setup,Install range extender for wireless shades,Motorized Shades,each,110,0.5,31.67
+Smart Speaker Setup,"Unbox, place, and configure voice assistant",Audio & Video,each,75,0.25,29.17
+Smart Soundbar Integration,Mount soundbar and connect to automation hub,Audio & Video,each,175,0.75,55
+Multi-Room Audio Zone Setup,Configure audio streaming amplifier zone,Audio & Video,each,200,1,50
+In-Ceiling Speaker Installation,"Cut drywall, run wire, and mount speaker",Audio & Video,each,130,0.75,25
+Universal Remote Control Programming,Program handheld macro remote for AV gear,Audio & Video,each,250,1,83.33
+Video Matrix Switcher Setup,Configure HDMI over IP routing matrix,Audio & Video,each,400,1.5,141.67
+Streaming Media Player Setup,Configure smart streaming box to network,Audio & Video,each,90,0.5,18.33
+Wireless Access Point Installation,Mount and configure ceiling access point,Networking,each,175,0.75,55
+Router and Switch Configuration,Setup core network router and managed switch,Networking,job,300,1.5,75
+Mesh Wi-Fi System Setup,Configure multi-node wireless mesh system,Networking,job,220,1,63.33
+Ethernet Drop Run,Run Cat6 cable through accessible walls,Networking,linear ft,6,0.02,3.55
+Network Patch Panel Termination,Terminate Cat6 cables into rack patch panel,Networking,each,15,0.1,1.67
+Guest Network Isolation Setup,Configure secure VLAN for smart home IoT devices,Networking,job,150,1,16.67
+Fiber Optic Media Converter Installation,Install and test fiber internet link converter,Networking,each,200,0.75,71.67
+Smart Water Valve Shutoff Installation,Install motorized automatic water shutoff valve,Safety & Sensors,each,350,1.25,130
+Wireless Leak Detector Placement,Place and test moisture sensor nodes,Safety & Sensors,each,50,0.25,12.5
+Smart Smoke Alarm Installation,Replace wired smoke detector with smart unit,Safety & Sensors,each,110,0.5,31.67
+Smart Carbon Monoxide Detector Setup,Install and test connected CO detector,Safety & Sensors,each,110,0.5,31.67
+Contact Sensor Installation,Mount wireless door or window open sensor,Safety & Sensors,each,45,0.25,9.17
+Motion Sensor Installation,Mount and pair wireless infrared motion detector,Safety & Sensors,each,60,0.25,19.17
+Glass Break Sensor Configuration,Mount acoustic glass breakage detector,Safety & Sensors,each,85,0.25,35
+Smart Irrigation Controller Installation,Replace sprinkler timer with smart controller,Outdoor & Pool,each,200,1,50
+Flow Meter Installation,Install main line water flow sensor,Outdoor & Pool,each,175,0.75,55
+Pool Automation Controller Setup,Configure smart pool pump and heater control,Outdoor & Pool,each,350,1.5,113.33
+Outdoor Smart Plug Installation,Mount weather-resistant smart outlet module,Outdoor & Pool,each,85,0.25,36.67
+Landscape Lighting Transformer Integration,Connect smart relay to low voltage lighting,Outdoor & Pool,each,180,1,36.67
+Smart Robot Lawn Mower Setup,Setup boundary wire and robotic mower base,Outdoor & Pool,job,400,1.5,141.67
+Voice Assistant Custom Routine Programming,Program custom voice triggers and multi-step routines,Programming,hour,150,1,16.67
+IFTTT or Zapier Integration Setup,Configure third-party cloud webhook bridges,Programming,hour,175,1,33.33
+Custom Dashboard UI Design,Design custom floor plan touch panel layout,Programming,hour,175,1,33.33
+Geo-Fencing Setup,Configure arrival and departure automation triggers,Programming,each,90,0.5,18.33
+API Script Integration,Write custom local API bridge code,Programming,hour,200,1.25,29.17
+Equipment Rack Assembly and Wiring,Build and lace structured AV/Network equipment rack,Infrastructure,job,650,3,175
+Structured Media Enclosure Cleanup,Organize and label builder-grade wiring panel,Infrastructure,job,250,1.5,41.67
+Low-Voltage Power Supply Installation,Mount and wire centralized 12V/24V power supply,Infrastructure,each,175,0.75,55
+UPS Battery Backup Installation,Install uninterruptible power supply for hub/network,Infrastructure,each,150,0.5,58.33
+Surge Protector Power Strip Installation,Install heavy-duty whole system surge protector,Infrastructure,each,220,0.5,105
+Low-Voltage Cable Run (Generic),Pull unshielded low-voltage wire through walls,Infrastructure,linear ft,4,0.02,2.33
+Low-Voltage Junction Box Installation,Cut in old-work low-voltage mounting bracket,Infrastructure,each,45,0.25,9.17
+Standard Permit Filing Fee,Process local low-voltage electrical permit,Permits & Disposal,job,100,0.2,66.67
+Commercial Building Permit Processing,Process commercial low-voltage plan review and permit,Permits & Disposal,job,300,0.5,200
+Old Equipment Disposal Fee,Haul away and recycle legacy electronics,Permits & Disposal,job,75,0.2,48.33
+Core Drilling Through Concrete,Drill penetration hole through concrete wall or slab,Permits & Disposal,each,250,1,83.33
+Drywall Patch and Repair,Patch drywall opening from wiring cut-ins,Permits & Disposal,each,125,0.75,21.67
+Annual Maintenance Plan Visit,Routine annual system check and software updates,Upsells & Maintenance,visit,250,1.5,41.67
+Priority Support SLA Upgrade,One year of expedited remote support service,Upsells & Maintenance,job,300,1,116.67
+Smart Home Orientation and Training,Two-hour in-home user training session,Upsells & Maintenance,visit,200,1.5,8.33
+Battery Replacement Service,Replace batteries in all wireless home sensors,Upsells & Maintenance,visit,150,0.75,38.33
+System Health Remote Monitoring Setup,Configure cloud tool for proactive downtime alerts,Upsells & Maintenance,job,120,0.75,16.67
+Whole-Home Wi-Fi Optimization Package,Full channel tuning and client steering setup,Upsells & Maintenance,job,350,2,66.67
+Smart Lighting Design Consultation,In-home lighting scene and fixture planning,Upsells & Maintenance,visit,200,1.5,8.33
+Voice Assistant Privacy Audit,Review and secure voice history and data settings,Upsells & Maintenance,hour,125,1,0
+Smart Appliance Integration,"Connect smart refrigerator, oven, or washer to hub",Upsells & Maintenance,each,75,0.5,8.33
+Robot Vacuum Mapping Service,Run and map floor plan for robotic vacuum,Upsells & Maintenance,each,90,0.5,18.33
+Smart Bed Sensor Integration,Install sleep tracking mattress monitor pad,Upsells & Maintenance,each,85,0.5,15
+Motorized TV Lift Installation,Mount cabinet TV lift and connect to automation,Audio & Video,each,550,2,200
+Projector and Screen Installation,Mount ceiling projector and motorized projection screen,Audio & Video,job,750,3,250
+Smart Pet Door Installation,Install electronic collar-activated pet door,Access Control,each,300,1.5,75
+Mailbox Sensor Integration,Install long-range wireless mail delivery sensor,Safety & Sensors,each,110,0.5,31.67

@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Septic Pumping up to 1000 Gallons,Pump and clear solids from standard 1000-gallon septic tank.,Pumping & Cleaning,job,375,2,33.33
+Standard Septic Pumping up to 1500 Gallons,Pump and clear solids from standard 1500-gallon septic tank.,Pumping & Cleaning,job,475,2.5,50
+Standard Septic Pumping up to 2000 Gallons,Pump and clear solids from standard 2000-gallon septic tank.,Pumping & Cleaning,job,600,3,75
+Emergency After-Hours Septic Pumping,Urgent tank pumping outside normal business operating hours.,Pumping & Cleaning,job,750,3.5,100
+Commercial Septic Pumping,Heavy-duty pumping for commercial-grade large capacity septic systems.,Pumping & Cleaning,gallon,1,0.005,0.5
+Grease Trap Pumping and Cleaning,Empty and thoroughly clean commercial or residential kitchen grease trap.,Pumping & Cleaning,job,275,1.5,56.67
+Dosing Tank Pumping,Pump out accumulated sludge from effluent dosing tank.,Pumping & Cleaning,job,325,1.75,73.33
+RV Holding Tank Pumping,Empty residential RV or camper waste holding tank on-site.,Pumping & Cleaning,job,175,1,33.33
+Tank Backwash Service,Flush tank filter media and backwash system components.,Pumping & Cleaning,job,225,1.25,50
+High-Pressure Jetting of Inlet Baffle,Clear clogged inlet baffle using high-pressure water stream.,Pumping & Cleaning,job,250,1.5,43.33
+Standard Septic System Inspection,"Visual and functional check of tank, baffles, and drain field.",Inspections & Diagnostics,visit,325,2,50
+Real Estate Septic Certification Inspection,Comprehensive inspection with written report for home sale transaction.,Inspections & Diagnostics,visit,450,2.5,83.33
+Video Camera Drain Line Inspection,Run camera down house sewer line to locate blockages or breaks.,Inspections & Diagnostics,job,300,2,33.33
+Electronic Tank Locating,Use sonde transmitter to pinpoint buried septic tank location.,Inspections & Diagnostics,job,175,1.25,13.33
+Drain Field Percolation Test,Perform perc test to evaluate soil absorption rate for new field.,Inspections & Diagnostics,job,650,3.5,150
+Effluent Filter Inspection and Cleaning,"Pull, wash, and reinstall effluent filter cartridge.",Inspections & Diagnostics,job,125,1,0
+Alarm Panel Diagnostics,Troubleshoot electrical issues with high-water alarm system.,Inspections & Diagnostics,hour,150,1.2,0
+Drain Field Dye Test,Flush fluorescent dye into system to check for surface breakout.,Inspections & Diagnostics,job,250,1.5,43.33
+Baffle Condition Assessment,Check inlet and outlet baffles for structural integrity.,Inspections & Diagnostics,visit,100,0.8,0
+Soil Boring Analysis,Drill soil auger holes to determine water table depth.,Inspections & Diagnostics,job,400,2,100
+Standard Labor Rate,Hourly labor rate for standard septic service technician.,Labor & Service,hour,125,1,0
+Two-Man Crew Labor Rate,Hourly rate for a two-person team on heavy repairs.,Labor & Service,hour,220,1.76,0
+Excavator Operator Labor Rate,Hourly rate for certified heavy equipment operator.,Labor & Service,hour,175,1.4,0
+After-Hours Emergency Dispatch Fee,Service call fee for emergency dispatches outside normal hours.,Labor & Service,visit,250,2,0
+Standard Service Call / Diagnostic Fee,Initial travel and diagnostic evaluation fee during normal hours.,Labor & Service,visit,150,1.2,0
+Mini Excavator Rental with Operator,Daily rental charge for mini excavator plus operator time.,Labor & Service,day,950,4,293.33
+Backhoe Rental with Operator,Daily rental charge for full-size backhoe plus operator.,Labor & Service,day,1200,5,383.33
+Hand Digging / Trenching Labor,Manual excavation labor where machinery cannot access.,Labor & Service,hour,95,0.76,0
+Site Cleanup and Grading,"Rake, seed, and grade disturbed earth after excavation work.",Labor & Service,job,350,2,66.67
+Confined Space Entry Service,Specialized confined space entry labor inside deep septic tank.,Labor & Service,job,500,3,83.33
+Concrete Septic Tank Lid Replacement,Supply and install heavy-duty precast concrete replacement lid.,Tank Repairs & Replacements,each,450,1.5,180
+Plastic Septic Tank Lid Replacement,Supply and install heavy-duty polyethylene replacement lid.,Tank Repairs & Replacements,each,275,1,100
+PVC Inlet Baffle Replacement,Cut and glue new PVC inlet sanitary tee baffle.,Tank Repairs & Replacements,each,225,1,66.67
+PVC Outlet Baffle Replacement,Cut and glue new PVC outlet sanitary tee baffle.,Tank Repairs & Replacements,each,225,1,66.67
+Concrete Tank Crack Repair,Epoxy injection seal for minor structural crack in tank wall.,Tank Repairs & Replacements,job,350,1.5,110
+Septic Risers Installation 24-Inch,Install corrugated plastic riser to bring tank opening to grade.,Tank Repairs & Replacements,each,325,1.5,93.33
+Riser Cover and Lid Installation,Bolt down watertight plastic lid onto installed riser shaft.,Tank Repairs & Replacements,each,150,0.8,33.33
+Tank Seam Waterproof Sealing,Apply hydraulic cement and bituminous sealant around tank tank joints.,Tank Repairs & Replacements,job,275,1.25,80
+Inlet Pipe Seal Boot Replacement,Replace rubber boot connector where sewer line enters concrete tank.,Tank Repairs & Replacements,each,200,1,50
+Abandon Old Septic Tank,"Pump, puncture bottom, and fill abandoned tank with clean gravel.",Tank Repairs & Replacements,job,1250,6,333.33
+Submersible Effluent Pump Replacement,Remove failed pump and install new 1/2 HP effluent pump.,Pumps & Controls,each,850,2,400
+Submersible Sewage Ejector Pump Replacement,Remove failed pump and install new heavy-duty sewage pump.,Pumps & Controls,each,975,2,483.33
+Septic Alarm Float Switch Replacement,Install new mechanical tethered float switch inside pump chamber.,Pumps & Controls,each,185,1,40
+Control Panel Replacement,Install new simplex pump control panel with audible alarm.,Pumps & Controls,each,650,2,266.67
+Duplex Control Panel Replacement,Install alternating dual-pump control panel with alarms.,Pumps & Controls,each,1200,3,533.33
+Pump Check Valve Replacement,Replace jammed or leaking PVC swing check valve on discharge line.,Pumps & Controls,each,175,1,33.33
+High-Water Audio/Visual Alarm Installation,Mount external warning beacon and buzzer box on exterior wall.,Pumps & Controls,each,250,1.25,63.33
+Pump Basin Replacement,Excavate and replace cracked polyethylene pump basin tank.,Pumps & Controls,job,1100,4,383.33
+Junction Box Replacement,Install weatherproof electrical wiring junction box near tank.,Pumps & Controls,each,200,1,50
+Float Bracket Assembly Replacement,Replace rusted stainless steel mounting bracket for alarm floats.,Pumps & Controls,each,140,0.8,26.67
+Conventional Drain Field Repair,"Excavate, clean, and rebuild damaged section of lateral trench.",Drain Field Services,linear ft,45,0.2,13.33
+Drain Field Jetting and Flushing,High-pressure water jetting to clear biofilm from perforated pipes.,Drain Field Services,linear ft,12,0.05,4
+Distribution Box Replacement,Dig up and replace broken concrete or plastic D-box.,Drain Field Services,each,750,2.5,283.33
+Distribution Box Leveling,Adjust flow speed levels inside D-box to balance lateral output.,Drain Field Services,job,250,1.5,43.33
+Root Cutting in Drain Line,Mechanical rooter service to slice tree roots inside sewer pipe.,Drain Field Services,linear ft,18,0.1,3.67
+Drain Field Relief Trench Installation,Install gravel-filled relief trench to alleviate saturated soil area.,Drain Field Services,linear ft,35,0.15,11
+Perforated Pipe Replacement,Replace crushed corrugated leach line pipe in lateral trench.,Drain Field Services,linear ft,25,0.1,8.33
+Drain Field Bio-Remediation Treatment,Apply specialized bacterial enzyme solution to break down biomat.,Drain Field Services,job,400,1,183.33
+Geotextile Filter Fabric Replacement,Lay new permeable geotextile fabric over gravel trench before burial.,Drain Field Services,sq ft,3,0.01,1.95
+Curtain Drain Installation,Install subsurface french drain uphill to divert groundwater away.,Drain Field Services,linear ft,40,0.18,12
+New Conventional Septic System Installation,"Full turnkey install of tank, D-box, and standard drain field.",Full System Installations,job,8500,24,3766.67
+New Mound Septic System Installation,"Engineering, sand fill, and complete installation of raised mound system.",Full System Installations,job,18000,48,7933.33
+Alternative Aerobic Treatment Unit Installation,Supply and install complete ATU system with aerator compressor.,Full System Installations,job,14000,36,6266.67
+Sand Filter System Installation,Construct intermittent sand filter bed for advanced wastewater treatment.,Full System Installations,job,12500,32,5600
+Complete Tank Replacement,Excavate and replace failing underground concrete septic tank.,Full System Installations,job,5500,16,2333.33
+Complete Drain Field Replacement,Abandon old soggy bed and construct entirely new absorption field.,Full System Installations,job,7500,20,3333.33
+Holding Tank Installation,Install non-discharge waste holding tank for restricted building lots.,Full System Installations,job,4500,14,1833.33
+Chamber Trench System Installation,Install gravelless plastic chamber system for absorption field.,Full System Installations,job,6800,20,2866.67
+Commercial Grease Interceptor Installation,Install large outdoor concrete commercial grease interceptor tank.,Full System Installations,job,6200,18,2666.67
+Gravity Sewer Line Replacement to House,Excavate and replace broken main sewer pipe from home to tank.,Full System Installations,linear ft,65,0.3,17.67
+Effluent Filter Cartridge (Standard),Replacement Zabel or Polylok effluent filter cartridge unit.,Parts & Materials,each,175,0.5,75
+Bacterial Additive Monthly Treatment Supply,Enzyme and bacteria additive packet for ongoing tank maintenance.,Parts & Materials,each,45,0,30
+Schedule 40 PVC Pipe 4-Inch,Standard 10-foot length of 4-inch PVC sewer piping.,Parts & Materials,each,30,0,20
+Washed Drain Rock Aggregate,Clean washed gravel stone delivered for drain field repairs.,Parts & Materials,ton,65,0,43.33
+Select Fill Dirt / Topsoil,Clean compactable fill dirt for backfilling excavation sites.,Parts & Materials,ton,45,0,30
+Heavy-Duty Rubber Fernco Coupling 4-Inch,Flexible mechanical pipe coupling with stainless steel bands.,Parts & Materials,each,25,0,16.67
+Aerobic System Compressor Replacement,Replacement linear air compressor pump for ATU system.,Parts & Materials,each,450,1.5,183.33
+UV Disinfection Lamp Replacement,Replacement ultraviolet lamp bulb for advanced effluent disinfection.,Parts & Materials,each,180,0.6,68
+Direct Burial Electrical Wire UF-B,Roll of 12/2 or 10/2 UF-B copper wire for pump circuits.,Parts & Materials,linear ft,3,0.01,1.95
+Concrete Splash Pad,Precast concrete pad placed under inlet pipe to disperse force.,Parts & Materials,each,75,0.2,33.33
+County Health Department Permit Processing,Administrative filing and county fee for septic repair permit.,Permits & Environmental Fees,job,275,2,16.67
+Engineering Site Plan Drawing,Certified CAD septic design layout drawing for health department.,Permits & Environmental Fees,job,850,4,233.33
+Environmental Soil Scientist Consultation,On-site visit and sign-off by licensed soil classifier.,Permits & Environmental Fees,job,550,2.5,158.33
+Liquid Waste Disposal Facility Dumping Fee,Municipal treatment plant fee for disposing pumped septage sludge.,Permits & Environmental Fees,gallon,0.15,0,0.1
+Grease Waste Processing Disposal Fee,Specialized processing fee for commercial kitchen grease waste.,Permits & Environmental Fees,gallon,0.25,0,0.17
+Utility Locating Service (811 Coordination),Coordination and marking of underground public utility lines.,Permits & Environmental Fees,job,50,0.4,0
+Special Hauling / Environmental Surcharge,Regulatory disposal compliance fee for out-of-district loads.,Permits & Environmental Fees,job,75,0,50
+Water Board Compliance Testing,Water sample collection and lab testing for well and septic proximity.,Permits & Environmental Fees,job,325,1.5,93.33
+Demolition and Disposal Permit,Municipal permit for abandoning and filling old septic tanks.,Permits & Environmental Fees,job,150,1,16.67
+Final Engineering Inspection Sign-Off,Engineer site visit to certify proper installation for occupancy.,Permits & Environmental Fees,job,300,2,33.33
+Annual Septic Maintenance Service Agreement,Yearly contract covering bi-annual filter cleans and system checks.,Upsells & Maintenance Plans,visit,299,1.5,74.33
+Bi-Annual ATU Service Contract,Semi-annual required maintenance service for Aerobic Treatment Units.,Upsells & Maintenance Plans,visit,450,2,133.33
+Septic Tank Additive Annual Supply Pack,Shipped box of monthly bacterial treatments for preventative care.,Upsells & Maintenance Plans,each,120,0,80
+Priority Service VIP Membership Upgrade,Waived emergency fees and front-of-line dispatch priority for one year.,Upsells & Maintenance Plans,visit,199,1,49.33
+Effluent Filter Upgrade Installation,Retrofit non-filtered tank outlet with modern multi-stage filter.,Upsells & Maintenance Plans,job,325,1.5,93.33
+Greenhouse / Landscaping Riser Cover Mock-Rock,Decorative faux-rock cover to camouflage ugly green plastic risers.,Upsells & Maintenance Plans,each,185,0.5,83.33
+Digital Tank Level Monitor System,Wireless remote transmitter displaying tank liquid level indoors.,Upsells & Maintenance Plans,each,350,1.5,116.67
+Backflow Preventer Installation,Install backflow prevention valve on house sewer lateral line.,Upsells & Maintenance Plans,each,425,2,116.67
+Sludge Hammer Bio-Catalyst Treatment,Heavy shock treatment dose of bacterial catalyst to liquefy grease.,Upsells & Maintenance Plans,job,150,0.5,58.33
+Drain Field Restorer Oxygen Injection,Aerobic oxygen injection treatment to revive failing organic drain fields.,Upsells & Maintenance Plans,job,1250,4,500

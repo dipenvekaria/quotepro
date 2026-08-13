@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial dispatch and first hour of diagnostic labor,Diagnostics & Labor,visit,175,1.4,0
+After-Hours Emergency Dispatch,Emergency service call outside normal business hours,Diagnostics & Labor,visit,350,2.8,0
+Sign Technician Labor,Hourly rate for skilled sign installation and repair labor,Diagnostics & Labor,hour,125,1,0
+Lead Installer Labor,Hourly rate for certified lead installation technician,Diagnostics & Labor,hour,155,1.24,0
+Bucket Truck and Operator,Hourly rate for crane or bucket truck with operator,Diagnostics & Labor,hour,225,1.8,0
+Electrical Troubleshooting,Diagnose electrical shorts and power supply issues,Diagnostics & Labor,hour,145,1.16,0
+Site Survey and Measurement,Detailed site inspection and dimensional measurements,Diagnostics & Labor,job,250,2,0
+Engineering Wind Load Calculation,Structural engineering stamp for sign permitting,Diagnostics & Labor,job,650,5.2,0
+Permit Acquisition Service,Preparation and submission of municipal sign permits,Permits & Disposal,job,300,2.4,0
+Variance Application Filing,Filing and representation for sign code variances,Permits & Disposal,job,750,6,0
+Old Sign Removal and Disposal,Dismantle and haul away existing exterior sign,Permits & Disposal,job,450,2.6,86.67
+Large Pylon Sign Removal,Dismantle and dispose of multi-pole pylon sign,Permits & Disposal,job,1800,10,366.67
+Hazardous Material Disposal Fee,Disposal fee for neon transformers and fluorescent tubes,Permits & Disposal,each,75,0,50
+Debris Haul-Away,Removal of concrete footings and heavy installation debris,Permits & Disposal,job,350,1.6,100
+Traffic Control Setup,Lane closure setup with cones and safety signage,Permits & Disposal,day,400,2.4,66.67
+Police Detail Coordination,Coordination of municipal traffic detail officers,Permits & Disposal,day,250,2,0
+LED Power Supply Replacement 60W,Replace 12V DC waterproof LED power supply,Electrical & Lighting,each,180,0.8,53.33
+LED Power Supply Replacement 120W,Replace high-capacity 12V DC LED power supply,Electrical & Lighting,each,260,0.8,106.67
+LED Power Supply Replacement 240W,Replace industrial-grade 240W LED power supply,Electrical & Lighting,each,380,0.8,186.67
+LED Module String Replacement,Replace failed section of exterior LED channel modules,Electrical & Lighting,linear ft,35,0.15,11
+T12 Fluorescent Ballast Replacement,Replace magnetic fluorescent sign ballast,Electrical & Lighting,each,210,0.9,66.67
+T8 Electronic Ballast Replacement,Replace electronic fluorescent sign ballast,Electrical & Lighting,each,195,0.9,56.67
+Neon Transformer Replacement 9000V,Replace high-voltage neon housing transformer,Electrical & Lighting,each,320,1,133.33
+Neon Tube Repair and Re-gassing,Repair cracked neon glass and pump with inert gas,Electrical & Lighting,linear ft,85,0.4,23.33
+Photo Cell Replacement,Replace dusk-to-dawn automatic lighting control sensor,Electrical & Lighting,each,125,0.6,33.33
+Digital Timer Switch Installation,Install programmable indoor sign timing clock,Electrical & Lighting,each,175,0.8,50
+Weatherproof Disconnect Switch,Install exterior safety disconnect switch near sign,Electrical & Lighting,each,220,0.9,73.33
+Sign Branch Circuit Wiring,Run new electrical conduit and wire to sign base,Electrical & Lighting,linear ft,22,0.1,6.33
+LED Retrofit Fluorescent Cabinet,Convert old fluorescent cabinet to direct-wire LED tubes,Electrical & Lighting,sq ft,28,0.12,8.67
+Ground Fault Circuit Interrupter,Install outdoor GFCI weather-resistant receptacle,Electrical & Lighting,each,160,0.7,46.67
+Wall-Mounted Channel Letter Install,Install raceway-mounted LED channel letters on masonry,Cabinet & Channel Letters,each,850,4.5,191.67
+Direct Pin-Mount Channel Letters,Install individual flush-mounted halo lit letters,Cabinet & Channel Letters,each,950,5,220
+Raceway Paint Matching,Custom paint sign raceway to match building facade,Cabinet & Channel Letters,job,200,1.2,33.33
+Channel Letter Face Replacement,Replace broken acrylic face and trim cap on letter,Cabinet & Channel Letters,each,140,0.6,43.33
+Channel Letter Trim Cap Replacement,Replace faded or loose plastic trim cap on letter,Cabinet & Channel Letters,linear ft,18,0.08,5.33
+Single Face Wall Cabinet Install,Mount standard illuminated wall box cabinet,Cabinet & Channel Letters,sq ft,45,0.2,13.33
+Double Face Pole Cabinet Install,Mount double-sided sign cabinet to existing pole,Cabinet & Channel Letters,sq ft,60,0.25,19.33
+Polycarbonate Face Replacement,Replace damaged impact-resistant sign face,Cabinet & Channel Letters,sq ft,32,0.12,11.2
+Acrylic Sign Face Replacement,Replace standard extruded acrylic sign face,Cabinet & Channel Letters,sq ft,26,0.1,9.07
+Flexible Sign Face Replacement,Replace flex-face vinyl banner in large cabinet,Cabinet & Channel Letters,sq ft,22,0.1,6.4
+Flex Face Tension Retensioning,Tighten and re-tension loose flex sign face,Cabinet & Channel Letters,sq ft,12,0.08,1.47
+Cabinet Hinges and Latches Repair,Replace rusted cabinet hinges and locking latches,Cabinet & Channel Letters,job,175,1,33.33
+Weep Hole Drilling and Clearing,Drill drainage holes to prevent internal water pooling,Cabinet & Channel Letters,each,65,0.5,1.67
+Pylon Pole Foundation Core Drill,Core drill concrete foundation for anchor bolts,Pylons & Monuments,each,500,2,166.67
+Concrete Foundation Pour,Pour reinforced concrete pier footing for pole sign,Pylons & Monuments,job,1500,4,666.67
+Anchor Bolt Cage Installation,Set structural anchor bolt template in wet concrete,Pylons & Monuments,job,600,2,233.33
+Pylon Structure Straightening,Adjust shims and level leaning pylon sign structure,Pylons & Monuments,job,950,6,133.33
+Monument Sign Masonry Repair,Repair brick or stucco base on ground monument sign,Pylons & Monuments,job,450,2.5,93.33
+Pylon Pole Cover Fabrication,Install aluminum pole skirt covers around steel pole,Pylons & Monuments,linear ft,85,0.3,31.33
+Structural Weld Repair,Certified field welding on cracked steel sign frame,Pylons & Monuments,hour,165,1.1,20
+Guy Wire Installation and Tensioning,Install temporary or permanent structural guy wires,Pylons & Monuments,job,400,2,100
+Vinyl Decal Application to Glass,Apply cut vinyl window lettering or graphics,Vinyl & Graphics,sq ft,15,0.08,3.67
+Perforated Window Vinyl Installation,Install see-through window perf graphics on storefront,Vinyl & Graphics,sq ft,18,0.08,5.67
+Old Vinyl Removal and Adhesive Clean,Peel aged vinyl graphics and remove glue residue,Vinyl & Graphics,sq ft,12,0.08,1.67
+Digital Print Banner Installation,Hang heavy-duty vinyl banner with grommets and ropes,Vinyl & Graphics,sq ft,8,0.04,3.07
+Dimensional PVC Logo Install,Stud-mount cut PVC letters to interior lobby wall,Vinyl & Graphics,each,250,1.2,66.67
+Brushed Metal Interior Logo Install,Install fabricated metal logo with mounting template,Vinyl & Graphics,each,450,2,133.33
+Vehicle Decal Removal,Remove fleet graphics and clean vehicle paint,Vinyl & Graphics,hour,95,0.76,0
+Wall Mural Vinyl Application,Install large format adhesive wall wrap graphic,Vinyl & Graphics,sq ft,20,0.08,6.93
+Reflective Traffic Sign Installation,Mount aluminum parking or directional sign on U-channel post,Parking & Directional,each,125,0.6,33.33
+Concrete Parking Post Installation,Set heavy concrete bollard with reflective tape,Parking & Directional,each,275,1.2,83.33
+Steel Pipe Bollard Fill and Paint,"Install steel bollard, fill with concrete, and paint safety yellow",Parking & Directional,each,325,1.4,96.67
+Bollard Plastic Sleeve Cover,Install polyethylene sleeve over existing steel bollard,Parking & Directional,each,95,0.4,30
+Directional Wayfinding Sign Post,Install multi-blade post and panel campus wayfinding sign,Parking & Directional,each,380,1.5,130
+Drive-Through Clearance Bar Install,Hang overhead height restriction clearance bar with chains,Parking & Directional,job,450,2,133.33
+ADA Compliant Restroom Sign Install,Mount braille tactile room identification sign,Parking & Directional,each,45,0.25,9.33
+Fire Exit Door Signage,Mount regulatory photoluminescent exit signage,Parking & Directional,each,60,0.3,14.67
+Single-Sided LED Message Center Setup,Program electronic message board controller and content,Digital & Electronic,job,500,2.5,125
+LED Module Repair in EMC Screen,Replace failed pixel module in digital message center,Digital & Electronic,each,350,1.5,116.67
+EMC Control Card Replacement,Replace sending or receiving data card in digital sign,Digital & Electronic,each,450,1.2,200
+Wi-Fi Antenna Kit Installation,Install wireless bridge antenna for remote sign programming,Digital & Electronic,job,375,1.5,125
+Cellular Gateway Modem Setup,Install 4G LTE cellular router for cloud sign connection,Digital & Electronic,job,550,2,200
+Digital Sign Power Supply Unit,Replace heavy-duty 5V power supply in LED matrix screen,Digital & Electronic,each,280,0.8,120
+Digital Controller Firmware Update,Diagnostic update and reconfiguration of sign controller software,Digital & Electronic,hour,150,1.2,0
+Internal Cooling Fan Replacement,Replace ventilation fan in digital sign cabinet,Digital & Electronic,each,165,0.9,36.67
+Annual Sign Maintenance Inspection,Comprehensive safety and electrical inspection of all exterior signs,Maintenance Agreements,visit,250,2,0
+Bi-Annual Lighting Service Contract,Twice yearly check and bulb replacement service,Maintenance Agreements,visit,200,1.6,0
+Sign Washing and Cleaning Service,Power wash exterior sign cabinet faces and structure,Maintenance Agreements,sq ft,1.5,0.01,0.6
+Touch-Up Paint Service,Sand and paint rusted spots on sign frame and pole,Maintenance Agreements,hour,110,0.8,8
+Emergency Storm Secure Service,Immediate dispatch to secure loose sign panels during windstorm,Maintenance Agreements,hour,185,1.2,24.67
+Seasonal Banner Exchange Service,Swap seasonal promotion banners on light pole brackets,Maintenance Agreements,job,300,1.6,66.67
+Rust Inhibitor Coating Application,Spray anti-corrosion protective coating on exterior steel,Maintenance Agreements,job,220,1,63.33
+Bird Spikes Installation,Install stainless steel deterrent spikes on sign top,Maintenance Agreements,linear ft,25,0.1,8.33
+Awning Cleaning and Treatment,Scrub fabric awning and apply protective water repellant,Awnings & Canopies,sq ft,2.5,0.01,1.47
+Fabric Awning Patch Repair,Glue waterproof vinyl patch over tear in canvas awning,Awnings & Canopies,job,175,1,33.33
+Awning Graphics Application,Apply heat-transfer vinyl logo to canvas awning valence,Awnings & Canopies,sq ft,22,0.08,7.87
+Metal Canopy Frame Repair,Weld and reinforce rusted structural canopy framework,Awnings & Canopies,hour,155,1.1,13.33
+Complete Fabric Awning Replacement,Remove old canvas and install new custom-sewn awning cover,Awnings & Canopies,sq ft,18,0.06,8
+Under-Canopy Downlight Replacement,Replace recessed LED can light under building entrance canopy,Awnings & Canopies,each,140,0.8,29.33
+Awning Lacing Cord Replacement,Re-lace canvas cover tightly to metal frame tubing,Awnings & Canopies,linear ft,8,0.04,2.67
+Canopy Drainage Gutter Clearing,Clear leaves and debris from built-in canopy drainage trough,Awnings & Canopies,job,195,1.2,30
+Building Façade Anchor Patch,Fill and seal masonry bolt holes after old sign removal,Miscellaneous,each,35,0.2,6.67
+Custom Aluminum Bracket Fabrication,Fabricate custom mounting bracket in shop,Miscellaneous,hour,130,0.8,20
+Acrylic Face Polishing,Buff out scratches and oxidation on hazy sign face,Miscellaneous,sq ft,14,0.06,4.27
+Sign Relocation Service,Dismantle sign at old address and reinstall at new location,Miscellaneous,job,1250,6,333.33
+Temporary Sign Banner Rental,Provide temporary plywood sign while permanent sign is built,Miscellaneous,job,600,1.5,273.33
+Architectural Project Rendering,Create photo-mockup visual rendering for landlord approval,Miscellaneous,job,200,1.6,0
+Landlord Criteria Compliance Review,Review shopping center sign criteria for proposed design,Miscellaneous,job,150,1.2,0
+Rush Production Surcharge,Expedited turnaround fee for urgent sign fabrication needs,Miscellaneous,job,500,0,333.33
+Disposal of Hazardous Fluorescent Tubes,EPA-compliant recycling fee for old fluorescent lamps,Miscellaneous,each,5,0.02,3.2
+Storage Fee for Completed Sign,Monthly warehouse storage fee if client delays installation,Miscellaneous,job,250,0,166.67

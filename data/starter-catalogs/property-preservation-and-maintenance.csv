@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Interior Inspection,Visual condition assessment and photo documentation,Inspections,visit,75,0.6,0
+Emergency Property Securing,Initial lock change and window board-up service,Inspections,job,250,1.5,43.33
+Occupancy Verification,Site visit to confirm vacant or occupied status,Inspections,visit,60,0.48,0
+Initial Damage Report,Detailed repair scope with photographic evidence,Inspections,job,150,1.2,0
+Hazard Assessment,Identify safety risks and mold conditions,Inspections,visit,125,1,0
+Routine Maintenance Visit,Scheduled monthly property check and light upkeep,Inspections,visit,95,0.76,0
+Pre-Listing Inspection,Punch list check prior to market readiness,Inspections,visit,110,0.88,0
+Winterization Inspection,Check plumbing systems and anti-freeze status,Inspections,visit,85,0.68,0
+Debris Removal Assessment,Estimate volume of trash and personal property,Inspections,visit,75,0.6,0
+Roof Interior Leak Check,Attic inspection for active water intrusion,Inspections,visit,90,0.72,0
+General Labor Rate,Standard hourly rate for interior maintenance,Labor,hour,65,1,0
+Skilled Carpentry Labor,"Hourly rate for trim, framing, and built-ins",Labor,hour,85,1,0
+Plumbing Labor Rate,Licensed plumbing repair and installation labor,Labor,hour,115,1,0
+Electrical Labor Rate,Licensed electrical repair and fixture labor,Labor,hour,120,1,0
+Drywall Finish Labor,"Hanging, taping, mudding, and texturing labor",Labor,hour,75,1,0
+Painting Labor Rate,Interior wall and ceiling painting labor,Labor,hour,60,1,0
+Tile Installation Labor,Floor and wall tile setting labor,Labor,hour,90,1,0
+Flooring Installation Labor,"LVP, carpet, or laminate installation labor",Labor,hour,70,1,0
+Debris Hauling Labor,Loading and sorting trash for removal,Labor,hour,55,1,0
+After-Hours Emergency Labor,Priority dispatch for urgent maintenance issues,Labor,hour,150,1,0
+Deadbolt Lock Replacement,Standard passage and deadbolt lockset install,Security & Hardware,each,95,0.5,21.67
+Padlock and Hasp Installation,Secure outbuilding or shed door with steel hasp,Security & Hardware,each,65,0.4,10
+Window Board-Up,Plywood cover secured over broken glass opening,Security & Hardware,each,75,0.4,16.67
+Door Board-Up,Secure exterior entry with reinforced plywood panel,Security & Hardware,each,110,0.5,31.67
+Keyless Entry Lock Install,Electronic digital deadbolt assembly installation,Security & Hardware,each,175,0.8,53.33
+Interior Door Knob Replacement,Passage or privacy knob hardware replacement,Security & Hardware,each,45,0.3,4.67
+Bi-Fold Closet Door Repair,Adjust or replace top track and pivot pins,Security & Hardware,each,80,0.5,11.67
+Cabinet Door Hinge Replacement,Concealed self-closing hinge swap per door,Security & Hardware,each,35,0.2,6.67
+Smoke Detector Installation,Battery-operated 10-year sealed ionization smoke alarm,Security & Hardware,each,50,0.25,12.5
+Carbon Monoxide Detector Install,Plug-in or wall-mounted digital CO detector,Security & Hardware,each,60,0.25,19.17
+Drywall Patch Small,Repair hole up to 6 inches square,Drywall & Walls,each,125,0.8,18.33
+Drywall Patch Medium,Repair hole up to 2 feet square,Drywall & Walls,each,220,1.4,29.33
+Drywall Patch Large,Repair section up to 4x8 sheet size,Drywall & Walls,each,380,2.2,66.67
+Corner Bead Repair,Replace damaged metal or paper drywall corner,Drywall & Walls,linear ft,18,0.1,3.67
+Baseboard Trim Replacement,Remove and install standard MDF base moulding,Drywall & Walls,linear ft,8,0.04,2
+Quarter Round Installation,Shoe molding installation along flooring edge,Drywall & Walls,linear ft,5,0.02,1.67
+Wall Texturing Service,Match existing orange peel or knockdown texture,Drywall & Walls,sq ft,3,0.02,0.33
+Wallpaper Removal,Strip wallpaper and wash residual glue off walls,Drywall & Walls,sq ft,4,0.03,0.13
+Interior Wall Painting,Two coats of paint on standard height walls,Drywall & Walls,sq ft,2,0.012,0.33
+Ceiling Painting,Prime and paint flat or textured ceiling surface,Drywall & Walls,sq ft,3,0.016,0.67
+Toilet Replacement,Remove old toilet and install new standard bowl,Plumbing,each,275,1.2,86.67
+Toilet Wax Ring & Bolt Kit,Reset loose toilet with new seal and hardware,Plumbing,each,120,0.8,15.33
+Bathroom Faucet Replacement,Install new center-set sink faucet and supply lines,Plumbing,each,190,1,43.33
+Kitchen Faucet Replacement,Install single-handle pull-down kitchen faucet,Plumbing,each,220,1.1,56.67
+P-Trap Assembly Repair,Replace leaking under-sink PVC drainage trap,Plumbing,each,95,0.6,13.33
+Shower Valve Cartridge Swap,Replace leaking single-handle shower mixing valve,Plumbing,each,185,1.1,33.33
+Water Heater Supply Line Fix,Replace corroded flexible water heater connectors,Plumbing,each,150,0.9,26.67
+Drain Unclogging Service,Snake main sink or tub branch drain line,Plumbing,each,160,1.2,6.67
+Supply Line Shut-Off Valve,Replace stuck angle stop valve under sink or toilet,Plumbing,each,110,0.7,15
+Sump Pump Replacement,Install new submersible pit pump and check valve,Plumbing,each,380,1.5,131.67
+Light Fixture Replacement,Remove old and install new ceiling flush-mount light,Electrical,each,110,0.6,23.33
+Ceiling Fan Installation,Assemble and hang standard ceiling fan with light,Electrical,each,195,1,46.67
+Outlet Receptacle Replacement,Swap standard duplex outlet or tamper-resistant plug,Electrical,each,45,0.3,4.67
+GFCI Outlet Installation,Install ground fault circuit interrupter in wet area,Electrical,each,95,0.5,21.67
+Light Switch Replacement,Standard single-pole or three-way toggle switch swap,Electrical,each,50,0.3,8.33
+Wall Plate Cover Replacement,Install plastic switch or outlet cover plate,Electrical,each,15,0.1,1.67
+Circuit Breaker Replacement,Replace standard single-pole breaker in main panel,Electrical,each,140,0.6,43.33
+Bulb Replacement Service,Install standard LED bulbs in existing fixtures,Electrical,each,20,0.1,5
+Doorbell Chime Repair,Troubleshoot and replace wired doorbell button,Electrical,each,85,0.5,15
+Electric Heater Thermostat Swap,Replace baseboard line-voltage wall thermostat,Electrical,each,125,0.7,25
+LVP Flooring Installation,Install luxury vinyl plank flooring with underlayment,Flooring,sq ft,4,0.02,2.4
+Carpet Roll Installation,Lay broadloom carpet over tacked padding,Flooring,sq ft,5,0.02,3
+Ceramic Tile Flooring Install,Set and grout ceramic tile on concrete or wood subfloor,Flooring,sq ft,8,0.04,4.93
+Sheet Vinyl Flooring Install,Glue down resilient sheet vinyl flooring material,Flooring,sq ft,4,0.02,2.4
+Flooring Demolition,"Rip up old carpet, vinyl, or tile and haul away",Flooring,sq ft,2,0.016,0
+Subfloor Section Replacement,Cut out and replace damaged OSB or plywood subfloor,Flooring,sq ft,12,0.06,5.87
+Carpet Patch Repair,Cut out stained carpet section and insert donor piece,Flooring,each,150,1,16.67
+Threshold Strip Installation,Install metal or wood transition strip between rooms,Flooring,linear ft,25,0.1,8.33
+Stair Tread Replacement,Remove and install solid wood stair tread step,Flooring,each,95,0.5,21.67
+Floor Leveling Compound Pour,Apply self-leveling cement over uneven subfloor slab,Flooring,sq ft,5,0.02,3
+Full House Debris Cleanout,Remove all abandoned personal property and trash,Cleanup & Disposal,job,1200,8,133.33
+Single Room Trash Removal,Clear out junk and trash from one interior room,Cleanup & Disposal,each,250,1.5,43.33
+Refrigerator Clean and Defrost,Sanitize appliance interior and haul rotten food,Cleanup & Disposal,each,175,1.2,13.33
+Hazardous Waste Disposal Fee,"Surcharge for paint, chemicals, or tire disposal",Cleanup & Disposal,each,95,0.2,46.67
+Dumpster Rental Surcharge,Drop-off and pickup fee for 20-yard roll-off bin,Cleanup & Disposal,job,550,0,366.67
+Deep House Cleaning Service,"Wash all baseboards, floors, fixtures, and surfaces",Cleanup & Disposal,sq ft,0.35,0.003,0
+Appliance Haul Away,"Remove old washer, dryer, or stove from property",Cleanup & Disposal,each,125,0.8,18.33
+Mattress Disposal Fee,Eco-fee and handling for discarded mattress or box spring,Cleanup & Disposal,each,75,0.2,33.33
+Carpet Steam Cleaning,Hot water extraction shampoo for wall-to-wall carpet,Cleanup & Disposal,sq ft,0.3,0.002,0
+Odor Neutralizing Treatment,Enzyme spray or ozone shock treatment for smoke/pet,Cleanup & Disposal,sq ft,0.4,0.001,0.18
+HVAC Filter Replacement,Swap standard 1-inch disposable furnace air filter,HVAC & Appliances,each,35,0.15,11
+Thermostat Replacement,Install basic digital non-programmable thermostat,HVAC & Appliances,each,110,0.5,30
+Smart Thermostat Installation,Install Wi-Fi enabled programmable thermostat,HVAC & Appliances,each,175,0.7,56.67
+Register Vent Cover Swap,Replace floor or wall metal air vent register grille,HVAC & Appliances,each,25,0.1,8.33
+Dryer Vent Cleaning,Clear lint blockage from interior dryer exhaust duct,HVAC & Appliances,job,120,0.9,3.33
+Range Hood Replacement,Install standard under-cabinet kitchen exhaust hood,HVAC & Appliances,each,210,1.1,50
+Microwave OTR Installation,Hang over-the-range microwave and connect power,HVAC & Appliances,each,250,1.3,56.67
+Water Heater Blanket Wrap,Install fiberglass insulation jacket on tank water heater,HVAC & Appliances,each,95,0.4,30
+Radiator Bleeding Service,Release trapped air from hot water heating radiators,HVAC & Appliances,each,85,0.6,3.33
+Bathroom Exhaust Fan Install,Replace ceiling ventilation fan and connect ducting,HVAC & Appliances,each,225,1.2,53.33
+Winterize Plumbing System,Blow out lines with air and add antifreeze to traps,Winterization,job,225,1.5,26.67
+De-Winterization Service,"Restore water supply, flush system, and check for leaks",Winterization,job,175,1.2,16.67
+Toilet Antifreeze Treatment,"Drain tank and bowl, add RV antifreeze to trap",Winterization,each,30,0.15,7.33
+Water Meter Tagging,Apply utility compliance tag to secured water shutoff,Winterization,each,45,0.3,4.67
+Pipe Freeze Repair,Solder copper coupling or replace burst PEX line,Winterization,each,220,1.2,46.67
+Boiler Drain Valve Replacement,Install new brass drain cock on water heater or boiler,Winterization,each,115,0.7,16.67
+Main Water Shut-Off Tag,Clearly label main house water valve with warning sign,Winterization,each,35,0.25,2
+Faucet Frost Protection Cover,Install insulated foam cover over interior sillcock,Winterization,each,40,0.1,18.33
+Basement Pipe Insulation Wrap,Install foam sleeve insulation on exposed water pipes,Winterization,linear ft,8,0.03,2.8
+Freeze Alarm Installation,Set up cellular or Wi-Fi low temperature monitor,Winterization,each,150,0.5,58.33

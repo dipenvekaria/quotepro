@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Labor Rate,General landscaping labor per technician hour,Labor,hour,65,1,0
+Foreman Labor Rate,Crew supervisor labor per hour,Labor,hour,85,1,0
+Overtime Labor Rate,Emergency or after-hours labor per hour,Labor,hour,125,1,0
+Design Consultation,On-site landscape design and planning consultation,Labor,hour,150,1,0
+Site Inspection and Diagnostic,"Evaluate turf, plant health, or drainage issues",Labor,hour,120,1,0
+Project Management,Dedicated oversight for large installation projects,Labor,hour,95,1,0
+Permit Acquisition Fee,Handling local municipality permits for site work,Permits and Disposal,job,250,0,166.67
+Green Waste Disposal Fee,Hauling and disposal of organic yard waste,Permits and Disposal,ton,75,0,50
+Debris Dumpster Rental,Roll-off dumpster for heavy landscape demolition debris,Permits and Disposal,each,650,0,433.33
+Soil Test Kit Processing,Laboratory nutrient and pH soil analysis,Permits and Disposal,each,95,0.2,43.33
+Commercial Turf Mowing,"Mowing, edging, and blowing of commercial grounds",Turf Maintenance,sq ft,1,0.005,0.25
+Core Aeration,Mechanical core aeration to relieve soil compaction,Turf Maintenance,sq ft,1,0.003,0.2
+Power Seeding,Slice seeding bare or thin turf areas,Turf Maintenance,sq ft,1,0.003,0.4
+Sod Installation,Lay new tall fescue or Bermuda commercial sod,Turf Maintenance,sq ft,1,0.003,0.4
+Fertilizer Application,Granular or liquid commercial turf fertilization,Turf Maintenance,sq ft,1,0.002,0.3
+Pre-Emergent Herbicide,Application of pre-emergent weed control,Turf Maintenance,sq ft,1,0.002,0.3
+Post-Emergent Weed Control,Spot treatment for broadleaf weeds in turf,Turf Maintenance,sq ft,1,0.002,0.3
+Turf Fungicide Treatment,Application to treat brown patch and dollar spot,Turf Maintenance,sq ft,1,0.002,0.3
+Topdressing Service,Application of compost and sand blend over turf,Turf Maintenance,sq ft,1,0.004,0.3
+Hydroseeding,"Spray application of seed, mulch, and fertilizer",Turf Maintenance,sq ft,1,0.003,0.4
+Shrub Pruning,Hand pruning and shaping of commercial shrubs,Plant and Bed Care,hour,75,1,0
+Hedge Trimming,Mechanical shearing of formal hedges,Plant and Bed Care,linear ft,3,0.015,0.5
+Small Tree Pruning,Pruning ornamental trees up to 15 feet,Plant and Bed Care,each,150,1,16.67
+Large Tree Pruning,Pruning mature trees above 15 feet,Plant and Bed Care,each,450,2.5,66.67
+Tree Removal,Felling and cutting down dead or hazardous trees,Plant and Bed Care,each,1200,6,293.33
+Stump Grinding,Grinding tree stump 8 inches below grade,Plant and Bed Care,each,350,2,66.67
+Bed Edging,Mechanical trenching of landscape bed edges,Plant and Bed Care,linear ft,2,0.01,0.5
+Weed Pulling in Beds,Manual removal of weeds from mulch beds,Plant and Bed Care,hour,60,1,0
+Perennial Cutback,Seasonal cutback of ornamental grasses and perennials,Plant and Bed Care,hour,65,1,0
+Root Barrier Installation,Installing plastic root barrier alongside hardscapes,Plant and Bed Care,linear ft,22,0.08,8
+Double Shredded Hardwood Mulch,Supply and blow or dump spread mulch,Mulch and Soil,ton,55,0.1,30
+Black Dyed Mulch,Supply and spread color-enhanced black mulch,Mulch and Soil,ton,65,0.1,36.67
+Brown Dyed Mulch,Supply and spread color-enhanced brown mulch,Mulch and Soil,ton,65,0.1,36.67
+Red Dyed Mulch,Supply and spread color-enhanced red mulch,Mulch and Soil,ton,65,0.1,36.67
+Playground Wood Chips,Certified IPEMA playground safety surfacing wood chips,Mulch and Soil,ton,70,0.1,40
+Topsoil Delivery and Spread,Screened topsoil for grade correction,Mulch and Soil,ton,50,0.15,21.67
+Leaf Mulch,Organic leaf compost soil conditioner,Mulch and Soil,ton,45,0.1,23.33
+Washed River Rock,1.5-inch decorative river stone for drainage or beds,Mulch and Soil,ton,95,0.15,50
+Crushed Granite Gravel,3/4-inch minus crushed granite for pathways,Mulch and Soil,ton,85,0.15,43.33
+Geotextile Fabric Installation,Heavy-duty weed barrier fabric under rock,Mulch and Soil,sq ft,1,0.003,0.4
+Irrigation System Startup,"Spring activation, zone check, and controller setup",Irrigation Systems,visit,175,1.2,13.33
+Irrigation Winterization,Blow out system lines with compressed air for winter,Irrigation Systems,visit,200,1.4,13.33
+Irrigation Backflow Test,Certified backflow preventer assembly test,Irrigation Systems,each,125,0.8,16.67
+Irrigation Controller Replacement,Install new smart commercial Wi-Fi controller,Irrigation Systems,each,650,2,266.67
+Rain Sensor Installation,Wireless rain and freeze sensor integration,Irrigation Systems,each,220,1,63.33
+Rotary Sprinkler Head Replacement,Replace broken gear-driven rotor head,Irrigation Systems,each,45,0.25,8.67
+Spray Head Replacement,Replace pop-up spray head and nozzle,Irrigation Systems,each,30,0.15,7.33
+Drip Line Repair,Fix cut or leaking emitter tubing,Irrigation Systems,linear ft,3,0.01,1.5
+Solenoid Valve Replacement,Replace 24V automatic irrigation control valve,Irrigation Systems,each,140,0.8,29.33
+Main Line Leak Repair,Locate and repair pressurized PVC main line break,Irrigation Systems,job,275,1.5,56.67
+Paver Patio Installation,Interlocking concrete pavers on compacted base,Hardscape Maintenance,sq ft,18,0.05,7.83
+Retaining Wall Construction,Segmental concrete block wall up to 3 feet,Hardscape Maintenance,sq ft,35,0.1,15
+Flagstone Walkway Installation,Natural flagstone set on dry pack,Hardscape Maintenance,sq ft,25,0.07,11
+Concrete Curb Repair,Pour and finish damaged parking lot landscape curbs,Hardscape Maintenance,linear ft,45,0.15,17.67
+Paver Joint Sanding,Sweep and compact polymeric sand into pavers,Hardscape Maintenance,sq ft,1,0.003,0.4
+Paver Sealing,Apply clear acrylic sealer over clean pavers,Hardscape Maintenance,sq ft,1,0.003,0.4
+Dry Laid Rock Wall Repair,Re-stacking loose boulders in retaining wall,Hardscape Maintenance,hour,85,1,0
+Concrete Stepping Stones,Install precast concrete pavers in turf path,Hardscape Maintenance,each,25,0.05,12.33
+Timber Edging Installation,Pressure-treated landscape timbers with rebar stakes,Hardscape Maintenance,linear ft,15,0.05,5.83
+Metal Landscape Edging,Commercial grade aluminum or steel bed edging,Hardscape Maintenance,linear ft,8,0.03,2.83
+French Drain Installation,"Perforated pipe, gravel, and sock trench for water",Drainage and Grading,linear ft,30,0.1,11.67
+Catch Basin Installation,12x12 storm drain basin with cast iron grate,Drainage and Grading,each,350,1.5,110
+Sump Pump Installation,Submersible pump and basin for low-point drainage,Drainage and Grading,each,850,3,313.33
+Surface Ditch Regrading,Excavator grading to direct water away from structures,Drainage and Grading,linear ft,15,0.08,3.33
+Dry Creek Bed Construction,Swale lined with geotextile and decorative boulders,Drainage and Grading,linear ft,45,0.15,17.67
+Downspout Extension Burial,Connect and bury solid PVC downspout drain lines,Drainage and Grading,linear ft,18,0.08,5.33
+Erosion Control Silt Fence,Install temporary geotextile silt fence per code,Drainage and Grading,linear ft,5,0.02,1.67
+Erosion Control Blanket,Biodegradable mesh blanket staked on sloped banks,Drainage and Grading,sq ft,1,0.003,0.4
+Retention Pond Clearing,Remove overgrowth and debris from stormwater basin,Drainage and Grading,hour,95,1,0
+Channel Drain Installation,Surface slot drain for asphalt or concrete aprons,Drainage and Grading,linear ft,75,0.25,29.33
+Gallon Evergreen Shrub,Supply and plant 3-gallon container shrub,Plantings and Flora,each,45,0.15,17.67
+Gallon Deciduous Shrub,Supply and plant 5-gallon container shrub,Plantings and Flora,each,65,0.15,31
+Ornamental Grass Specimen,Supply and plant 3-gallon ornamental grass,Plantings and Flora,each,40,0.15,14.33
+Perennial Flower Flat,Supply and plant flat of 18 seasonal perennials,Plantings and Flora,each,75,0.2,33.33
+Annual Flower Flat,Supply and plant flat of 36 seasonal color annuals,Plantings and Flora,each,90,0.2,43.33
+Balled and Burlapped Tree (2-inch caliper),Supply and plant medium shade or ornamental tree,Plantings and Flora,each,450,1.5,180
+Balled and Burlapped Tree (3-inch caliper),Supply and plant large shade tree,Plantings and Flora,each,750,2.5,293.33
+Evergreen Tree (6-8 foot),Supply and plant arborvitae or spruce screen tree,Plantings and Flora,each,320,1.5,90
+Bulb Planting,Mechanical fall planting of seasonal spring bulbs,Plantings and Flora,each,3,0.01,1.17
+Tree Guying and Staking,Support kit for newly planted large trees,Plantings and Flora,each,65,0.3,18.67
+Commercial Landscape Lighting Fixture,LED uplight or path light supply and install,Lighting and Enhancements,each,220,0.8,83.33
+Landscape Lighting Transformer,300W multi-tap low voltage lighting transformer,Lighting and Enhancements,each,450,1.5,180
+Lighting Wire Repair,Locate and splice low voltage lighting cable break,Lighting and Enhancements,job,125,1,0
+Bollard Light Installation,Post-mounted commercial architectural pathway light,Lighting and Enhancements,each,380,1.5,126.67
+Decorative Boulder Placement,Supply and place accent moss rock or granite boulder,Lighting and Enhancements,each,250,1,83.33
+Park Bench Installation,Anchor commercial metal or concrete park bench,Lighting and Enhancements,each,350,1.5,110
+Trash Receptacle Installation,Anchor commercial outdoor waste container,Lighting and Enhancements,each,300,1.2,100
+Bike Rack Installation,Surface mount commercial steel bicycle parking rack,Lighting and Enhancements,each,275,1.2,83.33
+Flagpole Installation,Commercial aluminum flagpole with concrete footer,Lighting and Enhancements,job,1500,6,500
+Signage Bed Enhancement,"Mulch, rock, and flower install around monument sign",Lighting and Enhancements,job,600,2.5,193.33
+Snow Plowing,Parking lot snow clearing with truck plow,Snow and Ice Management,hour,175,1,33.33
+Snow Shoveling Walkways,"Manual clearing of walks, steps, and building entries",Snow and Ice Management,hour,65,1,0
+Bulk Rock Salt Application,Spread halite rock salt on parking lots,Snow and Ice Management,ton,225,0.3,126.67
+Calcium Chloride Ice Melt,Eco-friendly ice melt application on pedestrian walkways,Snow and Ice Management,gallon,45,0.1,21.67
+Anti-Icer Liquid Application,Pre-storm liquid brine application for parking decks,Snow and Ice Management,sq ft,1,0.002,0.3
+Snow Hauling Off-Site,Loader and dump truck removal of piled snow banks,Snow and Ice Management,hour,250,1,83.33
+Parking Lot Sanding,Spread traction sand on icy commercial pavement,Snow and Ice Management,ton,180,0.3,93.33
+Ice Dam Removal Steam Treatment,Steam clearing of roof and gutter ice dams,Snow and Ice Management,hour,195,1,46.67
+Roof Shoveling,Clear excessive snow load from low-slope commercial roofs,Snow and Ice Management,hour,150,1,16.67
+Snow Stake Installation,Install and remove driveway and parking boundary markers,Snow and Ice Management,each,5,0.02,1.67

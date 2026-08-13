@@ -1,0 +1,99 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Window Service Call,On-site diagnostic for window operation or glass failure,Diagnostics & Service,visit,150,1.2,0
+Door Adjustment Service,Realign and adjust sagging or sticking entry door,Diagnostics & Service,hour,175,1.4,0
+Window Hardware Troubleshooting,"Diagnose latch, crank, or lock mechanism failure",Diagnostics & Service,hour,150,1.2,0
+Emergency Board-Up,Temporary plywood security cover for broken glass opening,Diagnostics & Service,sq ft,18,0.08,5.6
+Water Leak Inspection,Diagnostic testing for window or door frame water infiltration,Diagnostics & Service,hour,200,1.6,0
+General Labor Rate,Standard hourly rate for carpentry and installation labor,Labor Rates,hour,125,1,0
+Lead Carpenter Rate,Specialized hourly rate for complex structural framing work,Labor Rates,hour,165,1,26.67
+After-Hours Emergency Labor,Premium hourly rate for urgent night or weekend service,Labor Rates,hour,250,2,0
+Helper Labor Rate,Additional labor support for heavy or large format units,Labor Rates,hour,75,0.6,0
+Project Management Fee,On-site supervision and scheduling for multi-day installations,Labor Rates,day,250,2,0
+Single-Hung Window Replacement,Remove and replace standard single-hung window up to 15 sq ft,Window Replacements,each,650,2,266.67
+Double-Hung Window Replacement,Remove and replace standard double-hung window up to 15 sq ft,Window Replacements,each,750,2,333.33
+Casement Window Replacement,Remove and replace standard crank-out casement window,Window Replacements,each,850,2.2,383.33
+Awning Window Replacement,Remove and replace top-hinged awning style window,Window Replacements,each,800,2,366.67
+Slider Window Replacement,Remove and replace horizontal sliding window unit,Window Replacements,each,725,2,316.67
+Picture Window Replacement,Remove and replace fixed non-operable glass window unit,Window Replacements,each,900,2.2,416.67
+Bay Window Replacement,Complete removal and replacement of three-section bay window,Window Replacements,each,3200,8,1466.67
+Bow Window Replacement,Complete removal and replacement of curved multi-panel bow window,Window Replacements,each,3800,9,1766.67
+Garden Window Replacement,Remove and replace protruding glass greenhouse window unit,Window Replacements,each,2200,5,1033.33
+Egress Window Replacement,Basement window replacement meeting emergency egress size codes,Window Replacements,each,1100,3.5,443.33
+Hopper Window Replacement,Basement inward-tilting hopper window replacement,Window Replacements,each,450,1.5,176.67
+Architectural Shape Window Replacement,Custom geometric or radius window replacement unit,Window Replacements,each,1400,4,600
+Skylight Replacement,Roof-mounted skylight replacement including flashing kit,Window Replacements,each,1350,4.5,523.33
+Transom Window Replacement,Horizontal accent window above door or main window,Window Replacements,each,550,1.8,213.33
+Sidelight Glass Replacement,Narrow stationary glass panel beside exterior door,Window Replacements,each,450,1.5,176.67
+Steel Entry Door Replacement,Pre-hung insulated steel exterior door and frame replacement,Door Replacements,each,1800,4.5,816.67
+Fiberglass Entry Door Replacement,Pre-hung wood-grain fiberglass exterior door replacement,Door Replacements,each,2200,5,1033.33
+Wood Entry Door Replacement,Custom solid hardwood pre-hung entry door replacement,Door Replacements,each,3500,6,1733.33
+Double Entry Door System Replacement,Double active door unit with full sidelight configuration,Door Replacements,each,4800,8,2533.33
+Sliding Patio Door Replacement,Standard two-panel sliding glass patio door replacement,Door Replacements,each,2400,5.5,1050
+French Patio Door Replacement,Hinged double-panel exterior patio door replacement,Door Replacements,each,2900,6.5,1400
+Folding Glass Wall System,Multi-panel accordion style exterior patio door system,Door Replacements,each,7500,14,3833.33
+Storm Door Installation,Surface-mounted aluminum and glass storm door installation,Door Replacements,each,450,2,133.33
+Security Screen Door Installation,Heavy gauge stainless steel mesh security door installation,Door Replacements,each,850,2.5,366.67
+Garage Service Door Replacement,Steel pedestrian exit door for attached garage,Door Replacements,each,950,3,383.33
+Insulated Glass Unit (IGU) Replacement,Replace failed dual-pane glass insert in existing sash,Repairs & Glass,each,320,1,130
+Tempered Safety Glass Upgrade,Safety glass upgrade meeting local building code requirements,Repairs & Glass,sq ft,35,0.1,22.67
+Window Balance Replacement,Coil or block-and-tackle balance mechanism repair,Repairs & Glass,each,140,0.8,29.33
+Casement Operator Replacement,Mechanical window crank gear mechanism replacement,Repairs & Glass,each,175,1,33.33
+Window Sash Replacement,Manufacturer matching operational sash swap,Repairs & Glass,each,380,1.2,146.67
+Window Screen Replacement,New aluminum frame and fiberglass mesh screen assembly,Repairs & Glass,each,65,0.3,18
+Screen Mesh Re-screening,Replace torn mesh in existing window screen frame,Repairs & Glass,each,35,0.2,6.67
+Patio Door Roller Replacement,Sliding glass door carriage roller wheel assembly replacement,Repairs & Glass,each,220,1.2,49.33
+Patio Door Track Cap Installation,Stainless steel track overlay for damaged sliding door sill,Repairs & Glass,linear ft,45,0.2,10
+Window Latch Lock Replacement,Surface-mounted cam-action window lock replacement,Repairs & Glass,each,75,0.4,16.67
+Door Deadbolt Installation,Bore door and install single cylinder deadbolt lock set,Hardware & Trim,each,160,1,23.33
+Handleset and Lockset Installation,Entry door exterior grip and interior lever mechanism set,Hardware & Trim,each,190,1.1,36.67
+Multi-Point Door Lock Mechanism Replacement,Heavy-duty gear driven multi-point locking strip replacement,Hardware & Trim,each,380,2,86.67
+Door Hinge Replacement,Heavy-duty ball bearing architectural door hinge pair,Hardware & Trim,pair,95,0.6,13.33
+Door Threshold Replacement,Aluminum adjustable exterior door sill threshold install,Hardware & Trim,linear ft,50,0.3,7.33
+Door Sweep Replacement,Bottom door weatherstrip sweep replacement,Hardware & Trim,each,65,0.3,18
+Interior Casing Trim Replacement,Standard paint-grade or stain-grade wood window/door casing,Hardware & Trim,linear ft,12,0.06,3
+Interior Window Sill Replacement,Hardwood or PVC interior stool sill board installation,Hardware & Trim,linear ft,35,0.15,11
+Exterior Brickmould Replacement,Exterior wood or PVC trim molding around window/door frame,Hardware & Trim,linear ft,16,0.08,4
+Interior Header Extension Jambs,Wood interior jamb extension for deep wall installations,Hardware & Trim,linear ft,15,0.06,4.67
+Standard Interior Window Stop Replacement,Wood interior stop molding replacement per opening,Hardware & Trim,each,40,0.2,10
+Window Foam Insulation Injection,Low-expansion spray foam insulation around rough opening gap,Sealants & Insulation,opening,45,0.2,10
+Exterior Silicone Caulking,High-grade weatherproofing exterior perimeter silicone bead,Sealants & Insulation,linear ft,4,0.02,0.93
+Interior Paintable Caulk Sealing,Acrylic latex caulk bead sealing interior trim joints,Sealants & Insulation,linear ft,3,0.02,0.67
+Window Perimeter Weatherstripping,Self-adhesive foam or bulb weatherstrip gasket replacement,Sealants & Insulation,linear ft,5,0.03,0.87
+Flash-Banding Window Flashing Tape,Self-adhering waterproof flashing membrane installation,Sealants & Insulation,opening,65,0.3,18
+Standard Window Debris Disposal,Removal and hauling of old windows and jobsite trash,Disposal & Permits,each,45,0.36,0
+Large Door Debris Disposal,Removal and hauling of large sliding or entry door systems,Disposal & Permits,each,95,0.76,0
+Dumpster Rental Surcharge,Rolloff dumpster allocation for whole-house replacement jobs,Disposal & Permits,job,600,0,400
+Municipal Building Permit Fee Processing,Pulling and processing local government construction permits,Disposal & Permits,job,175,1.4,0
+Engineering Structural Calculation Letter,Licensed engineer sign-off for large structural header openings,Disposal & Permits,job,550,0,366.67
+Lead-Safe EPA Containment Setup,Lead paint containment protocol for homes built before 1978,Disposal & Permits,opening,120,0.6,30
+Rough Header Structural Framing,Install new load-bearing header for window/door size changes,Structural & Siding,linear ft,110,0.5,32.33
+Siding Patch and Repair,Vinyl or wood siding repair adjacent to resized openings,Structural & Siding,sq ft,28,0.12,8.67
+Stucco Patching Around Openings,Stucco repair and feathering after window frame alteration,Structural & Siding,sq ft,45,0.2,13.33
+Brick Veneer Cutting and Repair,Masonry saw cut and mortar repair for opening expansion,Structural & Siding,linear ft,65,0.3,18
+Aluminum Cladding Custom Bending,Custom brake-formed aluminum wrap for exterior wood frames,Structural & Siding,opening,130,0.5,46.67
+Rotten Sill Plate Wood Repair,Replace water-damaged rough framing studs and sill plates,Structural & Siding,hour,150,1,16.67
+Low-E Energy Plus Glass Upgrade,High-performance solar control low-emissivity glass coating,Glass Upgrades,sq ft,22,0.05,14
+Argon Gas Fill Insulation,Insulating inert gas fill sealed between window panes,Glass Upgrades,each,40,0.1,18.67
+Triple-Pane Glass Upgrade,Three panes of glass for maximum thermal acoustic insulation,Glass Upgrades,sq ft,38,0.08,24
+Obscure Privacy Glass Upgrade,Frosted or textured glass for bathroom and entry privacy,Glass Upgrades,sq ft,25,0.06,15.33
+Laminated Impact Resistant Glass Upgrade,Hurricane and forced entry rated shatterproof laminated glass,Glass Upgrades,sq ft,45,0.1,28.33
+Between-the-Glass Blinds Upgrade,Internal adjustable mini blinds sealed inside dual-pane glass,Glass Upgrades,each,350,0.8,166.67
+Custom Exterior Paint Match,Factory exterior color finish matched to HOA specifications,Finishes & Custom,opening,110,0.6,23.33
+Interior Wood Stain and Clear Coat,Custom hand-applied wood stain and polyurethane finish,Finishes & Custom,opening,160,0.8,40
+Grilles Between Glass (GBG) Option,Simulated divided lite grids permanently sealed inside glass,Finishes & Custom,each,75,0.2,30
+Simulated Divided Lites (SDL) Option,Permanently adhered exterior and interior authentic muntin bars,Finishes & Custom,each,150,0.4,66.67
+Brass Finish Hardware Upgrade,Polished or antique brass upgrade for window and door locks,Finishes & Custom,each,55,0.1,29.33
+Matte Black Hardware Upgrade,Modern contemporary matte black finish for locks and cranks,Finishes & Custom,each,55,0.1,29.33
+Integrated Pet Door Insertion,Weather-sealed pet flap built directly into sliding patio door,Finishes & Custom,each,320,1.2,113.33
+Custom Radius Arch Top Insert,Custom curved transom insert for arched window openings,Finishes & Custom,each,600,2,233.33
+Roller Shade Installation,Surface mounted custom window roller shade installation,Finishes & Custom,each,85,0.5,15
+Plantation Shutter Installation,Custom interior louvered plantation shutter mounting,Finishes & Custom,sq ft,32,0.12,11.33
+Second-Story Scaffolding Setup,Temporary scaffolding tower for elevated opening access,Access & Special,day,350,2,66.67
+Crane Lift Service,Mobile crane service for heavy oversized glass and door units,Access & Special,job,1200,0,800
+Difficult Access Surcharge,Additional labor factor for steep hills or restricted pathways,Access & Special,job,250,2,0
+Furniture Moving and Protection,Safely moving interior furnishings away from work zones,Access & Special,room,75,0.5,8.67
+Temporary Dust Barrier System,Plastic zip-wall containment barrier to isolate construction dust,Access & Special,room,90,0.4,26.67
+Final Construction Cleaning,Detailed vacuuming and glass cleaning upon project completion,Access & Special,job,175,1.2,13.33
+Annual Window Maintenance Tune-Up,"Lubricate hardware, inspect seals, and adjust operating sashes",Diagnostics & Service,visit,195,1.4,13.33
+Keyed-Alike Lock Cylinder Service,Rekey multiple new door locks to match a single house key,Hardware & Trim,each,40,0.2,10
+Awning Crank Handle Replacement,Universal replacement crank handle for awning or casement window,Repairs & Glass,each,35,0.2,6.67

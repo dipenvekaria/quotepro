@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Labor Rate - Installer,Hourly rate per certified playground installer,Labor Rates,hour,85,1,0
+Lead Foreman Rate,Hourly rate for site lead and project manager,Labor Rates,hour,115,1,0
+Heavy Equipment Operator Rate,Hourly rate for skid steer or excavator operator,Labor Rates,hour,125,1,0
+Overtime Labor Surcharge,Additional hourly rate multiplier for weekend or evening work,Labor Rates,hour,45,0.36,0
+Mobilization Fee - Local,Travel and site setup within 30 miles,Labor Rates,job,250,1,83.33
+Mobilization Fee - Extended,Travel fee for sites beyond 30 miles,Labor Rates,job,450,2,133.33
+Site Safety Assessment,Initial hazard and utility clearance inspection,Diagnostics and Service Calls,visit,175,1,33.33
+Playground Safety Audit (CPSI),Certified Public Playground Safety Inspector comprehensive review,Diagnostics and Service Calls,visit,450,2.5,83.33
+Vandalism Damage Inspection,Inspection and written report for insurance claims,Diagnostics and Service Calls,visit,225,1.5,25
+Post-Storm Structural Check,Wind and storm damage integrity check,Diagnostics and Service Calls,visit,200,1.25,31.25
+Maintenance Service Call,General troubleshooting and minor adjustment dispatch,Diagnostics and Service Calls,visit,250,1.5,41.67
+Excavation - Earth Removal,Machine excavation for footings and borders,Site Preparation,cu yd,85,0.5,14.33
+Site Grading and Leveling,Grading sub-base for proper drainage and slope,Site Preparation,sq ft,2,0.01,0.87
+Geo-Textile Fabric Installation,Woven weed barrier fabric placement,Site Preparation,sq ft,1,0.005,0.43
+Sub-Base Aggregate Layer,Crushed stone base layer installation,Site Preparation,ton,65,0.15,30.67
+Root Pruning and Removal,Tree root clearing in excavation zone,Site Preparation,hour,95,1,0
+Existing Equipment Demolition,Tear down and removal of old play structures,Demolition and Disposal,job,1500,8,333.33
+Concrete Footing Demolition,Breaking and removal of subsurface concrete piers,Demolition and Disposal,each,175,1,33.33
+Debris Disposal Fee,Dumpster rental and landfill tipping fees,Demolition and Disposal,job,600,1,316.67
+Metal Recycling Transport,Hauling scrap steel and aluminum to recycling center,Demolition and Disposal,load,250,1,83.33
+Old Surfacing Removal,Removal of legacy wood fiber or rubber mulch,Demolition and Disposal,sq ft,1,0.005,0.43
+Standard Concrete Footing Pour,Hand or truck poured concrete pier with rebar cage,Foundations and Anchoring,each,220,1,63.33
+Large Tower Footing Pour,Heavy-duty concrete pier for multi-deck towers,Foundations and Anchoring,each,350,1.5,110
+Surface Mount Anchor Kit,Expansion anchor installation into existing concrete slab,Foundations and Anchoring,each,75,0.25,29.17
+Sub-Surface Mounting Plate,Underground mounting harness for non-standard soils,Foundations and Anchoring,each,180,0.5,78.33
+Concrete Curing Acceleration Additive,Admixture for faster setting time,Foundations and Anchoring,each,40,0.05,25
+Play Structure Assembly - Small,Installation of simple single-deck play system,Equipment Installation,job,1200,6,293.33
+Play Structure Assembly - Medium,Installation of 2 to 4 deck modular playground,Equipment Installation,job,3500,16,1000
+Play Structure Assembly - Large,Installation of expansive multi-tower community playground,Equipment Installation,job,7500,32,2233.33
+Freestanding Swing Set Installation,Assembly and anchoring of 2-bay to 4-bay swing set,Equipment Installation,each,850,4,233.33
+Independent Slide Installation,Standalone embankment or stainless steel slide installation,Equipment Installation,each,600,3,150
+Climber Component Installation,"Rope, net, or panel climber assembly and tensioning",Equipment Installation,each,450,2.5,91.67
+Spring Rider Installation,Single rocker or spring toy mounting,Equipment Installation,each,200,1,50
+See-Saw Installation,Commercial seesaw or teeter-totter assembly,Equipment Installation,each,350,1.5,116.67
+Merry-Go-Round Installation,Inclusive spinner or carousel anchoring and leveling,Equipment Installation,each,950,4.5,250
+Outdoor Fitness Station Installation,Adult fitness equipment piece anchoring,Equipment Installation,each,300,1.5,75
+Zip Line Track Installation,Commercial playground zip line cable and trolley setup,Equipment Installation,job,2200,8.5,743.33
+Engineered Wood Fiber Surfacing,IPEMA certified EWF blow or dump installation,Safety Surfacing,cu yd,55,0.1,33
+Rubber Mulch Surfacing,Recycled rubber nuggets safety surfacing installation,Safety Surfacing,ton,450,0.6,250
+Pour-In-Place Rubber Surface Base Layer,SBR black rubber impact attenuation base installation,Safety Surfacing,sq ft,8,0.02,5.2
+Pour-In-Place Rubber Surface Wear Layer,EPDM colored top layer installation,Safety Surfacing,sq ft,10,0.025,6.5
+Rubber Tile Surfacing,Interlocking safety rubber tiles glued to sub-base,Safety Surfacing,sq ft,14,0.03,9.1
+Synthetic Turf Playground System,Artificial turf with foam shock pad underlayment,Safety Surfacing,sq ft,16,0.035,10.4
+Surfacing Wear Mat Installation,Heavy-duty rubber impact mats under swings and slides,Safety Surfacing,each,120,0.4,46.67
+Plastic Border Timber Installation,Recycled plastic landscape timbers for containment,Surfacing Containment,linear ft,22,0.08,10.83
+Steel Border Edging Installation,Heavy gauge steel edging for unitary surfacing,Surfacing Containment,linear ft,18,0.07,8.83
+ADA Accessible Ramp for Surfacing,Transition ramp for wood fiber or loose fill containment,Surfacing Containment,each,450,1.5,175
+Drainage Pipe Installation,Perforated corrugated pipe for subsurface water management,Surfacing Containment,linear ft,15,0.05,7.33
+Drainage Catch Basin Installation,Sump box and grate for surface water collection,Surfacing Containment,each,320,1.25,112.5
+Shade Sail Structure - Small,Single-post or four-post hip shade canopy installation,Amenities and Site Furnishings,each,3500,10,1500
+Shade Sail Structure - Large,Large multi-sail architectural shade structure installation,Amenities and Site Furnishings,each,8500,22,3833.33
+Commercial Picnic Table Installation,Surface or in-ground mount picnic table assembly,Amenities and Site Furnishings,each,250,1,83.33
+ADA Picnic Table Installation,Wheelchair accessible commercial table anchoring,Amenities and Site Furnishings,each,280,1,103.33
+Bench Installation,Park bench with or without backrest anchoring,Amenities and Site Furnishings,each,200,0.8,66.67
+Trash Receptacle Installation,Commercial litter bin with lid and anchor kit,Amenities and Site Furnishings,each,180,0.7,58.33
+Bike Rack Installation,Loop style commercial bicycle rack anchoring,Amenities and Site Furnishings,each,220,0.8,80
+Drinking Fountain Installation,Outdoor ADA drinking fountain plumbing and anchoring,Amenities and Site Furnishings,each,1800,4.5,816.67
+Perimeter Safety Fencing,Commercial chain link or decorative metal fence installation,Amenities and Site Furnishings,linear ft,35,0.12,13
+Swing Chain Replacement,Galvanized or plastisol coated swing chains pair,Repairs and Maintenance,each,85,0.4,23.33
+Swing Seat Replacement,"Belt seat, bucket seat, or inclusive swing replacement",Repairs and Maintenance,each,65,0.3,18.33
+Swing Hanger Replacement,Heavy duty commercial swing hanger with shackle,Repairs and Maintenance,each,55,0.25,15
+Deck Panel Replacement,Perforated steel or coated replacement deck platform,Repairs and Maintenance,each,350,1.25,131.67
+Slide Section Replacement,Rotomolded plastic slide bedway section swap,Repairs and Maintenance,each,600,2,233.33
+Hardware Tightening Service,Complete check and torque of all structural fasteners,Repairs and Maintenance,job,400,2.5,25
+Anti-Vandal Hardware Package,Tamper-resistant fastener upgrade set,Repairs and Maintenance,job,150,0.5,58.33
+Plastic Component Weld Repair,Plastic extrusion welding for cracked slides or panels,Repairs and Maintenance,hour,125,1,0
+Graffiti Removal Treatment,Chemical removal of spray paint from equipment surfaces,Repairs and Maintenance,hour,90,1,0
+Powder Coat Touch-Up,Surface prep and touch-up paint for scratched metal,Repairs and Maintenance,each,75,0.4,16.67
+Cable Netting Re-Tensioning,Adjustment and tightening of climbing net cables,Repairs and Maintenance,job,300,2,33.33
+Permit Acquisition Service,Local building and zoning permit processing,Permits and Compliance,job,350,2,66.67
+Engineering Drawing Package,Sealed structural engineering calculations for permits,Permits and Compliance,job,1200,4,466.67
+ASTM F1487 Compliance Certification,Third-party safety standard verification report,Permits and Compliance,job,600,3,150
+ADA Accessibility Compliance Audit,Department of Justice guidelines check for routes and play components,Permits and Compliance,job,500,2.5,125
+Utility Locating Service Coordination,Private utility locate coordination prior to excavation,Permits and Compliance,job,250,1.5,41.67
+Playground Rule Sign Installation,Aluminum age-appropriate safety sign and post installation,Signage and Wayfinding,each,175,0.6,66.67
+Custom Park Name Sign,Engraved monument or post-mounted park identification sign,Signage and Wayfinding,each,850,1.5,441.67
+Wayfinding Directional Sign,Park directory or directional sign post installation,Signage and Wayfinding,each,220,0.8,83.33
+Sponsor Recognition Plaque,Bronze or engraved donor plaque mounting on equipment or wall,Signage and Wayfinding,each,300,0.8,133.33
+Warning Label Decal Kit,Replacement safety warning stickers set for playground structure,Signage and Wayfinding,job,95,0.3,38.33
+Annual Maintenance Service Contract,"Quarterly inspection, hardware tightening, and minor repairs",Maintenance Agreements,visit,350,2,66.67
+Bi-Annual Safety Inspection Package,Spring and fall comprehensive CPSI safety audits,Maintenance Agreements,visit,400,2.2,83.33
+Surfacing Top-Off Service,Blowing in replacement wood fiber to maintain fall height depth,Maintenance Agreements,cu yd,60,0.15,34.17
+Emergency Storm Cleanup Dispatch,Priority crew dispatch for fallen tree limbs or hazard clearance,Maintenance Agreements,visit,550,3,116.67
+Winterization Service,Securing moveable components and seasonal covering,Maintenance Agreements,job,300,1.5,75
+Inclusive Sensory Panel Upgrade,Addition of ground-level interactive play panel,Upgrades and Add-Ons,each,750,2,333.33
+Bongos or Outdoor Musical Instrument Add-On,Independent percussion play equipment installation,Upgrades and Add-Ons,each,1200,2.5,591.67
+Tot Swing Bay Conversion,Retrofitting standard swing bay with full bucket toddler seats,Upgrades and Add-Ons,bay,350,1.5,108.33
+shade Roof Canopy Retrofit,Adding fabric roof topper to existing open platform deck,Upgrades and Add-Ons,each,1400,3.5,633.33
+Transfer Station Addition,ADA transfer platform and steps retrofit for accessibility,Upgrades and Add-Ons,job,1800,4.5,825
+Talk Tube Set Installation,Underground acoustic communication tubes setup,Upgrades and Add-Ons,job,650,2,266.67
+Spy Glass / Telescope Accessory,Mounted stationary optical play feature installation,Upgrades and Add-Ons,each,220,0.8,83.33
+Stepping Pods / Balance Beam Set,Ground-level coordination and balance course installation,Upgrades and Add-Ons,job,950,2.5,425
+Ship Wheel / Steering Panel Accessory,Interactive turning wheel panel installation,Upgrades and Add-Ons,each,280,1,100
+Playhouse / Stage Structure,Standalone imaginative play pavilion installation,Upgrades and Add-Ons,job,2400,6,1083.33
+Cargo Net Tunnel Addition,Enclosed rope crawl tunnel installation between decks,Upgrades and Add-Ons,each,1600,4,733.33
+Stainless Steel Slide Upgrade,Upgrading plastic slide to heavy-duty stainless steel,Upgrades and Add-Ons,each,2200,4,1133.33
+Custom Color Powder Coating,Non-standard custom color paint match for structural posts,Upgrades and Add-Ons,job,950,2,466.67
+Ball Wall / Rebounder Panel,Sports play wall panel installation,Upgrades and Add-Ons,each,1100,2.5,525
+Hammock Style Swing Integration,Inclusive multi-child web swing installation,Upgrades and Add-Ons,each,1350,3,633.33

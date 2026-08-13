@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Service Call,On-site troubleshooting and initial fault isolation.,Diagnostics & Labor,visit,250,2,0
+After-Hours Emergency Dispatch,Urgent on-site response outside normal business hours.,Diagnostics & Labor,visit,450,3.6,0
+Biomedical Technician Hourly Rate,Standard mechanical repair and maintenance labor.,Diagnostics & Labor,hour,135,1,0
+Specialized Metrology Calibration Labor,Precise mechanical and physical parameter calibration.,Diagnostics & Labor,hour,165,1,40
+Preventive Maintenance Inspection,Routine multi-point mechanical check and lubrication.,Diagnostics & Labor,visit,350,2.8,0
+Equipment Decontamination Fee,Biohazard wipe down prior to mechanical servicing.,Diagnostics & Labor,each,95,0.5,22
+Travel Surcharge Extended Zone,Mileage fee for locations beyond standard service radius.,Diagnostics & Labor,job,120,0,80
+Electrical Safety Analyzer Testing,NFPA 99 compliance leakage and ground wire test.,Diagnostics & Labor,each,150,1,16.67
+Rigging and Heavy Lifting Surcharge,Specialized equipment required for heavy unit positioning.,Diagnostics & Labor,job,500,2,166.67
+Shop Repair Bench Fee,Flat rate diagnostic fee for equipment brought to shop.,Diagnostics & Labor,each,175,1.4,0
+Biomedical Annual Service Contract,Comprehensive scheduled maintenance and emergency coverage.,Maintenance Agreements,year,2500,12,666.67
+Imaging Equipment PM Agreement,Quarterly mechanical and optical preventive maintenance.,Maintenance Agreements,year,4500,20,1333.33
+Sterilizer Validation Service,Biological and mechanical cycle performance testing.,Maintenance Agreements,visit,600,3.5,100
+Patient Monitor Fleet Inspection,Annual mechanical and parameter verification for ten units.,Maintenance Agreements,job,1200,8,133.33
+Infusion Pump Calibration Service,Delivery rate and mechanical occlusion pressure testing.,Maintenance Agreements,each,85,0.6,6.67
+Surgical Table Annual Service,Hydraulic fluid flush and mechanical linkage inspection.,Maintenance Agreements,each,450,2.5,86.67
+Centrifuge Calibration and Safety Check,RPM accuracy verification and lid lock mechanism test.,Maintenance Agreements,each,275,1.8,33.33
+Hospital Bed Mechanical Overhaul,"Actuator lubrication, caster check, and pendant test.",Maintenance Agreements,each,225,1.5,30
+Dental Chair Hydraulic Service,"Cylinder check, valve cleaning, and fluid replacement.",Maintenance Agreements,each,325,2,50
+Autoclave Chamber Deep Cleaning,Descaling and mechanical steam trap inspection.,Maintenance Agreements,each,380,2.5,46.67
+Autoclave Door Gasket Replacement,Silicone seal swap and vacuum pressure testing.,Sterilizer & Washer Repairs,each,240,1.2,60
+Autoclave Solenoid Valve Replacement,Inlet or exhaust valve mechanical replacement.,Sterilizer & Washer Repairs,each,310,1.5,83.33
+Steam Trap Assembly Replacement,Thermodynamic steam trap mechanism swap.,Sterilizer & Washer Repairs,each,420,2,113.33
+Autoclave Heating Element Replacement,Chamber band or immersion heater installation.,Sterilizer & Washer Repairs,each,550,2.2,180
+Water Level Sensor Probe Replacement,Boiler low-water cutoff probe cleaning and replacement.,Sterilizer & Washer Repairs,each,190,1,43.33
+Medical Washer Pump Motor Replacement,Circulation pump mechanical assembly swap.,Sterilizer & Washer Repairs,each,850,3.5,293.33
+Washer Door Seal Replacement,EPDM rubber gasket installation on instrument washer.,Sterilizer & Washer Repairs,each,340,1.8,76.67
+Chemical Dosing Pump Repair,Peristaltic tube and roller assembly replacement.,Sterilizer & Washer Repairs,each,210,1.2,40
+Sterilizer Pressure Relief Valve Replacement,ASME certified safety valve swap.,Sterilizer & Washer Repairs,each,290,1.4,73.33
+RO Water Feed Regulator Replacement,Pressure reducing valve and gauge assembly swap.,Sterilizer & Washer Repairs,each,260,1.2,73.33
+Hospital Bed Linear Actuator Replacement,Main lifting motor and screw jack assembly swap.,Patient Care Equipment,each,480,2,153.33
+Hospital Bed Caster Replacement,Locking medical-grade swivel wheel installation.,Patient Care Equipment,each,110,0.6,23.33
+Hospital Bed Side Rail Mechanism Repair,Latch and linkage mechanical alignment.,Patient Care Equipment,each,175,1,33.33
+Stretcher Hydraulic Lift Cylinder Repair,Seal kit replacement and hydraulic fluid flush.,Patient Care Equipment,each,390,2,93.33
+Stretcher Fifth Wheel Mechanism Repair,Directional steering caster linkage adjustment.,Patient Care Equipment,each,210,1.2,40
+Patient Lift Actuator Replacement,Battery-powered ceiling or floor lift motor swap.,Patient Care Equipment,each,520,2.2,160
+Patient Lift Sling Bar Replacement,Mechanical attachment hook and spreader bar swap.,Patient Care Equipment,each,160,0.8,40
+Exam Table Motor Replacement,Power height adjustment screw motor installation.,Patient Care Equipment,each,430,2,120
+Infusion Pump Pole Clamp Replacement,Mounting bracket and tightening screw assembly.,Patient Care Equipment,each,85,0.5,15
+Mayo Stand Height Clutch Repair,Friction sleeve and locking handle replacement.,Patient Care Equipment,each,95,0.6,13.33
+Surgical Table Hydraulic Pump Overhaul,Internal valve rebuilding and fluid replacement.,Surgical & OR Equipment,each,950,4.5,253.33
+Surgical Table Top Pad Replacement,Molded polyurethane mattress section swap.,Surgical & OR Equipment,each,320,1,133.33
+OR Light Suspension Arm Tension Adjustment,Spring arm balancing and friction brake service.,Surgical & OR Equipment,each,275,1.8,33.33
+OR Light Halogen Bulb Housing Replacement,Lamp socket and reflector mechanical assembly swap.,Surgical & OR Equipment,each,340,1.5,103.33
+Anesthesia Machine Bellows Assembly Replacement,Ventilator bellows canister and seal swap.,Surgical & OR Equipment,each,410,1.8,126.67
+Anesthesia Gas Scavenging Valve Repair,Positive and negative pressure relief valve service.,Surgical & OR Equipment,each,290,1.4,73.33
+Medical Air Yoke Assembly Replacement,Cylinder pin-index safety system block swap.,Surgical & OR Equipment,each,220,1.2,46.67
+Tourniquet Regulator Valve Replacement,Dual-port pneumatic pressure control valve swap.,Surgical & OR Equipment,each,380,1.6,120
+Electrosurgical Unit Chassis Fan Replacement,Cooling blower motor installation.,Surgical & OR Equipment,each,185,1,40
+Surgical Microscope Counterbalance Spring Adjustment,PANTOGRAPH arm tension calibration.,Surgical & OR Equipment,each,450,2.4,100
+X-Ray Tube Housing Mechanical Realignment,Collimator and gantry mechanical index calibration.,Imaging & Radiology,each,650,3,173.33
+C-Arm Brake Assembly Replacement,Mechanical steering and orbital lock repair.,Imaging & Radiology,each,580,2.5,186.67
+Bone Densitometer Drive Belt Replacement,Scan arm timing belt and pulley swap.,Imaging & Radiology,each,390,2,93.33
+Mammography Compression Paddle Drive Repair,Motorized force-feedback mechanism service.,Imaging & Radiology,each,520,2.5,146.67
+Ultrasound Probe Strain Relief Repair,Transducer cable boot and internal strain fix.,Imaging & Radiology,each,310,1.5,83.33
+Mobile X-Ray Drive Motor Overhaul,Transaxle brush replacement and gear lube.,Imaging & Radiology,each,750,3.5,220
+CT Gantry Cooling Fan Replacement,High-volume air mover installation.,Imaging & Radiology,each,890,3.8,280
+MRI Cold Head Motor Replacement,Cryocooler mechanical assembly maintenance.,Imaging & Radiology,each,2200,8,800
+X-Ray Table Top Bearing Replacement,Floating tabletop linear rail and bearing swap.,Imaging & Radiology,each,620,2.8,180
+Radiographic Collimator Blade Repair,Lead shutter gear train alignment.,Imaging & Radiology,each,480,2.2,133.33
+Dental Chair Base Actuator Replacement,Hydraulic or mechanical lift ram installation.,Dental & Laboratory,each,680,2.8,213.33
+Dental Delivery Unit Water Manifold Repair,O-ring replacement and valve block rebuild.,Dental & Laboratory,each,240,1.2,60
+Dental Light Pole Spring Arm Repair,Counterbalance internal cable adjustment.,Dental & Laboratory,each,210,1,56.67
+Centrifuge Lid Latch Solenoid Replacement,Safety interlock mechanism swap.,Dental & Laboratory,each,280,1.4,66.67
+Laboratory Incubator Gasket Replacement,Silicone door seal installation.,Dental & Laboratory,each,175,1,33.33
+Lab Shaker Drive Motor Replacement,Eccentric bearing and motor assembly swap.,Dental & Laboratory,each,450,2,133.33
+Laboratory Autoclave Door Hinge Repair,Alignment and pin replacement.,Dental & Laboratory,each,220,1.2,46.67
+Microscope Focus Rack Gear Repair,Coarse and fine focus knob gear replacement.,Dental & Laboratory,each,290,1.5,66.67
+Dental Compressor Unloader Valve Repair,Pressure switch and check valve maintenance.,Dental & Laboratory,each,320,1.5,86.67
+Medical Vacuum Pump Vane Replacement,Carbon vane swap and rotor cleaning.,Dental & Laboratory,each,550,2.4,173.33
+Medical Air Compressor Intake Filter Kit,Element replacement and housing cleanout.,Facility Mechanical Systems,each,140,0.6,43.33
+Medical Gas Outlet Rebuilding,Ohmeda or Puritan-Bennett latch valve replacement.,Facility Mechanical Systems,each,195,1,46.67
+Zone Valve Box Assembly Replacement,Shut-off ball valve and gauge module installation.,Facility Mechanical Systems,each,650,2.5,226.67
+Medical Vacuum Trap Flask Replacement,Collection canister and float valve swap.,Facility Mechanical Systems,each,220,0.8,80
+Medical Air Dryer Desiccant Replacement,Regenerative dryer media recharge.,Facility Mechanical Systems,job,750,2.5,293.33
+Pneumatic Tube Station Blower Repair,Diverter valve and turbine motor maintenance.,Facility Mechanical Systems,each,580,2.4,186.67
+Mortuary Cooler Condensing Unit Repair,Compressor and refrigerant line service.,Facility Mechanical Systems,each,920,3.2,353.33
+Pharmacy Refrigerator Door Seal Replacement,Magnetic gasket swap on cold storage unit.,Facility Mechanical Systems,each,185,1,40
+Emergency Eye Wash Station Valve Repair,Stay-open ball valve and strainer service.,Facility Mechanical Systems,each,150,0.8,33.33
+Medical Waste Shredder Blade Replacement,Heavy-duty cutter stack installation.,Facility Mechanical Systems,job,1800,5,786.67
+OEM Replacement Caster Set (Four),Set of four locking medical swivel casters.,Parts & Materials,job,320,0.5,196.67
+Universal Power Cord 10-Foot,Hospital-grade green dot power cable.,Parts & Materials,each,45,0.1,29.33
+High-Pressure Braided Medical Hose,Oxygen or air supply hose with DISS fittings.,Parts & Materials,linear ft,25,0.1,15
+Hydraulic Fluid Flush Quart,ISO VG 32 medical-grade hydraulic oil.,Parts & Materials,gallon,65,0.2,40
+Silicone Lubricant Spray Food Grade,Aerosol lubricant for mechanical hinges and seals.,Parts & Materials,each,28,0.05,18
+Thread Lock Adhesive Medium Strength,Anaerobic threadlocker for vibration-prone screws.,Parts & Materials,each,35,0.05,22.33
+Replacement Fuse Kit Assortment,Slow-blow ceramic medical equipment fuses.,Parts & Materials,job,75,0.2,43.33
+Copper Tubing 3/8 Inch,Seamless drawn copper for pneumatic and gas lines.,Parts & Materials,linear ft,12,0.05,7.33
+Brass Compression Fitting Assortment,Connectors for medical gas and fluid lines.,Parts & Materials,job,85,0.1,53.33
+Heavy Duty Cable Tie Pack,Nylon zip ties for internal wiring harness management.,Parts & Materials,job,20,0.05,12.67
+Municipal Hot Work Permit Processing,Required local clearance for brazing medical gas lines.,"Permits, Disposal & Compliance",each,150,1,16.67
+Medical Gas System Certification,NFPA 99 verification and certification report.,"Permits, Disposal & Compliance",visit,600,2.5,191.67
+Refrigerant Recovery and Disposal Fee,EPA compliant extraction and recycling of CFCs.,"Permits, Disposal & Compliance",each,220,1,63.33
+Hazardous Biohazard Waste Disposal,Safe containment and hauling of contaminated parts.,"Permits, Disposal & Compliance",each,125,0.4,50
+Electrical Safety Certification Tagging,Affixing compliance stickers after NFPA testing.,"Permits, Disposal & Compliance",job,75,0.6,0
+Pressure Vessel Inspection Fee,State boiler and autoclave safety inspector sign-off.,"Permits, Disposal & Compliance",each,350,2,66.67
+Lead Shielding Disposal Fee,Safe recycling of radiographic protection materials.,"Permits, Disposal & Compliance",job,275,1,100
+Out-of-Service Equipment Tagging & Audit,Formal quarantine documentation for failed devices.,"Permits, Disposal & Compliance",each,95,0.7,3.33
+Environmental Impact Disposal Fee,"Recycling fee for batteries, oils, and electronics.","Permits, Disposal & Compliance",job,110,0.2,54
+Joint Commission Compliance Documentation,Compiling complete mechanical service history records.,"Permits, Disposal & Compliance",job,250,1.5,41.67

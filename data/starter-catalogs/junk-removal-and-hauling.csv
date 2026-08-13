@@ -1,0 +1,98 @@
+name,description,category,unit,price,labor_hours,material_cost
+Commercial Site Audit,Detailed multi-room commercial cleanout assessment,Diagnostics,visit,150,1.2,0
+Hazardous Material Assessment,Inspection for restricted or regulated waste items,Diagnostics,visit,100,0.8,0
+Standard Labor Rate per Technician,Hourly charge per crew member for loading,Labor,hour,75,1,0
+Heavy Item Special Handling Labor,"Extra labor for safes, pianos, or oversized items",Labor,hour,125,1,0
+After-Hours Emergency Labor,Urgent night or weekend removal labor rate,Labor,hour,150,1,0
+Dismantling and Disassembly Labor,"Breaking down large furniture, sheds, or swing sets",Labor,hour,85,1,0
+Debris Sorting and Recycling Labor,"Separating recyclable metals, wood, and trash",Labor,hour,65,1,0
+Stair Carry Surcharge,Fee for hauling items up or down flights of stairs,Labor,job,50,0.4,0
+Long Carry Distance Fee,Fee for carrying items over 100 feet to truck,Labor,job,75,0.6,0
+Single Item Pickup - Small,Removal of one small furniture or household item,Single Items,each,95,0.5,22
+Single Item Pickup - Medium,Removal of one medium furniture piece,Single Items,each,125,0.7,25
+Single Item Pickup - Large,"Removal of one large couch, dresser, or mattress",Single Items,each,165,0.9,37
+Refrigerator or Freezer Removal,CFC-safe extraction and disposal of refrigeration unit,Single Items,each,150,0.8,35
+Washer or Dryer Removal,Disconnection and hauling of laundry appliance,Single Items,each,125,0.7,24
+Stove or Range Removal,Disconnection and hauling of kitchen stove,Single Items,each,125,0.7,24
+Dishwasher Removal,Uninstallation and hauling of built-in dishwasher,Single Items,each,110,0.6,24
+Water Heater Removal,"Drainage, disconnection, and hauling of tank",Single Items,each,175,0.9,43
+Large Screen TV Removal,Specialized handling and recycling of flat screen TV,Single Items,each,90,0.5,20
+Pianist Bench and Upright Piano Removal,Heavy transport and hauling of upright piano,Single Items,each,350,1.5,110
+Grand Piano Removal,Specialized rigging and transport for grand piano,Single Items,each,650,2.5,220
+Hot Tub Removal and Hauling,"Cutting up, dismantling, and hauling old hot tub",Single Items,each,450,2,133
+Pool Table Disassembly and Removal,Breakdown and hauling of slate pool table,Single Items,each,350,2,66
+Exercise Treadmill Removal,Disassembly and hauling of heavy gym equipment,Single Items,each,150,0.8,35
+Elliptical or Home Gym Removal,Breakdown and hauling of multi-station gym unit,Single Items,each,200,1,50
+Mattress and Box Spring Set,Hauling of one mattress and matching box spring,Single Items,each,110,0.5,32
+Sofa Bed or Futon Removal,Removal of heavy pull-out couch or futon,Single Items,each,160,0.8,40
+Patio Furniture Set Removal,Hauling table and chairs outdoor set,Single Items,each,130,0.7,25
+Large Safe Removal,Heavy lifting and transport of fireproof home safe,Single Items,each,300,1.5,75
+Full Truckload - 1/8 Load,Up to one-eighth of a standard box truck,Truck Loads,job,150,0.8,35
+Full Truckload - 1/4 Load,Up to one-quarter of a standard box truck,Truck Loads,job,250,1.2,66
+Full Truckload - 3/8 Load,Up to three-eighths of a standard box truck,Truck Loads,job,350,1.6,100
+Full Truckload - 1/2 Load,Up to half of a standard box truck,Truck Loads,job,450,2,133
+Full Truckload - 5/8 Load,Up to five-eighths of a standard box truck,Truck Loads,job,550,2.4,166
+Full Truckload - 3/4 Load,Up to three-quarters of a standard box truck,Truck Loads,job,650,2.8,200
+Full Truckload - 7/8 Load,Up to seven-eighths of a standard box truck,Truck Loads,job,750,3.2,233
+Full Truckload - 100% Load,Full standard box truck volume load,Truck Loads,job,850,3.6,266
+Trailer Load - 1/2 Load,Half capacity of utility hauling trailer,Trailer Loads,job,200,1,50
+Trailer Load - Full,Full capacity of utility hauling trailer,Trailer Loads,job,375,1.8,100
+Dumpster Rental - 10 Yard,Seven-day rental of 10-yard roll-off container,Dumpster Rentals,job,395,0.5,220
+Dumpster Rental - 15 Yard,Seven-day rental of 15-yard roll-off container,Dumpster Rentals,job,445,0.5,253
+Dumpster Rental - 20 Yard,Seven-day rental of 20-yard roll-off container,Dumpster Rentals,job,495,0.5,286
+Dumpster Rental - 30 Yard,Seven-day rental of 30-yard roll-off container,Dumpster Rentals,job,595,0.5,353
+Extra Rental Day Fee,Per day charge beyond standard 7-day dumpster rental,Dumpster Rentals,each,25,0,16.67
+Dumpster Overage Fee per Ton,Disposal fee for weight exceeding container allowance,Dumpster Rentals,ton,85,0,56.67
+Dumpster Dry Run Trip Fee,Trip charge when blocked access prevents drop-off,Dumpster Rentals,each,125,0.5,41
+Standard Landfill Disposal Fee,Municipal waste tipping fee per ton,Disposal Fees,ton,75,0,50
+Heavy Debris Landfill Fee,"Disposal fee for concrete, dirt, brick per ton",Disposal Fees,ton,95,0,63.33
+E-Waste Recycling Surcharge,"Processing fee for computers, monitors, and electronics",Disposal Fees,each,25,0.1,10
+Tire Disposal Fee,Recycling fee per passenger vehicle tire,Disposal Fees,each,15,0.05,9
+Semi-Truck Tire Disposal Fee,Recycling fee per large commercial vehicle tire,Disposal Fees,each,35,0.1,20
+Mattress Recycling Facility Fee,Eco-fee mandated for mattress recycling plants,Disposal Fees,each,20,0.05,10
+Appliance Refrigerant Recovery Fee,EPA-compliant freon extraction and processing,Disposal Fees,each,40,0.15,14
+Paint and Chemical Processing Fee,Safe disposal fee for latex or oil paints,Disposal Fees,gallon,10,0.02,6.5
+Right-of-Way Street Permit,Municipal permit for temporary dumpster placement,Permits,job,75,0.4,16
+HOA Compliance Coordination,Filing paperwork for community association approvals,Permits,job,50,0.4,0
+Commercial Waste Hauling Permit,Regulatory permit for commercial route operations,Permits,job,125,0.5,42
+Whole House Cleanout - Small,Complete cleanout of 1-bedroom home or apartment,Cleanouts,job,1200,5,383
+Whole House Cleanout - Medium,Complete cleanout of 2-to-3 bedroom home,Cleanouts,job,2200,9,706
+Whole House Cleanout - Large,Complete cleanout of 4+ bedroom home,Cleanouts,job,3800,15,1241
+Estate Cleanout Service,"Detailed sorting, packing, and hauling of estate items",Cleanouts,job,3000,12,1000
+Garage Cleanout and Sweep,Removal of all clutter and items from home garage,Cleanouts,job,450,2,133
+Attic Cleanout Service,Removal of stored items from cramped attic space,Cleanouts,job,550,2.5,160
+Basement Cleanout Service,Clearing all debris and junk from basement level,Cleanouts,job,600,2.8,166
+Storage Unit Cleanout,Complete removal of contents from storage locker,Cleanouts,job,500,2.2,143
+Office Suite Cleanout,"Removal of desks, cubicles, and office furniture",Cleanouts,job,1500,6,500
+Retail Store De-Fit and Cleanout,"Stripping shelving, fixtures, and inventory from store",Cleanouts,job,2500,10,833
+Foreclosure Eviction Cleanout,Complete trash-out of foreclosed property,Cleanouts,job,2000,8,666
+Hoarding Cleanup - Level 1,Light clutter sorting and sanitary debris removal,Specialty Cleanouts,job,1000,4,333
+Hoarding Cleanup - Level 2,Moderate clutter clearance and heavy bag loading,Specialty Cleanouts,job,2500,10,833
+Hoarding Cleanup - Level 3,Severe clutter mitigation with bio-debris handling,Specialty Cleanouts,job,5000,20,1666
+Carpet Pull and Haul,Pulling tacked carpet and pad for disposal,Specialty Cleanouts,sq ft,1,0.005,0.25
+Drywall and Insulation Debris Hauling,Remodeling scrap collection and loading,Demolition Debris,ton,120,0.4,46
+Roofing Shingle Debris Hauling,Old asphalt shingle tear-off disposal,Demolition Debris,ton,110,0.4,40
+Concrete and Brick Demolition Hauling,Heavy masonry and foundation chunk removal,Demolition Debris,ton,130,0.4,53
+Tile and Hardwood Flooring Hauling,Hauling ripped up flooring materials,Demolition Debris,sq ft,2,0.01,0.5
+Deck Demolition and Hauling,Shedding wood structure and hauling debris,Light Demolition,sq ft,5,0.02,1.5
+Shed Demolition and Hauling,Tearing down and hauling away wooden outdoor shed,Light Demolition,each,850,4,233
+Above-Ground Pool Demolition,Disassembling and hauling metal or vinyl pool,Light Demolition,each,600,3,150
+Fence Removal and Hauling,Pulling posts and panels of old wood or chainlink,Light Demolition,linear ft,6,0.02,2
+Kitchen Cabinet Demo and Hauling,Unscrewing and removing old upper and lower cabinets,Light Demolition,linear ft,25,0.1,8
+Light Sweeping and Debris Blow-Out,Broom sweep of cleared garage or room floors,Upsells and Add-ons,job,50,0.4,0
+Disinfecting Sanitization Spray,Antimicrobial surface spray after junk removal,Upsells and Add-ons,sq ft,1,0.005,0.25
+Garage Floor Power Washing,Pressure wash of concrete slab after cleanout,Upsells and Add-ons,sq ft,2,0.01,0.5
+Donation Drop-Off Delivery Service,Sorting and delivering usable items to charity,Upsells and Add-ons,job,100,0.6,16
+Same-Day Rush Service Surcharge,Priority dispatch fee for immediate same-day jobs,Upsells and Add-ons,job,150,0.8,33
+Bagster or Bag Pickup Service,Loading and hauling pre-purchased disposal bags,Upsells and Add-ons,each,175,0.5,73
+Yard Waste and Brush Hauling,"Loading branches, leaves, and organic yard debris",Yard Waste,job,250,1,83
+Tree Log and Branch Hauling,Heavy tree trunk and limb removal and transport,Yard Waste,ton,110,0.4,40
+Soil and Dirt Hauling,Loading and transport of excess topsoil or fill dirt,Yard Waste,ton,95,0.4,30
+Sod Removal and Hauling,Stripping old lawn turf and hauling off-site,Yard Waste,sq ft,1,0.005,0.25
+Compost Pile Removal,Shoveling and hauling old decaying organic compost,Yard Waste,cubic yd,75,0.3,25
+Rock and Gravel Hauling,Removal of unwanted landscape rock or river stone,Yard Waste,ton,105,0.4,36
+Commercial Pallet Removal,Hauling wooden shipping pallets from warehouse,Commercial Services,each,15,0.1,1.5
+Cardboard Recycling Haul,Flattening and hauling bulk commercial cardboard,Commercial Services,cubic yd,30,0.1,10
+Office Partition Panel Removal,Dismantling and hauling modular office cubicles,Commercial Services,each,65,0.3,18
+Restaurant Equipment Hauling,"Removal of commercial fryers, grills, and coolers",Commercial Services,each,250,1,83
+Warehouse Inventory Purge,Disposal of obsolete stock and dead merchandise,Commercial Services,job,1800,7.5,575

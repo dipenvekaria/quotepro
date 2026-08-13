@@ -1,0 +1,106 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Court Inspection,Comprehensive evaluation of surface condition and drainage.,Diagnostics & Testing,visit,250,2,0
+Laser Leveling Survey,Detailed slope and flatness mapping of court.,Diagnostics & Testing,job,650,4,100
+Drainage Flow Test,Flood testing to locate standing water zones.,Diagnostics & Testing,hour,175,1.4,0
+Net Post Foundation Core Test,Inspection of footing stability and depth.,Diagnostics & Testing,each,150,1,16.67
+Moisture Emission Test,Concrete slab moisture testing prior to coating.,Diagnostics & Testing,job,300,2,33.33
+Standard Labor Rate,Hourly rate for general court maintenance labor.,Labor Rates,hour,95,1,0
+Specialist Coating Labor Rate,Hourly rate for acrylic surface application.,Labor Rates,hour,125,1,0
+Line Striping Labor Rate,Hourly rate for precise game line painting.,Labor Rates,hour,140,1,0
+Overtime Labor Rate,Hourly rate for emergency or weekend work.,Labor Rates,hour,185,1,0
+Equipment Operator Rate,Hourly rate for heavy machinery operation.,Labor Rates,hour,150,1,0
+Crack Routing,Mechanical widening of cracks for sealant.,Repairs & Preparation,linear ft,4,0.02,1.67
+Acrylic Crack Repair,Filling standard cracks with acrylic binder mixture.,Repairs & Preparation,linear ft,6,0.02,2.67
+Fabric Reinforced Crack Repair,Applying fiberglass membrane over active structural cracks.,Repairs & Preparation,linear ft,12,0.04,5.33
+Birdbath Leveling Patch,Filling low spots up to 1/8 inch deep.,Repairs & Preparation,sq ft,3,0.01,1.33
+Deep Depression Leveling Patch,Resurfacing severe depressions deeper than 1/8 inch.,Repairs & Preparation,sq ft,5,0.02,2.22
+Concrete Spall Repair,Patching chipped or broken concrete slab edges.,Repairs & Preparation,each,85,0.5,15
+Pressure Washing,High-pressure water cleaning of entire court surface.,Repairs & Preparation,sq ft,1,0.005,0.33
+Algae and Mold Treatment,Chemical application to kill organic growth.,Repairs & Preparation,sq ft,1,0.005,0.33
+Oil Stain Primer Application,Sealing grease or oil spots before coating.,Repairs & Preparation,each,75,0.4,16.67
+Slab Grinding,Grinding uneven concrete joints smooth.,Repairs & Preparation,linear ft,15,0.1,3.33
+Acrylic Resurfacer Coat,Application of one coat acrylic filler course.,Surfacing & Coating,sq ft,1,0.005,0.33
+Cushion Layer System,Multi-layer resilient rubber cushion application.,Surfacing & Coating,sq ft,3,0.01,1.33
+Color Coat Application,Application of pigmented textured acrylic finish coat.,Surfacing & Coating,sq ft,1,0.005,0.33
+Second Color Coat Application,Additional pigmented coat for enhanced wear resistance.,Surfacing & Coating,sq ft,1,0.005,0.33
+Line Painting,Laying out and painting official tennis court lines.,Surfacing & Coating,job,750,4,166.67
+Pickleball Line Conversion,Adding blended pickleball lines to tennis court.,Surfacing & Coating,job,550,3,116.67
+Basketball Key Painting,Painting key and three-point lines on court.,Surfacing & Coating,job,450,2.5,83.33
+Clear Protective Topcoat,Applying UV resistant clear sealer over color coats.,Surfacing & Coating,sq ft,1,0.005,0.33
+Blended Line Primer,"Applying primer for sharp, non-bleeding line edges.",Surfacing & Coating,job,200,1,50
+Custom Court Logo Painting,Hand-painting custom crest or logo on court.,Surfacing & Coating,job,1200,6,300
+Standard Net Replacement,Supplying and installing standard braided polyester net.,Net Systems & Hardware,each,350,1,150
+Tournament Grade Net Replacement,Supplying heavy-duty tapered braided tennis net.,Net Systems & Hardware,each,550,1,283.33
+Single Steel Net Post Replacement,Replacing one rusted or bent external wind post.,Net Systems & Hardware,each,450,2,133.33
+Net Post Pair Replacement,Replacing both net posts including new concrete footings.,Net Systems & Hardware,job,1200,4,466.67
+Internal Winding Mechanism Repair,Replacing broken internal gear winch assembly.,Net Systems & Hardware,each,225,1,66.67
+Net Post Anchor Sleeve Installation,Core drilling and setting new brass anchor sleeves.,Net Systems & Hardware,each,300,1.5,75
+Center Strap and Anchor Replacement,Installing new web center strap and floor anchor.,Net Systems & Hardware,each,120,0.5,38.33
+Net Post Cap Replacement,Installing new aluminum or PVC post caps.,Net Systems & Hardware,each,45,0.2,13.33
+Doubles Sideline Post Installation,Setting temporary or permanent singles sticks sockets.,Net Systems & Hardware,pair,250,1,83.33
+Winch Handle Replacement,Supplying universal steel net winch handle.,Net Systems & Hardware,each,35,0.2,6.67
+Standard Windscreen Installation,Mounting vinyl-coated mesh windscreen on fencing.,Fencing & Windscreens,linear ft,12,0.05,5.33
+Windscreen Lacing Replacement,Re-securing windscreen with heavy-duty nylon ties.,Fencing & Windscreens,linear ft,3,0.02,1.33
+Chain Link Fabric Repair,Patching holes or damaged sections of court fence.,Fencing & Windscreens,sq ft,8,0.03,2.89
+Gate Latch and Hinge Repair,Replacing broken hardware on court access gates.,Fencing & Windscreens,each,150,0.8,35
+Top Rail Fence Repair,Straightening or replacing bent fence top rails.,Fencing & Windscreens,linear ft,18,0.05,7.92
+Privacy Slats Installation,Inserting vertical polyethylene slats into chain link.,Fencing & Windscreens,linear ft,15,0.05,5.83
+Bottom Tension Wire Replacement,Installing new tension wire along fence bottom.,Fencing & Windscreens,linear ft,4,0.02,1.78
+Corner Post Stabilization,Bracing leaning corner fence posts with concrete.,Fencing & Windscreens,each,275,1.5,58.33
+Fence Post Sleeve Replacement,Replacing rusted ground sleeves for fence uprights.,Fencing & Windscreens,each,220,1.2,46.67
+Complete Fence Replacement,Removing and installing new 10ft chain link fence.,Fencing & Windscreens,linear ft,45,0.15,17.78
+LED Court Lighting Fixture Replacement,Installing new high-output LED sports light.,Lighting & Electrical,each,850,2,400
+Lighting Timer Adjustment,Programming automatic court lighting control panel.,Lighting & Electrical,visit,150,1.2,0
+Bulb Replacement,Replacing individual metal halide lamp fixture bulb.,Lighting & Electrical,each,125,0.5,41.67
+Photocell Sensor Replacement,Replacing dusk-to-dawn automatic light sensor.,Lighting & Electrical,each,175,0.8,50
+Lighting Contactor Replacement,Replacing electrical relay switch in control box.,Lighting & Electrical,each,320,1.2,113.33
+Light Pole Base Inspection,Checking anchor bolts and concrete base integrity.,Lighting & Electrical,each,200,1.6,0
+Conduit Repair,Repairing damaged underground electrical conduit runs.,Lighting & Electrical,linear ft,35,0.15,11.11
+Switchboard Diagnostic,Troubleshooting electrical issues in lighting panel.,Lighting & Electrical,hour,150,1.2,0
+LED Driver Replacement,Replacing internal power supply unit for LED fixture.,Lighting & Electrical,each,280,1,103.33
+Lightning Protection Grounding Check,Testing electrical grounding rod resistance.,Lighting & Electrical,job,250,2,0
+Standard Acrylic Resurfacing Package,"Complete wash, patch, 1 resurfacer, and 2 color coats.",Full Resurfacing Packages,sq ft,2,0.008,0.73
+Premium Cushion Resurfacing Package,Complete restoration with multi-layer rubber cushion system.,Full Resurfacing Packages,sq ft,5,0.015,2.11
+Tournament Grade Resurfacing Package,High-spec resurfacing with custom tournament colors.,Full Resurfacing Packages,sq ft,3,0.01,1.17
+Multi-Sport Court Resurfacing Package,"Resurfacing with tennis, pickleball, and basketball lines.",Full Resurfacing Packages,sq ft,3,0.01,1.17
+Budget Recoat Package,Pressure wash and single color coat application.,Full Resurfacing Packages,sq ft,1,0.005,0.33
+Har-Tru Top Dressing Application,Adding new green clay material to clay court.,Clay Court Maintenance,ton,450,1.5,175
+Clay Court Rolling,Compacting clay surface with heavy water roller.,Clay Court Maintenance,visit,250,2,0
+Clay Court Line Brushing and Sweeping,Grooming lines and brushing court surface.,Clay Court Maintenance,visit,175,1.4,0
+Subsurface Irrigation System Repair,Fixing leaks in automated clay court watering system.,Clay Court Maintenance,hour,135,0.9,15
+Clay Court Scarifying,Loosening hardened clay crust to improve drainage.,Clay Court Maintenance,sq ft,1,0.005,0.33
+Clay Court Calcium Chloride Treatment,Applying moisture-retention salt to clay surface.,Clay Court Maintenance,bag,45,0.1,26.67
+Clay Court Brush Replacement,Replacing worn drag brushes on grooming equipment.,Clay Court Maintenance,each,180,0.3,93.33
+Clay Court Scarifier Blade Replacement,Replacing tines on scarifying machine.,Clay Court Maintenance,job,120,0.5,38.33
+Clay Court Roll Nails Replacement,Replacing tape nails on Har-Tru court lines.,Clay Court Maintenance,box,35,0.2,6.67
+Clay Court Perimeter Board Repair,Replacing rotting wood header boards around clay court.,Clay Court Maintenance,linear ft,22,0.08,8.15
+Municipal Permit Acquisition,Obtaining local building and zoning permits for work.,"Permits, Disposal & Mobilization",job,250,2,0
+Dumpster Rental and Debris Disposal,"Hauling away old asphalt, concrete, and waste materials.","Permits, Disposal & Mobilization",job,600,1,316.67
+Mobilization Fee,Transporting heavy equipment and crew to job site.,"Permits, Disposal & Mobilization",job,500,2,166.67
+Environmental Runoff Protection,Setting up silt fences and drain blockers.,"Permits, Disposal & Mobilization",job,300,1,116.67
+Traffic Control and Signage,Setting up cones and safety signs for public access.,"Permits, Disposal & Mobilization",day,150,0.8,35
+Portable Toilet Rental,Providing job site sanitation facilities.,"Permits, Disposal & Mobilization",week,175,0.2,96.67
+Core Sample Laboratory Analysis,Testing concrete or asphalt core for structural integrity.,"Permits, Disposal & Mobilization",each,400,1,183.33
+Engineer Certification Letter,Structural engineer sign-off on court foundation.,"Permits, Disposal & Mobilization",job,850,4,233.33
+Site Cleanup and Power Sweep,Final post-construction site cleaning and blowing.,"Permits, Disposal & Mobilization",job,250,2,0
+Hazardous Material Abatement,Removal and disposal of regulated old coatings.,"Permits, Disposal & Mobilization",job,1200,6,300
+Aluminum Court Bench Supply,Supplying standard 6-foot coated aluminum players bench.,Amenities & Accessories,each,450,0.5,250
+Umpire Chair Supply,Supplying referee chair with protective canopy.,Amenities & Accessories,each,1200,1,733.33
+Trash Receptacle Supply,Supplying heavy-duty coated steel trash can.,Amenities & Accessories,each,250,0.2,143.33
+Court Broom and Squeegee Rack,Supplying wall-mounted maintenance tool rack.,Amenities & Accessories,each,175,0.3,90
+Roller Squeegee Replacement,Supplying replacement PVA rolling water remover.,Amenities & Accessories,each,220,0.2,130
+Standard Court Broom,Supplying wide sweeping brush with aluminum handle.,Amenities & Accessories,each,130,0.1,76.67
+Ball Hopper Caddy Supply,Supplying heavy-duty metal tennis ball basket.,Amenities & Accessories,each,85,0.1,46.67
+Scorekeeper Turnstile Supply,Supplying rotating number tennis score flipper.,Amenities & Accessories,each,110,0.2,60
+Windscreen Banner Installation,Mounting sponsor or club logo banner on fence.,Amenities & Accessories,each,150,0.8,35
+Lockable Storage Box Supply,Supplying heavy-duty aluminum equipment storage locker.,Amenities & Accessories,each,950,0.5,591.67
+Annual Maintenance Service Contract,"Bi-annual inspection, washing, and minor repairs.",Maintenance Contracts,visit,600,3,150
+Quarterly Court Care Plan,"Four scheduled cleanings, net adjustments, and touch-ups.",Maintenance Contracts,visit,500,2.5,125
+Winterization Service,Blowing out water systems and securing nets for winter.,Maintenance Contracts,job,350,2,66.67
+Spring Opening Service,"Removing winter covers, washing, and setting up nets.",Maintenance Contracts,job,450,2.5,83.33
+Emergency Storm Cleanup,Clearing fallen branches and debris after severe weather.,Maintenance Contracts,hour,150,1.2,0
+Priority Service Add-On,Guaranteed 24-hour response time for service calls.,Maintenance Contracts,job,300,1.5,75
+Post-Construction Detail Cleaning,Deep chemical wash and detail after major repairs.,Maintenance Contracts,sq ft,1,0.005,0.33
+Surface Sealant Reapplication,Applying clear protective sealer to existing color coat.,Maintenance Contracts,sq ft,1,0.005,0.33
+Net Tension Calibration,Adjusting net height and cable tension to official specs.,Maintenance Contracts,visit,125,1,0
+Comprehensive Court Audit Report,Detailed written condition report with photo documentation.,Maintenance Contracts,job,350,2,66.67

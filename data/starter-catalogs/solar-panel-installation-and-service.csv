@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Solar Panel Installation,Mount and wire one photovoltaic solar panel on roof,Installation,each,350,1,150
+String Inverter Installation,Mount and wire one string inverter to wall,Inverter & Storage,each,1200,2,600
+Microinverter Installation,Install and connect one microinverter to panel,Inverter & Storage,each,180,0.5,80
+Battery Storage System Installation,Install and wire home battery backup system,Inverter & Storage,each,4500,8,2333.33
+Solar Racking Rail Installation,Install aluminum rail for solar mounting structure,Racking & Mounting,linear ft,18,0.08,8
+Roof Attachment L-Foot Installation,Secure waterproof roof anchor and L-foot mount,Racking & Mounting,each,35,0.15,11
+Tile Roof Mount Hook Installation,Install specialized tile roof attachment hook,Racking & Mounting,each,55,0.2,20
+Ground Mount Racking System Installation,Assemble ground mount solar structure and frame,Racking & Mounting,sq ft,25,0.05,12.5
+DC Conduit Run and Fasteners,Install exterior DC conduit and mounting clips,Wiring & Conduit,linear ft,12,0.05,3.83
+AC Conduit Run and Fasteners,Install exterior AC conduit and mounting hardware,Wiring & Conduit,linear ft,15,0.06,5
+Solar DC Wire Pull,Pull PV wire through conduit from array to inverter,Wiring & Conduit,linear ft,4,0.02,1
+MC4 Solar Cable Connector Replacement,Replace damaged or faulty waterproof MC4 connector,Wiring & Conduit,each,75,0.5,8.33
+Main Electrical Panel Upgrade,Upgrade main service panel to 200 amp capacity,Electrical & Grid,each,3200,8,1466.67
+Solar Generation Meter Installation,Install utility production meter socket and meter,Electrical & Grid,each,650,1.5,316.67
+Rapid Shutdown Device Installation,Install module-level rapid shutdown compliance unit,Electrical & Grid,each,150,0.5,58.33
+AC Disconnect Switch Installation,Mount external lockable AC safety disconnect switch,Electrical & Grid,each,350,1,150
+DC Disconnect Switch Installation,Mount external DC load-break safety disconnect switch,Electrical & Grid,each,400,1,183.33
+System Grounding Rod Installation,Drive copper ground rod and connect bonding wire,Electrical & Grid,each,250,1,83.33
+Solar System Diagnostic Diagnostic,"Troubleshoot system fault, low output, or error code",Service & Diagnostics,hour,175,1.4,0
+Inverter Replacement Service,Disconnect and replace failed string inverter unit,Service & Diagnostics,each,600,2,200
+Microinverter Replacement Service,Remove and replace failed module microinverter,Service & Diagnostics,each,250,1,83.33
+Solar Panel Removal and Reinstallation,Remove panels for roof repair and reinstall after,Service & Diagnostics,each,200,1.2,33.33
+Solar Panel Deep Cleaning Service,Wash and clean debris from solar panel glass surface,Service & Diagnostics,each,25,0.2,0
+Critter Guard Installation,Install mesh wire barrier to prevent animal nesting,Service & Diagnostics,linear ft,14,0.05,5.17
+Electrical Permit Acquisition,Secure municipal electrical permit for solar project,Permits & Inspection,job,300,2.4,0
+Building Permit Acquisition,Secure municipal structural building permit for array,Permits & Inspection,job,350,2.8,0
+Utility Interconnection Application Filing,Submit net metering and interconnection paperwork to utility,Permits & Inspection,job,250,2,0
+Structural Engineering Stamp,Provide certified engineer roof load calculation stamp,Permits & Inspection,job,500,4,0
+Electrical Safety Inspection,Perform final inspection and pass local code check,Permits & Inspection,visit,200,1.6,0
+Solar Monitoring Gateway Setup,Configure Wi-Fi data logger and production monitoring app,Monitoring & Smart,each,250,1,83.33
+CT Meter Clamp Installation,Install current transformers for consumption monitoring,Monitoring & Smart,each,200,1,50
+Solar Monitoring Gateway Replacement,Replace faulty communication logger and reconnect network,Monitoring & Smart,each,300,1,116.67
+EV Charger Integration with Solar,Install electric vehicle charger wired to solar system,Monitoring & Smart,each,850,2.5,350
+Smart Energy Panel Upgrade,Install smart load center for automated circuit control,Monitoring & Smart,each,2500,6,1133.33
+Rooftop Solar Array 4kW System,Complete 4 kilowatt residential solar installation package,Installation,job,10000,16,5333.33
+Rooftop Solar Array 6kW System,Complete 6 kilowatt residential solar installation package,Installation,job,14500,22,7800
+Rooftop Solar Array 8kW System,Complete 8 kilowatt residential solar installation package,Installation,job,18800,28,10066.67
+Rooftop Solar Array 10kW System,Complete 10 kilowatt residential solar installation package,Installation,job,23000,34,12333.33
+Rooftop Solar Array 12kW System,Complete 12 kilowatt residential solar installation package,Installation,job,27000,40,14666.67
+Monocrystalline Solar Panel Upgrade,Upgrade standard panels to high-efficiency monocrystalline modules,Installation,each,75,0.2,30
+Bifacial Solar Panel Installation,Install dual-side light absorbing solar panel module,Installation,each,420,1,196.67
+Commercial Solar Panel Installation,Mount and wire commercial grade PV panel on flat roof,Installation,each,380,1,173.33
+Ballasted Flat Roof Rack Installation,Install non-penetrating weighted roof racking system,Racking & Mounting,each,95,0.3,36.67
+Standing Seam Metal Roof Clamp,Install non-penetrating clamp for standing seam metal roof,Racking & Mounting,each,28,0.1,10
+Corrugated Metal Roof Bracket,Install bracket fastener for corrugated metal roofing,Racking & Mounting,each,32,0.12,11.33
+Roof Flashing Replacement,Remove and replace leaking roof flashing under solar mount,Racking & Mounting,each,120,0.6,30
+Racking Mid Clamp Component,Supply and install mid clamp between solar modules,Racking & Mounting,each,8,0.02,3.5
+Racking End Clamp Component,Supply and install end clamp on edge of solar array,Racking & Mounting,each,10,0.02,4.5
+Flexible Thin-Film Solar Module,Install adhesive thin-film solar laminate to membrane roof,Installation,each,310,1,123.33
+Solar Canopy Structure Installation,Erect overhead solar carport or patio shade structure,Installation,sq ft,45,0.1,20
+Hybrid Inverter Upgrade,Upgrade standard inverter to battery-ready hybrid model,Inverter & Storage,each,2200,4,1133.33
+Commercial Three-Phase Inverter,Install high capacity three-phase commercial inverter,Inverter & Storage,each,5500,8,3000
+Additional Battery Module Expansion,Add secondary battery pack to existing storage system,Inverter & Storage,each,3800,4,2133.33
+Battery Backup Transfer Switch,Install critical loads subpanel and automatic transfer switch,Inverter & Storage,each,1400,4,600
+Inverter Cooling Fan Replacement,Replace failed internal cooling fan inside inverter housing,Inverter & Storage,each,220,1.2,46.67
+Inverter Fuse Replacement,Replace blown DC or AC fuse inside inverter enclosure,Inverter & Storage,each,90,0.5,18.33
+Inverter Firmware Update Service,Connect and update inverter operating software version,Inverter & Storage,each,150,1.2,0
+Combiner Box Installation,Install electrical combiner box for multi-string arrays,Wiring & Conduit,each,450,1.5,183.33
+Combiner Box Surge Protector,Install lightning and surge protection device in combiner,Wiring & Conduit,each,180,0.5,78.33
+Underground Trenching for Solar Feed,Trench earth for underground conduit run to outbuilding,Wiring & Conduit,linear ft,22,0.08,8
+Underground PVC Conduit Installation,Lay buried PVC electrical conduit with warning tape,Wiring & Conduit,linear ft,14,0.05,5.17
+Direct Burial UF Wire Pull,Pull underground feeder cable through trench conduit,Wiring & Conduit,linear ft,8,0.03,2.83
+Flexible Liquidtight Conduit Run,Install flexible weather-rated conduit to array junction,Wiring & Conduit,linear ft,16,0.06,5.67
+Junction Box Weatherproof Mounting,Mount and seal outdoor electrical junction box,Wiring & Conduit,each,110,0.5,30
+Wire Management Clip Installation,Secure loose wires to racking with stainless steel clips,Wiring & Conduit,each,4,0.02,1.5
+Line-Side Tap Installation,Install supply-side interconnection tap at service entrance,Electrical & Grid,each,450,2,133.33
+Backfeed Circuit Breaker Installation,Install dedicated solar backfeed breaker in panel,Electrical & Grid,each,175,0.8,50
+Zero Export Controller Installation,Install device to prevent exporting power to grid,Electrical & Grid,each,550,2,200
+Arc Fault Circuit Interrupter Service,Troubleshoot and reset solar arc fault trip code,Electrical & Grid,hour,190,1.52,0
+Lightning Surge Arrestor Installation,Install main service panel whole-house surge protector,Electrical & Grid,each,320,1,133.33
+Main Service Busbar Upgrade,Replace electrical panel busbar to support high solar amps,Electrical & Grid,each,900,4,266.67
+Thermal Imaging Diagnostic Scan,Scan solar array with infrared camera for hot spots,Service & Diagnostics,hour,250,2,0
+String Insulation Resistance Testing,Perform megger insulation test on DC wiring circuits,Service & Diagnostics,hour,200,1.6,0
+Solar Array Voltage Curve Testing,Perform I-V curve tracer analysis on string output,Service & Diagnostics,each,350,1,150
+Bird Nest Removal and Cleanup,Clear debris and nests from underneath solar panels,Service & Diagnostics,each,150,1,16.67
+Snow Removal from Solar Array,Safely rake and clear heavy snow accumulation off panels,Service & Diagnostics,hour,160,1.28,0
+Hail Damage Assessment Inspection,Inspect glass and components after severe weather storm,Service & Diagnostics,visit,200,1.6,0
+Solar System Decommissioning,Safely disconnect and remove entire solar power system,Service & Diagnostics,job,2500,12,666.67
+Warranty Claim Processing Service,File paperwork and manage hardware replacement with manufacturer,Service & Diagnostics,job,150,1.2,0
+HOA Design Review Application,Prepare architectural drawings and submit to homeowner association,Permits & Inspection,job,200,1.6,0
+Fire Department Access Plan Drafting,Draw required rooftop pathway plan for municipal fire code,Permits & Inspection,job,175,1.4,0
+Historic District Permit Consultation,Navigate special architectural review board rules for solar,Permits & Inspection,hour,150,1.2,0
+Environmental Impact Study,Complete ground mount site environmental survey report,Permits & Inspection,job,800,6.4,0
+Utility Witness Test Coordination,Schedule and attend utility company operational inspection,Permits & Inspection,visit,250,2,0
+Solar Production Guarantee Audit,Analyze multi-year energy generation versus contract promise,Monitoring & Smart,job,400,3.2,0
+Home Energy Audit Service,Evaluate home efficiency and energy usage patterns,Monitoring & Smart,job,350,2.8,0
+Smart Thermostat Installation,Install and program Wi-Fi connected smart thermostat,Monitoring & Smart,each,200,0.8,66.67
+Load Center Energy Monitor Setup,Install whole-home circuit level energy usage tracker,Monitoring & Smart,each,350,1.5,116.67
+Weather Station Sensor Integration,Install rooftop irradiance and temperature sensor array,Monitoring & Smart,each,400,1.5,141.67
+Backup Generator Integration,Connect standby fossil fuel generator to solar storage system,Inverter & Storage,job,1800,8,533.33
+Off-Grid System Charge Controller,Install MPPT solar charge controller for battery bank,Inverter & Storage,each,650,1.5,316.67
+Deep Cycle Battery Bank Wiring,Interconnect series and parallel off-grid battery bank,Inverter & Storage,job,500,2.5,125
+Optimized Solar Optimizer Addition,Add DC power optimizer to shaded solar panel module,Inverter & Storage,each,140,0.4,60
+Rooftop Safety Anchor Installation,Install permanent fall protection anchor point on roof,Racking & Mounting,each,175,0.5,75
+Scaffolding Setup and Rental,Erect temporary exterior scaffolding for high roof access,Racking & Mounting,job,1200,4,466.67
+Solar Panel Recycling Disposal Fee,Properly recycle and dispose of damaged old solar module,Service & Diagnostics,each,50,0.1,32.33
+Emergency System Shutdown Service,Emergency site visit to safely isolate and shut down array,Service & Diagnostics,visit,300,1.8,53.33
+Solar Placard Label Kit,Install code-compliant reflective safety warning labels,Electrical & Grid,job,75,0.3,25
+After-Hours Emergency Service Dispatch,Urgent night or weekend solar electrical troubleshooting,Service & Diagnostics,hour,275,2.2,0

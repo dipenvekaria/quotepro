@@ -1,0 +1,99 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Bathtub Refinishing,"Clean, etch, prime, and topcoat standard porcelain tub",Bathtub Refinishing,job,450,2.5,90
+Cast Iron Bathtub Refinishing,Thermal-shock prep and refinish for heavy cast iron tub,Bathtub Refinishing,job,525,3,100
+Acrylic Bathtub Refinishing,Specialized bonding agent and topcoat for acrylic tubs,Bathtub Refinishing,job,475,2.5,110
+Fiberglass Bathtub Refinishing,High-flex primer and topcoat for fiberglass tub units,Bathtub Refinishing,job,475,2.5,110
+Clawfoot Bathtub Interior Refinishing,Interior surface restoration for freestanding clawfoot tub,Bathtub Refinishing,job,650,4,100
+Clawfoot Bathtub Exterior Refinishing,Exterior body prep and finish painting for clawfoot tub,Bathtub Refinishing,job,450,2.5,90
+Walk-in Tub Refinishing,Refinish interior surfaces of accessible walk-in bathtub,Bathtub Refinishing,job,750,4.5,125
+Jetted Tub Refinishing,Standard tub refinishing including surface around existing jets,Bathtub Refinishing,job,550,3,116.67
+Bathtub Color Change,Switch existing tub color from almond or pink to white,Bathtub Refinishing,job,100,0.5,25
+Deep-Soaking Tub Surcharge,Additional labor and material for oversized deep tubs,Bathtub Refinishing,job,125,0.5,43.33
+Standard Wall Tile Refinishing,"Clean, prep, and coat standard ceramic wall tile surround",Tile & Surround Refinishing,sq ft,6,0.03,2.8
+Shower Stall Refinishing,Refinish built-in fiberglass or tile shower base and walls,Tile & Surround Refinishing,job,550,3,116.67
+Tile Grout Line Accent Painting,Faux grout line painting in contrasting accent color,Tile & Surround Refinishing,sq ft,3,0.02,1.4
+Bathroom Vanity Top Refinishing,Refinish cultured marble or porcelain vanity countertop,Tile & Surround Refinishing,job,275,1.5,56.67
+Surround Accent Stripe,Add single decorative color stripe around tile surround,Tile & Surround Refinishing,linear ft,8,0.04,3.47
+Porcelain Sink Refinishing,Resurface drop-in or undermount bathroom sink basin,Tile & Surround Refinishing,each,225,1.25,50
+Pedestal Sink Refinishing,Refinish integrated basin and pedestal body,Tile & Surround Refinishing,each,275,1.5,56.67
+Kitchen Sink Refinishing,Resurface porcelain or cast iron single or double-basin sink,Tile & Surround Refinishing,job,350,2,66.67
+Floor Tile Refinishing,Resurface small ceramic bathroom floor tile area,Tile & Surround Refinishing,sq ft,8,0.04,3.73
+Soap Dish and Grab Bar Respraying,Refinish built-in ceramic soap dishes and grab bars in place,Tile & Surround Refinishing,each,45,0.25,9.67
+Bottom Tub Slip-Resistant Mat,Factory-applied permanent textured anti-slip safety pattern,Safety & Custom Options,job,75,0.25,29.17
+Custom Anti-Slip Strip Application,Apply set of non-slip adhesive strips to tub floor,Safety & Custom Options,job,50,0.25,12.5
+Granite-Look Fleck Finish Upgrade,Multi-color stone appearance topcoat spray application,Safety & Custom Options,job,150,0.5,58.33
+High-Gloss Clear Coat Upgrade,Extra protective clear gloss layer for enhanced shine,Safety & Custom Options,job,95,0.25,42.5
+Custom Color Match Surcharge,Match specific non-standard paint or tile manufacturer color,Safety & Custom Options,job,125,0.5,43.33
+Low-VOC Coating Upgrade,Premium low-odor environmentally friendly coating system,Safety & Custom Options,job,110,0.25,52.5
+Fast-Cure Catalyst Additive,Special additive allowing same-day use of refinished fixture,Safety & Custom Options,job,135,0.25,70
+Matte Finish Conversion,Apply specialized flattening agent for matte surface look,Safety & Custom Options,job,90,0.25,39.17
+Grab Bar Installation,Install customer-provided safety grab bar into wall studs,Safety & Custom Options,each,85,0.5,15
+Shower Rod Replacement,Remove old and install new standard curved shower rod,Safety & Custom Options,each,65,0.3,18
+Bottom Tub Rust Repair,"Grind out rust pit, neutralize, and fill with waterproof epoxy",Surface Prep & Repairs,each,75,0.4,16.67
+Fiberglass Bottom Soft Spot Repair,Reinforce sagging or cracked fiberglass tub bottom from top,Surface Prep & Repairs,job,225,1.25,50
+Chip Repair (Single Spot),Fill and color-blend single surface chip up to coin size,Surface Prep & Repairs,each,150,0.8,33.33
+Additional Chip Repairs,Per additional chip repaired during same service visit,Surface Prep & Repairs,each,45,0.25,9.67
+Crack Repair (Under 6 Inches),"V-groove, reinforce, and patch structural crack in tub",Surface Prep & Repairs,each,175,1,33.33
+Crack Repair (Over 6 Inches),Extensive structural crack repair with fiberglass mesh backing,Surface Prep & Repairs,each,250,1.5,43.33
+Hole Patching,Backer-patch and fill puncture hole through tub wall,Surface Prep & Repairs,each,200,1.25,31.67
+Old Liner Removal,Cut out and dispose of rigid plastic acrylic bathtub liner,Surface Prep & Repairs,job,300,2,16.67
+Severe Soap Scum Acid Wash,Heavy chemical stripping for neglected or calcified surfaces,Surface Prep & Repairs,job,95,0.5,21.67
+Tile Grout Regrouting,Rake out crumbling grout and replace with fresh grout mix,Surface Prep & Repairs,sq ft,5,0.02,2.4
+Standard Plumbing R&R,Remove and reinstall tub drain waste and overflow assembly,Plumbing & Hardware,job,150,1,16.67
+Drain Assembly Replacement,Install new customer-supplied trip-lever or push-pull drain,Plumbing & Hardware,each,95,0.5,21.67
+Overflow Cover Replacement,Swap out old tarnished overflow plate with new finish,Plumbing & Hardware,each,45,0.25,9.67
+Bathtub Spout Replacement,Unscrew old and install new slip-on or threaded tub spout,Plumbing & Hardware,each,75,0.4,16.67
+Shower Valve Trim Replacement,"Replace handle, escutcheon plate, and sleeve for shower valve",Plumbing & Hardware,job,110,0.6,23.33
+Supply Line Leak Check,Pressure test behind wall access panel for active leaks,Plumbing & Hardware,job,85,0.5,15
+Plumbing Access Panel Installation,Cut drywall and install plastic access hatch for tub plumbing,Plumbing & Hardware,each,125,0.75,21.67
+Shower Head Replacement,Swap standard shower head with new client-provided unit,Plumbing & Hardware,each,40,0.2,10
+Stuck Drain Removal Surcharge,Extra labor to extract rusted or cross-threaded old drain basket,Plumbing & Hardware,job,75,0.5,8.33
+Emergency Shut-off Valve Service,Locate and operate main water shut-off valves for prep work,Plumbing & Hardware,job,50,0.3,8.33
+Old Caulk Removal,Strip out failing silicone caulk from tub and tile joints,Caulking & Sealing,linear ft,2,0.01,0.93
+Professional Silicone Caulking,Apply fresh mildew-resistant white or clear silicone caulk bead,Caulking & Sealing,linear ft,3,0.01,1.47
+Mold Remediation Treatment,Apply industrial anti-fungal wash to joints prior to sealing,Caulking & Sealing,job,65,0.4,11
+Expansion Joint Sealing,Seal movement joints around tub rim with flexible elastomeric seal,Caulking & Sealing,linear ft,4,0.02,1.73
+Full Perimeter Re-Caulk,Complete removal and replacement of all tub and surround caulk,Caulking & Sealing,job,125,0.75,21.67
+Sink Basin Rim Sealing,Caulk perimeter seam between vanity top and drop-in sink,Caulking & Sealing,each,45,0.25,9.67
+Tile Transition Sealing,Seal vertical inside corners of tiled shower enclosure,Caulking & Sealing,linear ft,3,0.01,1.47
+Backsplash Waterproof Bead,Caulk bottom edge of bathroom mirror or tile backsplash,Caulking & Sealing,linear ft,2,0.01,0.93
+Clear Protective Caulk Shield,Apply secondary clear protectant over fresh silicone line,Caulking & Sealing,linear ft,2,0.01,0.93
+Grout Sealer Application,Brush-applied penetrating sealer over all existing tile grout,Caulking & Sealing,sq ft,1,0.005,0.49
+On-Site Estimate Fee,In-person consultation and color swatch presentation,Diagnostics & Admin,visit,50,0.4,0
+After-Hours Emergency Dispatch,Urgent response fee for weekend or evening service calls,Diagnostics & Admin,visit,150,1,16.67
+Reschedule Fee (Late Cancellation),Charge for cancellation with less than 24 hours notice,Diagnostics & Admin,job,75,0.6,0
+Return Trip Fee,Travel fee when client is not ready or site is unprepared,Diagnostics & Admin,visit,100,0.8,0
+Extended Warranty Registration,Register fixture for extended commercial or landlord warranty,Diagnostics & Admin,job,50,0.25,12.5
+Commercial Multi-Unit Rate,Discounted per-tub rate for volume apartment complex projects,Diagnostics & Admin,job,375,2.5,43.33
+Lead Paint Test,Chemical test kit swab for older homes with painted tubs,Diagnostics & Admin,each,40,0.2,10
+Subfloor Moisture Inspection,Electronic meter scan for rot behind surround or under floor,Diagnostics & Admin,job,60,0.4,6.67
+Hourly Labor Rate,Additional custom handyman or prep labor outside standard scope,Diagnostics & Admin,hour,85,1,0
+Old Fixture Debris Disposal,"Haul away old removed liners, doors, or heavy plumbing parts",Cleanup & Disposal,job,75,0.5,8.33
+Hazardous Material Disposal Fee,Environmental disposal fee for old chemical-laden fixtures,Cleanup & Disposal,job,50,0.2,16.67
+Full Bathroom Floor Masking,Cover entire bathroom floor with rosin paper and plastic sheeting,Cleanup & Disposal,job,45,0.3,5
+Exhaust Ventilation Duct Setup,Install temporary window exhaust fan and ducting for fumes,Cleanup & Disposal,job,60,0.4,6.67
+Post-Job Construction Cleanup,"Detailed sweep, vacuum, and wipe down of work area",Cleanup & Disposal,job,50,0.4,0
+Carpet Runner Protection,Lay down adhesive plastic film over path from entry to bathroom,Cleanup & Disposal,job,35,0.2,6.67
+Fixture Dust Containment Barrier,Zip-wall plastic dust barrier enclosing bathroom doorway,Cleanup & Disposal,job,85,0.5,15
+Chemical Odor Neutralizer Treatment,Spray botanical odor neutralizer after coating application,Cleanup & Disposal,job,40,0.2,10
+Old Shower Door Removal,Unscrew and remove old glass shower door frame assembly,Cleanup & Disposal,job,90,0.6,10
+Debris Bagging and Curbside Placement,Bag all trash and place in customer designated curbside bin,Cleanup & Disposal,job,30,0.2,3.33
+Second Coat Acid Etching,Deep acid wash for resistant factory porcelain finishes,Bathtub Refinishing,job,75,0.4,16.67
+Acrylic Tub Reinforcement Mat,Layer of fiberglass matting bonded under flexed acrylic bottom,Surface Prep & Repairs,job,130,0.6,36.67
+Tile Border Accent Line Refinishing,Refinish contrasting decorative tile border row,Tile & Surround Refinishing,linear ft,10,0.05,4.5
+Clawfoot Tub Interior Sandblasting,Abrasive blast interior of cast iron tub to bare metal,Surface Prep & Repairs,job,350,2,66.67
+Bathtub Over-Spray Masking Kit,Extensive paper masking of walls and ceiling around tub unit,Cleanup & Disposal,job,55,0.2,20
+Urinal Refinishing,Resurface commercial wall-hung porcelain urinal basin,Tile & Surround Refinishing,each,175,1,33.33
+Corner Shelf Refinishing,Resurface built-in ceramic or glass corner shower shelves,Tile & Surround Refinishing,each,35,0.2,6.67
+Threshold Refinishing,Resurface shower curb or door threshold tile,Tile & Surround Refinishing,linear ft,15,0.08,5.87
+Polyurethane Clear Topcoat,Extra layer of protective clear coat for heavy commercial use,Safety & Custom Options,job,120,0.6,30
+Waste & Overflow Linkage Adjustment,Adjust internal trip lever linkage for proper stopper seal,Plumbing & Hardware,job,45,0.25,9.67
+Shower Stall Pan Liner Patch,Epoxy patch for leaking fiberglass or acrylic shower pan base,Surface Prep & Repairs,job,180,1,36.67
+High-Heat Cure Heat Lamp Setup,Deploy commercial infrared heat lamps to accelerate cure time,Safety & Custom Options,job,90,0.5,18.33
+Stained Grout Color Sealing,Apply pigmented color seal to restore discolored grout lines,Tile & Surround Refinishing,sq ft,2,0.01,0.93
+Soap Scum Mechanical Buffing,Power buffing pre-treatment for heavy mineral deposit removal,Surface Prep & Repairs,job,80,0.5,11.67
+Bathroom Vent Fan Cover Reinstall,Remove and replace ceiling ventilation grille for masking,Cleanup & Disposal,each,25,0.2,0
+Toilet Removal and Reset Surcharge,Pull and reset toilet to allow access for tight tub wall refinishing,Plumbing & Hardware,job,175,1.2,16.67
+Pedestal Lavatory Leg Secure,Anchor loose pedestal sink base to floor and wall,Plumbing & Hardware,job,60,0.4,6.67
+Tile Surround Water Damage Dry-Out,Use industrial air movers to dry saturated wall cavity,Surface Prep & Repairs,day,110,0.6,23.33
+Final Inspection and Care Kit,Provide cleaning instructions and specialized non-abrasive cleaner sample,Diagnostics & Admin,job,25,0.1,8.33

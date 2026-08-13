@@ -1,0 +1,103 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Dispatch and initial diagnostic fee during business hours,Diagnostics and Service Calls,visit,95,0.76,0
+After Hours Service Call,Dispatch and initial diagnostic fee after hours,Diagnostics and Service Calls,visit,175,1.4,0
+Holiday Service Call,Dispatch and initial diagnostic fee on holidays,Diagnostics and Service Calls,visit,250,2,0
+Commercial Service Call,Business premises dispatch and site assessment,Diagnostics and Service Calls,visit,125,1,0
+Safe Lockout Diagnostic,Initial assessment of locked or jammed safe,Diagnostics and Service Calls,visit,150,1.2,0
+Automotive Service Call,Vehicle lockout dispatch and location fee,Diagnostics and Service Calls,visit,95,0.76,0
+Standard Locksmith Labor,Hourly labor rate for standard installation or repair,Labor Rates,hour,110,1,0
+After Hours Labor Rate,Hourly labor rate for evening or weekend work,Labor Rates,hour,165,1,0
+Specialized High Security Labor,Hourly rate for high-security and access control work,Labor Rates,hour,150,1,0
+Apprentice Labor Rate,Hourly labor rate for assistant technician,Labor Rates,hour,65,1,0
+Residential Lockout - Standard,Non-destructive opening of residential keyed door,Emergency Lockouts,each,125,0.8,18.33
+Residential Lockout - Deadbolt,Opening of locked residential deadbolt,Emergency Lockouts,each,145,0.8,31.33
+Commercial Lockout - Storefront,Opening of locked commercial glass or metal door,Emergency Lockouts,each,175,1,33.33
+Commercial Lockout - Panic Bar,Emergency opening via commercial exit device,Emergency Lockouts,each,225,1.2,53.33
+Automotive Lockout - Standard,Opening of standard passenger vehicle door,Emergency Lockouts,each,95,0.6,13.33
+Automotive Lockout - Luxury,Opening of high-end or specialized vehicle door,Emergency Lockouts,each,150,0.8,35.33
+Padlock Removal,Cutting off seized or jammed padlock,Emergency Lockouts,each,65,0.4,10
+Standard Key Duplication,Copy of standard brass house key,Key Cutting and Duplication,each,3,0.02,1.8
+High-Security Key Duplication,Copy of restricted or patented keyway,Key Cutting and Duplication,each,25,0.08,10
+Tubular Key Duplication,Copy of tubular cylindrical key,Key Cutting and Duplication,each,15,0.05,6
+Double-Sided Key Duplication,Copy of automotive or specialized double-sided key,Key Cutting and Duplication,each,8,0.03,2.8
+Skeleton Key Fabrication,Custom filing of antique skeleton key,Key Cutting and Duplication,each,75,0.4,16.67
+Key Origination From Code,Cut new key using manufacturer code data,Key Cutting and Duplication,each,45,0.25,9
+Impressioning Key,Hand-filing key by reading lock tumblers,Key Cutting and Duplication,each,95,0.5,22
+Standard Doorknob Replacement,Supply and install standard keyed entry knob,Locks and Hardware Replacement,each,120,0.6,30
+Grade 2 Deadbolt Replacement,Supply and install commercial-grade deadbolt,Locks and Hardware Replacement,each,150,0.6,50
+Grade 1 Commercial Deadbolt,Supply and install heavy-duty commercial deadbolt,Locks and Hardware Replacement,each,220,0.8,80
+Mortise Lock Body Replacement,Replace internal mortise lock cassette mechanism,Locks and Hardware Replacement,each,280,1.2,86.67
+Mortise Lock Trim Set,Replace exterior trim and handles for mortise lock,Locks and Hardware Replacement,each,190,0.8,60
+Rim Cylinder Replacement,Supply and install standard rim cylinder lock,Locks and Hardware Replacement,each,95,0.5,22
+Mortise Cylinder Replacement,Supply and install threaded mortise cylinder,Locks and Hardware Replacement,each,110,0.5,32
+Cam Lock Replacement,Supply and install cabinet or mailbox cam lock,Locks and Hardware Replacement,each,60,0.3,15
+Mailbox Lock Replacement,Drill and replace standard USPS cluster box lock,Locks and Hardware Replacement,each,75,0.4,16.67
+Standard Rekey - First Cylinder,Pin tumbler cylinder rekey including new keys,Rekeying Services,each,35,0.2,4.67
+Standard Rekey - Additional Cylinder,Additional cylinder rekeyed on same visit,Rekeying Services,each,20,0.12,3.33
+High-Security Rekey,Rekeying of restricted patent-protected cylinder,Rekeying Services,each,55,0.25,16.67
+Mortise Cylinder Rekey,Disassemble and rekey threaded mortise cylinder,Rekeying Services,each,40,0.2,10
+Master Key System Setup,Design and pin initial master key hierarchy system,Rekeying Services,job,250,1.4,50
+Master Key System Addition,Add new keyed cylinder to existing master key system,Rekeying Services,each,45,0.25,9
+Vehicle Key Programming - Standard,Program standard transponder chip ignition key,Automotive Locksmithing,each,120,0.4,46.67
+Vehicle Key Programming - Proximity,Program push-to-start smart proximity fob,Automotive Locksmithing,each,220,0.6,96.67
+Automotive Key Cutting & Programming,Cut and program standard laser-cut transponder key,Automotive Locksmithing,each,180,0.5,76.67
+Ignition Cylinder Replacement,Remove and replace faulty mechanical ignition cylinder,Automotive Locksmithing,each,250,1.2,66.67
+Door Lock Cylinder Repair - Auto,Rebuild or replace jammed vehicle door lock cylinder,Automotive Locksmithing,each,160,1,23.33
+Motorcycle Key Generation,Originate new key for motorcycle ignition switch,Automotive Locksmithing,each,150,0.8,33.33
+Smart Deadbolt Installation,Install customer-supplied electronic deadbolt,Electronic and Smart Locks,each,130,0.6,36.67
+Keyless Entry Touchpad Install,Supply and install commercial keypad lock,Electronic and Smart Locks,each,320,1.2,113.33
+Biometric Lock Installation,Install fingerprint scanning smart lock system,Electronic and Smart Locks,each,280,1.2,86.67
+Electric Strike Installation,Install low-voltage electric door strike into frame,Electronic and Smart Locks,each,350,1.4,116.67
+Magnetic Lock System Installation,Supply and mount electromagnetic door lock,Electronic and Smart Locks,each,450,1.6,166.67
+Access Control Panel Setup,Configure single-door cloud-connected access controller,Electronic and Smart Locks,each,275,1.5,56.67
+Proximity Card Reader Install,Mount and wire RFID keycard reader,Electronic and Smart Locks,each,175,0.8,53.33
+Smart Lock Battery Replacement,Service visit to replace depleted smart lock batteries,Electronic and Smart Locks,each,75,0.4,16.67
+Commercial Panic Bar Installation,Supply and install rim-exit panic hardware device,Commercial Hardware,each,425,1.8,133.33
+Vertical Rod Panic Bar Repair,Adjust and repair top and bottom rod exit device,Commercial Hardware,hour,140,1.12,0
+Door Closer Installation,Supply and mount hydraulic overhead door closer,Commercial Hardware,each,250,1.2,66.67
+Door Closer Adjustment,Tune spring tension and closing speed valves,Commercial Hardware,each,85,0.6,6.67
+Continuous Hinges Installation,Install heavy-duty aluminum geared continuous hinge,Commercial Hardware,each,290,1.2,93.33
+Commercial Pivot Set Replacement,Replace top and bottom heavy door pivot hinges,Commercial Hardware,job,380,1.6,120
+Threshold Replacement,Remove and replace aluminum exterior door threshold,Commercial Hardware,linear ft,45,0.25,8.67
+Weatherstripping Installation,Install perimeter door seal and smoke gasketing,Commercial Hardware,linear ft,15,0.08,3.5
+Safe Opening - Dial Combination,Non-destructive manipulation or drilling of mechanical safe,Safe and Vault Services,job,350,2.4,26.67
+Safe Opening - Electronic Keypad,Bypass failed electronic safe lock mechanism,Safe and Vault Services,job,300,2,26.67
+Safe Combination Change - Mechanical,Reset dial combination on mechanical safe lock,Safe and Vault Services,each,150,1,16.67
+Safe Combination Change - Electronic,Program new code on digital safe lock,Safe and Vault Services,each,110,0.7,13.33
+Safe Bolting Down,Anchor residential or commercial safe to concrete floor,Safe and Vault Services,each,175,1,33.33
+Safe Dial Replacement,Replace broken mechanical safe dial and ring,Safe and Vault Services,each,220,1.2,46.67
+Safe Relocation,Local moving of standard floor safe up to 500lbs,Safe and Vault Services,job,450,2.4,100
+Safe Scope Inspection,Borescope inspection of safe locking mechanism,Safe and Vault Services,each,125,1,0
+Drill-Out Stuck Deadbolt,Extract destroyed or frozen deadbolt from jamb,Repairs and Restorations,each,110,0.8,8
+Stripped Screw Repair,Rebuild stripped wood screw holes in door frame,Repairs and Restorations,each,45,0.3,4.67
+Door Alignment and Adjustment,Realign sagging door to latch correctly in strike plate,Repairs and Restorations,each,95,0.76,0
+Strike Plate Modification,Enlarge or reposition metal strike plate for smooth latching,Repairs and Restorations,each,60,0.4,6.67
+Broken Key Extraction,Extract snapped key fragment from lock cylinder,Repairs and Restorations,each,65,0.5,2
+Hollow Metal Door Repair,Reinforce crushed hollow metal door lock stile,Repairs and Restorations,job,250,1.6,33.33
+Wood Door Edge Repair,Repair splintered wood around mortise pocket,Repairs and Restorations,job,190,1.2,26.67
+Antique Lock Restoration,"Disassemble, clean, and repair vintage rim lock",Repairs and Restorations,job,320,2,46.67
+Reinforced Strike Box Install,Install high-security heavy-duty security strike plate,Security Upgrades,each,85,0.5,15
+Door Armor Wrap Install,Install steel door wrap-around reinforcing plate,Security Upgrades,each,175,0.8,50
+Security Hasp Installation,Install heavy-duty steel padlock hasp and staple,Security Upgrades,each,95,0.6,13.33
+Window Guard Installation,Supply and mount security bar guard over window,Security Upgrades,each,220,1,63.33
+Door Viewer (Peephole) Installation,Bore hole and install 200-degree door optical viewer,Security Upgrades,each,65,0.4,10
+Security Survey and Audit,Comprehensive physical property vulnerability assessment,Security Upgrades,visit,150,1.2,0
+Anti-Snap Cylinder Upgrade,Install break-resistant bump-proof lock cylinder,Security Upgrades,each,130,0.6,36.67
+Security Latch Guard Install,Install metal plate preventing latch slip-attacks,Security Upgrades,each,90,0.6,10
+Standard Key Cabinet,Supply and mount 50-capacity key storage cabinet,Hardware and Accessories,each,110,0.4,40
+Brass Padlock - Heavy Duty,Supply hardened steel shackle brass padlock,Hardware and Accessories,each,45,0.1,26.67
+Brass Padlock - Weatherproof,Supply weather-resistant rubber-jacketed padlock,Hardware and Accessories,each,55,0.1,33.33
+Door Chain Guard,Supply and install traditional surface-mounted door chain,Hardware and Accessories,each,40,0.25,5
+Kick Plate Installation,Mount stainless steel protective plate to bottom of door,Hardware and Accessories,each,120,0.6,28
+Sliding Glass Door Lock,Supply and install secondary patio door security lock,Hardware and Accessories,each,75,0.4,16.67
+Garage Door Lock Kit,Replace manual T-handle garage door locking mechanism,Hardware and Accessories,each,95,0.5,22
+Key Retaining Lanyard,Supply retractable heavy-duty steel key reel,Hardware and Accessories,each,20,0.05,9.33
+Emergency Exit Sign Install,Mount illuminated battery-backup exit sign,Hardware and Accessories,each,160,0.8,40
+Disposal of Old Hardware,Haul away and recycle replaced commercial door hardware,"Permits, Disposal, and Fees",job,35,0.28,0
+After-Hours Parking/Toll Surcharge,Urban delivery or congestion parking fee recovery,"Permits, Disposal, and Fees",visit,30,0.24,0
+Special Lift Rental Surcharge,Scissor lift rental allocation for high overhead doors,"Permits, Disposal, and Fees",day,250,0,166.67
+Municipal Permit Acquisition,Process local government permit for storefront access control,"Permits, Disposal, and Fees",job,125,1,0
+Rush Hardware Delivery Fee,Courier charge for expedited non-stocked specialty parts,"Permits, Disposal, and Fees",job,75,0,50
+Environmental Core Disposal,Safe disposal fee for legacy electronic lock batteries,"Permits, Disposal, and Fees",job,15,0.12,0
+Hazardous Location Surcharge,Special safety gear and protocol fee for industrial sites,"Permits, Disposal, and Fees",visit,100,0.8,0
+Travel Surcharge - Extended Range,Mileage fee for service locations outside standard zone,"Permits, Disposal, and Fees",visit,50,0.4,0

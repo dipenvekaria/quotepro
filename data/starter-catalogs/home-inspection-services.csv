@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Home Inspection,Comprehensive visual inspection of entire home structure and systems,Standard Inspections,job,450,3.2,33.33
+Condo Inspection,Visual inspection of interior and accessible limited common elements,Standard Inspections,job,325,2.2,33.33
+Multi-Family Inspection Duplex,Inspection of two attached residential dwelling units,Standard Inspections,job,650,4.8,33.33
+Multi-Family Inspection Triplex,Inspection of three attached residential dwelling units,Standard Inspections,job,800,6,33.33
+Multi-Family Inspection Quadplex,Inspection of four attached residential dwelling units,Standard Inspections,job,950,7.2,33.33
+Pre-Drywall Inspection,"Framing, plumbing, and electrical rough-in inspection before drywall",Standard Inspections,job,400,2.8,33.33
+Builder Warranty Inspection,Comprehensive inspection prior to expiration of builder one-year warranty,Standard Inspections,job,425,3,33.33
+Maintenance Checkup Inspection,Annual general condition and preventative maintenance review,Standard Inspections,job,300,2,33.33
+Re-Inspection Service,Verification of previously reported repair items completed by seller,Standard Inspections,job,175,1,33.33
+Commercial Building Inspection,Property condition assessment for light commercial buildings,Standard Inspections,sq ft,1,0.005,0.65
+Radon Testing 48-Hour,Continuous radon monitor placement for minimum 48 hours,Environmental Testing,job,175,0.8,50
+Radon Testing Long-Term,Alpha track long-term radon test kit deployment,Environmental Testing,job,250,1,83.33
+Mold Air Quality Testing,Collection of two ambient air samples and one outdoor control,Environmental Testing,job,300,1,116.67
+Additional Mold Air Sample,Extra indoor air sample collected for laboratory analysis,Environmental Testing,each,75,0.2,30
+Mold Surface Lift Sample,Tape lift sample of visible suspected mold growth for lab culture,Environmental Testing,each,75,0.2,30
+Asbestos Bulk Material Testing,Collection and lab analysis of suspected asbestos-containing material,Environmental Testing,each,125,0.4,50
+Lead-Based Paint Screening,XRF or swab test screening for lead paint on painted surfaces,Environmental Testing,job,250,1,83.33
+Indoor Allergen Testing,Dust sample collection for common indoor allergens and dust mites,Environmental Testing,job,200,0.8,66.67
+Volatile Organic Compounds Test,Air sampling for chemical pollutants and VOCs in living space,Environmental Testing,job,350,1,150
+Formaldehyde Testing,Active air sampling for formaldehyde emission levels,Environmental Testing,job,275,0.8,116.67
+Standard Water Quality Test,"Testing for coliform bacteria, nitrates, lead, and pH levels",Water & Septic Testing,job,200,0.6,83.33
+Comprehensive Well Water Panel,Full laboratory screen including heavy metals and minerals,Water & Septic Testing,job,350,1,150
+Bacteria Only Water Test,Coliform and E. coli presence or absence water sample,Water & Septic Testing,job,125,0.4,50
+Septic System Loading Test,Functional hydraulic load test of septic tank and drain field,Water & Septic Testing,job,400,2.4,66.67
+Septic Tank Camera Scope,Internal video inspection of septic tank structural condition,Water & Septic Testing,job,250,1.6,33.33
+Flow Rate Well Test,Four-hour sustained yield and water pressure test for private well,Water & Septic Testing,job,300,2,33.33
+Municipal Water Meter Check,Leak detection check using city water supply meter,Water & Septic Testing,job,75,0.6,0
+Greywater System Evaluation,Visual check of residential greywater recycling or discharge setup,Water & Septic Testing,job,150,1.2,0
+Sump Pump Operational Test,Manual float activation and discharge flow check,Water & Septic Testing,job,60,0.48,0
+Sewage Ejector Pump Test,Functional check of below-grade sewage basin pump,Water & Septic Testing,job,85,0.68,0
+Wood Destroying Insect Inspection,"Visual NPMA-33 inspection for termites, carpenter ants, and beetles",Pest & Structural,job,125,1,0
+Termite Specific Inspection,Targeted search for subterranean or drywood termite evidence,Pest & Structural,job,100,0.8,0
+Rodent Infestation Survey,"Check crawlspaces and attics for signs of mice, rats, or squirrels",Pest & Structural,job,90,0.72,0
+Powderpost Beetle Check,Inspection of structural framing for wood-boring beetle holes,Pest & Structural,job,110,0.88,0
+Foundation Structural Assessment,Detailed engineering-style review of settlement and cracking,Pest & Structural,job,350,2.4,33.33
+Retaining Wall Inspection,Visual stability check of landscape and structural retaining walls,Pest & Structural,job,150,1.2,0
+Roof Framing Analysis,"Inspection of rafter and truss alignment, sagging, and bracing",Pest & Structural,job,120,0.96,0
+Crawlspace Structural Check,"Inspection of floor joists, girders, and pier supports",Pest & Structural,job,130,1.04,0
+Chimney Structural Inspection,"Visual check of exterior masonry, crown, and flashing condition",Pest & Structural,job,140,1.12,0
+Balcony and Deck Safety Review,Load-path connection and ledger board fastening inspection,Pest & Structural,job,150,1.2,0
+Thermal Imaging Scan Full House,"Infrared camera scan for hidden moisture, leaks, and insulation gaps",Specialty & Systems,job,200,1,50
+Sewer Line Video Scope,Camera inspection of main sewer line from house to municipal tie-in,Specialty & Systems,job,275,1.4,66.67
+Chimney Flue Level 2 Scope,Internal video camera sweep of fireplace flue and damper,Specialty & Systems,job,225,1.2,50
+Pool and Spa Inspection,"Operational check of pool pump, heater, filter, and safety barriers",Specialty & Systems,job,250,1.6,33.33
+Standalone Spa Check,"Inspection of hot tub heater, jets, pump, and electrical disconnect",Specialty & Systems,job,150,1,16.67
+Lawn Sprinkler System Test,"Functional test of irrigation zones, timer, and sprinkler heads",Specialty & Systems,job,125,1,0
+Solar Panel System Overview,Visual check of roof-mounted photovoltaic panels and inverter status,Specialty & Systems,job,200,1.2,33.33
+Generator Functional Test,Manual start and transfer switch test for standby generator,Specialty & Systems,job,150,1.2,0
+Outbuilding Guest House Inspection,Inspection of detached secondary dwelling up to 600 sq ft,Specialty & Systems,job,250,1.6,33.33
+Detached Garage Workshop Check,Inspection of separate garage structure and sub-panel,Specialty & Systems,job,150,1.2,0
+HVAC Heat Pump Operation Test,Temperature split and mode check for heating and cooling cycles,Mechanical & Electrical,job,100,0.8,0
+Boiler System Inspection,"Inspection of hydronic heating boiler, pressure, and relief valve",Mechanical & Electrical,job,150,1.2,0
+Electrical Panel Thermal Scan,Infrared check of circuit breakers for overheating and hot spots,Mechanical & Electrical,job,100,0.6,16.67
+Main Electrical Panel Audit,"Removal of dead front to check wiring, sizing, and double taps",Mechanical & Electrical,job,90,0.72,0
+Sub-Panel Inspection,Check of secondary circuit breaker panel for code and safety,Mechanical & Electrical,each,60,0.48,0
+GFCI and AFCI Testing,Testing trip functionality of ground fault and arc fault breakers,Mechanical & Electrical,job,75,0.6,0
+Electric Vehicle Charger Check,Inspection of installed EV charging station and dedicated circuit,Mechanical & Electrical,job,75,0.6,0
+Gas Leak Detection Sweep,Electronic sniff test of accessible gas lines and appliance connections,Mechanical & Electrical,job,100,0.6,16.67
+Water Heater Performance Check,"Temperature, pressure relief valve, and burner/element check",Mechanical & Electrical,job,75,0.6,0
+Tankless Water Heater Check,"Inspection of flow rate, venting, and scale buildup indicators",Mechanical & Electrical,job,95,0.76,0
+Drone Roof Inspection,High-resolution aerial roof and chimney imaging for steep slopes,Accessory & Logistics,job,125,0.6,33.33
+Weekend Inspection Surcharge,Additional fee for performing inspection on Saturday or Sunday,Accessory & Logistics,job,100,0.8,0
+Same-Day Report Delivery,Guaranteed inspection report delivery by 9 PM on inspection day,Accessory & Logistics,job,75,0.6,0
+Historical Home Surcharge,Extra inspection time for homes built prior to 1940,Accessory & Logistics,job,100,0.8,0
+Large Home Square Footage Fee,"Added charge for homes exceeding 3,500 finished square feet",Accessory & Logistics,sq ft,0.1,0.001,0.07
+Out of Service Area Travel Fee,Travel fee for inspections outside standard 40-mile service radius,Accessory & Logistics,visit,50,0.4,0
+Crawlspace Entry Surcharge,"Added fee for tight, muddy, or restricted physical crawlspace entry",Accessory & Logistics,job,75,0.6,0
+Attic Walkthrough Surcharge,Added fee for difficult attic entry or low-clearance roof spaces,Accessory & Logistics,job,60,0.48,0
+Additional Participant Consultation,On-site walkthrough consultation for additional family members,Accessory & Logistics,hour,75,1,0
+Printed Bound Report Copy,Full color hard-copy inspection report delivered in binder,Accessory & Logistics,job,40,0.1,18.33
+Energy Audit Assessment,Blower door test preparation and insulation thermal analysis,Energy & Efficiency,job,300,2,33.33
+Blower Door Test,Air leakage quantification test for building envelope tightness,Energy & Efficiency,job,250,1.2,66.67
+Attic Insulation Depth Check,Measurement of R-value and thickness across attic spaces,Energy & Efficiency,job,50,0.4,0
+Window Seal Failure Check,Inspection of double-pane glass for interior fogging and seal leaks,Energy & Efficiency,job,75,0.6,0
+Door Weatherstripping Audit,Check of exterior door seals and threshold clearances,Energy & Efficiency,job,45,0.36,0
+Ductwork Integrity Check,Inspection of accessible HVAC supply and return duct connections,Energy & Efficiency,job,85,0.68,0
+Appliance Energy Efficiency Review,Age and operational check of major built-in kitchen appliances,Energy & Efficiency,job,60,0.48,0
+Whole House Fan Operation Check,Testing of attic ventilation fan and louver operation,Energy & Efficiency,job,40,0.32,0
+Passive Vent Inspection,"Check of soffit, ridge, and gable vents for blockage",Energy & Efficiency,job,50,0.4,0
+Thermostat Calibration Check,Testing digital and mechanical thermostat response accuracy,Energy & Efficiency,job,35,0.28,0
+Exterior Drainage and Grading Review,Check of yard slope and water runoff away from foundation,Site & Exterior,job,75,0.6,0
+Driveway and Walkway Condition Check,Inspection of concrete and asphalt flatwork for trip hazards,Site & Exterior,job,60,0.48,0
+Fence and Gate Safety Inspection,Check of property fencing and pool barrier gate latches,Site & Exterior,job,50,0.4,0
+Exterior Siding and Trim Audit,"Visual check of brick, vinyl, stucco, or wood siding condition",Site & Exterior,job,80,0.64,0
+Gutter and Downspout Flow Check,"Inspection of gutter pitch, secure attachment, and splash blocks",Site & Exterior,job,50,0.4,0
+Exterior Hose Bib Anti-Siphon Check,Testing freeze-resistant outdoor faucets for proper operation,Site & Exterior,job,40,0.32,0
+Exterior GFCI Outlet Audit,Testing weather-resistant outdoor electrical outlets and covers,Site & Exterior,job,45,0.36,0
+Porch and Stoop Structural Check,Inspection of front entry porch settlement and railing safety,Site & Exterior,job,70,0.56,0
+Patio Slab Cracking Review,Assessment of concrete patio slabs for displacement and pitch,Site & Exterior,job,50,0.4,0
+Outbuilding Shed Inspection,Visual check of small detached storage shed or playhouse,Site & Exterior,job,75,0.6,0
+Interior Wall and Ceiling Finish Check,Inspection of drywall and plaster for cracks and water stains,Interior Rooms,job,60,0.48,0
+Flooring Material Inspection,"Visual check of hardwood, tile, carpet, and vinyl flooring",Interior Rooms,job,60,0.48,0
+Interior Door Operability Test,"Testing interior doors for latching, binding, and plumb frames",Interior Rooms,job,50,0.4,0
+Stairway and Handrail Safety Check,"Inspection of step risers, treads, balusters, and handrails",Interior Rooms,job,50,0.4,0
+Smoke and Carbon Monoxide Detector Test,Testing alarm sounder and battery operation for all units,Interior Rooms,job,45,0.36,0
+Built-In Oven and Range Test,"Functional check of cooktop burners, oven elements, and broiler",Interior Rooms,job,50,0.4,0
+Built-In Dishwasher Cycle Test,"Running quick cycle to check fill, wash, and drain functions",Interior Rooms,job,45,0.36,0
+Garbage Disposal Operational Test,"Testing food waste disposer motor, blades, and wall switch",Interior Rooms,job,35,0.28,0
+Built-In Microwave Functional Test,Testing microwave heating and exhaust fan operation,Interior Rooms,job,35,0.28,0
+Attic Access Ladder Inspection,"Check of pull-down attic stair hardware, springs, and fasteners",Interior Rooms,job,40,0.32,0

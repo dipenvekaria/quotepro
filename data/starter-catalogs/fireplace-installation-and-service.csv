@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Initial troubleshooting and system evaluation visit,Diagnostics & Service,visit,149,1,16
+After-Hours Emergency Diagnostic,Urgent service call outside normal business hours,Diagnostics & Service,visit,275,1.5,59.33
+Annual Fireplace Tune-Up,"Comprehensive cleaning, safety check, and performance test",Diagnostics & Service,each,199,1.2,32.67
+Gas Leak Detection Service,Electronic sniff test of all gas line connections,Diagnostics & Service,each,125,1,0
+Carbon Monoxide Testing,Ambient air and flue gas CO concentration test,Diagnostics & Service,each,95,0.76,0
+Standard Technician Labor,Hourly rate for repair and installation labor,Labor Rates,hour,150,1,0
+Two-Man Installation Labor,Hourly rate for a two-person installation crew,Labor Rates,hour,275,2,16.67
+Master Technician Specialist,Advanced troubleshooting and complex wiring labor,Labor Rates,hour,195,1,46.67
+Pilot Assembly Replacement,Replace standing pilot assembly and thermocouple,Repairs & Maintenance,each,245,1,80
+Thermocouple Replacement,Replace faulty safety thermocouple on millivolt valve,Repairs & Maintenance,each,165,1,26.67
+Thermopile Replacement,Replace power-generating thermopile sensor,Repairs & Maintenance,each,185,1,40
+Gas Control Valve Replacement,Replace main millivolt or IPI gas control valve,Repairs & Maintenance,each,485,1.5,203.33
+IPI Electronic Ignition Module,Replace intermittent pilot ignition control module,Repairs & Maintenance,each,425,1.2,183.33
+Igniter Electrode Replacement,Replace spark igniter and ceramic electrode assembly,Repairs & Maintenance,each,195,1,46.67
+Blower Fan Kit Replacement,Replace convection room air blower fan assembly,Repairs & Maintenance,each,395,1.2,163.33
+Blower Rheostat Speed Control,Replace variable speed fan control switch,Repairs & Maintenance,each,155,1,20
+Thermal Snap Switch Replacement,Replace high-limit or blower activation snap disc,Repairs & Maintenance,each,135,1,6.67
+Ceramic Glass Panel Replacement,Replace cracked or broken tempered ceramic viewing glass,Repairs & Maintenance,each,450,1,216.67
+Glass Gasket Replacement,Install new fiberglass rope seal around glass frame,Repairs & Maintenance,linear ft,25,0.15,4.33
+Door Latch Spring Replacement,Replace tension springs on fireplace glass barrier,Repairs & Maintenance,each,95,0.6,13.33
+Burner Tube Cleaning and Alignment,"Remove, clean, and reinstall main gas burner ports",Repairs & Maintenance,each,175,1.2,13.33
+Orifice Replacement,Replace main burner gas orifice for proper flame,Repairs & Maintenance,each,115,0.8,12.67
+Log Set Rearrangement,Position ceramic logs per manufacturer specifications,Repairs & Maintenance,each,125,1,0
+Ember Material Replacement,Install fresh glowing embers or rockwool material,Repairs & Maintenance,each,95,0.6,13.33
+Venting Gasket Kit Installation,Replace high-temperature silicone seals on direct vent,Repairs & Maintenance,each,185,1,40
+Draft Hood Replacement,Replace B-vent draft diverter hood,Repairs & Maintenance,each,285,1.5,65
+Pressure Switch Replacement,Replace direct vent airflow proving switch,Repairs & Maintenance,each,235,1.2,54
+Transformer Replacement,Replace 110V to 120V step-down low voltage transformer,Repairs & Maintenance,each,165,1,26.67
+Wiring Harness Repair,Repair or replace damaged internal electrical wiring,Repairs & Maintenance,hour,150,1,16.67
+Battery Backup Pack Replacement,Replace emergency battery pack for IPI systems,Repairs & Maintenance,each,115,0.5,35
+Direct Vent Gas Insert Installation,Standard drop-in installation into existing masonry fireplace,Fireplace Installation,job,1450,6,466.67
+B-Vent Gas Fireplace Installation,Install natural draft B-vent fireplace unit,Fireplace Installation,job,1850,8,583.33
+Zero Clearance Fireplace Box Install,Install framing and zero clearance firebox housing,Fireplace Installation,job,2200,10,633.33
+Direct Vent Pipe Run (Vertical),Install coaxial or colinear venting through roof,Fireplace Installation,linear ft,75,0.4,16.33
+Direct Vent Pipe Run (Horizontal),Install rigid or flexible direct vent through sidewall,Fireplace Installation,linear ft,65,0.35,14.33
+Termination Cap Installation,Install exterior horizontal or vertical vent cap,Fireplace Installation,each,250,1.2,66.67
+Gas Line Run (Flexible CSST),Run new flexible gas line from meter to fireplace,Fireplace Installation,linear ft,22,0.12,4.67
+Gas Shutoff Valve Installation,Install manual quarter-turn gas ball valve,Fireplace Installation,each,145,0.8,32.67
+Gas Pressure Regulator Installation,Install or replace appliance gas pressure regulator,Fireplace Installation,each,175,1,33.33
+Wall Switch Installation,Install standard millivolt on/off wall switch,Fireplace Installation,each,95,0.6,13.33
+110V Outlet Installation,Install dedicated electrical receptacle inside fireplace cavity,Fireplace Installation,each,225,1.2,52.67
+Fireplace Hearth Pad Installation,Install non-combustible hearth extension pad,Fireplace Installation,each,350,1.5,110
+Non-Combustible Wall Board Install,Install cement board around fireplace facing,Fireplace Installation,sq ft,18,0.08,7.47
+Existing Insert Extraction,Disconnect and remove old fireplace insert,Fireplace Installation,job,295,2,30
+Chimney Liner Kit (Aluminum),Install flexible aluminum liner for gas insert conversion,Venting & Chimney,linear ft,45,0.2,26.67
+Chimney Liner Kit (Stainless Steel),Install heavy-duty stainless steel chimney liner,Venting & Chimney,linear ft,65,0.25,37.67
+Chimney Cap Installation,Install single-flue stainless steel protective cap,Venting & Chimney,each,220,1,63.33
+Chimney Chase Cover Replacement,Custom galvanized or stainless chase top cover installation,Venting & Chimney,each,650,2,266.67
+Chimney Flue Sweep,Mechanical brush cleaning of wood-burning flue,Venting & Chimney,job,225,1.5,26.67
+Creosote Chemical Treatment,Apply professional chemical remover for heavy creosote,Venting & Chimney,job,125,0.5,42
+Damper Replacement,Replace throat damper plate and hardware,Venting & Chimney,each,385,2,90
+Top-Sealing Damper Installation,Install energy-saving chimney top damper with cable,Venting & Chimney,each,495,2.2,146.67
+Firebox Masonry Tuckpointing,Repair mortar joints inside wood-burning firebox,Venting & Chimney,sq ft,35,0.2,4.67
+Refractory Panel Set Replacement,Replace cracked ceramic refractory panels in firebox,Venting & Chimney,each,550,2,200
+Smoke Chamber Parging,Smooth and seal masonry smoke chamber with refractory mortar,Venting & Chimney,job,600,3.5,112.5
+Exterior Brick Waterproofing,Apply breathable siloxane water repellent to chimney exterior,Venting & Chimney,job,275,1.5,56.67
+Crown Repair and Sealing,Apply elastomeric waterproof coating to concrete chimney crown,Venting & Chimney,job,350,2,66.67
+Basic Handheld Remote Control,Install on/off battery-operated wireless remote kit,Controls & Accessories,each,175,0.5,75
+Thermostatic Remote Control,Install wireless remote with ambient temperature control,Controls & Accessories,each,285,0.6,140
+Programmable Wall Thermostat,Install digital wall thermostat for millivolt fireplace,Controls & Accessories,each,195,0.8,63.33
+Smart Home Wi-Fi Module,Install app-compatible receiver module for remote operation,Controls & Accessories,each,325,1,133.33
+Decorative Ceramic Log Set Upgrade,Upgrade to high-definition realistic oak ceramic log set,Controls & Accessories,each,450,0.5,256.67
+Crushed Glass Media Kit,Install reflective fire glass media for modern burners,Controls & Accessories,job,195,0.5,90
+Decorative River Rock Media,Install ceramic stone media kit in lieu of logs,Controls & Accessories,job,220,0.5,105
+Black Metal Fireplace Trim Kit,Install custom fit surround faceplate and trim,Controls & Accessories,each,320,1,130
+Cast Iron Surrounds Installation,Install heavy cast iron decorative facade frame,Controls & Accessories,each,550,2,200
+Fireplace Safety Screen Guard,Install mesh safety barrier screen to prevent burns,Controls & Accessories,each,225,0.8,85
+Mantel Shelf Installation,Mount wooden or stone decorative mantel shelf,Controls & Accessories,each,350,1.5,110
+Log Lighter Installation,Install gas log lighter pipe inside wood-burning hearth,Controls & Accessories,job,295,1.5,73.33
+Gas Conversion Kit (NG to LP),Convert natural gas valve and burners to propane,Conversions & Upgrades,job,375,1.5,125
+Gas Conversion Kit (LP to NG),Convert propane valve and burners to natural gas,Conversions & Upgrades,job,375,1.5,125
+Standing Pilot to IPI Upgrade Kit,Upgrade old standing pilot system to electronic ignition,Conversions & Upgrades,job,650,3,183.33
+High-Altitude Orifice Adjustment Kit,Install altitude-specific gas orifices for proper combustion,Conversions & Upgrades,job,225,1.2,50
+Direct Vent Conversion from B-Vent,Convert natural draft venting system to sealed direct vent,Conversions & Upgrades,job,1200,6,300
+Pellet Stove Insert Installation,Install biomass pellet stove insert with flexible liner,Pellet & Biomass,job,1350,6,400
+Pellet Stove Annual Service,"Clean ash trap, exhaust blower, feed system, and burn pot",Pellet & Biomass,each,250,1.5,43.33
+Pellet Stove Convection Blower,Replace room air blower motor on pellet stove,Pellet & Biomass,each,385,1.5,133.33
+Pellet Stove Exhaust Combustion Motor,Replace draft blower motor assembly,Pellet & Biomass,each,425,1.5,160
+Pellet Stove Auger Motor Replacement,Replace pellet feed auger gear motor,Pellet & Biomass,each,345,1.5,106.67
+Pellet Stove Igniter Cartridge,Replace electric auto-start heating element,Pellet & Biomass,each,225,1,66.67
+Pellet Stove Circuit Board,Replace digital control board and interface,Pellet & Biomass,each,485,1.2,223.33
+Electric Fireplace Insert Installation,Install plug-in or hardwired electric fireplace unit,Electric Fireplaces,job,450,2.5,91.67
+Electric Fireplace LED Light Strip,Replace internal ember bed and flame effect LED assembly,Electric Fireplaces,each,225,1,66.67
+Electric Fireplace Heating Element,Replace forced-air heating coil and blower assembly,Electric Fireplaces,each,275,1.2,83.33
+Electric Fireplace Flame Motor,Replace rotisserie flame simulation spinner motor,Electric Fireplaces,each,185,1,40
+Municipal Mechanical Permit,Required local building and gas line permit processing,Permits & Disposal,each,150,0,150
+Old Fireplace Unit Disposal,Haul away and recycle old metal or masonry fireplace unit,Permits & Disposal,each,125,1,0
+Debris Haul Away Fee,"Remove jobsite packaging, old bricks, and construction waste",Permits & Disposal,job,95,0.5,22
+Scaffolding Setup and Rental,Erect safety scaffolding for high vaulted ceiling installations,Permits & Disposal,day,250,1,83.33
+Core Drilling Through Concrete Wall,Core drill exterior foundation wall for intake and exhaust,Permits & Disposal,each,350,1.5,110
+Drywall Patch and Repair,Patch drywall cutouts required for gas line or vent runs,Permits & Disposal,job,225,1.5,26.67
+High-Temperature Silicone Sealant,Tube of rated red RTV silicone for flue joints,Materials & Hardware,each,25,0.1,15.67
+Fireplace Glass Cleaner Spray,Professional ceramic glass cleaner bottle,Materials & Hardware,each,20,0.05,12.67
+Refractory Cement Tub,High-heat mortar for firebrick repairs,Materials & Hardware,each,35,0.1,22
+Pipe Thread Sealant Compound,Gas-rated pipe dope sealant container,Materials & Hardware,each,22,0.05,14
+Floor Protection Surface Covering,Temporary ram board and drop cloths for home protection,Materials & Hardware,job,50,0.3,7.67
+Fireplace Safety Inspection Certificate,Written real estate safety inspection report and certification,Diagnostics & Service,each,175,1.2,16.67
+Blower Noise Dampening Kit,Install rubber vibration isolation pads under blower motor,Repairs & Maintenance,each,85,0.5,14.67
+Wall Thimble and Firestop Spacer,Install required safety spacer shield through combustible wall,Fireplace Installation,each,115,0.4,43.33
+Attic Insulation Shield,Install metal radiation shield around vertical vent in attic,Fireplace Installation,each,135,0.5,49.33
+System Decommissioning and Cap Off,"Safely disconnect, cap gas line, and render fireplace inoperable",Diagnostics & Service,job,195,1.2,29.33

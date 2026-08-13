@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Onsite troubleshooting and diagnosis of one appliance,Diagnostics,visit,125,1,0
+After-Hours Diagnostic Fee,Emergency evening or weekend diagnostic service,Diagnostics,visit,225,1.8,0
+Additional Appliance Diagnostic,Diagnosis of a second appliance during same visit,Diagnostics,visit,75,0.6,0
+Refrigeration System Leak Search,Electronic and pressure testing for refrigerant leaks,Diagnostics,job,195,1,46.67
+Standard Labor Rate,Hourly labor rate for mechanical repairs,Labor,hour,150,1,0
+Two-Technician Labor Rate,Hourly labor rate for heavy lifting or complex installs,Labor,hour,250,2,0
+Appliance Removal and Haul-Away,Disconnection and disposal of old broken appliance,Disposal,each,125,0.8,18.33
+Refrigerant Recovery,EPA-compliant extraction of refrigerant from sealed system,Disposal,job,175,1,33.33
+Appliance Permit Processing,Local municipality permit filing where required,Permits,each,85,0.68,0
+Refrigerator Water Inlet Valve Replacement,Replacement of leaking or faulty water valve,Refrigeration,each,245,1,80
+Refrigerator Evaporator Fan Motor Replacement,New fan motor for freezer airflow circulation,Refrigeration,each,285,1.2,90
+Refrigerator Condenser Fan Motor Replacement,Replacement motor behind unit for compressor cooling,Refrigeration,each,295,1.2,96.67
+Refrigerator Defrost Heater Replacement,New heating element to prevent frost buildup,Refrigeration,each,310,1.4,90
+Refrigerator Defrost Thermostat Replacement,Thermal bi-metal safety switch replacement,Refrigeration,each,215,1.2,43.33
+Refrigerator Main Control Board Replacement,Electronic control board supply and installation,Refrigeration,each,450,1.2,200
+Refrigerator Compressor Replacement,Sealed system compressor replacement with recharge,Refrigeration,job,850,4,233.33
+Refrigerator Start Relay Replacement,Compressor overload relay and capacitor assembly,Refrigeration,each,185,0.8,56.67
+Refrigerator Door Gasket Replacement Single,Magnetic door seal replacement for one door,Refrigeration,each,220,1,63.33
+Ice Maker Assembly Replacement,Complete modular ice maker unit replacement,Refrigeration,each,325,1,133.33
+Ice Maker Water Line Repair,Fix or replace leaking supply line to ice maker,Refrigeration,each,165,1,26.67
+Refrigerator Condenser Coil Cleaning,Deep brush and vacuum cleaning of lower coils,Refrigeration,each,140,1,10
+Refrigerator Thermistor Replacement,Internal temperature sensor probe replacement,Refrigeration,each,190,1,43.33
+Washer Drain Pump Replacement,Removal and replacement of failing water drain pump,Laundry,each,275,1.2,83.33
+Washer Lid Switch Replacement,Safety switch assembly for top load washers,Laundry,each,195,1,46.67
+Washer Door Lock Assembly Replacement,Electronic door latch assembly for front load washers,Laundry,each,285,1.2,90
+Washer Drive Belt Replacement,Rubber drive belt for drum rotation,Laundry,each,175,1,33.33
+Washer Water Inlet Valve Replacement,Dual or triple solenoid water mixing valve,Laundry,each,235,1,73.33
+Washer Suspension Rod Kit Replacement,Set of four suspension rods for balance,Laundry,each,310,1.2,106.67
+Washer Tub Bearing Replacement,Inner and outer tub seals and bearing kit,Laundry,job,550,3,116.67
+Washer Shift Actuator Replacement,Mode shifter motor for agitator and spin transition,Laundry,each,265,1,93.33
+Washer Motor Control Board Replacement,Inverter board or main control replacement,Laundry,each,425,1.2,183.33
+Washer Bellow Gasket Replacement,Front load rubber door boot seal replacement,Laundry,each,340,1.6,93.33
+Washer Drain Hose Replacement,Corrugated flexible rubber drain line replacement,Laundry,each,145,0.8,30
+Washer Stainless Steel Supply Hoses,Pair of burst-proof braided steel water lines,Laundry,each,95,0.4,29.33
+Dryer Thermal Fuse Replacement,Safety fuse replacement for no heat condition,Laundry,each,165,1,26.67
+Dryer Heating Element Assembly Replacement,Open coil electric heating element replacement,Laundry,each,295,1.2,93.33
+Dryer Igniter Replacement,Glow bar igniter for gas dryers,Laundry,each,225,1,66.67
+Dryer Gas Valve Coils Replacement,Set of solenoid coils for gas burner assembly,Laundry,each,195,1,46.67
+Dryer Blower Wheel Replacement,Plastic fan wheel inside blower housing,Laundry,each,185,1,40
+Dryer Drum Belt Replacement,Long rubber belt wrapping around dryer drum,Laundry,each,180,1,36.67
+Dryer Roller and Axle Kit Replacement,Support rollers and shafts for rotating drum,Laundry,each,275,1.4,66.67
+Dryer Cycling Thermostat Replacement,Temperature regulating control thermostat,Laundry,each,175,1,33.33
+Dryer Vent Cleanout and Duct Service,Lint removal from interior cabinet to exterior cap,Laundry,job,175,1.2,13.33
+Dryer Moisture Sensor Bars Replacement,Auto-dry metal sensor strips inside drum,Laundry,each,160,1,23.33
+Dishwasher Circulation Pump Replacement,Main wash motor and pump assembly replacement,Dishwasher,each,385,1.6,123.33
+Dishwasher Drain Pump Replacement,Small pump for evacuating dirty wash water,Dishwasher,each,245,1.2,63.33
+Dishwasher Water Inlet Valve Replacement,Solenoid fill valve at base of unit,Dishwasher,each,215,1,60
+Dishwasher Door Latch Assembly Replacement,Mechanical latch and microswitch assembly,Dishwasher,each,195,1,46.67
+Dishwasher Spray Arm Replacement,Upper or lower rotating water delivery arm,Dishwasher,each,145,0.6,46.67
+Dishwasher Detergent Dispenser Replacement,Wax motor and soap door assembly,Dishwasher,each,230,1,70
+Dishwasher Upper Rack Assembly Replacement,Complete sliding wire dish rack replacement,Dishwasher,each,220,0.6,96.67
+Dishwasher Lower Rack Assembly Replacement,Complete bottom dish rack replacement,Dishwasher,each,250,0.6,116.67
+Dishwasher Chopper Blade Assembly Replacement,Food disposer blade and screen inside sump,Dishwasher,each,195,1.2,30
+Dishwasher UI Control Board Replacement,Touchpad and user interface board replacement,Dishwasher,each,340,1.2,126.67
+Dishwasher Floating Switch Assembly Replacement,Overfill protection float switch and Styrofoam float,Dishwasher,each,175,1,33.33
+Dishwasher Door Gasket Replacement,Rubber perimeter tub seal replacement,Dishwasher,each,185,1,40
+Oven Surface Burner Element Replacement,Electric radiant coil burner replacement,Cooking,each,175,0.8,51.33
+Range Infinite Switch Replacement,Rotary control switch for surface burners,Cooking,each,195,1,46.67
+Oven Bake Element Replacement,Lower heating element in oven cavity,Cooking,each,235,1,73.33
+Oven Broil Element Replacement,Upper heating element in oven cavity,Cooking,each,245,1,80
+Oven Igniter Replacement Gas,Glow bar igniter for gas oven burner,Cooking,each,230,1,70
+Range Gas Safety Valve Replacement,Main oven burner gas safety control valve,Cooking,each,310,1.2,106.67
+Oven Temperature Sensor Replacement,Internal oven probe sensor replacement,Cooking,each,185,1,40
+Glass Cooktop Replacement,Ceramic glass top surface replacement,Cooking,each,550,1.6,233.33
+Convection Fan Motor Replacement,Fan motor for convection oven baking,Cooking,each,295,1.2,96.67
+Range Electronic Control Board Replacement,Main clock and relay control board,Cooking,each,440,1.2,193.33
+Microwave Magnetron Replacement,High voltage tube generating microwave energy,Cooking,each,325,1.4,100
+Microwave High Voltage Diode Replacement,High voltage circuit diode replacement,Cooking,each,165,1,26.67
+Microwave Door Switch Interlock Replacement,Set of safety microswitches in door frame,Cooking,each,185,1,40
+Microwave Turntable Motor Replacement,Drive motor turning glass tray,Cooking,each,160,1,23.33
+Microwave Exhaust Fan Motor Replacement,Blower motor for over-the-range ventilation,Cooking,each,240,1.2,60
+Range Hood Filter Replacement,Aluminum mesh grease filter replacement pair,Ventilation,each,85,0.2,38
+Range Hood Charcoal Filter Replacement,Odour removal filters for recirculating hoods,Ventilation,each,75,0.2,33.33
+Garbage Disposal Replacement 1/2 HP,Standard continuous feed food waste disposer,Plumbing,each,325,1.2,116.67
+Garbage Disposal Replacement 3/4 HP,Heavy-duty continuous feed food waste disposer,Plumbing,each,395,1.2,163.33
+Garbage Disposal Jam Clearing,Manual unjamming and reset of unit,Plumbing,each,125,1,0
+Garbage Disposal Sink Flange Replacement,Mounting assembly and putty seal replacement,Plumbing,each,175,1,33.33
+Trash Compactor Drive Gear Kit Replacement,Ram drive gears and chain mechanism service,Specialty,each,285,1.4,73.33
+Trash Compactor Bag Bucket Replacement,Replacement drawer bucket container,Specialty,each,150,0.4,66.67
+Wine Cooler Temperature Controller Replacement,Electronic thermostat for wine storage unit,Refrigeration,each,260,1.2,73.33
+Wine Cooler Shelf Set Replacement,Wooden sliding wine rack replacements,Refrigeration,each,220,0.4,113.33
+Ice Machine Water Pump Replacement,Recirculating water pump for freestanding ice maker,Refrigeration,each,275,1.2,83.33
+Ice Machine Cutter Grid Replacement,Harvest grid wire assembly for cube formation,Refrigeration,each,310,1.2,106.67
+Ice Machine Water Filtration Cartridge,Replacement inline water filter cartridge,Refrigeration,each,95,0.3,38.67
+Appliance Leveling and Anti-Tip Bracket Install,Stabilizing range or stacking unit safely,Installation,each,115,0.8,10
+Gas Appliance Connector Replacement,New flexible stainless steel gas supply line,Installation,each,95,0.5,21.67
+Dryer Cord Replacement 3-Prong,Heavy-duty power cord installation,Installation,each,85,0.4,23.33
+Dryer Cord Replacement 4-Prong,Heavy-duty power cord installation,Installation,each,85,0.4,23.33
+Range Power Cord Replacement,Heavy-duty electric range cord installation,Installation,each,110,0.5,30
+Appliance Hinge Kit Replacement,Door hinge assembly pair for oven or washer,Hardware,each,165,0.8,46.67
+Appliance Leveling Leg Set,Threaded support foot replacements,Hardware,each,75,0.4,16.67
+Appliance Knob Replacement Single,Replacement control dial knob,Hardware,each,45,0.2,13.33
+Appliance Handle Replacement,Door handle bar and mounting screws,Hardware,each,135,0.6,40
+Appliance Interior Light Socket Replacement,Lamp holder and bulb housing replacement,Hardware,each,110,0.6,23.33
+Appliance Terminal Block Replacement,Power input terminal block and wiring terminal,Hardware,each,145,0.8,30
+Cooling Fan Assembly Replacement,Electronic component cooling fan for wall oven,Cooking,each,250,1.2,66.67
+Oven Door Glass Panel Replacement,Interior or exterior thermal glass panel,Cooking,each,310,1.2,106.67
+Refrigerator Evaporator Drain Clearing,Steam clearing of blocked freezer defrost drain,Refrigeration,job,165,1.2,10
+Washer Cleanout and Sanitation Cycle,Deep chemical descaling and mold treatment,Laundry,job,130,0.8,20
+Dishwasher Filter and Sump Cleaning,Removal of debris and buildup from wash sump,Dishwasher,job,125,0.8,16.67
+Warranty Service Administration Fee,Processing fee for third-party warranty claims,Diagnostics,visit,45,0.36,0

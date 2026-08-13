@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Level 1 Chimney Inspection,Visual inspection of readily accessible areas,Inspections & Diagnostics,visit,175,1.4,0
+Level 2 Chimney Inspection,Video camera inspection of flue interior and structure,Inspections & Diagnostics,visit,325,2.6,0
+Level 3 Chimney Inspection,Destructive inspection for hidden structural hazards,Inspections & Diagnostics,job,850,6.8,0
+Real Estate Chimney Certification,Inspection report for property transfer transactions,Inspections & Diagnostics,visit,275,2.2,0
+Gas Fireplace Safety Check,Functional test and leak check for gas logs,Inspections & Diagnostics,visit,195,1.56,0
+Chimney Draft Analysis,Diagnostic testing of smoke flow and pressure,Inspections & Diagnostics,visit,225,1.8,0
+Insurance Loss Inspection,Damage assessment report for insurance claims,Inspections & Diagnostics,visit,400,3.2,0
+Service Call Dispatch Fee,Standard trip charge for diagnostic visits,Inspections & Diagnostics,visit,125,1,0
+Standard Chimney Sweeping,Rotary brush cleaning of active woodburning flue,Sweeping & Cleaning,visit,249,1.5,42.67
+Deep Creosote Removal Treatment,Chemical application and scraping for glazed creosote,Sweeping & Cleaning,job,350,1.5,110
+Pellet Stove Pipe Cleaning,Specialized brush cleaning for pellet vent systems,Sweeping & Cleaning,visit,225,1.8,0
+Furnace Flue Cleaning,Brush cleaning of oil or gas utility flue,Sweeping & Cleaning,visit,210,1.68,0
+Firebox Ash Removal,Vacuuming and disposal of firebox ash accumulation,Sweeping & Cleaning,visit,75,0.6,0
+Dryer Vent Cleaning,Rotary brush cleaning of residential dryer exhaust,Sweeping & Cleaning,visit,175,1.4,0
+Standard Stainless Cap Installation,Single-flue animal guard and rain cap install,Caps & Dampers,each,275,1,100
+Multi-Flue Chimney Cap Installation,Custom sized stainless cap covering multiple flues,Caps & Dampers,each,650,2,266.67
+Copper Chimney Cap Installation,Architectural heavy-duty copper rain cap install,Caps & Dampers,each,1200,2.5,596.67
+Top-Sealing Damper Replacement,Energy-top damper with sealing cable and cap,Caps & Dampers,each,550,2.5,160
+Throat Damper Plate Replacement,Cast iron damper blade and frame replacement,Caps & Dampers,job,450,3,50
+Spark Arrestor Screen Replacement,Stainless mesh screen replacement on existing cap,Caps & Dampers,each,150,0.8,33.33
+Flue Relining 6 Inch Stainless Steel,Flexible 316Ti stainless steel liner kit installation,Flue Lining,linear ft,75,0.3,25
+Flue Relining 8 Inch Stainless Steel,Large diameter flexible stainless liner installation,Flue Lining,linear ft,95,0.35,33.33
+Rigid Stainless Steel Liner Install,Rigid stainless liner for zero-clearance or high heat,Flue Lining,linear ft,110,0.4,40
+Aluminum Gas Liner Installation,Flexible aluminum liner for B-vent gas appliances,Flue Lining,linear ft,55,0.25,15
+Insulated Liner Wrap Kit,Thermal wrap insulation blanket for stainless liner,Flue Lining,linear ft,35,0.1,13.33
+Pour-In Insulation Mix,Lightweight insulating concrete mix poured around liner,Flue Lining,job,950,3.5,350
+Clay Tile Flue Replacement,Demolition and relaying of cracked clay tile flues,Flue Lining,linear ft,150,0.8,33.33
+Smoke Chamber Parging,Smooth refractory mortar coat applied to smoke shelf,Flue Lining,job,650,4.5,50
+Chimney Crown Replacement,Formed concrete wash crown with overhang drip edge,Masonry Repairs,job,1200,6,293.33
+Chimney Crown Crack Repair,Elastomeric waterproof sealant applied to crown cracks,Masonry Repairs,job,350,2.2,46.67
+Chimney Tuckpointing Standard,Grinding out and repointing deteriorated exterior mortar,Masonry Repairs,linear ft,25,0.15,4.33
+Brick Replacement,Removal and replacement of spalled or broken bricks,Masonry Repairs,each,45,0.25,9
+Partial Chimney Rebuild,Rebuilding chimney stack from roofline up,Masonry Repairs,job,2800,16,533.33
+Complete Chimney Teardown and Rebuild,Full structural masonry rebuild from roofline to top,Masonry Repairs,job,5500,32,1000
+Firebox Rebuilding,Relaying firebrick and refractory mortar in firebox,Masonry Repairs,job,1400,8.5,233.33
+Firebox Spot Patching,Patching minor cracks and voids in firebrick mortar,Masonry Repairs,visit,275,1.8,33.33
+Concrete Hearth Extension Pour,Pouring code-compliant non-combustible hearth extension,Masonry Repairs,job,750,4.5,116.67
+Chimney Waterproofing Application,Vapor-permeable water repellent treatment on exterior brick,Waterproofing & Leak Repair,sq ft,4,0.02,1.67
+Flashing Replacement Step and Counter,Aluminum or copper roof flashing at chimney intersection,Waterproofing & Leak Repair,job,850,5.5,66.67
+Cricket Installation,Metal roof saddle built behind wide chimney stack,Waterproofing & Leak Repair,job,1100,6.5,183.33
+Storm Collar and Flashing Repair,Resealing metal chimney penetration on sloped roof,Waterproofing & Leak Repair,job,250,1.6,33.33
+Leak Diagnostic Water Test,Controlled water testing to locate roof and chimney leaks,Waterproofing & Leak Repair,visit,300,2.4,0
+Chimney Pan and Shroud Replacement,Custom metal chase cover and shroud installation,Waterproofing & Leak Repair,each,950,4.5,243.33
+Skylight Flashing Integration,Tying chimney flashing into adjacent roof penetrations,Waterproofing & Leak Repair,job,450,3,46.67
+Prefabricated Chimney Pipe Replacement,Replacing section of double or triple wall metal pipe,Prefabricated Chimneys,linear ft,120,0.45,43.33
+Zero-Clearance Firebox Replacement,Removing and replacing prefabricated metal firebox unit,Prefabricated Chimneys,job,3200,14,966.67
+Prefabricated Chimney Chase Cover Install,Galvanized or stainless chase top cover installation,Prefabricated Chimneys,each,450,2.2,113.33
+Support Box and Radiation Shield Install,Ceiling support box for prefabricated chimney system,Prefabricated Chimneys,each,350,1.6,100
+Wood Stove Installation,Setting up freestanding wood stove and connecting pipe,Stove & Insert Services,job,850,5,150
+Wood Stove Insert Installation,Installing wood insert into existing masonry fireplace,Stove & Insert Services,job,950,5.5,183.33
+Pellet Stove Installation,Setting up pellet stove with direct vent pipe,Stove & Insert Services,job,750,4.5,116.67
+Gas Log Set Installation,Installing vented or vent-free gas log assembly,Stove & Insert Services,job,450,2.2,113.33
+Stove Gasket Replacement,Replacing fiberglass door gasket on wood stove,Stove & Insert Services,each,150,1,16.67
+Catalytic Combustor Replacement,Replacing catalytic element in clean-burn wood stove,Stove & Insert Services,each,325,1,133.33
+Stove Blower Fan Replacement,Replacing electric convection blower on wood or pellet insert,Stove & Insert Services,each,375,1.2,146.67
+Floor Protector Pad Installation,Placing non-combustible pad under wood stove,Stove & Insert Services,each,225,1.2,53.33
+Animal Removal Chimney,Humane extraction of trapped birds or raccoons from flue,Animal & Obstruction Removal,job,350,2.8,0
+Nest Removal and Sanitization,Clearing heavy nesting debris and sanitizing flue,Animal & Obstruction Removal,job,275,2,16.67
+Heavy Obstruction Core Drilling,Breaking up hardened blockages or fallen mortar in flue,Animal & Obstruction Removal,job,500,3,83.33
+Standard Chimney Mesh Screen Guard,Installing heavy wire mesh on open caps against wildlife,Animal & Obstruction Removal,each,175,1,33.33
+Chimney Removal Below Roofline,Demolishing unused chimney down to attic level,Demolition & Removal,job,1500,10,166.67
+Complete Chimney Demolition,Full tear down of chimney stack and hauling debris,Demolition & Removal,job,3500,24,333.33
+Old Wood Stove Haul Away,Disposal of heavy old freestanding wood stove,Demolition & Removal,each,150,1.2,0
+Debris Disposal Fee,Dump fees and handling for heavy masonry waste,Demolition & Removal,job,150,0,100
+Masonry Stain Removal,Acid washing and cleaning soot stains from exterior brick,Aesthetic & Restoration,sq ft,5,0.02,2.33
+Fireplace Mantel Installation,Mounting wood or stone mantel shelf above firebox,Aesthetic & Restoration,job,350,2,66.67
+Brick Veneer Refacing,Installing thin brick over existing outdated fireplace surround,Aesthetic & Restoration,sq ft,30,0.12,9.67
+Hearth Tile Surfacing,Laying ceramic or stone tile on hearth floor,Aesthetic & Restoration,sq ft,25,0.1,8.33
+Glass Fireplace Doors Installation,Mounting glass fireplace enclosure doors,Aesthetic & Restoration,each,450,1.8,153.33
+Standard Chimney Masonry Primer,Application of bonding primer before stucco or paint,Aesthetic & Restoration,sq ft,3,0.01,1.33
+Scaffolding Setup and Tear Down,Erecting safety scaffolding for high chimney work,Safety & Access,job,500,4,0
+Roof Anchor Safety Harness Setup,Rigging fall protection gear for steep roof access,Safety & Access,job,150,1.2,0
+High Reach Lift Rental Surcharge,Daily fee for boom lift required for tall chimneys,Safety & Access,day,450,0,300
+Chimney Permit Acquisition,Pulling municipal building and safety permits,Permits & Administration,job,175,1.4,0
+Engineering Structural Letter,Licensed structural engineer review and stamp for rebuilds,Permits & Administration,job,750,0,500
+Code Compliance Consultation,Reviewing local fire codes for wood burner installations,Permits & Administration,hour,125,1,0
+After-Hours Emergency Dispatch,Immediate dispatch for active chimney fires or gas leaks,Emergency Services,visit,350,2.8,0
+Emergency Chimney Board-Up,Temporary weatherproofing after storm or fire damage,Emergency Services,job,400,2.4,66.67
+Emergency Flue Fire Mitigation Check,Post-chimney-fire safety check and temporary stabilization,Emergency Services,visit,300,2.4,0
+Chimney Sweep Hourly Labor Rate,General labor rate for custom field service tasks,Labor & Hourly,hour,125,1,0
+Master Mason Hourly Labor Rate,Skilled masonry labor rate for complex structural work,Labor & Hourly,hour,175,1,0
+Apprentice Helper Hourly Rate,Assistant labor rate for secondary technician support,Labor & Hourly,hour,75,1,0
+Travel Surcharge Extended Area,Mileage fee for job sites outside standard service zone,Labor & Hourly,visit,75,0.6,0
+Fireplace Tool Set,"Wrought iron poker, shovel, brush, and stand set",Accessories & Upgrades,each,150,0.2,93.33
+Cast Iron Fireback,Protective cast iron plate installed at rear of firebox,Accessories & Upgrades,each,225,0.3,126.67
+Log Grate Heavy Duty Steel,Replacement steel bar log holder for wood firebox,Accessories & Upgrades,each,110,0.2,53.33
+Fireplace Screen Mesh Curtain,Sliding woven steel mesh fire safety curtain,Accessories & Upgrades,each,130,0.2,66.67
+Ash Dump Door Replacement,Cast iron cleanout door in hearth floor or exterior base,Accessories & Upgrades,each,125,0.8,18.33
+Chimney Cleanout Door Replacement,Metal access door at base of exterior chimney stack,Accessories & Upgrades,each,160,1,23.33
+Magnetic Stove Thermometer,Surface temperature gauge for wood burning stoves,Accessories & Upgrades,each,30,0.1,11.67
+Creosote Sweeping Log,Chemical treatment log burned to loosen heavy creosote,Accessories & Upgrades,each,45,0.1,23.33
+Fire Starter Fatwood Bundle,Natural resinous pine fire-starting kindling bundle,Accessories & Upgrades,each,20,0.05,9.33
+Carbon Monoxide Detector Installation,Battery-operated digital readout CO alarm near fireplace,Accessories & Upgrades,each,65,0.3,17.67
+Fire Extinguisher ABC Rated,Standard household fire extinguisher for hearth safety,Accessories & Upgrades,each,85,0.2,36.67
+Flue Fire Safety Warning Plaque,Metal safety reminder tag attached near cleanout door,Accessories & Upgrades,each,25,0.1,8.33
+High Temperature Silicone Sealant Tube,Tube of 600-degree rated silicone sealant material,Accessories & Upgrades,each,35,0.1,15
+Refractory Mortar Bucket,Premixed high heat mortar for firebrick repairs,Accessories & Upgrades,each,50,0.1,25
+Metal Chimney Pipe Wall Band,Exterior stabilizing wall strap for prefabricated pipe,Accessories & Upgrades,each,65,0.2,26.67
+Roof Brace Kit for Tall Chimneys,Metal tripod stabilization rods for tall metal chimneys,Accessories & Upgrades,job,225,1,66.67

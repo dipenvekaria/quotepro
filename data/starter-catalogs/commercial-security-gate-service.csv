@@ -1,0 +1,99 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial on-site diagnostic and troubleshooting visit,Diagnostics and Service,visit,175,1.4,0
+After-Hours Emergency Service Call,Emergency dispatch outside normal business hours,Diagnostics and Service,visit,350,2.8,0
+Standard Technician Labor Rate,Hourly rate for single technician labor,Diagnostics and Service,hour,125,1,0
+Two-Man Technician Crew Rate,Hourly rate for a two-person installation crew,Diagnostics and Service,hour,220,1.76,0
+Gate System Safety Inspection,Comprehensive UL325 compliance and safety check,Diagnostics and Service,job,250,2,0
+Gate Open/Close Force Calibration,Adjusting obstruction detection sensors and limits,Diagnostics and Service,hour,125,1,0
+Diagnostic Software Scan,Reading error codes on smart gate operators,Diagnostics and Service,job,150,1.2,0
+Remote Site Access Configuration,Programming cellular or IP gate controllers,Diagnostics and Service,hour,150,1.2,0
+Travel Surcharge Extended Zone,Travel fee for locations outside standard service radius,Diagnostics and Service,job,95,0.76,0
+Slide Gate Operator Replacement,Remove and replace commercial slide gate operator unit,Operator Replacement,each,2800,4,1533.33
+Swing Gate Operator Replacement,Remove and replace commercial swing gate operator unit,Operator Replacement,each,2600,4,1400
+Barrier Arm Operator Replacement,Remove and replace commercial traffic barrier gate,Operator Replacement,each,2400,3,1333.33
+Heavy-Duty Industrial Slide Operator,High-cycle commercial slide operator installation,Operator Replacement,each,4500,6,2500
+Dual Swing Gate Operators Replacement,Replace master and slave operators for dual swing gates,Operator Replacement,each,3900,6,2133.33
+Solar-Powered Operator Retrofit Kit,Install solar panel and battery backup system,Operator Replacement,job,1600,4,733.33
+Hydraulic Gate Actuator Replacement,Replace heavy-duty hydraulic piston operator arm,Operator Replacement,each,1850,3,966.67
+Operator Gearbox Assembly Replacement,Replace internal mechanical reduction gearbox,Operator Repair,each,850,3,313.33
+Operator Control Board Replacement,Replace main electronic circuit board and logic processor,Operator Repair,each,750,2,333.33
+Drive Motor Replacement,Replace electric drive motor inside operator housing,Operator Repair,each,950,3,386.67
+Transformer Replacement,Replace primary low-voltage power transformer,Operator Repair,each,280,1,103.33
+Limit Switch Assembly Replacement,Replace magnetic or mechanical gate travel limit switches,Operator Repair,each,320,1.5,90
+Drive Chain Replacement,Replace roller chain for slide gate operators,Operator Repair,linear ft,18,0.1,8
+Drive Chain Tension Adjustment,Realign and tension slide gate drive chain,Operator Repair,job,150,1.2,0
+Release Mechanism Repair,Repair manual emergency disconnect handle and cable,Operator Repair,each,220,1.5,23.33
+Operator Chassis Pad Pour,Pour concrete mounting pad for new gate operator,Operator Repair,each,650,3,173.33
+V-Groove Track Replacement,Bolt down or weld new V-track for sliding gate,Gate Hardware,linear ft,45,0.2,20
+V-Groove Bearing Roller Replacement,Replace heavy-duty carriage wheels on sliding gate,Gate Hardware,each,275,1.5,56.67
+Cantilever Roller Assembly Replacement,Replace enclosed track cantilever gate roller trucks,Gate Hardware,each,450,2,133.33
+Commercial Heavy-Duty Hinge Replacement,Replace weld-on or bolt-on swing gate pivot hinges,Gate Hardware,each,310,1.5,80
+Industrial Sealed Bearing Hinge Pair,Replace premium load-bearing swing gate hinges,Gate Hardware,each,520,2,180
+Gate Guide Roller Post Replacement,Replace upper guide rollers and mounting bracket,Gate Hardware,each,240,1.5,33.33
+Gate Catcher Receiver Pocket Installation,Install or replace locking receiver latch post,Gate Hardware,each,350,2,66.67
+Magnetic Gate Lock Installation,Install high-holding electromagnetic lock for swing gate,Gate Hardware,each,680,3,200
+Mechanical Solenoid Lock Replacement,Replace heavy-duty automatic electric gate lock,Gate Hardware,each,550,2.5,156.67
+Drop Pin Assembly Installation,Install motorized or manual drop pin for double gates,Gate Hardware,each,420,2,113.33
+Barrier Gate Wooden Arm Replacement,Replace standard wooden traffic arm up to 15 ft,Gate Hardware,each,250,1,83.33
+Barrier Gate Aluminum Arm Replacement,Replace breakaway aluminum arm with reflective tape,Gate Hardware,each,450,1.5,176.67
+Photo Eye Sensor Set Replacement,Replace thru-beam photo safety eyes and alignment,Safety and Access Controls,each,380,1.5,126.67
+Reflective Photo Eye Installation,Install single-sided polarized retro-reflective photo sensor,Safety and Access Controls,each,320,1.5,86.67
+Safety Edge Sensor Replacement,Replace pneumatic or electric reversing edge on gate,Safety and Access Controls,linear ft,65,0.3,17.67
+Safety Edge Transmitter/Receiver Kit,Replace wireless monitored edge transceiver system,Safety and Access Controls,each,450,2,133.33
+Loop Detector Installation,Install single inductive loop detector module in operator,Safety and Access Controls,each,320,1.5,90
+Inductive Loop Saw Cutting,Saw cut asphalt or concrete for new detector loop,Safety and Access Controls,linear ft,18,0.1,8
+Loop Sealant Application,Fill saw cuts with heavy-duty loop sealant compound,Safety and Access Controls,linear ft,8,0.05,3.67
+Keypad Surface Mount Installation,Install standard digital commercial access keypad,Safety and Access Controls,each,450,2,133.33
+Pedestal Post Installation,Mount steel pedestal post for keypad or card reader,Safety and Access Controls,each,350,2,66.67
+Telephone Entry System Replacement,Replace cellular or VoIP multi-tenant intercom system,Safety and Access Controls,each,2200,4,1133.33
+RFID Long Range Reader Installation,Install vehicle windshield RFID tag reader system,Safety and Access Controls,each,1100,3,483.33
+Optical Sensor / Traffic Camera Installation,Install emergency vehicle strobe detector (Yelp sensor),Safety and Access Controls,each,1400,3,683.33
+Radio Receiver Replacement,Replace external gate remote control receiver unit,Safety and Access Controls,each,220,1,63.33
+Commercial Remote Transmitters Programming,Program standard rolling-code visor remote controls,Safety and Access Controls,each,65,0.5,1.67
+Vehicle Loop Diagnostic Testing,Test loop inductance and megohm insulation breakdown,Safety and Access Controls,job,150,1.2,0
+Fire Department Knox Box Installation,Install and wire emergency access key switch box,Safety and Access Controls,each,480,2,153.33
+Emergency Release Key Switch,Install keyed override switch for power failure opening,Safety and Access Controls,each,290,1.5,66.67
+Gate Intercom Power Supply Replacement,Replace dedicated low voltage intercom power unit,Safety and Access Controls,each,240,1.5,36.67
+Proximity Card Reader Replacement,Replace Wiegand protocol access card reader head,Safety and Access Controls,each,380,2,86.67
+Access Control Database Programming,Add or delete user credentials in software system,Safety and Access Controls,hour,135,1.08,0
+Warning Placard Sign Installation,Mount mandatory UL325 compliant warning signs,Safety and Access Controls,each,55,0.3,11.67
+Slide Gate Structural Steel Repair,Weld cracked frame members on commercial sliding gate,Gate Structural Repair,hour,150,1.2,0
+Swing Gate Frame Realignment,Straighten sagging or impacted commercial swing leaf,Gate Structural Repair,job,450,3.6,0
+Chain Link Fabric Replacement on Gate,Re-mesh damaged chain link infill on security gate,Gate Structural Repair,sq ft,12,0.05,5
+Ornamental Steel Picket Replacement,Weld in replacement vertical pickets on iron security gate,Gate Structural Repair,each,95,0.5,21.67
+Cantilever Gate Nose Wheel Replacement,Replace front guide wheel assembly on cantilever gate,Gate Structural Repair,each,380,2,86.67
+Gate Post Replacement (Concrete Embedded),"Break out old concrete, set new heavy steel post",Gate Structural Repair,each,950,4,300
+Gate Post Surface Mount Plate Welded,Weld gussets and secure surface-mounted steel gate post,Gate Structural Repair,each,550,3,116.67
+Security Barbed Wire Arm Extension,Fabricate and install security outriggers for gate top,Gate Structural Repair,linear ft,25,0.1,11
+Anti-Ram Cable System Repair,Repair high-security crash-rated cable barrier setup,Gate Structural Repair,job,1200,6,300
+Gate Touch-Up Painting,Prime and paint welded or repaired areas on gate,Gate Structural Repair,job,220,1.5,20
+Commercial Slide Gate Installation,Install new commercial cantilever or sliding gate up to 20ft,New Gate Installation,each,4800,8,2533.33
+Commercial Swing Gate Installation,Install new dual ornamental steel swing gates up to 20ft total,New Gate Installation,each,4500,8,2333.33
+Cantilever Sliding Gate System Install,Install heavy industrial cantilever gate assembly,New Gate Installation,each,6200,10,3133.33
+Traffic Barrier Arm System Install,Install complete parking lot barrier arm and housing,New Gate Installation,each,3100,6,1533.33
+Security Security CAGE Gate Installation,Install tall security enclosure gate for utility compounds,New Gate Installation,each,3800,8,1866.67
+High-Security Crash Gate Installation,Install ASTM certified anti-ram commercial vehicle gate,New Gate Installation,job,15000,30,7500
+Commercial Turnstile Gate Installation,Install full-height pedestrian security turnstile,New Gate Installation,each,7500,12,4000
+Vertical Lift Gate Installation,Install vertical pivot or vertical lift security gate,New Gate Installation,each,8500,14,4433.33
+Custom Laser-Cut Logo Gate Panel,Install custom decorative sign panel on commercial gate,New Gate Installation,each,1800,2,1033.33
+Industrial Gate Track Foundation Excavation,Excavate and prep sub-base for heavy track installation,New Gate Installation,job,1100,6,233.33
+Main Power Feed Trenching,Trench ground up to 24 inches for electrical conduit run,Electrical and Cabling,linear ft,22,0.1,9.33
+High Voltage Electrical Conduit Run,Install PVC or rigid metallic conduit with pull wire,Electrical and Cabling,linear ft,16,0.08,6.67
+Low Voltage Communication Wire Pull,Run shielded multi-conductor cable for accessories,Electrical and Cabling,linear ft,8,0.05,3
+Dedicated AC Power Disconnect Box,Install weatherproof fused disconnect switch near operator,Electrical and Cabling,each,340,1.5,103.33
+Main Circuit Breaker Installation,Install dedicated breaker in existing main electrical panel,Electrical and Cabling,each,280,1.2,86.67
+Surge Protector Device Installation,Install heavy-duty lightning and power surge suppressor,Electrical and Cabling,each,290,1,106.67
+Battery Backup System Replacement,Replace sealed lead-acid backup batteries in operator,Electrical and Cabling,each,210,0.8,73.33
+Ground Rod and Clamp Installation,Drive copper-clad ground rod for lightning protection,Electrical and Cabling,each,220,1,63.33
+Junction Box Weatherproof Replacement,Replace rusted outdoor electrical junction enclosure,Electrical and Cabling,each,140,0.8,26.67
+Low Voltage Power Supply Unit,Replace 12V or 24V DC regulated power supply module,Electrical and Cabling,each,260,1,90
+Preventative Maintenance Bi-Annual Contract,"Scheduled bi-annual lubrication, tuning, and safety test",Maintenance Agreements,visit,350,2.8,0
+Preventative Maintenance Quarterly Contract,"Scheduled quarterly check, adjustments, and compliance test",Maintenance Agreements,visit,300,2.4,0
+Gate System Comprehensive Lubrication,"Grease all bearings, hinges, rollers, and drive chains",Maintenance Agreements,job,175,1.4,0
+Debris Removal from Slide Gate Track,"Clear rocks, ice, and buildup from sliding gate tracks",Maintenance Agreements,job,125,1,0
+Old Operator Removal and Disposal,Haul away and recycle old heavy commercial operator unit,Permits and Disposal,each,200,1.6,0
+Municipal Electrical Permit Processing,Obtain local electrical permit for gate power connections,Permits and Disposal,job,250,2,0
+Municipal Building Permit Processing,Obtain structural permit for new gate installation project,Permits and Disposal,job,300,2.4,0
+Core Drilling Concrete Core,Core drill through concrete slab for post or conduit,Permits and Disposal,each,180,1.2,20
+Crane Rental Surcharge for Heavy Gate,Crane service for heavy industrial gate placement,Permits and Disposal,day,1500,2,833.33
+Traffic Control Setup (Flaggers and Cones),Provide temporary traffic safety control during roadway work,Permits and Disposal,day,600,2,233.33

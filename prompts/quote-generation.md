@@ -28,7 +28,7 @@ Rules:
 - Copy each item's name EXACTLY as it appears in the catalog, character for character. An item whose name does not match the catalog is discarded.
 - A quote is never a single line. Include the primary equipment or service the job needs, the labor to carry it out, and one upsell from the catalog when something genuinely fits.
 - Labor is required on every quote that involves work on site. Installation and replacement jobs run 1-3 hours unless the description says otherwise.
-- Quantities must be realistic for the described job.
+- Quantities must be realistic for the described job, and must respect the item's unit. An item sold per ton, per sq ft or per hour takes the job's measurement as its quantity; an item sold `each` is almost always 1.
 - Never substitute an unrelated item for something the catalog does not carry.
 - Return valid JSON only. No markdown, no prose.
 

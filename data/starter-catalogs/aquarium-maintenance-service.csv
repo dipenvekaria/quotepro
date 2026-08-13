@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,On-site diagnostic and travel fee for local service area,Diagnostics and Service,visit,125,1,0
+Emergency After-Hours Service Call,Urgent on-site response outside normal business hours,Diagnostics and Service,visit,250,2,0
+Livestock Health Diagnostic,Disease identification and water quality correlation analysis,Diagnostics and Service,hour,150,1.2,0
+Equipment Failure Troubleshooting,Electrical and mechanical testing of pumps and filters,Diagnostics and Service,hour,135,1.08,0
+Leak Detection Service,Pressure and dye testing to locate aquarium seal leaks,Diagnostics and Service,hour,150,1.2,0
+Water Parameter Comprehensive Panel,Laboratory-grade testing for 12 key chemical parameters,Diagnostics and Service,each,75,0.4,16.67
+Submersible Return Pump Replacement,Swap and plumb new main circulation water pump,Equipment Replacement,each,280,0.8,120
+External Water Pump Replacement,Disconnect and install new external aquarium water pump,Equipment Replacement,each,450,1.2,200
+Protein Skimmer Body Replacement,Replace worn marine protein skimmer reaction chamber,Equipment Replacement,each,350,1,150
+Skimmer Pump Replacement,Install new needle-wheel pump for protein skimmer,Equipment Replacement,each,220,0.8,80
+LED Light Fixture Replacement,Mount and program new reef aquarium LED light fixture,Equipment Replacement,each,400,0.8,200
+T5 Fluorescent Ballast Replacement,Wire in new electronic ballast for aquarium fluorescent lights,Equipment Replacement,each,175,0.8,50
+Titanium Aquarium Heater Replacement,Install new digital submersible heating element and controller,Equipment Replacement,each,195,0.6,80
+Inline UV Sterilizer Replacement,Plumb and mount replacement ultraviolet clarifier unit,Equipment Replacement,each,310,1,126.67
+RO/DI Booster Pump Replacement,Replace booster pump on reverse osmosis filtration system,Equipment Replacement,each,240,0.8,93.33
+Auto Top-Off Unit Replacement,Install new optical sensor auto top-off system,Equipment Replacement,each,180,0.6,70
+Wavemaker Pump Replacement,Replace internal flow circulation pump and controller,Equipment Replacement,each,160,0.4,73.33
+Sump Tank Replacement,"Disconnect, remove, and install new acrylic filtration sump",Equipment Replacement,each,750,2.4,300
+Calcium Reactor Replacement,Install new calcium reactor vessel and CO2 regulator,Equipment Replacement,each,550,1.6,233.33
+Media Reactor Replacement,Replace GAC or GFO fluidized media reactor,Equipment Replacement,each,140,0.6,43.33
+Aquarium Technician Labor,Standard hourly rate for maintenance and installation work,Labor Rates,hour,125,1,0
+Senior Aquarist Labor,"Advanced troubleshooting, aquascaping, and livestock management",Labor Rates,hour,175,1.4,0
+Plumbing Installation Labor,"PVC cutting, gluing, and bulkhead installation labor",Labor Rates,hour,135,1.08,0
+Tank Move Assistant Labor,Additional helper for heavy aquarium relocation projects,Labor Rates,hour,75,0.6,0
+Bi-Weekly Freshwater Maintenance Visit,"Water change, glass cleaning, filter rinse, and testing",Maintenance Services,visit,110,0.8,8
+Bi-Weekly Saltwater Maintenance Visit,"Water change, salt mixing, glass scraping, and filter service",Maintenance Services,visit,150,1,16.67
+Weekly Reef Tank Maintenance Visit,"Intensive weekly cleaning, dosing check, and skimmer service",Maintenance Services,visit,175,1,33.33
+Monthly Commercial Aquarium Service,Comprehensive monthly deep clean for large commercial systems,Maintenance Services,visit,350,2,66.67
+Deep Clean Glass and Overflow,Razor blade algae removal and overflow box sanitation,Maintenance Services,hour,125,1,0
+Filter Media Service and Swap,"Replace filter socks, carbon, and filter pads",Maintenance Services,each,65,0.4,10
+Substrate Vacuuming Service,Deep siphon cleaning of gravel or sand bed,Maintenance Services,hour,125,1,0
+RO/DI System Filter Cartridge Replacement,Replace sediment and carbon blocks in purification unit,Maintenance Services,each,95,0.4,30
+RO/DI Deionization Resin Replacement,Replace color-changing DI resin in filtration canister,Maintenance Services,each,75,0.4,16.67
+RO/DI Membrane Replacement,Install new reverse osmosis membrane element,Maintenance Services,each,140,0.6,43.33
+Aquarium Resealing Service,Strip old silicone and reseal glass aquarium seams,Repairs and Plumbing,linear ft,45,0.3,5
+Bulkhead Fitting Replacement,Replace tank-wall pass-through plumbing fitting,Repairs and Plumbing,each,95,0.6,13.33
+PVC Return Line Repair,Cut and solvent-weld cracked or leaking PVC plumbing,Repairs and Plumbing,hour,135,0.8,23.33
+Flexible Tubing Replacement,Replace hardened vinyl or silicone tubing lines,Repairs and Plumbing,linear ft,12,0.08,1.33
+Check Valve Replacement,Install or replace backflow prevention plumbing valve,Repairs and Plumbing,each,65,0.4,10
+True Union Ball Valve Installation,Install maintenance isolation valve on PVC plumbing line,Repairs and Plumbing,each,85,0.4,23.33
+Durso Standpipe Repair,Repair or rebuild aquarium overflow silencer standpipe,Repairs and Plumbing,each,75,0.4,16.67
+Aquarium Acrylic Scratch Removal,Buff out scratches from acrylic viewing panels on-site,Repairs and Plumbing,hour,160,1.2,6.67
+Glass Lid Replacement,Cut and fit custom glass canopy top with plastic handle,Repairs and Plumbing,each,85,0.2,40
+Cabinet Hinge and Hardware Repair,Adjust or replace rust-damaged stand doors and hinges,Repairs and Plumbing,each,50,0.3,8.33
+Marine Salt Mix (50 Gallon Bag),Synthetic sea salt for saltwater water changes,Materials and Parts,each,45,0,30
+Marine Salt Mix (200 Gallon Box),Bulk synthetic sea salt for large systems,Materials and Parts,each,130,0,86.67
+Activated Carbon (1 lb),High-grade pelletized carbon for water polishing,Materials and Parts,each,20,0,13.33
+Granular Ferric Oxide GFO (1 lb),Phosphate removal media for reef aquariums,Materials and Parts,each,35,0,23.33
+Filter Sock 7-Inch 200 Micron,Replacement felt mesh mechanical filter bag,Materials and Parts,each,12,0,8
+Live Aragonite Sand (20 lb),Washed calcareous marine aquarium substrate,Materials and Parts,each,38,0,25.33
+Freshwater Aquarium Gravel (25 lb),Coated inert gravel substrate for freshwater tanks,Materials and Parts,each,30,0,20
+RO/DI Pure Water,Zero TDS deionized water for top-off and mixing,Materials and Parts,gallon,1,0,0.67
+Instant Ocean Sea Water,Pre-mixed saltwater ready for immediate use,Materials and Parts,gallon,2,0,1.33
+Aquarium Safe Silicone Tube,100 percent RTV silicone sealant for aquarium repairs,Materials and Parts,each,22,0,14.67
+PVC Primer and Cement Kit,Purple primer and medium-clear PVC solvent cement,Materials and Parts,each,25,0,16.67
+UV Sterilizer Bulb Replacement,Replacement ultraviolet germicidal lamp bulb,Materials and Parts,each,55,0.2,20
+Sponge Filter Replacement,Biochemical foam sponge insert for internal filters,Materials and Parts,each,15,0,10
+Ceramic Biological Ring Media (1 kg),High surface area porous ceramic filtration rings,Materials and Parts,each,28,0,18.67
+Bio-Pellets (500ml),Polymer solid carbon source for nitrate reduction,Materials and Parts,each,32,0,21.33
+Aquarium Relocation (Up to 50 Gal),"Complete breakdown, transport, and setup of small tank",Tank Relocation and Setup,job,450,3,50
+Aquarium Relocation (51 to 125 Gal),"Complete breakdown, transport, and setup of medium tank",Tank Relocation and Setup,job,850,6,66.67
+Aquarium Relocation (126 to 250 Gal),"Complete breakdown, transport, and setup of large tank",Tank Relocation and Setup,job,1500,10,166.67
+Commercial Tank Relocation (250+ Gal),Specialized rigging and relocation for oversized tanks,Tank Relocation and Setup,job,2800,18,386.67
+New Tank Installation and Plumbing,"Unbox, level, plumb, and fill brand new aquarium system",Tank Relocation and Setup,job,600,4,66.67
+Aquascaping Design and Hardscape Build,Artistic rock stacking and coral mounting structure creation,Tank Relocation and Setup,hour,150,1.2,0
+Livestock Acclimation and Stocking,Drip acclimation and safe introduction of fish and corals,Tank Relocation and Setup,hour,125,1,0
+Aquarium Cycling Booster Package,Seeding nitrifying bacteria and monitoring initial cycle,Tank Relocation and Setup,visit,200,1,50
+Temporary Livestock Housing Transport,Providing oxygenated holding bins and temporary housing,Tank Relocation and Setup,day,150,1,16.67
+Tank Leveling and Shim Service,Adjusting aquarium stand leveling feet or adding shims,Tank Relocation and Setup,each,120,0.8,13.33
+Commercial Permit Processing Fee,Filing municipal paperwork for large public display tanks,Permits and Disposal,each,175,1.4,0
+Hazardous Waste Water Disposal Fee,Eco-friendly disposal of medicated or contaminated water,Permits and Disposal,gallon,1,0,0.67
+Old Tank Decommissioning and Haul-Away,Breakdown and disposal of old glass or acrylic aquarium,Permits and Disposal,job,300,2.4,0
+Heavy Equipment Disposal Fee,Disposal surcharge for large commercial sumps and stands,Permits and Disposal,each,150,1.2,0
+Smart Controller Installation,Mount and program cloud-connected aquarium monitor,Upgrades and Add-ons,each,250,1,83.33
+Automatic Dosing Pump System Installation,Mount and calibrate 4-channel automated dosing pump,Upgrades and Add-ons,each,200,1,50
+Refugium Lighting Upgrade,Install specialized macroalgae growth light in sump,Upgrades and Add-ons,each,130,0.6,36.67
+Battery Backup Power System Installation,Setup uninterruptible power supply for return pumps,Upgrades and Add-ons,each,280,1,103.33
+CO2 System Installation for Planted Tank,"Install pressurized CO2 tank, solenoid, and bubble counter",Upgrades and Add-ons,each,220,1,63.33
+Automatic Fish Feeder Programming,Mount and program digital automated daily fish feeder,Upgrades and Add-ons,each,75,0.4,16.67
+Custom Mesh Screen Lid Fabrication,Build custom aluminum frame jump screen for open tanks,Upgrades and Add-ons,each,160,0.8,40
+In-Cabinet LED Lighting Strip Installation,Install waterproof lighting inside aquarium cabinet stand,Upgrades and Add-ons,each,110,0.6,23.33
+PAR Meter Light Intensity Testing,Measure photosynthetic active radiation levels across tank,Upgrades and Add-ons,visit,125,1,0
+Ozone Generator Installation,Install medical-grade ozone generator and carbon reactor,Upgrades and Add-ons,each,380,1.4,133.33
+Automatic Water Change System Plumbing,Plumb direct auto water change lines to drain and source,Upgrades and Add-ons,job,450,2.4,100
+Heater Controller Redundancy Setup,Wire dual-stage temperature controller for safety,Upgrades and Add-ons,each,95,0.4,30
+Leak Sensor Node Integration,Install floor moisture sensors linked to smart controller,Upgrades and Add-ons,each,110,0.6,23.33
+Custom Sump Baffle Modification,Cut and silicone new acrylic partitions inside glass sump,Repairs and Plumbing,hour,150,1,16.67
+Chiller Unit Replacement,Disconnect and install new aquarium water chiller system,Equipment Replacement,each,650,1.6,300
+Chiller Cleaning and Descaling Service,Flush mineral buildup from aquarium water chiller coil,Maintenance Services,each,180,1.2,20
+Internal Powerhead Deep Clean,Disassemble and vinegar-bathe calcium-crusted circulation pumps,Maintenance Services,hour,115,0.92,0
+Quarantine Tank Setup Service,Establish temporary QT system with sponge filter and heater,Tank Relocation and Setup,each,175,1,33.33
+Freshwater Plant Fertilization Service,Dose root tabs and liquid macro/micronutrients,Maintenance Services,visit,50,0.3,8.33
+Algae Scrubbing Pad Pack,Non-scratch replacement pads for glass and acrylic,Materials and Parts,each,18,0,12
+Marine Fish Food Supply Pack,Curated selection of frozen and pellet fish foods,Materials and Parts,each,40,0,26.67
+Coral Frag Glue (Gel Cyanacrylate),Waterproof adhesive for mounting coral fragments,Materials and Parts,each,14,0,9.33
+Magnesium Supplement Additive (1000ml),Liquid magnesium supplement for saltwater balance,Materials and Parts,each,25,0,16.67
+Calcium Buffer Additive (1000ml),Liquid alkalinity and calcium buffer solution,Materials and Parts,each,25,0,16.67
+Glass Canopy Handle Replacement,Adhesive acrylic lift handles for glass aquarium covers,Materials and Parts,each,10,0.1,5.83
+Return Nozzle Directional Fitting,Loc-line modular return nozzle component replacement,Materials and Parts,each,16,0.05,10
+Overflow Box Weir Comb Replacement,Plastic surface skimmer tooth grate insert,Materials and Parts,each,22,0.1,13.33

@@ -1,0 +1,92 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial on-site assessment and travel fee,Diagnostics & Service Calls,visit,125,1,0
+After-Hours Emergency Dispatch,Immediate dispatch outside normal business hours,Diagnostics & Service Calls,visit,250,2,0
+Moisture Mapping Inspection,Thermal and meter reading moisture assessment,Diagnostics & Service Calls,job,175,1.4,0
+Carpet Fiber Identification Test,Burn and chemical test to identify fiber type,Diagnostics & Service Calls,each,75,0.4,15
+Odor Source Investigation,UV light and probing inspection for urine contamination,Diagnostics & Service Calls,hour,150,1,16.67
+Lead Technician Labor Rate,Hourly rate for certified senior restoration technician,Labor Rates,hour,125,1,0
+Standard Technician Labor Rate,Hourly rate for assistant restoration technician,Labor Rates,hour,85,0.68,0
+After-Hours Labor Surcharge,Hourly premium for emergency night or weekend work,Labor Rates,hour,100,0.8,0
+Heavy Furniture Moving Labor,Hourly rate for moving oversized furniture items,Labor Rates,hour,95,0.76,0
+Demolition and Tear-Out Labor,Hourly rate for removing ruined materials,Labor Rates,hour,90,0.72,0
+Heavy Duty Carpet Cleaning,Deep agitation extraction for heavily soiled carpets,Carpet Cleaning,sq ft,1,0.005,0.25
+Delicate Oriental Rug Cleaning,Hand washing and controlled drying for wool rugs,Carpet Cleaning,sq ft,3,0.015,0.75
+Upholstery Cleaning - Synthetic Sofa,Hot water extraction cleaning for synthetic sofa,Upholstery Restoration,each,175,1,33.33
+Upholstery Cleaning - Natural Fiber Sofa,Dry solvent cleaning for delicate natural fabric sofa,Upholstery Restoration,each,225,1.2,50
+Upholstery Cleaning - Sectional,Deep extraction cleaning for sectional sofa,Upholstery Restoration,each,300,1.6,66.67
+Upholstery Cleaning - Armchair,Extraction cleaning for standard armchair or recliner,Upholstery Restoration,each,95,0.6,13.33
+Upholstery Cleaning - Dining Chair,Cleaning per individual dining room chair seat,Upholstery Restoration,each,35,0.2,6.67
+Upholstery Cleaning - Ottoman,Extraction cleaning for standard ottoman,Upholstery Restoration,each,65,0.4,10
+Leather Sofa Cleaning and Conditioning,Deep clean and pH-balanced condition for leather sofa,Upholstery Restoration,each,275,1.4,66.67
+Mattress Sanitization and Cleaning,Double-sided steam extraction and sanitizer treatment,Upholstery Restoration,each,150,0.8,33.33
+Auto Interior Deep Clean,Complete carpet and seat extraction for vehicle interior,Upholstery Restoration,job,250,1.4,50
+Velvet Nap Restoration,Grooming and steam restoration for crushed velvet,Upholstery Restoration,hour,110,0.88,0
+Carpet Patch Repair,Permanent donor patch installation for burned carpet,Carpet Repair,each,150,1,16.67
+Carpet Seam Repair,Re-gluing and heat sealing separated carpet seams,Carpet Repair,linear ft,15,0.1,1.67
+Carpet Stretching,Power stretching to remove wrinkles and buckles,Carpet Repair,sq ft,1,0.005,0.25
+Threshold Transition Installation,Installing metal or wood carpet transition strip,Carpet Repair,linear ft,25,0.1,8.33
+Tack Strip Replacement,Replacing damaged or rusted wood tack strips,Carpet Repair,linear ft,12,0.05,3.83
+Stair Carpet Re-Securing,Re-stapling and tightening loose stair runner carpet,Carpet Repair,linear ft,18,0.1,3.67
+Burn Damage Shear Repair,Cutting away melted tips from synthetic carpet,Carpet Repair,each,60,0.4,6.67
+Bleach Spot Dye Repair,Spot dyeing bleached fibers to match original color,Carpet Repair,each,125,0.8,16.67
+Upholstery Seam Repair,Hand-stitching split seams on upholstered furniture,Carpet Repair,linear ft,45,0.25,9.17
+Cushion Core Replacement,Installing high-density foam replacement in sofa cushion,Carpet Repair,each,135,0.6,40
+Carpet Pull and Relayer,"Pulling wet carpet back, drying pad, and re-securing",Water Damage Restoration,sq ft,1,0.005,0.25
+Carpet Pad Disposal and Replacement,Discarding ruined pad and installing new cushion,Water Damage Restoration,sq ft,1,0.005,0.25
+Air Mover Rental,Daily rental of high-velocity drying fan,Water Damage Restoration,day,35,0.1,15
+LGR Dehumidifier Rental,Daily rental of commercial low grain refrigerant dehumidifier,Water Damage Restoration,day,175,0.2,100
+Subfloor Drying System Setup,Installation of floor drying mats for water extraction,Water Damage Restoration,job,250,1.4,50
+Category 3 Water Decontamination,Specialized cleaning and disposal protocol for sewage backup,Water Damage Restoration,sq ft,2,0.01,0.5
+Moisture Monitoring Daily Visit,Daily site check of humidity and moisture meter readings,Water Damage Restoration,visit,95,0.6,13.33
+Subfloor Urine Sealing,Shellac-based odor-blocking primer on exposed subfloor,Specialty Treatments,sq ft,1,0.005,0.25
+Hydroxyl Generator Rental,Daily rental of hydroxyl machine for safe odor removal,Specialty Treatments,day,150,0.2,83.33
+Ozone Machine Treatment,24-hour ozone shock treatment for severe smoke or odor,Specialty Treatments,day,175,0.4,83.33
+Rust Stain Removal,Chemical treatment and extraction for metal rust stains,Specialty Treatments,each,45,0.25,9.17
+Tannin and Coffee Stain Removal,Specialized spot treatment for tannin-based stains,Specialty Treatments,each,40,0.2,10
+Gum and Wax Removal,Freezing and scraping sticky gum or wax deposits,Specialty Treatments,each,35,0.2,6.67
+Standard Area Rug Cleaning,In-plant synthetic area rug wash and extraction,Rug & Specialty Cleaning,sq ft,2,0.008,0.6
+Handmade Silk Rug Cleaning,Specialized dry-wash process for delicate silk area rugs,Rug & Specialty Cleaning,sq ft,5,0.02,1.5
+Area Rug Fringe Detangling and Washing,Hand scrubbing and combing rug fringe tassels,Rug & Specialty Cleaning,linear ft,10,0.05,2.5
+Rug Moth Treatment,Application of anti-moth pesticide solution to area rug,Rug & Specialty Cleaning,sq ft,1,0.003,0.4
+Custom Rug Pad Cut-to-Size,Supplying and cutting non-slip rug pad underlay,Rug & Specialty Cleaning,sq ft,1,0.003,0.4
+Rug Odor Submersion Bath,Full immersion enzyme soak for heavily contaminated rugs,Rug & Specialty Cleaning,sq ft,2,0.008,0.6
+Leather Rug Special Conditioning,Hand conditioning for cowhide and leather patchwork rugs,Rug & Specialty Cleaning,sq ft,3,0.012,0.9
+Rug Binding Repair,Re-stitching frayed or damaged outer edges of area rug,Rug & Specialty Cleaning,linear ft,12,0.06,3
+Rug Fringe Replacement,Seaming new cotton fringe onto area rug edge,Rug & Specialty Cleaning,linear ft,25,0.12,6.67
+Pickup and Delivery Service for Rugs,Roundtrip transport service for in-plant rug cleaning,Rug & Specialty Cleaning,job,75,0.4,16.67
+Standard Disposal Fee,"Disposal of ruined carpet, pad, and debris at dump",Disposal & Permits,job,100,0.4,33.33
+Hazardous Material Disposal Fee,Disposal fees for Category 3 sewage-contaminated waste,Disposal & Permits,job,250,0.8,100
+Appliance Removal and Reinstallation,Moving heavy laundry appliances to access flooded flooring,Disposal & Permits,each,125,0.8,16.67
+Municipal Restoration Permit Fee,Cost to pull required local structural drying permits,Disposal & Permits,each,150,0,100
+Large Debris Haul-Away,Loading and hauling oversized water-damaged debris,Disposal & Permits,job,200,1,50
+Heavy Equipment Transport Fee,Logistics fee for delivering large drying trailers,Disposal & Permits,job,125,0.6,33.33
+Biohazard Cleanup Surcharge,Protective gear and disposal for biological waste sites,Disposal & Permits,job,300,1.4,83.33
+Carpet Pad (Standard Rebond),Supply and install 7/16 inch standard rebond carpet pad,Materials & Parts,sq ft,1,0.003,0.4
+Carpet Pad (Heavy Traffic/Moisture Barrier),Supply and install moisture-barrier cushion pad,Materials & Parts,sq ft,1,0.003,0.4
+Commercial Glue-Down Carpet Adhesive,Adhesive material for direct-glue carpet installations,Materials & Parts,gallon,65,0.1,35
+Carpet SeAM Sealer,Heat-activate liquid seam sealer adhesive,Materials & Parts,each,25,0.1,8.33
+Hot Melt Seaming Tape,Width roll of professional carpet seaming tape,Materials & Parts,linear ft,2,0.005,0.85
+Heavy Duty Carpet Staples,Box of corrosion-resistant pneumatic carpet staples,Materials & Parts,each,20,0.05,9.17
+Polyethylene Containment Sheeting,Roll of 6-mil fire-retardant plastic barrier sheeting,Materials & Parts,each,45,0.15,17
+ZipWall Dust Barrier Pole Kit,Spring-loaded poles for temporary containment walls,Materials & Parts,job,75,0.2,30
+HEPA Vacuum Filter Replacement,Replacement HEPA filter for restoration vacuum,Materials & Parts,each,90,0.2,40
+Dehumidifier Filter Replacement,MERV filter replacement for commercial dehumidifiers,Materials & Parts,each,30,0.1,11.67
+Microfiber Cleaning Cloths Pack,Pack of professional grade microfiber wiping cloths,Materials & Parts,each,25,0.05,12
+Enzymatic Cleaner Concentrate,Gallon jug of professional pet urine neutralizing concentrate,Materials & Parts,gallon,85,0.1,48.33
+Extraction Detergent Concentrate,Gallon of low-residue truckmount extraction soap,Materials & Parts,gallon,65,0.1,35
+Spotter Kit for Homeowners,Take-home professional spot cleaning kit with solutions,Materials & Parts,each,40,0.1,18.33
+Duct Cleaning Main Trunk,Rotary brush cleaning for main HVAC supply and return trunk,HVAC & Duct Restoration,linear ft,15,0.08,3.33
+HVAC Supply Vent Cleaning,Cleaning and sanitizing individual branch supply vent,HVAC & Duct Restoration,each,25,0.15,4.17
+HVAC Blower Compartment Sanitization,Deep cleaning and disinfecting furnace blower housing,HVAC & Duct Restoration,job,150,0.8,33.33
+Electrostatic Air Filter Replacement,Supply and install custom HVAC filter after restoration,HVAC & Duct Restoration,each,60,0.2,23.33
+UV Germicidal Lamp Installation,Installing UV light air purifier in HVAC ductwork,HVAC & Duct Restoration,each,350,1,146.67
+Dryer Vent Cleaning,Clearing lint buildup from residential dryer exhaust duct,HVAC & Duct Restoration,job,125,0.8,16.67
+Air Duct Odor Fogging Treatment,Fogging deodorizer through entire ductwork system,HVAC & Duct Restoration,job,200,1,50
+Tile and Grout Deep Extraction Cleaning,High-pressure rotary steam cleaning for ceramic tile floors,Hard Surface Add-Ons,sq ft,1,0.005,0.25
+Grout Sealing Application,Applying clear penetrating sealer to cleaned tile grout lines,Hard Surface Add-Ons,sq ft,1,0.005,0.25
+Natural Stone Polishing,Diamond pad honing and polishing for marble or granite floors,Hard Surface Add-Ons,sq ft,4,0.02,1
+Luxury Vinyl Plank Deep Clean,Scrubbing and buffing luxury vinyl tile flooring,Hard Surface Add-Ons,sq ft,1,0.005,0.25
+Hardwood Floor Cleaning and Buffing,Low-moisture maintenance cleaning for finished hardwood,Hard Surface Add-Ons,sq ft,1,0.005,0.25
+Concrete Floor Acid Wash and Seal,"Acid etching, cleaning, and sealing bare concrete slab",Hard Surface Add-Ons,sq ft,2,0.01,0.5
+Grout Color Sealing,Applying pigmented color sealer to restore discolored grout,Hard Surface Add-Ons,sq ft,2,0.01,0.5
+Emergency Board-Up Service,Securing broken windows or doors after catastrophe,Emergency Services,job,350,1.6,100

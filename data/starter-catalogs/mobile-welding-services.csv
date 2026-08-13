@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Service Call & Travel Fee,Base travel and dispatch within standard service radius,Diagnostics & Travel,visit,150,1.2,0
+After-Hours Emergency Dispatch,Urgent mobilization outside normal business hours,Diagnostics & Travel,visit,300,2.4,0
+On-Site Diagnostic Evaluation,Inspection and assessment of structural or equipment damage,Diagnostics & Travel,hour,125,1,0
+Site Safety Assessment,Hazard evaluation and hot work permit preparation,Diagnostics & Travel,hour,100,0.8,0
+Mileage Surcharge,Travel fee per mile outside standard service radius,Diagnostics & Travel,each,4,0,2.67
+Standard Mobile Welding Labor,On-site welding and fabrication labor per welder,Labor Rates,hour,135,1,6.67
+Certified Structural Welding Labor,D1.1 certified welding labor for structural steel,Labor Rates,hour,165,1,26.67
+Pipe Welding Labor,Certified high-pressure pipe welding labor,Labor Rates,hour,175,1,33.33
+TIG Welding Labor,Precision TIG welding for aluminum or stainless steel,Labor Rates,hour,160,1,23.33
+Dual-Operator Labor,Second welder required for large or complex jobs,Labor Rates,hour,110,0.8,6.67
+Rig Setup and Tear Down,Preparation and packing of mobile welding rig equipment,Labor Rates,hour,95,0.76,0
+Helper / Assistant Labor,"General labor support for grinding, fitting, and safety",Labor Rates,hour,75,0.6,0
+Carbon Steel Structural Crack Repair,V-groove and weld repair on structural steel members,Structural Repairs,linear ft,120,0.8,13.33
+Steel Beam Reinforcement Plate Installation,Weld gusset or reinforcement plate to damaged beam,Structural Repairs,each,350,1.5,110
+Column Base Plate Repair,Re-weld or reinforce structural steel column base,Structural Repairs,each,450,2,133.33
+Mezzanine Frame Repair,Repair broken joints and supports on steel mezzanine,Structural Repairs,hour,140,1,10
+Steel Staircase Tread Repair,Re-secure and weld broken steel stair treads,Structural Repairs,each,175,1,33.33
+Handrail Repair and Reattachment,Weld broken joints or base plates on steel handrail,Structural Repairs,linear ft,85,0.5,15
+Bollard Post Installation,Weld steel pipe bollard into existing base plate,Structural Repairs,each,220,1,63.33
+Warehouse Guardrail Repair,Repair impact damage on warehouse safety guardrails,Structural Repairs,each,250,1.2,66.67
+Dock Leveler Lip Repair,Hardface and rebuild worn loading dock leveler lip,Loading Dock & Equipment,each,380,1.5,126.67
+Loading Dock Bumpers Steel Frame Repair,Weld new mounting plate for dock bumper assembly,Loading Dock & Equipment,each,275,1.5,56.67
+Dock Plate Hinge Repair,Repair or replace broken hinge loops on dock plate,Loading Dock & Equipment,each,210,1.2,40
+Conveyor Frame Weld Repair,Repair cracked or sagging industrial conveyor frame,Loading Dock & Equipment,hour,145,1,13.33
+Hopper Crack Repair,Weld cracks in industrial material handling hopper,Loading Dock & Equipment,linear ft,130,0.8,20
+Industrial Chute Patching,Weld steel wear patch over damaged chute section,Loading Dock & Equipment,sq ft,160,0.8,40
+Storage Rack Upright Repair,Weld reinforcement sleeve to damaged pallet rack leg,Loading Dock & Equipment,each,290,1.2,93.33
+Storage Rack Beam Re-welding,Re-attach torn connector clips on pallet rack beam,Loading Dock & Equipment,each,150,1,16.67
+Dumpster Lid Hinge Fabrication,Weld new heavy-duty steel hinges onto metal dumpster,Heavy Equipment & Trailers,each,185,1,40
+Dumpster Floor Patch,Weld steel plate to patch rusted dumpster bottom,Heavy Equipment & Trailers,sq ft,145,0.8,30
+Trailer Tongue Crack Repair,V-groove and reinforce cracked utility trailer tongue,Heavy Equipment & Trailers,each,320,1.5,86.67
+Trailer Axle Re-welding,Re-secure spun or broken trailer axle spindle mount,Heavy Equipment & Trailers,each,450,2,133.33
+Gooseneck Trailer Frame Gusseting,Install structural gussets on heavy equipment trailer,Heavy Equipment & Trailers,each,550,2.5,163.33
+Trailer Ramp Hinge Repair,Re-weld or replace broken spring-assisted ramp hinges,Heavy Equipment & Trailers,each,240,1.2,60
+Heavy Equipment Bucket Hardfacing,Apply wear-resistant alloy to loader or excavator bucket,Heavy Equipment & Trailers,hour,175,1,33.33
+Excavator Bucket Tooth Adapter Replacement,Cut off worn adapter and weld on new excavator adapter,Heavy Equipment & Trailers,each,210,1,56.67
+Bulldozer Blade Crack Repair,Gouge and weld structural cracks on dozer blade moldboard,Heavy Equipment & Trailers,linear ft,165,1,26.67
+Heavy Equipment Cab Guard Fabrication,Weld protective steel mesh screen to machinery cab,Heavy Equipment & Trailers,hour,150,1,16.67
+Aluminum Diamond Plate Tool Box Repair,TIG weld cracks on aluminum truck utility box,Aluminum & Stainless,hour,160,1,23.33
+Aluminum Trailer Frame Repair,TIG weld structural cracks on aluminum trailer frame,Aluminum & Stainless,linear ft,150,0.8,33.33
+Aluminum Boat Hull Patch,TIG weld patch over punctured aluminum boat hull,Aluminum & Stainless,sq ft,220,1,63.33
+Aluminum Tank Crack Repair,Repair crack on non-code aluminum holding tank,Aluminum & Stainless,linear ft,175,1,33.33
+Stainless Steel Handrail TIG Welding,Fabricate and weld sanitary stainless steel handrail,Aluminum & Stainless,linear ft,140,0.8,26.67
+Stainless Steel Table Repair,Weld broken seams on commercial kitchen prep table,Aluminum & Stainless,hour,150,1,16.67
+Stainless Steel Pipe Weld Repair,Purge-welded stainless steel process pipe repair,Aluminum & Stainless,each,280,1.2,86.67
+Cast Iron Manifold Repair,Brazing and controlled cooling repair on cast iron part,Cast Iron & Special Metals,hour,180,1.2,20
+Cast Iron Gearbox Housing Repair,Specialized nickel-rod weld repair on cracked casting,Cast Iron & Special Metals,hour,195,1.3,20
+Cast Iron Machine Base Repair,Structural repair on heavy cast iron industrial base,Cast Iron & Special Metals,hour,210,1.4,20
+Bronze Bushing Retaining Weld,Tack and secure bronze bushing inside steel housing,Cast Iron & Special Metals,each,130,0.8,20
+Steel Pipe Section Replacement,Cut out damaged pipe section and weld in new carbon pipe,Pipe & Pressure,each,320,1.2,113.33
+Flange Welding,Weld slip-on or weld-neck flange to carbon steel pipe,Pipe & Pressure,each,250,1,83.33
+Pipe Support Bracket Fabrication,Weld custom pipe hanger bracket to structural steel,Pipe & Pressure,each,140,0.8,26.67
+Pressure Vessel Non-Code Leak Repair,Weld surface pinhole leak on non-code air receiver tank,Pipe & Pressure,each,275,1.5,60
+Gate Hinge Post Replacement,Cut off old hinge post and weld new heavy steel post,"Gates, Fences & Security",each,290,1.2,93.33
+Ornamental Iron Gate Repair,Weld broken pickets and scrollwork on driveway gate,"Gates, Fences & Security",hour,135,1,6.67
+Security Window Bar Installation,Weld steel security bars into commercial window frame,"Gates, Fences & Security",each,220,1,63.33
+Security Gate Motor Mount Fabrication,Weld custom mounting plate for automatic gate operator,"Gates, Fences & Security",each,310,1.5,83.33
+Chain Link Fence Post Sleeve Repair,Weld steel sleeve over broken fence post base,"Gates, Fences & Security",each,115,0.6,26.67
+Plasma Cutting Services,Heavy-duty thermal cutting of thick steel plate on-site,Cutting & Preparation,linear ft,45,0.3,4.33
+Carbon Arc Air Gouging,Remove old welds and defects with carbon arc torch,Cutting & Preparation,hour,160,1,23.33
+Structural Steel Flame Cutting,Custom length or shape cutting of steel beams on-site,Cutting & Preparation,each,85,0.5,15
+Weld Grinding and Flush Finishing,Grind welds flush with surrounding base metal,Cutting & Preparation,linear ft,35,0.25,2.33
+Beveling Plate Edges for Welding,Grind or thermal bevel edge preparation for full penetration,Cutting & Preparation,linear ft,40,0.3,1.67
+Custom Steel Bracket Fabrication,Fabricate custom mounting bracket from raw stock on-site,Custom Fabrication & Mods,each,175,1,33.33
+Steel Plate Gusset Fabrication,Cut and drill triangular steel gusset plates,Custom Fabrication & Mods,each,65,0.4,10
+Custom Signage Mounting Post,Fabricate and weld heavy base plate to sign post,Custom Fabrication & Mods,each,240,1.2,60
+AC Unit Security Cage Installation,Weld protective steel cage around exterior condenser unit,Custom Fabrication & Mods,each,450,1.5,176.67
+Custom Lintel Fabrication & Installation,"Measure, cut, and weld steel angle lintel for masonry",Custom Fabrication & Mods,linear ft,95,0.5,20
+Carbon Steel Plate Material,Cost per square foot of 1/4 inch steel plate,Materials & Hardware,sq ft,35,0,23.33
+Thick Steel Plate Material,Cost per square foot of 1/2 inch steel plate,Materials & Hardware,sq ft,65,0,43.33
+Structural Steel Tubing,Cost per linear foot of 2x2 square steel tubing,Materials & Hardware,linear ft,25,0,16.67
+Heavy Structural Channel Material,Cost per linear foot of steel C-channel stock,Materials & Hardware,linear ft,45,0,30
+Stainless Steel Plate Material,Cost per square foot of 304 stainless steel sheet,Materials & Hardware,sq ft,85,0,56.67
+Aluminum Tread Plate Material,Cost per square foot of aluminum diamond plate,Materials & Hardware,Materials & Hardware,55,0,36.67
+High-Tensile Steel Rod,Cost per linear foot of solid steel reinforcing rod,Materials & Hardware,linear ft,15,0,10
+Threaded Anchor Bolts Set,Set of four heavy-duty concrete wedge anchor bolts,Materials & Hardware,each,40,0,26.67
+Hot Work Fire Watch Service,Dedicated safety personnel required during hot work operations,"Permits, Safety & Disposal",hour,65,0.52,0
+Municipal Hot Work Permit Procurement,Obtain local fire department hot work operating permit,"Permits, Safety & Disposal",each,150,1.2,0
+Certified Weld Inspection Report,Visual and dimensional weld inspection documentation,"Permits, Safety & Disposal",job,250,2,0
+Non-Destructive Testing Preparation,Grind and prep welds for ultrasonic or magnetic particle test,"Permits, Safety & Disposal",hour,95,0.76,0
+Hazardous Material Cutting Fee,Specialized handling for coated or galvanized steel cutting,"Permits, Safety & Disposal",hour,50,0.4,0
+Scrap Metal Removal & Recycling,Haul away and recycle old metal removed during repair,"Permits, Safety & Disposal",each,75,0.6,0
+Corrosion-Resistant Zinc Primer Application,Spray cold-galvanizing zinc primer on bare weldments,Finishing & Protection,sq ft,12,0.05,4
+Industrial Enamel Topcoat Painting,Apply matching industrial enamel paint over primed steel,Finishing & Protection,sq ft,18,0.08,5.33
+Stainless Steel Passivation Service,Chemical cleaning treatment for stainless steel welds,Finishing & Protection,linear ft,25,0.1,8.33
+Weld Joint Sealing,Apply polyurethane waterproof sealant to exterior joints,Finishing & Protection,linear ft,15,0.1,1.67
+Anti-Spatter Coating Application,Spray anti-spatter compound prior to high-spatter welding,Finishing & Protection,hour,40,0.25,5
+Generator Fuel Surcharge,Fuel and power generation fee for remote job sites,Equipment & Rig Fees,visit,45,0,30
+Heavy Rig Crane Truck Surcharge,Utilization fee for onboard boom crane on service truck,Equipment & Rig Fees,hour,85,0.5,15
+Oxygen and Acetylene Gas Consumable Fee,Standard gas torch consumption for cutting and heating,Equipment & Rig Fees,hour,35,0,23.33
+Shielding Gas Consumable Fee,Argon and CO2 mix consumption for MIG and TIG processes,Equipment & Rig Fees,hour,30,0,20
+Specialized Tungsten Electrode Fee,High-grade tungsten electrodes for precision TIG work,Equipment & Rig Fees,each,20,0,13.33
+Carbon Steel Structural Re-engineering,Engineering review and redesigned weld reinforcement plan,Engineering & Consultation,job,600,4,66.67
+On-Site Welding Procedure Consultation,Technical advice on weld joint design and metal selection,Engineering & Consultation,hour,150,1.2,0
+Field Blueprint Takeoff & Estimating,Measure and calculate material needs from site plans,Engineering & Consultation,hour,115,0.92,0
+Metal Alloy Identification Testing,Chemical spot testing to identify unknown metal grades,Engineering & Consultation,each,90,0.5,18.33
+Post-Weld Heat Treatment Service,Local stress-relieving heat treatment on heavy weldment,Engineering & Consultation,hour,220,1.2,46.67
+Temporary Shoring Installation,Install temporary steel screw jacks before structural cut,Structural Repairs,each,275,1.5,60
+Overhead Welding Surcharge,Additional complexity fee for overhead position welding,Labor Rates,hour,45,0.36,0
+Confined Space Welding Setup,Ventilation and continuous air monitoring equipment setup,"Permits, Safety & Disposal",hour,85,0.68,0
+Rush Job Priority Surcharge,Jump the queue fee for immediate same-day service,Diagnostics & Travel,job,250,2,0

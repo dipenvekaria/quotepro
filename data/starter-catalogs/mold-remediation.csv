@@ -1,0 +1,103 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Mold Inspection,Visual assessment and moisture mapping of affected areas,Testing and Inspection,visit,250,2,0
+Air Quality Testing,Collection of baseline and indoor spore trap samples,Testing and Inspection,each,150,1,16.67
+Surface Lift Sample,Tape lift analysis for direct mold identification,Testing and Inspection,each,100,0.5,25
+ERMI Dust Sample Collection,Comprehensive dust sample for toxic mold DNA analysis,Testing and Inspection,each,350,2,66.67
+Laboratory Rush Fee,Expedited 24-hour turnaround on lab sample results,Testing and Inspection,each,125,0,83.33
+Thermal Imaging Scan,Infrared camera detection of hidden moisture pockets,Testing and Inspection,job,200,1.5,8.33
+Post-Remediation Verification,Clearance testing after remediation work is complete,Testing and Inspection,visit,300,2,33.33
+Protocol Writing,Detailed remediation scope of work for insurance,Testing and Inspection,each,250,2,0
+Containment Barrier Setup,Polyethylene barrier with zippered entry to isolate zone,Containment and Setup,linear ft,15,0.08,6
+Negative Air Machine Setup,HEPA air scrubber installation for negative pressure,Containment and Setup,each,175,1.2,13.33
+HEPA Air Scrubber Daily Rental,Continuous filtration of airborne mold spores,Containment and Setup,day,85,0.2,53.33
+Negative Air Exhaust Ducting,Flexible ducting to vent scrubbers outdoors,Containment and Setup,linear ft,6,0.02,3.73
+Decontamination Chamber Setup,Two-stage entry chamber for worker suit changing,Containment and Setup,each,250,1.5,43.33
+ZipWall System Installation,Reusable dust barrier poles and plastic sheeting,Containment and Setup,each,120,0.8,14.67
+Floor Protection Layer,Heavy-duty Ram Board installation to protect flooring,Containment and Setup,sq ft,1,0.005,0.63
+HVAC System Isolation,Sealing supply and return vents to prevent cross-contamination,Containment and Setup,each,75,0.5,8.33
+PPE and Safety Kit,"Respirators, tyvek suits, and gloves for technicians",Containment and Setup,day,50,0,33.33
+Dehumidifier Large Rental,Industrial LGR dehumidifier for structural drying,Equipment Rental,day,150,0.2,93.33
+Dehumidifier Medium Rental,Standard commercial dehumidifier for small spaces,Equipment Rental,day,110,0.2,66.67
+Commercial Air Mover Rental,Low profile centrifugal fan for evaporation,Equipment Rental,day,35,0.1,20
+HEPA Vacuum Rental,Industrial vacuum for fine particulate cleanup,Equipment Rental,day,95,0.1,56.67
+Ozone Machine Rental,Heavy-duty odor and spore oxidation unit,Equipment Rental,day,125,0.2,73.33
+Hydroxyl Generator Rental,Safe continuous odor and mold gas neutralizer,Equipment Rental,day,175,0.2,103.33
+Thermal Fogger Rental,Fogging machine for disinfectant application,Equipment Rental,day,90,0.2,50
+Moisture Meter Calibration Check,Pin and pinless meter accuracy verification,Equipment Rental,visit,45,0.35,0
+Drywall Removal and Disposal,Demolition of mold-infested drywall up to 2 feet high,Demolition and Removal,linear ft,12,0.06,2.93
+Full Wall Drywall Demolition,Tear down of entire mold-damaged wall assemblies,Demolition and Removal,sq ft,4,0.02,1
+Ceiling Drywall Removal,Removal of water-damaged and moldy ceiling panels,Demolition and Removal,sq ft,6,0.03,1.47
+Insulation Removal and Bagging,Extraction of wet and moldy fiberglass batt insulation,Demolition and Removal,sq ft,3,0.02,0.33
+Blown-in Insulation Removal,Vacuum extraction of contaminated blown-in cellulose,Demolition and Removal,sq ft,5,0.03,0.83
+Baseboard Removal,Careful prying and salvaging of wood baseboards,Demolition and Removal,linear ft,3,0.02,0.33
+Casing and Trim Removal,Removal of door and window trim in affected zone,Demolition and Removal,linear ft,4,0.025,0.5
+Carpet and Pad Removal,Cutting and discarding contaminated carpet and cushion,Demolition and Removal,sq ft,2,0.01,0.83
+Hardwood Floor Removal,Pry-out and disposal of ruined hardwood flooring,Demolition and Removal,sq ft,8,0.05,1.13
+Laminate Flooring Removal,Tear up of floating click-lock flooring planks,Demolition and Removal,sq ft,4,0.025,0.5
+Vinyl Tile Removal,Scraping up glued resilient flooring materials,Demolition and Removal,sq ft,5,0.03,0.67
+Cabinetry Removal,Unbolting and taking down water-damaged base cabinets,Demolition and Removal,linear ft,45,0.3,4.67
+Vanity Removal,Disconnection and removal of bathroom vanity,Demolition and Removal,each,125,0.8,18.33
+Door Removal,Removing interior doors within remediation zone,Demolition and Removal,each,35,0.25,2
+Structural Wood Framing Demolition,Cutting out structurally compromised rotted studs,Demolition and Removal,linear ft,25,0.15,4.33
+Subfloor Removal,Cutting out moldy plywood or OSB subflooring,Demolition and Removal,sq ft,7,0.04,1.47
+HEPA Vacuuming Framing,Detailed vacuuming of exposed studs and joists,Cleaning and Remediation,sq ft,1,0.005,0.3
+Wire Brushing Framing,Mechanical scrubbing of heavy mold staining on lumber,Cleaning and Remediation,sq ft,3,0.02,0.33
+Anti-Microbial Application,Chemical spray treatment to kill active mold spores,Cleaning and Remediation,sq ft,1,0.005,0.3
+Encapsulant Coating Application,Painting antifungally treated wood with clear sealer,Cleaning and Remediation,sq ft,2,0.01,0.5
+White Pigmented Encapsulant,Applying mold-resistant barrier coating to framing,Cleaning and Remediation,sq ft,3,0.01,1
+Soda Blasting Remediation,Abrasive blast cleaning of large moldy wood surfaces,Cleaning and Remediation,sq ft,6,0.03,1.47
+Dry Ice Blasting,Non-destructive CO2 blasting for mold removal,Cleaning and Remediation,sq ft,8,0.03,2.47
+HEPA Wiping Non-Porous Surfaces,Detailed damp-wiping with HEPA filtration cloth,Cleaning and Remediation,sq ft,1,0.005,0.25
+Contents Cleaning,Detailed sanitizing and wiping of salvageable items,Cleaning and Remediation,hour,75,0.6,0
+HVAC Duct Cleaning,Rotary brush vacuum cleaning of air duct network,Cleaning and Remediation,each,450,2.5,93.33
+HVAC Coil Sanitization,Chemical wash of air handler evaporator coils,Cleaning and Remediation,each,175,1,33.33
+Crawlspace Ground Clean-up,Raking and clearing debris and organic matter from soil,Crawlspace Services,sq ft,1,0.005,0.25
+Crawlspace Vapor Barrier Installation,Lay down 6-mil poly sheeting over exposed dirt floor,Crawlspace Services,sq ft,1,0.004,0.3
+Encapsulated Crawlspace Liner,Heavy 20-mil reinforced vapor barrier sealed to walls,Crawlspace Services,sq ft,3,0.01,1.1
+Crawlspace Sump Pump Installation,Digging pit and installing submersible drainage pump,Crawlspace Services,each,750,4,166.67
+Crawlspace Dehumidifier Install,Hanging commercial crawlspace dehumidifier unit,Crawlspace Services,each,1850,5,833.33
+Foundation Vent Cover Installation,Sealing crawlspace vents for closed system conversion,Crawlspace Services,each,25,0.15,4.33
+Attic Ridge Vent Installation,Cutting and installing continuous passive roof exhaust,Attic and Roof Services,linear ft,35,0.2,6.67
+Attic Gable Fan Installation,Electrical and structural mounting of powered exhaust fan,Attic and Roof Services,each,350,2,66.67
+Attic Baffling Installation,Installing cardboard soffit vents to ensure airflow,Attic and Roof Services,each,18,0.1,3.67
+Roof Decking Board Replacement,Swapping out rotten plywood on roof sheathing,Attic and Roof Services,sq ft,12,0.06,2.93
+Drywall Hanging and Fastening,Installation of mold-resistant greenboard drywall,Reconstruction and Repairs,sq ft,3,0.015,0.9
+Drywall Taping and Mudding,Joint compound application and sanding for smooth finish,Reconstruction and Repairs,sq ft,3,0.015,0.9
+Drywall Texture Match,"Applying knockdown, orange peel, or smooth wall texture",Reconstruction and Repairs,sq ft,2,0.01,0.5
+Wall Painting (Prime and Two Coats),Primer application and finish paint on repaired walls,Reconstruction and Repairs,sq ft,2,0.01,0.5
+Insulation Replacement,Re-installing fiberglass batt insulation in cavities,Reconstruction and Repairs,sq ft,2,0.01,0.5
+Baseboard Installation,Nailing and caulking wood baseboard trim,Reconstruction and Repairs,linear ft,5,0.03,0.83
+Casing Installation,Installing door and window trim mouldings,Reconstruction and Repairs,linear ft,6,0.035,1
+Carpet Installation,Stretching and tacking new carpet over fresh pad,Reconstruction and Repairs,sq ft,4,0.02,1
+Laminate Flooring Installation,Laying click-lock flooring planks with underlayment,Reconstruction and Repairs,sq ft,5,0.025,1.25
+Subfloor Patching,Screwing down new plywood patch to floor joists,Reconstruction and Repairs,sq ft,6,0.03,1.5
+Framing Stud Doubling,Adding sister studs alongside water-damaged framing,Reconstruction and Repairs,linear ft,18,0.1,3.67
+Bagged Debris Disposal,Disposal fee for bagged contaminated demo material,Disposal and Environmental,each,15,0.08,3.33
+Debris Trailer Load,Hauling away bulk construction and mold waste,Disposal and Environmental,job,350,1.5,110
+Dumpster Rental (10 Yard),"Drop-off, rental, and pickup of roll-off dumpster",Disposal and Environmental,day,550,0.5,320
+Hazardous Waste Handling Fee,Special disposal processing for heavy toxic mold loads,Disposal and Environmental,job,200,0.5,91.67
+Bio-Wash Disposal,Discharge fees for liquid chemical extraction waste,Disposal and Environmental,gallon,10,0,6.67
+Mold Remediation Labor,Standard hourly technician rate for hands-on remediation,Labor and Fees,hour,75,1,0
+Supervisor Labor Rate,Project manager oversight and protocol management,Labor and Fees,hour,95,1,0
+After-Hours Emergency Dispatch,Late night or holiday mobilization surcharge,Labor and Fees,visit,250,1.5,41.67
+Travel Surcharge,Extended distance mileage fee outside service radius,Labor and Fees,each,75,0.4,16.67
+Permit Acquisition Fee,Local municipality paper filing and processing charge,Labor and Fees,each,150,1,16.67
+HEPA Filter Replacement Fee,Mandatory disposal and replacement of spent vacuum filters,Labor and Fees,each,125,0.2,66.67
+Scrubber Carbon Filter Replacement,Fresh carbon bed insertion for odor control scrubbers,Labor and Fees,each,175,0.3,90
+Whole-Home UVC Air Purifier,Installation of duct-mounted germicidal UV light system,Upsells and Enhancements,each,650,2,266.67
+Whole-House Dehumidifier Installation,Ducted AprilAire whole-home moisture control system,Upsells and Enhancements,each,2400,6,1100
+Smart Water Leak Sensor Kit,Wireless auto-shutoff valve and floor leak detectors,Upsells and Enhancements,each,450,1.5,183.33
+HEPA Room Air Purifier,Standalone medical-grade air purifier for living spaces,Upsells and Enhancements,each,350,0.5,191.67
+Anti-Microbial HVAC Filter Upgrade,MERV 13 treated filter supply for furnace system,Upsells and Enhancements,each,45,0.1,21.67
+Mold Prevention Home Warranty,Annual inspection and spray preventative maintenance plan,Upsells and Enhancements,visit,199,1,49.33
+Attic Solar Fan Upgrade,Eco-friendly solar powered attic ventilation fan,Upsells and Enhancements,each,550,2,200
+Plumbing Leak Repair (Minor),Fixing loose pipe joint or supply line leak causing mold,Upsells and Enhancements,each,175,1,33.33
+Tile and Grout Deep Steam Clean,High-heat extraction cleaning for bathroom mold removal,Upsells and Enhancements,sq ft,2,0.01,0.5
+Exterior Drainage Extension,Adding downspout splash blocks and plastic extensions,Upsells and Enhancements,each,35,0.2,6.67
+Dryer Vent Duct Cleaning,Lint and trapped moisture removal from exhaust pipe,Upsells and Enhancements,each,150,0.6,50
+Window Condensation Mitigation Kit,Installation of secondary insulation window film liners,Upsells and Enhancements,each,120,0.5,38.33
+Insurance Documentation Package,Comprehensive photo log and moisture report binder,Labor and Fees,job,100,0.8,0
+Structural Drying Certification,Final psychrometric report proving structural dry standard,Testing and Inspection,job,150,1.2,0
+Ceiling Texture Spray,Popcorn or acoustic ceiling texture repair application,Reconstruction and Repairs,sq ft,4,0.02,1
+Stair Tread Replacement,Installing new wood stair treads ruined by moisture,Reconstruction and Repairs,each,95,0.5,21.67
+Final Construction Cleanup,Detailed dusting and sweeping after repairs are finished,Reconstruction and Repairs,hour,60,1,0

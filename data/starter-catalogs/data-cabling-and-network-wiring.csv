@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,On-site diagnostic and troubleshooting visit,Diagnostics & Labor,visit,150,1.2,0
+After Hours Service Call,Emergency dispatch outside normal business hours,Diagnostics & Labor,visit,300,2.4,0
+Standard Technician Labor,Hourly rate for single technician,Diagnostics & Labor,hour,95,1,0
+Senior Lead Technician Labor,Hourly rate for senior network specialist,Diagnostics & Labor,hour,125,1,0
+Two-Man Crew Labor,Hourly rate for installation crew of two,Diagnostics & Labor,hour,190,1,0
+Project Management,On-site supervision and project coordination,Diagnostics & Labor,hour,115,1,0
+After-Hours Labor Premium,Additional hourly rate multiplier for night work,Diagnostics & Labor,hour,60,1,0
+Lift Rental Daily Fee,Scissor or boom lift daily rental,Diagnostics & Labor,day,350,0,233.33
+Permit Acquisition Fee,Local municipality low-voltage permit handling,Diagnostics & Labor,job,175,1.4,0
+Disposal Fee,Removal and hauling of old cable and scrap,Diagnostics & Labor,job,75,0.6,0
+Cat5e Cable Drop,Run termination and test for single Cat5e line,Cabling Installation,each,145,0.8,33.33
+Cat6 Cable Drop,Run termination and test for single Cat6 line,Cabling Installation,each,165,0.8,46.67
+Cat6A Shielded Cable Drop,Run termination and test for 10Gig shielded line,Cabling Installation,each,210,0.9,63.33
+Coax RG6 Cable Drop,Run termination and test for video line,Cabling Installation,each,135,0.8,26.67
+Speaker Wire Drop,Two-conductor audio cable run and strip,Cabling Installation,each,110,0.7,16.67
+Security Camera Cable Drop,Cat6 run dedicated for IP security camera,Cabling Installation,each,170,0.8,46.67
+Access Point Cable Drop,High ceiling Cat6 run for wireless access point,Cabling Installation,each,195,0.9,56.67
+HDMI Cable Run,Long distance in-wall HDMI cable installation,Cabling Installation,each,180,0.8,53.33
+USB Extender Cable Run,Cat6-based USB extension run and termination,Cabling Installation,each,190,0.8,60
+Fiber Optic Cable Run,Single-mode or multi-mode indoor fiber run,Cabling Installation,linear ft,4,0.02,2.49
+Cat5e Bulk Cable,1000ft box of UTP solid copper wire,Cabling Materials,each,160,0,106.67
+Cat6 Bulk Cable,1000ft box of UTP solid copper wire,Cabling Materials,each,210,0,140
+Cat6A Shielded Bulk Cable,1000ft spool of shielded solid copper wire,Cabling Materials,each,380,0,253.33
+Fiber Optic Patch Cable,Duplex LC-LC multimode patch cord,Cabling Materials,each,25,0,16.67
+Cat6 Patch Cable 3ft,Factory made RJ45 patch cord,Cabling Materials,each,8,0,5.33
+Cat6 Patch Cable 7ft,Factory made RJ45 patch cord,Cabling Materials,each,12,0,8
+Cat6 Patch Cable 14ft,Factory made RJ45 patch cord,Cabling Materials,each,18,0,12
+J-Hook Support Fastener,Cable management support hook installed,Cabling Materials,each,12,0.05,7.33
+D-Ring Cable Manager,Wall mount plastic cable management ring,Cabling Materials,each,15,0.05,9.33
+Velcro Roll Bulk,15-foot roll of reusable cable fastening strap,Cabling Materials,each,20,0,13.33
+RJ45 Keystone Jack Cat5e,Termination insert for wall plate,Termination & Jacks,each,10,0.05,6.33
+RJ45 Keystone Jack Cat6,Termination insert for wall plate,Termination & Jacks,each,14,0.05,9
+RJ45 Keystone Jack Cat6A,Shielded termination insert for wall plate,Termination & Jacks,each,22,0.05,14.33
+Single Gang Faceplate,Plastic wall plate with 1 to 4 ports,Termination & Jacks,each,8,0.04,5
+Double Gang Faceplate,Plastic wall plate with up to 6 ports,Termination & Jacks,each,12,0.05,7.67
+Surface Mount Box Single,Surface box for drywalls without hollow space,Termination & Jacks,each,18,0.08,11.33
+Low Voltage Mounting Bracket,Old work mud ring for drywall installation,Termination & Jacks,each,9,0.05,5.67
+BNC Coax Connector,Crimp-on connector for security video line,Termination & Jacks,each,12,0.05,7.67
+Fiber Optic Termination LC,Mechanical splice or fusion splice on fiber strand,Termination & Jacks,each,35,0.2,20
+Blank Keystone Insert,Plastic filler for unused faceplate openings,Termination & Jacks,each,4,0.02,2.33
+24-Port Patch Panel Cat6,Rack mount network patch panel installed and punched,Rack & Patch Panels,each,185,0.6,73.33
+48-Port Patch Panel Cat6,High density rack mount patch panel punched down,Rack & Patch Panels,each,280,1,100
+24-Port Patch Panel Cat5e,Rack mount network patch panel installed and punched,Rack & Patch Panels,each,150,0.6,50
+Wall Mount Equipment Rack 6U,Hinged wall mount swing gate rack installation,Rack & Patch Panels,each,220,0.8,83.33
+Wall Mount Equipment Rack 12U,Enclosed or open wall rack installation,Rack & Patch Panels,each,350,1.2,133.33
+Floor Standing Network Cabinet 42U,Standard server rack assembly and positioning,Rack & Patch Panels,each,950,3,386.67
+Horizontal Cable Manager 1U,Rack mount finger duct management panel,Rack & Patch Panels,each,45,0.15,26.67
+Vertical Cable Manager,Full height rack cable management channel,Rack & Patch Panels,each,160,0.5,63.33
+Rack Mount Shelf,Vented cantilever shelf for equipment placement,Rack & Patch Panels,each,65,0.2,23.33
+Rack Mount Power Strip,1U 8-outlet surge protected PDU installation,Rack & Patch Panels,each,110,0.3,48.67
+Wireless Access Point Installation,Mounting and connection of ceiling wireless device,Network Hardware,each,125,0.7,23.33
+PoE Network Switch 8-Port,Unmanaged gigabit power over ethernet switch setup,Network Hardware,each,175,0.4,83.33
+PoE Network Switch 24-Port,Managed gigabit power over ethernet switch setup,Network Hardware,each,450,0.8,233.33
+PoE Network Switch 48-Port,Enterprise managed power over ethernet switch setup,Network Hardware,each,950,1.2,533.33
+Router Configuration,Basic gateway setup and internet connectivity test,Network Hardware,each,200,1.2,33.33
+Network Firewall Setup,Hardware firewall integration and rule verification,Network Hardware,each,350,2,66.67
+Network Rack Grounding Kit,Bus bar and copper grounding wire installation,Network Hardware,each,140,0.5,51.67
+UPS Battery Backup Unit,Rack mount uninterruptible power supply installation,Network Hardware,each,320,0.4,186.67
+Media Converter Installation,Copper to fiber media converter setup,Network Hardware,each,130,0.6,36.67
+Network Printer Connection,IP configuration and test print setup,Network Hardware,each,85,0.5,15
+Cable Tone and Trace,Locate and identify unknown or unlabeled cables,Testing & Certification,hour,110,0.88,0
+Fluke Cable Certification Cat6,Full pass/fail report generation per cable run,Testing & Certification,each,25,0.15,4.33
+Fluke Cable Certification Cat6A,Full 10Gig pass/fail report generation per run,Testing & Certification,each,35,0.2,6.67
+Fiber Optic OTDR Testing,Optical time-domain reflectometer test and trace report,Testing & Certification,each,75,0.4,16.67
+Network Mapping Service,Physical layout documentation and port mapping,Testing & Certification,hour,120,0.96,0
+Line Troubleshooting & Repair,Isolate fault and re-terminate damaged cable end,Testing & Certification,each,135,0.9,16.67
+Continuity Test Basic,Simple wire map test for open/short verification,Testing & Certification,each,45,0.3,5
+Bandwidth Performance Audit,Throughput speed testing across network switches,Testing & Certification,hour,150,1.2,0
+As-Built Documentation Package,PDF drawings with final drop numbers and IDs,Testing & Certification,job,250,2,0
+Labeling Complete System,Machine printed labels on both ends of all cables,Testing & Certification,job,150,1.2,0
+Data Center Cabinet Clean Up,Re-dressing and cable management overhaul of messy rack,MDF / IDF Remediation,hour,125,1,0
+Abandoned Cable Removal,Pulling out old dead low-voltage wire from ceiling,MDF / IDF Remediation,linear ft,1,0.01,0
+MDF/IDF Relocation Labor,Dismantling and moving network rack to new room,MDF / IDF Remediation,job,1200,9.6,0
+Patch Panel Re-Punch,Re-terminating sloppy or failing punch down blocks,MDF / IDF Remediation,each,8,0.05,1.17
+Server Rack Bonding and Grounding,Bringing ungrounded rack up to electrical code,MDF / IDF Remediation,job,275,1.6,50
+IDF Ventilation Fan Installation,Adding cooling fan kit to enclosed wall cabinet,MDF / IDF Remediation,each,190,1,43.33
+Firestopping Penetration Seal,Applying UL-rated firestop putty around cable bundles,MDF / IDF Remediation,each,65,0.3,18.33
+Sleeve Core Drilling 2-inch,Core drill through concrete wall for cable pass,MDF / IDF Remediation,each,220,1.2,46.67
+Sleeve Core Drilling 4-inch,Core drill through concrete wall for cable pass,MDF / IDF Remediation,each,320,1.6,80
+Ladder Tray Installation,Suspended ceiling cable runway tray installed,MDF / IDF Remediation,linear ft,35,0.15,11
+Security Camera IP Dome Installation,Mounting and aiming security camera head,Security & Audio,each,150,0.8,33.33
+Security Camera IP Bullet Installation,Mounting and aiming outdoor security camera,Security & Audio,each,150,0.8,33.33
+NVR Recorder Setup,Network video recorder configuration and hard drive setup,Security & Audio,each,350,1.6,100
+Card Access Reader Installation,Door controller and badge reader mounting,Security & Audio,each,275,1.4,66.67
+Electric Door Strike Installation,Mortise or rim strike installation in door frame,Security & Audio,each,320,1.6,80
+Request to Exit Sensor Installation,PIR motion sensor above door for access release,Security & Audio,each,160,0.9,33.33
+In-Ceiling Speaker Installation,Cutting drywall and mounting audio speaker,Security & Audio,each,110,0.7,16.67
+Paging Amplifier Setup,Multi-zone commercial audio amplifier installation,Security & Audio,each,400,2,100
+Volume Control Wall Plate,Analog speaker volume attenuator installation,Security & Audio,each,85,0.4,23.33
+Intercom Station Installation,Door intercom sub-station flush or surface mount,Security & Audio,each,190,1,43.33
+Surface Raceway PVC,Surface wiremold channel installed per 5ft stick,Concealment & Pathways,linear ft,14,0.06,4.47
+Metallic EMT Conduit 3/4-inch,Rigid metal pipe installed for exposed cable runs,Concealment & Pathways,linear ft,18,0.08,5.53
+Flexible Conduit Whip,MC or flexible metal conduit run for drop drops,Concealment & Pathways,each,65,0.3,18.33
+J-Box Surface Mount,Metal junction box for conduit routing,Concealment & Pathways,each,35,0.15,11
+Under-Floor Cable Trench Routing,Laying cabling inside raised access floor grids,Concealment & Pathways,linear ft,6,0.03,1.5
+Overhead Bridle Ring Support,Beam clamp and bridle ring assembly,Concealment & Pathways,each,22,0.08,8
+Pull String Installation,Nylon pull line left inside empty conduit run,Concealment & Pathways,linear ft,1,0.005,0.33
+Exterior Weatherproof Conduit Run,Outdoor rated conduit and fittings installed,Concealment & Pathways,linear ft,25,0.12,6.67
+Floor Box Data Activation,Installing jacks inside existing in-floor utility box,Concealment & Pathways,each,95,0.5,21.67
+Seismic Bracing Kit,Earthquake sway bracing for suspended cable tray,Concealment & Pathways,each,180,0.6,66.67

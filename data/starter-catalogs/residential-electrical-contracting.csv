@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,Initial diagnostic and trip fee up to one hour,Diagnostics & Labor,visit,175,1.4,0
+After-Hours Emergency Dispatch,Emergency dispatch fee outside normal business hours,Diagnostics & Labor,visit,350,2.8,0
+Master Electrician Hourly Rate,Standard hourly labor rate for licensed electrician,Diagnostics & Labor,hour,150,1,0
+Apprentice Electrician Hourly Rate,Hourly rate for assistant apprentice technician,Diagnostics & Labor,hour,95,1,0
+Two-Man Crew Hourly Rate,Combined hourly rate for master and apprentice,Diagnostics & Labor,hour,225,1,0
+Electrical System Health Safety Inspection,Comprehensive visual inspection of entire electrical system,Diagnostics & Labor,job,250,2,0
+Thermal Imaging Scan,Infrared panel and circuit diagnostic scan,Diagnostics & Labor,job,300,2,33.33
+Troubleshooting and Diagnostics,Advanced electrical fault finding per hour,Diagnostics & Labor,hour,165,1.32,0
+Standard 15A Tamper-Resistant Outlet,Replacement of standard 15 amp receptacle,Outlets & Switches,each,85,0.5,15
+Standard 20A Tamper-Resistant Outlet,Replacement of standard 20 amp receptacle,Outlets & Switches,each,95,0.5,21.67
+GFCI Outlet Replacement,Standard GFCI safety receptacle replacement,Outlets & Switches,each,175,0.8,50
+USB Combo Outlet Installation,Receptacle with integrated USB charging ports,Outlets & Switches,each,150,0.6,50
+240V Heavy-Duty Outlet Installation,Dryer or range 240V receptacle replacement,Outlets & Switches,each,250,1.2,66.67
+Weatherproof Exterior Outlet,GFCI outlet with weather-resistant in-use cover,Outlets & Switches,each,220,1,63.33
+Single-Pole Wall Switch,Standard toggle or paddle light switch,Outlets & Switches,each,85,0.5,15
+Three-Way Switch Replacement,Replacement of paired three-way switch,Outlets & Switches,each,110,0.6,23.33
+Four-Way Switch Replacement,Replacement of four-way control switch,Outlets & Switches,each,140,0.8,26.67
+Single-Pole Dimmer Switch,Standard incandescent or LED dimmer switch,Outlets & Switches,each,160,0.8,40
+Smart Wi-Fi Dimmer Switch,Smart connected dimmer switch installation,Outlets & Switches,each,210,0.9,65
+Motion Sensor Switch,Occupancy sensor switch for lighting control,Outlets & Switches,each,180,0.8,53.33
+Standard Ceiling Fan Installation,Assembly and hanging of fan on existing box,Lighting & Fans,each,250,1.5,43.33
+Heavy Ceiling Fan with Vaulted Bracing,Fan installation requiring new structural ceiling brace,Lighting & Fans,each,450,2.5,93.33
+Standard Light Fixture Installation,Replacement of standard flush mount light fixture,Lighting & Fans,each,150,1,16.67
+Chandelier Installation up to 15ft,Hanging chandelier on existing junction box,Lighting & Fans,each,350,2.2,46.67
+High Ceiling Chandelier Installation,Chandelier installation above 15 feet height,Lighting & Fans,each,650,4,100
+Recessed LED Can Light Installation,New 4-inch or 6-inch LED retrofit downlight,Lighting & Fans,each,175,1,33.33
+Under Cabinet LED Lighting Strip,Hardwired under cabinet LED lighting system,Lighting & Fans,linear ft,65,0.3,18.33
+Exterior Floodlight Fixture,Single or double head security floodlight replacement,Lighting & Fans,each,200,1.1,43.33
+Pendant Light Fixture Installation,Single hanging pendant light installation,Lighting & Fans,each,175,1.1,26.67
+Wall Sconce Light Installation,Indoor or outdoor wall-mounted sconce fixture,Lighting & Fans,each,150,1,16.67
+100 Amp Main Breaker Panel Replacement,Swap out standard 100A main service panel,Panels & Breakers,job,2200,10,633.33
+200 Amp Main Breaker Panel Replacement,Swap out standard 200A main service panel,Panels & Breakers,job,3200,13,1033.33
+400 Amp Main Service Upgrade,Dual 200A panel upgrade with heavy service risers,Panels & Breakers,job,5500,22,1800
+Standard Single-Pole Circuit Breaker,Replacement of 15A or 20A standard breaker,Panels & Breakers,each,150,0.6,50
+AFCI Circuit Breaker Installation,Arc-fault circuit interrupter breaker replacement,Panels & Breakers,each,220,0.8,80
+GFCI Circuit Breaker Installation,Ground-fault circuit interrupter breaker replacement,Panels & Breakers,each,240,0.8,93.33
+Dual-Function AFCI/GFCI Breaker,Combination arc-fault and ground-fault breaker,Panels & Breakers,each,275,0.8,116.67
+240V Two-Pole Breaker 30A-50A,Double pole breaker for large appliances,Panels & Breakers,each,250,0.8,100
+Whole House Surge Protector,Main panel surge suppression device installation,Panels & Breakers,each,450,1.5,173.33
+Sub-Panel Installation 100A,Installation of secondary sub-panel up to 100 amps,Panels & Breakers,job,1800,8,533.33
+Main Service Ground Rod Installation,Driven copper ground rods and bonding clamps,Panels & Breakers,job,400,2.2,73.33
+Water Pipe Ground Bonding Kit,Copper jumper wire and clamps for water service,Panels & Breakers,job,220,1.2,46.67
+14-2 Romex Wire Run,New 14-2 non-metallic building wire per run,Wiring & Conduit,linear ft,8,0.04,2
+12-2 Romex Wire Run,New 12-2 non-metallic building wire per run,Wiring & Conduit,linear ft,10,0.04,3.33
+10-3 Romex Wire Run,New 10-3 non-metallic building wire per run,Wiring & Conduit,linear ft,14,0.05,5
+EMT Metal Conduit Installation,Electrical metallic tubing rigid raceway run,Wiring & Conduit,linear ft,18,0.06,7
+Liquid-Tight Flexible Conduit,Outdoor weatherproof flexible conduit run,Wiring & Conduit,linear ft,22,0.06,9.67
+Knob and Tube Wiring Decommissioning,Locating and bypassing legacy knob and tube wiring,Wiring & Conduit,hour,175,1.4,0
+Aluminum to Copper Wire Remediation,CO/ALR connectors or copalum crimps per connection,Wiring & Conduit,each,45,0.25,9
+Junction Box and Cover Installation,Accessible electrical junction box installation,Wiring & Conduit,each,120,0.6,30
+Smoke Detector Hardwired Replacement,120V interconnected ionization smoke detector,Life Safety & Low Voltage,each,135,0.7,30
+Carbon Monoxide Detector Hardwired,120V interconnected CO detector replacement,Life Safety & Low Voltage,each,150,0.7,40
+Combination Smoke and CO Detector,Hardwired dual sensor safety detector replacement,Life Safety & Low Voltage,each,175,0.7,56.67
+Standard Doorbell Transformer Replacement,Low voltage doorbell power transformer swap,Life Safety & Low Voltage,each,140,0.7,33.33
+Video Doorbell Installation,Ring or wired smart video doorbell setup,Life Safety & Low Voltage,each,175,0.8,50
+Cat6 Data Network Drop,Cat6 ethernet cable run terminated with wall jack,Life Safety & Low Voltage,each,220,1.1,56.67
+Coaxial TV Cable Drop,RG6 coaxial cable run with compression fittings,Life Safety & Low Voltage,each,180,0.9,46.67
+Home Theater Surround Sound Wire Run,In-wall speaker wire run per channel,Life Safety & Low Voltage,linear ft,12,0.05,3.83
+Smart Thermostat Installation,C-wire installation and smart thermostat setup,Life Safety & Low Voltage,each,175,0.8,50
+Electric Vehicle Level 2 Charger 40A,Hardwired EV charger installation on dedicated circuit,EV Charging & Heavy Appliances,job,950,4,300
+Electric Vehicle NEMA 14-50 Outlet,50 amp 240V receptacle for portable EV chargers,EV Charging & Heavy Appliances,job,750,3,250
+Electric Range Circuit Installation,Dedicated 50A 240V circuit for kitchen range,EV Charging & Heavy Appliances,job,650,2.8,193.33
+Electric Dryer Circuit Installation,Dedicated 30A 240V circuit for clothes dryer,EV Charging & Heavy Appliances,job,550,2.4,166.67
+Water Heater Circuit Installation,Dedicated 240V circuit for electric water heater,EV Charging & Heavy Appliances,job,600,2.6,180
+Central AC Disconnect Box Replacement,Outdoor non-fused or fused AC disconnect switch,EV Charging & Heavy Appliances,each,275,1.2,83.33
+Mini-Split Heat Pump Power Whip,Dedicated circuit and whip for ductless mini-split,EV Charging & Heavy Appliances,job,450,2,133.33
+Hot Tub / Spa Electrical Hookup,GFCI spa panel and whip connection to disconnect,EV Charging & Heavy Appliances,job,850,3.5,283.33
+Standby Generator Interlock Kit,Manual generator transfer interlock with breaker,Generators & Transfer Switches,job,550,2.4,173.33
+Manual Transfer Switch Installation,6 to 10 circuit manual transfer switch for generator,Generators & Transfer Switches,job,1250,5.5,383.33
+Automatic Standby Generator Hookup,Electrical connection for automatic home standby unit,Generators & Transfer Switches,job,2500,10,833.33
+Generator Inlet Box 30A-50A,Exterior power inlet box for portable generators,Generators & Transfer Switches,each,375,1.5,123.33
+Standard Ceiling Fan Box Upgrade,Retrofit heavy-duty fan rated support box,Hardware & Brackets,each,175,1,33.33
+Retrofit Junction Box Installation,Old work electrical box cut into drywall,Hardware & Brackets,each,95,0.5,20
+New Construction Wall Box,Stud-mounted plastic or metal box before drywall,Hardware & Brackets,each,65,0.3,18.33
+Expansion Bracket for Heavy Fixture,Adjustable brace bar for heavy ceiling loads,Hardware & Brackets,each,120,0.6,30
+Weatherproof While-In-Use Cover,Heavy duty locking outdoor receptacle cover,Hardware & Brackets,each,75,0.3,25
+Conduit Body LB Fitting,Rigid conduit pull elbow fitting installation,Hardware & Brackets,each,85,0.4,23.33
+Ground Clamp Heavy Duty,Bronze grounding electrode conductor clamp,Hardware & Brackets,each,45,0.2,13.33
+Cable Staples and Fastener Kit,Standard code-compliant cable securing hardware,Hardware & Brackets,job,35,0.1,15
+Electrical Permit Fee Processing,Municipal electrical permit application and filing fee,Permits & Disposal,job,150,1.2,0
+Electrical Inspection Coordination,Scheduling and attending municipal code inspection,Permits & Disposal,job,125,1,0
+Old Material Disposal Fee,Haul away and recycling of legacy electrical waste,Permits & Disposal,job,75,0.6,0
+Core Drilling Concrete Wall,Core drilling up to 3-inch hole through foundation,Permits & Disposal,each,250,1.2,66.67
+Drywall Patch Minor Repair,Patching small wall holes cut during wiring runs,Permits & Disposal,job,150,1,16.67
+Attic Crawlspace Surcharge,Labor adder for tight or difficult attic access work,Permits & Disposal,hour,75,0.6,0
+Crawlspace Vapor Barrier Clearance,Working in crawlspaces requiring protective gear,Permits & Disposal,hour,85,0.68,0
+Landscape Trenching for Underground Feed,Shovel trench up to 18 inches deep for conduit,Permits & Disposal,linear ft,25,0.08,10
+Mechanical Trenching Machine,Trenched run using powered mechanical trencher,Permits & Disposal,linear ft,15,0.04,6.67
+Temporary Power Pole Setup,Temporary overhead service drop and pedestal,Permits & Disposal,job,950,4,300
+Landscape Pathway Light Fixture,Low voltage LED landscape path light installation,Specialty & Upsells,each,125,0.6,33.33
+Landscape Spotlight Fixture,Low voltage adjustable tree or shrub uplight,Specialty & Upsells,each,150,0.7,40
+Low Voltage Lighting Transformer,Multi-tap landscape lighting transformer with timer,Specialty & Upsells,each,350,1.5,113.33
+Under-Deck Recessed Light,Weatherproof recessed light for outdoor decks,Specialty & Upsells,each,110,0.6,23.33
+Eave Soffit Holiday Lighting Outlet,Switched roofline outlet with timer control,Specialty & Upsells,job,320,1.5,86.67
+Mirror Defogger Pad Installation,Hardwired heated bathroom mirror pad,Specialty & Upsells,job,220,1,63.33
+Radiant Floor Heating Thermostat Controller,Floor warming system thermostat and sensor setup,Specialty & Upsells,job,275,1.2,83.33
+Electric Baseboard Heater Replacement,Standard 240V wall baseboard heating unit,Specialty & Upsells,each,350,1.6,100
+Cabinet LED Puck Light Kit,Recessed interior cabinet lighting set of three,Specialty & Upsells,job,280,1.2,86.67
+Lightning Protection System Bonding,Bonding structural metal to electrical ground,Specialty & Upsells,job,450,2,133.33

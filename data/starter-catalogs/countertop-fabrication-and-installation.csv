@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Initial Template Measurement,On-site laser template measurement for exact layout,Templates & Design,job,250,2,0
+Digital CAD Layout Programming,Computer-aided design programing for slab nesting,Templates & Design,job,175,1.4,0
+Design Consultation & Revision,In-person or virtual countertop design revision session,Templates & Design,hour,120,1,0
+Expedited Template Service,Priority measurement turnaround within twenty-four hours,Templates & Design,job,300,2.4,0
+Custom Full-Height Backsplash Template,Precise field template for full height wall coverage,Templates & Design,job,200,1.6,0
+Granite Slab Level 1,Standard entry-level natural granite stone material,Material Slabs,sq ft,55,0.2,34
+Granite Slab Level 2,Mid-tier natural granite stone material selection,Material Slabs,sq ft,70,0.2,44
+Granite Slab Level 3,Exotic natural granite stone material selection,Material Slabs,sq ft,90,0.2,57
+Marble Slab Standard,Natural marble stone slab material,Material Slabs,sq ft,95,0.2,60
+Marble Slab Premium,High-grade imported natural marble stone slab,Material Slabs,sq ft,130,0.2,83.33
+Quartz Standard Series,Engineered quartz stone slab standard tier,Material Slabs,sq ft,65,0.2,41
+Quartz Premium Series,Engineered quartz stone slab premium design,Material Slabs,sq ft,85,0.2,54.33
+Quartz Luxury Designer Series,High-end engineered quartz with intricate veining,Material Slabs,sq ft,110,0.2,71
+Quartzite Natural Slab,Natural quartzite high-durability stone slab,Material Slabs,sq ft,125,0.2,81
+Soapstone Natural Slab,Natural soapstone slab material,Material Slabs,sq ft,115,0.2,74.33
+Porcelain Slab Countertop,Large format thin porcelain slab material,Material Slabs,sq ft,140,0.3,90
+Solid Surface Acrylic Slab,Corian or equivalent solid surface material,Material Slabs,sq ft,50,0.2,31
+Butcher Block Hardwood Slab,Maple or walnut wood butcher block section,Material Slabs,sq ft,75,0.2,47.67
+Full Slab Bookmatch Fee,Custom matching layout for mirrored slab veins,Material Slabs,each,450,2.5,96.67
+Additional Slab Storage,Monthly storage fee for held stone slabs,Material Slabs,each,150,0.4,66.67
+Straight Edge Polish,Standard flat polished edge profile,Edge Profiles,linear ft,15,0.1,6.33
+Bevel Edge Polish,Angled bevel cut and polished edge profile,Edge Profiles,linear ft,22,0.12,9.33
+Bullfull Edge Polish,Full rounded radius edge profile,Edge Profiles,linear ft,25,0.14,10.33
+Half Bullnose Edge Polish,Top rounded radius edge profile,Edge Profiles,linear ft,22,0.12,9.33
+Ogee Edge Profile,Decorative S-curve traditional edge profile,Edge Profiles,linear ft,35,0.2,14.67
+Waterfall Edge Mitered Joint,Forty-five degree mitered joint for waterfall drop,Edge Profiles,linear ft,95,0.5,41
+Eased Edge Profile,Slightly softened sharp top edge,Edge Profiles,linear ft,10,0.06,4.33
+Cove Edge Polish,Concave recessed edge profile,Edge Profiles,linear ft,40,0.22,16.67
+Laminated Built-Up Edge,Double thickness glued strip edge profile,Edge Profiles,linear ft,45,0.25,18.67
+Dupont Edge Profile,Complex stepped curve decorative edge,Edge Profiles,linear ft,50,0.28,20.67
+Undermount Sink Cutout,Precise CNC cutout and polish for undermount sink,Cutouts & Sinks,each,225,1.5,25
+Top Mount Drop-In Sink Cutout,Standard cutout for drop-in sink application,Cutouts & Sinks,each,125,0.8,18.33
+Apron Front Farmhouse Sink Cutout,Complex apron front cabinet sink modification cutout,Cutouts & Sinks,each,325,2.2,30
+Cooktop Cutout,Standard cooktop drop-in opening with thermal corners,Cutouts & Sinks,each,200,1.3,25
+Faucet Hole Drilling,Single standard diameter hole drilled into stone,Cutouts & Sinks,each,35,0.25,2
+Soap Dispenser Hole Drilling,Additional hole drilled for accessory dispenser,Cutouts & Sinks,each,35,0.25,2
+Air Switch Cutout,Small diameter hole for garbage disposal button,Cutouts & Sinks,each,35,0.25,2
+Drainboard Grooves,Set of sloped drain channels cut into stone surface,Cutouts & Sinks,job,250,1.6,33.33
+Trivet Recess Grooves,Inlaid stainless steel or stone hot pad slots,Cutouts & Sinks,job,200,1.3,23.33
+Electrical Outlet Cutout in Backsplash,Square cutout for wall outlet box in backsplash,Cutouts & Sinks,each,65,0.45,5
+Standard Countertop Installation,"Delivery, leveling, and setting of stone sections",Installation Labor,sq ft,35,0.22,4.67
+High-Rise Carry Surcharge,Manual carrying fee for stairs or elevator limits,Installation Labor,job,250,2,0
+Seam Fabrication and Joining,Epoxy color-matched resin seam assembly and leveling,Installation Labor,each,150,1,16.67
+Island Heavy Support Bracket Installation,Mounting steel support brackets for overhangs,Installation Labor,each,95,0.5,22
+Cabinet Leveling and Shim Adjustment,Adjusting out-of-level base cabinets prior to install,Installation Labor,hour,90,1,0
+Full Height Backsplash Installation,Adhering and grouting full wall stone backsplash,Installation Labor,sq ft,45,0.3,4.67
+Standard 4-Inch Backsplash Installation,Setting matching four-inch side and back splashes,Installation Labor,linear ft,20,0.12,3.33
+Scribe and Fit Wall Splicing,Hand-grinding stone edges to match bowed walls,Installation Labor,linear ft,30,0.2,3.33
+After-Hours Night Installation,Commercial off-hours installation labor surcharge,Installation Labor,job,600,4.8,0
+Weekend Installation Surcharge,Saturday or Sunday scheduling installation fee,Installation Labor,job,400,3.2,0
+Existing Laminate Countertop Tearout,Removal and disposal of old laminate surfaces,Removal & Disposal,linear ft,12,0.08,1.47
+Existing Stone Countertop Tearout,Heavy removal and disposal of old granite or quartz,Removal & Disposal,linear ft,25,0.16,3.13
+Existing Tile Backsplash Demolition,Chipping out old wall tile and repairing drywall,Removal & Disposal,sq ft,15,0.1,1.67
+Old Countertop Haul Away & Dump Fee,Disposal fee for old material transport to dump,Removal & Disposal,job,175,1,33.33
+Sink Disconnection Service,Plumbing disconnect of existing faucet and sink,Removal & Disposal,each,85,0.6,6.67
+Cooktop Disconnection Service,Electrical or gas disconnect of existing cooktop,Removal & Disposal,each,95,0.65,8.33
+Debris Cleanup and Site Sweep,HEPA vacuum sweep and broom cleanup of work area,Removal & Disposal,job,75,0.6,0
+Hazardous Material Disposal,Special disposal fee for regulated old materials,Removal & Disposal,job,200,1,50
+Temporary Plywood Vanity Tops,Temporary sink setup during custom fabrication lead time,Removal & Disposal,job,150,0.8,35
+Cabinet Box Debris Haul,Removal of old damaged cabinet parts during refit,Removal & Disposal,job,120,0.8,13.33
+Sink Reconnection Plumbing,"Reconnect drain lines, P-trap, and water supply",Plumbing & Electrical,each,175,1.1,26.67
+New Faucet Installation,Mounting customer-supplied kitchen or bath faucet,Plumbing & Electrical,each,95,0.6,13.33
+Garbage Disposal Reinstallation,Mounting and wiring existing garbage disposal unit,Plumbing & Electrical,each,85,0.5,15
+Instant Hot Water Dispenser Install,Plumbing and mounting under-sink hot water tank,Plumbing & Electrical,each,150,0.9,26.67
+Water Filter System Hookup,Installing inline filtration system under sink,Plumbing & Electrical,each,120,0.7,21.67
+Cooktop Re-installation,Drop-in and electrical connection of cooktop,Plumbing & Electrical,each,130,0.8,22
+Undermount Sink Mounting Hardware Upgrade,Heavy-duty mechanical sink harness installation,Plumbing & Electrical,each,75,0.3,25
+Custom Plumbing Line Extension,Extending supply lines to fit new layout dimensions,Plumbing & Electrical,hour,125,1,0
+Gas Line Relocation,Hard pipe or flexible gas line shift for range,Plumbing & Electrical,job,275,1.5,58.33
+Outlet Faceplate Adjustments,Adjusting electrical boxes for new tile thickness,Plumbing & Electrical,each,30,0.2,3.33
+Natural Stone Sealing Application,Professional impregnating sealer application for granite,Maintenance & Repair,sq ft,3,0.02,1.13
+Chipped Seam Repair,Epoxy injection and polishing for stone surface chip,Maintenance & Repair,each,150,1,16.67
+Cracked Stone Structural Repair,Pinning and epoxy bonding for fractured countertop,Maintenance & Repair,job,350,2.2,46.67
+Sink Repositioning and Re-Gluing,Re-hanging a dropped undermount kitchen sink,Maintenance & Repair,job,225,1.5,25
+Etch Mark Removal and Repolishing,Diamond pad restoration for acidic etch marks on marble,Maintenance & Repair,sq ft,75,0.5,8.33
+Scratch Buffing and Honing,Mechanical resurfacing to remove surface scratches,Maintenance & Repair,sq ft,60,0.4,6.67
+Seam Recaulking,Removal and replacement of old silicone joint caulk,Maintenance & Repair,linear ft,8,0.05,1.13
+Stain Extraction Poultice Treatment,Chemical treatment to draw deep oil stains from stone,Maintenance & Repair,each,120,0.6,30
+Surface Buff and Polish Refresh,High-speed gloss restoration polish for dull stone,Maintenance & Repair,sq ft,15,0.1,1.67
+Loose Countertop Re-securing,Re-gluing loose slab sections to cabinet tops,Maintenance & Repair,job,110,0.8,8.33
+Stainless Steel Undermount Sink,Sixteen gauge single bowl undermount kitchen sink,Parts & Hardware,each,320,0.2,196
+Composite Quartz Undermount Sink,Granite composite double bowl undermount sink,Parts & Hardware,each,380,0.2,236
+Bathroom Porcelain Vanity Sink,White rectangular undermount vanity basin,Parts & Hardware,each,95,0.2,46.67
+Heavy Duty Steel Island Leg Support,Decorative tubular metal support leg for overhang,Parts & Hardware,each,140,0.3,69.33
+Hidden Cantilever Support Bracket,Flat steel concealed bracket for floating bar tops,Parts & Hardware,each,65,0.2,26.67
+Bottle of Stone Cleaner,pH-neutral daily cleaner spray for natural stone,Parts & Hardware,each,20,0,13.33
+Bottle of Stone Sealer Maintenance Spray,Consumer spray-on sealer booster bottle,Parts & Hardware,each,25,0,16.67
+Silicone Color-Matched Tube,Professional grade color-matched silicone caulk,Parts & Hardware,each,22,0,14.67
+Stainless Steel Grate Grid Protector,Custom fit sink bottom protection grid,Parts & Hardware,each,45,0,30
+Strainer Basket Assembly,Standard stainless steel kitchen sink strainer drain,Parts & Hardware,each,30,0,20
+Commercial Building Certificate of Insurance,Custom named insured COI for commercial properties,Permits & Administration,job,50,0.4,0
+Municipal Building Permit Processing,Filing paperwork for local structural alteration permits,Permits & Administration,job,150,1.2,0
+HOA Compliance Document Filing,Submitting contractor forms to homeowners associations,Permits & Administration,job,75,0.6,0
+Out of Service Area Travel Surcharge,Mileage fee for job sites outside standard radius,Permits & Administration,job,150,1.2,0
+Rush Order Processing Fee,Expedited fabrication schedule queue jump fee,Permits & Administration,job,500,4,0
+Engineering Load Calculation Letter,Structural engineer sign-off for heavy stone overhangs,Permits & Administration,job,450,3.6,0
+Site Re-Inspection Fee,Additional trip charge when site was not ready,Permits & Administration,visit,175,1.4,0
+Physical Template Storage Fee,Archiving wood or plastic physical templates long-term,Permits & Administration,job,100,0.8,0
+Material Restocking Fee,Restocking charge for returned custom slabs,Permits & Administration,job,350,1.5,110
+After-Hours Emergency Service Dispatch,Emergency callout fee for urgent damage repair,Permits & Administration,visit,250,2,0

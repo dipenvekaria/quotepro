@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Fee,Troubleshoot existing security system issues,Diagnostics & Service,visit,125,1,0
+After-Hours Diagnostic Fee,Emergency dispatch outside normal business hours,Diagnostics & Service,visit,250,2,0
+System Inspection and Test,Annual complete test of all zones and signals,Diagnostics & Service,job,150,1.2,0
+Sensor Battery Replacement,Replace batteries in wireless door or window sensors,Diagnostics & Service,each,35,0.25,3
+Panel Firmware Update,Update security panel software to latest version,Diagnostics & Service,job,95,0.75,0
+Standard Technician Labor,Hourly rate for standard installation work,Labor Rates,hour,115,1,0
+Master Technician Labor,Hourly rate for complex programming and diagnostics,Labor Rates,hour,145,1,0
+Two-Man Installation Crew,Hourly rate for two technicians on large jobs,Labor Rates,hour,220,1,0
+After-Hours Labor Rate,Hourly rate for emergency night or weekend labor,Labor Rates,hour,210,1,0
+Wiring Pull and Fish,Run new low-voltage cable through finished walls,Labor Rates,linear ft,4,0.02,1.5
+Hardwire Control Panel,Main security control panel enclosure with transformer,Control Panels,each,320,1.5,90
+Wireless Touchscreen Keypad,7-inch full color wireless security control keypad,Control Panels,each,275,0.75,120
+Standard Fixed Keypad,Hardwired alphanumeric LCD keypad,Control Panels,each,145,0.5,50
+Panel Expansion Module,Hardwired zone expansion board for main panel,Control Panels,each,110,0.5,30
+Backup Battery 12V 4Ah,Rechargeable lead-acid backup battery for panel,Control Panels,each,45,0.2,10
+Backup Battery 12V 7Ah,Large rechargeable backup battery for main panel,Control Panels,each,65,0.2,20
+Tamper Switch Replacement,Panel or device enclosure tamper switch,Control Panels,each,30,0.2,5
+Plug-In Power Transformer,16.5VAC transformer for security panel power,Control Panels,each,40,0.2,10
+Wireless Door Sensor,Surface mount wireless magnetic door contact,Intrusion Sensors,each,65,0.25,20
+Recessed Door Contact,Concealed magnetic contact for wooden doors,Intrusion Sensors,each,55,0.3,15
+Wireless Window Sensor,Compact wireless sensor for double hung windows,Intrusion Sensors,each,60,0.25,18
+Hardwired Magnetic Contact,Surface mount wired door or window contact,Intrusion Sensors,each,25,0.2,8
+Overhead Door Contact,Heavy duty roller switch for garage doors,Intrusion Sensors,each,110,0.5,35
+Standard Motion Detector,Passive infrared motion sensor up to 35ft range,Intrusion Sensors,each,120,0.3,45
+Pet-Immune Motion Detector,PIR motion sensor ignoring pets up to 80 lbs,Intrusion Sensors,each,155,0.3,60
+Dual-Tech Motion Detector,PIR and microwave motion sensor to prevent false alarms,Intrusion Sensors,each,195,0.4,75
+Glass Break Detector,Acoustic sensor detecting breaking plate or tempered glass,Intrusion Sensors,each,165,0.3,65
+Recessed Ceiling Motion Detector,360-degree flush mount ceiling motion sensor,Intrusion Sensors,each,210,0.5,85
+Outdoor Motion Detector,Weatherproof dual-tech motion sensor for exterior use,Intrusion Sensors,each,325,0.75,120
+Shock Sensor,Vibration sensor mounted on glass or walls,Intrusion Sensors,each,85,0.25,30
+Indoor Fixed Bullet Camera,1080p indoor security camera with night vision,CCTV & Video Surveillance,each,180,0.75,60
+Outdoor Turret Camera,4K outdoor weatherproof IP turret security camera,CCTV & Video Surveillance,each,280,1,100
+Outdoor Bullet Camera,4K motorized zoom outdoor security camera,CCTV & Video Surveillance,each,340,1.2,120
+Video Doorbell Camera,HD video doorbell with two-way audio,CCTV & Video Surveillance,each,250,0.75,90
+PTZ Security Camera,Pan-tilt-zoom high speed outdoor security camera,CCTV & Video Surveillance,each,650,2,250
+4-Channel NVR,Network video recorder with 1TB hard drive,CCTV & Video Surveillance,each,350,1.2,130
+8-Channel NVR,Network video recorder with 2TB hard drive,CCTV & Video Surveillance,each,500,1.5,200
+16-Channel NVR,Network video recorder with 4TB hard drive,CCTV & Video Surveillance,each,850,2,350
+Surveillance Hard Drive Upgrade,Upgrade to 4TB enterprise surveillance grade hard drive,CCTV & Video Surveillance,each,220,0.5,90
+PoE Network Switch,8-port Power over Ethernet switch for cameras,CCTV & Video Surveillance,each,175,0.5,70
+Camera Junction Box,Weatherproof mounting base for security camera cables,CCTV & Video Surveillance,each,45,0.2,15
+Smoke Detector Wireless,Photoelectric interconnected wireless smoke alarm,Life Safety & Environmental,each,145,0.3,55
+Heat Detector Wireless,Rate-of-rise and fixed temperature heat sensor,Life Safety & Environmental,each,135,0.3,50
+Carbon Monoxide Detector,Wireless electrochemical CO detector for security system,Life Safety & Environmental,each,155,0.3,60
+Water Leak Sensor,Wireless flood detector with remote probe,Life Safety & Environmental,each,95,0.2,35
+Temperature Freeze Sensor,Alerts when ambient temperature drops below 45 degrees,Life Safety & Environmental,each,110,0.2,40
+Medical Panic Pendant,Wearable wireless emergency panic button lanyard,Life Safety & Environmental,each,90,0.2,35
+Fixed Panic Button,Under-counter duress panic button for cash registers,Life Safety & Environmental,each,85,0.2,30
+Standalone Indoor Siren,110dB piezo electronic interior alarm siren,Life Safety & Environmental,each,75,0.3,25
+Outdoor Strobe Siren Box,Weatherproof siren with flashing strobe light,Life Safety & Environmental,each,210,0.75,75
+Cellular Communicator Module,LTE cellular backup communicator for monitoring center,Communication & Networking,each,240,0.5,100
+IP Internet Communicator,Ethernet network module for broadband monitoring,Communication & Networking,each,160,0.5,65
+Dual-Path Communicator,Combined cellular and IP communicator module,Communication & Networking,each,290,0.75,120
+Wi-Fi Range Extender,Wireless repeater for security panel network connection,Communication & Networking,each,95,0.25,35
+Structured Media Enclosure,28-inch metal structured wiring panel box,Communication & Networking,each,150,0.5,55
+Cat6 Data Cable Run,Run terminated Cat6 cable for network device,Communication & Networking,linear ft,3,0.015,1
+Coaxial Cable Run,RG59 Siamese cable run for analog cameras,Communication & Networking,linear ft,3,0.015,1
+Z-Wave Smart Door Lock,Keyless deadbolt integrated with security panel,Access Control & Automation,each,295,1,110
+Z-Wave Smart Thermostat,Programmable thermostat controlled via security app,Access Control & Automation,each,240,0.75,95
+Z-Wave Lamp Module,Plug-in appliance module for automated lighting control,Access Control & Automation,each,65,0.1,25
+Z-Wave Garage Door Controller,Remote tilt sensor and relay for automatic garage door,Access Control & Automation,each,130,0.5,45
+Single Door Access Controller,IP controller for single card reader door,Access Control & Automation,each,450,1.5,180
+RFID Proximity Card Reader,Wall mount key fob and card reader,Access Control & Automation,each,180,0.75,60
+Electric Strike Door Lock,Fail-secure heavy duty electric door strike,Access Control & Automation,each,260,1.2,75
+Magnetic Door Lock 600lbs,Electromagnetic lock for commercial doors,Access Control & Automation,each,340,1.5,100
+Request-to-Exit Sensor,PIR motion sensor to release magnetic door lock,Access Control & Automation,each,120,0.5,40
+Proximity Keyfobs,Pack of 10 standard RFID keyfobs for access control,Access Control & Automation,each,50,0.1,20
+Standard Monitoring Setup,Program central station accounts and test signals,Monitoring & Software Setup,job,95,0.75,0
+Cellular Monitoring Activation,Activate cellular pathway with central monitoring station,Monitoring & Software Setup,job,50,0.4,0
+Interactive App User Setup,Configure smartphone app and create user profiles,Monitoring & Software Setup,job,75,0.6,0
+Monthly Cellular Monitoring,24/7 central station professional burglar monitoring,Monitoring & Software Setup,visit,45,0.36,0
+Monthly Interactive Video Monitoring,24/7 monitoring plus cloud video storage and alerts,Monitoring & Software Setup,visit,65,0.52,0
+Commercial Fire Line Monitoring,UL listed commercial fire alarm central station monitoring,Monitoring & Software Setup,visit,95,0.76,0
+Monthly Virtual Guard Tour,Remote camera check service by monitoring station,Monitoring & Software Setup,visit,150,1.2,0
+Local Security Permit Processing,File paperwork for municipal alarm permit,Permits & Compliance,job,75,0.6,0
+Municipal Alarm Permit Fee,Pass-through cost for city or county alarm license,Permits & Compliance,each,50,0,33.33
+Commercial Fire System Plan Review,Submit engineering drawings to fire marshal,Permits & Compliance,job,350,2.8,0
+NFPA 72 Inspection Certificate,Official testing documentation for commercial fire systems,Permits & Compliance,job,250,2,0
+Low-Voltage Electrical Permit,Required municipal permit for low-voltage wiring,Permits & Compliance,job,125,1,0
+Old Panel and Battery Disposal,Remove and recycle legacy security equipment,Disposal & Cleanup,job,50,0.4,0
+Hazardous Battery Recycling Fee,Proper disposal fee for sealed lead-acid batteries,Disposal & Cleanup,each,15,0,10
+Construction Debris Cleanup,Site cleanup after drilling and cable pulling,Disposal & Cleanup,job,75,0.6,0
+Drywall Patch and Repair,Patch holes from relocated sensors or panels,Disposal & Cleanup,each,95,0.5,20
+Lift Rental Equipment,Scissor lift rental for high ceiling commercial installs,Specialized Equipment & Travel,day,350,0,233.33
+Extension Ladder Rigging Fee,Specialized high ladder setup for exterior cameras,Specialized Equipment & Travel,job,100,0.8,0
+Long Distance Service Surcharge,Travel fee for jobs outside standard service radius,Specialized Equipment & Travel,visit,75,0.6,0
+Core Drilling Concrete Wall,Core drill through concrete for exterior conduit run,Specialized Equipment & Travel,each,150,0.8,33.33
+Conduit Installation Surface,EMT metal conduit run for exposed wiring,Specialized Equipment & Travel,linear ft,12,0.06,3
+System Takeover Programming,Reprogram existing non-proprietary third party panel,Diagnostics & Service,job,195,1.5,0
+Wireless Repeater Module,Range extender for RF security sensor signals,Control Panels,each,130,0.4,50
+Driveway Vehicle Probe,Underground magnetic sensor for vehicle entry alert,Intrusion Sensors,each,380,1.2,150
+Beam Detector Set,Photoelectric perimeter beam sensor set up to 300ft,Intrusion Sensors,each,450,1.5,180
+Thermal Security Camera,Thermal imaging camera for perimeter detection,CCTV & Video Surveillance,each,1850,2.5,1000
+Micro SD Card 128GB,High endurance local storage card for IP cameras,CCTV & Video Surveillance,each,45,0.1,22
+Natural Gas Detector,Plug-in combustible gas detector with relay output,Life Safety & Environmental,each,120,0.3,50
+Lightning Surge Protector,Power and data surge suppressor for camera systems,Communication & Networking,each,85,0.3,30
+Biometric Fingerprint Reader,Biometric access control reader for high security doors,Access Control & Automation,each,380,1.2,150
+Visitor Intercom Station,Audio-video intercom sub-station for entry gate,Access Control & Automation,each,290,1,110
+Guard Tour Data Button,Checkpoint button for security guard patrol tracking,Access Control & Automation,each,60,0.2,20
+System Training Session,On-site comprehensive tutorial for users and staff,Diagnostics & Service,job,75,0.6,0
+Temporary Wireless Alarm Kit,Rental security system setup for construction sites,Diagnostics & Service,week,150,0.5,60

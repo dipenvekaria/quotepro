@@ -48,12 +48,23 @@ const DEFAULT_TAX_RATE = 8.5
 // Data
 // ---------------------------------------------------------------------------
 
+/**
+ * The items a quote may be built from.
+ *
+ * Narrowed to the company's trade when it has one, so a plumber's quote is
+ * never grounded on roofing items. Items with no trade are always eligible —
+ * that is everything the contractor added by hand or imported themselves, and
+ * excluding their own price book would be the worse failure by far.
+ */
 export async function fetchCatalog(companyId: string): Promise<CatalogItem[]> {
   return query<CatalogItem>(
-    `select id, name, description, category, base_price, unit
-       from catalog_items
-      where company_id = $1 and is_active = true
-      order by name
+    `select ci.id, ci.name, ci.description, ci.category, ci.base_price, ci.unit
+       from catalog_items ci
+       join companies c on c.id = ci.company_id
+      where ci.company_id = $1
+        and ci.is_active = true
+        and (c.trade is null or ci.trade is null or ci.trade = c.trade)
+      order by ci.name
       limit 200`,
     [companyId],
   )
@@ -142,6 +153,9 @@ const QUOTE_SCHEMA: Schema = {
   properties: {
     line_items: {
       type: Type.ARRAY,
+      // A real quote is a handful of lines. Without a ceiling the model has
+      // walked the whole catalog into the response.
+      maxItems: '12',
       items: {
         type: Type.OBJECT,
         properties: {

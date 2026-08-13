@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Flooring Consultation and Measure,On-site assessment and precise room measurement,Diagnostics & Service Calls,visit,100,0.8,0
+Subfloor Moisture Testing,Concrete relative humidity test for moisture levels,Diagnostics & Service Calls,visit,175,1.4,0
+Emergency Water Extraction Service,Water removal from soaked flooring materials,Diagnostics & Service Calls,hour,150,1,16.67
+Standard Flooring Inspection,Detailed failure analysis and damage report,Diagnostics & Service Calls,visit,200,1.6,0
+After-Hours Service Call Fee,Emergency dispatch outside normal business hours,Diagnostics & Service Calls,visit,250,2,0
+Carpet Stretch and Re-secure,Power stretch loose wall-to-wall carpet,Carpet Repair,room,150,1.2,0
+Carpet Patch Repair,Cut and glue remnant piece into damaged area,Carpet Repair,each,225,1.6,10
+Carpet Seam Repair,Re-glue and seal fraying carpet seams,Carpet Repair,linear ft,15,0.1,2
+Carpet Burn Repair,Clip damaged fibers and insert donor tufts,Carpet Repair,each,125,1,0
+Stair Carpet Re-attachment,Re-staple and secure loose carpet on stairs,Carpet Repair,linear ft,20,0.15,0.67
+Hardwood Board Replacement,Remove damaged plank and install new matching hardwood,Hardwood Repair,each,175,1.2,13.33
+Hardwood Scratch Touch-Up,Color blend and seal surface scratches,Hardwood Repair,hour,120,0.96,0
+Hardwood Board Face Nailing,Secure squeaking or loose boards with face nails,Hardwood Repair,linear ft,12,0.08,1.33
+Engineered Wood Injection Repair,Inject adhesive to bond loose veneer to subfloor,Hardwood Repair,each,95,0.6,13.33
+Hardwood Threshold Repair,Re-secure or replace damaged wooden transition strip,Hardwood Repair,each,110,0.7,13.33
+Tile Replacement,Chisel out broken tile and install replacement,Tile Repair,each,85,0.5,15
+Grout Line Restoration,Clean and re-color stained grout lines,Tile Repair,sq ft,4,0.02,0.67
+Grout Crack Repair,Rake out cracked grout and apply fresh mortar,Tile Repair,linear ft,8,0.05,1
+Loose Tile Re-adhesion,Inject epoxy under hollow-sounding loose tiles,Tile Repair,each,60,0.4,5.33
+Shower Tile Regrouting,Remove old shower grout and apply waterproof grout,Tile Repair,sq ft,12,0.08,1.33
+LVP Plank Replacement,Replace damaged luxury vinyl plank in field,Laminate & Vinyl Repair,each,130,0.8,20
+Laminate Seam Sealing,Apply moisture barrier adhesive to laminate joints,Laminate & Vinyl Repair,linear ft,5,0.03,0.67
+Sheet Vinyl Patch,Heat weld or seam seal sheet vinyl insert,Laminate & Vinyl Repair,each,175,1.2,16.67
+LVP Edge Trim Repair,Re-glue detached vinyl stair nose or edge,Laminate & Vinyl Repair,linear ft,18,0.1,3.33
+Vinyl Plank Gapping Correction,Pull and realign shifted locking planks,Laminate & Vinyl Repair,sq ft,3,0.02,0.33
+Carpet Installation,Install wall-to-wall carpet over pad,Carpet Installation,sq ft,2,0.01,0.9
+Carpet Tile Installation,Glue down modular carpet tiles,Carpet Installation,sq ft,3,0.015,1.4
+Stair Carpet Installation,Install carpet on standard straight stairs,Carpet Installation,each,15,0.1,1.67
+Carpet Stair Runner Installation,Install decorative runner with hardware,Carpet Installation,linear ft,25,0.15,4.33
+Commercial Glue-Down Carpet Installation,Direct glue carpet installation for commercial grade,Carpet Installation,sq ft,2,0.01,0.9
+Solid Hardwood Nail-Down Installation,Install solid hardwood over wooden subfloor,Hardwood Installation,sq ft,5,0.02,2.2
+Engineered Hardwood Float Installation,Float engineered wood over acoustic underlayment,Hardwood Installation,sq ft,4,0.015,1.8
+Hardwood Glue-Down Installation,Full spread adhesive wood flooring installation,Hardwood Installation,sq ft,6,0.025,2.5
+Unfinished Hardwood Sand and Finish,Sand raw wood and apply three coats of finish,Hardwood Installation,sq ft,4,0.02,1
+Hardwood Stair Tread Installation,Install solid wood treads and risers,Hardwood Installation,each,125,0.8,16.67
+Ceramic Tile Floor Installation,Thin-set mortar installation of ceramic tile,Tile & Stone Installation,sq ft,8,0.03,3.2
+Porcelain Tile Floor Installation,Install porcelain tile with modified thin-set,Tile & Stone Installation,sq ft,9,0.035,3.5
+Natural Stone Tile Installation,"Marble, granite, or slate tile installation",Tile & Stone Installation,sq ft,12,0.05,4.33
+Large Format Tile Installation,Install tiles larger than 15x15 inches,Tile & Stone Installation,sq ft,11,0.045,4
+Tile Backsplash Installation,Kitchen or bath wall tile installation,Tile & Stone Installation,sq ft,22,0.1,6.67
+Luxury Vinyl Plank Installation,Click-lock LVP flooring installation,Laminate & Vinyl Installation,sq ft,3,0.015,1.2
+Glue-Down LVT Installation,Direct glue luxury vinyl tile installation,Laminate & Vinyl Installation,sq ft,3,0.015,1.2
+Laminate Flooring Installation,Click-lock laminate floor with foam pad,Laminate & Vinyl Installation,sq ft,3,0.015,1.2
+Sheet Vinyl Installation,Full spread sheet vinyl flooring installation,Laminate & Vinyl Installation,sq ft,3,0.015,1.2
+VCT Tile Installation,Vinyl composition tile installation and initial wax,Laminate & Vinyl Installation,sq ft,4,0.02,1.3
+Carpet Tear-Out and Disposal,Remove old carpet and pad and haul away,Demolition & Removal,sq ft,1,0.005,0.25
+Hardwood Tear-Out and Disposal,Pry up nailed or glued hardwood and haul away,Demolition & Removal,sq ft,2,0.01,0.4
+Tile Tear-Out and Disposal,Demolish tile and backer board and haul away,Demolition & Removal,sq ft,4,0.02,0.8
+Laminate or Vinyl Tear-Out,Pull up floating or glued laminate or vinyl,Demolition & Removal,sq ft,1,0.005,0.25
+Baseboard Removal and Salvage,Carefully pry off baseboards for reuse,Demolition & Removal,linear ft,2,0.012,0.3
+Plywood Subfloor Installation,Install 3/4 inch tongue and groove plywood subfloor,Subfloor Preparation,sq ft,3,0.012,1
+OSB Subfloor Patching,Cut out damaged subfloor and patch with new OSB,Subfloor Preparation,sq ft,5,0.025,1.3
+Self-Leveling Underlayment Pour,Pour and spread self-leveling compound up to 1/2 inch,Subfloor Preparation,sq ft,3,0.012,1
+Cement Backer Board Installation,Screw down cement board over wood subfloor for tile,Subfloor Preparation,sq ft,3,0.012,1
+Subfloor Sanding and Planing,Sand high spots in wooden subfloor to flatten,Subfloor Preparation,hour,95,0.76,0
+Uncoupling Membrane Installation,Install Ditra or equivalent anti-fracture membrane,Subfloor Preparation,sq ft,3,0.012,1
+Acoustic Underlayment Installation,Roll out and tape sound dampening underlayment,Subfloor Preparation,sq ft,1,0.005,0.25
+Moisture Barrier Poly Sheeting,Lay down 6 mil polyethylene vapor retarder,Subfloor Preparation,sq ft,1,0.005,0.25
+Subfloor Screw-Down Service,Screw down squeaking subfloor to joists,Subfloor Preparation,sq ft,1,0.005,0.25
+Floor Primer Application,Apply acrylic primer to concrete before leveling,Subfloor Preparation,sq ft,1,0.005,0.25
+Wood Baseboard Installation,Install primed MDF or wood baseboard moulding,Moulding & Trim,linear ft,5,0.025,1.3
+Quarter Round Installation,Install quarter round or shoe molding,Moulding & Trim,linear ft,2,0.012,0.3
+T-Molding Transition Installation,Install T-molding between same-height floors,Moulding & Trim,each,35,0.2,6.67
+Reducer Transition Installation,Install reducer strip between different height floors,Moulding & Trim,each,40,0.22,7.33
+Stair Nosing Installation,Install stair nose molding on step edge,Moulding & Trim,linear ft,25,0.15,4.33
+Baseboard Painting or Caulking,Caulk top edge of baseboard and touch up paint,Moulding & Trim,linear ft,3,0.02,0.33
+Standard Carpet Pad Material,8 lb rebond carpet cushion pad,Materials & Supplies,sq ft,1,0.002,0.65
+Premium Moisture Barrier Carpet Pad,Pet-proof moisture barrier carpet cushion,Materials & Supplies,sq ft,1,0.002,0.65
+Flooring Adhesive Pail,Professional grade wood or tile adhesive,Materials & Supplies,gallon,95,0,63.33
+Tile Grout Bag,Polymer modified sanded or unsanded grout,Materials & Supplies,each,35,0,23.33
+Thinset Mortar Bag,Standard polymer modified thinset mortar,Materials & Supplies,each,25,0,16.67
+Self-Leveling Compound Bag,Fast setting hydraulic cement underlayment mix,Materials & Supplies,each,45,0,30
+Hardwood Finish Polyurethane,Waterborne floor finish gallon,Materials & Supplies,gallon,120,0,80
+Carpet Tack Strip,Wooden tack strip for carpet installation,Materials & Supplies,linear ft,2,0.01,0.5
+Tile Trim Schluter Strip,Metal tile edge protection profile,Materials & Supplies,linear ft,15,0.08,3.33
+General Labor Rate,Hourly labor rate for miscellaneous floor work,Labor Rates,hour,75,1,0
+Master Installer Labor Rate,Hourly rate for intricate patterns or custom work,Labor Rates,hour,115,1,0
+Furniture Moving Service,Labor to move heavy furniture out of work area,Labor Rates,room,100,0.8,0
+Appliance Disconnect and Reconnect,"Disconnect and move washer, dryer, or refrigerator",Labor Rates,each,75,0.6,0
+Door Undercutting,Trim bottom of doors to clear new flooring height,Labor Rates,each,35,0.25,1.67
+Debris Disposal Fee,Dumpster rental and debris hauling charge,Permits & Disposal,job,200,0,133.33
+Local Building Permit Fee,Municipal permit filing and processing fee,Permits & Disposal,job,150,0,100
+HOA Compliance Documentation,Prepare and submit HOA flooring impact documents,Permits & Disposal,job,75,0.6,0
+Environmental Asbestos Test,Laboratory testing of old tile or mastic,Permits & Disposal,each,250,1,83.33
+Floor Protection Film Roll,Temporary plastic surface protection film application,Permits & Disposal,sq ft,1,0.003,0.6
+Stair Tread Custom Staining,Custom stain match unfinished wood stair treads,Custom & Specialty,each,60,0.4,6.67
+Custom Tile Medallion Inlay,Install pre-assembled custom tile medallion,Custom & Specialty,each,350,2.2,46.67
+Herringbone Pattern Surcharge,Additional labor for herringbone wood or tile layout,Custom & Specialty,sq ft,4,0.02,1
+Radiant Heat Mat Installation,Install electric radiant heating wire under tile,Custom & Specialty,sq ft,5,0.02,2.2
+Flush Floor Vent Integration,Cut in and install flush wooden vent registers,Custom & Specialty,each,75,0.5,8.33
+Commercial Floor Prep Shot Blasting,Shot blast concrete surface for high bond strength,Subfloor Preparation,sq ft,2,0.01,0.5
+Sound Control Cork Underlayment,Glue down 1/4 inch cork sound barrier,Subfloor Preparation,sq ft,2,0.005,0.8
+Carpet Deep Steam Cleaning,Hot water extraction cleaning of wall-to-wall carpet,Carpet Repair,sq ft,1,0.005,0.25
+Hardwood Buff and Coat,Screen existing hardwood and apply fresh topcoat,Hardwood Repair,sq ft,2,0.01,0.5
+Epoxy Garage Floor Coating,Multi-coat decorative epoxy flake garage floor system,Tile & Stone Installation,sq ft,7,0.03,2.2
+Vinyl Wall Base Installation,Install commercial rubber or vinyl cove base,Moulding & Trim,linear ft,3,0.015,0.8
+Threshold Marble Saddle Installation,Install natural stone door threshold transition,Moulding & Trim,each,50,0.3,8.33
+Stair Rod Installation,Install decorative brass stair runner rods,Carpet Installation,each,40,0.25,5
+Polished Concrete Sealing,Apply penetrating densifier and sealer to concrete,Subfloor Preparation,sq ft,2,0.01,0.5
+Carpet Power Stretching Equipment Surcharge,Heavy duty setup fee for large commercial areas,Carpet Repair,visit,75,0.2,29.33

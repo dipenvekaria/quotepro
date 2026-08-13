@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Mold Inspection,Visual assessment and moisture mapping for mold.,Consulting & Assessment,visit,350,2.5,23.33
+Comprehensive Mold Assessment,Full inspection with thermal imaging and protocol generation.,Consulting & Assessment,visit,550,4,33.33
+Asbestos Inspection,Suspect material identification and walk-through survey.,Consulting & Assessment,visit,400,3,16.67
+Lead-Based Paint Inspection,XRF analyzer testing throughout residence.,Consulting & Assessment,visit,450,3.2,33.33
+Indoor Air Quality Consultation,General IAQ evaluation and ventilation review.,Consulting & Assessment,hour,175,1.4,0
+Phase I Environmental Site Assessment,Commercial historical records review and site visit.,Consulting & Assessment,job,2200,15,200
+Phase II Environmental Site Assessment,Subsurface soil and groundwater testing.,Consulting & Assessment,job,4500,28,666.67
+Radon Short-Term Test,Placement of continuous monitor for 48 hours.,Consulting & Assessment,visit,200,1.2,33.33
+Radon Long-Term Test,Alpha track detector deployment for 90 days.,Consulting & Assessment,visit,250,1.5,43.33
+Post-Remediation Verification,Clearance testing after mold or asbestos abatement.,Consulting & Assessment,visit,300,2,33.33
+Air-O-Cell Mold Spore Trap Sample,Collection and laboratory analysis of airborne spores.,Laboratory Analysis,each,95,0.25,42
+Surface Lift Tape Mold Sample,Direct optical examination of visible surface growth.,Laboratory Analysis,each,85,0.25,35.33
+Bulk Material Mold Sample,Laboratory culture or direct microscopic analysis.,Laboratory Analysis,each,90,0.25,39
+Asbestos Bulk PLM Sample,Polarized light microscopy for asbestos fibers.,Laboratory Analysis,each,45,0.15,17
+Asbestos TEM Air Sample,Transmission electron microscopy for clearance testing.,Laboratory Analysis,each,120,0.3,54
+Lead Chip Sample,Atomic absorption spectrometry for lead content.,Laboratory Analysis,each,65,0.2,25.33
+Lead Dust Wipe Sample,Ghost wipe analysis for settled lead dust.,Laboratory Analysis,each,50,0.2,15.33
+VOC Air Quality Sample,Summa canister collection for volatile organics.,Laboratory Analysis,each,350,0.5,190
+Formaldehyde Air Sample,Active sampling cartridge for formaldehyde levels.,Laboratory Analysis,each,220,0.5,103.33
+Drinking Water Coliform Bacteria Test,Total coliform and E. coli presence assay.,Laboratory Analysis,each,110,0.3,49
+Drinking Water Heavy Metals Panel,"ICP-MS testing for lead, copper, arsenic, and iron.",Laboratory Analysis,each,250,0.4,133.33
+Radon Laboratory Processing Fee,Analysis of active or passive radon collection devices.,Laboratory Analysis,each,40,0,26.67
+Soil Contamination TPH Panel,Total petroleum hydrocarbons laboratory assay.,Laboratory Analysis,each,180,0.4,86.67
+Asbestos PCM Air Sample,Phase contrast microscopy for fiber counting.,Laboratory Analysis,each,35,0.15,11
+Bacteria Source Tracking Sample,DNA analysis to identify sewage or animal contamination.,Laboratory Analysis,each,275,0.4,150
+Standard Inspection Report,Detailed PDF report with photo logs and lab data.,Reporting & Administration,job,150,1.2,0
+Expedited Lab Turnaround Fee,Rush 24-hour analysis surcharge per batch.,Reporting & Administration,job,200,0,133.33
+Mold Remediation Protocol Document,Step-by-step containment and cleaning specifications.,Reporting & Administration,job,350,2.8,0
+Asbestos Abatement Specification,Engineering controls and contractor bidding document.,Reporting & Administration,job,450,3.6,0
+Expert Witness Testimony,Court appearance and legal deposition preparation.,Reporting & Administration,hour,350,2.8,0
+Environmental Lien Search,Regulatory database search for historical violations.,Reporting & Administration,job,250,2,0
+Chain of Custody Documentation,Legal sample tracking and documentation preparation.,Reporting & Administration,job,50,0.4,0
+Moisture Mapping Diagram,CAD schematic showing structural wet zones.,Reporting & Administration,job,125,1,0
+Additional Copy of Lab Report,Duplicate printed or electronic report set.,Reporting & Administration,each,25,0.1,8.33
+Regulatory Agency Notification Filing,Submission of asbestos or lead abatement notifications.,Reporting & Administration,job,150,1.2,0
+Field Technician Hourly Rate,Standard labor for sampling and field assistance.,Labor & Field Services,hour,95,0.76,0
+Senior Industrial Hygienist Rate,Professional consulting and complex investigation labor.,Labor & Field Services,hour,175,1.4,0
+After-Hours Emergency Surcharge,Urgent dispatch outside normal business hours.,Labor & Field Services,hour,150,1.2,0
+Containment Barrier Construction,Temporary plastic barrier setup with zipper door.,Labor & Field Services,sq ft,4,0.02,1.63
+HEPA Air Scrubber Rental,Negative air machine operation per day.,Equipment & Rentals,day,75,0.2,29.67
+Dehumidifier Industrial Rental,Commercial refrigerant dehumidifier per day.,Equipment & Rentals,day,90,0.2,39.67
+Borescope Inspection Camera Rental,Intrusive wall cavity viewing tool usage.,Equipment & Rentals,day,60,0.1,31.67
+Thermal Imaging Camera Fee,Infrared moisture and heat loss detection survey.,Equipment & Rentals,visit,150,0.8,33.33
+Continuous Radon Monitor Deployment,EPERM or electronic monitor rental for testing period.,Equipment & Rentals,visit,120,0.6,29.33
+Particle Counter Rental,Laser particle counter deployment for cleanroom or IAQ.,Equipment & Rentals,day,175,0.2,99.67
+PID Gas Detector Rental,Photoionization detector for VOC screening.,Equipment & Rentals,day,150,0.2,79.67
+Personal Protective Equipment Kit,"Disposable suit, gloves, and respirator filters.",Materials & Supplies,each,35,0.05,22.33
+Chain of Custody Cooler Pack,Ice packs and insulated mailer for sample transport.,Materials & Supplies,each,20,0.05,12.33
+Biocide Antimicrobial Treatment,Application of EPA-registered fungicide to framing.,Materials & Supplies,sq ft,0.75,0.003,0.49
+Encapsulant Paint Application,Lead or asbestos encapsulating coating application.,Materials & Supplies,sq ft,1.25,0.005,0.81
+Radon Fan Replacement,Mid-line active mitigation fan swap out.,Mitigation & Remediation,each,450,1.5,176.67
+Radon System Pipe Extension,PVC vent pipe routing above roofline.,Mitigation & Remediation,linear ft,18,0.08,5.47
+Sub-Slab Depressurization Diagnostics,Pressure field extension testing for radon.,Mitigation & Remediation,visit,250,1.6,33.33
+Sump Pit Sealing,Air-tight lid and gasket installation for radon control.,Mitigation & Remediation,each,200,1.2,33.33
+Crawlspace Vapor Barrier Installation,6-mil polyethylene ground cover installation.,Mitigation & Remediation,sq ft,0.65,0.003,0.42
+HEPA Vacuum Detailed Cleaning,Surface cleaning of dust and debris.,Mitigation & Remediation,sq ft,0.5,0.002,0.32
+Small Mold Containment Tear-Down,Removal of temporary barriers and negative air.,Mitigation & Remediation,job,175,1.4,0
+Duct Cleaning & Sanitization,HVAC supply and return trunk cleaning.,Mitigation & Remediation,job,550,3,116.67
+Attic Mold Soda Blasting,Abrasive blast cleaning of roof sheathing.,Mitigation & Remediation,sq ft,3.5,0.015,2.23
+Hazardous Waste Disposal Fee,Transport and disposal of regulated asbestos materials.,Permits & Disposal,gallon,15,0,10
+Local Environmental Permit Fee,Municipal or county health department filing fee.,Permits & Disposal,job,125,1,0
+Sample Shipping & Handling,Courier or overnight express delivery to laboratory.,Permits & Disposal,each,45,0.15,17.67
+Disposal Bag Asbestos Rated,Labeled 6-mil thick disposal bags per bundle.,Permits & Disposal,each,30,0.05,19.33
+Decontamination Station Setup,Negative pressure shower unit assembly.,Permits & Disposal,job,300,2.4,0
+Mobile Lab On-Site Surcharge,Mobile microscopy unit deployment to job site.,Equipment & Rentals,day,800,4,393.33
+Water Damage Category 3 Assessment,Sewage contamination evaluation and scope.,Consulting & Assessment,visit,400,2.4,33.33
+Drywall Core Sample Extraction,Cutting and patching test plugs for lab analysis.,Labor & Field Services,each,45,0.25,9
+Carpet Core Sample Extraction,Carpet plug collection for mold or allergen testing.,Labor & Field Services,each,55,0.3,11
+HVAC Filter Analysis,Laboratory examination of loaded air filter media.,Laboratory Analysis,each,125,0.3,59
+Allergen Dust Sample Screen,"Dust sample analysis for dust mites, pollen, and cat dander.",Laboratory Analysis,each,195,0.3,101.33
+EMMI Panel Multiplex PCR Test,DNA testing for 36 different mold species.,Laboratory Analysis,each,375,0.4,216.67
+Mycotoxin Screen Assay,Testing dust for toxic mold secondary metabolites.,Laboratory Analysis,each,450,0.4,266.67
+Legionella Water Sample Culture,Testing building water systems for Legionella bacteria.,Laboratory Analysis,each,220,0.3,121.33
+Asbestos Bulk Vermiculite Sample,Specialized testing of attic insulation.,Laboratory Analysis,each,95,0.25,42
+Lead Water First-Draw Sample,Collection protocol for stagnant tap water.,Laboratory Analysis,each,75,0.3,25
+Lead Water Flush Sample,Collection protocol following 30-second water flush.,Laboratory Analysis,each,75,0.3,25
+Radon Mitigation System Activation,Electrical hookup and initial fan start-up.,Mitigation & Remediation,each,150,1,16.67
+Crawlspace Encapsulation Heavy Duty,20-mil reinforced vapor barrier installation.,Mitigation & Remediation,sq ft,2.25,0.008,1.45
+Sump Pump Installation,Primary submersible pump with check valve.,Mitigation & Remediation,each,450,1.5,176.67
+Battery Backup Sump System,Secondary pump with DC power supply.,Mitigation & Remediation,each,750,2,333.33
+Crawlspace Dehumidifier Permanent Install,Drainage hose and electrical setup for permanent unit.,Mitigation & Remediation,each,350,1.5,116.67
+Mold Preventative Coating,Clear sealant applied to inhibit future growth.,Materials & Supplies,sq ft,0.85,0.003,0.55
+Fire Retardant Poly Sheeting,NFPA 701 certified containment plastic roll.,Materials & Supplies,each,110,0.2,54.67
+Negative Air Exhaust Ducting,Flexible 10-inch or 12-inch ducting per length.,Materials & Supplies,linear ft,6,0.02,2.37
+Sticky Mat Tacky Pad Refill,Contamination control floor mat replacement.,Materials & Supplies,each,45,0.05,26.33
+Safety Data Sheet Binder Setup,Hazard communication documentation on site.,Reporting & Administration,job,75,0.6,0
+Client Consultation Meeting,In-person review of lab results and findings.,Consulting & Assessment,hour,125,1,0
+Travel Surcharge Extended Range,Trip charge for locations beyond standard service radius.,Labor & Field Services,visit,100,0.8,0
+Parking and Toll Reimbursement,Direct cost pass-through for urban job sites.,Permits & Disposal,job,50,0,33.33
+Night Shift Labor Premium,Overnight work differential for commercial sites.,Labor & Field Services,hour,65,0.52,0
+Weekend Dispatch Surcharge,Saturday or Sunday service call fee.,Labor & Field Services,visit,200,1.6,0
+Board of Health Liaison Service,Interfacing with municipal code enforcement officers.,Reporting & Administration,hour,150,1.2,0
+Crawlspace Structural Inspection,Framing and joist integrity check during assessment.,Consulting & Assessment,visit,175,1.4,0
+Roof Leak Source Investigation,Water intrusion tracking from roof to ceiling.,Consulting & Assessment,hour,150,1.2,0
+Window Seal Leak Testing,Spray rack testing to identify window water entry.,Consulting & Assessment,hour,175,1.4,0
+Stachybotrys Specific PCR Test,Targeted assay for black mold toxicity.,Laboratory Analysis,each,110,0.3,49
+Methamphetamine Residue Field Screen,Wipe test kit for clandestine lab detection.,Laboratory Analysis,each,250,0.8,100
+PCB Wipe Sample Analysis,Surface testing for polychlorinated biphenyls.,Laboratory Analysis,each,180,0.3,93.33
+Asbestos Floor Tile Bulk Sample,Mastic and tile composite laboratory test.,Laboratory Analysis,each,55,0.2,23.33

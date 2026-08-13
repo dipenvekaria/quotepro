@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,On-site travel and dispatch fee for mobile service.,Diagnostics & Service Calls,visit,75,0.6,0
+After-Hours Emergency Dispatch,Emergency service call outside standard business hours.,Diagnostics & Service Calls,visit,150,1.2,0
+Windshield Damage Assessment,Inspection to determine repairability of glass damage.,Diagnostics & Service Calls,job,50,0.4,0
+ADAS Camera Calibration Check,Pre-replacement check of driver assistance system requirements.,Diagnostics & Service Calls,job,65,0.52,0
+Fleet Vehicle Inspection,Multi-vehicle glass condition evaluation.,Diagnostics & Service Calls,each,35,0.28,0
+Water Leak Diagnostics,Testing and identifying source of cabin water intrusion.,Diagnostics & Service Calls,hour,125,1,0
+Wind Noise Diagnostics,Identifying source of cabin wind noise around glass.,Diagnostics & Service Calls,hour,125,1,0
+Remote Location Surcharge,Travel fee for locations outside standard service radius.,Diagnostics & Service Calls,job,50,0.4,0
+Canceled Appointment Fee,Fee for cancellation within two hours of scheduled time.,Diagnostics & Service Calls,job,50,0.4,0
+Standard Labor Rate,Hourly labor for specialized glass removal or repair.,Labor Rates,hour,110,1,0
+Overtime Labor Rate,Hourly labor for evening or weekend emergency work.,Labor Rates,hour,165,1,0
+Rust Mitigation Labor,Scraping and treating pinchweld rust before installation.,Labor Rates,hour,130,1,0
+Custom Glass Fitting Labor,Specialized labor for non-standard or classic vehicle fitment.,Labor Rates,hour,140,1,0
+Molding Modification Labor,Trimming or fitting custom universal exterior moldings.,Labor Rates,hour,110,1,0
+Single Chip Repair,Resin injection repair for one bullseye or star chip.,Repairs,each,85,0.5,15
+Second Chip Repair,Additional chip repair completed during the same visit.,Repairs,each,35,0.2,4
+Long Crack Repair (Under 6 Inches),Resin repair for a crack measuring up to six inches.,Repairs,each,120,0.7,20
+Long Crack Repair (6 to 12 Inches),Resin repair for a crack measuring six to twelve inches.,Repairs,each,150,0.9,25
+Bullseye Repair,Specialized resin filling for circular impact damage.,Repairs,each,85,0.5,15
+Combination Break Repair,Repair for impact damage featuring both a bullseye and cracks.,Repairs,each,95,0.55,18
+Pit Fill Only,Filling surface glass pit to prevent moisture entry.,Repairs,each,55,0.35,10
+Rear View Mirror Bracket Reattachment,Glues detached interior mirror mounting button to windshield.,Repairs,each,45,0.3,5
+Stone Bruise Repair,Resin injection for deep impact stone bruise.,Repairs,each,85,0.5,15
+Re-cure Resin Treatment,Secondary UV curing for previously failed repair attempts.,Repairs,each,60,0.4,6
+Sedan Windshield Replacement,Standard laminated front windshield replacement for passenger cars.,Replacements,each,310,1,124
+SUV Windshield Replacement,Standard laminated front windshield replacement for sport utility vehicles.,Replacements,each,350,1.1,140
+Pickup Truck Windshield Replacement,Standard laminated front windshield replacement for pickup trucks.,Replacements,each,330,1.05,133
+Luxury Vehicle Windshield Replacement,Acoustic or solar-coated windshield replacement for luxury cars.,Replacements,each,550,1.5,233
+Sports Car Windshield Replacement,Curved or specialty laminated windshield replacement for sports cars.,Replacements,each,480,1.4,200
+Van Windshield Replacement,Large flat or curved front windshield replacement for commercial vans.,Replacements,each,380,1.2,153
+Class A RV Windshield Replacement,Large flat or curved motorhome windshield replacement.,Replacements,each,1250,3.5,550
+Semi-Truck Windshield Replacement,Two-piece split or single flat windshield replacement for semi trucks.,Replacements,each,450,1.5,183
+Classic Car Flat Glass Replacement,Custom cut non-laminated flat safety glass replacement.,Replacements,each,275,1.2,83
+Back Glass (Backlite) Replacement,Tempered rear window glass replacement for passenger vehicles.,Replacements,each,320,1.2,113
+Slider Back Glass Replacement,Manual sliding rear window replacement for pickup trucks.,Replacements,each,420,1.4,160
+Power Slider Back Glass Replacement,Electric sliding rear window replacement for pickup trucks.,Replacements,each,650,1.8,280
+Front Door Glass Replacement,Driver or passenger side door window glass replacement.,Replacements,each,260,1.2,73
+Rear Door Glass Replacement,Rear passenger side door window glass replacement.,Replacements,each,250,1.2,67
+Quarter Glass Replacement,Fixed stationary side window glass replacement.,Replacements,each,230,1.1,67
+Vent Glass Replacement,Small hinged or fixed front corner window glass replacement.,Replacements,each,220,1.1,60
+Sunroof Glass Replacement,Overhead factory sunroof or moonroof glass panel replacement.,Replacements,each,550,1.8,220
+Panoramic Roof Glass Replacement,Large overhead glass roof panel replacement.,Replacements,each,1400,3.5,633
+OEM Windshield Glass,Original Equipment Manufacturer branded replacement windshield.,Materials & Parts,each,250,0,166.67
+OEE Aftermarket Windshield Glass,Original Equipment Equivalent aftermarket replacement windshield.,Materials & Parts,each,160,0,106.67
+Urethane Adhesive Kit,High-grade automotive polyurethane bonding adhesive and primer.,Materials & Parts,each,35,0,23.33
+OEM Windshield Molding,Vehicle-specific factory outer trim molding.,Materials & Parts,each,45,0,30
+Universal Windshield Molding,Generic cut-to-fit outer trim molding strip.,Materials & Parts,linear ft,12,0,8
+Rain Sensor Pad,Optical gel pad for automated windshield wiper sensor.,Materials & Parts,each,25,0,16.67
+Rear View Mirror Button,Metal mounting bracket glued to windshield glass.,Materials & Parts,each,15,0,10
+Cowl Grille Clip Set,Plastic fasteners securing base of windshield plastic shroud.,Materials & Parts,job,15,0,10
+Side View Mirror Glass Replacement,Adhesive-backed exterior mirror glass replacement.,Materials & Parts,each,45,0.3,5
+Acoustic Interlayer Glass Upgrade,Upgraded sound-dampening laminated glass material.,Materials & Parts,each,90,0,60
+Solar-Coated Glass Upgrade,Heat-reflecting tinted upper band glass material.,Materials & Parts,each,110,0,73.33
+Heated Windshield Wiper Park Area,Integrated heating element glass for winter ice melting.,Materials & Parts,each,150,0.2,80
+Static Calibration (ADAS),In-shop camera calibration using physical target boards.,Calibration Services,job,200,1.6,0
+Dynamic Calibration (ADAS),On-road driving test camera calibration using diagnostic tool.,Calibration Services,job,175,1.4,0
+Dual Calibration (Static and Dynamic),Complete target and road test camera alignment service.,Calibration Services,job,325,2.6,0
+Blind Spot Monitor Calibration,Programming radar sensors after bumper or quarter glass work.,Calibration Services,job,150,1.2,0
+Lane Departure Warning Reset,Computer system reset for lane keeping camera systems.,Calibration Services,job,150,1.2,0
+Adaptive Cruise Control Radar Alignment,Calibration of front-grille or windshield radar unit.,Calibration Services,job,175,1.4,0
+Head-Up Display Projector Alignment,Calibration and alignment for windshield projected displays.,Calibration Services,job,100,0.8,0
+Diagnostic Trouble Code Clearing,Scanning and clearing stored vehicle safety fault codes.,Calibration Services,job,50,0.4,0
+Power Window Regulator Replacement,Mechanical scissor lift assembly replacement inside door panel.,Hardware & Mechanisms,each,180,1,36.67
+Power Window Motor Replacement,Electric drive motor replacement inside door panel.,Hardware & Mechanisms,each,160,0.9,33.33
+Window Regulator and Motor Assembly,Combined lift mechanism and electric motor replacement.,Hardware & Mechanisms,each,240,1.3,46.67
+Door Glass Run Channel Seal,Rubber window channel guide replacement in door frame.,Hardware & Mechanisms,each,95,0.5,20
+Manual Window Crank Mechanism,Manual gear regulator replacement for crank windows.,Hardware & Mechanisms,each,130,0.8,23.33
+Tailgate Window Motor Replacement,Electric motor replacement for drop-down rear SUV glass.,Hardware & Mechanisms,each,210,1.2,40
+Power Sunroof Motor Replacement,Electric drive motor replacement for overhead sunroof.,Hardware & Mechanisms,each,250,1.4,46.67
+Window Switch Panel Replacement,Master driver door window control switch replacement.,Hardware & Mechanisms,each,110,0.5,30
+Old Glass Disposal Fee,Environmental recycling fee for shattered automotive safety glass.,"Permits, Disposal & Protection",each,15,0,10
+Hazardous Waste Handling Fee,"Disposal fee for chemical primers, urethane, and activators.","Permits, Disposal & Protection",job,10,0,6.67
+Mobile Shop Environmental Surcharge,Fee for proper containment and disposal of mobile waste.,"Permits, Disposal & Protection",visit,15,0,10
+Interior Floor Protection Kit,Disposable seat covers and floor mats during service.,"Permits, Disposal & Protection",job,10,0.08,4.67
+Glass Debris Interior Vacuuming,Thorough vacuuming of broken safety glass from vehicle cabin.,"Permits, Disposal & Protection",job,30,0.24,0
+Windshield Rain Repellent Treatment,Hydrophobic glass coating application for improved water shedding.,Upsells & Add-ons,job,35,0.15,11
+Standard Wiper Blade Set,Replacement pair of conventional rubber windshield wiper blades.,Upsells & Add-ons,each,30,0.1,12.67
+Premium Beam Wiper Blade Set,Replacement pair of aerodynamic frameless wiper blades.,Upsells & Add-ons,each,50,0.1,26
+Rear Wiper Blade Replacement,Single replacement wiper blade for rear window.,Upsells & Add-ons,each,20,0.1,8
+Windshield Washer Fluid Top-Off,Refilling vehicle windshield washer fluid reservoir.,Upsells & Add-ons,each,10,0.08,4.67
+Glass Scratch Removal Polish,Cerium oxide glass polishing to remove light surface scratches.,Upsells & Add-ons,hour,125,1,0
+Ceramic Glass Coating Protection,Long-lasting nano-ceramic coating applied to exterior glass.,Upsells & Add-ons,job,99,0.5,24.67
+Anti-Fog Interior Glass Treatment,Chemical treatment to prevent interior window fogging.,Upsells & Add-ons,job,25,0.15,5.33
+Pinchweld Rust Treatment Coating,Rust-inhibiting primer coat applied to exposed metal frame.,Upsells & Add-ons,job,40,0.2,10
+Cabin Air Filter Replacement,Replacing fresh air ventilation filter behind glove box.,Upsells & Add-ons,each,45,0.2,13.33
+Rear View Mirror Adhesive Kit,DIY mirror button glue kit for customer use.,Upsells & Add-ons,each,15,0,10
+Dash Mat Cover Protection,Protective fabric cover for dashboard during glass work.,Upsells & Add-ons,each,35,0.1,15.33
+Glass Protection Film Application,Clear protective security film applied to side windows.,Upsells & Add-ons,sq ft,18,0.1,3.67
+Tint Strip Installation,Dark sun visor tint strip applied to top of windshield.,Upsells & Add-ons,each,50,0.3,8.33
+Windshield Sun Shade,Foldable reflective sun shade for front windshield.,Upsells & Add-ons,each,30,0.05,15.67
+Key Fob Battery Replacement,Replacement coin cell battery for vehicle keyless entry fob.,Upsells & Add-ons,each,15,0.1,1.67
+Wiper Arm Replacement,Metal windshield wiper arm replacement.,Hardware & Mechanisms,each,45,0.25,8.33
+Windshield Washer Nozzle Replacement,Fluid spray jet nozzle replacement on hood or cowl.,Hardware & Mechanisms,each,25,0.15,5.33
+Windshield Washer Pump Replacement,Electric fluid pump replacement in washer reservoir tank.,Hardware & Mechanisms,each,95,0.6,13.33
+Cowl Grille Panel Replacement,Plastic shroud panel replacement at base of windshield.,Hardware & Mechanisms,each,120,0.7,20
+Rear Defroster Tab Repair,Conductive epoxy repair for broken rear defroster grid tab.,Repairs,each,50,0.35,5
+Rear Defroster Grid Line Repair,Conductive paint repair for open circuit on rear window grid.,Repairs,each,65,0.45,6.67
+Windshield Leak Re-seal,Injecting additional urethane to seal minor water leak area.,Repairs,job,90,0.6,10
+Door Trim Panel Clip Replacement,Plastic fasteners for reattaching interior door panels.,Materials & Parts,job,15,0.1,1.67
+Adhesive Primer Activator,Chemical prep primer for bonding difficult metal surfaces.,Materials & Parts,each,20,0,13.33

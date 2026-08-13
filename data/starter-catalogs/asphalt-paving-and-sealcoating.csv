@@ -1,0 +1,96 @@
+name,description,category,unit,price,labor_hours,material_cost
+Site Inspection and Measurement,Onsite evaluation and square footage measurement for quote,Diagnostics & Estimating,visit,150,1.2,0
+Core Sampling and Analysis,Extract core sample to determine existing asphalt depth,Diagnostics & Estimating,each,250,1,83.33
+Drainage and Slope Assessment,Laser level survey to check water runoff patterns,Diagnostics & Estimating,hour,175,1.4,0
+Soil Sub-Base Compaction Test,Proctor density testing for sub-base stability,Diagnostics & Estimating,each,350,1.5,116.67
+GPR Subsurface Imaging,Ground penetrating radar to locate underground utility voids,Diagnostics & Estimating,job,850,2,400
+Standard Paving Laborer,General ground crew labor for asphalt installation,Labor Rates,hour,65,0.52,0
+Skid Steer Operator,Skid steer or bobcat operator for grading and milling,Labor Rates,hour,95,0.76,0
+Paver Operator,Skilled operator for asphalt paving machine,Labor Rates,hour,125,1,0
+Roller Operator,Operator for steel wheel and pneumatic compactors,Labor Rates,hour,110,0.88,0
+Traffic Control Technician,Flagger and traffic management setup for worksite,Labor Rates,hour,75,0.6,0
+Project Supervisor,Onsite job management and crew coordination,Labor Rates,hour,140,1.12,0
+Overtime Labor Surcharge,Additional hourly rate for nights or weekends,Labor Rates,hour,50,0.4,0
+Sealcoating Brush Application,Hand-brush applied coal tar or asphalt emulsion sealer,Sealcoating & Protection,sq ft,1,0.005,0.63
+Commercial Grade Polymer Additive,Additive mixed into sealer for enhanced durability,Sealcoating & Protection,gallon,25,0,16.67
+Oil Spot Primer Treatment,Chemical primer applied to heavy grease and oil spots,Sealcoating & Protection,each,35,0.15,11
+High Traffic Sealcoat Formulation,Heavy-duty formulation for truck lanes and turns,Sealcoating & Protection,sq ft,1,0.004,0.64
+Parking Stall Striping,Standard 4-inch parking stall line layout and paint,Line Striping & Markings,linear ft,1,0.005,0.63
+ADA Handicap Stall Painting,Blue background and white wheelchair symbol painting,Line Striping & Markings,each,150,0.8,33.33
+ADA Access Aisle Striping,Hashed lines for handicap access aisle,Line Striping & Markings,linear ft,2,0.01,1.27
+Fire Lane Curb Painting,Red curb painting with stencil lettering,Line Striping & Markings,linear ft,4,0.02,2.53
+Directional Pavement Arrow,Painted directional traffic arrow on pavement,Line Striping & Markings,each,45,0.25,9.33
+Stop Bar Installation,White stop bar line at exit or intersection,Line Striping & Markings,linear ft,6,0.03,3.8
+Speed Limit Stencil,Painted speed limit text on surface,Line Striping & Markings,each,75,0.4,16.67
+Custom Stencil Pavement Marking,Custom text or reserved parking stencil,Line Striping & Markings,each,90,0.5,19.33
+Hot Pour Crack Filling,Rubberized hot pour crack sealant application,Crack Repair & Patching,linear ft,2,0.01,1.27
+Cold Patch Asphalt Repair,Temporary cold mix patching for potholes,Crack Repair & Patching,sq ft,6,0.03,2.73
+Saw Cut Patching,"Saw cut, excavate, and repave failed asphalt section",Crack Repair & Patching,sq ft,12,0.06,3
+Infrared Asphalt Repair,Thermal bond seamless infrared heater patching,Crack Repair & Patching,sq ft,16,0.08,4
+Pothole Deep Patch Repair,Square cut and hot mix replacement for deep holes,Crack Repair & Patching,sq ft,14,0.07,3.47
+Skin Patch Overlay,Thin asphalt overlay feather-edged over low spot,Crack Repair & Patching,sq ft,5,0.02,1.67
+Alligator Crack Fabric Overlay,Paving fabric installation over webbing alligator cracks,Crack Repair & Patching,sq ft,4,0.02,1.33
+Standard Sub-Base Excavation,Excavate soil to specified depth for new paving,Excavation & Grading,sq ft,3,0.015,1.4
+Sub-Base Aggregate Base Rock,Crushed stone aggregate base installation and grading,Excavation & Grading,ton,45,0.1,20
+Subgrade Proof Rolling,Heavy vibratory roller compaction of subgrade soil,Excavation & Grading,sq ft,1,0.005,0.27
+Geotextile Fabric Installation,Non-woven separation fabric laid over subgrade,Excavation & Grading,sq ft,1,0.004,0.64
+Fine Grading and Sloping,Laser guided fine grading for proper water runoff,Excavation & Grading,sq ft,1,0.005,0.27
+Standard Asphalt Overlay,1.5-inch hot mix asphalt surface overlay course,Paving & Resurfacing,sq ft,3,0.012,1.33
+Heavy Duty Asphalt Overlay,2-inch hot mix asphalt overlay for heavy truck traffic,Paving & Resurfacing,sq ft,4,0.016,1.73
+New Asphalt Paving Full Depth,4-inch total hot mix asphalt over aggregate base,Paving & Resurfacing,sq ft,7,0.028,3
+Commercial Parking Lot Paving,Binder and surface course total 6-inch installation,Paving & Resurfacing,sq ft,10,0.04,3.33
+Residential Driveway Paving,3-inch compacted residential asphalt installation,Paving & Resurfacing,sq ft,5,0.02,1.67
+Asphalt Milling and Profile,Cold milling machine removal of top asphalt layer,Paving & Resurfacing,sq ft,2,0.01,0.47
+Hand-laid Asphalt Transition,"Hand-raked transition areas, aprons, and edges",Paving & Resurfacing,sq ft,6,0.03,1.53
+Concrete Curb and Gutter Installation,Extruded or form-poured concrete curb and gutter,Concrete & Drainage,linear ft,35,0.16,10
+Concrete Wheel Stop Installation,Precast concrete parking block with rebar pins,Concrete & Drainage,each,75,0.4,16.67
+Catch Basin Adjustment,Adjust storm drain manhole or catch basin to grade,Concrete & Drainage,each,650,3,183.33
+Trench Drain Installation,Linear surface water drain channel and grate setup,Concrete & Drainage,linear ft,120,0.5,39.33
+Concrete Sidewalk Replacement,Pour new concrete sidewalk section adjoining paving,Concrete & Drainage,sq ft,15,0.06,5
+Commercial Speed Bump Rubber,Bolt-down recycled rubber speed bump installation,Traffic Control Accessories,each,250,0.8,100
+Asphalt Speed Bump Construction,Formed and rolled hot mix asphalt speed hump,Traffic Control Accessories,linear ft,45,0.2,13.33
+Metal Sign Post and Base,Galvanized U-channel sign post driven into ground,Traffic Control Accessories,each,120,0.6,30
+ADA Handicap Sign Supply and Mount,Standard R7-8 handicap parking sign and hardware,Traffic Control Accessories,each,95,0.45,25.33
+Traffic Bollard Installation,Steel pipe bollard filled with concrete in ground,Traffic Control Accessories,each,300,1.5,75
+Bollard Plastic Guard Cover,High-visibility yellow plastic sleeve for steel bollard,Traffic Control Accessories,each,65,0.3,18.67
+Debris Disposal Fee,Dump fees for old asphalt and soil removal,"Permits, Cleanup & Disposal",ton,35,0,23.33
+Municipal Right-of-Way Permit,City or county street opening and work permit fee,"Permits, Cleanup & Disposal",job,250,0.5,125
+SWPPP Site Management Plan,Stormwater pollution prevention plan documentation,"Permits, Cleanup & Disposal",job,450,2,133.33
+Mechanical Power Sweeping,Commercial sweeper truck debris and dust cleanup,"Permits, Cleanup & Disposal",hour,175,1,33.33
+Traffic Control Rental Package,"Cones, signs, and arrow board daily rental","Permits, Cleanup & Disposal",day,200,0.4,100
+Line Striping Removal,Mechanical grinding or blasting to erase old stripes,Line Striping & Markings,linear ft,3,0.015,0.8
+Thermoplastic Striping Upgrade,High durability heat-applied thermoplastic lines,Line Striping & Markings,linear ft,4,0.015,1.4
+Commercial Driveway Apron Repair,Reconstruction of commercial street entry apron,Paving & Resurfacing,sq ft,9,0.04,2.67
+Milling Debris Haul Away,Loading and trucking milled asphalt offsite,Excavation & Grading,ton,20,0,13.33
+Lime Stabilization Treatment,Agricultural lime mixed into clay soil sub-base,Excavation & Grading,sq ft,2,0.008,0.67
+Proof Roll Failure Remediation,Dig out soft subgrade spot and replace with rock,Excavation & Grading,ton,85,0.2,40
+Slurry Seal Application,Aggregate and emulsion slurry resurfacing mix,Sealcoating & Protection,sq ft,1,0.004,0.33
+Micro-Surfacing Application,Polymer modified cold mix high performance overlay,Sealcoating & Protection,sq ft,2,0.008,0.67
+Coal Tar Emulsion Sealer,Standard heavy-duty coal tar protective coating,Sealcoating & Protection,gallon,15,0,10
+Asphalt Emulsion Sealer Eco,Environmentally friendly asphalt base sealer,Sealcoating & Protection,gallon,18,0,12
+Crack Routing Service,Mechanical routing tool to widen cracks for bonding,Crack Repair & Patching,linear ft,1,0.005,0.27
+Cold Weather Sealer Additive,Chemical accelerator for low temperature curing,Sealcoating & Protection,gallon,30,0,20
+Parking Stall Numbering Stencil,Paint designated stall numbers inside stalls,Line Striping & Markings,each,15,0.08,3.67
+Reserved Parking Stencil,Painted RESERVED text in parking space,Line Striping & Markings,each,35,0.2,6.67
+Visitor Parking Stencil,Painted VISITOR text on pavement,Line Striping & Markings,each,35,0.2,6.67
+EV Charging Station Marking Set,Green background box and electric vehicle stencil,Line Striping & Markings,each,175,0.9,43.33
+No Parking Stencil,Painted NO PARKING text on surface,Line Striping & Markings,each,40,0.22,7.33
+Curb Red Yellow White Painting,Standard curb painting for hazard identification,Line Striping & Markings,linear ft,3,0.015,0.8
+Temporary Water-Filled Barrier Rental,Safety barrier placement for work zone protection,"Permits, Cleanup & Disposal",day,35,0.1,15
+Night Shift Crew Surcharge,Additional project cost for nighttime execution,Labor Rates,job,1200,6,300
+Hand Tamper Compaction,Manual compaction for tight spaces and edges,Labor Rates,hour,55,0.44,0
+Asphalt Curb Machine Paving,Extruded asphalt slipform curb installation,Paving & Resurfacing,linear ft,12,0.05,3.8
+Parking Lot Layout Engineering,CAD design and stall count optimization plan,Diagnostics & Estimating,job,500,2.5,125
+Catch Basin Lid Replacement,Heavy duty cast iron storm drain grate and frame,Concrete & Drainage,each,450,1.5,183.33
+Root Pruning and Barrier Installation,Cut tree roots and install root barrier near paving,Excavation & Grading,linear ft,25,0.12,6.67
+Rebar Dowel Drill and Epoxy,Tie new concrete or patch into existing structure,Concrete & Drainage,each,18,0.1,3.67
+Asphalt Sealing Overspray Protection,Plastic sheeting protection for walls and landscaping,Sealcoating & Protection,job,150,0.8,33.33
+Infrared Reheat Rejuvenating Oil,Rejuvenator spray applied to restore oxidized asphalt,Crack Repair & Patching,sq ft,1,0.004,0.33
+Private Utility Locating Service,Private sweep for unmarked private lines and pipes,Diagnostics & Estimating,job,400,1.5,141.67
+Traffic Sign Removal,Take down old signpost and fill hole,Traffic Control Accessories,each,45,0.3,4.67
+Parking Block Removal,Pull old concrete or plastic wheel stops,Traffic Control Accessories,each,25,0.18,2
+Speed Bump Removal,Chop out or unbolt existing speed bump,Traffic Control Accessories,linear ft,15,0.08,3.33
+Sealcoat Sand Additive,Silica sand mixed in sealer for skid resistance,Sealcoating & Protection,gallon,8,0,5.33
+Commercial Mobilization Fee,Equipment transport and crew mobilization for site,Diagnostics & Estimating,job,350,1.5,116.67
+Small Job Minimum Trip Charge,Minimum dispatch fee for minor repair work,Diagnostics & Estimating,visit,450,2.5,91.67
+Concrete Expansion Joint Replacement,Cut out old joint material and pour new flexible sealant,Concrete & Drainage,linear ft,8,0.03,2.8

@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Mobile Service Call,Travel to location and initial vehicle assessment,Diagnostics & Travel,visit,125,1,0
+Advanced Electronic Diagnostics,Scan and analyze complex automotive computer codes,Diagnostics & Travel,hour,150,1.2,0
+No-Start Diagnostic Testing,"Test fuel, spark, and starting systems",Diagnostics & Travel,job,175,0.7,58.33
+Cooling System Pressure Test,Check for internal and external coolant leaks,Diagnostics & Travel,job,95,0.38,31.67
+Electrical Short Tracing,Isolate and identify wiring harness faults,Diagnostics & Travel,hour,160,1.28,0
+Pre-Purchase Vehicle Inspection,Comprehensive mechanical and cosmetic evaluation,Diagnostics & Travel,job,200,0.8,66.67
+After-Hours Emergency Dispatch,Urgent mobile dispatch outside normal business hours,Diagnostics & Travel,visit,250,2,0
+Standard Labor Rate,General mechanical labor performed on-site,Labor,hour,135,1.08,0
+Heavy Labor Rate,Intricate engine or transmission mechanical labor,Labor,hour,165,1.32,0
+Hazardous Waste Disposal,Eco-friendly disposal of fluids and used filters,Labor,job,35,0.14,11.67
+Remote Area Travel Surcharge,Additional mileage fee for distant service locations,Diagnostics & Travel,job,75,0.3,25
+Alternator Replacement,Remove and replace faulty charging alternator,Electrical,each,380,1.52,126.67
+Starter Motor Replacement,Remove and replace defective starter motor,Electrical,each,340,1.36,113.33
+Car Battery Replacement,Supply and install new standard 12V battery,Electrical,each,210,0.84,70
+Battery Terminal Clean and Repair,Clean corrosion and replace battery terminal ends,Electrical,job,75,0.3,25
+Ignition Switch Replacement,Replace faulty mechanical or electrical ignition switch,Electrical,each,260,1.04,86.67
+Headlight Bulb Replacement,Replace standard halogen headlight bulb,Electrical,each,60,0.24,20
+HID/LED Headlight Assembly Replacement,Replace high-intensity discharge or LED headlight unit,Electrical,each,180,0.72,60
+Tail Light Bulb Replacement,Replace rear brake or tail light bulb,Electrical,each,50,0.2,16.67
+Power Window Motor Replacement,Replace failed window lift motor in door panel,Electrical,each,290,1.16,96.67
+Serpentine Belt Replacement,Remove and replace worn accessory drive belt,Engine Maintenance,each,140,0.56,46.67
+Drive Belt Tensioner Replacement,Replace worn automatic belt tensioner pulley,Engine Maintenance,each,190,0.76,63.33
+Spark Plug Replacement (4-Cylinder),Replace four standard ignition spark plugs,Engine Maintenance,job,180,0.72,60
+Spark Plug Replacement (6-Cylinder),Replace six standard ignition spark plugs,Engine Maintenance,job,260,1.04,86.67
+Ignition Coil Replacement,Replace individual failed ignition coil pack,Engine Maintenance,each,150,0.6,50
+Engine Air Filter Replacement,Swap dirty engine air intake filter element,Engine Maintenance,each,45,0.18,15
+Cabin Air Filter Replacement,Replace interior HVAC pollen and dust filter,Engine Maintenance,each,55,0.22,18.33
+PCV Valve Replacement,Replace positive crankcase ventilation valve,Engine Maintenance,each,65,0.26,21.67
+Fuel Injector Replacement,Replace clogged or leaking fuel injector,Engine Maintenance,each,220,0.88,73.33
+Throttle Body Cleaning,Clean carbon buildup from throttle body bore,Engine Maintenance,job,130,0.52,43.33
+Valve Cover Gasket Replacement,Replace leaking cylinder head valve cover seal,Engine Maintenance,job,310,1.24,103.33
+Oil Pressure Switch Replacement,Replace faulty oil pressure sending unit,Engine Maintenance,each,110,0.44,36.67
+Water Pump Replacement,Replace engine coolant water pump assembly,Cooling System,each,420,1.68,140
+Thermostat Replacement,Replace engine thermostat and housing gasket,Cooling System,each,170,0.68,56.67
+Radiator Replacement,Remove and replace leaking engine radiator,Cooling System,each,520,2.08,173.33
+Coolant Hose Replacement (Upper/Lower),Replace main rubber radiator coolant hoses,Cooling System,job,190,0.76,63.33
+Coolant Flush and Fill,Flush system and refill with fresh antifreeze,Cooling System,job,160,0.64,53.33
+Cooling Fan Assembly Replacement,Replace electric radiator cooling fan motor and shroud,Cooling System,each,350,1.4,116.67
+Expansion Tank Replacement,Replace cracked coolant overflow reservoir tank,Cooling System,each,150,0.6,50
+Front Brake Pad Replacement,Install new front disc brake pads and hardware,Brakes,job,210,0.84,70
+Rear Brake Pad Replacement,Install new rear disc brake pads and hardware,Brakes,job,220,0.88,73.33
+Front Brake Pads and Rotors,Replace front brake pads and resurface or replace rotors,Brakes,job,380,1.52,126.67
+Rear Brake Pads and Rotors,Replace rear brake pads and resurface or replace rotors,Brakes,job,390,1.56,130
+Brake Caliper Replacement,Replace seized or leaking brake caliper unit,Brakes,each,280,1.12,93.33
+Brake Fluid Flush,Flush old brake fluid and bleed entire hydraulic system,Brakes,job,140,0.56,46.67
+Front Brake Hose Replacement,Replace flexible rubber front brake hydraulic line,Brakes,each,130,0.52,43.33
+Emergency Brake Cable Replacement,Replace snapped or seized parking brake cable,Brakes,job,240,0.96,80
+ABS Wheel Speed Sensor Replacement,Replace failed anti-lock braking sensor,Brakes,each,160,0.64,53.33
+Front Strut Assembly Replacement,Replace complete front strut and coil spring unit,Suspension & Steering,each,450,1.8,150
+Rear Shock Absorber Replacement,Replace rear shock absorbers,Suspension & Steering,job,280,1.12,93.33
+Front Control Arm Replacement,Replace front lower control arm and ball joint assembly,Suspension & Steering,each,340,1.36,113.33
+Ball Joint Replacement,Press out and replace worn front suspension ball joint,Suspension & Steering,each,250,1,83.33
+Outer Tie Rod End Replacement,Replace worn outer steering linkage tie rod,Suspension & Steering,each,170,0.68,56.67
+Inner Tie Rod End Replacement,Replace inner steering rack tie rod assembly,Suspension & Steering,each,210,0.84,70
+Sway Bar Link Replacement,Replace worn front or rear stabilizer bar links,Suspension & Steering,job,150,0.6,50
+Wheel Bearing Hub Replacement,Replace integrated wheel bearing and hub assembly,Suspension & Steering,each,360,1.44,120
+Power Steering Pump Replacement,Replace hydraulic power steering pump,Suspension & Steering,each,390,1.56,130
+Power Steering Hose Replacement,Replace high-pressure power steering line,Suspension & Steering,each,230,0.92,76.67
+CV Axle Shaft Replacement,Replace front constant velocity drive axle assembly,Suspension & Steering,each,320,1.28,106.67
+AC Recharge Service,Evacuate system and recharge R134a or R1234yf refrigerant,Heating & AC,job,220,0.88,73.33
+AC Compressor Replacement,Replace air conditioning refrigerant compressor pump,Heating & AC,each,650,2.6,216.67
+AC Condenser Replacement,Replace damaged front air conditioning condenser core,Heating & AC,each,480,1.92,160
+Blower Motor Replacement,Replace interior HVAC fan blower motor,Heating & AC,each,240,0.96,80
+Blower Motor Resistor Replacement,Replace climate control fan speed resistor block,Heating & AC,each,140,0.56,46.67
+AC Expansion Valve Replacement,Replace AC thermal expansion block valve,Heating & AC,each,310,1.24,103.33
+Heater Core Flush,Flush clogged cabin heater core to restore warmth,Heating & AC,job,175,0.7,58.33
+Fuel Pump Replacement,Replace in-tank electric fuel delivery pump,Fuel & Exhaust,job,490,1.96,163.33
+Fuel Filter Replacement,Replace inline fuel line filtration unit,Fuel & Exhaust,each,110,0.44,36.67
+Oxygen Sensor Replacement,Replace upstream or downstream exhaust O2 sensor,Fuel & Exhaust,each,190,0.76,63.33
+Exhaust Manifold Gasket Replacement,Replace leaking exhaust manifold sealing gasket,Fuel & Exhaust,job,350,1.4,116.67
+Exhaust Hanger Replacement,Replace broken rubber exhaust system hanger mounts,Fuel & Exhaust,job,50,0.2,16.67
+Muffler Replacement,Weld or clamp on new replacement rear muffler,Fuel & Exhaust,job,280,1.12,93.33
+Catalytic Converter Replacement,Replace emissions catalytic converter unit,Fuel & Exhaust,job,650,2.6,216.67
+Fuel Tank Pressure Sensor Replacement,Replace EVAP system tank pressure sensor,Fuel & Exhaust,each,160,0.64,53.33
+Standard Synthetic Oil Change,"Drain oil, replace filter, and refill with synthetic oil",Fluids & Routine Maintenance,job,110,0.44,36.67
+Conventional Oil Change,"Drain oil, replace filter, and refill with conventional oil",Fluids & Routine Maintenance,job,85,0.34,28.33
+Transmission Fluid Service,Drain and fill automatic transmission fluid pan,Fluids & Routine Maintenance,job,190,0.76,63.33
+Differential Fluid Service,Drain and refill front or rear differential gear oil,Fluids & Routine Maintenance,job,140,0.56,46.67
+Transfer Case Fluid Service,Drain and refill 4WD transfer case fluid,Fluids & Routine Maintenance,job,130,0.52,43.33
+Power Steering Fluid Exchange,Evacuate and refill power steering fluid reservoir,Fluids & Routine Maintenance,job,100,0.4,33.33
+Windshield Wiper Blade Replacement,Install new front windshield wiper blades,Fluids & Routine Maintenance,job,45,0.18,15
+Windshield Washer Pump Replacement,Replace electric windshield washer fluid pump,Fluids & Routine Maintenance,each,120,0.48,40
+Engine Oil Leak Dye Test,Add UV dye and inspect to locate hidden oil leaks,Fluids & Routine Maintenance,job,85,0.34,28.33
+Engine Clean and Degrease,Pressure wash engine bay to remove grease and grime,Fluids & Routine Maintenance,job,120,0.48,40
+Door Latch Actuator Replacement,Replace power door lock mechanism inside door,Body & Interior,each,270,1.08,90
+Hood Lift Support Replacement,Replace gas struts supporting the hood,Body & Interior,job,90,0.36,30
+Tailgate Lift Support Replacement,Replace rear hatch or trunk lid gas lift struts,Body & Interior,job,100,0.4,33.33
+Side View Mirror Replacement,Replace complete exterior side mirror assembly,Body & Interior,each,220,0.88,73.33
+Wiper Motor Replacement,Replace front windshield wiper linkage and motor,Body & Interior,job,310,1.24,103.33
+Interior Dome Light Bulb Replacement,Replace interior cabin overhead light bulb,Body & Interior,each,35,0.14,11.67
+Horn Replacement,Replace failed electric horn assembly,Body & Interior,each,110,0.44,36.67
+Sun Visor Replacement,Replace broken interior sun visor assembly,Body & Interior,each,130,0.52,43.33
+Glove Box Latch Repair,Repair or replace broken glove box locking latch,Body & Interior,job,80,0.32,26.67
+Steering Wheel Cover Installation,Install aftermarket leather steering wheel wrap,Body & Interior,each,50,0.2,16.67
+Key Fob Battery Replacement,Replace coin cell battery in remote key fob,Convenience Upsells,each,25,0.1,8.33
+Fuel System Cleaner Additive,Pour concentrated detergent into gas tank,Convenience Upsells,each,30,0.12,10
+Oil Treatment Additive,Pour engine anti-wear treatment into crankcase,Convenience Upsells,each,35,0.14,11.67
+Battery Protection Terminal Spray,Apply anti-corrosion spray to battery terminals,Convenience Upsells,job,20,0.08,6.67
+Wiper Fluid Top-Off,Fill windshield washer fluid reservoir to maximum,Convenience Upsells,job,15,0.06,5
+Tire Pressure Check and Adjust,Check and adjust air pressure in all four tires,Convenience Upsells,job,25,0.1,8.33
+Bulb Multi-Pack Replacement,Replace multiple minor exterior warning bulbs together,Convenience Upsells,job,75,0.3,25

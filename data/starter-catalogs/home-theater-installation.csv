@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Diagnostic Visit,On-site troubleshooting of existing audio and video systems.,Diagnostics,visit,150,1,16.67
+Advanced Network Troubleshooting,Diagnose complex Wi-Fi and hardwired streaming connectivity issues.,Diagnostics,hour,125,1,0
+Audio Calibration Service,Acoustic level setting and speaker distance calibration.,Diagnostics,job,200,1.6,0
+Video Display Calibration,Color and brightness optimization using test patterns.,Diagnostics,job,200,1.6,0
+System Health Check,"Full inspection of wiring, connections, and firmware updates.",Diagnostics,visit,175,1.4,0
+Standard Labor Rate,Hourly rate for one certified AV technician.,Labor,hour,115,1,0
+Lead Technician Rate,Hourly rate for lead system programmer and senior installer.,Labor,hour,150,1,0
+After-Hours Emergency Labor,Hourly rate for emergency evening or weekend service calls.,Labor,hour,225,1,0
+Two-Man Installation Crew,Hourly rate for a two-person installation team.,Labor,hour,220,1,0
+Programming and Configuration,Custom remote control and smart home hub programming.,Labor,hour,135,1,6.67
+Basic TV Wall Mount (Up to 55 Inch),Mount standard TV securely to wood stud drywall.,TV Mounting,each,175,1,33.33
+Large TV Wall Mount (60 to 75 Inch),Mount large format TV securely to standard wall.,TV Mounting,each,225,1.2,50
+Extra Large TV Wall Mount (80 Inch Plus),Mount oversized TV requiring two-person handling.,TV Mounting,each,325,1.6,83.33
+Articulating Arm Mount Installation,Install and level full-motion swing-out TV mount.,TV Mounting,each,250,1.2,66.67
+Above Fireplace TV Mounting,Mount TV over brick or stone fireplace structure.,TV Mounting,each,350,2,66.67
+Motorized Drop-Down TV Mount,Install ceiling or mantel motorized lowering TV mount.,TV Mounting,each,600,2.5,193.33
+In-Wall Power Kit Installation,Conceal power cords safely behind drywall.,TV Mounting,job,175,1,33.33
+TV Removal and Reinstallation,Take down existing TV and remount on new wall.,TV Mounting,each,250,2,0
+Commercial Steel Stud TV Mount,Mount TV to commercial metal stud wall structure.,TV Mounting,each,275,1.6,53.33
+Ceiling TV Mount Installation,Mount television securely to exposed ceiling joists.,TV Mounting,each,300,1.8,53.33
+Fixed Frame Projector Screen,Assemble and mount wall projection screen.,Projection Systems,each,350,2,66.67
+Motorized Projector Screen,Hang and wire electric drop-down projection screen.,Projection Systems,each,500,2.5,126.67
+Projector Ceiling Mount Installation,Secure projector mount to ceiling and align image.,Projection Systems,each,275,1.6,53.33
+Projector Lens Calibration,Focus and align projector to screen boundaries.,Projection Systems,job,150,1.2,0
+Projector Bulb Replacement,Swap burned-out lamp and reset projector lamp timer.,Projection Systems,each,100,0.4,33.33
+In-Ceiling Speaker Installation,Cut drywall and mount single architectural speaker.,Audio Systems,each,90,0.6,10
+In-Wall Speaker Installation,Cut drywall and mount single in-wall speaker.,Audio Systems,each,90,0.6,10
+Bookshelf Speaker Mounting,Install wall brackets and mount satellite speakers.,Audio Systems,pair,120,0.8,13.33
+Soundbar Wall Mounting,Mount soundbar directly below wall-hung television.,Audio Systems,each,110,0.6,23.33
+Subwoofer Placement and Tuning,Position and calibrate subwoofer for optimal bass response.,Audio Systems,each,125,1,0
+Surround Sound Receiver Setup,Connect components and run auto-calibration mic.,Audio Systems,job,200,1.6,0
+Outdoor Speaker Pair Installation,Mount weather-resistant speakers to exterior walls.,Audio Systems,pair,250,1.4,46.67
+Multi-Zone Audio Controller Setup,Configure multi-room audio amplification hardware.,Audio Systems,job,300,2,33.33
+Speaker Terminal Wall Plate,Install double-gang binding post wall plate.,Audio Systems,each,75,0.4,16.67
+Acoustic Wall Panel Installation,Mount sound-absorbing fabric panels to home theater walls.,Audio Systems,each,45,0.2,13.33
+Standard Speaker Wire Run,Pull low-voltage wire through accessible open ceiling.,Wiring and Cabling,linear ft,2,0.01,1.31
+In-Wall Fish Speaker Wire Run,Fish low-voltage wire through finished drywall.,Wiring and Cabling,linear ft,4,0.02,2.61
+HDMI Cable Concealment,Run high-speed HDMI through wall cavities.,Wiring and Cabling,each,125,0.8,18.67
+Cat6 Network Cable Run,Pull and terminate Ethernet cable for streaming devices.,Wiring and Cabling,each,110,0.6,23.33
+Optical Audio Cable Run,Install digital optical audio interconnect line.,Wiring and Cabling,each,90,0.4,26.67
+Coaxial TV Antenna Line,Run RG6 coaxial cable for broadcast TV tuners.,Wiring and Cabling,each,95,0.4,30
+Structured Wiring Panel Termination,Organize and punch down cables in patch panel.,Wiring and Cabling,job,250,1.6,33.33
+Low-Voltage Mud Ring Installation,Cut in mounting bracket for low-voltage wall plate.,Wiring and Cabling,each,35,0.2,6.67
+Custom Cable Labeling,Tag all system wires for easy future troubleshooting.,Wiring and Cabling,job,75,0.6,0
+Armor Braided Cable Sleeving,Wrap visible wire bundles in protective mesh tubing.,Wiring and Cabling,linear ft,6,0.02,3.93
+Dedicated 20 Amp Circuit Installation,Run new electrical line from breaker box to theater.,Electrical Integration,each,450,2.5,93.33
+Recessed Outlet Behind TV,Install recessed electrical receptacle directly behind display.,Electrical Integration,each,200,1.2,33.33
+Smart Dimmer Switch Installation,Replace standard wall switch with smart lighting dimmer.,Electrical Integration,each,95,0.6,13.33
+Surge Protector Power Strip,Supply heavy-duty multi-outlet surge protection unit.,Electrical Integration,each,85,0.2,53.33
+Whole-Home Surge Protector,Install main electrical panel heavy surge suppressor.,Electrical Integration,each,375,1.5,125
+AV Equipment Rack Assembly,Build freestanding or floor AV component rack.,Equipment Racks,each,250,1.4,50
+In-Wall Equipment Rack Installation,Mount flush wall equipment enclosure in drywall.,Equipment Racks,job,400,2.5,50
+Component Shelf Installation,Mount floating glass or wood AV component shelf.,Equipment Racks,each,110,0.6,23.33
+Rack Ventilation Fan Unit,Install active cooling fan system in AV rack.,Equipment Racks,each,175,0.8,50
+Rack Cable Management Lacing,Clean up and zip tie wiring inside equipment rack.,Equipment Racks,job,200,1.6,0
+Universal Remote Setup,Program touchscreen remote to control entire system.,Smart Control Integration,each,250,1.2,66.67
+Voice Control Integration,Link smart speakers to control home theater gear.,Smart Control Integration,job,125,1,0
+Lighting Scene Programming,Create custom cinema lighting presets for movie watching.,Smart Control Integration,job,175,1.4,0
+IR Repeater System Installation,Install hidden infrared receiver kit for enclosed cabinets.,Smart Control Integration,job,180,1,36.67
+IP Control Bridge Configuration,Set up network adapter for tablet-based equipment control.,Smart Control Integration,each,150,0.8,33.33
+Mesh Wi-Fi Node Setup,Configure wireless router node near home theater area.,Networking,each,100,0.6,16.67
+Gigabit Network Switch Installation,Install multi-port wired ethernet network switch.,Networking,each,120,0.6,26.67
+Firmware Update Service,Update software across all connected AV components.,Networking,job,90,0.72,0
+Network Port Testing and Certification,Test Cat6 line speed and continuity with meter.,Networking,each,45,0.36,0
+Streaming Media Player Setup,Connect and log into streaming box apps for client.,Component Integration,each,75,0.4,16.67
+Blu-ray Disc Player Hookup,Connect disc player and verify HDCP handshake.,Component Integration,each,75,0.4,16.67
+Game Console Integration,Connect gaming system and configure display settings.,Component Integration,each,75,0.4,16.67
+Turntable and Phono Preamp Setup,Balance tonearm and connect vinyl record player.,Component Integration,job,125,0.8,18.67
+Sound Bar Firmware and App Setup,Configure manufacturer app and run room correction.,Component Integration,each,90,0.6,6.67
+Standard HDMI 2.1 Cable (6 ft),High-speed ultra definition interconnect cable.,Materials and Hardware,each,35,0,23.33
+Long HDMI 2.1 Fiber Cable (25 ft),Active optical high-bandwidth long run HDMI cable.,Materials and Hardware,each,150,0,100
+Speaker Wire 14 Gauge (100 ft Spool),Oxygen-free copper stranded multi-purpose speaker wire.,Materials and Hardware,each,75,0,50
+Cat6 Network Cable (100 ft Box),Solid copper unshielded twisted pair network cable.,Materials and Hardware,each,90,0,60
+Heavy-Duty Toggle Bolts,Pack of anchors for hollow wall TV mounting support.,Materials and Hardware,job,20,0,13.33
+Single Gang Brush Wall Plate,Pass-through faceplate for low-voltage cable bundles.,Materials and Hardware,each,15,0,10
+Gold Banana Plugs (Pair),Screw-type speaker wire connectors for clean termination.,Materials and Hardware,pair,12,0,8
+Optical Toslink Cable (6 ft),Digital fiber optic audio transmission cable.,Materials and Hardware,each,25,0,16.67
+RCA Subwoofer Cable (15 ft),Shielded mono audio cable for powered subwoofers.,Materials and Hardware,each,30,0,20
+Cable Management Raceway Kit,Surface mount paintable plastic wire concealment channel.,Materials and Hardware,job,45,0,30
+Low-Voltage Permit Processing,Obtain municipal low-voltage installation permit.,Permits and Disposal,job,150,1.2,0
+Electrical Permit Processing,Obtain municipal high-voltage electrical permit.,Permits and Disposal,job,200,1.6,0
+Old TV Disposal Fee,Recycle obsolete CRT or large flat-screen display.,Permits and Disposal,each,75,0.4,16.67
+Packaging Debris Removal,Haul away and recycle all cardboard box waste.,Permits and Disposal,job,50,0.4,0
+Drywall Patch and Texture Repair,Patch small exploratory cuts made during wiring runs.,Permits and Disposal,job,175,1,33.33
+Theater Seating Assembly,Uncrate and assemble motorized reclining theater chairs.,Upsells and Furniture,each,125,0.8,18.67
+LED Backlighting Kit Installation,Apply bias lighting strip behind television display.,Upsells and Furniture,each,90,0.4,26.67
+Starry Ceiling Fiber Optic Kit,Install fiber optic starlight ceiling effect panels.,Upsells and Furniture,job,850,4,233.33
+Motorized Projector Lift,Install ceiling recessed motorized projector drop lift.,Upsells and Furniture,job,750,3.5,200
+Universal Remote Control Handset,Supply high-end handheld programmable touch remote.,Upsells and Furniture,each,399,0,266
+Battery Backup UPS Unit (1500VA),Uninterruptible power supply for expensive AV gear.,Upsells and Furniture,each,250,0.4,133.33
+HDMI over Cat6 Extender Kit,Transmit 4K video signals over long network cable runs.,Upsells and Furniture,job,220,0.8,80
+Wireless Subwoofer Transmitter Kit,Convert standard subwoofer to wireless operation.,Upsells and Furniture,each,130,0.4,53.33
+Custom Grille Painting,Paint architectural speaker grilles to match wall color.,Upsells and Furniture,each,40,0.2,16.67
+Universal Projector Ceiling Mount,Supply heavy-duty adjustable projector bracket.,Upsells and Furniture,each,110,0.4,40
+Tilt TV Wall Mount Bracket,Supply low-profile adjustable tilting television bracket.,Upsells and Furniture,each,90,0.4,26.67
+Full-Motion TV Wall Mount Bracket,Supply heavy-duty articulating arm wall mount.,Upsells and Furniture,each,160,0.6,56.67
+In-Wall Power and Cable Kit,Supply recessed power flanged inlet and pass-through kit.,Upsells and Furniture,each,115,0.4,43.33
+System Orientation and Training,Walkthrough session teaching homeowner how to use system.,Diagnostics,hour,100,0.8,0
+Annual Maintenance Service Contract,"Yearly inspection, cleaning, and software update visit.",Diagnostics,visit,300,1.4,83.33

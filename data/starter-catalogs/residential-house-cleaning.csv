@@ -1,0 +1,99 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Cleaning - Studio Apartment,Routine cleaning for small studio apartments,Routine Cleaning,job,125,0.9,10
+Standard Cleaning - 1 Bedroom Home,Routine cleaning for one bedroom residences,Routine Cleaning,job,150,1.1,10
+Standard Cleaning - 2 Bedroom Home,Routine cleaning for two bedroom residences,Routine Cleaning,job,195,1.4,15
+Standard Cleaning - 3 Bedroom Home,Routine cleaning for three bedroom residences,Routine Cleaning,job,245,1.8,15
+Standard Cleaning - 4 Bedroom Home,Routine cleaning for four bedroom residences,Routine Cleaning,job,295,2.2,18
+Standard Cleaning - 5 Bedroom Home,Routine cleaning for large five bedroom homes,Routine Cleaning,job,360,2.7,20
+Bi-Weekly Maintenance Clean,Recurring standard cleaning service every two weeks,Recurring Maintenance,visit,160,1.1,15
+Weekly Maintenance Clean,Recurring standard cleaning service every week,Recurring Maintenance,visit,140,1,10
+Monthly Maintenance Clean,Recurring standard cleaning service every four weeks,Recurring Maintenance,visit,210,1.5,15
+Initial Deep Clean - Small Home,Detailed first-time cleaning for under 1500 sq ft,Deep Cleaning,job,275,2,16.67
+Initial Deep Clean - Medium Home,Detailed first-time cleaning for 1500 to 2500 sq ft,Deep Cleaning,job,375,2.7,20
+Initial Deep Clean - Large Home,Detailed first-time cleaning for over 2500 sq ft,Deep Cleaning,job,495,3.6,23.33
+Move-In Clean - Small Home,Full sanitization for empty small homes,Move In/Out,job,325,2.4,16.67
+Move-In Clean - Medium Home,Full sanitization for empty medium homes,Move In/Out,job,425,3.1,23.33
+Move-In Clean - Large Home,Full sanitization for empty large homes,Move In/Out,job,575,4.2,33.33
+Move-Out Clean - Small Home,Comprehensive deposit-return clean for small homes,Move In/Out,job,350,2.6,16.67
+Move-Out Clean - Medium Home,Comprehensive deposit-return clean for medium homes,Move In/Out,job,450,3.3,23.33
+Move-Out Clean - Large Home,Comprehensive deposit-return clean for large homes,Move In/Out,job,600,4.4,33.33
+Post-Construction Clean - Flat Rate,Detailed post-build cleaning up to 2000 sq ft,Specialty Cleaning,job,650,4.8,33.33
+Interior Refrigerator Deep Clean,Complete wipe down and sanitizing of all shelves,Kitchen Add-ons,each,45,0.3,5
+Interior Oven Deep Clean,Heavy grease removal and baked-on grime scrubbing,Kitchen Add-ons,each,50,0.3,8.33
+Range Hood Degreasing,Deep clean and degrease kitchen exhaust hood,Kitchen Add-ons,each,35,0.2,6.67
+Dishwasher Interior Sanitation,Run cleaning cycle and sanitize internal seals,Kitchen Add-ons,each,25,0.15,4.17
+Kitchen Cabinet Interior Wipeout,Wipe down inside of all empty kitchen cupboards,Kitchen Add-ons,job,75,0.5,8.33
+Pantry Organization and Wipe,"Empty, clean shelves, and reorganize food items",Kitchen Add-ons,job,65,0.4,10
+Microwave Interior and Exterior Detail,Remove food splatters and sanitize unit,Kitchen Add-ons,each,20,0.1,5
+Countertop Deep Polish,Specialized cleaner application for stone surfaces,Kitchen Add-ons,job,30,0.15,7.5
+Kitchen Baseboards Hand Wash,Detailed scrubbing of kitchen baseboard trim,Kitchen Add-ons,linear ft,2,0.01,0.83
+Bathroom Deep Sanitization,"Scrub tile grout, tub, shower, and toilet",Bathroom Services,each,60,0.4,6.67
+Glass Shower Door Hard Water Treatment,Remove mineral buildup and soap scum from glass,Bathroom Services,each,45,0.3,5
+Bathroom Tile Grout Steam Cleaning,High-heat steam treatment for stained tile grout,Bathroom Services,job,90,0.6,10
+Bathroom Vanity Interior Clean,Wipe down under-sink cabinet space,Bathroom Services,each,25,0.15,4.17
+Bathtub Resurfacing Prep Clean,Deep chemical prep clean prior to refinishing,Bathroom Services,each,75,0.5,8.33
+Exhaust Fan Cover Cleaning,"Remove, wash, and reinstall bathroom fan vent",Bathroom Services,each,20,0.12,3.33
+Toilet Deep Descaling,Remove hard water rings and mineral deposits,Bathroom Services,each,30,0.2,3.33
+Interior Window Cleaning,"Wash glass panes, sills, and tracks on inside",Window Cleaning,each,10,0.06,1.67
+Exterior Window Cleaning,Wash exterior glass panes and window frames,Window Cleaning,each,12,0.07,2
+Window Blind Dusting,Dust and wipe individual horizontal or vertical slats,Window Cleaning,each,15,0.1,1.67
+Window Screen Washing,"Remove, wash, and reinstall mesh window screens",Window Cleaning,each,8,0.05,1.17
+Sliding Glass Door Track Detail,Vacuum and scrub sliding door tracks and frames,Window Cleaning,each,25,0.15,4.17
+Bay Window Cleaning Package,Complete clean for large multi-pane bay windows,Window Cleaning,job,85,0.5,15
+Carpet Shampoo - Single Room,Hot water extraction cleaning for one carpeted room,Carpet & Flooring,each,75,0.4,16.67
+Carpet Shampoo - Whole House,Hot water extraction for up to 5 carpeted rooms,Carpet & Flooring,job,295,2,30
+Pet Stain Carpet Treatment,Enzyme treatment for pet urine odor and spots,Carpet & Flooring,each,40,0.2,10
+Carpet Deodorizing Application,Neutralize odors and apply fresh scent to carpet,Carpet & Flooring,room,25,0.1,8.33
+Area Rug Cleaning - Small,Off-site or in-home wash for rugs under 5x8,Carpet & Flooring,each,50,0.3,8.33
+Area Rug Cleaning - Large,Off-site or in-home wash for rugs over 5x8,Carpet & Flooring,each,90,0.5,18.33
+Hardwood Floor Mopping and Polish,pH-neutral wash and light polish for wood floors,Carpet & Flooring,sq ft,1,0.005,0.45
+Tile Floor Scrub and Seal,Machine scrub hard tile and apply protective sealant,Carpet & Flooring,sq ft,1,0.005,0.45
+Staircase Deep Cleaning,"Vacuum, dust, and hand wash wooden or carpeted stairs",Carpet & Flooring,flight,55,0.35,8.33
+Laundry Wash and Fold Service,"Wash, dry, and neatly fold standard clothing loads",Laundry & Linens,load,25,0.15,4.17
+Bed Linen Change and Make,Strip dirty sheets and make bed with fresh linens,Laundry & Linens,each,15,0.1,1.67
+Ironing Service,"Press shirts, pants, and household garments",Laundry & Linens,hour,40,0.32,0
+Towels Wash and Fold,"Wash, dry, and fold bathroom towels and washcloths",Laundry & Linens,load,20,0.12,3.33
+Dryer Vent Lint Removal,Clean lint trap housing and immediate exhaust duct,Laundry & Linens,each,35,0.2,6.67
+Washing Machine Interior Clean,Run self-clean cycle and wipe rubber gasket seals,Laundry & Linens,each,30,0.18,5
+Ceiling Fan Dusting and Wipe,Dust blades and motor housing of ceiling fans,Detailed Dusting,each,20,0.12,3.33
+Light Fixture Glass Washing,"Remove, wash, and reinstall glass globe light fixtures",Detailed Dusting,each,25,0.15,4.17
+Baseboard Hand Washing - Whole House,Wipe down all baseboards throughout the home,Detailed Dusting,job,110,0.7,15
+Door Frame and Trim Wipe,Clean fingerprints and dust off doors and frames,Detailed Dusting,job,45,0.3,5
+High Ceiling Cobweb Removal,Use extension pole to clear corners and vaulted ceilings,Detailed Dusting,job,50,0.35,5
+Air Vent Cover Dusting,Vacuum and wipe dust off supply and return grilles,Detailed Dusting,each,10,0.06,1.67
+Interior Wall Spot Cleaning,Remove scuff marks and smudges from painted walls,Detailed Dusting,hour,45,0.36,0
+Furniture Polish and Conditioning,"Apply wood polish to tables, desks, and shelves",Detailed Dusting,job,40,0.2,10
+Upholstery Vacuum and Refresh,Vacuum fabric sofas and armchairs thoroughly,Detailed Dusting,each,50,0.3,8.33
+Patio Furniture Wipe Down,"Clean outdoor tables, chairs, and cushions",Outdoor Living,job,60,0.4,6.67
+Porch and Deck Sweeping,Clear debris from front porch or back deck,Outdoor Living,job,35,0.25,2.5
+Sliding Patio Door Glass Clean,Wash large exterior sliding glass door panes,Outdoor Living,each,30,0.18,5
+Garbage Can Sanitization and Wash,High-pressure wash and deodorize outdoor trash bins,Outdoor Living,each,25,0.15,4.17
+Garage Floor Degreasing and Sweep,Sweep concrete slab and spot treat oil stains,Outdoor Living,job,95,0.6,13.33
+Eco-Friendly Cleaning Products Surcharge,Use 100 percent plant-based non-toxic products,Add-on Services,job,20,0,13.33
+Same-Day Rush Cleaning Surcharge,Priority scheduling for immediate cleaning requests,Add-on Services,job,75,0.6,0
+After-Hours Cleaning Surcharge,Cleaning service performed outside normal business hours,Add-on Services,job,100,0.8,0
+Key Pickup and Drop-off Fee,Travel to off-site location to retrieve house keys,Add-on Services,trip,20,0.15,5
+Excessive Clutter/Debris Surcharge,Extra labor fee for heavy item sorting before cleaning,Add-on Services,hour,60,1,0
+Extra Cleaner Hourly Rate,Add an additional team member for faster completion,Labor Rates,hour,45,0.36,0
+Standard Cleaning Hourly Rate,Standard hourly labor charge per cleaner,Labor Rates,hour,50,1,0
+Deep Cleaning Hourly Rate,Specialized intensive labor charge per cleaner,Labor Rates,hour,60,1,0
+Organizational Specialist Labor,Professional home organizing and decluttering labor,Labor Rates,hour,70,1,0
+Biohazard Cleanup Surcharge,Specialized removal of hazardous bodily waste,Specialty Cleaning,job,250,1.5,43.33
+Hoarder Home Assessment and Clean,Heavy-duty remediation clean for severely cluttered homes,Specialty Cleaning,day,850,5.8,100
+Post-Party Cleanup Service,"Clear trash, wash dishes, and clean up event mess",Specialty Cleaning,job,200,1.3,25
+Estate Cleanout Service,Comprehensive clearing and cleaning of estate homes,Specialty Cleaning,day,750,5.2,66.67
+Basement Deep Dust and Sweep,"Clear cobwebs, sweep concrete, and dust exposed beams",Specialty Cleaning,job,150,1,16.67
+Attic Dust and Cobweb Removal,Clear overhead dust and debris from unfinished attic,Specialty Cleaning,job,175,1.2,16.67
+Interior Fireplace Ash Cleanout,"Remove ash, soot, and sweep firebox and hearth",Specialty Cleaning,each,40,0.25,5
+Pet Hair Deep Extraction,Specialized rubber broom and vacuum removal of pet hair,Add-on Services,room,25,0.15,4.17
+HEPA Air Scrubber Rental,Industrial air filtration unit rental per day,Equipment Rental,day,75,0.1,43.33
+Ozone Odor Neutralization Treatment,Machine treatment to permanently eliminate smoke or pet odors,Specialty Cleaning,job,200,1,50
+Mattress Steam Sanitization,Kill dust mites and deep clean mattress surfaces,Carpet & Flooring,each,80,0.5,11.67
+Disinfectant Fogging Treatment,Whole-room electrostatic disinfectant spray application,Add-on Services,job,120,0.6,30
+Trash Removal and Disposal Fee,Haul away bagged trash generated from major cleanout,Add-on Services,load,60,0.2,20
+Chandelier Hand Polish,Meticulous individual crystal and fixture cleaning,Detailed Dusting,each,150,1,16.67
+Interior Glass Partition Cleaning,Wash internal glass walls and office dividers,Window Cleaning,sq ft,2,0.01,0.83
+Skylight Interior Cleaning,Wash hard-to-reach overhead skylight glass panes,Window Cleaning,each,35,0.2,6.67
+Medicine Cabinet Interior Clean,Wipe down shelves inside bathroom medicine cabinets,Bathroom Services,each,20,0.12,3.33
+Baby Nursery Sanitization,Non-toxic deep clean and toy sanitizing for nursery,Specialty Cleaning,job,130,0.85,18.33
+Holiday Decor Pack-Up and Storage,"Carefully take down, pack, and store holiday decorations",Specialty Cleaning,hour,50,1,0

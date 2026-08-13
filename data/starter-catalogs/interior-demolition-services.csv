@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Site Visit and Demolition Assessment,Onsite evaluation and scope determination for interior strip out,Consultation,visit,150,1.2,0
+Demolition Permit Processing,Filing and obtaining required local municipal demolition permits,Consultation,job,350,0,233.33
+Structural Engineer Consultation,Engineering review prior to load bearing wall removal,Consultation,visit,750,0,500
+Asbestos Inspection and Testing,Sampling and laboratory analysis for hazardous materials,Consultation,job,500,0,333.33
+Lead Paint Testing,XRF testing or laboratory sample analysis for lead,Consultation,job,300,0,200
+Mold Inspection and Assessment,Visual and thermal imaging check for active mold growth,Consultation,visit,350,0,233.33
+Temporary Power Pole Setup,Jobsite temporary electricity distribution for demolition tools,Preparation,job,450,2,133.33
+Temporary Water Line Hookup,Dust suppression water source connection setup,Preparation,job,250,1,83.33
+Floor Protection Poly and Masonite,Heavy duty surface protection for finished floors,Preparation,sq ft,1,0.005,0.63
+Dust Barrier Containment Wall,ZipWall plastic barrier system with zipper entry,Preparation,linear ft,12,0.06,3
+Negative Air Machine Setup,HEPA air scrubber installation for dust control,Preparation,each,250,1,83.33
+HVAC System Sealing,Sealing ductwork and returns to prevent dust circulation,Preparation,job,150,0.8,33.33
+Temporary Lighting Installation,String lighting setup for unlit interior work areas,Preparation,job,200,1,50
+Appliance Disconnection Service,Safe disconnection of plumbing and electrical for removal,Preparation,each,75,0.5,8.33
+Fixtures and Hardware Salvage,Careful removal of reusable items for client retention,Preparation,hour,85,0.68,0
+Drywall Partition Demolition,Removal of non-load bearing gypsum wallboard,Walls and Ceilings,sq ft,2,0.01,0.5
+Plaster Wall Demolition,Manual breakdown and removal of traditional lath and plaster,Walls and Ceilings,sq ft,4,0.02,1
+Wood Stud Framing Demolition,Takedown of interior wood partition framing studs,Walls and Ceilings,linear ft,5,0.03,0.83
+Metal Stud Framing Demolition,Cutting and removal of commercial steel stud partitions,Walls and Ceilings,linear ft,4,0.02,1
+Drop Ceiling Tile Removal,Removal of acoustic ceiling tiles from grid,Walls and Ceilings,sq ft,1,0.005,0.25
+Suspended Ceiling Grid Demolition,Takedown of metal T-bar ceiling suspension grid,Walls and Ceilings,sq ft,2,0.01,0.5
+Drywall Ceiling Demolition,Pulling down gypsum board ceiling assemblies,Walls and Ceilings,sq ft,3,0.015,0.75
+Wood Paneling Removal,Stripping decorative wood wall planks and paneling,Walls and Ceilings,sq ft,2,0.01,0.5
+Ceramic Wall Tile Demolition,Chipping away wall tile and backer board,Walls and Ceilings,sq ft,5,0.03,0.83
+Interior Non-Load Bearing Wall Removal,Complete removal of studs and drywall for open concept,Walls and Ceilings,linear ft,35,0.2,6.67
+Carpet and Pad Removal,Pulling up tacked carpet and foam padding,Flooring,sq ft,1,0.005,0.25
+Sheet Vinyl Flooring Removal,Scraping up glued sheet linoleum or vinyl flooring,Flooring,sq ft,2,0.01,0.5
+Veiyl Composition Tile Removal,Scraping VCT tiles from concrete subfloor,Flooring,sq ft,2,0.01,0.5
+Ceramic Floor Tile Demolition,Mechanical chipping of floor tile and mortar bed,Flooring,sq ft,4,0.02,1
+Hardwood Flooring Removal,Pry bar removal of nailed down hardwood strips,Flooring,sq ft,3,0.015,0.75
+Engineered Wood Floor Removal,Removal of glued or floated engineered wood flooring,Flooring,sq ft,3,0.015,0.75
+Laminate Flooring Removal,Pulling up click lock laminate flooring planks,Flooring,sq ft,2,0.01,0.5
+Thin-Set Mortar Grinding,Diamond grinding residual thin-set off concrete slab,Flooring,sq ft,2,0.01,0.5
+Self Leveling Underlayment Removal,Breaking up and scraping self leveling cement toppings,Flooring,sq ft,4,0.02,1
+Subfloor Plywood Demolition,Cutting and tearing out damaged wood subflooring,Flooring,sq ft,3,0.015,0.75
+Concrete Slab Saw Cutting,Wet saw cutting of concrete for utility trenches,Concrete,linear ft,18,0.1,3.67
+Concrete Floor Breaking,Jackhammering interior concrete slabs for plumbing access,Concrete,sq ft,15,0.08,3.33
+Concrete Curb Demolition,Removal of interior concrete curbs and housekeeping pads,Concrete,linear ft,25,0.14,5
+Masonry Wall Demolition,Takedown of interior brick or concrete block walls,Concrete,sq ft,12,0.06,3
+Kitchen Cabinet Demolition,Careful removal of upper and lower kitchen cabinetry,Millwork and Fixtures,linear ft,25,0.14,5
+Bathroom Vanity Removal,Tear out of vanity cabinets and attached countertops,Millwork and Fixtures,each,95,0.6,13.33
+Countertop Demolition,"Removal of laminate, granite, or solid surface counters",Millwork and Fixtures,linear ft,20,0.1,5
+Baseboard and Trim Removal,Pry bar removal of baseboards and window casings,Millwork and Fixtures,linear ft,1,0.005,0.25
+Interior Door and Frame Demolition,"Removal of pre-hung doors, slabs, and wooden frames",Millwork and Fixtures,each,45,0.3,5
+Commercial Storefront Door Removal,Takedown of commercial aluminum glass entrance doors,Millwork and Fixtures,each,250,1.5,43.33
+Closet Shelving Removal,Removal of wire or wood closet organizer systems,Millwork and Fixtures,job,120,0.8,13.33
+Staircase Demolition,Complete tear down of wooden interior stairs and stringers,Millwork and Fixtures,job,850,5.5,100
+Guardrail and Handrail Removal,Unbolting and cutting out interior metal or wood railings,Millwork and Fixtures,linear ft,15,0.08,3.33
+Fireplace Mantle Demolition,"Removal of brick, stone, or wood fireplace surrounds",Millwork and Fixtures,job,200,1.2,33.33
+Bathtub Removal and Breakage,Demolition and removal of cast iron or fiberglass tubs,Plumbing,each,175,1,33.33
+Toilet and Sink Removal,Disconnecting and hauling away bathroom porcelain fixtures,Plumbing,each,75,0.4,16.67
+Shower Stall Demolition,Tear out of fiberglass shower units and tile pans,Plumbing,each,200,1.2,33.33
+Water Heater Demolition and Removal,"Drain, disconnect, and haul away old water heater tank",Plumbing,each,150,0.8,33.33
+Cast Iron Pipe Demolition,Cutting and removal of old cast iron drain stacks,Plumbing,linear ft,22,0.12,4.67
+Light Fixture Removal,Safely disconnecting and removing interior light fixtures,Electrical,each,25,0.15,4.17
+Electrical Panel Demolition,Safe removal of dead electrical panels after power kill,Electrical,each,200,1.2,33.33
+Conduit and Wiring Pull,Pulling abandoned electrical wiring and metal conduit,Electrical,linear ft,3,0.02,0.67
+HVAC Ductwork Demolition,Takedown and removal of sheet metal supply and return ducts,HVAC,linear ft,10,0.05,2.5
+Furnace and Air Handler Removal,Disconnection and removal of indoor HVAC mechanical units,HVAC,job,350,2,66.67
+Radiator Demolition and Removal,Disconnecting and heavy lifting of cast iron radiators,HVAC,each,180,1,36.67
+Batt Insulation Removal,Pulling fiberglass or rockwool batts from walls or ceilings,Insulation,sq ft,1,0.005,0.25
+Blown-in Insulation Extraction,Vacuum extraction of loose fill cellulose or fiberglass,Insulation,sq ft,2,0.01,0.5
+Spray Foam Insulation Removal,Scraping and shaving rigid spray polyurethane foam,Insulation,sq ft,4,0.02,1
+Roll-Off Dumpster 20 Yard,Rental and haul away of 20 yard demolition debris box,Debris Disposal,each,650,0,433.33
+Roll-Off Dumpster 30 Yard,Rental and haul away of 30 yard demolition debris box,Debris Disposal,each,800,0,533.33
+Debris Loading Labor,Manual loading of construction waste into dumpsters or trucks,Debris Disposal,hour,65,0.52,0
+Hand Truck and Trash Chute Setup,Equipment setup for multi-story debris removal operations,Debris Disposal,job,400,2.5,50
+Hazardous Material Disposal Fee,Specialized tipping fee for regulated waste handling,Debris Disposal,ton,250,0,166.67
+Appliance Recycling Fee,EPA compliant disposal fee for refrigerators and units,Debris Disposal,each,75,0,50
+Final Broom Sweep Cleanout,Thorough sweeping and light cleanup of demolished areas,Cleanup,sq ft,1,0.005,0.25
+HEPA Vacuum Detailed Cleanup,Fine dust vacuuming of all surfaces post demolition,Cleanup,sq ft,1,0.005,0.25
+Concrete Slab Pressure Washing,Power washing remaining concrete floors after strip out,Cleanup,sq ft,1,0.005,0.25
+Demolition Laborer Hourly,General demolition operative rate for non-specialized tasks,Labor Rates,hour,65,0.52,0
+Demolition Foreman Hourly,Onsite working supervisor and crew lead hourly rate,Labor Rates,hour,85,0.68,0
+Skid Steer Operator Hourly,Certified machine operator for indoor mini loader work,Labor Rates,hour,95,0.76,0
+After Hours Premium Laborer,Night or weekend shift differential rate per worker,Labor Rates,hour,45,0.36,0
+Mini Skid Steer Daily Rental,Indoor tracked loader for material moving and breaking,Equipment,day,350,0,233.33
+Concrete Saw Daily Rental,Gas or electric walk behind floor saw daily rate,Equipment,day,175,0,116.67
+Breaker Hammer Heavy Daily,Electric demolition jackhammer daily rental rate,Equipment,day,95,0,63.33
+Air Scrubber Daily Rental,HEPA negative air machine daily rental fee,Equipment,day,75,0,50
+Trash Chute Section Rental,Polyethylene debris chute section weekly rental,Equipment,linear ft,25,0.05,12.5
+Selective Retail Store Demo,Partial teardown of retail displays while keeping shell intact,Commercial Upsells,sq ft,4,0.02,1
+Office Cubicle Demolition,Takedown and removal of modular office workstation systems,Commercial Upsells,each,75,0.4,16.67
+Commercial Floor Prep Shot Blasting,Shot blasting concrete for new flooring preparation,Commercial Upsells,sq ft,3,0.015,0.75
+Safe and Vault Removal,Rigging and extraction of heavy commercial safes,Commercial Upsells,job,1500,10,166.67
+Server Room Demolition,Careful dismantling of raised flooring and server racks,Commercial Upsells,sq ft,6,0.03,1.5
+Bank Teller Line Demolition,"Removal of millwork, bullet resistant glass, and counters",Commercial Upsells,linear ft,60,0.35,11.67
+Restaurant Kitchen Tear Out,"Complete removal of commercial hoods, grease traps, and lines",Commercial Upsells,job,3500,24,333.33
+Walk-in Cooler Demolition,Disassembly and removal of commercial refrigeration boxes,Commercial Upsells,job,1200,8,133.33
+Medical Equipment Room Tear Out,Specialized removal of lead lined X-ray room walls,Commercial Upsells,sq ft,12,0.06,3
+Interior Wall Core Drilling,Diamond core drilling through concrete walls for utilities,Specialty Cuts,each,175,1,33.33
+Structural Steel Beam Cutting,Torch cutting or sawing of interior steel structural supports,Specialty Cuts,linear ft,85,0.5,15
+Balcony Demolition,Saw cutting and removal of interior concrete mezzanine floors,Specialty Cuts,sq ft,25,0.14,5
+Fireproofing Removal,Scraping spray applied fireproofing from steel framing,Specialty Cuts,sq ft,3,0.015,0.75
+Graffiti and Paint Stripping,Chemical or abrasive removal of paint from masonry,Specialty Cuts,sq ft,5,0.025,1.25
+Emergency Storm Cleanup,Urgent interior debris cleanup after water or wind damage,Emergency,hour,120,0.96,0
+Emergency Shoring Installation,Erecting temporary wood shoring for compromised structures,Emergency,job,950,6,133.33
+After Hours Emergency Dispatch,Immediate dispatch fee for urgent middle of night callouts,Emergency,visit,300,1.8,50
+Salvage Sorting and Palletizing,Sorting recyclable metals and wood for green diversion,Debris Disposal,hour,55,0.44,0

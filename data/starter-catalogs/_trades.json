@@ -1,0 +1,402 @@
+[
+  {
+    "name": "Residential HVAC Service & Repair",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Residential Plumbing Service & Repair",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Residential Electrical Contracting",
+    "category": "Electrical"
+  },
+  {
+    "name": "Residential Landscaping & Lawn Care",
+    "category": "Grounds"
+  },
+  {
+    "name": "Residential House Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Residential Roofing Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Residential Pest Control",
+    "category": "Specialty"
+  },
+  {
+    "name": "Residential Painting",
+    "category": "Interior"
+  },
+  {
+    "name": "Residential Tree Service",
+    "category": "Grounds"
+  },
+  {
+    "name": "Residential Handyman Services",
+    "category": "Interior"
+  },
+  {
+    "name": "Commercial HVAC Service & Repair",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Commercial Plumbing Service",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Commercial Electrical Contracting",
+    "category": "Electrical"
+  },
+  {
+    "name": "Garage Door Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Residential Carpet Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Residential Pressure Washing",
+    "category": "Exterior"
+  },
+  {
+    "name": "Locksmith Services",
+    "category": "Specialty"
+  },
+  {
+    "name": "Swimming Pool Service & Repair",
+    "category": "Grounds"
+  },
+  {
+    "name": "Residential Flooring Installation & Repair",
+    "category": "Interior"
+  },
+  {
+    "name": "Residential Window Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Appliance Repair",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Residential Fencing Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Residential Siding Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Water Damage Restoration",
+    "category": "Restoration"
+  },
+  {
+    "name": "Septic System Service & Repair",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Chimney Sweep & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Home Inspection Services",
+    "category": "Inspection"
+  },
+  {
+    "name": "Commercial Cleaning & Janitorial",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Commercial Roofing",
+    "category": "Exterior"
+  },
+  {
+    "name": "Solar Panel Installation & Service",
+    "category": "Electrical"
+  },
+  {
+    "name": "Residential Concrete & Masonry",
+    "category": "Exterior"
+  },
+  {
+    "name": "Junk Removal & Hauling",
+    "category": "Specialty"
+  },
+  {
+    "name": "Residential Drywall Installation & Repair",
+    "category": "Interior"
+  },
+  {
+    "name": "Interior Design & Remodeling",
+    "category": "Interior"
+  },
+  {
+    "name": "Well Pump Service & Repair",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Residential Gutter Cleaning & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Security System Installation & Monitoring",
+    "category": "Electrical"
+  },
+  {
+    "name": "Fireplace Installation & Service",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Mobile Auto Repair",
+    "category": "Specialty"
+  },
+  {
+    "name": "Window & Door Replacement",
+    "category": "Exterior"
+  },
+  {
+    "name": "Asphalt Paving & Sealcoating",
+    "category": "Exterior"
+  },
+  {
+    "name": "Commercial Landscaping",
+    "category": "Grounds"
+  },
+  {
+    "name": "Mold Remediation",
+    "category": "Restoration"
+  },
+  {
+    "name": "Commercial Painting",
+    "category": "Interior"
+  },
+  {
+    "name": "Audio Visual Installation & Integration",
+    "category": "Electrical"
+  },
+  {
+    "name": "Interior Plantscaping & Maintenance",
+    "category": "Grounds"
+  },
+  {
+    "name": "Fire Protection System Service",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Elevator Maintenance & Repair",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Commercial Flooring Installation",
+    "category": "Interior"
+  },
+  {
+    "name": "Commercial Pest Control",
+    "category": "Specialty"
+  },
+  {
+    "name": "Interior Demolition Services",
+    "category": "Interior"
+  },
+  {
+    "name": "Environmental Testing & Consulting",
+    "category": "Inspection"
+  },
+  {
+    "name": "Exterior Lighting Installation",
+    "category": "Electrical"
+  },
+  {
+    "name": "Property Preservation & Maintenance",
+    "category": "Interior"
+  },
+  {
+    "name": "Blind & Shutter Installation",
+    "category": "Interior"
+  },
+  {
+    "name": "Residential Carpentry Services",
+    "category": "Interior"
+  },
+  {
+    "name": "Safe and Vault Service",
+    "category": "Specialty"
+  },
+  {
+    "name": "Carpet & Upholstery Restoration",
+    "category": "Restoration"
+  },
+  {
+    "name": "Commercial Window Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Mobile Pet Grooming",
+    "category": "Specialty"
+  },
+  {
+    "name": "Sign Installation & Maintenance",
+    "category": "Specialty"
+  },
+  {
+    "name": "Irrigation System Installation & Repair",
+    "category": "Grounds"
+  },
+  {
+    "name": "Commercial Pressure Washing",
+    "category": "Exterior"
+  },
+  {
+    "name": "Awning Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Radon Mitigation Services",
+    "category": "Specialty"
+  },
+  {
+    "name": "Stump Grinding & Removal",
+    "category": "Grounds"
+  },
+  {
+    "name": "Wildlife Removal & Exclusion",
+    "category": "Specialty"
+  },
+  {
+    "name": "Commercial Door Service",
+    "category": "Exterior"
+  },
+  {
+    "name": "Access Control System Installation",
+    "category": "Electrical"
+  },
+  {
+    "name": "Stucco & EIFS Installation & Repair",
+    "category": "Exterior"
+  },
+  {
+    "name": "Tile & Grout Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Commercial Refrigeration Repair",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Residential Cabinet Refinishing & Installation",
+    "category": "Interior"
+  },
+  {
+    "name": "Parking Lot Striping & Maintenance",
+    "category": "Exterior"
+  },
+  {
+    "name": "Data Cabling & Network Wiring",
+    "category": "Electrical"
+  },
+  {
+    "name": "Windshield Repair & Replacement",
+    "category": "Specialty"
+  },
+  {
+    "name": "Commercial Concrete & Masonry",
+    "category": "Exterior"
+  },
+  {
+    "name": "Backflow Testing & Certification",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Water Softener & Filtration Service",
+    "category": "Plumbing"
+  },
+  {
+    "name": "Mobile Welding Services",
+    "category": "Specialty"
+  },
+  {
+    "name": "Countertop Fabrication & Installation",
+    "category": "Interior"
+  },
+  {
+    "name": "Home Theater Installation",
+    "category": "Electrical"
+  },
+  {
+    "name": "Commercial Kitchen Exhaust Hood Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Medical Equipment Repair & Maintenance",
+    "category": "Mechanical"
+  },
+  {
+    "name": "Portable Toilet Rental & Servicing",
+    "category": "Specialty"
+  },
+  {
+    "name": "Playground Equipment Installation",
+    "category": "Grounds"
+  },
+  {
+    "name": "Commercial Fence Installation",
+    "category": "Exterior"
+  },
+  {
+    "name": "Home Energy Auditing",
+    "category": "Inspection"
+  },
+  {
+    "name": "Aquarium Maintenance Service",
+    "category": "Specialty"
+  },
+  {
+    "name": "Bathtub & Tile Refinishing",
+    "category": "Interior"
+  },
+  {
+    "name": "Commercial Security Gate Service",
+    "category": "Exterior"
+  },
+  {
+    "name": "Smart Home Automation Integration",
+    "category": "Electrical"
+  },
+  {
+    "name": "Tennis Court Resurfacing & Maintenance",
+    "category": "Grounds"
+  },
+  {
+    "name": "Commercial Awning Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Ceiling Tile Installation & Repair",
+    "category": "Interior"
+  },
+  {
+    "name": "Lightning Protection System Installation",
+    "category": "Electrical"
+  },
+  {
+    "name": "Generator Sales, Installation & Service",
+    "category": "Electrical"
+  },
+  {
+    "name": "Exterior Caulking & Waterproofing",
+    "category": "Exterior"
+  },
+  {
+    "name": "Solar Panel Cleaning",
+    "category": "Cleaning"
+  },
+  {
+    "name": "Sewer Scope Inspection",
+    "category": "Inspection"
+  }
+]

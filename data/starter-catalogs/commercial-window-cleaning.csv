@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Exterior Window Cleaning,Exterior glass washing for low rise commercial buildings,Exterior Cleaning,sq ft,0.15,0.001,0.05
+Standard Interior Window Cleaning,Interior glass cleaning and wiping frames,Interior Cleaning,sq ft,0.12,0.001,0.04
+High Rise Exterior Window Cleaning,Rope access or bosun chair exterior glass washing,High Rise,sq ft,0.35,0.002,0.08
+High Rise Interior Window Cleaning,Interior high reach glass cleaning with specialized poles,High Rise,sq ft,0.28,0.002,0.06
+Storefront Glass Cleaning,Ground level exterior and interior storefront glass,Storefront,sq ft,0.18,0.001,0.06
+Atrium Glass Cleaning,Multi-level interior atrium glass cleaning with lift,Specialty Cleaning,sq ft,0.45,0.003,0.1
+Skylight Exterior Cleaning,Removal of debris and washing of exterior skylight glass,Specialty Cleaning,sq ft,0.3,0.002,0.08
+Canopy Glass Cleaning,Cleaning glass entrance canopies from top and bottom,Storefront,sq ft,0.25,0.002,0.06
+Hard Water Stain Removal,Chemical treatment to remove mineral deposits from glass,Glass Restoration,sq ft,0.75,0.004,0.15
+Paint and Silicone Removal,Scraping construction debris and paint from glass,Glass Restoration,sq ft,0.5,0.003,0.08
+Acid Wash Glass Restoration,Heavy restoration acid wash for severely neglected glass,Glass Restoration,sq ft,1.25,0.006,0.3
+Scratch Removal on Glass,Mechanical polishing to remove light glass scratches,Glass Restoration,each,150,0.8,35
+Commercial Window Screen Cleaning,Washing and dusting removable window screens,Frame and Screen,each,6,0.04,1
+Window Screen Replacement,New aluminum frame and fiberglass mesh screen,Frame and Screen,each,35,0.15,10
+Window Screen Re-mesh,Replacing damaged mesh in existing window frames,Frame and Screen,each,20,0.12,5
+Window Track Cleaning,Vacuuming and wiping out sliding window tracks,Frame and Screen,linear ft,2,0.012,0.3
+Window Frame Wiping,Detailed wiping of metal or vinyl window frames,Frame and Screen,linear ft,1,0.006,0.15
+Weep Hole Clearing,Clearing blocked frame drainage weep holes,Frame and Screen, each,5,0.03,1
+Gasket Replacement,Replacing worn rubber window glazing gaskets,Repairs and Maintenance,linear ft,4,0.02,1
+Window Caulking,Applying exterior silicone sealant around window frame perimeter,Repairs and Maintenance,linear ft,5,0.025,1
+Glass Pane Replacement Insulated,Replacing failed double pane insulated glass unit,Repairs and Maintenance,sq ft,45,0.15,18
+Glass Pane Replacement Single,Replacing broken single pane commercial glass,Repairs and Maintenance,sq ft,30,0.12,10
+Window Balance Replacement,Replacing internal spiral or block and tackle balances,Repairs and Maintenance,each,85,0.4,20
+Window Operator Replacement,Replacing casement window crank operators,Repairs and Maintenance,each,110,0.5,30
+Window Lock Replacement,Replacing commercial sliding or awning window latches,Repairs and Maintenance,each,65,0.3,15
+Hinge Replacement,Replacing projecting or egress window friction hinges,Repairs and Maintenance,each,95,0.45,20
+Door Closer Adjustment,Adjusting hydraulic speed and latching on glass entry doors,Door Services,each,75,0.5,5
+Door Closer Replacement,Replacing commercial overhead glass door hydraulic closer,Door Services,each,320,0.8,150
+Glass Door Patch Fitting Replacement,Replacing top or bottom glass patch fittings,Door Services,each,250,0.7,100
+Glass Door Pivot Set Replacement,"Replacing top, bottom, and intermediate door pivots",Door Services,each,180,0.5,80
+Storefront Door Sweep Replacement,Replacing bottom weatherstripping sweep on glass doors,Door Services,each,90,0.35,30
+Panic Bar Replacement,Replacing commercial exit device on glass storefront doors,Door Services,each,450,1,220
+Boom Lift Rental Daily,Articulating or telescopic boom lift daily rental fee,Equipment Rental,day,450,0,300
+Boom Lift Rental Weekly,Articulating or telescopic boom lift weekly rental fee,Equipment Rental,day,1500,0,1000
+Scissor Lift Rental Daily,Electric slab scissor lift daily rental fee,Equipment Rental,day,250,0,166.67
+Scissor Lift Rental Weekly,Electric slab scissor lift weekly rental fee,Equipment Rental,day,800,0,533.33
+Swing Stage Rigging Setup,Engineering and rigging temporary roof suspended scaffolding,Equipment Rental,job,1200,6,300
+Swing Stage Daily Rental,Suspended scaffold system daily use charge,Equipment Rental,day,350,0,233.33
+Water Fed Pole System Surcharge,Purified water system deployment for high reach cleaning,Equipment Rental,visit,75,0.4,15
+Spider Crane Rental Daily,Mini crawler crane for glass replacement jobs,Equipment Rental,day,950,0,633.33
+Anchor Certification Inspection,Annual safety inspection and load testing of roof anchors,Safety and Compliance,each,125,0.8,18
+New Roof Anchor Installation,Installing and certifying fall protection roof anchor,Safety and Compliance,each,450,1.5,180
+Lifeline Rigging and Inspection,Setting up synthetic vertical lifelines for drop work,Safety and Compliance,each,150,0.8,35
+Pedestrian Traffic Control Setup,"Setting up caution tape, cones, and sidewalk walkers",Safety and Compliance,job,175,1,33.33
+Off-Hours Service Surcharge,Labor multiplier for night or weekend window cleaning,Labor and Fees,hour,45,0.36,0
+Standard Labor Rate,Hourly rate for standard commercial window cleaning technician,Labor and Fees,hour,65,0.52,0
+Lead Technician Labor Rate,Hourly rate for site supervisor and rigging specialist,Labor and Fees,hour,85,0.68,0
+Emergency Service Callout Fee,Dispatch fee for urgent glass or repair response,Labor and Fees,visit,150,1,16.67
+City Right-of-Way Permit Fee,Municipal sidewalk or street closure permit processing,Labor and Fees,job,250,0,166.67
+Debris Disposal Fee,Hauling and disposal of broken glass and frame waste,Labor and Fees,job,100,0,66.67
+Solar Panel Cleaning,Deionized water washing of commercial roof solar arrays,Specialty Cleaning,sq ft,0.2,0.001,0.06
+Pressure Washing Concrete Entrance,High pressure hot water cleaning of concrete walkways,Exterior Cleaning,sq ft,0.3,0.002,0.05
+Building Façade Wash,Low pressure chemical rinse of exterior building panels,Exterior Cleaning,sq ft,0.25,0.002,0.04
+Awning Cleaning Fabric,Brushing and rinsing canvas or vinyl entrance awnings,Exterior Cleaning,sq ft,0.4,0.003,0.06
+Signage Cleaning,Washing exterior illuminated building letters and signs,Exterior Cleaning,each,150,0.8,33.33
+Post-Construction Window Detail,Heavy duty initial cleaning of new construction windows,Glass Restoration,sq ft,0.35,0.002,0.08
+Mirror Cleaning Commercial,Large interior wall mirror washing and detailing,Interior Cleaning,sq ft,0.15,0.001,0.04
+Interior Glass Partition Cleaning,Cleaning both sides of office glass conference walls,Interior Cleaning,sq ft,0.2,0.001,0.06
+Security Film Removal,Peeling and scraping old window safety security film,Glass Restoration,sq ft,1.5,0.008,0.35
+Solar Tint Film Installation,Applying commercial grade solar control window film,Repairs and Maintenance,sq ft,7,0.02,2.8
+Decorative Frost Film Installation,Applying privacy frosted vinyl film to interior glass,Repairs and Maintenance,sq ft,8.5,0.025,3.4
+Graffiti Removal Glass,Chemical removal of marker or spray paint from glass,Glass Restoration,sq ft,2,0.01,0.5
+Anti-Graffiti Film Installation,Installing sacrificial clear film over storefront glass,Repairs and Maintenance,sq ft,6,0.02,2.4
+Bird Dropping Removal Surcharge,Heavy scaling and sanitizing of soiled exterior glass,Exterior Cleaning,sq ft,0.25,0.001,0.08
+Cobweb Removal Perimeter,Brushing away spider webs from window frames and eaves,Exterior Cleaning,linear ft,0.5,0.003,0.08
+Interior Dusting High Reach,Vacuuming dust from high ledges and exposed beams,Interior Cleaning,hour,75,0.6,0
+Light Fixture Cleaning Interior,Washing glass globe covers on hanging ceiling lights,Interior Cleaning,each,25,0.15,5
+Chandeliers Cleaning Large,Hand washing crystal prisms on large commercial chandeliers,Interior Cleaning,each,350,2,66.67
+Pressure Washing Drive-Thru,Degreasing and hot water washing concrete drive-thru lanes,Exterior Cleaning,sq ft,0.35,0.002,0.08
+Dumpster Pad Sanitizing,High pressure washing and sanitizing waste container enclosures,Exterior Cleaning,job,200,1,46.67
+Loading Dock Pressure Wash,Washing concrete loading bay floors and walls,Exterior Cleaning,job,250,1.2,60
+Rain Gutter Clearing,Scooping leaves and flushing commercial roof gutters,Roof Services,linear ft,3,0.02,0.6
+Downspout Flushing,Clearing clogged exterior roof drain downspouts,Roof Services,each,45,0.3,5
+Fascia Board Pressure Wash,Washing painted wood or metal roof fascia trim,Exterior Cleaning,linear ft,1.5,0.01,0.3
+Soffit Cleaning,Washing exterior overhang soffit panels,Exterior Cleaning,sq ft,0.3,0.002,0.06
+Aluminum Cladding Polish,Restoring oxidized metal building panels with chemical polish,Metal Restoration,sq ft,1.75,0.008,0.5
+Bronze Panel Maintenance,Cleaning and clear coating architectural bronze metal work,Metal Restoration,sq ft,2.5,0.012,0.66
+Stainless Steel Column Polish,Cleaning and polishing lobby stainless steel cladding,Metal Restoration,sq ft,1.25,0.006,0.35
+Curamin Sealant Injection,Injecting sealant into leaking commercial window joints,Repairs and Maintenance,linear ft,12,0.06,2.8
+Water Leak Testing Diagnostic,Spraying windows to locate building envelope water leaks,Repairs and Maintenance,hour,125,1,0
+Infrared Thermal Leak Scan,Using thermal camera to detect window air and water leaks,Repairs and Maintenance,job,450,2.5,93.33
+Consultation and Site Survey,Onsite visit and engineering assessment for large project,Labor and Fees,visit,150,1.2,0
+Safety Plan Documentation,Drafting site specific OSHA compliant fall protection plan,Safety and Compliance,job,250,2,0
+Police Detail Traffic Control,Hired uniformed officers for street lane closures,Safety and Compliance,hour,85,0.68,0
+Barrier Gate Rental,Renting and placing temporary metal crowd control barricades,Equipment Rental,each,25,0.05,10
+Epoxy Glass Repair,Filling minor glass chip with structural optical epoxy,Glass Restoration,each,95,0.5,20
+Window Hardware Lubrication,"Applying silicone spray to hinges, locks, and operators",Repairs and Maintenance,each,15,0.1,1.67
+Storm Shutter Cleaning,Washing exterior roll-down security and storm shutters,Exterior Cleaning,sq ft,0.3,0.002,0.06
+Louvers and Vent Cleaning,Washing dust and grime from architectural metal louvers,Exterior Cleaning,sq ft,0.4,0.003,0.08
+Interior Partition Glass Coating,Applying hydrophobic easy-clean coating to glass walls,Interior Cleaning,sq ft,0.5,0.003,0.12
+Exterior Glass Hydrophobic Treatment,Applying water repelling rain shield coating to exterior glass,Exterior Cleaning,sq ft,0.6,0.003,0.15
+Emergency Board-Up Service,Securing broken storefront glass with plywood and screws,Repairs and Maintenance,sq ft,12,0.05,5
+Plywood Removal and Cleanup,Taking down temporary wood board-ups prior to glass install,Repairs and Maintenance,job,150,1,16.67
+Facade Washing Chemical Additive,Specialty surfactant blend for organic stain removal,Exterior Cleaning,gallon,45,0,30
+Pure Water Deionizing Resin Refill,Replacing exhausted mixed bed DI resin in filtration tank,Equipment Rental,each,180,0.4,86.67
+Window Vacuum Suction Cup Rental,Renting manual glass handling suction cups for the day,Equipment Rental,day,35,0,23.33
+Glazing Bead Replacement,Replacing snap-in aluminum or vinyl interior glazing stops,Repairs and Maintenance,linear ft,3,0.02,0.6
+Expansion Joint Sealant Replacement,Cutting out old failing wall joint caulking and resealing,Repairs and Maintenance,linear ft,8,0.04,2
+Signage Removal Service,Unbolting old exterior building signs and patching holes,Repairs and Maintenance,job,300,1.5,75
+Flagpole Maintenance and Rigging,Replacing halyard ropes and servicing commercial flagpole,Repairs and Maintenance,each,175,1,33.33
+Holiday Lighting Installation,Installing temporary festive lighting along rooflines,Specialty Cleaning,linear ft,5,0.03,1.2

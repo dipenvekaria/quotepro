@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Roof Inspection,"Visual check of shingles, flashings, and overall roof condition.",Inspections & Diagnostics,visit,150,1.2,0
+Thermal Imaging Leak Detection,Infrared scan to locate hidden moisture intrusion behind walls and ceilings.,Inspections & Diagnostics,job,350,2,66.67
+Attic Ventilation Assessment,Inspection of intake and exhaust airflow efficiency.,Inspections & Diagnostics,visit,125,1,0
+Storm Damage Assessment Report,Detailed documentation and photo report for insurance claims.,Inspections & Diagnostics,job,250,2,0
+Emergency Roof Tarping,Temporary heavy-duty tarp installation to prevent active interior leaks.,Inspections & Diagnostics,sq ft,3,0.015,1.35
+Standard Service Call Fee,Dispatch and initial on-site evaluation for repair work.,Inspections & Diagnostics,visit,150,1.2,0
+After-Hours Emergency Dispatch,Immediate dispatch outside normal business hours.,Inspections & Diagnostics,visit,300,2.4,0
+Roof Core Sample Testing,Extraction of roof layers to determine material composition.,Inspections & Diagnostics,each,200,1,50
+Gutter Flow Test,Water test to check drainage slope and downspout capacity.,Inspections & Diagnostics,visit,100,0.8,0
+Structural Decking Inspection,Attic inspection of rafters and plywood sheathing integrity.,Inspections & Diagnostics,hour,150,1,0
+Master Roofer Labor Rate,Hourly labor rate for skilled roofing installation and repair.,Labor Rates,hour,125,1,0
+General Roofing Apprentice Labor,Hourly rate for ground crew and material handling assistance.,Labor Rates,hour,75,1,0
+After-Hours Labor Premium,Overtime labor multiplier rate for night or weekend emergency work.,Labor Rates,hour,185,1,0
+Structural Carpentry Labor,Specialized labor for rafter and truss repair.,Labor Rates,hour,150,1,0
+Crane Operation and Operator,Daily rate for material hoisting crane and certified operator.,Labor Rates,day,1200,4,466.67
+Safety Harness and Rigging Setup,OSHA-compliant tie-off installation for steep slope roofs.,Labor Rates,job,250,1,83.33
+Project Management Fee,On-site supervision and municipal inspection coordination.,Labor Rates,job,400,3.2,0
+Handyman Minor Repair Rate,Hourly rate for small miscellaneous exterior fixes.,Labor Rates,hour,95,1,0
+Debris Haul-Away Crew,Hourly rate for site clean-up and loading old materials.,Labor Rates,hour,100,1,0
+Architectural Shingle Replacement,Tear off and replacement of damaged dimensional shingles.,Common Repairs,sq ft,12,0.05,7.5
+3-Tab Shingle Repair Patch,Small section patch for wind-damaged standard shingles.,Common Repairs,each,175,1,33.33
+Chimney Flashing Resealing,Application of urethane sealant around existing chimney step flashing.,Common Repairs,linear ft,25,0.1,11.33
+Pipe Boot Replacement,Removal and replacement of rubber plumbing vent boot collar.,Common Repairs,each,225,1,66.67
+Valleys Seal and Repair,Repair of leaking open metal or closed-cut shingle valleys.,Common Repairs,linear ft,30,0.12,10
+Skylight Flashing Repair,Resealing existing skylight step flashings and glass perimeter.,Common Repairs,each,350,1.5,110
+Ridge Cap Shingle Replacement,Replacement of cracked or missing hip and ridge cap shingles.,Common Repairs,linear ft,18,0.08,5.47
+Soffit Vent Replacement,Replacement of damaged aluminum or vinyl under-eave venting panels.,Common Repairs,each,75,0.4,16.67
+Fascia Board Repair,Replacement of rotted wood or composite fascia trim boards.,Common Repairs,linear ft,35,0.15,11
+Gutter Seam Leak Repair,Sealing leaking corner miters and end caps with heavy-duty sealant.,Common Repairs,each,65,0.4,10
+Downspout Reattachment,Securing loose downspouts to exterior walls with straps.,Common Repairs,each,50,0.3,8
+Siding Corner Patch,Repair of localized exterior siding damaged by falling limbs.,Common Repairs,job,300,1.5,75
+Nail Pop Correction,Driving down protruding shingle nails and sealing penetration point.,Common Repairs,each,25,0.15,4
+Gutter Re-sloping,Adjusting hangers to ensure proper drainage toward downspouts.,Common Repairs,linear ft,12,0.06,2.93
+Rotted Rafter Tail Replacement,Cutting out and sistering new wood onto rotted rafter ends.,Common Repairs,each,275,1.5,56.67
+Storm Collar Resealing,Sealing metal storm collar around B-vent or chimney pipe.,Common Repairs,each,125,0.8,18.33
+Architectural Shingle Roof Replacement,Complete tear-off and installation of dimensional shingle system.,Replacements,sq ft,6,0.02,3.73
+Designer Shingle Roof Replacement,Complete tear-off and installation of luxury or shake-style shingles.,Replacements,sq ft,9,0.03,5.53
+Standing Seam Metal Roof Replacement,Complete installation of concealed fastener architectural metal panels.,Replacements,sq ft,16,0.05,9.73
+Flat Roof Modified Bitumen Replacement,Multi-ply torch-down or self-adhering flat roof replacement.,Replacements,sq ft,8,0.03,4.8
+EPDM Rubber Roof Replacement,Single-ply membrane installation for low-slope residential areas.,Replacements,sq ft,7,0.025,4.2
+TPO Membrane Roof Replacement,Heat-welded white thermoplastic polyolefin membrane installation.,Replacements,sq ft,8.5,0.03,5.13
+Skylight Complete Replacement,Removal of old skylight and installation of new deck-mounted unit.,Replacements,each,1200,4,466.67
+Solar Tube Skylight Installation,Tubular daylighting device installation for dark interior rooms.,Replacements,each,950,3.5,333.33
+Chimney Metal Flashing Replacement,Fabrication and installation of new custom step and counter flashing.,Replacements,job,750,3,240
+Box Gutter System Replacement,Custom lined built-in gutter system rebuild.,Replacements,linear ft,45,0.18,15
+Seamless Aluminum Gutter Replacement,5-inch continuous K-style aluminum gutter installation.,Replacements,linear ft,9,0.04,5
+Oversized Gutter Replacement,6-inch continuous K-style aluminum gutter installation.,Replacements,linear ft,12,0.05,6.8
+Mansard Wall Re-covering,Replacement of steep vertical wall shingle cladding.,Replacements,sq ft,14,0.06,8.67
+Attic Insulation Blown-In,Adding loose-fill fiberglass insulation to achieve R-49 rating.,Replacements,sq ft,2.5,0.01,1.53
+Synthetic Underlayment,High-performance woven polymeric roof deck protection sheet.,Materials & Parts,sq ft,0.45,0.002,0.29
+High-Temp Ice and Water Shield,Self-adhering waterproofing membrane for eaves and valleys.,Materials & Parts,sq ft,1.25,0.004,0.79
+OSB Roof Decking,7/16-inch oriented strand board replacement decking.,Materials & Parts,each,45,0.15,17.67
+CDX Plywood Decking,1/2-inch exterior grade plywood sheathing replacement.,Materials & Parts,each,65,0.15,31
+Aluminum Drip Edge,Standard pre-formed metal edge flashing per 10-foot stick.,Materials & Parts,linear ft,2.5,0.01,1.57
+Aluminum Step Flashing,Individual bent metal pieces for wall and roof junctions.,Materials & Parts,each,3,0.01,1.93
+Lead Plumbing Pipe Boot,Heavy-duty lead sleeve flashing for roof vent pipes.,Materials & Parts,each,65,0.2,26.67
+Plastic Roof Vent,Standard static box vent for attic exhaust.,Materials & Parts,each,35,0.15,11
+Aluminum Louver Vent,Gable or soffit louver ventilation panel.,Materials & Parts,each,45,0.18,15
+Continuous Ridge Vent,Shingle-over exterior ridge vent roll for balanced exhaust.,Materials & Parts,linear ft,8,0.03,4.8
+Downspout Extension,Standard flexible plastic water redirection pipe extension.,Materials & Parts,each,20,0.08,6.67
+Splash Block,Concrete or plastic channel to direct water away from foundation.,Materials & Parts,each,15,0.04,6.67
+Fascia Board Prime Pine,1x8 primed finger-jointed pine trim board.,Materials & Parts,linear ft,6,0.02,3.73
+Roofing Coil Nails,Hot-dipped galvanized wire collated roofing fasteners.,Materials & Parts,gallon,85,0,56.67
+Polyurethane Roofing Sealant,Single-component moisture-cure joint sealant tube.,Materials & Parts,each,15,0,10
+Roll-Off Dumpster Rental,Standard 20-yard waste container for old roofing materials.,Permits & Disposal,job,600,0,400
+Municipal Building Permit,Local city or county roofing permit acquisition fee.,Permits & Disposal,job,250,0,166.67
+Environmental Disposal Fee,Shingle recycling and landfill tipping fees.,Permits & Disposal,sq ft,0.35,0,0.23
+HOA Application Processing,Preparation and submission of architectural review board documents.,Permits & Disposal,job,100,0.8,0
+Traffic Control Permit,Municipal street occupancy permit for crane or dumpster placement.,Permits & Disposal,job,175,0,116.67
+Asbestos Roof Testing,Laboratory analysis of textured shingle samples for asbestos.,Permits & Disposal,each,150,0.6,50
+Engineering Wind-Load Calculation,Signed and sealed structural letter for high-wind compliance.,Permits & Disposal,job,450,2,133.33
+Hazardous Material Disposal,Special handling fee for regulated toxic roofing debris.,Permits & Disposal,job,500,1.5,216.67
+Portable Toilet Rental,Jobsite sanitation station for multi-day tear-off projects.,Permits & Disposal,visit,200,0,133.33
+Post-Job Magnet Sweep,Thorough magnetic rolling of lawn and driveway for stray nails.,Permits & Disposal,job,75,0.6,0
+Standard Gutter Guard Installation,Perforated aluminum slip-in screen leaf protection.,Upgrades & Options,linear ft,5,0.02,3.13
+Micro-Mesh Gutter Guard System,High-grade stainless steel fine mesh filtration system.,Upgrades & Options,linear ft,14,0.03,8.93
+Solar-Powered Attic Fan,Hassle-free rooftop exhaust fan powered entirely by sunlight.,Upgrades & Options,each,750,2,333.33
+Electric Attic Fan Installation,Hardwired thermostatically controlled attic ventilation fan.,Upgrades & Options,each,600,2,233.33
+Snow Guard Rail Installation,Metal bar retention system to prevent dangerous sliding snow avalanches.,Upgrades & Options,linear ft,28,0.08,12.13
+Roof De-icing Heat Cable,Self-regulating electric heating cable to prevent ice dams.,Upgrades & Options,linear ft,15,0.04,6.67
+Full Deck Ice and Water Shield Upgrade,Application of waterproof underlayment across entire roof surface.,Upgrades & Options,sq ft,1.75,0.005,1.13
+Synthetic Slate Upgrade,High-end molded composite slate appearance shingle upgrade.,Upgrades & Options,sq ft,18,0.04,11.47
+Copper Flashing Upgrade,Custom fabricated architectural copper step and valley flashing.,Upgrades & Options,job,1500,4,666.67
+Leaf Trap Collection Box,Downspout inlet debris filtration strainer box.,Upgrades & Options,each,85,0.3,31.67
+Rain Chain Installation,Decorative architectural alternative to traditional downspouts.,Upgrades & Options,each,120,0.4,46.67
+Attic Access Hatch Insulation Box,Insulated cover box for pull-down attic stair openings.,Upgrades & Options,each,175,0.6,66.67
+Whirlwind Turbine Vent,Wind-driven rotary turbine attic exhaust ventilator.,Upgrades & Options,each,160,0.5,63.33
+Roof Walkway Pads,Heavy-duty rubber safety path for frequent rooftop equipment access.,Upgrades & Options,linear ft,22,0.06,9.73
+Custom Color Matching Touch-Up Paint,Matching exterior paint for exposed flashing and vents.,Upgrades & Options,each,45,0.2,13.33
+Bird Stop Installation,Mesh barrier to prevent birds nesting behind tile or metal ribs.,Upgrades & Options,linear ft,9,0.03,3.73
+Extended Workmanship Warranty Certificate,Upgraded 25-year comprehensive labor and installation warranty.,Upgrades & Options,job,500,0,333.33
+Annual Maintenance Inspection Plan,Contract for yearly roof cleaning and minor preventative maintenance.,Upgrades & Options,visit,250,1.5,41.67
+Gutter Cleaning Service,Manual clearing of leaves and debris from gutters and downspouts.,Upgrades & Options,linear ft,2,0.01,0.47
+Roof Soft Wash Cleaning,Low-pressure chemical treatment to remove unsightly algae streaks.,Upgrades & Options,sq ft,0.3,0.001,0.19
+Chimney Crown Repair,Pouring new concrete wash coat to seal top of masonry chimney.,Upgrades & Options,job,450,2,133.33
+Chimney Tuckpointing,Grinding out and replacing deteriorated mortar joints in brickwork.,Upgrades & Options,sq ft,25,0.08,10
+Chimney Cap Installation,Stainless steel rain cap and spark arrestor installation.,Upgrades & Options,each,275,0.8,116.67
+Siding Repair and Painting,Patching damaged exterior siding and applying matching finish coat.,Upgrades & Options,sq ft,15,0.04,6.67
+Solar Panel Removal and Reinstall,Detaching and resetting roof-mounted solar array for re-roofing.,Upgrades & Options,each,250,1,83.33
+Satellite Dish Remounting,Repositioning and securing television dish onto new roof surface.,Upgrades & Options,each,150,0.8,33.33
+Lightning Rod System Reconnection,Reattaching grounded lightning protection cables to roof deck.,Upgrades & Options,job,350,1.5,116.67

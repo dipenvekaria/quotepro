@@ -1,0 +1,101 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Parking Stall Striping,Apply 4-inch traffic paint for standard parking space.,Striping,linear ft,1,0.005,0.3
+ADA Handicap Stall Symbol,Paint standard blue and white handicap access symbol.,Striping,each,45,0.2,10
+Handicap Access Stencil,Paint wheelchair access text legend in stall.,Striping,each,35,0.15,8
+Reserved Parking Stencil,Paint reserved text legend on pavement surface.,Striping,each,30,0.12,7
+No Parking Stencil,Paint no parking text legend on asphalt.,Striping,each,30,0.12,7
+Fire Lane Curb Painting,Paint red safety curb for fire lane designation.,Striping,linear ft,3,0.015,0.8
+Stop Bar Painting,Paint 18-inch white stop bar at intersection.,Striping,linear ft,6,0.03,1.5
+Directional Arrow Stencil,Paint thermoplastic or paint directional traffic arrow.,Striping,each,40,0.18,9
+Speed Bump Yellow Striping,Paint yellow warning stripes across speed bump.,Striping,linear ft,4,0.02,1
+Loading Zone Stencil,Paint loading zone text and border.,Striping,each,45,0.2,10
+Visitor Parking Stencil,Paint visitor designation legend on stall.,Striping,each,30,0.12,7
+EV Charging Stall Stencil,Paint electric vehicle charging station legend.,Striping,each,50,0.22,12
+Custom Text Stencil,Paint custom text legend up to ten characters.,Striping,each,60,0.25,15
+Crosswalk Striping,Paint zebra style crosswalk safety lines.,Striping,linear ft,5,0.025,1.2
+Parking Lot Layout Redesign,Reconfigure existing layout and mark new stalls.,Striping,job,750,4.5,110
+Curb Number Painting,Paint address or stall numbers on vertical curb.,Striping,each,15,0.08,3
+Parking Stall Double Stripe,Apply dual parallel lines for premium stall marking.,Striping,linear ft,2,0.01,0.5
+Tire Stop Alignment Striping,Stripe guide line for wheel stop placement.,Striping,linear ft,1,0.005,0.3
+Thermoplastic Handicap Symbol,Apply durable heat-applied handicap symbol.,Striping,each,150,0.5,58
+Thermoplastic Directional Arrow,Apply durable heat-applied traffic arrow.,Striping,each,120,0.4,46
+Hot Pour Rubber Crack Filling,Seal cracks up to 1 inch with hot rubber.,Sealcoating & Repair,linear ft,2,0.01,0.5
+Cold Pour Crack Filling,Seal minor cracks with cold pour polymer.,Sealcoating & Repair,linear ft,1,0.006,0.2
+Asphalt Emulsion Sealcoat Application,Spray or squeegee two coats of coal tar sealer.,Sealcoating & Repair,sq ft,1,0.004,0.3
+Asphalt Rejuvenator Application,Spray penetrating oil-based rejuvenator on aged asphalt.,Sealcoating & Repair,sq ft,1,0.004,0.3
+Pothole Cold Patch Repair,Fill pothole with cold mix asphalt and compact.,Sealcoating & Repair,each,120,0.6,30
+Pothole Infrared Patch Repair,Seamlessly repair pothole using infrared heat reclamation.,Sealcoating & Repair,sq ft,25,0.12,6
+Saw Cut Asphalt Patch,"Saw cut, excavate, and repave damaged asphalt section.",Sealcoating & Repair,sq ft,18,0.08,5
+Alligator Cracking Skin Patch,Overlay heavily cracked alligator area with surface asphalt.,Sealcoating & Repair,sq ft,8,0.03,2.5
+Oil Spot Primer Treatment,Apply bonding primer to heavily stained oil spots.,Sealcoating & Repair,each,25,0.12,6.5
+Asphalt Milling Services,Grind down damaged surface layer of asphalt.,Sealcoating & Repair,sq ft,3,0.012,0.8
+Concrete Wheel Stop Installation,Anchor standard concrete parking stop to asphalt.,Signage & Bumper Stops,each,85,0.4,25
+Concrete Wheel Stop Removal,Remove and dispose of damaged concrete wheel stop.,Signage & Bumper Stops,each,40,0.25,5
+Recycled Rubber Wheel Stop Installation,Anchor heavy-duty rubber parking stop to surface.,Signage & Bumper Stops,each,95,0.4,30
+Galvanized Sign Post Installation,Drive or core-mount U-channel sign post.,Signage & Bumper Stops,each,110,0.5,32
+Standard Parking Sign Installation,Mount aluminum regulatory sign to existing post.,Signage & Bumper Stops,each,45,0.2,13
+ADA Handicap Sign & Post Combo,Install handicap metal sign on dedicated post.,Signage & Bumper Stops,each,160,0.7,45
+Sign Post Removal,Extract metal post and fill hole with cold patch.,Signage & Bumper Stops,each,50,0.3,5
+Speed Bump Installation,Bolt rubber or plastic speed bump to asphalt.,Signage & Bumper Stops,each,250,1.2,66
+Speed Bump Removal,Unbolt and remove damaged speed bump section.,Signage & Bumper Stops,each,75,0.5,8
+Bollard Installation,Set steel pipe bollard in concrete core.,Signage & Bumper Stops,each,350,1.6,95
+Bollard Protective Plastic Sleeve,Slide high-visibility yellow plastic cover over bollard.,Signage & Bumper Stops,each,70,0.3,20
+Clearance Bar Installation,Hang overhead parking garage clearance warning bar.,Signage & Bumper Stops,each,450,2,130
+Directional Metal Sign Mounting,Mount directional traffic flow sign on wall.,Signage & Bumper Stops,each,65,0.3,18
+Custom Aluminum Parking Sign,Manufacture custom text or logo parking sign.,Signage & Bumper Stops,each,95,0.25,42
+Sign Post Straightening,Straighten bent metal sign post in ground.,Signage & Bumper Stops,each,40,0.25,5
+Parking Lot Pressure Washing,"Wash oil, dirt, and debris from asphalt surface.",Cleaning & Prep,sq ft,1,0.003,0.3
+Heavy Oil Stain Degreasing,Apply chemical degreaser and scrub heavy oil.,Cleaning & Prep,sq ft,1,0.004,0.3
+Parking Lot Power Sweeping,Sweep loose debris and dirt prior to striping.,Cleaning & Prep,sq ft,1,0.003,0.3
+Weed Spraying in Cracks,Apply herbicide to vegetation growing in asphalt cracks.,Cleaning & Prep,sq ft,1,0.003,0.3
+Debris Haul Off,Load and haul away construction waste and trash.,Cleaning & Prep,job,200,1,50
+Mud and Silt Removal,Scrape and remove heavy mud accumulation from lot.,Cleaning & Prep,sq ft,1,0.004,0.2
+Leaf Blow Parking Lot,Blow leaves and organic matter from service area.,Cleaning & Prep,sq ft,1,0.003,0.1
+Catch Basin Cleaning,Vacuum sediment and debris from storm drain insert.,Drainage & Catch Basins,each,250,1.2,65
+Catch Basin Collar Repair,Repair cracked concrete collar around drain grate.,Drainage & Catch Basins,job,450,2.2,110
+Drain Grate Replacement,Supply and install heavy-duty cast iron drain grate.,Drainage & Catch Basins,each,300,1.2,100
+Trench Drain Cleaning,Clear leaves and silt from surface trench drain.,Drainage & Catch Basins,linear ft,15,0.07,3.8
+Silt Sock Installation,Place temporary sediment barrier around catch basin.,Drainage & Catch Basins,linear ft,10,0.04,3
+Drain Marker Installation,",No dumping drains to water body marker glued down.,",Drainage & Catch Basins,each,35,0.15,10
+Parking Lot Inspection Service,Perform comprehensive pavement condition and ADA audit.,Diagnostics & Consultation,visit,250,1.5,20
+Core Sampling Analysis,Extract asphalt core sample for laboratory testing.,Diagnostics & Consultation,each,350,1.5,110
+Laser Level Drainage Survey,Survey lot elevation to diagnose standing water issues.,Diagnostics & Consultation,job,400,2.2,70
+ADA Compliance Review Report,Document compliance gaps for federal accessibility standards.,Diagnostics & Consultation,visit,300,1.8,30
+Emergency Traffic Control Setup,Deploy cones and signs for urgent safety hazard.,Traffic Control,job,350,1.8,85
+Traffic Cone Rental,Provide standard orange safety traffic cone per day.,Traffic Control,each,5,0.01,2.5
+Barricade Fence Rental,Provide interlocking metal traffic barricade per day.,Traffic Control,each,25,0.05,12
+Caution Tape Deployment,String high-visibility warning tape around work zone.,Traffic Control,linear ft,1,0.004,0.3
+Temporary No Parking Sign,Install stake-mounted temporary towing warning sign.,Traffic Control,each,15,0.08,4.5
+Flanker Laborer Service,Provide dedicated pedestrian traffic control worker.,Traffic Control,hour,55,1,0
+LED Arrow Board Trailer Rental,Provide trailer-mounted flashing directional arrow board.,Traffic Control,day,175,0.2,95
+Night Work Surcharge,Additional fee for performing services during night hours.,Labor & Mobilization,job,500,2.5,100
+Weekend Work Surcharge,Additional fee for executing project on Saturday or Sunday.,Labor & Mobilization,job,400,2,80
+Small Lot Mobilization Fee,Transport equipment for jobs under minimum square footage.,Labor & Mobilization,job,150,0.8,35
+Standard Labor Rate,Hourly rate for general striping and maintenance technician.,Labor & Mobilization,hour,75,1,0
+Specialist Operator Rate,Hourly rate for heavy equipment and sealcoat operator.,Labor & Mobilization,hour,95,1,0
+Permit Acquisition Service,Secure municipal right-of-way or striping permits.,Permits & Administration,job,200,1.2,30
+Traffic Control Plan Drafting,Draw engineered traffic management plan for city review.,Permits & Administration,job,450,2.5,80
+HOA Notification Flyer Distribution,Distribute property notification notices to tenants.,Permits & Administration,each,2,0.01,0.5
+Environmental Disposal Fee,Dispose of waste paint and petroleum-contaminated debris.,Permits & Administration,job,75,0,50
+Layout Drawing Service,Create digital CAD layout for new striping design.,Permits & Administration,job,350,2,65
+Blackout Paint Application,Spray black traffic paint to obliterate old lines.,Striping,linear ft,1,0.004,0.3
+Waterborne Traffic Paint Upgrade,Upgrade to fast-dry high-durability waterborne paint.,Striping,linear ft,1,0.004,0.3
+Glass Bead Broadcast Application,Broadcast reflective glass beads into wet paint.,Striping,linear ft,1,0.003,0.3
+Curb Painting Solid Yellow,Paint solid yellow stripe along top and face of curb.,Striping,linear ft,250,1.2,65
+Curb Painting Solid White,Paint solid white stripe along top and face of curb.,Striping,linear ft,250,1.2,65
+Fire Hydrant Safety Zone Painting,Paint red curb and crosshatch around fire hydrant.,Striping,job,90,0.45,22
+Pedestrian Walkway Stencil,Paint pedestrian walking man symbol in crosswalk.,Striping,each,45,0.2,10
+Reserved EV Charging Stencil,Paint dedicated electric vehicle charging space legend.,Striping,each,40,0.18,9
+Pick Up Zone Stencil,Paint designated passenger pick up zone legend.,Striping,each,35,0.15,8
+Medical Only Parking Stencil,Paint medical parking designation legend on surface.,Striping,each,35,0.15,8
+Compactor Pad Asphalt Overlay,Overlay heavy-duty dumpster pad with reinforced asphalt.,Sealcoating & Repair,sq ft,12,0.05,3.8
+Dumpster Enclosure Post Repair,Weld or replace damaged steel gate posts.,Signage & Bumper Stops,each,200,1,50
+Sealcoating Overspray Removal,Remove accidental sealer splatters from building exterior.,Cleaning & Prep,hour,85,1,0
+Asphalt Tack Coat Application,Spray bituminous tack coat adhesive prior to patching.,Sealcoating & Repair,sq ft,1,0.003,0.3
+Handicap Blue Background Block,Paint solid blue square background for handicap symbol.,Striping,each,50,0.22,14
+Reflective Pavement Marker Installation,Glue raised blue snow-plowable marker to asphalt.,Signage & Bumper Stops,each,18,0.08,5.5
+Raised Pavement Marker Removal,Chisel off damaged raised plastic pavement marker.,Signage & Bumper Stops,each,10,0.06,1
+Concrete Joint Sealing,Apply hot pour rubber into concrete expansion joints.,Sealcoating & Repair,linear ft,3,0.012,0.9
+Asphalt Edge Milling,Grind flush trip hazard edge along concrete gutter.,Sealcoating & Repair,linear ft,12,0.05,3.8
+Parking Lot Sweeping Debris Disposal,Dump fee for collected parking lot sweepings.,Cleaning & Prep,ton,65,0.2,25
+Express Service Surcharge,Priority scheduling fee for emergency maintenance work.,Labor & Mobilization,job,300,1.5,75

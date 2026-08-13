@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Diagnostic Fee Standard,Troubleshoot standard HVAC system during normal business hours,Diagnostics,visit,129,1,0
+Diagnostic Fee After Hours,Troubleshoot HVAC system during emergency or after hours,Diagnostics,visit,249,1.5,0
+Diagnostic Fee Weekend,Troubleshoot HVAC system during weekend hours,Diagnostics,visit,199,1.5,0
+System Performance Check,Comprehensive check of pressures temperatures and airflow,Diagnostics,visit,159,1,0
+Refrigerant Leak Search Electronic,Detect refrigerant leaks using electronic sniffing equipment,Diagnostics,hour,185,1,40
+Refrigerant Leak Search UV Dye,Inject UV dye and inspect system for refrigerant leaks,Diagnostics,job,195,1,46
+Combustion Analysis Test,Test furnace efficiency CO levels and draft pressure,Diagnostics,visit,149,1,0
+Blower Door Air Leakage Test,Measure building envelope air leakage rate,Diagnostics,job,350,2,66
+Duct Camera Inspection,Visual inspection of duct interior using camera probe,Diagnostics,visit,195,1,46
+Electrical Circuit Troubleshooting,Diagnose complex low and high voltage electrical faults,Diagnostics,hour,175,1,33
+Standard Labor Rate,General HVAC installation and repair labor per technician,Labor,hour,165,1,0
+After Hours Labor Rate,Emergency repair labor outside normal business hours,Labor,hour,275,1,0
+Two Technician Labor Rate,Required tandem labor for heavy lifting or complex installs,Labor,hour,285,1,0
+Sheet Metal Fabrication Labor,Custom transition and plenum fabrication work,Labor,hour,185,1,40
+Brazing and Soldering Labor,Copper line set modification and repair labor,Labor,hour,175,1,33
+Thermostat Replacement Standard,Replace existing thermostat with customer supplied unit,Controls,each,125,0.75,21
+Programmable Thermostat Supply and Install,Furnish and install standard programmable digital thermostat,Controls,each,225,0.75,88
+Wi-Fi Thermostat Supply and Install,Furnish and install smart Wi-Fi connected thermostat,Controls,each,349,1,149
+Smart Thermostat with Remote Sensor,Install smart thermostat and one remote temperature sensor,Controls,each,449,1.25,199
+Zone Control Board Replacement,Replace main electronic zoning control panel,Controls,each,589,1.5,266
+Motorized Zone Damper Replacement,Replace automatic duct zone damper actuator and body,Controls,each,425,1.5,166
+Transformer Replacement,Replace low voltage 24V control transformer,Controls,each,195,0.75,67
+Fan Control Board Replacement,Replace furnace integrated furnace control board,Controls,each,415,1.25,176
+Defrost Control Board Replacement,Replace heat pump outdoor defrost control board,Controls,each,435,1.25,190
+Condenser Fan Motor Replacement,Replace outdoor condenser fan motor and blade,Electrical,each,549,1.5,246
+Condenser Dual Run Capacitor Replacement,Replace outdoor dual run motor run capacitor,Electrical,each,245,0.75,99
+Indoor Blower Motor Replacement PSC,Replace standard permanent split capacitor indoor blower motor,Electrical,each,625,2,249
+Indoor Blower Motor Replacement ECM,Replace high efficiency electronically commutated blower motor,Electrical,each,985,2.5,443
+Blower Motor Run Capacitor Replacement,Replace indoor blower motor capacitor,Electrical,each,215,0.75,82
+Contactor Replacement Single Pole,Replace 30 amp single pole compressor contactor,Electrical,each,225,0.75,88
+Contactor Replacement Double Pole,Replace heavy duty double pole compressor contactor,Electrical,each,265,0.75,115
+Hard Start Kit Installation,Install compressor potential relay and start capacitor assist kit,Electrical,each,315,1,126
+Outdoor Disconnect Box Replacement,Replace exterior electrical pullout disconnect box,Electrical,each,285,1,106
+Whip and Conduit Replacement,Replace electrical whip and waterproof conduit to unit,Electrical,each,165,0.75,49
+Flame Sensor Replacement,Clean or replace furnace flame rectification sensor,Heating Repairs,each,175,0.75,54
+Hot Surface Ignitor Replacement,Replace silicon nitride or carbide furnace ignitor,Heating Repairs,each,245,0.75,101
+Gas Valve Replacement Standard,Replace standard multi-stage gas control valve,Heating Repairs,each,585,1.5,263
+Inducer Draft Motor Replacement,Replace furnace draft inducer exhaust fan motor assembly,Heating Repairs,each,685,1.75,296
+Pressure Switch Replacement,Replace furnace combustion safety air pressure switch,Heating Repairs,each,265,1,93
+Limit Switch Replacement,Replace furnace high limit safety switch,Heating Repairs,each,215,0.75,82
+Rollout Switch Replacement,Replace manual reset rollout safety switch,Heating Repairs,each,195,0.75,69
+Flue Pipe Repair,Repair or secure venting pipe for draft safety,Heating Repairs,hour,185,1,40
+R410A Refrigerant Recharge,Add R410A refrigerant to correct charge level,Refrigeration,pound,125,0.5,43
+R22 Refrigerant Recharge,Add R22 hydrochlorofluorocarbon refrigerant to system,Refrigeration,pound,225,0.5,110
+Filter Drier Replacement,Cut out and braze in liquid line filter drier,Refrigeration,each,325,1.5,93
+Refrigerant Line Set Repair,Locate and braze leak in copper refrigerant tubing,Refrigeration,hour,195,1,46
+TXV Expansion Valve Replacement,Replace thermal expansion valve on indoor coil,Refrigeration,each,675,2.5,243
+Reversing Valve Replacement,Replace heat pump heat cool reversing valve assembly,Refrigeration,each,895,3,343
+System Evacuation and Nitrogen Purge,Pull deep vacuum on refrigeration circuit,Refrigeration,job,285,1.5,66
+Condensate P-Trap Replacement,Replace clogged or broken condensate drain trap,Drainage,each,145,0.75,36
+Condensate Drain Line Clearing,Blow out and flush condensate drain line with nitrogen,Drainage,visit,165,1,26
+Condensate Pump Replacement,Replace automatic condensate removal pump tank assembly,Drainage,each,295,1,113
+Secondary Drain Pan Installation,Install plastic emergency overflow pan under indoor unit,Drainage,each,275,1.25,80
+Float Switch Safety Installation,Install water safety shutoff switch in drain line,Drainage,each,185,0.75,62
+Standard Air Filter Replacement 1 Inch,Replace standard pleated 1 inch air filter,Maintenance,each,45,0.25,8
+Media Air Filter Replacement 4 Inch,Replace heavy duty 4 or 5 inch media filter,Maintenance,each,115,0.25,55
+Electronic Air Cleaner Cells Wash,Clean and service electronic air cleaner collector cells,Maintenance,visit,195,1,46
+UV Lamp Replacement,Replace ultraviolet germicidal purification bulb,Maintenance,each,225,0.75,88
+Humidifier Pad Replacement,Replace water evaporator panel in bypass humidifier,Maintenance,each,125,0.5,42
+Humidifier Solenoid Valve Replacement,Replace water feed solenoid valve for whole house humidifier,Maintenance,each,265,1,93
+Condenser Coil Chemical Wash,Wash outdoor condenser coil with foaming coil cleaner,Maintenance,visit,225,1.25,49
+Evaporator Coil Cleaning In Place,Clean indoor evaporator coil without removing from system,Maintenance,visit,325,1.75,73
+Blower Assembly Deep Cleaning,Remove and wash indoor blower wheel and housing,Maintenance,visit,295,1.5,69
+Precision Tune-Up AC,Spring preventative maintenance check and calibration,Maintenance,visit,149,1,16
+Precision Tune-Up Furnace,Fall preventative maintenance check and calibration,Maintenance,visit,149,1,16
+Dual Maintenance Agreement Semi-Annual,Spring and Fall comprehensive multi-point maintenance visits,Maintenance,visit,279,1.75,43
+Ductwork Repair Section,Repair or seal damaged section of flex or metal duct,Ductwork,linear ft,45,0.25,9
+Supply Plenum Modification,Modify main supply air plenum for new equipment,Ductwork,job,450,2,133
+Return Drop Replacement,Fabricate and install new sheet metal return drop,Ductwork,each,525,2.5,143
+Flexible Duct Run Installation,Run new insulated flexible duct to room supply,Ductwork,linear ft,35,0.2,7
+Duct Sealing Interior Mastic,Seal accessible duct joints with mastic paste sealant,Ductwork,hour,165,1,26
+Supply Register Vent Replacement,Replace floor or ceiling air supply grill register,Ductwork,each,65,0.3,18
+Return Air Grille Replacement,Replace hinged filter return grille frame and door,Ductwork,each,145,0.5,55
+Whole House Dehumidifier Installation,Install standalone whole home ducted dehumidification system,Indoor Air Quality,job,2495,6,1163
+Whole House HEPA Bypass Filter Install,Install high efficiency particulate air filtration system,Indoor Air Quality,job,1250,4,500
+UV Germicidal Light System Install,Install dual bulb UV air purification system in duct,Indoor Air Quality,job,795,2.5,323
+Fresh Air Intake Damper Installation,Install motorized fresh air ventilation duct damper,Indoor Air Quality,job,650,2.5,223
+Duct Sanitizing Fogging Treatment,Treat entire duct system with antimicrobial fogging solution,Indoor Air Quality,job,450,2,133
+Carbon Monoxide Detector Hardwired,Install digital direct wire carbon monoxide alarm,Indoor Air Quality,each,175,0.75,54
+Gas Furnace Replacement Standard Efficiency,Replace 80 percent AFUE gas furnace equipment only,Replacements,each,3200,8,1466
+Gas Furnace Replacement High Efficiency,Replace 96 percent AFUE condensing gas furnace equipment only,Replacements,each,4400,10,2066
+Air Conditioner Condenser Replacement,Replace split system AC condenser outdoor unit,Replacements,ton,1650,6,600
+Heat Pump Condenser Replacement,Replace outdoor heat pump split system unit,Replacements,ton,1950,7,693
+Evaporator Coil Replacement Indoor,Replace A-coil or slab coil inside air handler or plenum,Replacements,each,1850,6,733
+Package Unit Replacement Gas Electric,Replace roof or ground mounted packaged combo unit,Replacements,ton,4800,12,2200
+Mini Split Single Zone Install Complete,Install ductless inverter heat pump wall cassette system,Replacements,job,3850,10,1700
+Mini Split Multi Zone Install Complete,Install multi-zone ductless outdoor unit and two heads,Replacements,job,6200,16,2800
+Electric Air Handler Replacement,Replace indoor electric strip heat air handler unit,Replacements,each,2850,10,1066
+Attic Insulation Blow In Upgrade,Blow in fiberglass loose fill insulation to R-49 value,Weatherization,sq ft,3,0.01,1.3
+Radiant Barrier Foil Installation,Install radiant heat barrier foil on attic rafters,Weatherization,sq ft,2,0.01,0.8
+Mechanical Permit Fee Filing,Municipal permit filing and required inspection fee,Permits & Fees,each,175,1,33
+Crane Rental Service,Crane truck and operator hoist for rooftop equipment,Permits & Fees,job,950,0,633
+Old Equipment Removal and EPA Disposal,Haul away old HVAC unit and recycle refrigerants properly,Permits & Fees,each,225,1.5,26
+Pad and Equipment Mounting Base,Pour concrete or place plastic equipment mounting pad,Permits & Fees,each,195,1,46
+Refrigerant Recovery Service,Recover refrigerant according to EPA regulations,Permits & Fees,system,150,1,16
+Emergency Temporary Heater Rental,Provide portable electric space heaters during outage,Permits & Fees,day,75,0.25,29
+Nitrogen Pressure Test,Pressure test sealed lineset with dry nitrogen gas,Diagnostics,job,145,1,13
+Gas Leak Pressure Test,Test gas piping system integrity with pressure gauge,Diagnostics,job,175,1,33
+Zone Damper Motor Replacement,Replace motor actuator on existing zone damper body,Controls,each,285,1,106
+Micro-Channel Coil Repair,Repair aluminum micro-channel condenser coil leak,Refrigeration,job,350,2,66
+Surge Protector Whole House,Install whole house electrical surge protection device at panel,Electrical,each,325,0.75,153

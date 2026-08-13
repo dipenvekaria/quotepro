@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Mobile Service Call Fee,Travel and convenience fee for mobile van dispatch.,Trip Fees,visit,45,0.36,0
+Extended Travel Surcharge,Additional mileage fee outside standard service radius.,Trip Fees,each,30,0.24,0
+Emergency Same-Day Dispatch Fee,Priority scheduling fee for urgent appointments.,Trip Fees,visit,75,0.6,0
+After-Hours Appointment Fee,Surcharge for service requested outside normal hours.,Trip Fees,visit,100,0.8,0
+Small Dog Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,85,0.6,7
+Medium Dog Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,105,0.75,9
+Large Dog Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,135,0.95,12
+Extra Large Dog Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,175,1.25,15
+Giant Breed Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,220,1.6,18
+Toy Breed Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,75,0.5,8
+Puppy Introductory Groom,"Gentle introduction bath, brush, and light trim.",Full Grooming,each,65,0.45,5
+Senior Dog Special Care Groom,Accommodating slow pace and specialized physical support.,Full Grooming,each,115,0.85,7
+Cat Full Grooming,"Bath, haircut, blow dry, brush, nail trim, ear cleaning.",Full Grooming,each,120,0.85,10
+Short Hair Cat Lion Cut,Full body lion trim for short haired felines.,Full Grooming,each,130,0.9,10
+Small Dog Bath and Brush,"Bath, blow dry, brushing, nail trim, ear cleaning.",Bath and Brush,each,55,0.35,7
+Medium Dog Bath and Brush,"Bath, blow dry, brushing, nail trim, ear cleaning.",Bath and Brush,each,70,0.45,9
+Large Dog Bath and Brush,"Bath, blow dry, brushing, nail trim, ear cleaning.",Bath and Brush,each,90,0.6,10
+Extra Large Dog Bath and Brush,"Bath, blow dry, brushing, nail trim, ear cleaning.",Bath and Brush,each,120,0.8,14
+Giant Breed Bath and Brush,"Bath, blow dry, brushing, nail trim, ear cleaning.",Bath and Brush,each,150,1,16
+Cat Bath and Brush,"Feline bath, blow dry, brushing, nail trim, ears.",Bath and Brush,each,90,0.6,10
+Deshedding Treatment Small,Specialized undercoat removal for small dogs.,Add-On Treatments,each,25,0.15,4
+Deshedding Treatment Medium,Specialized undercoat removal for medium dogs.,Add-On Treatments,each,35,0.2,6
+Deshedding Treatment Large,Specialized undercoat removal for large dogs.,Add-On Treatments,each,45,0.25,9
+Deshedding Treatment Extra Large,Specialized undercoat removal for extra large dogs.,Add-On Treatments,each,60,0.35,11
+Medicated Shampoo Bath,Veterinary prescribed or specialized soothing skin wash.,Add-On Treatments,each,20,0.1,7
+Flea and Tick Shampoo Treatment,Parasite removal bath using specialized shampoo.,Add-On Treatments,each,25,0.1,9
+Hypoallergenic Shampoo Upgrade,Gentle formulation for sensitive skin pets.,Add-On Treatments,each,15,0.05,6
+Oatmeal Soothing Treatment,"Relief bath for itchy, dry, or irritated skin.",Add-On Treatments,each,18,0.05,8
+Skunk Odor Neutralizing Treatment,Special enzyme bath to remove skunk oils.,Add-On Treatments,each,40,0.2,10
+Nail Trimming,Clipping and smoothing of pet claws.,A la Carte,each,20,0.15,1
+Nail Grinding,Smoothing nail edges with rotary tool.,A la Carte,each,28,0.2,2
+Nail Polish Application,Non-toxic pet-safe polish applied to nails.,A la Carte,each,15,0.1,2
+Ear Cleaning and Plucking,Removal of ear hair and cleaning of ear canals.,A la Carte,each,18,0.12,2
+Teeth Brushing,Enzymatic toothpaste application and plaque brush.,A la Carte,each,18,0.12,2
+Anal Gland Expression,External or internal expression of anal sacs.,A la Carte,each,22,0.15,2
+Face Trim Only,"Trimming hair around eyes, muzzle, and chin.",A la Carte,each,15,0.1,2
+Sanitary Trim Only,Clipping hair in sanitary areas between baths.,A la Carte,each,18,0.12,2
+Paw Pad Trim and Butter,Hair removal between pads and soothing balm application.,A la Carte,each,18,0.1,4
+De-matting Labor 15 Minutes,Tedious manual removal of severe pet hair mats.,Coat Maintenance,each,20,0.15,1
+Severe Matting Surcharge,Extra labor charge for heavily matted coats.,Coat Maintenance,each,45,0.35,2
+Hand Stripping Service,Traditional hand stripping technique for wirehaired breeds.,Coat Maintenance,hour,95,1,0
+Undercoat Raking,Intensive brushing to extract dead double-coat hair.,Coat Maintenance,each,30,0.24,0
+Cat Claw Caps Application,Applying soft vinyl caps to feline claws.,Feline Specific,each,35,0.15,11
+Cat Sanitary Trim,Clipping sanitary areas for long-haired cats.,Feline Specific,each,30,0.22,2
+Cat Face and Comb Out,Detangling face and general comb out for cats.,Feline Specific,each,40,0.3,2
+Aggressive Dog Handling Fee,Surcharge for handling dangerous or biting pets.,Behavioral,each,40,0.32,0
+Anxious Pet Calm Down Time,Extra time required to soothe stressed animals.,Behavioral,each,30,0.24,0
+Two-Person Handling Fee,Additional groomer required for safety and control.,Behavioral,each,50,0.4,0
+Muzzle Training and Use,Safe temporary placement of muzzle for procedures.,Behavioral,each,15,0.1,2
+Breed Specific Scissor Finish,Intricate hand scissoring for show or breed standards.,Specialty Styling,each,50,0.35,5
+Creative Color Tail or Ears,Pet-safe semi-permanent dye application.,Specialty Styling,each,45,0.25,9
+Asian Fusion Styling,Trendy rounded face and flared leg styling.,Specialty Styling,each,40,0.3,3
+Feather Extension Application,Hair feathers attached securely to pet fur.,Specialty Styling,each,15,0.08,6
+Cologne and Bow Finishing,Pet-safe fragrance mist and decorative neck accessory.,Finishing Touches,each,5,0.02,2
+Bandana Upgrade,Seasonal decorative fabric neck bandana.,Finishing Touches,each,6,0.02,3
+Bowtie Upgrade,Collar-attachable decorative pet bowtie.,Finishing Touches,each,8,0.02,4
+Specialty Scented Spritz,Premium lasting fragrance application.,Finishing Touches,each,7,0.02,3
+Reflective Safety Collar Charm,LED or reflective charm clipped to collar.,Finishing Touches,each,10,0.02,5
+Fleet Van Generator Maintenance,Routine diagnostic and servicing of onboard generator.,Van Maintenance,hour,85,0.5,15
+Water Pump Replacement,Replace onboard freshwater supply pump in mobile unit.,Van Maintenance,each,220,0.8,80
+Water Heater Element Repair,Repair or replace electric water heater in van.,Van Maintenance,each,180,0.6,70
+Gray Water Tank Cleaning,Sanitization and deodorization of waste water tank.,Van Maintenance,each,95,0.5,23
+Tub Clog Clearing,Remove hair and debris from mobile grooming tub drain.,Van Maintenance,each,75,0.4,17
+AC Unit Repair and Service,Service rooftop climate control unit on mobile van.,Van Maintenance,each,250,0.8,100
+Clipper Blade Sharpening,Professional sharpening of steel grooming clipper blades.,Equipment Service,each,12,0.05,4
+Shear Sharpening Service,Honing and balancing of grooming scissors.,Equipment Service,each,25,0.1,8
+Clipper Drive Assembly Replacement,Replace mechanical internal drive components.,Equipment Service,each,65,0.25,23
+Dryer Hose Replacement,Replace flexible forced-air dryer hose.,Equipment Service,each,45,0.15,17
+Dryer Motor Brush Replacement,Replace carbon brushes in high-velocity dryer motor.,Equipment Service,each,55,0.2,20
+Sanitization and Disinfection Service,Total medical-grade disinfecting fog of van interior.,Van Maintenance,visit,60,0.3,15
+Propane Refill Service,Refill onboard propane tank for water heating.,Van Maintenance,each,50,0.15,21
+Freshwater Tank Sanitization,Chlorine flush and rinse of onboard freshwater tank.,Van Maintenance,each,85,0.4,23
+Electrical Inverter Diagnostics,Troubleshoot power inverter and battery charging system.,Van Maintenance,hour,95,1,0
+Hydraulic Table Repair,Repair foot pump or electric actuator on grooming table.,Van Maintenance,each,120,0.5,39
+Late Cancellation Fee,Fee charged for appointments cancelled under 24 hours.,Administrative,each,50,0.4,0
+No-Show Appointment Fee,Fee charged when client is not home for scheduled visit.,Administrative,each,75,0.6,0
+Returned Check Fee,Fee for bank returned paper checks.,Administrative,each,35,0.28,0
+After-Hours Rescheduling Fee,Fee for emergency rebooking outside normal routes.,Administrative,each,40,0.32,0
+Multi-Pet Maintenance Subscription,Monthly recurring billing for scheduled recurring grooms.,Administrative,visit,150,0.8,33
+Deodorizing Mist Add-On,Long-lasting odor neutralizer spray.,Add-On Treatments,each,10,0.02,5
+Paw Pad Moisturizer Application,Soothing balm rubbed into cracked paw pads.,Add-On Treatments,each,12,0.05,4
+Nose Balm Application,"Hydrating balm for dry, cracked canine noses.",Add-On Treatments,each,10,0.05,3
+Flea Comb-Out Service,Meticulous combing to remove live fleas and dirt.,Add-On Treatments,each,20,0.12,3
+Tick Removal Service,Manual safe extraction of attached ticks.,Add-On Treatments,each,15,0.1,2
+Show Coat Conditioning Pack,Deep conditioning mask for show dog coats.,Coat Maintenance,each,30,0.1,11
+Extra Towel Service Fee,Additional laundry fee for extraordinarily muddy pets.,Bath and Brush,each,15,0.05,6
+Heated Hydro-Bath Upgrade,Therapeutic massaging bath using warm circulating water.,Bath and Brush,each,25,0.05,13
+Cat Nail Cap Removal,Safe removal of old feline nail caps.,Feline Specific,each,20,0.15,1
+Feline Sanitary Shave,Clipping hind quarters for sanitary purposes.,Feline Specific,each,35,0.24,3
+Deshedding Tool Rental Surcharge,Use of specialized specialty deshedding equipment.,Coat Maintenance,each,10,0.02,6
+Extra Large Cat Surcharge,Handling fee for felines over 18 pounds.,Feline Specific,each,25,0.15,4
+Sedated Grooming Assist Fee,Assisting veterinarian-prescribed sedation grooming.,Behavioral,each,60,0.3,15
+Bite Recovery Cleaning Surcharge,Sanitizing van surfaces after biological incident.,Van Maintenance,visit,75,0.4,17
+Holiday Surcharge,Service fee for major national holidays.,Trip Fees,visit,50,0.4,0
+VIP Priority Scheduling Membership,Monthly fee guaranteeing top priority slot on schedule.,Administrative,visit,99,0.5,24
+Mobile Hookup Assistance,Assisting client with electric/water auxiliary hookups.,Trip Fees,each,25,0.2,0
+Custom Haircut Pattern Fee,Intricate stylized cuts outside standard breed norms.,Specialty Styling,each,35,0.2,7
+De-shedding Rake Replacement Part,New replacement blade for undercoat rake.,Equipment Service,each,18,0,12
+Grooming Loop Replacement,Replace frayed safety restraint table loops.,Equipment Service,each,12,0,8

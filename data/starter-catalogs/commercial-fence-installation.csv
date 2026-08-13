@@ -1,0 +1,102 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Labor Rate - Installer,Per hour per fence installation technician,Labor,hour,85,1,0
+Foreman Labor Rate,Per hour per site supervisor,Labor,hour,115,1,0
+Overtime Labor Surcharge,Additional hourly charge for weekend or night work,Labor,hour,50,0.4,0
+Mobilization and Travel Fee,Per trip fee for job site transit,Labor,visit,150,1.2,0
+Site Survey and Layout,Professional boundary layout and marking,Labor,job,450,3.6,0
+Core Drilling - Concrete,Core drill hole in existing concrete per post,Labor,each,75,0.6,0
+Post Hole Excavation - Manual,Digging post hole by hand in restricted access,Labor,each,95,0.76,0
+Post Hole Excavation - Auger,Mechanical auger excavation per post hole,Labor,each,45,0.36,0
+Concrete Pour - Post Footing,Ready-mix concrete pour and finish per hole,Labor,each,65,0.2,26.67
+Underground Utility Locating,Private utility locate coordination and service,Labor,job,350,2.8,0
+Chain Link Fabric - 6ft Galvanized 9 Gauge,Standard commercial galvanized chain link mesh,Chain Link,linear ft,12,0.05,4
+Chain Link Fabric - 8ft Galvanized 9 Gauge,Taller commercial galvanized chain link mesh,Chain Link,linear ft,16,0.06,5.33
+Chain Link Fabric - 6ft Black Vinyl Coated,Vinyl coated black chain link mesh,Chain Link,linear ft,15,0.05,5
+Terminal Post - 4in SS40 Galvanized,"End, corner, or pull post for chain link",Chain Link,each,185,0.6,73.33
+Line Post - 2.5in SS40 Galvanized,Intermediate line post for chain link,Chain Link,each,95,0.35,35
+Top Rail - 1.625in Galvanized Steel,Horizontal top rail pipe for chain link,Chain Link,linear ft,4,0.02,1.47
+Bottom Tension Wire - 7 Gauge,Galvanized coil wire for bottom security,Chain Link,linear ft,1,0.01,0.33
+Barbar Wire Arms - 3-Strand Single,Security extension arm with three barb strands,Chain Link,each,35,0.15,11
+Barbed Wire - 12.5 Gauge Double Strand,Security barbed wire per roll,Chain Link,each,95,0.2,43.33
+Slats - Privacy HDPE Winged,High density polyethylene privacy slats inserted,Chain Link,linear ft,8,0.04,1.93
+Ornamental Iron Panel - 6ft Flat Top,Welded steel ornamental security panel,Ornamental Iron,linear ft,45,0.12,20
+Ornamental Iron Panel - 8ft Spear Top,Heavy security steel ornamental panel,Ornamental Iron,linear ft,65,0.16,29.33
+Ornamental Post - 3in Square Steel,Post for ornamental iron fence systems,Ornamental Iron,each,140,0.45,56.67
+Ornamental Post - 4in Square Heavy,Heavy duty gate or corner post for iron,Ornamental Iron,each,220,0.6,93.33
+Ornamental Bracket Set,Mounting brackets and hardware per panel,Ornamental Iron,each,18,0.08,5.33
+Aluminum Fence Panel - 6ft Commercial,Rust-free commercial grade aluminum panel,Ornamental Iron,linear ft,52,0.14,22.67
+Aluminum Post - 2.5in Square,Post for commercial aluminum fencing,Ornamental Iron,each,95,0.35,35
+Ramp Up / Stepped Panel Adaptation,Custom racking or stepping for slopes,Ornamental Iron,each,45,0.36,0
+Decorative Finial Addition,Pressed spear or ball cap per picket,Ornamental Iron,each,6,0.02,2.67
+Touch-Up Paint - Industrial Enamel,Rust preventive touch up paint spray can,Ornamental Iron,each,25,0.1,8.33
+PVC Privacy Panel - 6ft Tongue and Groove,Commercial grade white vinyl privacy section,Vinyl and Wood,linear ft,42,0.11,19.33
+PVC Post - 5x5 Reinforced Vinyl,Heavy wall structural vinyl post with insert,Vinyl and Wood,each,85,0.3,31.33
+Wood Privacy Panel - 6ft Pressure Treated,Commercial wood board-on-board fence section,Vinyl and Wood,linear ft,32,0.1,13.33
+Wood Post - 6x6 Pressure Treated Pine,Heavy timber post for wood commercial fence,Vinyl and Wood,each,65,0.25,23.33
+Wood Post - 4x4 Pressure Treated Pine,Standard timber post for wood fence,Vinyl and Wood,each,35,0.15,11
+Wood Rails - 2x4 Pressure Treated,Horizontal stringer rails per piece,Vinyl and Wood,each,18,0.08,5.33
+Staining Service - Transparent,Professional wood waterproofing and stain application,Vinyl and Wood,sq ft,2,0.012,0.33
+Metal Reinforcement Insert - Vinyl Post,Galvanized steel stiffener for vinyl posts,Vinyl and Wood,each,45,0.15,17.67
+Post Cap - Pyramid Vinyl,External vinyl post cap,Vinyl and Wood,each,8,0.03,2.67
+Post Cap - Galvanized Dome,Pressed steel dome cap for round posts,Vinyl and Wood,each,6,0.03,1.5
+Cantilever Slide Gate - 20ft Opening,Heavy commercial rolling cantilever gate system,Gates and Operators,each,3800,8,1866.67
+Double Swing Driveway Gate - 20ft,Paired commercial swing gates with drop rod,Gates and Operators,each,2200,6,966.67
+Single Walk Gate - 4ft Chain Link,Standard pedestrian walk gate assembly,Gates and Operators,each,450,1.5,176.67
+Single Walk Gate - 4ft Ornamental Iron,Welded ornamental pedestrian entry gate,Gates and Operators,each,650,2,266.67
+Slide Gate Track and Roller Assembly,Enclosed track and truck assembly set,Gates and Operators,each,450,1.5,176.67
+Gate Hinges - Industrial Heavy Duty,Pair of adjustable heavy commercial hinges,Gates and Operators,each,120,0.3,53.33
+Gate Latch - Padlockable Drop Rod,Secure drop rod assembly for double gates,Gates and Operators,each,95,0.25,41.33
+Mag Lock - 1200lb Gate Lock,Electromagnetic lock for high security gates,Gates and Operators,each,650,1.5,313.33
+Slide Gate Operator - Commercial Heavy Duty,Slide gate motor unit installation,Gates and Operators,each,3200,6,1640
+Swing Gate Operator - Dual Arm System,Commercial dual swing gate motor operator,Gates and Operators,each,3500,6.5,1783.33
+Access Control - Commercial Keypad,Digital standalone weather-resistant keypad,Gates and Operators,each,750,1.5,373.33
+Access Control - Telephone Entry System,Cellular or VoIP commercial intercom box,Gates and Operators,each,1800,3,940
+Safety Loop Detector - Inductive,"Sawcut, loop wire, and sealant per loop",Gates and Operators,each,450,1.2,200
+Photo Eye Safety Sensors - Pair,Through-beam infrared entrapment protection sensors,Gates and Operators,each,280,0.8,120
+Vehicle Transponder / Tag Reader,Long-range RFID gate reader unit,Gates and Operators,each,950,1.5,500
+Gate Operator Backup Battery System,DC power backup unit for automatic operators,Gates and Operators,each,350,0.6,183.33
+Warning Placard - Automatic Gate,Required UL325 safety warning sign,Gates and Operators,each,35,0.1,15
+Crash Rated Bollard - Fixed,Heavy steel pipe concrete-filled safety bollard,Security and Bollards,each,650,2,266.67
+Removable Security Bollard,Lockable removable steel bollard with ground sleeve,Security and Bollards,each,950,2.2,440
+Razor Ribbon Wire - Concertina Spool,High security stainless steel razor wire coil,Security and Bollards,linear ft,9,0.04,3.67
+Security Outriggers - Double Arm,V-shaped arms for dual razor wire lines,Security and Bollards,each,55,0.15,24.33
+Anti-Ram Cable System,High-tensile steel security cable strand,Security and Bollards,linear ft,18,0.05,7.83
+Temporary Chain Link Panel Rental,6x12ft portable fence panel rental per month,Temporary Fencing,month,35,0.1,20
+Temporary Fence Stand Base,Weighted rubber base for temporary panel,Temporary Fencing,each,12,0.02,6
+Temporary Fence Sandbag Weight,Filled sandbag for wind bracing stability,Temporary Fencing,each,8,0.02,3.67
+Temporary Construction Gate Wheel,Swivel caster wheel for temp swing gate,Temporary Fencing,each,45,0.15,17.67
+Windscreen - Privacy Mesh Roll,Knitted polyethylene windscreen per linear foot,Temporary Fencing,linear ft,4,0.01,1.83
+Fence Removal - Chain Link,Tear down and haul away old chain link,Demolition and Disposal,linear ft,4,0.03,0
+Fence Removal - Ornamental Iron,Dismantle and load heavy iron fencing,Demolition and Disposal,linear ft,6,0.04,0
+Fence Removal - Wood or Vinyl,Tear down and clear old wood or vinyl,Demolition and Disposal,linear ft,5,0.035,0
+Concrete Footing Demolition,Jackhammer and remove old post concrete base,Demolition and Disposal,each,55,0.4,3.33
+Debris Disposal Fee - Roll-Off Dumpster,Dumpster rental and disposal per haul,Demolition and Disposal,job,650,0.5,396.67
+Brush and Clearing Labor,Clear trees and heavy brush along fence line,Demolition and Disposal,hour,95,0.76,0
+Post Straightening Service,Mechanical straightening of bent steel post,Repair and Maintenance,each,120,0.9,6.67
+Fabric Patch Repair,Weave in new chain link mesh section,Repair and Maintenance,job,250,1.8,20
+Bottom Rail Weld Repair,Field weld broken rail or frame connection,Repair and Maintenance,each,175,1.2,13.33
+Gate Adjustment and Alignment,Realign and tune sagging commercial gate,Repair and Maintenance,job,220,1.76,0
+Emergency Vehicle Crash Securing,Immediate temporary security after vehicle impact,Repair and Maintenance,job,750,4.5,116.67
+Chain Link Tension Band Replacement,Replace rusted or broken bands and bolts,Repair and Maintenance,each,15,0.1,1.67
+Commercial Building Permit Processing,Filing plans and pulling local municipal permit,Permits and Engineering,job,350,2,66.67
+Engineered Wind Load Drawings,Stamped structural calculations for local code,Permits and Engineering,job,850,1,483.33
+Property Survey Plat Verification,Review survey pins and match property bounds,Permits and Engineering,job,200,1.2,33.33
+HOA Architectural Submittal Package,Prepare renderings and docs for association review,Permits and Engineering,job,150,1,16.67
+Dumpster Permit,City right-of-way permit for roll-off container,Permits and Engineering,job,125,0.5,41.67
+Traffic Control Detail - Flaggers,Per hour per certified traffic control flagger,Site Services,hour,75,0.6,0
+Traffic Control Signage and Cones,Roadwork warning signs and safety cone setup,Site Services,day,150,0.4,66.67
+Silt Fence Installation,Temporary sediment control fence for erosion,Site Services,linear ft,4,0.02,1.5
+Root Barrier Installation,Heavy plastic root deflection barrier per foot,Site Services,linear ft,9,0.04,2.67
+Core Drill Oversized Post Hole,Extra large core drill for heavy corner posts,Site Services,each,125,0.8,16.67
+Grounding Kit - Electrical / Lightning,Copper clad ground rod and clamp for fence,Security and Bollards,each,110,0.4,40
+Post Sleeve - Core Mount Flange,Welded base plate for surface mounting posts,Ornamental Iron,each,85,0.3,31.33
+Expansion Anchor Bolts - Heavy Duty,Set of concrete wedge anchors for base plate,Ornamental Iron,each,12,0.05,3.83
+Gate Operator Solar Power Kit,"Solar panel, bracket, and charging regulator",Gates and Operators,each,650,1.5,313.33
+Wireless Intercom Receiver Add-On,Additional remote receiver or base station,Gates and Operators,each,220,1,63.33
+Safety Edge - Monitored Pressure Edge,Rubber safety contact edge for sliding gate,Gates and Operators,linear ft,45,0.12,19.33
+Knox Box - Rapid Entry Fire Box,Commercial fire department lock box installed,Security and Bollards,each,420,1,196.67
+Security Camera Mounting Bracket,Pole top bracket for CCTV camera install,Security and Bollards,each,150,0.6,50
+Galvanized Tie Wires - Bag of 100,Aluminum or galvanized wire ties for chain link,Chain Link,each,25,0.05,12.5
+High Security Truss Rod Assembly,Horizontal corner brace truss rod and tightener,Chain Link,each,40,0.15,14.33
+Anti-Climb Spikes - Wall Mount,Security spike strip per linear foot,Security and Bollards,linear ft,22,0.05,10.33
+After-Hours Emergency Dispatch Fee,Emergency service callout outside normal hours,Labor,visit,350,1.5,116.67

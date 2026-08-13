@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Visit,"Routine watering, pruning, and cleaning of indoor plants",Maintenance,visit,75,0.6,0
+Bi-Weekly Maintenance Program,Bi-monthly service visit including all basic care,Maintenance,visit,70,0.56,0
+Weekly Maintenance Program,Weekly service visit including all basic care,Maintenance,visit,65,0.52,0
+Plant Health Assessment,"Detailed inspection for pests, disease, and nutritional deficiencies",Diagnostics,hour,125,1,0
+Emergency Service Dispatch,Urgent after-hours visit for plant failure or damage,Diagnostics,hour,175,1.4,0
+Horticulturist Labor,"Skilled labor for pruning, styling, and general care",Labor,hour,85,1,0
+Senior Plant Designer Labor,Expert installation and complex design layout work,Labor,hour,115,1,0
+Overtime Labor Rate,Labor outside normal business hours,Labor,hour,150,1,0
+Aglaonema Silver Queen 10 inch,Medium foliage plant in nursery pot,Plant Replacements,each,45,0.1,29.33
+Aglaonema Silver Queen 14 inch,Large foliage plant in nursery pot,Plant Replacements,each,95,0.15,62.33
+Anthurium Red 6 inch,Small flowering plant in nursery pot,Plant Replacements,each,25,0.05,16.33
+Areca Palm 10 inch,Medium tropical palm in nursery pot,Plant Replacements,each,55,0.1,36
+Areca Palm 14 inch,Large tropical palm in nursery pot,Plant Replacements,each,110,0.15,72.33
+Cast Iron Plant 10 inch,Low light tolerant foliage plant,Plant Replacements,each,60,0.1,39.33
+Chinese Evergreen 8 inch,Compact foliage plant for tabletops,Plant Replacements,each,30,0.08,19.33
+Corn Plant Dracaena 10 inch,Upright cane plant for indoor spaces,Plant Replacements,each,50,0.1,32.67
+Corn Plant Dracaena 14 inch,Large multi-cane plant,Plant Replacements,each,120,0.15,79.33
+Croton Petra 10 inch,Colorful tropical foliage plant,Plant Replacements,each,48,0.1,31.33
+Dieffenbachia 10 inch,Broad leaf tropical foliage plant,Plant Replacements,each,45,0.1,29.33
+Dracaena Marginata 10 inch,Slender cane plant with red edges,Plant Replacements,each,55,0.1,36
+Dracaena Marginata 14 inch,Large multi-stem cane plant,Plant Replacements,each,125,0.15,82.33
+Ficus Lyrata Fiddle Leaf Fig 10 inch,Popular large leaf tree,Plant Replacements,each,75,0.12,49
+Ficus Lyrata Fiddle Leaf Fig 14 inch,Large specimen fiddle leaf fig,Plant Replacements,each,175,0.2,114.67
+Ficus Lyrata Fiddle Leaf Fig 17 inch,Extra large statement tree,Plant Replacements,each,350,0.3,229.33
+Ficus Benjamina Weeping Fig 10 inch,Classic woody tree with small leaves,Plant Replacements,each,65,0.1,42.33
+Ficus Elastica Rubber Tree 10 inch,Sturdy plant with thick dark leaves,Plant Replacements,each,55,0.1,36
+Kentia Palm 10 inch,Elegant upright palm for indoor spaces,Plant Replacements,each,85,0.12,55.67
+Kentia Palm 14 inch,Large mature kentia palm specimen,Plant Replacements,each,220,0.25,144.33
+Monstera Deliciosa 10 inch,Split-leaf tropical philodendron,Plant Replacements,each,60,0.1,39.33
+Monstera Deliciosa 14 inch,Large mature split-leaf plant,Plant Replacements,each,130,0.15,85.67
+Neanthe Bella Palm 8 inch,Compact parlor palm,Plant Replacements,each,32,0.08,20.67
+Peace Lily Spathiphyllum 10 inch,Dark green leaves with white blooms,Plant Replacements,each,45,0.1,29.33
+Philodendron Xanadu 10 inch,Compact self-heading philodendron,Plant Replacements,each,50,0.1,32.67
+Pothos Golden Hanging Basket 8 inch,Trailing vine for baskets or ledges,Plant Replacements,each,35,0.08,22.67
+Rhapis Palm Lady Palm 10 inch,Fan-leaved slow-growing palm,Plant Replacements,each,95,0.12,62.33
+Rhapis Palm Lady Palm 14 inch,Large multi-stem lady palm,Plant Replacements,each,250,0.25,164.33
+Sansevieria Snake Plant 10 inch,Stiff upright succulent foliage,Plant Replacements,each,50,0.1,32.67
+Sansevieria Snake Plant 14 inch,Large cluster snake plant,Plant Replacements,each,110,0.15,72.33
+Schefflera Arboricola Umbrella Tree 10 inch,Glossy multi-stemmed shrub,Plant Replacements,each,55,0.1,36
+Spathiphyllum Peace Lily 6 inch,Small tabletop flowering plant,Plant Replacements,each,22,0.05,14.33
+Strelitzia Bird of Paradise 10 inch,Large tropical plant with paddle leaves,Plant Replacements,each,80,0.12,52.33
+Strelitzia Bird of Paradise 14 inch,Large statement bird of paradise,Plant Replacements,each,190,0.2,125.33
+ZZ Plant Zamioculcas Zamiifolia 10 inch,Waxy dark green low-light plant,Plant Replacements,each,60,0.1,39.33
+ZZ Plant Zamioculcas Zamiifolia 14 inch,Large mature ZZ plant specimen,Plant Replacements,each,140,0.15,92.33
+Bromeliad Assorted 6 inch,Tropical plant with colorful center bract,Plant Replacements,each,28,0.05,18
+Orchid Phalaenopsis 6 inch,Single spike blooming orchid in pot,Plant Replacements,each,45,0.08,28.67
+Seasonal Blooming Rotation 6 inch,Replacement color plant for rotation program,Plant Replacements,each,18,0.05,11.33
+Ceramic Planter 10 inch,Decorative glazed ceramic pot for interior plants,Containers,each,85,0.1,55.67
+Ceramic Planter 14 inch,Large decorative glazed ceramic pot,Containers,each,175,0.15,115.33
+Fiberglass Planter Cylinder 12 inch,Lightweight modern fiberglass floor planter,Containers,each,110,0.1,72.33
+Fiberglass Planter Cylinder 16 inch,Large lightweight modern floor planter,Containers,each,210,0.15,138.67
+Fiberglass Trough Planter 36 inch,Rectangular floor trough for space division,Containers,each,280,0.25,184.33
+Metal Planter Brushed Brass 12 inch,Metallic finish decorative floor pot,Containers,each,135,0.1,89
+Self-Watering Insert 10 inch,Sub-irrigation insert for 10 inch pots,Containers,each,22,0.05,14.33
+Self-Watering Insert 14 inch,Sub-irrigation insert for 14 inch pots,Containers,each,38,0.08,24.67
+Saucer Plastic Clear 12 inch,Water catch tray for floor containers,Containers,each,8,0.02,5.16
+Top Dressing River Rock,Polished decorative stones for surface cover,Materials,gallon,15,0.05,9.67
+Top Dressing Spanish Moss,Natural organic moss surface covering,Materials,bag,18,0.05,11.67
+Top Dressing Lava Cinders,Volcanic rock surface dressing,Materials,gallon,12,0.05,7.67
+Potting Soil Premium Tropical Mix,Soil blend formulated for indoor tropicals,Materials,cubic ft,25,0.05,16.33
+Slow Release Fertilizer Pellets,Controlled release nutrient application,Materials,pound,14,0.02,9.16
+Liquid Micronutrient Supplement,Foliar feed for chlorosis and pale leaves,Materials,gallon,45,0.05,29.67
+Insecticidal Soap Treatment,Organic treatment for soft-bodied pests,Treatments,visit,60,0.48,0
+Neem Oil Pest Treatment,Organic horticultural oil for mite and scale control,Treatments,visit,65,0.52,0
+Systemic Insecticide Spike Application,Root-zone treatment for persistent insect pests,Treatments,each,25,0.1,8.33
+Fungicide Drench Treatment,Root rot and fungal disease control application,Treatments,visit,75,0.6,0
+Leaf Shine and Cleaning Solution,Specialized foliar cleaner for dust removal,Treatments,visit,40,0.32,0
+Root Rot Remediation,"Repotting, root pruning, and sterile soil replacement",Repairs,hour,110,0.88,0
+Staking and Cabling Large Specimen,Structural support for heavy leaning plants,Repairs,each,65,0.3,18.33
+Pruning Deadwood and Yellow Fronds,Detailed cleanup of distressed plant material,Repairs,hour,85,0.68,0
+Re-potting Labor 10 inch,Transferring plant to a larger container,Repairs,each,30,0.15,7.33
+Re-potting Labor 14 inch,Transferring large plant to a larger container,Repairs,each,60,0.25,19.33
+Moss Pole Installation and Tying,Support structure for climbing vines,Repairs,each,45,0.2,13.33
+LED Grow Light Fixture Simple,Supplemental lighting fixture for low-light corners,Lighting,each,150,0.3,73.33
+LED Grow Light Track Fixture Commercial,Adjustable track-mounted plant growth light,Lighting,each,220,0.5,103.33
+Grow Bulb Replacement LED,High PAR output replacement bulb,Lighting,each,35,0.1,15
+Timer Outlet Programmable,Automatic timer for supplemental plant lighting,Lighting,each,28,0.08,16.67
+Green Wall Modular Panel 2x2,Living wall planting module for vertical gardens,Living Walls,each,180,0.4,86.67
+Green Wall Irrigation Line Maintenance,Flush and check of living wall drip emitters,Living Walls,hour,95,0.76,0
+Living Wall Plant Replacement Module,Swap out dead plants in a living wall system,Living Walls,each,45,0.15,17.33
+Green Wall Nutrient Reservoir Pump Replacement,Water pump replacement for living wall systems,Living Walls,each,250,0.8,103.33
+Holiday Poinsettia 6 inch,Red holiday blooming plant for seasonal decor,Holiday Decor,each,22,0.05,14.33
+Holiday Poinsettia 10 inch,Large holiday blooming plant specimen,Holiday Decor,each,55,0.1,36
+Live Holiday Tree Installation 6 ft,Potted evergreen tree setup for holiday season,Holiday Decor,job,350,1.2,133.33
+Holiday Decor Take Down and Disposal,Removal of seasonal displays after holidays,Holiday Decor,job,150,1.2,0
+Dead Plant Disposal Fee,Haul away and green waste disposal of removed plants,Disposal,each,20,0.16,0
+Large Specimen Plant Disposal Fee,Heavy lifting and disposal of oversized trees,Disposal,each,75,0.6,0
+Delivery and Placement Fee Local,Transport and initial placement of new plant order,Logistics,job,120,0.96,0
+After-Hours Delivery Surcharge,Night or weekend delivery fee,Logistics,job,175,1.4,0
+Hoisting Fee for Multi-Floor Atriums,Specialized rigging for high atrium plant installation,Logistics,job,450,3.6,0
+Scaffolding Rental for High Maintenance,Temporary scaffold setup for high-reaching plant care,Logistics,day,200,0.8,66.67
+Watering Service Only (Vacation Coverage),Temporary watering visits while client staff is away,Maintenance,visit,50,0.4,0
+Interior Plant Audit Report,Comprehensive inventory and health report for facilities,Diagnostics,job,250,2,0
+Sub-Irrigation Water Level Indicator,Replacement float gauge for self-watering pots,Containers,each,15,0.02,9.86
+Foliage Dusting and Washing Service,Deep cleaning of large dusty plant leaves,Maintenance,hour,75,0.6,0
+Aromatherapy Diffuser Integration,Botanical scent diffusion setup near plant displays,Upsells,each,120,0.3,55
+Preserved Moss Wall Panel 2x4,Maintenance-free preserved moss art installation,Upsells,each,450,0.8,233.33
+Artificial Silk Plant Insertion,Realistic permanent botanical placement for dark zones,Plant Replacements,each,95,0.2,43.33
+Water Meter Soil Probe,Manual moisture testing tool for accurate watering,Materials,each,16,0.02,10.53

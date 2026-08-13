@@ -1,0 +1,100 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Service Call,On-site troubleshooting and visual assessment,Diagnostics,visit,150,1.2,0
+Structural Engineer Consultation,Third-party engineering assessment and report,Diagnostics,job,650,5.2,0
+Subgrade Soil Compaction Test,Proctor density testing for soil stability,Diagnostics,each,350,2.8,0
+Ground Penetrating Radar Scan,Locate subsurface utilities and voids,Diagnostics,job,500,4,0
+Concrete Core Sampling,Extract core sample for compressive strength testing,Diagnostics,each,275,2.2,0
+Masonry Lead Laborer,Skilled mason for custom repair work,Labor Rates,hour,95,1,0
+Concrete Finisher Labor,Journeyman finisher for flatwork placement,Labor Rates,hour,85,1,0
+Demolition and Prep Labor,General labor for breaking and site cleanup,Labor Rates,hour,65,1,0
+After-Hours Emergency Labor,Urgent stabilization or emergency shoring,Labor Rates,hour,150,1,0
+Equipment Operator,Operator for skid steer or mini excavator,Labor Rates,hour,90,1,0
+Sidewalk Demolition and Removal,Break up and haul away existing walkway,Demolition & Disposal,sq ft,4,0.02,2.5
+Driveway Demolition and Removal,Break up and haul away existing drive,Demolition & Disposal,sq ft,5,0.025,3
+Concrete Patio Demolition,Break up and haul away existing slab,Demolition & Disposal,sq ft,5,0.025,3
+Brick Wall Demolition,Take down brick structure and haul debris,Demolition & Disposal,sq ft,12,0.06,6
+Roll-Off Dumpster Rental,20-yard debris container and disposal fee,Demolition & Disposal,each,750,0.5,466.67
+Excavation and Grading,Machine dig and grade subbase for concrete,Site Prep & Base,sq ft,3,0.015,1.8
+Crushed Stone Base Installation,Aggregate road base spread and compacted,Site Prep & Base,ton,65,0.2,23.33
+Geotextile Fabric Installation,Stabilization fabric laid under aggregate base,Site Prep & Base,sq ft,1,0.005,0.5
+Formwork Setup and Bracing,Wood forms set to grade for pouring,Site Prep & Base,linear ft,6,0.03,3
+Steel Rebar Grid Reinforcement,Install #3 rebar grid on chairs,Site Prep & Base,sq ft,2,0.008,1.2
+Standard Broom Finish Concrete,4-inch poured concrete with broom texture,Concrete Flatwork,sq ft,12,0.04,4.67
+Reinforced Driveway Concrete,6-inch poured concrete with fiber and rebar,Concrete Flatwork,sq ft,16,0.05,6.33
+Stamped Concrete Patio,Patterned and textured decorative concrete slab,Concrete Flatwork,sq ft,22,0.08,8
+Exposed Aggregate Finish,Washed surface revealing decorative stone,Concrete Flatwork,sq ft,18,0.06,7
+Colored Concrete Additive,Integrated pigment mixed into concrete batch,Concrete Flatwork,sq ft,3,0.01,1.2
+Monolithic Concrete Slab,Slab and thickened edge poured together,Concrete Flatwork,sq ft,15,0.05,5.83
+Concrete Approach Apron,Heavy-duty driveway entrance at curb,Concrete Flatwork,sq ft,18,0.06,7
+Concrete Mowing Strip,Narrow border along garden beds,Concrete Flatwork,linear ft,14,0.05,5.17
+AC Unit Concrete Pad,Precast or poured equipment pad,Concrete Flatwork,each,350,1,150
+Trash Can Storage Pad,Small reinforced slab for bins,Concrete Flatwork,each,450,1.2,200
+CMU Foundation Wall,Standard concrete masonry unit block wall,Foundations & Walls,sq ft,32,0.1,13
+Poured Concrete Foundation Wall,Formed and poured structural wall,Foundations & Walls,sq ft,40,0.12,16.67
+Retaining Wall Block,Segmental retaining wall blocks laid level,Foundations & Walls,sq ft,45,0.14,18
+Natural Stone Retaining Wall,Dry-stacked or mortared natural fieldstone,Foundations & Walls,sq ft,75,0.24,30
+Brick Veneer Installation,Clay brick facade anchored to framing,Foundations & Walls,sq ft,28,0.09,11
+CMU Pier Installation,Structural block pier for porch or deck,Foundations & Walls,each,250,1,83.33
+Concrete Block Column,Structural column wrapped in stone or brick,Foundations & Walls,linear ft,110,0.35,43.33
+Retaining Wall Drainage Pipe,Perforated corrugated pipe with gravel sock,Foundations & Walls,linear ft,15,0.05,5.83
+Foundation Waterproofing Membrane,Spray-applied rubberized wall coating,Foundations & Walls,sq ft,5,0.015,2
+Foundation Dampproofing,Asphalt-based coating applied to exterior wall,Foundations & Walls,sq ft,3,0.01,1.17
+Polyurethane Concrete Lifting,Inject expanding foam to raise sunken slab,Repair & Restoration,sq ft,18,0.04,8
+Mudjacking Slab Lifting,Pump slurry mix beneath sunken concrete,Repair & Restoration,sq ft,10,0.03,4.17
+Concrete Crack Epoxy Injection,Structural epoxy seal for stable cracks,Repair & Restoration,linear ft,35,0.12,13.33
+Polyurethane Joint Sealing,Flexible sealant for expansion joints,Repair & Restoration,linear ft,4,0.015,1.42
+Masonry Tuckpointing,Grind out and replace degraded mortar joints,Repair & Restoration,sq ft,18,0.06,7
+Spalled Concrete Patching,Chisel damaged area and apply polymer patch,Repair & Restoration,sq ft,25,0.08,10
+Brick Replacement,Chisel out and relay damaged masonry units,Repair & Restoration,each,45,0.25,10
+Concrete Step Rebuilding,Form and pour new front entry steps,Repair & Restoration,each,1500,4.5,600
+Chimney Crown Repair,Pour new concrete crown on masonry chimney,Repair & Restoration,each,650,2.5,225
+Chimney Pointing and Flashing,Repair mortar and step flashing on chimney,Repair & Restoration,job,850,3.5,275
+Penetrating Concrete Sealer,Siloxane-based water repellent application,Finishing & Sealing,sq ft,1,0.003,0.4
+Acrylic Concrete Sealer,Gloss or matte surface sealer coat,Finishing & Sealing,sq ft,2,0.005,0.9
+Acid Wash Cleaning,Chemical wash to remove efflorescence and dirt,Finishing & Sealing,sq ft,1,0.003,0.4
+Power Washing Surface Prep,High-pressure water wash prior to coating,Finishing & Sealing,sq ft,1,0.003,0.4
+Concrete Grinding and Polishing,Mechanical diamond grind for smooth finish,Finishing & Sealing,sq ft,6,0.02,2.33
+Anti-Graffiti Coating,Sacrificial barrier coating for masonry walls,Finishing & Sealing,sq ft,3,0.01,1.17
+Masonry Stain Application,Color stain applied to brick or block,Finishing & Sealing,sq ft,4,0.012,1.6
+Curing Compound Application,Spray film applied to fresh concrete,Finishing & Sealing,sq ft,1,0.003,0.4
+Expansion Joint Board Insertion,Fibre expansion joint material installed,Finishing & Sealing,linear ft,3,0.01,1.17
+Brick Paver Patio Installation,Interlocking pavers set on screeded sand,Pavers & Hardscaping,sq ft,18,0.06,7
+Concrete Paver Driveway,Heavy-duty vehicular pavers on dense aggregate,Pavers & Hardscaping,sq ft,22,0.07,8.67
+Flagstone Patio Installation,Natural flagstone set in mortar or on base,Pavers & Hardscaping,sq ft,28,0.09,11
+Travertine Paver Installation,Natural stone pavers set for outdoor living,Pavers & Hardscaping,sq ft,30,0.1,11.67
+Paver Edge Restraint Installation,Plastic or metal edge spiked into base,Pavers & Hardscaping,linear ft,5,0.015,2
+Polymeric Sand Sweeping and Sealing,Joint sand swept and activated with water,Pavers & Hardscaping,sq ft,2,0.006,0.8
+Permeable Paver System,Open-graded aggregate paver installation,Pavers & Hardscaping,sq ft,24,0.075,9.5
+Bullnose Paver Coping,Rounded edge pavers for pool or step edge,Pavers & Hardscaping,linear ft,25,0.08,10
+Paver Cleaning and Resanding,Pressure wash existing pavers and add sand,Pavers & Hardscaping,sq ft,3,0.01,1.17
+Stone Step Installation,Heavy quarried stone steps set in place,Pavers & Hardscaping,each,450,1.5,183.33
+Municipal Right-of-Way Permit,City permit for sidewalk or apron work,Permits & Fees,job,175,0.4,83.33
+Building Department Permit,Permit for structural walls or foundations,Permits & Fees,job,250,0.6,116.67
+HOA Architectural Review Fee,Submission package for association approval,Permits & Fees,job,100,0.2,50
+Utility Locating Service,Private utility marking prior to excavation,Permits & Fees,job,200,0.4,100
+Traffic Control Setup,"Signage, cones, and flaggers for street work",Permits & Fees,day,400,1.2,166.67
+Concrete Pump Truck Surcharge,Boom pump fee for hard-to-reach pours,Equipment & Surcharges,job,850,0.8,483.33
+Buggy Concrete Transport,Powered buggy for backyard concrete hauling,Equipment & Surcharges,day,300,0.8,133.33
+Mini Excavator Rental,Daily rental for site grading and digging,Equipment & Surcharges,day,350,0.5,191.67
+Skid Steer Loader Rental,Daily rental for material moving,Equipment & Surcharges,day,375,0.5,208.33
+Plate Compactor Rental,Vibratory compactor for subbase prep,Equipment & Surcharges,day,125,0.2,66.67
+Concrete Saw Cutting,Wet diamond blade cut for control joints,Cutting & Coring,linear ft,4,0.015,1.42
+Heavy-Duty Wall Sawing,Deep wall cut for new doors or windows,Cutting & Coring,sq ft,65,0.2,26.67
+Core Drilling 4-Inch Hole,Core drill utility penetration through concrete,Cutting & Coring,each,150,0.5,58.33
+Core Drilling 8-Inch Hole,Core drill large penetration through foundation,Cutting & Coring,each,250,0.8,100
+Asphalt Patching,Hot mix asphalt patch at concrete transition,Cutting & Coring,sq ft,12,0.035,5.17
+Integral LED Step Lights,Low-voltage light fixtures cast into steps,Lighting & Electrical,each,125,0.4,50
+Paver Light Fixture Installation,Paver light inserted into hardscape border,Lighting & Electrical,each,110,0.35,43.33
+Conduit Sleeve Installation,PVC sleeve buried under slab for future wires,Lighting & Electrical,linear ft,12,0.03,5.17
+Transformer and Timer Setup,Low-voltage landscape lighting power unit,Lighting & Electrical,each,250,0.8,100
+Post Anchor Bracket Cast,Metal structural post base set in concrete,Lighting & Electrical,each,65,0.2,23.33
+French Drain Installation,"Perforated pipe, gravel, and fabric trench",Drainage,linear ft,35,0.1,15
+Catch Basin Installation,Surface water drain box connected to pipe,Drainage,each,350,1.2,133.33
+Channel Drain System,Trench drain with grate across driveway,Drainage,linear ft,75,0.2,33.33
+Sump Pump Basin Installation,Exterior collection basin and discharge line,Drainage,each,600,2,233.33
+Downspout Extension Burial,Solid PVC pipe directing water away from slab,Drainage,linear ft,18,0.05,7.83
+Masonry Outdoor Fireplace,Custom wood-burning outdoor masonry fireplace,Outdoor Living,job,6500,22,2466.67
+Outdoor Kitchen Base Structure,CMU block structure built for grill insertion,Outdoor Living,linear ft,350,1.2,133.33
+Concrete Fire Pit,Cast-in-place or modular backyard fire ring,Outdoor Living,each,1800,6,700
+Concrete Seat Wall,Freestanding curved seating wall with cap,Outdoor Living,linear ft,120,0.4,46.67
+Concrete Pillar Caps,Precast or cut stone caps set on piers,Outdoor Living,each,150,0.4,66.67

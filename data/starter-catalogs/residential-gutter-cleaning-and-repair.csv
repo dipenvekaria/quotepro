@@ -1,0 +1,96 @@
+name,description,category,unit,price,labor_hours,material_cost
+Standard Gutter Cleaning (Single Story),Clear all debris from single story gutters and downspouts.,Cleaning Services,linear ft,2,0.016,0
+Standard Gutter Cleaning (Two Story),Clear all debris from two story gutters and downspouts.,Cleaning Services,linear ft,3,0.024,0
+Standard Gutter Cleaning (Three Story),Clear all debris from three story gutters and downspouts.,Cleaning Services,linear ft,4,0.032,0
+Downspout Flushing,Flush underground and above ground downspouts to clear clogs.,Cleaning Services,each,25,0.2,0
+Debris Haul Away and Disposal,Remove and dispose of all cleared gutter waste from property.,Cleaning Services,job,50,0.2,13.33
+Eco-Friendly Roof Moss Treatment,Apply treatment to prevent moss from entering gutter system.,Cleaning Services,sq ft,1,0.005,0.25
+Solar Panel Gutter Clearing,Carefully clean debris around solar panel perimeter and gutters.,Cleaning Services,linear ft,3,0.02,0
+Skylight Debris Removal,Clear accumulated leaves and debris around skylight valleys.,Cleaning Services,each,35,0.28,0
+Interior Gutter Wipe Down,Wipe down interior walls of gutters to remove residue.,Cleaning Services,linear ft,1,0.008,0
+Emergency Storm Debris Removal,Urgent clearing of gutters following severe storm events.,Cleaning Services,hour,150,1.2,0
+Standard Service Call and Inspection,Travel to site and perform comprehensive exterior system evaluation.,Diagnostics & Service Calls,visit,125,1,0
+Emergency Leak Troubleshooting,Diagnose source of water overflow during active weather event.,Diagnostics & Service Calls,hour,175,1.4,0
+Pre-Listing Gutter Inspection,Inspect system condition and provide report for home sale.,Diagnostics & Service Calls,visit,150,1.2,0
+Post-Storm Damage Assessment,Detailed inspection of gutters for insurance claim documentation.,Diagnostics & Service Calls,visit,175,1.4,0
+Infrared Water Intrusion Check,Detect hidden leaks behind fascia boards using thermal imaging.,Diagnostics & Service Calls,visit,200,1.6,0
+Standard Labor Rate,General labor for gutter repair and maintenance tasks.,Labor Rates,hour,95,1,0
+Overtime Labor Rate,"After-hours, weekend, or holiday labor surcharge.",Labor Rates,hour,145,1,13.33
+Two-Person Crew Labor Rate,Hourly rate for specialized jobs requiring dual technicians.,Labor Rates,hour,180,1.44,0
+Master Technician Rate,"Advanced diagnosis, complex repairs, and custom sheet metal work.",Labor Rates,hour,135,1.08,0
+Apprentice Labor Rate,Basic assistance and support labor during installation.,Labor Rates,hour,65,0.52,0
+Aluminum Gutter Sealing (Per Joint),Apply commercial-grade sealant to leaking miter or end cap.,Repairs,each,35,0.2,3.33
+Gutter Re-Securing (Spike and Ferrule),Re-drive loose spikes and ferrules into solid fascia wood.,Repairs,linear ft,3,0.016,0.67
+Gutter Re-Securing (Hidden Hanger),Replace old spikes with heavy-duty screwed hidden hangers.,Repairs,linear ft,5,0.024,1.33
+Gutter Pitch Adjustment,Rehang section of gutter to correct standing water and slope.,Repairs,linear ft,8,0.05,1.17
+Corner Miter Re-Sealing,Clean and reseal leaking corner joint from the inside.,Repairs,each,55,0.35,6.67
+End Cap Repair and Sealing,Reattach loose end cap and apply waterproof silicone sealant.,Repairs,each,45,0.28,6
+Downspout Reconnection,Reattach loose or detached downspout to wall or extension.,Repairs,each,30,0.18,5.33
+Fascia Board Wood Repair (Rot),Cut out rotted section of fascia and install primed wood.,Repairs,linear ft,45,0.24,10
+Soffit Repair Section,Replace damaged or water-stained aluminum or wood soffit.,Repairs,sq ft,25,0.14,4.67
+Drip Edge Repair and Realignment,Bend or replace damaged metal drip edge hanging over gutter.,Repairs,linear ft,12,0.07,2
+5-Inch Seamless Aluminum Gutter Installation,Install new custom roll-formed 5-inch seamless aluminum gutters.,Replacements,linear ft,10,0.032,4
+6-Inch Seamless Aluminum Gutter Installation,Install new custom roll-formed 6-inch seamless aluminum gutters.,Replacements,linear ft,14,0.045,5.67
+7-Inch Seamless Aluminum Gutter Installation,Install new custom roll-formed 7-inch seamless aluminum gutters.,Replacements,linear ft,20,0.065,7.67
+Half-Round Copper Gutter Installation,Install premium architectural half-round copper gutters.,Replacements,linear ft,45,0.16,16.67
+Galvanized Steel Gutter Installation,Install heavy-duty galvanized steel gutters for maximum strength.,Replacements,linear ft,18,0.06,7.33
+Standard Downspout Replacement (2x3 Inch),Replace existing damaged downspout with new aluminum section.,Replacements,linear ft,8,0.035,2.5
+Large Downspout Replacement (3x4 Inch),Replace existing damaged downspout with high-capacity section.,Replacements,linear ft,12,0.05,4
+Round Copper Downspout Replacement,Install matching round architectural copper downspout.,Replacements,linear ft,35,0.14,11.67
+Fascia Board Full Replacement,Remove and replace entire rotted fascia board with primed pine.,Replacements,linear ft,30,0.16,6.67
+Custom Collector Box Installation,Install architectural leader head for complex roof drainage.,Replacements,each,250,1.2,66.67
+Mesh Gutter Guard Installation,Install standard stainless steel mesh leaf and debris guards.,Gutter Protection,linear ft,6,0.02,2.33
+Micro-Mesh Gutter Guard Installation,Install premium fine-mesh filters to block pine needles and silt.,Gutter Protection,linear ft,9,0.03,3.67
+Surface-Tension Gutter Guard Installation,Install solid-hood water-deflecting surface tension guards.,Gutter Protection,linear ft,12,0.04,4.67
+Plastic Screen Gutter Guard Installation,Install basic snap-in plastic mesh screens to block large leaves.,Gutter Protection,linear ft,3,0.012,1
+Foam Insert Gutter Filter Installation,Install porous polyurethane foam filters inside gutter channel.,Gutter Protection,linear ft,4,0.016,1.33
+Brush-Style Gutter Guard Installation,Install hedgehog-style bristle brushes inside gutter channels.,Gutter Protection,linear ft,5,0.02,1.67
+Gutter Guard Removal and Disposal,"Strip out old, failing, or clogged aftermarket gutter guards.",Gutter Protection,linear ft,2,0.016,0
+Custom Splash Block Installation,Place concrete or plastic splash block beneath downspout exit.,Drainage & Extensions,each,20,0.1,5
+Flexible Downspout Extension,Connect expandable plastic pipe to route water away from foundation.,Drainage & Extensions,each,25,0.12,6.67
+Above-Ground PVC Extension (10 Foot),Install solid PVC pipe extension to direct water off property.,Drainage & Extensions,each,65,0.25,22.33
+Underground Pop-Up Drainage Kit,Install buried PVC line terminating in lawn pop-up emitter.,Drainage & Extensions,job,275,1.2,83.33
+French Drain Connection,Tie downspout directly into existing perimeter French drain system.,Drainage & Extensions,job,350,1.6,100
+Rain Barrel Installation,Install homeowner-supplied or purchased rain barrel to downspout.,Drainage & Extensions,each,150,0.6,50
+Hinged Downspout Extension Flippers,Install hinge mechanism to allow lifting downspout for mowing.,Drainage & Extensions,each,40,0.2,10
+Catch Basin Installation,Install in-ground catch basin to collect downspout sediment.,Drainage & Extensions,each,180,0.8,53.33
+Standard Aluminum End Cap (Pair),Factory-formed aluminum end cap for 5-inch or 6-inch gutters.,Materials & Parts,each,8,0.04,2
+Copper End Cap (Each),Hand-soldered copper end cap for architectural copper systems.,Materials & Parts,each,35,0.16,10
+Inside Corner Miter (5-Inch),Factory-welded inside corner piece for seamless aluminum layout.,Materials & Parts,each,18,0.08,5.33
+Outside Corner Miter (5-Inch),Factory-welded outside corner piece for seamless aluminum layout.,Materials & Parts,each,18,0.08,5.33
+Heavy-Duty Hidden Hanger with Screw,Aluminum bracket securing gutter lip to fascia board.,Materials & Parts,each,3,0.01,1
+Downspout Offset Bends (A-Style / B-Style),Aluminum offset elbow to route downspout around architectural overhangs.,Materials & Parts,each,12,0.05,3.83
+Downspout Pipe Straps (Band),Metal strap securing vertical downspout pipe to exterior wall.,Materials & Parts,each,5,0.02,1.5
+Standard Downspout Outlet Drop,Flanged flange outlet piece connecting gutter trough to downspout.,Materials & Parts,each,10,0.04,3.33
+Polyurethane Gutter Sealer (Tube),Exterior grade waterproof sealant for metal gutter joints.,Materials & Parts,each,15,0,10
+Touch-Up Paint for Aluminum Gutters,Color-matched spray paint for scratched or repaired aluminum.,Materials & Parts,each,18,0,12
+Aluminum Rivet Fasteners (Pack of 50),Small pop rivets for securing metal joints and end caps.,Materials & Parts,each,10,0,6.67
+Wedge Shims for Fascia Alignment,Plastic wedges placed behind brackets to fine-tune gutter slope.,Materials & Parts,each,4,0,2.67
+Leaf Trap Strainer Basket,Wire mesh basket inserted at downspout opening to catch debris.,Materials & Parts,each,15,0,10
+Galvanized Spike and Ferrule Set,Traditional 7-inch spike and sleeve fastener for hanging gutters.,Materials & Parts,each,3,0,2
+City or Municipal Permit Fee,Required local government permit for major exterior drainage work.,Permits & Disposal,job,75,0,50
+HOA Compliance Documentation Package,Prepare and submit material samples and forms for board approval.,Permits & Disposal,visit,50,0.4,0
+Bulk Debris Dumpster Fee,Rental and disposal fee for large-scale demolition waste.,Permits & Disposal,job,250,0,166.67
+Hazardous Waste/Asbestos Handling Fee,Safe removal and disposal of old asbestos-containing siding/fascia.,Permits & Disposal,job,400,0,266.67
+Traffic Control / Street Permit,Municipal permit for street-blocking ladder or lift placement.,Permits & Disposal,job,150,0,100
+Roof Anchor Installation Fee,Permanent safety anchor installation for multi-story maintenance.,Safety & Access,each,75,0.4,16.67
+Multi-Story Ladder Setup Surcharge,Specialized rigging and stabilizing for heights over 30 feet.,Safety & Access,job,100,0.8,0
+Scaffolding Rental and Assembly,Erect temporary scaffolding for safe high-reach gutter replacement.,Safety & Access,day,250,1.2,66.67
+Boom Lift Daily Rental Surcharge,Towable or motorized boom lift for extreme height access.,Safety & Access,day,350,1,150
+Fall Protection Rigging Setup,OSHA-compliant harness and tie-off line setup on steep roofs.,Safety & Access,job,125,1,0
+Solar Panel Removal and Reinstallation,Disconnect and lift solar panels to access blocked underlying gutters.,Specialty Services,linear ft,15,0.06,5
+Awning Detachment and Reattachment,Temporarily remove canvas or metal awning to access damaged gutter.,Specialty Services,each,120,0.8,13.33
+Exterior Holiday Lighting Removal,Take down customer holiday light strands left inside gutters.,Specialty Services,linear ft,1,0.008,0
+Bird Nest Removal from Gutter,Safely remove active or inactive nesting materials from downspout.,Specialty Services,each,50,0.4,0
+Bee Hive / Wasp Nest Removal (Gutter),Treat and remove stinging insect nests blocking water flow.,Specialty Services,each,125,0.8,16.67
+Exterior Pressure Washing (Gutter Exterior),Wash dirt and tiger stripes off outside face of aluminum gutters.,Specialty Services,linear ft,1,0.005,0.25
+Fascia Painting (Post-Repair),Prime and paint new wood fascia boards to match existing trim.,Specialty Services,linear ft,8,0.04,2
+Custom Copper Soldering (Joints),Professional torch soldering for heritage copper gutter systems.,Specialty Services,each,65,0.35,15
+Gutter Thermal Heating Cable Installation,Install electric de-icing heat cable to prevent winter ice dams.,Winterization,linear ft,7,0.03,2.17
+Ice Dam Steam Removal Service,Use high-pressure steam equipment to melt and clear ice dams.,Winterization,hour,225,1.6,16.67
+Annual Maintenance Membership Plan,Includes two scheduled cleanings and priority emergency repair service.,Maintenance Plans,visit,299,1.5,74.33
+Bi-Annual Maintenance Membership Plan,Includes four seasonal cleanings and free minor adjustments.,Maintenance Plans,visit,499,2.5,124.33
+Commercial Gutter Cleaning Contract (Base),Recurring maintenance cleaning for low-rise commercial building.,Maintenance Plans,linear ft,3,0.016,0.67
+After-Hours Emergency Callout Fee,Flat fee dispatched outside normal operating hours.,Diagnostics & Service Calls,visit,200,1.6,0
+Trip Charge (Out of Service Area),Additional travel fee for locations beyond standard radius.,Diagnostics & Service Calls,visit,75,0.6,0
+Re-Inspection Fee (Failed Initial Repair),Return trip to verify correct operation after structural fix.,Diagnostics & Service Calls,visit,50,0.4,0
