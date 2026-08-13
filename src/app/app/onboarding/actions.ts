@@ -112,7 +112,7 @@ async function seedCatalog(
 ) {
   const values: unknown[] = []
   const tuples = items.map((item, i) => {
-    const b = i * 8
+    const b = i * 9
     values.push(
       companyId,
       item.name,
@@ -122,26 +122,31 @@ async function seedCatalog(
       item.unit,
       item.labor_hours || null,
       item.material_cost || null,
+      input.trade ?? null,
     )
-    return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8})`
+    return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9})`
   })
 
   await query(
     `insert into catalog_items
-       (company_id, name, description, category, base_price, unit, labor_hours, material_cost)
+       (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade)
      values ${tuples.join(', ')}`,
     values,
   )
 
   // Kept so the catalog can be repriced later when the contractor raises their
   // rate — the whole point of storing hours and material cost per item.
+  // `trade` is a column, not a settings key: it is read on the quoting path and
+  // decides which items the model may see. The rates stay in settings — they
+  // exist to reprice the catalog later, nothing reads them per quote.
   await query(
     `update companies
-        set settings = coalesce(settings, '{}'::jsonb) || $1::jsonb
-      where id = $2`,
+        set trade = $1,
+            settings = coalesce(settings, '{}'::jsonb) || $2::jsonb
+      where id = $3`,
     [
+      input.trade ?? null,
       JSON.stringify({
-        trade: input.trade,
         labor_rate: input.labor_rate,
         materials_markup: input.materials_markup,
         service_call_fee: input.service_call_fee,
