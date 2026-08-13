@@ -1,0 +1,103 @@
+name,description,category,unit,price
+Standard Service Call,Initial travel and diagnostic during normal business hours,Diagnostics & Labor,visit,175
+After Hours Service Call,Emergency dispatch outside normal operating hours,Diagnostics & Labor,visit,295
+Holiday Service Call,Emergency dispatch on recognized holidays,Diagnostics & Labor,visit,395
+Standard Technician Labor,Hourly rate for single technician repair work,Diagnostics & Labor,hour,125
+Two-Man Technician Labor,Hourly rate for heavy installations requiring two men,Diagnostics & Labor,hour,225
+After Hours Labor Rate,Hourly labor surcharge for night or weekend work,Diagnostics & Labor,hour,185
+Preventative Maintenance Inspection,Comprehensive 21-point check for one commercial door,Diagnostics & Labor,each,150
+Lift Rental Daily Fee,Scissor lift rental for high header work,Diagnostics & Labor,day,350
+Disposal Fee,Haul away and disposal of old door materials,Diagnostics & Labor,job,125
+Municipal Permit Fee,Local building permit processing and acquisition,Diagnostics & Labor,job,250
+Torsion Spring Replacement Single,Replace one broken sectional door torsion spring,Sectional Doors,each,285
+Torsion Spring Replacement Pair,Replace balanced pair of sectional door torsion springs,Sectional Doors,each,420
+Sectional Door Cable Replacement,Replace frayed or snapped lifting cables pair,Sectional Doors,each,195
+Sectional Door Roller Replacement,Replace nylon steel stem rollers up to 10,Sectional Doors,each,175
+Bottom Section Replacement 16ft,Replace damaged bottom panel on standard sectional door,Sectional Doors,each,750
+Intermediate Section Replacement 16ft,Replace damaged middle panel on sectional door,Sectional Doors,each,680
+Sectional Door Hinge Replacement,Replace standard gauge door hinge 1 through 5,Sectional Doors,each,110
+Sectional Door Track Repair,Straighten or replace bent vertical track section,Sectional Doors,each,220
+Solid Shaft Replacement,Replace 1 inch keyed torsion shaft up to 16ft,Sectional Doors,each,450
+Top Fixture Replacement,Replace adjustable top roller carrier brackets pair,Sectional Doors,each,135
+Rolling Steel Curtain Replacement,Replace damaged slat curtain up to 100 sq ft,Rolling Steel Doors,sq ft,45
+Rolling Steel Bottom Bar Replacement,Replace structural steel bottom bar with astragal,Rolling Steel Doors,linear ft,55
+Rolling Door Guide Replacement,Replace damaged steel guide angles per side,Rolling Steel Doors,linear ft,65
+Rolling Steel Barrel Assembly,Replace complete barrel and spring assembly,Rolling Steel Doors,each,1850
+Rolling Door Hood Replacement,Replace galvanized sheet metal coil hood cover,Rolling Steel Doors,linear ft,45
+Coiling Door Spring Repair,Retension or replace internal coiling steel springs,Rolling Steel Doors,each,650
+Countershutter Slat Repair,Replace damaged interlocking slats on counter door,Rolling Steel Doors,sq ft,55
+Rolling Steel Endlock Replacement,Replace cast iron curtain endlocks set of 10,Rolling Steel Doors,each,120
+Fire Door Drop Test and Reset,Mandatory annual drop test and certification reset,Rolling Steel Doors,each,325
+Fire Door Fusible Link Replacement,Replace thermal release links on fire shutter,Rolling Steel Doors,each,145
+Commercial Hollow Metal Door Replacement,Standard 30x70 16-gauge exterior metal door slab,Hollow Metal & Storefront,each,850
+Aluminum Storefront Door Replacement,Standard narrow stile commercial glass aluminum door,Hollow Metal & Storefront,each,1450
+Continuous Gear Hinge Installation,Full surface heavy duty aluminum continuous hinge,Hollow Metal & Storefront,each,380
+Storefront Pivot Set Replacement,Top and bottom offset pivot set for glass door,Hollow Metal & Storefront,each,320
+Commercial Door Frame Repair,Weld and reinforce damaged hollow metal frame anchor,Hollow Metal & Storefront,each,450
+Threshold Replacement,Heavy duty aluminum commercial saddle threshold,Hollow Metal & Storefront,linear ft,45
+Storefront Glass Replacement Insulated,Dual pane tempered glass unit up to 20 sq ft,Hollow Metal & Storefront,each,650
+Hollow Metal Butt Hinges Pair,Heavy duty ball bearing commercial steel hinges,Hollow Metal & Storefront,each,95
+Door Latch Guard Installation,Security plate to prevent tampering with latch bolt,Hollow Metal & Storefront,each,115
+Kick Plate Installation,8x34 stainless steel protection plate mounted,Hollow Metal & Storefront,each,145
+Commercial Operator Replacement Trolley,1/2 HP heavy duty trolley operator installation,Operators & Controls,each,1450
+Commercial Operator Replacement Jackshaft,1/2 HP industrial jackshaft operator installation,Operators & Controls,each,1650
+Slidebridge Operator Chain Hoist,Manual chain hoist reduction unit for large doors,Operators & Controls,each,450
+Operator Limit Switch Replacement,Replace and calibrate travel limit switches,Operators & Controls,each,280
+Operator Logic Board Replacement,Replace main electronic control circuit board,Operators & Controls,each,580
+Operator Motor Replacement,Replace electric motor unit on commercial operator,Operators & Controls,each,750
+Photo Eye Safety Sensors Pair,Commercial thru-beam photo electric safety eyes,Operators & Controls,each,275
+Safety Edge Pneumatic Hose,Replacement rubber sensing edge pneumatic switch,Operators & Controls,linear ft,35
+Electric Safety Edge Kit Wireless,Wireless monitored bottom edge safety system,Operators & Controls,each,650
+External Radio Receiver Installation,Multi-code universal radio receiver unit,Operators & Controls,each,220
+Commercial Remote Control Transmitter,Single button high frequency visor remote,Operators & Controls,each,85
+Key Switch Station Surface Mount,Keyed open-close-stop switch metal box,Operators & Controls,each,195
+Push Button Station 3-Button,Standard NEMA 1 interior wall control station,Operators & Controls,each,135
+Loop Detector Installation,Inductive vehicle loop detector module for operator,Operators & Controls,each,420
+Commercial Hydraulic Closer Heavy Duty,Grade 1 surface mounted door closer body and arm,Access Hardware,each,380
+Door Closer Link Arm Replacement,Standard parallel arm assembly for closer,Access Hardware,each,125
+Mortise Lock Body Replacement,Heavy duty commercial mortise lockcase replacement,Access Hardware,each,450
+Cylindrical Lever Lockset Grade 1,Heavy duty commercial cylindrical passage lockset,Access Hardware,each,280
+Panic Hardware Rim Device,Single point touch bar exit device surface mounted,Access Hardware,each,650
+Panic Hardware Vertical Rod Device,Surface vertical rod fire rated exit device,Access Hardware,each,850
+Mortise Cylinder Replacement,Mortise lock cylinder with standard keyway,Access Hardware,each,110
+Interchangeable Core IC Core Core Swap,Removable core cylinder replacement and pinning,Access Hardware,each,135
+Electric Strike Installation,Fail secure commercial door electric strike unit,Access Hardware,each,490
+Magnetic Lock 1200lb System,Electromagnetic lock with mounting brackets and armature,Access Hardware,each,750
+Door Sweep Brush Seal,Aluminum retainer with nylon brush weatherstripping,Access Hardware,linear ft,22
+Header Weather Seal Rubber,Flexible EPDM header seal for overhead doors,Access Hardware,linear ft,18
+Side Jamb Seal Vinyl Insert,Aluminum and vinyl snap-in jamb weatherseal,Access Hardware,linear ft,15
+Intumescent Fire Seal Strip,Expansion smoke and fire seal for rated doors,Access Hardware,linear ft,28
+Loading Dock Bumper Laminated,Rubber dock bumper pad 4x10x14 bolt-on,Loading Dock Equipment,each,165
+Loading Dock Leveler Spring Repair,Replace mechanical dock leveler hold-down spring,Loading Dock Equipment,each,380
+Dock Seal Foam Pad Replacement,High density foam dock head and side pads,Loading Dock Equipment,each,1250
+Dock Shelter Replacement,Flexible fabric curtain loading dock shelter unit,Loading Dock Equipment,each,2400
+Hydraulic Dock Leveler Cylinder,Replace main lift hydraulic cylinder unit,Loading Dock Equipment,each,950
+Dock Leveler Hydraulic Fluid Flush,Drain system and refill hydraulic oil reservoir,Loading Dock Equipment,each,290
+Dock Light Gooseneck LED,Heavy duty loading dock arm light fixture,Loading Dock Equipment,each,350
+Wheel Chock Steel Chain Set,Molded rubber wheel chock with security chain,Loading Dock Equipment,each,95
+Traffic Door PVC Panel Replacement,Replacement clear flexible vinyl door panel,Specialty Doors,each,450
+Strip Door PVC Curtain,Universal 8 inch PVC strip curtain material,Specialty Doors,sq ft,14
+High Speed Fabric Door Curtain,Replacement high speed roll up fabric door section,Specialty Doors,sq ft,65
+Gate Operator Slide Chain,ANSI #40 roller chain for automated sliding gate,Specialty Doors,linear ft,18
+Security Gate V-Groove Wheel,Heavy duty forged steel slide gate wheel,Specialty Doors,each,195
+Gate Operator Limit Assembly,Rotary limit switch assembly for slide gate,Specialty Doors,each,280
+Welding Service Structural Steel,Custom on-site field welding and fabrication labor,Specialty Doors,hour,150
+Core Drill Concrete Anchor,Core drill hole and set heavy structural anchor,Specialty Doors,each,95
+Scissor Gate Replacement,Single security folding scissor gate 6ft opening,Specialty Doors,each,580
+Air Curtain Unit 36 inch,Commercial over-door fly fan and air barrier,Specialty Doors,each,850
+Bollard Pipe Installation Filled,Concrete filled steel safety bollard pipe painted,Specialty Doors,each,420
+Impact Traffic Door Hinge Repair,V-cam gravity hinge repair kit for double acting door,Specialty Doors,each,290
+Hermetic Door Seal Kit,Inflatable airtight seal gasket replacement,Specialty Doors,each,650
+Clean Room Door Sweep Bottom,Flush drop seal mechanism for cleanroom doors,Specialty Doors,each,320
+X-Ray Lead Lined Door Panel,Lead core shielded sliding or swing door slab,Specialty Doors,each,2800
+Emergency Egress Push Button,Green mushroom request to exit station REX,Access Hardware,each,165
+Proximity Card Reader HID,Wall mounted access control proximity card reader,Access Hardware,each,350
+Biometric Fingerprint Scanner,Commercial access control biometric reader unit,Access Hardware,each,850
+Door Alignment and Tune-Up,"Full adjustment of hinges, strikes, and closers",Diagnostics & Labor,each,195
+Emergency Board-Up Service,Temporary plywood security board up after break-in,Diagnostics & Labor,job,450
+Sectional Door Wind Load Upgrade,Strut reinforcement package for high wind zones,Sectional Doors,each,310
+High Cycle Torsion Spring Conversion,Upgrade to 100000 cycle springs for heavy use,Sectional Doors,each,550
+Insulation Kit Sectional Door,Rigid polystyrene snap-in back insulation panels,Sectional Doors,sq ft,4
+Vision Lite Kit with Glass,Cut-in view window kit with tempered glass insert,Hollow Metal & Storefront,each,340
+Weatherstrip Retrofit Complete Set,Full perimeter aluminum and rubber seal replacement,Hollow Metal & Storefront,job,280
+Battery Backup Unit for Operator,DC motor emergency battery backup system,Operators & Controls,each,320

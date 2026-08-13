@@ -1,0 +1,102 @@
+name,description,category,unit,price
+Standard Labor Rate,General flooring installation labor per technician hour,Labor Rates,hour,85
+Overtime Labor Rate,Emergency or after-hours installation labor,Labor Rates,hour,125
+Surface Preparation Labor,"Scraping, grinding, and smoothing subfloor surfaces",Labor Rates,hour,95
+Moisture Testing Service,Calcium chloride or RH testing per location,Diagnostics & Testing,each,150
+Subfloor Moisture Mitigation,Application of epoxy moisture mitigation system,Subfloor Prep,sq ft,3
+Self-Leveling Underlayment,Pouring and smoothing cementitious self-leveler,Subfloor Prep,sq ft,4
+Patching and Filling,Filling gouges and low spots with patch compound,Subfloor Prep,sq ft,2
+Carpet Tile Installation,Direct glue-down installation of carpet tiles,Carpet,sq ft,2
+Broadloom Carpet Installation,Direct glue-down installation of broadloom carpet,Carpet,sq ft,3
+Carpet Stair Installation,Carpet installation on commercial stairs including nosing,Carpet,linear ft,18
+Carpet Cove Base Installation,Installing carpet base around perimeter walls,Carpet,linear ft,4
+VCT Installation,Vinyl composition tile installation including layout,Resilient,sq ft,3
+LVT Glue-Down Installation,Luxury vinyl tile full spread adhesive installation,Resilient,sq ft,3
+LVT Click Installation,Floating luxury vinyl plank or tile installation,Resilient,sq ft,3
+Sheet Vinyl Installation,Commercial sheet vinyl flooring installation,Resilient,sq ft,4
+Sheet Vinyl Heat Welding,Heat welding seams in commercial sheet vinyl,Resilient,linear ft,3
+Rubber Tile Installation,Interlocking or direct glue rubber tile installation,Resilient,sq ft,4
+Rubber Sheet Installation,Roll rubber flooring installation with adhesive,Resilient,sq ft,4
+Linoleum Installation,Natural linoleum sheet or tile installation,Resilient,sq ft,5
+Rubber Wall Base Installation,Installing 4-inch or 6-inch rubber wall base,Base & Trim,linear ft,2
+Vinyl Wall Base Installation,Installing standard vinyl cove base,Base & Trim,linear ft,2
+Wood Wall Base Installation,Installing stained or painted wood baseboard,Base & Trim,linear ft,5
+Transition Strip Installation,Installing aluminum or vinyl floor transition strips,Base & Trim,linear ft,12
+Reducer Strip Installation,Installing reducer strips between different floor heights,Base & Trim,linear ft,14
+T-Molding Installation,Installing T-molding at doorway thresholds,Base & Trim,linear ft,15
+Stair Nosing Installation,Metal or rubber stair nosing installation,Base & Trim,linear ft,15
+Ceramic Tile Installation,Setting standard ceramic floor tiles,Tile & Stone,sq ft,8
+Porcelain Tile Installation,Setting commercial grade porcelain floor tiles,Tile & Stone,sq ft,10
+Quarry Tile Installation,Commercial kitchen quarry tile setting,Tile & Stone,sq ft,12
+Stone Tile Installation,"Marble, granite, or slate tile installation",Tile & Stone,sq ft,15
+Tile Grouting,Applying sanded or unsanded grout to tile joints,Tile & Stone,sq ft,2
+Tile Sealing,Applying penetrating sealer to tile and grout,Tile & Stone,sq ft,1
+Epoxy Grout Upgrade,Upgrading to chemical resistant epoxy grout,Tile & Stone,sq ft,4
+Carpet Removal and Disposal,Stripping old carpet and pad with haul away,Demolition & Disposal,sq ft,1
+VCT Removal and Disposal,Scraping up VCT and disposing of debris,Demolition & Disposal,sq ft,1
+Ceramic Tile Demolition,Breaking out existing tile bed and hauling away,Demolition & Disposal,sq ft,3
+Wood Flooring Demolition,Ripping up glued or nailed wood flooring,Demolition & Disposal,sq ft,2
+Sheet Vinyl Removal,Stripping commercial sheet flooring and backing,Demolition & Disposal,sq ft,2
+Adhesive Removal,Mechanical removal of old mastic and glue,Demolition & Disposal,sq ft,1
+Dumpster Rental Fee,Construction debris roll-off dumpster per pull,Demolition & Disposal,each,650
+Debris Disposal Surcharge,Disposal fee for hazardous or heavy materials,Demolition & Disposal,ton,120
+Epoxy Flake Flooring,Decorative flake broadcast epoxy floor system,Specialty Coatings,sq ft,6
+Metallic Epoxy Flooring,High-end metallic pigment epoxy coating,Specialty Coatings,sq ft,9
+Polyaspartic Topcoat,Fast-cure UV stable clear topcoat application,Specialty Coatings,sq ft,3
+Concrete Polishing,Multi-step mechanical diamond polish of concrete,Specialty Coatings,sq ft,4
+Concrete Densifier Application,Chemical hardener application for polished concrete,Specialty Coatings,sq ft,1
+Anti-Slip Coating,Applying slip-resistant clear grit treatment,Specialty Coatings,sq ft,1
+Stair Tread Replacement,Replacing worn commercial rubber stair treads,Repairs,each,45
+Carpet Tile Patching,Cutting out and replacing damaged carpet tiles,Repairs,each,75
+VCT Tile Patching,Replacing cracked or damaged VCT tiles,Repairs,each,35
+LVT Plank Replacement,Replacing damaged luxury vinyl planks,Repairs,each,50
+Seam Repair Sheet Vinyl,Repairing lifted or split sheet vinyl seams,Repairs,linear ft,25
+Wall Base Repair,Re-gluing or replacing detached wall base,Repairs,linear ft,6
+Grout Repair,Trenching out and replacing cracked tile grout,Repairs,linear ft,8
+Threshold Repair,Securing loose or damaged door thresholds,Repairs,each,90
+VCT Stripping and Waxing,Strip old finish and apply three coats of wax,Maintenance,sq ft,1
+Carpet Deep Cleaning,Hot water extraction commercial carpet cleaning,Maintenance,sq ft,1
+Tile and Grout Cleaning,High-pressure scrub and extraction for tile floors,Maintenance,sq ft,1
+Floor Polishing and Buffing,High-speed burnishing of resilient floor finish,Maintenance,sq ft,1
+Acoustic Underlayment,Installing sound-dampening underlayment membrane,Materials,sq ft,1
+Waterproof Membrane,Liquid applied waterproofing layer under tile,Materials,sq ft,2
+Crack Isolation Membrane,Anti-fracture fabric sheet installation for tile,Materials,sq ft,2
+Pressure Sensitive Adhesive,Carpet tile and LVT releasable adhesive,Materials,gallon,85
+Epoxy Adhesive,Two-part high strength flooring adhesive,Materials,gallon,150
+Cove Base Adhesive,Cartridge adhesive for rubber or vinyl base,Materials,each,18
+Floor Primer,Acrylic primer for subfloor preparation,Materials,gallon,65
+Cementitious Patching Compound,Bag of rapid setting floor patch,Materials,each,45
+Self-Leveling Compound,Bag of self-leveling underlayment mix,Materials,each,50
+Welding Rod,Color matched PVC welding rod for sheet vinyl,Materials,linear ft,1
+Floor Protection Paper,Heavy duty ram board surface protection layout,Site Prep,sq ft,1
+Plastic Dust Barrier,Temporary containment walls with zipper entry,Site Prep,linear ft,15
+Furniture Moving Labor,Moving office furniture and equipment per hour,Site Prep,hour,75
+Carpet Lifting and Re-stretching,Power stretching wrinkled broadloom carpet,Repairs,sq ft,1
+Subfloor Screw Down,Securing loose plywood subfloor with screws,Subfloor Prep,sq ft,1
+Asbestos Testing Sample,Lab testing for asbestos in old mastic or tile,Diagnostics & Testing,each,200
+Perimeter Expansion Joint,Installing flexible expansion joint material,Base & Trim,linear ft,8
+Metal Edge Binding,Installing metal binder bar at exposed carpet edges,Base & Trim,linear ft,14
+Stair Landing Installation,Flooring installation on intermediate stair landings,Carpet,sq ft,4
+Gym Floor Line Painting,Painting game lines on synthetic athletic flooring,Specialty Coatings,linear ft,5
+Tactile Warning Strip,ADA compliant truncated dome tile installation,Resilient,each,120
+Anti-Fatigue Matting,Interlocking rubber anti-fatigue mat installation,Resilient,sq ft,6
+Subfloor Sanding,Sanding high spots on wood or concrete subfloors,Subfloor Prep,sq ft,1
+Hardwood Floor Installation,Glue-down or nail-down commercial wood flooring,Tile & Stone,sq ft,9
+Engineered Wood Installation,Installing commercial grade engineered wood flooring,Tile & Stone,sq ft,7
+Wood Floor Sanding and Refinishing,Sanding and applying polyurethane to wood floors,Tile & Stone,sq ft,4
+Concrete Shot Blasting,Surface preparation using automated shot blaster,Subfloor Prep,sq ft,1
+Diamond Grinding Concrete,Mechanical grinding to remove sealers and profile,Subfloor Prep,sq ft,1
+Custom Logo Inlay Labor,Cutting and heat welding custom logos into flooring,Specialty Coatings,hour,110
+Floor Core Drilling,Core drilling concrete for floor electrical boxes,Subfloor Prep,each,175
+Permit Acquisition Service,Obtaining local commercial construction permits,Site Prep,job,250
+After-Hours Mobilization Surcharge,Fee for scheduling work during night shifts,Labor Rates,visit,350
+Small Job Trip Charge,Service call fee for repairs under four hours,Labor Rates,visit,150
+Material Delivery and Handling,Jobsite delivery and upper floor material hoisting,Site Prep,job,200
+Stair Risers Installation,Installing matching rubber or vinyl stair risers,Base & Trim,linear ft,10
+Threshold Transition Ramp,Rubber slope ramp for handicap accessibility,Base & Trim,linear ft,30
+Static Control Grounding Kit,Copper strip installation for ESD conductive flooring,Materials,each,125
+ESD Conductive Tile Installation,Installing static dissipative or conductive tile,Resilient,sq ft,6
+Moisture Barrier Poly Sheeting,Laydown 6-mil poly vapor retarder over subfloor,Subfloor Prep,sq ft,1
+Carpet Cove Riser Installation,Wrapping carpet up open stair risers,Carpet,linear ft,12
+Expansion Joint Cover Assembly,Heavy duty metal expansion joint cover plate,Base & Trim,linear ft,85
+Final Construction Cleanup,Vacuuming and wet mopping newly installed floors,Site Prep,sq ft,1

@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call,Initial on-site trip and diagnosis within normal business hours,Service Calls & Labor,visit,175
+After-Hours Service Call,Emergency on-site trip and diagnosis outside normal business hours,Service Calls & Labor,visit,350
+Standard Technician Labor,Hourly rate for safe technician labor during business hours,Service Calls & Labor,hour,125
+Overtime Technician Labor,Hourly rate for safe technician labor outside business hours,Service Calls & Labor,hour,185
+Two-Man Labor Crew,Hourly rate for a secondary technician required for heavy rigging,Service Calls & Labor,hour,220
+Safe Opening Diagnostic,Detailed mechanical evaluation to determine lockout cause,Service Calls & Labor,hour,150
+Combination Recovery,Locating lost mechanical combination via factory records or decoding,Service Calls & Labor,each,250
+Safe Inspection and Tune-Up,"Comprehensive check of bolts, hinges, and locking mechanism",Service Calls & Labor,each,195
+Local Travel Surcharge,Additional mileage fee for service outside standard coverage zone,Service Calls & Labor,visit,75
+Waiting Time Surcharge,Hourly charge for site delays beyond technician control,Service Calls & Labor,hour,95
+Dial and Ring Manipulation Opening,Non-destructive opening of mechanical dial lock,Opening & Drilling,each,450
+Electronic Lock Bypass Opening,Non-destructive opening of electronic lock via specialized interface,Opening & Drilling,each,350
+Safe Door Drilling and Scope,Precision drilling to view internal components for lockout bypass,Opening & Drilling,each,550
+Relock Trigger Bypass,Specialized intervention to bypass active relocking device,Opening & Drilling,each,300
+Torch Opening (Extreme Failure),Destructive opening of severely jammed high-security vault door,Opening & Drilling,job,2500
+Safe Repair After Drill,Repairing drill hole in hardened steel door with plug and hardplate,Opening & Drilling,each,275
+Safe Spindle Replacement,Replacing worn or sheared mechanical lock drive spindle,Opening & Drilling,each,320
+Internal Linkage Realignment,Straightening and adjusting internal bolt work levers,Opening & Drilling,each,225
+Handle Hub Repair,Re-securing loose or sheared safe exterior handle mechanism,Opening & Drilling,each,180
+Drop-In Boltwork Repair,Clearing jammed sliding locking bolts inside safe door,Opening & Drilling,each,260
+Group 2 Mechanical Dial Lock Replacement,Supplying and installing standard mechanical combination lock,Lock Upgrades & Replacement,each,385
+Group 1R High-Security Mechanical Lock,Supplying and installing high-security manipulation-resistant lock,Lock Upgrades & Replacement,each,650
+Standard Electronic Safe Lock Replacement,Supplying and installing standard keypad and solenoid lock body,Lock Upgrades & Replacement,each,420
+Commercial Motor-Driven Electronic Lock,Supplying and installing heavy-duty deadbolt electronic lock,Lock Upgrades & Replacement,each,850
+Biometric Scanner Upgrade,Adding fingerprint reader keypad to compatible safe lock,Lock Upgrades & Replacement,each,495
+Conversion from Electronic to Mechanical,Swapping unstable electronic lock for reliable mechanical dial,Lock Upgrades & Replacement,each,450
+Conversion from Mechanical to Electronic,Swapping dial lock for quick-entry digital keypad system,Lock Upgrades & Replacement,each,480
+Key-Operated Safe Lock Replacement,Replacing lost-key safe deposit box or cash box lock,Lock Upgrades & Replacement,each,165
+Time Lock Movement Replacement,Replacing mechanical multi-movement vault time lock,Lock Upgrades & Replacement,each,1850
+Redundant Lock Installation,Installing dual-control lock requiring both dial and keypad,Lock Upgrades & Replacement,each,950
+Keypad Housing Replacement,Replacing damaged exterior digital entry pad and cable,Lock Hardware & Parts,each,175
+Safe Dial Ring and Spline Key,New graduated dial ring and alignment spline key,Lock Hardware & Parts,each,95
+Internal Relocker Assembly,Replacement glass or thermal relocking trigger module,Lock Hardware & Parts,each,210
+Battery Compartment Extension Kit,Remote battery pack for electronic locks with dead internal batteries,Lock Hardware & Parts,each,85
+Replacement Safe Key (Standard),Cutting standard safe key from code or sample,Lock Hardware & Parts,each,45
+Restricted Safe Key Duplication,Factory authorized cutting of high-security restricted key,Lock Hardware & Parts,each,95
+Safe Hinge Bearing Replacement,Replacing worn thrust bearings on heavy vault door hinges,Lock Hardware & Parts,each,250
+Door Sealing Gasket Replacement,Installing new fire and smoke intumescent door seal,Lock Hardware & Parts,each,195
+Safe Handle Spoke Replacement,Replacing bent or broken decorative exterior handle spokes,Lock Hardware & Parts,each,110
+Lock Mounting Screws and Hardware,Set of hardened grade-8 mounting fasteners for safe locks,Lock Hardware & Parts,each,35
+Residential Safe Ground Floor Delivery,Delivery and placement of safe up to 750 lbs on ground level,Delivery & Rigging,job,350
+Residential Safe Stair Navigation,Additional fee for moving safe up or down interior stairs,Delivery & Rigging,job,250
+Heavy Safe Rigging (Over 1000 lbs),Specialized machinery and crew for commercial safe transport,Delivery & Rigging,job,850
+Safe Floor Anchoring Installation,Securing safe to concrete or wood subfloor with heavy anchors,Delivery & Rigging,each,150
+Safe Wall Anchoring Installation,Securing safe to structural wall studs or masonry,Delivery & Rigging,each,165
+Safe Removal and Disposal,Hauling away unwanted or damaged old safe from premises,Delivery & Rigging,job,400
+Crane Hoist Service for Safe,Using crane service to lift safe through upper floor window,Delivery & Rigging,job,1500
+Temporary Safe Storage Facility,Monthly secure warehouse storage during client relocation,Delivery & Rigging,month,200
+Vault Room Panel Assembly,Erecting modular modular vault panels on site,Delivery & Rigging,linear ft,450
+Safe Pallet Jack Service,Moving oversized safe across smooth commercial flooring,Delivery & Rigging,job,225
+Modular Vault Door Installation,Hanging and calibrating heavy modular bank vault door,Vault & Safe Installation,each,1800
+Class 350 Fire Insulation Repair,Patching gypsum or concrete fire barrier inside safe wall,Vault & Safe Installation,job,350
+Safe Interior Custom Wood Shelving,Building and fitting custom velvet-lined wooden compartments,Vault & Safe Installation,job,650
+Jewelry Drawer Insert Installation,Installing pre-made velvet jewelry tray modules in safe,Vault & Safe Installation,each,220
+Watch Winder Integration,Installing and wiring automatic watch winders inside safe,Vault & Safe Installation,each,450
+Safe Interior LED Lighting Kit,Installing motion-activated low-voltage internal LED strip lights,Vault & Safe Installation,each,275
+Dehumidifier Rod Installation,Installing electric moisture-control rod inside safe interior,Vault & Safe Installation,each,135
+Deposit Drop Hopper Installation,Cutting and mounting rotary or drawer drop hopper to safe body,Vault & Safe Installation,each,550
+Safe Body Rust Remediation,Sandblasting and priming exterior surface corrosion,Vault & Safe Installation,job,400
+Safe Exterior Touch-Up Paint,Color-matching and repainting scratched safe exterior surfaces,Vault & Safe Installation,job,250
+Bank Safe Deposit Box Drilling,Drilling forced-entry opened safe deposit box rental opening,Bank & Institutional,each,175
+Safe Deposit Box Nose Replacement,Replacing lock cylinder and keys for deposit box rental change,Bank & Institutional,each,90
+Night Depository Chute Servicing,Cleaning and repairing commercial night drop receiving safe,Bank & Institutional,each,320
+Drive-Up Pneumatic Tube System Repair,Troubleshooting and fixing bank drive-thru teller tube system,Bank & Institutional,hour,165
+Vault Day Gate Repair,Aligning and repairing security gate inside main vault door,Bank & Institutional,each,280
+Vault Ventilation Fan Replacement,Replacing emergency air circulation blower in heavy vault room,Bank & Institutional,each,450
+Safe Deposit Nest Extraction,Removing and replacing entire bank safe deposit box cabinet section,Bank & Institutional,each,1200
+Dual-Key Guard Lock Maintenance,Servicing guard lock requiring bank officer key and renter key,Bank & Institutional,each,140
+Bailment Safe Inspection,Regulatory inspection and compliance certification for bank vault,Bank & Institutional,visit,500
+Time Lock Clean and Service,"Complete disassembly, ultrasonic cleaning, and oiling of clock movements",Bank & Institutional,each,650
+Gun Safe Interior Reconfiguration,Rearranging rifle racks and shelving to customer preference,Gun Safes & Specialty,hour,125
+Custom Rifle Barrel Rest Pad Set,Replacing worn foam or leather gun barrel support inserts,Gun Safes & Specialty,each,85
+Door-Mounted Pistol Holster Panel,Installing canvas or leather handgun storage organizer on door,Gun Safes & Specialty,each,110
+Dehumidifier Silica Gel Recharging Service,Replacing or baking moisture-absorbing desiccant canisters,Gun Safes & Specialty,each,55
+Tactical Safe Power Outlet Kit,Installing internal AC power outlet box inside gun safe,Gun Safes & Specialty,each,210
+Safe Fireboard Upgrade,Adding extra layers of Type-X gypsum board for higher fire rating,Gun Safes & Specialty,job,450
+Modular Gun Safe Disassembly and Reassembly,Taking apart bolt-together gun safe for tight space relocation,Gun Safes & Specialty,job,600
+Armored Car Drop Box Servicing,Repairing heavy tamper-proof commercial cash drop receptacle,Gun Safes & Specialty,each,380
+Under-Floor Safe Lid Replacement,Replacing lost or damaged cover plate for inground floor safe,Gun Safes & Specialty,each,275
+Waterproof Floor Safe Seal Kit,Replacing O-ring and rubber compression seal on inground safe,Gun Safes & Specialty,each,160
+UL Residential Security Container Certification,Applying official RSC rating plaque after inspection,Inspections & Certifications,each,150
+UL Burglary Rating Label Replacement,Reissuing lost TL-15 or TL-30 rating plates via manufacturer verification,Inspections & Certifications,each,250
+Insurance Safe Compliance Letter,Official written appraisal and security rating report for insurance,Inspections & Certifications,each,175
+Safe Security Audit,"On-site assessment of safe placement, anchoring, and vulnerability",Inspections & Certifications,visit,225
+Post-Burglary Damage Assessment Report,Formal inspection report and repair estimate following break-in attempt,Inspections & Certifications,job,300
+Pre-Purchase Safe Inspection,Evaluating condition of used safe before customer purchase,Inspections & Certifications,visit,180
+Combination Security Verification,Witnessing and verifying safe combination change for corporate audit,Inspections & Certifications,visit,150
+Vault Door Structural Engineering Review,Engineering load calculation for heavy vault installation on upper floor,Inspections & Certifications,job,950
+Government SCIF Safe Inspection,Inspection and certification of GSA-approved security containers,Inspections & Certifications,each,400
+Safe Fire Rating Verification Service,Researching manufacturer specs to certify safe temperature endurance,Inspections & Certifications,each,125
+Annual Maintenance Service Contract,"Yearly inspection, lubrication, and battery replacement agreement",Maintenance Agreements,visit,250
+Bi-Annual Commercial Vault Servicing,Two service visits per year for high-use commercial vault doors,Maintenance Agreements,visit,450
+Priority Emergency Response Rider,Add-on guaranteeing 2-hour technician response time for lockouts,Maintenance Agreements,visit,300
+Multi-Safe Corporate Fleet Discount Plan,Service agreement covering 5 or more commercial safes,Maintenance Agreements,job,1200
+ATM Safe Maintenance Package,Routine service of cash dispenser safe and electronic lock mechanism,Maintenance Agreements,visit,350
+Combination Change Service Plan,Scheduled bi-annual combination changes for retail security,Maintenance Agreements,visit,175
+Emergency Drill Insurance Add-On,Coverage rider for cost of drilling safe during accidental lockout,Maintenance Agreements,job,500
+Safe Hinge Lubrication Service,Deep cleaning and re-greasing of high-capacity safe door hinges,Maintenance Agreements,each,120
+Intumescent Seal Replacement Program,Scheduled replacement of heat-expanding fire door seals every 5 years,Maintenance Agreements,job,300
+Complete Lock Diagnostic Overhaul,Bench testing and servicing removed lock mechanism in shop,Maintenance Agreements,each,275

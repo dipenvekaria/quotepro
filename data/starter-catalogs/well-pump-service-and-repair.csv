@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call,Initial on-site diagnostic and trip fee,Diagnostics & Service,visit,150
+After-Hours Emergency Service Fee,Emergency dispatch outside normal business hours,Diagnostics & Service,visit,300
+Well System Diagnostic & Inspection,Comprehensive mechanical and electrical system check,Diagnostics & Service,hour,175
+Electrical Testing & Troubleshooting,Voltage and amperage check at controls and pump,Diagnostics & Service,hour,165
+Flow Rate & Yield Test,Measure gallons per minute and well recovery rate,Diagnostics & Service,job,250
+Water Pressure Testing,Static and dynamic pressure verification,Diagnostics & Service,job,100
+Standard Labor Rate,Hourly labor for standard well repairs,Labor,hour,150
+Master Technician Labor Rate,Hourly labor for complex diagnostics and heavy repairs,Labor,hour,195
+Two-Man Crew Labor Rate,Hourly labor for heavy lifting and pull installations,Labor,hour,275
+Submersible Pump Pull & Reset Labor,Labor to pull and reinstall drop pipe and pump,Labor,job,650
+Trenching Labor,Hand or machine trenching for supply lines,Labor,linear ft,25
+Well Head Excavation Labor,Expose buried well cap or pitless adapter,Labor,hour,150
+1/2 HP Submersible Pump Replacement,Replace 1/2 HP 115V or 230V submersible well pump,Pump Replacement,each,950
+3/4 HP Submersible Pump Replacement,Replace 3/4 HP submersible well pump,Pump Replacement,each,1150
+1 HP Submersible Pump Replacement,Replace 1 HP submersible well pump,Pump Replacement,each,1350
+1.5 HP Submersible Pump Replacement,Replace 1.5 HP submersible well pump,Pump Replacement,each,1650
+2 HP Submersible Pump Replacement,Replace 2 HP heavy-duty submersible well pump,Pump Replacement,each,2100
+1/2 HP Jet Pump Replacement,Replace shallow or deep well surface jet pump,Pump Replacement,each,850
+3/4 HP Jet Pump Replacement,Replace 3/4 HP surface jet pump,Pump Replacement,each,1050
+1 HP Jet Pump Replacement,Replace 1 HP surface jet pump,Pump Replacement,each,1250
+Constant Pressure Pump System Replacement,Replace VFD constant pressure pump system,Pump Replacement,job,2800
+Pressure Tank 20-Gallon Replacement,Replace bladder-style pressure tank up to 20 gallons,Pressure Tanks,each,650
+Pressure Tank 36-Gallon Replacement,Replace 36-gallon pressure tank,Pressure Tanks,each,850
+Pressure Tank 44-Gallon Replacement,Replace 44-gallon pressure tank,Pressure Tanks,each,1050
+Pressure Tank 86-Gallon Replacement,Replace large 86-gallon pressure tank,Pressure Tanks,each,1600
+Pressure Tank 119-Gallon Replacement,Replace commercial-size 119-gallon pressure tank,Pressure Tanks,each,2200
+Pressure Tank Tee Kit Replacement,"Replace tank tee, relief valve, and drain valve",Pressure Tanks,each,275
+Pressure Switch Replacement,Replace standard 30/50 or 40/60 pressure switch,Controls & Switches,each,175
+Heavy-Duty Pressure Switch Replacement,Replace heavy-duty contacts pressure switch,Controls & Switches,each,225
+Digital Pressure Switch Replacement,Replace digital programmable pressure switch,Controls & Switches,each,375
+Pump Control Box Replacement (1/2 HP),Replace single-phase control box for 1/2 HP pump,Controls & Switches,each,325
+Pump Control Box Replacement (3/4 - 1 HP),Replace control box for 3/4 to 1 HP pump,Controls & Switches,each,385
+Pump Control Box Replacement (1.5+ HP),Replace control box for 1.5 HP and larger pump,Controls & Switches,each,475
+Pressure Relief Valve Replacement,Replace 100 PSI brass pressure relief valve,Controls & Switches,each,125
+Check Valve Replacement (Surface),Replace brass check valve on surface plumbing,Valves & Fittings,each,150
+Foot Valve Replacement,Replace brass foot valve at bottom of drop pipe,Valves & Fittings,each,225
+Isolation Ball Valve Replacement,Replace 1-inch brass ball valve,Valves & Fittings,each,135
+Gate Valve Replacement,Replace brass gate valve,Valves & Fittings,each,165
+Drain-back Valve Replacement,Replace bleeder orifice or drain-back valve,Valves & Fittings,each,175
+Pitless Adapter Replacement,Replace standard brass pitless adapter in well casing,Well Casing & Head,job,650
+Sanitary Well Cap Replacement,Replace vented aluminum sanitary well cap,Well Casing & Head,each,225
+Well Casing Extension,Extend well casing above grade with steel sleeve,Well Casing & Head,job,850
+Well Casing Repair Clamp,Install split-repair clamp on damaged casing,Well Casing & Head,job,450
+Well Vent Screen Replacement,Replace bug screen on well cap vent,Well Casing & Head,each,75
+Poly Drop Pipe Replacement (1 Inch),Replace 200 PSI poly drop pipe per foot,Pipe & Wire,linear ft,4.5
+Poly Drop Pipe Replacement (1-1/4 Inch),Replace 1-1/4 inch 200 PSI poly pipe,Pipe & Wire,linear ft,6
+Poly Drop Pipe Replacement (1-1/2 Inch),Replace 1-1/2 inch 200 PSI poly pipe,Pipe & Wire,linear ft,8
+Galvanized Drop Pipe Replacement,Replace galvanized steel drop pipe section,Pipe & Wire,linear ft,12
+Pump Wire Replacement (10/2),Replace 10/2 submersible pump wire per foot,Pipe & Wire,linear ft,4
+Pump Wire Replacement (12/2),Replace 12/2 submersible pump wire per foot,Pipe & Wire,linear ft,3.25
+Heat Trace Cable Installation,Install pipe freeze protection heating cable,Pipe & Wire,linear ft,12
+Underground Conduit Installation,Install electrical conduit from wellhead to home,Pipe & Wire,linear ft,15
+Sediment Filter Housing Replacement,Replace whole-house big blue filter housing,Water Treatment & Filtration,each,350
+Standard Sediment Filter Cartridge Replacement,Replace standard pleated sediment filter cartridge,Water Treatment & Filtration,each,75
+Spin-Down Sediment Filter Installation,Install clear bowl manual flush sediment filter,Water Treatment & Filtration,each,325
+UV Lamp Replacement,Replace ultraviolet disinfection lamp and reset timer,Water Treatment & Filtration,each,225
+UV Quartz Sleeve Replacement,Replace and clean quartz sleeve for UV system,Water Treatment & Filtration,each,175
+Acid Neutralizer Tank Recharge,Add calcite media to neutralizer tank,Water Treatment & Filtration,job,275
+Water Softener Resin Replacement,Rebed water softener tank with new resin media,Water Treatment & Filtration,job,450
+Iron Filter Regeneration Service,Service and re-bed iron filtration system,Water Treatment & Filtration,job,350
+Well Shock Chlorination Service,Sanitize well and distribution system with chlorine,Maintenance & Testing,job,350
+Bacterial Water Test (Coliform/E. coli),Collect sample and laboratory test for bacteria,Maintenance & Testing,visit,150
+Full Well Water Quality Panel,"Comprehensive lab test for minerals, metals, and bacteria",Maintenance & Testing,visit,325
+Annual Well Maintenance Check,"Inspect tank, switches, flow, and water quality",Maintenance & Testing,visit,200
+Well Decommissioning / Abandonment,Fill and seal abandoned well per local code,Maintenance & Testing,job,2500
+Well Permit Processing,Obtain local county or state well repair permit,Permits & Disposal,job,125
+Old Pump & Tank Disposal Fee,Dispose of old heavy equipment and tanks,Permits & Disposal,job,75
+Hazardous Material Disposal Fee,Disposal fee for old contaminated well components,Permits & Disposal,job,150
+Crane Truck Service Fee,Heavy lifting equipment for deep well pump pulls,Permits & Disposal,job,400
+Emergency Generator Interlock Kit,Install manual transfer switch for well power backup,Upgrades & Add-ons,job,450
+Surge Protector Installation (Pump),Install lightning and power surge protector at control box,Upgrades & Add-ons,each,225
+Low-Water Cut-Off Probe Installation,Install electronic well protection sensor probes,Upgrades & Add-ons,job,350
+Flow Restrictor Valve Installation,Install valve to protect low-yielding wells from over-pumping,Upgrades & Add-ons,each,175
+Frost-Free Yard Hydrant Installation,Install yard hydrant on well supply line,Upgrades & Add-ons,each,450
+Booster Pump Installation,Install home water pressure booster pump system,Upgrades & Add-ons,job,950
+Submersible Well Pump (1/3 HP),Replacement 1/3 HP submersible well pump,Pump Replacement,each,850
+Submersible Well Pump (3 HP),Replacement 3 HP heavy-duty commercial submersible pump,Pump Replacement,each,3200
+Shallow Well Jet Pump (1/2 HP),Replacement shallow well jet pump,Pump Replacement,each,750
+Deep Well Jet Pump Assembly,Deep well two-pipe jet pump replacement assembly,Pump Replacement,job,1450
+Pressure Tank 14-Gallon Replacement,Replace compact 14-gallon pressure tank,Pressure Tanks,each,550
+Pressure Tank 62-Gallon Replacement,Replace 62-gallon bladder pressure tank,Pressure Tanks,each,1250
+Brass Well Cap Upgrade,Heavy-duty solid brass sanitary well cap upgrade,Well Casing & Head,each,375
+Torque Arrestor Installation,Rubber torque arrestor to protect drop pipe,Pipe & Wire,each,75
+Stainless Steel Safety Cable,Safety cable for submersible pump hanging support,Pipe & Wire,linear ft,1.5
+Wire Splice Kit (Heavy Duty),Submersible heat-shrink wire splice kit,Pipe & Wire,each,45
+PVC Supply Line Repair,Repair broken 1-inch PVC underground water line,Pipe & Wire,job,250
+Poly Supply Line Repair,Repair broken 1-inch poly underground water line,Pipe & Wire,job,225
+Reverse Osmosis System Installation,Under-counter RO drinking water filtration system,Water Treatment & Filtration,job,650
+RO Filter & Membrane Replacement,Service and replace filters on reverse osmosis system,Water Treatment & Filtration,job,185
+Chemical Feed Pump Replacement,Peristaltic chemical injection pump for well chlorination,Water Treatment & Filtration,each,650
+Contact Tank Installation,Water contact tank for chlorine dwell time,Water Treatment & Filtration,job,950
+Well Sounding / Depth Measurement,Measure total depth of well and water level,Maintenance & Testing,job,150
+Thermal Well House Heater Installation,Thermostatically controlled heater for well house,Upgrades & Add-ons,each,250
+Well House Insulation Package,Insulate well house or pit to prevent freezing,Upgrades & Add-ons,job,350
+Pressure Gauge Replacement,Replace liquid-filled 0-100 PSI pressure gauge,Valves & Fittings,each,75
+Sample Tap Installation,Install brass water testing valve before treatment,Valves & Fittings,each,95
+Pump Control Relay Replacement,Replace heavy-duty pump starting relay,Controls & Switches,each,185
+Magnetic Starter Replacement,Replace 3-phase or heavy single-phase motor starter,Controls & Switches,each,450
+Well Casing Vent Pipe Installation,Install code-compliant screened vent pipe,Well Casing & Head,job,125
+Municipal Hookup Disconnect,Disconnect well system when switching to city water,Diagnostics & Service,job,350

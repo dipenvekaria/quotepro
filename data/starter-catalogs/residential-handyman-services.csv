@@ -1,0 +1,102 @@
+name,description,category,unit,price
+Standard Service Call and Diagnosis,Initial on-site assessment and troubleshooting up to one hour,Diagnostics and Labor,visit,125
+Hourly Handyman Labor Rate,General interior repair and installation labor per hour,Diagnostics and Labor,hour,95
+Two-Man Crew Hourly Rate,Two technicians for heavy lifting or complex installations,Diagnostics and Labor,hour,165
+Emergency After-Hours Dispatch Fee,Urgent same-day or weekend service call fee,Diagnostics and Labor,visit,250
+Minimum Service Charge,Base fee for small quick-fix visits under one hour,Diagnostics and Labor,job,150
+Half-Day Rate,Up to four consecutive hours of general handyman labor,Diagnostics and Labor,job,350
+Full-Day Rate,Up to eight consecutive hours of general handyman labor,Diagnostics and Labor,job,650
+Design and Consultation Fee,In-home project planning and material sourcing service,Diagnostics and Labor,hour,100
+Material Pickup and Delivery Fee,Sourcing and transporting specialized materials to job site,Diagnostics and Labor,job,75
+Debris Disposal and Haul Away,Removal and dumping of old fixtures and packaging waste,Diagnostics and Labor,job,85
+Standard Interior Door Installation,Hang pre-hung door in existing framed opening,Doors and Windows,each,225
+Interior Slab Door Replacement,Replace door slab using existing hinges and jamb,Doors and Windows,each,150
+Door Knob and Lockset Installation,Install standard passage or privacy lockset,Doors and Windows,each,65
+Deadbolt Installation,Bore door and install single cylinder deadbolt,Doors and Windows,each,95
+Smart Door Lock Installation,Install and program keypad or bluetooth deadbolt,Doors and Windows,each,125
+Interior Door Hinge Replacement,Replace three standard door hinges,Doors and Windows,each,45
+Door Stop Installation,Install wall or baseboard mounted door stop,Doors and Windows,each,25
+Bi-Fold Closet Door Repair,Adjust tracks and replace pivot pins on bi-fold doors,Doors and Windows,each,85
+Pocket Door Repair,Troubleshoot and adjust sliding pocket door hardware,Doors and Windows,hour,115
+Window Blind Installation,Mount standard horizontal or vertical window blinds,Doors and Windows,each,55
+Curtain Rod Installation,Mount single or double drapery rod securely to wall,Doors and Windows,each,65
+Window Screen Replacement,Re-mesh standard window screen frame,Doors and Windows,each,45
+Storm Door Installation,Assemble and hang surface-mount aluminum storm door,Doors and Windows,each,275
+Window Crank Operator Replacement,Replace casement window mechanical crank mechanism,Doors and Windows,each,110
+Drywall Hole Patch up to 4 Inches,Patch small drywall hole with mesh and joint compound,Drywall and Painting,each,95
+Drywall Patch up to 12 Inches,Square cut patch with wood backing and mud finish,Drywall and Painting,each,175
+Drywall Patch up to 2 Feet,Larger drywall repair including framing support and taping,Drywall and Painting,each,275
+Drywall Corner Bead Repair,Repair damaged metal or vinyl outside corner bead,Drywall and Painting,linear ft,35
+Drywall Tape and Mud Seam Repair,Repair cracking tape joints on walls or ceilings,Drywall and Painting,linear ft,25
+Popcorn Ceiling Texture Patch,Scrape and re-spray acoustic ceiling texture,Drywall and Painting,sq ft,15
+Interior Wall Painting,Apply two coats of paint to walls excluding trim,Drywall and Painting,sq ft,3
+Interior Ceiling Painting,Apply flat white paint to ceiling surface,Drywall and Painting,sq ft,3.5
+Accent Wall Painting,Paint single feature wall with distinct color,Drywall and Painting,job,200
+Baseboard Paint Touch-Up,Touch up scuffs and paint baseboard trim,Drywall and Painting,linear ft,4
+Door and Trim Painting,Prep and paint one interior door and casing,Drywall and Painting,each,125
+Wallpaper Removal,Steam and strip old wallpaper from walls,Drywall and Painting,sq ft,4
+Baseboard Installation,Install and nail standard wood or MDF baseboard,Carpentry and Trim,linear ft,5
+Quarter Round Installation,Install quarter round shoe molding along flooring,Carpentry and Trim,linear ft,3
+Crown Molding Installation,Miter and install ceiling crown molding,Carpentry and Trim,linear ft,12
+Window Casing Installation,Install interior trim around window opening,Carpentry and Trim,linear ft,7
+Chair Rail Installation,Level and install decorative chair rail molding,Carpentry and Trim,linear ft,8
+Custom Closet Shelf Installation,Install wooden shelf and clothes hanging rod,Carpentry and Trim,linear ft,35
+Floating Shelf Installation,Mount decorative floating shelf with concealed brackets,Carpentry and Trim,each,75
+Bookcase Assembly and Anchoring,Assemble flat-pack bookcase and anchor to wall,Carpentry and Trim,each,125
+ Mantel Installation,Secure wooden fireplace mantel to wall studs or masonry,Carpentry and Trim,each,225
+Threshold Transition Installation,Install wood or metal floor transition strip,Carpentry and Trim,each,55
+TV Wall Mount Installation,Mount flat screen TV to wall studs with customer bracket,Wall Mounting and Hanging,each,150
+Large Picture or Mirror Hanging,Hang heavy artwork or mirror with secure wall anchors,Wall Mounting and Hanging,each,65
+Gallery Wall Hanging,Layout and hang up to six framed photos or art pieces,Wall Mounting and Hanging,job,175
+Heavy Wall Anchor Installation,Install toggle bolts or molly bolts for heavy loads,Wall Mounting and Hanging,each,30
+Whiteboard or Corkboard Mounting,Secure office board to drywall or commercial studs,Wall Mounting and Hanging,each,75
+Bathroom Vanity Mirror Installation,Hang framed or unframed wall mirror above vanity,Wall Mounting and Hanging,each,95
+Bicycle Wall Rack Installation,Mount heavy-duty bike storage hooks to studs,Wall Mounting and Hanging,each,65
+Ceiling Fan Installation,Replace existing fixture with new ceiling fan and balanced blades,Electrical Fixtures,each,175
+Standard Light Fixture Replacement,Replace flush-mount ceiling light or pendant light,Electrical Fixtures,each,110
+Chandelier Installation,Install large hanging chandelier requiring ceiling support check,Electrical Fixtures,each,250
+Under-Cabinet LED Lighting Installation,Mount and wire linkable under-cabinet kitchen lights,Electrical Fixtures,job,200
+Light Switch Replacement,Replace standard single-pole or three-way wall switch,Electrical Fixtures,each,50
+Electrical Outlet Replacement,Replace standard duplex wall receptacle,Electrical Fixtures,each,50
+GFCI Outlet Replacement,Replace faulty GFCI safety outlet in kitchen or bath,Electrical Fixtures,each,85
+USB Outlet Upgrade,Replace standard outlet with USB charging receptacle,Electrical Fixtures,each,75
+Smart Dimmer Switch Installation,Install and setup Wi-Fi enabled wall dimmer switch,Electrical Fixtures,each,95
+Smoke Detector Replacement,Replace hardwired or battery smoke and CO detector,Electrical Fixtures,each,45
+Doorbell Button Replacement,Replace wired exterior lighted doorbell push button,Electrical Fixtures,each,55
+Video Doorbell Installation,Install smart video doorbell and connect to chime,Electrical Fixtures,each,125
+Bathroom Faucet Replacement,Remove old sink faucet and install new single or widespread faucet,Plumbing Fixtures,each,175
+Kitchen Faucet Replacement,Replace kitchen sink faucet including sprayer line,Plumbing Fixtures,each,195
+Garbage Disposal Replacement,Disconnect old unit and install new under-sink food disposer,Plumbing Fixtures,each,210
+Toilet Replacement,"Remove old toilet, replace wax ring, and install new toilet",Plumbing Fixtures,each,250
+Toilet Fill and Flush Valve Replacement,Rebuild toilet tank interior mechanism,Plumbing Fixtures,each,110
+Toilet Seat Replacement,Remove old toilet seat and install new standard seat,Plumbing Fixtures,each,45
+Showerhead Replacement,Replace standard showerhead with new handheld or fixed model,Plumbing Fixtures,each,65
+Shower Cartridge Replacement,Replace leaking single-handle shower mixing valve cartridge,Plumbing Fixtures,each,175
+Sink P-Trap Replacement,Replace leaking plastic under-sink drain pipes,Plumbing Fixtures,each,95
+Water Supply Line Replacement,Replace braided stainless steel sink supply lines,Plumbing Fixtures,each,75
+Ice Maker Water Line Installation,Connect refrigerator ice maker line to supply valve,Plumbing Fixtures,job,125
+Bathroom Exhaust Fan Replacement,Replace faulty ceiling ventilation fan unit housing,Plumbing Fixtures,each,225
+Laminate Flooring Installation,Click-lock floating laminate floor planks over underlayment,Flooring and Tile,sq ft,4.5
+Vinyl Plank Flooring Installation,Install LVP luxury vinyl plank flooring with click system,Flooring and Tile,sq ft,4
+Carpet Tile Installation,Glue down or peel-and-stick modular carpet tiles,Flooring and Tile,sq ft,3.5
+Ceramic Tile Repair,Remove and replace cracked floor or wall tiles,Flooring and Tile,job,200
+Tile Grout Cleaning and Sealing,Deep clean tile grout lines and apply penetrating sealer,Flooring and Tile,sq ft,2.5
+Bathroom Re-Caulking,Remove old mildewed caulk and re-seal tub or shower perimeter,Flooring and Tile,job,150
+Kitchen Backsplash Installation,Install tile kitchen backsplash with thinset and grout,Flooring and Tile,sq ft,22
+Kitchen Cabinet Hardware Installation,Drill and install knobs and pulls on cabinet doors and drawers,Cabinetry and Hardware,each,12
+Cabinet Door Hinge Adjustment,Align and adjust European cabinet door hinges,Cabinetry and Hardware,each,20
+Cabinet Drawer Slide Replacement,Replace worn side-mount or undermount drawer glides,Cabinetry and Hardware,each,85
+Cabinet Door Repair,Repair stripped screw holes or split wood on cabinet doors,Cabinetry and Hardware,each,65
+Bathroom Vanity Installation,Set and secure vanity cabinet and connect plumbing traps,Cabinetry and Hardware,each,325
+Medicine Cabinet Installation,Surface or recess mount bathroom medicine cabinet,Cabinetry and Hardware,each,150
+Countertop Micro-Patch,Repair small laminate or solid surface countertop chip,Cabinetry and Hardware,job,125
+Grab Bar Installation,Mount ADA compliant safety grab bar into wall studs,Safety and Specialty,each,95
+Baby Gate Installation,Secure hardware-mounted safety gate to walls or banisters,Safety and Specialty,each,75
+Furniture Assembly,"Assemble standard table, desk, or bed frame",Safety and Specialty,hour,95
+Stair Handrail Installation,Mount wall handrail brackets and wood rail securely,Safety and Specialty,linear ft,35
+Closet Organizer System Assembly,Install wire or modular laminate closet shelving system,Safety and Specialty,job,275
+Fireplace Screen Installation,Mount mesh screen or glass doors to fireplace opening,Safety and Specialty,each,110
+Interior Weatherstripping Installation,Install door sweep and foam weatherseal around interior doors,Safety and Specialty,each,65
+HVAC Filter Replacement Service,"Locate, remove, and replace customer-provided air filters",Safety and Specialty,job,50
+House Numbers Installation,Mount metal or wooden address numbers to exterior facade,Safety and Specialty,job,55
+Attic Ladder Spring Replacement,Replace broken tension springs on pull-down attic stairs,Safety and Specialty,job,150

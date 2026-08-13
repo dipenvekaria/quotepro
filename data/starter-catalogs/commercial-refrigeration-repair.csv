@@ -1,0 +1,102 @@
+name,description,category,unit,price
+Standard Diagnostic Fee,Initial system evaluation and fault isolation during normal hours,Diagnostics and Service Calls,visit,185
+After-Hours Diagnostic Fee,Emergency system evaluation outside normal operating hours,Diagnostics and Service Calls,visit,325
+Holiday Diagnostic Fee,System evaluation on recognized holidays,Diagnostics and Service Calls,visit,450
+Refrigeration Leak Search,Electronic and nitrogen pressure test to locate refrigerant leaks,Diagnostics and Service Calls,hour,220
+System Performance Audit,"Full check of superheat, subcooling, and electrical draw",Diagnostics and Service Calls,job,275
+Standard Labor Rate,Hourly labor for certified refrigeration technician,Labor Rates,hour,165
+Overtime Labor Rate,Hourly labor outside normal working hours,Labor Rates,hour,248
+Holiday Labor Rate,Hourly labor on recognized holidays,Labor Rates,hour,330
+Two-Man Crew Labor Rate,Hourly rate for a two-technician rigging or heavy repair crew,Labor Rates,hour,310
+Apprentice Labor Rate,Hourly labor rate for assisting technician,Labor Rates,hour,95
+Evaporator Fan Motor Replacement Small,Replace fractional horsepower walk-in evaporator fan motor,Electrical and Motors,each,340
+Evaporator Fan Motor Replacement Large,Replace commercial multi-watt evaporator fan motor,Electrical and Motors,each,460
+Condenser Fan Motor Replacement Small,Replace condensing unit fan motor up to 1/3 HP,Electrical and Motors,each,420
+Condenser Fan Motor Replacement Large,Replace condensing unit fan motor 1/2 HP and above,Electrical and Motors,each,680
+Compressor Contactor Replacement Single Pole,Replace 30 amp single pole definite purpose contactor,Electrical and Motors,each,210
+Compressor Contactor Replacement Three Pole,Replace three pole heavy duty compressor contactor,Electrical and Motors,each,290
+Defrost Timer Mechanical Replacement,Replace mechanical commercial refrigeration defrost clock,Electrical and Motors,each,380
+Defrost Time Clock Electronic Replacement,Replace electronic programmable defrost controller,Electrical and Motors,each,490
+Defrost Termination Thermostat Replacement,Replace bi-metal defrost limit switch,Electrical and Motors,each,195
+Evaporator Coil Defrost Heater Replacement,Replace electric resistance defrost heating element,Electrical and Motors,each,550
+Drain Line Heater Replacement,Replace self-regulating electric condensate drain line heater,Electrical and Motors,linear ft,45
+Run Capacitor Replacement,Replace motor run capacitor,Electrical and Motors,each,175
+Start Capacitor Replacement,Replace motor start capacitor,Electrical and Motors,each,195
+Potential Relay Replacement,Replace compressor potential start relay,Electrical and Motors,each,210
+Control Transformer Replacement,Replace step-down control circuit transformer,Electrical and Motors,each,260
+Digital Temperature Control Replacement,Replace Dixell or Danfoss digital case controller,Electrical and Motors,each,480
+Fan Blade Replacement Small,Replace aluminum or plastic condenser fan blade,Electrical and Motors,each,150
+Fan Blade Replacement Large,Replace heavy duty multi-prop condenser fan blade,Electrical and Motors,each,280
+High Low Pressure Switch Replacement,Replace dual pressure safety control switch,Refrigeration Components,each,380
+Oil Pressure Safety Switch Replacement,Replace compressor oil failure control switch,Refrigeration Components,each,440
+Filter Drier Replacement Liquid Line,Replace standard hermetic liquid line filter drier,Refrigeration Components,each,220
+Filter Drier Replacement Core Shell,Replace replaceable core suction or liquid filter drier,Refrigeration Components,each,410
+Sight Glass Replacement,Replace moisture indicating liquid line sight glass,Refrigeration Components,each,190
+Thermostatic Expansion Valve Replacement,Replace TXV valve body and adjust superheat,Refrigeration Components,each,620
+Electronic Expansion Valve Replacement,Replace step motor EEV and check driver,Refrigeration Components,each,850
+Liquid Line Solenoid Valve Replacement,Replace liquid line solenoid valve body and coil,Refrigeration Components,each,390
+Suction Accumulator Replacement,Replace compressor suction line liquid accumulator,Refrigeration Components,each,540
+Receiver Tank Replacement,Replace liquid receiver tank on condensing unit,Refrigeration Components,each,750
+Vibration Eliminator Replacement,Replace braided copper vibration absorber on line set,Refrigeration Components,each,280
+Head Pressure Control Valve Replacement,Replace ORD or ambient fan cycling control valve,Refrigeration Components,each,510
+R-404A Refrigerant Recovery and Recharge,Refrigerant fluid replacement per pound R-404A,Refrigerants and Recovery,each,55
+R-448A Refrigerant Recovery and Recharge,Refrigerant fluid replacement per pound R-448A,Refrigerants and Recovery,each,58
+R-134a Refrigerant Recovery and Recharge,Refrigerant fluid replacement per pound R-134a,Refrigerants and Recovery,each,52
+R-507 Refrigerant Recovery and Recharge,Refrigerant fluid replacement per pound R-507,Refrigerants and Recovery,each,60
+Refrigerant Recovery Environmental Fee,EPA compliant refrigerant evacuation and recycling charge,Refrigerants and Recovery,job,150
+Nitrogen Purge and Pressure Hold Test,Brazing prep nitrogen purge and hold test,Refrigerants and Recovery,job,175
+Deep System Evacuation,Micron vacuum pull down below 500 microns,Refrigerants and Recovery,job,220
+Hermetic Compressor Replacement Fractional,Replace reach-in fractional reciprocating compressor package,Compressors and Condensing Units,each,1250
+Semi-Hermetic Compressor Replacement Small,Replace semi-hermetic compressor 1/2 HP to 3 HP,Compressors and Condensing Units,each,2400
+Semi-Hermetic Compressor Replacement Medium,Replace semi-hermetic compressor 5 HP to 10 HP,Compressors and Condensing Units,each,4200
+Scroll Compressor Replacement Commercial,Replace commercial refrigeration scroll compressor,Compressors and Condensing Units,each,2800
+Compressor Crankcase Heater Replacement,Replace wrap-around or insertion crankcase heater,Compressors and Condensing Units,each,210
+Compressor Vibration Isolator Mount Replacement,Replace rubber or spring compressor mounting feet,Compressors and Condensing Units,each,140
+Condensing Unit Replacement Air Cooled Small,Replace complete outdoor condensing unit up to 2 HP,Compressors and Condensing Units,each,3100
+Condensing Unit Replacement Air Cooled Medium,Replace complete outdoor condensing unit 3 HP to 5 HP,Compressors and Condensing Units,each,4900
+Walk-In Cooler Evaporator Coil Replacement,Replace ceiling hung evaporator coil assembly,Coils and Piping,each,1850
+Walk-In Freezer Evaporator Coil Replacement,Replace low temperature evaporator coil assembly,Coils and Piping,each,2200
+Air Cooled Condenser Coil Replacement,Replace remote condenser coil assembly,Coils and Piping,each,2400
+Refrigeration Line Set Repair,Locate and repair leak in copper line set,Coils and Piping,each,320
+Refrigeration Line Insulation Replacement,Replace Armaflex insulation on suction lines,Coils and Piping,linear ft,18
+Condensate Drain Line Clearing,Clear clogged condensate drain using nitrogen or CO2,Drainage and Defrost,each,165
+Condensate Pump Replacement,Replace automatic condensate removal pump,Drainage and Defrost,each,285
+Walk-In Cooler Door Gasket Replacement,Replace magnetic perimeter door gasket on walk-in,Doors and Hardware,each,290
+Walk-In Freezer Door Gasket Replacement,Replace low temp frost-resistant door gasket,Doors and Hardware,each,340
+Walk-In Door Closer Replacement,Replace hydraulic spring door hinge and closer,Doors and Hardware,each,260
+Walk-In Door Latch and Handle Replacement,Replace safety release interior/exterior door latch assembly,Doors and Hardware,each,380
+Strip Curtain Replacement Kit,Replace PVC strip curtains for walk-in doorway,Doors and Hardware,job,350
+Reach-In Glass Door Replacement,Replace insulated glass door assembly on reach-in cooler,Doors and Hardware,each,850
+Reach-In Door Hinge Replacement,Replace spring loaded cartridge hinge on glass door,Doors and Hardware,each,175
+Reach-In Door Heater Wire Replacement,Replace anti-sweat door frame heater wire,Doors and Hardware,each,310
+LED Cooler Light Fixture Replacement,Replace waterproof LED commercial case light bar,Lighting and Controls,each,195
+Fluorescent Ballast Replacement Case,Replace refrigerated display case electronic ballast,Lighting and Controls,each,240
+Case Thermometer Replacement,Replace analog or digital dial display thermometer,Lighting and Controls,each,95
+Wireless Data Logger Installation,Install remote temperature monitoring sensor and gateway,Lighting and Controls,each,320
+Condenser Coil Chemical Cleaning Small,Wash and flush small air-cooled condenser coil,Maintenance and Preventative,each,220
+Condenser Coil Chemical Cleaning Large,Wash and flush large remote air-cooled condenser coil,Maintenance and Preventative,each,450
+Evaporator Coil Chemical Cleaning,Foaming coil wash and flush for walk-in evaporator,Maintenance and Preventative,each,280
+Quarterly Preventive Maintenance Visit,"Coil wash, filter check, and operational check per unit",Maintenance and Preventative,visit,250
+Bi-Annual Preventive Maintenance Visit,Comprehensive spring and fall system service per unit,Maintenance and Preventative,visit,380
+Ice Machine Sanitize and Clean,"Scale removal, acid wash, and sanitize ice maker",Maintenance and Preventative,each,320
+Ice Machine Water Filter Replacement,Replace commercial scale and sediment water filter cartridge,Maintenance and Preventative,each,145
+Ice Machine Harvest Assist Assembly Replacement,"Replace probe, curtain, or harvest assist mechanism",Maintenance and Preventative,each,340
+Ice Machine Water Inlet Valve Replacement,Replace dual or single solenoid water fill valve,Maintenance and Preventative,each,260
+Ice Machine Pump Motor Replacement,Replace water circulation pump assembly,Maintenance and Preventative,each,380
+Refrigeration Permit Fee,Local municipal mechanical permit filing,Permits and Disposal,job,175
+Commercial Crane Lift Service,Crane rental and operator for rooftop unit replacement,Permits and Disposal,day,1500
+Refrigerated Equipment Disposal Fee,Haul away and EPA compliant scrap disposal of old unit,Permits and Disposal,each,250
+Hazardous Material Handling Fee,Special disposal of oil and contaminated refrigerant,Permits and Disposal,job,120
+After-Hours Dispatch Surcharge,Logistics fee for emergency night or weekend dispatch,Diagnostics and Service Calls,visit,125
+Refrigerant Leak Preventive Sealant Injection,Inject chemical sealant to seal minor evaporator micro-leaks,Refrigeration Components,job,310
+Phase Monitor Installation,Install three-phase voltage protection relay,Electrical and Motors,each,350
+Low Ambient Kit Installation,Install fan cycling controls for cold weather operation,Refrigeration Components,job,480
+Suction Line Heat Exchanger Retrofit,Add suction-liquid heat exchanger to improve efficiency,Coils and Piping,job,650
+Compressor Soft Starter Installation,Install electronic soft start module to reduce inrush current,Electrical and Motors,each,450
+Smart Thermostat Cloud Gateway Upgrade,Install enterprise cloud gateway for remote temperature alerts,Lighting and Controls,each,550
+Evaporator Fan Speed Controller Installation,Install ECM speed controller for energy savings,Electrical and Motors,each,290
+Condenser Wind Baffle Fabrication,Install custom sheet metal wind deflectors on condenser,Coils and Piping,job,380
+Walk-In Floor Insulated Panel Repair,Repair or patch damaged walk-in floor insulation panels,Doors and Hardware,sq ft,85
+Emergency Temporary Refrigeration Hookup,Plumb temporary mobile refrigeration unit to existing lines,Diagnostics and Service Calls,day,600
+Refrigerant Oil Analysis Lab Test,Laboratory spectrochemical analysis of compressor oil sample,Maintenance and Preventative,each,195
+Glycol Coolant Fluid Replacement,Flush and refill secondary loop propylene glycol system,Refrigerants and Recovery,gallon,42

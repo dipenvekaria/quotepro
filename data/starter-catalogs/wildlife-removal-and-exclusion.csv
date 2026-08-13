@@ -1,0 +1,100 @@
+name,description,category,unit,price
+Standard Wildlife Inspection,Comprehensive attic and exterior entry point evaluation,Diagnostics & Inspection,visit,150
+Thermal Imaging Inspection,Detect hidden animal nests and heat signatures in walls,Diagnostics & Inspection,visit,250
+Roof-Level Safety Assessment,High-slope roof access and perimeter vulnerability review,Diagnostics & Inspection,visit,175
+Sewer Scope Camera Inspection,Inspect underground pipes for rat or rodent intrusion,Diagnostics & Inspection,job,300
+Pre-Purchase Wildlife Audit,Home buyer structural animal vulnerability assessment,Diagnostics & Inspection,visit,275
+Standard Labor Rate,Hourly charge for general technician labor and repairs,Labor Rates,hour,125
+After-Hours Emergency Labor,Urgent night or weekend wildlife response hourly rate,Labor Rates,hour,225
+Specialist High-Access Labor,Hourly rate for complex rigging and multi-story work,Labor Rates,hour,175
+Two-Technician Crew Rate,Combined hourly rate for heavy exclusion projects,Labor Rates,hour,220
+Attic Sanitation Labor,Hourly rate for biological waste cleanup and vacuuming,Labor Rates,hour,110
+Raccoon Trapping Set-Up,Initial placement and baiting of live animal traps,Animal Removal,job,250
+Raccoon Removal Service,Per animal extraction and relocation fee,Animal Removal,each,150
+Squirrel Trapping Set-Up,Initial placement of multiple squirrel traps on roof,Animal Removal,job,225
+Squirrel Removal Service,Per squirrel extraction and relocation fee,Animal Removal,each,75
+Opossum Trapping Set-Up,Initial placement and baiting for ground-dwelling marsupials,Animal Removal,job,200
+Opossum Removal Service,Per opossum extraction and relocation fee,Animal Removal,each,125
+Skunk Trapping Set-Up,Covered trap installation for odor-free skunk capture,Animal Removal,job,275
+Skunk Removal Service,Per skunk secure removal and relocation fee,Animal Removal,each,175
+Bat Colony Evacuation System,Installation of one-way bat cones on primary exit points,Animal Removal,each,150
+Bat Colony Seal-Up Service,Post-evacuation sealing of all secondary bat entry points,Animal Removal,job,600
+Flying Squirrel Trapping Package,Specialized multi-trap setup for attic nesting rodents,Animal Removal,job,350
+Rat Extermination Program,Rodenticide station setup and initial interior trapping,Animal Removal,job,300
+Mice Eradication Setup,Interior snap trap array and exterior bait station deployment,Animal Removal,job,250
+Snake Removal Service,Safe capture and removal of nuisance snake from property,Animal Removal,each,200
+Snake Fence Barrier Installation,Fine mesh wire buried barrier to deter ground snakes,Animal Removal,linear ft,18
+Bird Nest Removal,Extraction of active or inactive nesting materials from vents,Animal Removal,each,175
+Pigeon Exclusion Netting,Heavy-duty netting installation under commercial overhangs,Animal Removal,sq ft,12
+Solar Panel Bird Guard Installation,Critter guard wire mesh perimeter clip installation around array,Animal Removal,linear ft,22
+Armadillo Trapping Set-Up,Specialized trench trap installation for burrowing pests,Animal Removal,job,300
+Armadillo Removal Service,Per armadillo capture and relocation fee,Animal Removal,each,150
+Beaver Dam Removal,Physical disassembly of obstruction causing localized flooding,Animal Removal,job,500
+Coyote Trapping Program,Professional predator trap deployment and monitoring,Animal Removal,visit,150
+Dead Animal Extraction,Locate and remove decaying carcass from wall or ceiling,Animal Removal,job,250
+Daily Trap Monitoring Visit,Required field check and rebaiting of active wildlife traps,Animal Removal,visit,75
+Roof Ridge Vent Exclusion Guard,Galvanized heavy mesh secured over ridge vent openings,Exclusion & Repairs,linear ft,25
+Gable Vent Screen Replacement,Heavy hardware cloth installation behind wooden louvers,Exclusion & Repairs,each,175
+Soffit Repair and Exclusion,Rebuild damaged soffit board and seal animal access gap,Exclusion & Repairs,linear ft,45
+Fascia Board Animal Repair,Replace chewed wood and install galvanized steel backing,Exclusion & Repairs,linear ft,55
+Chimney Cap Installation,Stainless steel single-flue animal cap with spark arrestor,Exclusion & Repairs,each,275
+Custom Multi-Flue Chimney Cap,Large custom-sized wire mesh cover for oversized chimneys,Exclusion & Repairs,each,550
+Chimney Damper Seal,Seal upper throat gaps to block birds and squirrels,Exclusion & Repairs,job,225
+Foundation Vent Screen Guard,Heavy-duty steel mesh screwed over crawlspace openings,Exclusion & Repairs,each,65
+Dryer Vent Guard Installation,Heavy rodent-proof exhaust flap cage on exterior wall,Exclusion & Repairs,each,120
+Bathroom Exhaust Vent Guard,Secure heavy mesh cover over roof-mounted exhaust cap,Exclusion & Repairs,each,135
+Deck Trench Barrier Installation,Hardware cloth buried around deck perimeter to stop skunks,Exclusion & Repairs,linear ft,28
+Shed Skirt Exclusion Wall,Galvanized wire mesh installed around low-clearance shed,Exclusion & Repairs,linear ft,24
+Foundation Gap Steel Mesh Seal,Industrial wire mesh fastened over masonry settlement cracks,Exclusion & Repairs,linear ft,20
+Weep Hole Screen Insertion,Stainless steel mesh inserts placed in brick weep holes,Exclusion & Repairs,each,12
+Roof-Wall Junction Flashing Repair,Install metal flashing to block wildlife entry at angle,Exclusion & Repairs,linear ft,38
+Expansion Joint Metal Sealing,Heavy gauge metal barrier over structural wall gaps,Exclusion & Repairs,linear ft,32
+Attic Insulation Removal (Contaminated),Industrial vacuum extraction of ruined animal insulation,Attic Restoration,sq ft,2.25
+Attic Sanitization and Deodorization,Enzymatic spray treatment for biological waste and odor,Attic Restoration,sq ft,0.75
+Thermal Fogging Disinfectant Treatment,Deep-penetrating fogger to neutralize bacteria and viruses,Attic Restoration,sq ft,0.5
+Blown-In Cellulose Insulation Replacement,Installation of fresh pest-treated cellulose insulation,Attic Restoration,sq ft,2.5
+Fiberglass Batt Insulation Replacement,Installation of fresh R-30 fiberglass batts in attic space,Attic Restoration,sq ft,2.85
+RectorSeal Odor Neutralizer Application,Targeted spray application for urine-soaked subflooring,Attic Restoration,sq ft,1.1
+Crawlspace Vapor Barrier Replacement,Heavy 6-mil poly sheeting installation on ground,Attic Restoration,sq ft,0.9
+Subfloor Urine Sealing Treatment,Apply shellac-based primer to wood blocking odor,Attic Restoration,sq ft,1.75
+Ductwork Sanitization Service,Antimicrobial fogging treatment inside HVAC flex ducts,Attic Restoration,job,350
+Attic Hantavirus Safety Protocol Fee,Full PPE and negative air setup for heavy rodent hazard,Attic Restoration,job,200
+Hardware Cloth Roll (1/4 inch),Galvanized steel wire mesh for chewing animal exclusion,Materials & Hardware,each,85
+Hardware Cloth Roll (1/2 inch),Standard galvanized wire mesh for medium animal barriers,Materials & Hardware,each,75
+Copper Mesh Roll (Stuf-Fit),Knitted copper wire blocking material for small gaps,Materials & Hardware,each,45
+Expanding Foam (Pest-Block),Polyurethane foam sealant with bitterant deterrent,Materials & Hardware,each,25
+High-Grade Exterior Caulk Tube,Siliconized acrylic latex sealant for minor gap closure,Materials & Hardware,each,15
+Sheet Metal Flashing Panel,24-gauge galvanized steel sheet for custom patching,Materials & Hardware,each,40
+Live Animal Trap (Small),Single-door wire mesh trap for rats and squirrels,Materials & Hardware,each,60
+Live Animal Trap (Medium),Standard cage trap for raccoons and opossums,Materials & Hardware,each,95
+Live Animal Trap (Large),Heavy-duty cage trap for bobcats and stray dogs,Materials & Hardware,each,175
+Tamper-Resistant Rodent Bait Station,Locking exterior station for mouse and rat blocks,Materials & Hardware,each,35
+One-Way Bat Cone Excluder,Plastic funnel device for safe bat colony exit,Materials & Hardware,each,30
+Roof Cement Pail (1 Gallon),Bituminous flashing cement for emergency patch work,Materials & Hardware,gallon,45
+Stainless Steel Fasteners Box,Corrosion-resistant screws for exterior mesh mounting,Materials & Hardware,each,28
+Perimeter Repellent Granules,Organic scent-based animal deterrent application,Materials & Hardware,each,50
+Animal Waste Disposal Bag Set,Heavy duty biohazard disposal bags for attic waste,Materials & Hardware,each,20
+Standard Municipal Disposal Fee,Dump fee for non-hazardous animal waste and debris,Permits & Disposal,job,75
+Biohazard Debris Disposal Fee,Special facility fee for animal feces and contaminated insulation,Permits & Disposal,job,175
+Local Wildlife Permit Processing,Filing fees and documentation for regulated species removal,Permits & Disposal,each,50
+Commercial Crane Rental Fee,Daily crane rental for high-rise exclusion staging,Permits & Disposal,day,850
+Scaffolding Setup and Tear-Down,Temporary staging assembly for multi-story exclusion work,Permits & Disposal,job,450
+Annual Preventative Maintenance Plan,Quarterly exterior inspection and trap reset service,Service Plans & Warranties,job,499
+Semi-Annual Exclusion Checkup,Biannual review of existing mesh guards and seals,Service Plans & Warranties,visit,199
+Extended Exclusion Warranty (1 Year),Full coverage warranty on all installed exclusion repairs,Service Plans & Warranties,job,250
+Extended Exclusion Warranty (3 Year),Three-year workmanship guarantee against re-entry,Service Plans & Warranties,job,599
+Lifetime Transferable Exclusion Warranty,Permanent re-entry protection for home sale transfer,Service Plans & Warranties,job,999
+Priority Emergency Dispatch Fee,Jump to front of queue for same-day animal emergency,Service Plans & Warranties,job,150
+Animal Damage Insurance Claim Assistance,Detailed photo report and adjuster meeting for claims,Service Plans & Warranties,job,200
+Attic Insulation Top-Up (R-38),Add loose fill insulation to bring attic up to code,Attic Restoration,sq ft,1.85
+Soffit Vent Screen Upgrades,Replace plastic vented panels with heavy aluminum mesh,Exclusion & Repairs,each,35
+Foundation Air Vent Replacement,Install new heavy-gauge metal crawlspace vent door,Exclusion & Repairs,each,85
+Roof Leak Patch (Animal Caused),Shingle repair where animal chewed through roof deck,Exclusion & Repairs,job,325
+Gutter Guard Installation (Brush Style),Block pests from nesting inside residential gutters,Exclusion & Repairs,linear ft,6
+Gutter Guard Installation (Mesh Style),Aluminum perforated screen over gutters to block animals,Exclusion & Repairs,linear ft,9
+Subfloor Insulation Replacement,Hang new fiberglass batts under floor joists in crawlspace,Attic Restoration,sq ft,2.1
+Rodent Proofing Whole-House Package,Comprehensive bottom-to-top exterior gap sealing,Exclusion & Repairs,job,1250
+Bat Guano Heavy Debris Removal,Manual scraping and bagging of heavy guano deposits,Attic Restoration,job,450
+Squirrel Entry Repair Package,Seal up to five minor roof and soffit entry points,Exclusion & Repairs,job,450
+Raccoon Roof Interception Barrier,Heavy flashing install over vulnerable valley and vent intersections,Exclusion & Repairs,job,550
+Ultrasonic Pest Repeller Installation,Plug-in high frequency sound generators for attic space,Materials & Hardware,each,75

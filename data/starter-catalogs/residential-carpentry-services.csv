@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call and Diagnostic,On-site assessment and written repair estimate,Diagnostics and Fees,visit,125
+After-Hours Emergency Service Call,Urgent on-site diagnostic outside normal business hours,Diagnostics and Fees,visit,250
+Detailed Carpentry Consultation,In-person design and scope planning session,Diagnostics and Fees,hour,95
+Carpentry Labor Rate,Standard hourly rate for skilled finish carpentry work,Labor Rates,hour,85
+Lead Carpenter Labor Rate,Hourly rate for complex structural or custom millwork,Labor Rates,hour,115
+Apprentice Labor Rate,Hourly rate for assistant labor and material handling,Labor Rates,hour,55
+Overtime Labor Surcharge,Additional hourly premium for evening or weekend work,Labor Rates,hour,45
+Debris Disposal Fee,Removal and hauling of old materials and jobsite waste,Permits and Disposal,job,150
+Large Dumpster Rental Surcharge,Roll-off dumpster coordination for major remodeling jobs,Permits and Disposal,job,550
+Building Permit Acquisition,Filing and processing local municipal construction permits,Permits and Disposal,job,200
+Interior Door Installation,Hang pre-hung interior door in existing rough opening,Doors and Hardware,each,225
+Exterior Door Installation,Hang pre-hung exterior door with proper flashing and shims,Doors and Hardware,each,450
+Pocket Door Installation,Install sliding pocket door frame and slab,Doors and Hardware,each,550
+Bifold Door Set Installation,Install closet bifold door track and panels,Doors and Hardware,each,175
+Double French Door Installation,Install double pre-hung door unit in interior opening,Doors and Hardware,each,650
+Door Slab Replacement,Fit and hang new door slab into existing mortises,Doors and Hardware,each,180
+Interior Door Hardware Installation,Install passage or privacy knob set and latch,Doors and Hardware,each,45
+Deadbolt Installation,Bore door and install single cylinder deadbolt,Doors and Hardware,each,75
+Mortise Lock Repair,Realign and repair traditional mortise lockset,Doors and Hardware,each,150
+Door Hinge Replacement,Swap out three existing hinges with new finish hinges,Doors and Hardware,each,60
+Door Sweep Installation,Mount rubber door sweep to exterior door bottom,Doors and Hardware,each,40
+Threshold Replacement,Remove and replace worn exterior door threshold,Doors and Hardware,each,120
+Baseboard Installation,"Cut, cope, and nail standard wood baseboard",Trim and Molding,linear ft,5
+Baseboard Removal and Disposal,Carefully pry off and discard old baseboard trim,Trim and Molding,linear ft,2
+Quarter Round Molding Installation,Install shoe or quarter round molding along baseboards,Trim and Molding,linear ft,3
+Crown Molding Installation,"Measure, cope, and install intricate crown molding",Trim and Molding,linear ft,12
+Chair Rail Installation,Install decorative chair rail molding on drywall,Trim and Molding,linear ft,7
+Wainscoting Panel Installation,Install beadboard wainscoting with top and bottom rail,Trim and Molding,sq ft,18
+Door Casing Installation,Install trim boards around single interior door opening,Trim and Molding,each,90
+Window Casing Installation,Install trim boards around standard interior window opening,Trim and Molding,each,110
+Window Sill and Apron Installation,Replace interior wooden window stool and apron trim,Trim and Molding,each,130
+Picture Frame Molding Installation,Create decorative wall panel boxes using molding strips,Trim and Molding,linear ft,9
+Coffered Ceiling Build,Construct grid of wooden beams on flat drywall ceiling,Trim and Molding,sq ft,35
+Wood Wall Paneling Installation,Install tongue and groove planks on accent wall,Trim and Molding,sq ft,14
+Custom Built-In Bookshelf Construction,Build and install custom wall-to-wall shelving unit,Cabinetry and Built-Ins,linear ft,320
+Floating Shelf Installation,Mount heavy-duty concealed bracket floating wood shelf,Cabinetry and Built-Ins,each,125
+Kitchen Cabinet Upper Installation,Level and anchor upper kitchen cabinet boxes to wall,Cabinetry and Built-Ins,linear ft,110
+Kitchen Cabinet Base Installation,Level and anchor base kitchen cabinet boxes to floor,Cabinetry and Built-Ins,linear ft,95
+Cabinet Door Adjustment,Align euro-hinges for proper cabinet door closure,Cabinetry and Built-Ins,each,25
+Cabinet Hardware Replacement,Swap out pulls and knobs on existing cabinet doors,Cabinetry and Built-Ins,each,15
+Custom Pantry Shelving Build,Construct fixed solid wood shelving inside pantry closet,Cabinetry and Built-Ins,linear ft,45
+Mantel Installation,Secure wooden fireplace mantel to masonry or framing,Cabinetry and Built-Ins,each,275
+Bathroom Vanity Installation,Set freestanding vanity cabinet and level in place,Cabinetry and Built-Ins,each,220
+Closet Organizer System Assembly,Build and secure modular laminate closet shelving system,Cabinetry and Built-Ins,linear ft,65
+Custom Window Seat Construction,Build wood bench frame with hinged storage lid,Cabinetry and Built-Ins,linear ft,280
+Hardwood Floor Repair,Patch damaged tongue and groove hardwood flooring boards,Flooring and Stairs,sq ft,30
+Subfloor Section Replacement,Cut out and replace damaged plywood or OSB subfloor,Flooring and Stairs,sq ft,12
+Stair Tread Replacement,Remove and replace damaged solid wood stair tread,Flooring and Stairs,each,140
+Stair Riser Replacement,Install new vertical board between stair treads,Flooring and Stairs,each,75
+Stair Baluster Installation,Install new wood or metal baluster into stair tread,Flooring and Stairs,each,45
+Newel Post Installation,Anchor structural stair newel post to floor framing,Flooring and Stairs,each,250
+Handrail Installation,Mount wooden handrail to wall or balusters,Flooring and Stairs,linear ft,35
+Squeaky Stair Repair,Fasten loose treads and risers to eliminate floor noise,Flooring and Stairs,step,50
+Threshold Transition Installation,Install wood transition strip between different floor types,Flooring and Stairs,each,60
+Interior Wall Framing,Build standard 2x4 wood stud partition wall,Structural and Framing,linear ft,35
+Non-Loadbearing Wall Removal,Demo and remove interior partition wall and framing,Structural and Framing,linear ft,55
+Header Installation,Install engineered wood or lumber header for new opening,Structural and Framing,each,320
+Floor Joist Sistering,Reinforce sagging wooden floor joist with adjacent lumber,Structural and Framing,linear ft,40
+Wall Stud Repair,Splice or replace damaged sections of wall framing studs,Structural and Framing,each,110
+Pocket Door Rough Opening Framing,Construct properly sized header and cripples for pocket door,Structural and Framing,each,180
+Ceiling Joist Reinforcement,Strengthen attic ceiling framing for added load capacity,Structural and Framing,linear ft,45
+Drywall Patching Small,Repair hole up to six inches in drywall surface,Drywall and Repairs,each,125
+Drywall Patching Medium,Repair hole up to two square feet in drywall,Drywall and Repairs,each,225
+Drywall Sheet Hanging,Hang standard gypsum board to wall or ceiling framing,Drywall and Repairs,sq ft,3
+Drywall Taping and Mudding,Apply joint tape and three coats of joint compound,Drywall and Repairs,sq ft,3
+Popcorn Ceiling Texture Removal,"Scrape, skim coat, and sand textured ceiling smooth",Drywall and Repairs,sq ft,4
+Water Damaged Drywall Replacement,Cut out moldy drywall and replace with greenboard,Drywall and Repairs,sq ft,8
+Corner Bead Replacement,Install and mud new metal or paper drywall corner bead,Drywall and Repairs,linear ft,9
+Access Panel Installation,Cut opening and install framed drywall access door,Drywall and Repairs,each,160
+TV Wall Mount Installation,Secure flat screen bracket to wood studs through drywall,Miscellaneous Hardware,each,130
+Curtain Rod Installation,Mount drapery brackets and rod securely to wall anchors,Miscellaneous Hardware,each,65
+Blinds Installation,Mount window blind brackets and hang slat blinds,Miscellaneous Hardware,each,55
+Interior Shutter Installation,Mount louvered wood shutters inside window frame,Miscellaneous Hardware,each,140
+Heavy Mirror Hanging,Install heavy-duty french cleat for large wall mirror,Miscellaneous Hardware,each,95
+Artwork Hanging Service,Hang framed art using proper wall anchors and level,Miscellaneous Hardware,each,45
+Smoke Detector Mounting,Secure battery or hardwired smoke detector to ceiling,Miscellaneous Hardware,each,35
+Coat Hook Rail Installation,Mount wooden board with hooks onto wall studs,Miscellaneous Hardware,each,75
+Baby Gate Installation,Secure pressure or hardware-mounted safety gate,Miscellaneous Hardware,each,60
+Grab Bar Installation,Mount ADA compliant bathroom safety grab bar to blocking,Miscellaneous Hardware,each,85
+Custom Radiator Cover Build,Construct decorative wooden enclosure for baseboard heater,Cabinetry and Built-Ins,linear ft,190
+Attic Access Ladder Installation,Cut opening and install fold-down wooden attic stairs,Structural and Framing,each,450
+Collar Tie Installation,Install dimensional lumber across attic rafters for rigidity,Structural and Framing,each,90
+Skylight Shaft Framing,Construct light tunnel framing from roof to ceiling drywall,Structural and Framing,linear ft,70
+Wood Rot Repair in Studs,Cut out decayed wood and sister fresh lumber to stud,Structural and Framing,each,135
+Baseboard Corner Patch,Re-miter and glue separated baseboard corner joints,Trim and Molding,each,50
+Custom Range Hood Cover Build,Build decorative wood housing to conceal kitchen vent hood,Cabinetry and Built-Ins,each,450
+Interior Transom Window Installation,Install glass transom window above interior door opening,Doors and Hardware,each,275
+Pet Door Installation in Wooden Door,Cut opening and mount pet flap into solid core door,Doors and Hardware,each,150
+Column Wrap Installation,Encase interior structural post in decorative wood columns,Trim and Molding,each,350
+Acoustic Wall Panel Installation,Mount sound-dampening wood slat acoustic panels to wall,Trim and Molding,sq ft,22
+Custom Closet Drawer Box Build,Construct dovetailed wood drawer box for closet system,Cabinetry and Built-Ins,each,110
+Hardwood Threshold Fabrication,Custom mill transition piece from scrap hardwood stock,Flooring and Stairs,each,85
+Drywall Expansion Joint Installation,Install metal control joint to prevent drywall cracking,Drywall and Repairs,linear ft,15
+Picture Rail Molding Installation,Mount traditional picture hanging rail molding near ceiling,Trim and Molding,linear ft,11
+Pocket Door Roller Replacement,Access track and replace worn sliding door roller hardware,Doors and Hardware,each,175
+Fireplace Surround Woodwork,Install custom wooden panels and legs around fireplace,Cabinetry and Built-Ins,job,850
+Stair Tread Refinishing Prep,Sand down old finish on existing wood stair treads,Flooring and Stairs,each,40
+Drywall Sanding and Dust Control,Perform HEPA vacuum-assisted sanding of drywall compound,Drywall and Repairs,sq ft,1
+Custom Under-Stair Storage Build,Construct pull-out drawers and framing beneath open stairs,Cabinetry and Built-Ins,job,1200
+Baseboard Caulking and Filling,Fill nail holes and caulk top edge of baseboard trim,Trim and Molding,linear ft,2

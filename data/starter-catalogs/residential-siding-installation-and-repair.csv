@@ -1,0 +1,99 @@
+name,description,category,unit,price
+Standard Service Call,On-site diagnostic and assessment of siding damage,Diagnostics,visit,125
+After-Hours Emergency Service Call,Urgent dispatch outside of normal business hours,Diagnostics,visit,250
+Siding Leak Investigation,Water intrusion testing and moisture meter analysis,Diagnostics,hour,150
+Thermal Imaging Scan,Infrared scan to detect hidden wall cavity moisture,Diagnostics,job,300
+Insurance Claim Documentation,Detailed damage report with photos for insurance adjusters,Diagnostics,job,200
+Standard Labor Rate,Hourly rate for general siding repairs and labor,Labor Rates,hour,95
+Master Installer Labor Rate,Hourly rate for complex architectural detailing and trim,Labor Rates,hour,135
+Overtime Labor Surcharge,Additional hourly rate multiplier for weekend or evening work,Labor Rates,hour,65
+Two-Man Crew Daily Rate,Full day labor charge for a standard two-person crew,Labor Rates,day,1500
+Scaffolding Setup and Rental,Erection and weekly rental of exterior staging equipment,Labor Rates,job,450
+Vinyl Siding Removal,Stripping and hauling away existing vinyl siding materials,Removal & Disposal,sq ft,1
+Fiber Cement Removal,Stripping and hauling away existing fiber cement siding,Removal & Disposal,sq ft,2
+Wood Siding Removal,Stripping and hauling away existing wood plank or panel siding,Removal & Disposal,sq ft,2
+Stucco Removal,Chipping out and disposing of exterior stucco cladding,Removal & Disposal,sq ft,4
+Foam Backer Board Removal,Stripping underlying insulation board during demolition,Removal & Disposal,sq ft,1
+Debris Dumpster Rental,"Delivery, rental, and pickup of a 30-yard disposal container",Removal & Disposal,job,650
+Hazardous Material Disposal Fee,Special disposal handling for lead-based paint or asbestos siding,Removal & Disposal,job,500
+Site Cleanup and Magnetic Sweep,Post-project cleanup including magnet sweep for fasteners,Removal & Disposal,job,150
+House Wrap Installation,Application of breathable weather-resistant moisture barrier,Preparation & Substrate,sq ft,1
+Rigid Foam Insulation Board,Installation of 1-inch exterior insulation foam board,Preparation & Substrate,sq ft,2
+OSB Wall Sheathing Replacement,Replacement of damaged oriented strand board wall sheathing,Preparation & Substrate,sq ft,4
+Plywood Wall Sheathing Replacement,Replacement of damaged exterior plywood wall decking,Preparation & Substrate,sq ft,5
+Stud Repair and Sistering,Reinforcing or replacing rotted vertical wall framing studs,Preparation & Substrate,linear ft,35
+Flashing Tape Application,Self-adhering flashing membrane around window and door openings,Preparation & Substrate,linear ft,3
+Vinyl Siding Panel Replacement,Replacement of damaged standard vinyl siding panels,Vinyl Siding,sq ft,7
+New Vinyl Siding Installation,Complete installation of new standard vinyl siding,Vinyl Siding,sq ft,8
+Insulated Vinyl Siding Installation,Installation of premium foam-backed vinyl siding,Vinyl Siding,sq ft,11
+Vinyl J-Channel Installation,Installation of perimeter and opening trim channels,Vinyl Siding,linear ft,4
+Vinyl Corner Post Installation,Installation of outside or inside vinyl corner posts,Vinyl Siding,linear ft,9
+Vinyl Starter Strip Installation,Leveling and fastening bottom starter course track,Vinyl Siding,linear ft,3
+Fiber Cement Lap Siding Installation,Installation of Hardieplank or equivalent fiber cement siding,Fiber Cement,sq ft,12
+Fiber Cement Panel Replacement,Removal and replacement of broken fiber cement lap boards,Fiber Cement,sq ft,15
+Fiber Cement Vertical Siding,Installation of vertical panel style fiber cement cladding,Fiber Cement,sq ft,14
+Fiber Cement Trim Board Installation,Installation of 4/4 or 5/4 fiber cement corner and window trim,Fiber Cement,linear ft,10
+Fiber Cement Soffit Panel,Installation of vented or unvented fiber cement soffit panels,Fiber Cement,sq ft,13
+Fiber Cement Touch-Up Painting,Field painting of cut edges and touched-up fastener heads,Fiber Cement,hour,85
+Wood Bevel Siding Installation,Installation of cedar or redwood traditional bevel siding,Wood & Cedar Siding,sq ft,14
+Wood Board and Batten Siding,Installation of vertical wood boards with decorative battens,Wood & Cedar Siding,sq ft,16
+Cedar Shingle Siding Installation,Installation of individual or paneled cedar shake siding,Wood & Cedar Siding,sq ft,18
+Wood Plank Board Replacement,Replacement of rotted individual cedar or pine planks,Wood & Cedar Siding,linear ft,18
+Cedar Siding Staining,Application of semi-transparent penetrating oil stain,Wood & Cedar Siding,sq ft,3
+Wood Siding Primer Application,Application of exterior oil-based primer on raw wood,Wood & Cedar Siding,sq ft,2
+Aluminum Lap Siding Replacement,Replacement of damaged metal lap siding sections,Metal & Composite Siding,sq ft,10
+Steel Siding Installation,Installation of heavy-duty seamless steel siding panels,Metal & Composite Siding,sq ft,15
+Composite Siding Installation,Installation of engineered wood composite siding panels,Metal & Composite Siding,sq ft,13
+Metal Corner Flashing Fabrication,Custom brake-formed metal corner trim installation,Metal & Composite Siding,linear ft,12
+Aluminum Fascia Wrap,Covering existing wood fascia with custom bent aluminum coil,Trim & Soffit,linear ft,11
+Aluminum Rake Wrap,Covering gable rake boards with custom bent aluminum coil,Trim & Soffit,linear ft,12
+Aluminum Soffit Installation,Installation of vented or solid aluminum soffit panels,Trim & Soffit,sq ft,8
+Wood Fascia Board Replacement,Replacement of rotted 2x6 or 2x8 wood fascia boards,Trim & Soffit,linear ft,20
+Wood Rake Board Replacement,Replacement of rotted gable rake boards,Trim & Soffit,linear ft,22
+PVC Trim Board Installation,Installation of rot-proof cellular PVC boards for trim,Trim & Soffit,linear ft,14
+Crown Molding Exterior Detail,Installation of architectural exterior PVC crown molding,Trim & Soffit,linear ft,25
+Window Flashing Kit Installation,Installation of aluminum sill pan and head flashing,Flashing & Details,each,75
+Door Flashing Kit Installation,Installation of exterior door head and jamb flashing,Flashing & Details,each,95
+Step Flashing Installation,Installation of step flashing where roof meets wall siding,Flashing & Details,linear ft,12
+Kickout Flashing Installation,Installation of diverter flashing at roof wall intersections,Flashing & Details,each,85
+Z-Flashing Installation,Metal flashing installed horizontally above ledger boards and ledges,Flashing & Details,linear ft,8
+Foundation Drip Edge Installation,Installation of starter metal flashing above foundation wall,Flashing & Details,linear ft,7
+Friese Board Installation,Installation of top horizontal wall trim board under eaves,Flashing & Details,linear ft,10
+Exterior Caulking Service,"Sealing all window perimeters, trim joints, and penetrations",Caulking & Weatherproofing,linear ft,3
+Expansion Joint Sealing,Installation of backer rod and high-grade elastomeric sealant,Caulking & Weatherproofing,linear ft,5
+Control Joint Installation,Installation of metal or vinyl control joints in siding runs,Caulking & Weatherproofing,linear ft,9
+Weatherstripping Replacement,Replacement of worn perimeter door and window seals,Caulking & Weatherproofing,linear ft,6
+Attic Ventilation Gable Louver,Installation of decorative gable vent louver with screen,Vents & Accessories,each,175
+Dryer Vent Hood Replacement,Replacement of exterior louvered dryer exhaust vent hood,Vents & Accessories,each,90
+Bathroom Exhaust Vent Hood,Replacement of flanged exhaust vent cap through siding,Vents & Accessories,each,85
+Electrical Meter Base Trim-Out,Framing and siding around utility meter socket and conduit,Vents & Accessories,job,150
+Light Fixture Mounting Block,Installation of surface mounting block for exterior sconce,Vents & Accessories,each,65
+Water Spigot Mounting Block,Installation of mounting block around exterior hose bib,Vents & Accessories,each,65
+Decorative Gable Pediment,Installation of architectural gable accent pediment,Vents & Accessories,each,350
+Board and Batten Accent Wall,Installation of accent vertical board and batten feature wall,Architectural Accents,sq ft,16
+Shake Siding Accent Gable,Installation of cedar-look shake siding on gable peak accent,Architectural Accents,sq ft,17
+Stone Veneer Siding Integration,Installation of manufactured stone veneer wainscot siding,Architectural Accents,sq ft,28
+Corbel Bracket Installation,Installation of decorative structural or cosmetic wood corbels,Architectural Accents,each,120
+Window Paneled Shutter Installation,Hanging decorative louvered or paneled exterior shutters,Architectural Accents,pair,110
+Standard Building Permit Fee,Acquisition of municipal building permit for siding replacement,Permits & Administration,job,250
+HOA Architectural Application,Preparation and submission of paperwork for homeowner association,Permits & Administration,job,100
+Engineering Wind Load Calculation,Structural engineering letter for high wind zone requirements,Permits & Administration,job,400
+Municipal Inspection Coordination,Scheduling and attending local building code progress inspections,Permits & Administration,job,125
+Lead Safe Containment Setup,EPA RRP compliant plastic ground barrier and containment setup,Safety & Containment,job,300
+Fall Protection Anchor Rigging,Installation of OSHA-compliant roof and wall anchor points,Safety & Containment,job,200
+Temporary Weather Protection Barrier,Installation of emergency poly sheeting over exposed wall framing,Safety & Containment,sq ft,2
+Lead Testing Kit Sample Analysis,On-site chemical testing of painted siding layers for lead content,Safety & Containment,each,75
+Exterior Pressure Washing,Low-pressure washing of existing siding prior to repair work,Cleaning & Maintenance,sq ft,1
+Mold and Mildew Treatment,Application of specialized fungicidal wash to exterior walls,Cleaning & Maintenance,sq ft,1
+Annual Siding Maintenance Check,"Inspection, minor caulking touch-ups, and loose panel re-securing",Cleaning & Maintenance,visit,195
+Dry Rot Treatment Application,Application of liquid wood stabilizer and borate anti-fungal treatment,Repairs - Miscellaneous,hour,95
+Termite Damage Framing Repair,Replacement of structural studs and plates damaged by subterranean termites,Repairs - Miscellaneous,linear ft,55
+Bird Damage Repair Patch,Repair of holes pecked into wood or composite siding by wildlife,Repairs - Miscellaneous,each,150
+Hail Damage Spot Siding Repair,Replacing isolated cracked or dented siding panels caused by hailstorms,Repairs - Miscellaneous,job,350
+Wind Damage Re-securing,Re-snapping and fastening loose or blown-off vinyl siding panels,Repairs - Miscellaneous,hour,95
+Expansion Joint Repair,Cutting out failed sealant and installing new backing and caulk,Repairs - Miscellaneous,linear ft,8
+Foundation Vent Replacement,Replacement of damaged cast iron or plastic crawlspace foundation vents,Repairs - Miscellaneous,each,75
+Chimney Chase Cover and Siding Wrap,Installation of siding and trim around prefabricated fireplace chase,Repairs - Miscellaneous,job,600
+Bay Window Roof Siding Integration,Flashing and siding installation around custom bay window overhang,Repairs - Miscellaneous,job,450
+Soffit Vent Replacement,Replacing damaged individual vented soffit panels to restore airflow,Trim & Soffit,each,35
+Custom Brake-Formed Flashing,Custom fabricated aluminum or copper metal flashing piece,Flashing & Details,linear ft,18

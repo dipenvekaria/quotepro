@@ -1,0 +1,102 @@
+name,description,category,unit,price
+Standard Diagnostic Fee,Onsite evaluation and troubleshooting of plumbing system issue,Diagnostics and Service Calls,visit,175
+After-Hours Diagnostic Fee,Emergency dispatch outside normal business hours,Diagnostics and Service Calls,visit,350
+Commercial Plumbing Labor Rate,Standard hourly rate per certified commercial plumber,Diagnostics and Service Calls,hour,145
+Overtime Labor Rate,After-hours and weekend hourly rate per plumber,Diagnostics and Service Calls,hour,215
+Two-Man Crew Labor Rate,Hourly rate for a primary technician and assistant,Diagnostics and Service Calls,hour,260
+Project Management Fee,Coordination and oversight for major plumbing installations,Diagnostics and Service Calls,job,450
+Municipal Permit Acquisition,Pulling local plumbing permits for required commercial work,Diagnostics and Service Calls,job,250
+Environmental Disposal Fee,Proper disposal of hazardous waste or contaminated materials,Diagnostics and Service Calls,job,125
+After-Hours Emergency Dispatch,Immediate mobilization fee for critical facility failures,Diagnostics and Service Calls,visit,400
+Safety Standby Fire Watch,Required fire watch during hot work operations,Diagnostics and Service Calls,hour,95
+Toilet Flush Valve Replacement,Replace commercial diaphragm-style manual flushometer,Fixtures and Faucets,each,240
+Sensor Flush Valve Replacement,Replace electronic infrared flush valve assembly,Fixtures and Faucets,each,420
+Commercial Water Closet Replacement,Floor-mounted vitreous china commercial toilet installation,Fixtures and Faucets,each,650
+Wall-Hung Urinal Replacement,Commercial wall-hung porcelain urinal replacement,Fixtures and Faucets,each,580
+Commercial Lavatory Sink Replacement,Wall-hung or drop-in commercial sink basin installation,Fixtures and Faucets,each,520
+Commercial Faucet Replacement,Deck-mounted commercial metering or manual faucet,Fixtures and Faucets,each,310
+Sensor Faucet Replacement,Electronic touchless battery or hardwired faucet,Fixtures and Faucets,each,540
+Commercial Service Sink Replacement,Floor-mounted mop sink and wall faucet installation,Fixtures and Faucets,each,850
+Drinking Fountain Replacement,Wall-mounted commercial electric drinking fountain,Fixtures and Faucets,each,980
+Eye Wash Station Installation,Emergency plumbed eye wash station and drain hookup,Fixtures and Faucets,each,1100
+Main Sewer Line Hydro Jetting,High-pressure water jetting of main building sewer line,Drain Cleaning and Jetting,hour,380
+Branch Line Cable Cleaning,Mechanical snake cleaning of secondary drain branch,Drain Cleaning and Jetting,each,220
+Floor Drain Clearing,Mechanical rodding and clearing of commercial floor drain,Drain Cleaning and Jetting,each,240
+Urinal Drain Clearing,Clear stubborn scale and blockage in urinal drain line,Drain Cleaning and Jetting,each,210
+Grease Trap Line Jetting,High-pressure jetting of kitchen grease waste line,Drain Cleaning and Jetting,hour,420
+Roof Drain Clearing,Clear clogged commercial roof storm drain leader,Drain Cleaning and Jetting,each,350
+Main Sewer Video Inspection,Camera inspection and digital recording of sewer line,Drain Cleaning and Jetting,job,450
+Additional Line Camera Scope,Secondary branch line camera inspection during visit,Drain Cleaning and Jetting,each,150
+Sewer Line Locating,Electronic surface mapping of buried sewer pipe path,Drain Cleaning and Jetting,job,275
+Main Cleanout Installation,Install 4-inch PVC cleanout assembly on main sewer line,Drain Cleaning and Jetting,each,650
+Gas Water Heater Replacement 50Gal,Commercial grade 50-gallon gas water heater replacement,Water Heaters and Boilers,each,3400
+Gas Water Heater Replacement 100Gal,Commercial grade 100-gallon gas water heater replacement,Water Heaters and Boilers,each,5800
+Electric Water Heater Replacement,Commercial heavy-duty electric water heater replacement,Water Heaters and Boilers,each,3900
+Tankless Water Heater Commercial,Commercial condensing tankless water heater installation,Water Heaters and Boilers,each,4600
+Water Heater Anode Rod Replacement,Replace sacrificial magnesium anode rods in tank,Water Heaters and Boilers,each,280
+Water Heater Thermostat Replacement,Replace commercial gas valve or electric thermostat,Water Heaters and Boilers,each,450
+Circulation Pump Replacement,Bronze hot water recirculation pump replacement,Water Heaters and Boilers,each,950
+Expansion Tank Replacement,Commercial thermal expansion tank replacement,Water Heaters and Boilers,each,420
+Boiler Feed Valve Replacement,Automatic water feeder valve replacement for boiler system,Water Heaters and Boilers,each,520
+Commercial Boiler Descaling,Chemical flush and descale of commercial water boiler,Water Heaters and Boilers,job,1250
+Main Water Shut-Off Valve Replacement,Replace 2-inch commercial main water isolation valve,"Pipes, Valves, and Fittings",each,950
+Pressure Reducing Valve Replacement,Commercial water pressure regulator replacement,"Pipes, Valves, and Fittings",each,780
+Backflow Preventer Testing,Annual certification and test of backflow assembly,"Pipes, Valves, and Fittings",each,220
+Backflow Preventer Rebuild,Internal seal and check valve replacement kit installation,"Pipes, Valves, and Fittings",each,650
+Backflow Preventer Replacement,Complete 2-inch RPZ backflow preventer replacement,"Pipes, Valves, and Fittings",each,1850
+Copper Pipe Repair 1 Inch,Repair leaking or damaged 1-inch copper water line,"Pipes, Valves, and Fittings",linear ft,75
+Copper Pipe Repair 2 Inch,Repair leaking or damaged 2-inch copper water line,"Pipes, Valves, and Fittings",linear ft,120
+Galvanized Pipe Replacement,Replace corroded galvanized steel pipe section,"Pipes, Valves, and Fittings",linear ft,140
+Cast Iron Drain Pipe Repair,Cut and patch cracked cast iron waste stack section,"Pipes, Valves, and Fittings",job,1100
+PVC Drain Line Installation,Install new schedule 40 PVC drainage piping,"Pipes, Valves, and Fittings",linear ft,45
+Commercial Grease Interceptor Installation,Install 50-gallon indoor automatic grease trap,Grease Traps and Interceptors,each,2800
+Large Exterior Grease Trap Pumping,Pump and clean 1000-gallon inground grease interceptor,Grease Traps and Interceptors,job,1450
+Under-Sink Grease Trap Cleaning,Manual clean out of small commercial under-sink grease trap,Grease Traps and Interceptors,each,250
+Grease Trap Flow Restrictor Replacement,Replace clogged or damaged grease interceptor flow control,Grease Traps and Interceptors,each,320
+Grease Interceptor Gasket Replacement,Replace odor-sealing lid gasket on grease interceptor,Grease Traps and Interceptors,each,180
+Commercial Garbage Disposal Replacement,Heavy-duty 1 HP commercial food waste disposer replacement,Grease Traps and Interceptors,each,1350
+Disposer Reset and Jam Clearing,Clear jammed objects and reset commercial disposal motor,Grease Traps and Interceptors,each,175
+Sewer Ejector Pump Replacement,Submersible 1/2 HP sewage ejector pump replacement,Pumps and Pumping Systems,each,1650
+Duplex Sewage Pump System Replacement,Replace dual basin commercial sewage ejection system,Pumps and Pumping Systems,job,4200
+Sump Pump Replacement,Commercial subsurface groundwater sump pump replacement,Pumps and Pumping Systems,each,850
+Sump Pump Check Valve Replacement,Replace backflow check valve on sump pump discharge,Pumps and Pumping Systems,each,190
+Sump Basin Cover Replacement,Sealed gas-tight sump basin lid and seal installation,Pumps and Pumping Systems,each,340
+Sewage Alarm Panel Installation,High-water audio and visual alarm system for pump basin,Pumps and Pumping Systems,each,520
+Booster Pump System Service,Diagnostic and pressure switch adjustment for water booster,Pumps and Pumping Systems,hour,195
+Condensate Pump Replacement,Automatic condensate removal pump for HVAC or boiler,Pumps and Pumping Systems,each,290
+Commercial Water Softener Installation,High-capacity commercial ion exchange water softener setup,Water Treatment and Filtration,job,3200
+Water Softener Resin Replacement,Replenish exhausted resin media in commercial softener tank,Water Treatment and Filtration,job,950
+Commercial Carbon Filter Replacement,Replace whole-facility activated carbon filtration media,Water Treatment and Filtration,job,1100
+UV Water Sterilizer Lamp Replacement,Ultraviolet disinfection lamp and quartz sleeve replacement,Water Treatment and Filtration,each,380
+RO System Filter Replacement,Commercial reverse osmosis pre-filters and membrane service,Water Treatment and Filtration,job,480
+Commercial Gas Line Repair,Repair leaking threaded black iron commercial gas piping,Gas Lines and Equipment,linear ft,110
+Gas Shut-Off Valve Replacement,Replace high-capacity commercial gas ball valve,Gas Lines and Equipment,each,350
+Commercial Gas Leak Testing,Pressure test gas distribution system and issue sign-off,Gas Lines and Equipment,job,350
+Appliance Gas Connector Replacement,Stainless steel flexible gas appliance connector installation,Gas Lines and Equipment,each,175
+Commercial Gas Regulator Replacement,Main gas pressure reducing regulator replacement,Gas Lines and Equipment,each,680
+Roof Penetration Flashing Repair,Lead pipe boot flashing repair to stop roof leaks,Roof and Storm Drainage,each,420
+Storm Drain Strainer Dome Replacement,Cast iron roof drain dome strainer replacement,Roof and Storm Drainage,each,210
+Exterior Yard Hydrant Replacement,Commercial frost-free freeze-less yard hydrant installation,Roof and Storm Drainage,each,790
+Floor Sink Strainer Basket Replacement,Replace stainless steel sediment bucket in commercial floor sink,Roof and Storm Drainage,each,95
+Area Drain Cleanout Installation,Install surface area drain basin with debris basket,Roof and Storm Drainage,each,550
+Commercial Plumbing Preventative Maintenance,"Annual facility audit of all valves, drains, and fixtures",Preventative Maintenance,job,850
+Quarterly Grease Trap Maintenance,Scheduled routine servicing of restaurant grease interceptor,Preventative Maintenance,visit,350
+Backflow Annual Inspection Program,Contracted yearly testing and reporting for all facility backflows,Preventative Maintenance,visit,180
+Water Heater Flushing Service,Sediment flush and operational check of commercial water heater,Preventative Maintenance,each,290
+Sump Pump Annual Test,"Functional test, switch check, and basin cleaning",Preventative Maintenance,visit,220
+Commercial Restroom Audit,Comprehensive water conservation and leak inspection,Preventative Maintenance,job,350
+Thermostatic Mixing Valve Service,Clean and calibrate commercial tempering valve assembly,Preventative Maintenance,each,310
+Main Water Line Leak Detection,Acoustic or thermal imaging leak location on buried main,Specialty Services,job,590
+Core Drilling Concrete 4 Inch,Core drill through concrete slab for new pipe penetration,Specialty Services,each,320
+Core Drilling Concrete 6 Inch,Core drill through thick commercial concrete floor or wall,Specialty Services,each,450
+Pipe Thawing Service,Electrical pipe thawing for frozen commercial water lines,Specialty Services,hour,250
+Confined Space Entry Fee,Required safety crew and equipment for deep pit entry,Specialty Services,job,750
+ADA Compliance Fixture Adjustment,Adjust or relocate grab bars and plumbing for ADA code,Specialty Services,hour,150
+Emergency Water Extraction Support,Temporary shutoff and standby during major pipe rupture,Specialty Services,hour,175
+Glycol System Fill and Purge,Boiler or closed-loop hydronic system fluid replenishment,Specialty Services,job,680
+Fixture Cartridge Replacement,Replace internal mixing cartridge in single-handle faucet,Fixtures and Faucets,each,185
+Urinal Diaphragm Kit Replacement,Replace internal flush valve repair kit for urinal,Fixtures and Faucets,each,145
+Water Closet Wax Ring Replacement,"Pull toilet, replace wax seal, reset and bolt down",Fixtures and Faucets,each,260
+Commercial Supply Line Replacement,Replace braided stainless steel toilet or faucet supply lines,"Pipes, Valves, and Fittings",each,120
+Trap Primer Replacement,Mechanical or electronic floor drain trap primer installation,"Pipes, Valves, and Fittings",each,410
+Water Hammer Arrestor Installation,Install shock absorber arrestor on fast-closing water lines,"Pipes, Valves, and Fittings",each,220

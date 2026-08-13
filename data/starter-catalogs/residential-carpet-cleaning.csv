@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Carpet Cleaning,Hot water extraction cleaning per square foot,Carpet Cleaning,sq ft,0.4
+Heavy Traffic Area Pre-Treatment,Targeted pre-conditioner application for soiled walkways,Carpet Cleaning,sq ft,0.15
+Pet Urine Treatment,Enzymatic treatment applied to neutralize urine salts,Carpet Cleaning,sq ft,0.5
+Carpet Deodorizer Application,Standard odor neutralizer applied during extraction,Carpet Cleaning,sq ft,0.12
+Carpet Protector Application,Fluorochemical stain retardant applied to clean carpet,Carpet Cleaning,sq ft,0.25
+Staircase Cleaning,Hot water extraction for standard steps and risers,Carpet Cleaning,each,5
+Area Rug Cleaning On-Site,Standard synthetic area rug steam cleaning,Carpet Cleaning,sq ft,0.6
+Delicate Oriental Rug Cleaning,Hand washing process for wool or silk rugs,Carpet Cleaning,sq ft,2.5
+Commercial Grade Pre-Spray,Heavy industrial pre-conditioner for neglected carpet,Carpet Cleaning,sq ft,0.2
+Encapsulation Maintenance Cleaning,Low moisture bonnet buffing for low profile carpet,Carpet Cleaning,sq ft,0.35
+Dry Compound Carpet Cleaning,Absorbent powder cleaning for moisture sensitive floors,Carpet Cleaning,sq ft,0.45
+Wool Carpet Safe Cleaning,pH balanced solution extraction for natural wool fibers,Carpet Cleaning,sq ft,0.55
+Berber Carpet Special Handling,Low pressure wand stroke to prevent loop snagging,Carpet Cleaning,sq ft,0.45
+Shag Carpet Deep Extraction,Extra passes and grooming for deep pile carpet,Carpet Cleaning,sq ft,0.65
+Carpet Pile Raking,Mechanical grooming to lift crushed carpet pile,Carpet Cleaning,sq ft,0.1
+Speed Air Mover Rental,High velocity blower fan for rapid carpet drying,Carpet Cleaning,each,25
+Rotary Scrubbing Agitation,Counter rotating brush machine for dense soil removal,Carpet Cleaning,sq ft,0.22
+Walk-Off Mat Cleaning,Deep soil extraction for commercial entry mats,Carpet Cleaning,each,15
+Closet Floor Cleaning,Extraction service inside standard clothes closet,Carpet Cleaning,each,10
+Hallway Cleaning Surcharge,Dedicated service for narrow transit corridors,Carpet Cleaning,linear ft,1.5
+Upholstery Cleaning Sofa,Hot water extraction for standard three cushion sofa,Upholstery Cleaning,each,150
+Upholstery Cleaning Loveseat,Hot water extraction for standard two cushion loveseat,Upholstery Cleaning,each,120
+Upholstery Cleaning Sectional,Deep extraction cleaning for multi piece sectional sofa,Upholstery Cleaning,each,275
+Upholstered Armchair Cleaning,Steam extraction for standard armchair or recliner,Upholstery Cleaning,each,75
+Dining Room Chair Cushion Cleaning,Extraction cleaning for removable dining chair seat,Upholstery Cleaning,each,15
+Office Chair Cleaning,Fabric steam cleaning for rolling desk chair,Upholstery Cleaning,each,35
+Leather Sofa Cleaning and Conditioning,Hand wash and conditioner application for leather sofa,Upholstery Cleaning,each,225
+Leather Recliner Maintenance,Deep clean and conditioning for single leather chair,Upholstery Cleaning,each,110
+Microfiber Upholstery Restoration,Solvent clean and brush restoration for synthetic velvet,Upholstery Cleaning,each,175
+Mattress Cleaning Twin,Sanitizing extraction for single mattress one side,Upholstery Cleaning,each,60
+Mattress Cleaning Full,Sanitizing extraction for double mattress one side,Upholstery Cleaning,each,80
+Mattress Cleaning Queen,Sanitizing extraction for queen mattress one side,Upholstery Cleaning,each,100
+Mattress Cleaning King,Sanitizing extraction for king mattress one side,Upholstery Cleaning,each,125
+Mattress Sanitization Treatment,Anti allergen mist applied to kill dust mites,Upholstery Cleaning,each,40
+Headboard Upholstery Cleaning,Steam extraction for attached fabric headboard,Upholstery Cleaning,each,65
+Ottoman Cleaning,Hot water extraction for standard footstool or ottoman,Upholstery Cleaning,each,45
+Fabric Protector Upholstery Application,Stain repellent spray applied to clean furniture fabric,Upholstery Cleaning,each,50
+Throw Pillow Cleaning,Surface extraction for decorative couch pillow,Upholstery Cleaning,each,10
+Upholstered Bench Cleaning,Steam extraction for long bedroom bench seat,Upholstery Cleaning,each,55
+Vehicle Interior Seat Cleaning,Steam extraction for car or truck fabric seats,Upholstery Cleaning,each,40
+Tile and Grout Deep Cleaning,High pressure rotary rinse for ceramic floor tile,Tile and Hard Surface,sq ft,0.85
+Natural Stone Polishing,Diamond pad hone and polish for marble or travertine,Tile and Hard Surface,sq ft,3.5
+Grout Sealing Application,Penetrating sealer applied to clean grout lines,Tile and Hard Surface,sq ft,0.45
+Color Seal Grout Restoration,Pigmented acrylic sealer applied to stain and seal grout,Tile and Hard Surface,sq ft,1.25
+Hardwood Floor Deep Clean,Counter rotating brush scrub and pH neutral wash,Tile and Hard Surface,sq ft,1
+Hardwood Floor Maintenance Coat,Buff and apply waterborne finish coat to wood floor,Tile and Hard Surface,sq ft,1.75
+Vinyl Composition Tile Strip and Wax,Strip old finish and apply three coats floor wax,Tile and Hard Surface,sq ft,1.5
+VCT Burnishing,High speed polish for waxed vinyl composite tile,Tile and Hard Surface,sq ft,0.4
+Travertine Honing,Surface scratch removal for natural stone tile,Tile and Hard Surface,sq ft,4
+Slate Floor Sealing,Topical gloss sealer applied to clean slate tile,Tile and Hard Surface,sq ft,1.1
+Terrazzo Grinding and Polishing,Multi step diamond grind for terrazzo flooring,Tile and Hard Surface,sq ft,5
+Shower Stall Tile Cleaning,High temperature pressure clean for tiled shower walls,Tile and Hard Surface,job,150
+Concrete Floor Power Washing,Surface cleaner sweep for garage or patio concrete,Tile and Hard Surface,sq ft,0.5
+Epoxy Floor Cleaning,Gentle wash and degrease for coated garage floor,Tile and Hard Surface,sq ft,0.35
+Linoleum Scrub and Seal,Deep clean and protective polymer coat for linoleum,Tile and Hard Surface,sq ft,0.9
+Grout Haze Removal,Acid wash to remove construction grout film on tile,Tile and Hard Surface,sq ft,1.15
+Baseboard Cleaning Detail,Hand wipe baseboards prior to floor extraction,Tile and Hard Surface,linear ft,0.3
+Natural Stone Sealer Application,Impregnating sealer applied to polished stone floor,Tile and Hard Surface,sq ft,0.8
+Ceramic Tile Steam Sanitizing,Vapor steam disinfection for bathroom tile floors,Tile and Hard Surface,sq ft,0.7
+Hardwood Scratch Buffing,Light buffer pass to blend minor surface scuffs,Tile and Hard Surface,sq ft,0.6
+Air Duct Cleaning Main Trunk,Negative air vacuum sweep of primary supply trunk,Air Duct and Dryer Vent,each,75
+Air Duct Cleaning Register Supply,Rotary brush cleaning per individual supply vent,Air Duct and Dryer Vent,each,25
+Air Duct Return Vent Cleaning,Vacuum extraction for large air return vent,Air Duct and Dryer Vent,each,35
+Dryer Vent Cleaning Standard,Rotary brush and vacuum extraction for exhaust duct,Air Duct and Dryer Vent,job,125
+Blower Motor Cleaning,Vacuum and brush dust out of furnace blower housing,Air Duct and Dryer Vent,each,95
+Electrostatic Filter Replacement,Install customer supplied permanent air filter,Air Duct and Dryer Vent,each,15
+UV Air Purifier Bulb Replacement,Install new ultraviolet germicidal lamp in ductwork,Air Duct and Dryer Vent,each,150
+Sanitizing Fogging HVAC,Antimicrobial fog mist applied through duct system,Air Duct and Dryer Vent,job,130
+Dryer Transition Duct Replacement,Install new foil flexible duct behind clothes dryer,Air Duct and Dryer Vent,each,45
+Main HVAC Plenum Vacuum,Deep vacuum service inside main furnace plenum box,Air Duct and Dryer Vent,each,110
+Carpet Patch Repair,Cut out damaged carpet and insert donor piece,Repairs and Restoration,each,150
+Carpet Re-Stretching Standard,Power stretcher use to remove ripples in single room,Repairs and Restoration,job,175
+Threshold Transition Strip Install,Anchor metal or wood binder bar between flooring types,Repairs and Restoration,each,45
+Tack Strip Replacement,Install new wood tack strip along perimeter wall,Repairs and Restoration,linear ft,8
+Carpet Seam Repair,Hot melt tape application to fix delaminated seam,Repairs and Restoration,linear ft,15
+Water Damage Extraction Service,Emergency standing water removal from flooded floor,Repairs and Restoration,sq ft,0.75
+Antimicrobial Flood Application,Fungicide spray applied to water damaged subfloor,Repairs and Restoration,sq ft,0.3
+Carpet Pad Replacement,Remove old wet cushion and install new rebond pad,Repairs and Restoration,sq ft,0.9
+Odor Mitigation Thermal Fogging,Neutralize severe structure odors with thermal fog,Repairs and Restoration,job,250
+Ozone Machine Rental,24 hour ozone generator placement for odor destruction,Repairs and Restoration,day,125
+Stair Nosing Repair,Reattach loose carpet edge to stair nosing tack strip,Repairs and Restoration,each,35
+Burn Mark Carpet Repair,Clip scorched fiber tips and glue new tufts in place,Repairs and Restoration,each,75
+Bleach Spot Dye Repair,Color injection to restore spot damaged by bleach,Repairs and Restoration,each,95
+Dehumidifier Heavy Duty Rental,Commercial refrigerant dehumidifier for structural drying,Repairs and Restoration,day,110
+Subfloor Drying Injection,Specialized manifold drying for trapped wet subfloor,Repairs and Restoration,job,200
+Furniture Moving Labor,Moving heavy items to clean underneath per room,Labor and Specialty,hour,75
+Heavy Safe Surcharge,Special equipment fee for extremely heavy items,Labor and Specialty,each,100
+Emergency After Hours Callout,Service dispatch outside normal business hours,Labor and Specialty,visit,150
+Minimum Service Charge,Base trip fee for small scheduled cleaning visits,Labor and Specialty,visit,125
+Stain Removal Special,Targeted chemical treatment for unusual difficult stains,Labor and Specialty,each,40
+Green Cleaning Solution Upgrade,Certified organic botanical cleaning agents used exclusively,Labor and Specialty,job,50
+Pet Odor Subfloor Sealing,Pigmented shellac applied to subfloor to lock odors,Labor and Specialty,sq ft,1.25
+Carpet Disposal Fee,Haul away and dump old ripped out carpeting,Labor and Specialty,job,100
+Protective Plastic Tab Placement,Tabs placed under furniture legs to prevent rust transfer,Labor and Specialty,job,15
+Stair Tread Protector Film,Adhesive plastic film applied to protect clean stairs,Labor and Specialty,each,5
+Hand Wash Area Rug Pickup and Delivery,Transport rug to offsite plant for immersion washing,Labor and Specialty,job,75
+Rug Centrifuge Water Extraction,Rapid water removal via spinning cylinder for area rugs,Labor and Specialty,each,50
+Moth Treatment Application,Insecticide mist applied to wool rug to prevent damage,Labor and Specialty,sq ft,0.45
+Fringe Cleaning Detail,Hand scrubbing and whitening of delicate rug fringes,Labor and Specialty,linear ft,3
+Rug Blocking and Sizing,Stretching and pinning wet rug to restore square shape,Labor and Specialty,job,90

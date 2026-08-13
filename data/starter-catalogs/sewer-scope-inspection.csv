@@ -1,0 +1,97 @@
+name,description,category,unit,price
+Standard Sewer Scope Inspection,Camera inspection of main sewer line up to 100 feet,Inspections,job,275
+Additional Line Scope,Inspection of secondary lateral or branch line,Inspections,each,125
+Pre-Purchase Sewer Inspection,Standard inspection with real estate agent summary report,Inspections,job,300
+Commercial Sewer Scope,Camera inspection for commercial properties up to 200 feet,Inspections,job,550
+Sewer Scope Re-Inspection,Follow-up camera run to verify completed repairs,Inspections,job,175
+HD Video Recording Copy,Digital copy of sewer scope footage via cloud link,Inspections,each,35
+Locate and Mark Main Line,Surface marking of sewer line path and depth,Inspections,job,150
+Rooter Cleaning Service,Standard cable machine rooter clearing of main line,Cleaning,job,325
+Hydro Jetting Main Line,High-pressure water jetting of grease and scale,Cleaning,job,650
+Root Intrusion Chemical Treatment,Foaming root killer application for sewer lines,Cleaning,job,200
+Grease Trap Jetting,High-pressure wash of commercial grease trap lines,Cleaning,job,450
+Descaling Cast Iron Pipe,Chain knocking removal of scale inside cast iron,Cleaning,linear ft,25
+Standard Labor Rate,Hourly rate for technician labor,Labor,hour,150
+After Hours Emergency Labor,Hourly rate for emergency evening or weekend dispatch,Labor,hour,250
+Two-Man Crew Hourly Rate,Hourly rate for lead technician and assistant,Labor,hour,275
+Excavation Laborer,Hourly rate for manual digging and trenching,Labor,hour,95
+Plumbing Permit Fee,Local municipality permit acquisition fee,Permits & Fees,each,175
+Emergency Call-Out Fee,Dispatch fee for urgent same-day service,Permits & Fees,visit,150
+Environmental Disposal Fee,Disposal fee for contaminated soil or debris,Permits & Fees,job,100
+Traffic Control Permit,Permit and setup for street or sidewalk excavation,Permits & Fees,job,350
+Utility Line Locate Service,811 utility marking coordination and private locate,Permits & Fees,job,125
+Sewer Cleanout Installation,Install 4-inch PVC two-way cleanout in yard,Repairs,each,850
+Spot Repair PVC Pipe,Excavate and replace up to 5 feet of PVC,Repairs,job,1400
+Spot Repair Cast Iron Pipe,Excavate and replace up to 5 feet of cast iron,Repairs,job,1800
+Belly Repair in Yard,Correct sag in pipe by re-bedding gravel base,Repairs,job,2200
+Root Damage Pipe Section Repair,Replace root-compromised clay pipe section,Repairs,job,1600
+Offset Joint Repair,Excavate and reconnect separated pipe joint,Repairs,job,1500
+Crushed Pipe Section Replacement,Replace crushed or collapsed section of lateral,Repairs,job,1900
+Backwater Valve Installation,Install backwater valve to prevent municipal sewage backup,Repairs,job,2400
+Main Line Replacement PVC,Replace entire main sewer line from house to street,Replacements,linear ft,160
+Main Line Replacement Cast Iron,Replace entire main line with schedule 40 PVC,Replacements,linear ft,190
+Trenchless Pipe Lining CIPP,Cured-in-place pipe lining for main sewer line,Trenchless,linear ft,210
+Pipe Bursting Main Line,Trenchless pipe bursting and replacement from pit to pit,Trenchless,linear ft,250
+Spot Structural Liner,Epoxy resin structural patch for localized pipe defect,Trenchless,each,1200
+Branch Connection Lining,Inversion lining for hard-to-reach branch tie-ins,Trenchless,each,1500
+Access Pit Excavation,Digging entry pit for trenchless lining equipment,Trenchless,each,750
+Epoxy Coating Interior Pipe,Spray-applied epoxy lining for interior cast iron,Trenchless,linear ft,180
+4 Inch Schedule 40 PVC Pipe,10-foot section of PVC drain pipe,Materials,each,45
+3 Inch Schedule 40 PVC Pipe,10-foot section of PVC drain pipe,Materials,each,35
+4 Inch PVC Coupling,Standard PVC coupling fitting,Materials,each,12
+4 Inch Rubber Fernco Coupling,Flexible mechanical coupling with stainless steel bands,Materials,each,28
+4 Inch PVC Cleanout Adapter,Cleanout adapter with threaded plug,Materials,each,22
+4 Inch PVC 45 Degree Elbow,PVC sweep elbow fitting,Materials,each,18
+4 Inch PVC 90 Degree Elbow,PVC long turn sweep elbow fitting,Materials,each,24
+Bedding Gravel,Cubic yard of crushed stone for pipe bedding,Materials,cubic yard,85
+Backfill Soil Material,Cubic yard of clean fill dirt,Materials,cubic yard,65
+Concrete Sidewalk Patching,Pour and finish concrete for sidewalk cut repair,Surface Restoration,job,450
+Asphalt Trench Patching,Cold patch asphalt repair for driveway trench,Surface Restoration,job,550
+Lawn Re-seeding and Topsoil,Topsoil and grass seed for disturbed lawn area,Surface Restoration,job,250
+Sod Replacement,Install fresh sod over excavated trench area,Surface Restoration,sq ft,4
+Paver Patio Restoration,Relaying interlocking pavers after trench excavation,Surface Restoration,sq ft,18
+Shrub Removal and Replanting,Relocation of small landscaping bush for excavation access,Surface Restoration,each,150
+Mini Excavator Rental,Daily rental fee for mini excavator equipment,Equipment Rental,day,350
+Rubber Track Skid Steer Rental,Daily rental fee for loader machine,Equipment Rental,day,400
+Plate Compactor Rental,Daily rental fee for soil compaction equipment,Equipment Rental,day,125
+Trash Pump Rental,Daily rental fee for water removal pump,Equipment Rental,day,95
+Traffic Control Signage Package,Daily rental of safety cones and warning signs,Equipment Rental,day,75
+Sewer Camera System Calibration,Diagnostic service and calibration for inspection head,Maintenance,job,250
+Push Rod Replacement,Replace damaged fiberglass push cable on reel,Maintenance,job,450
+Sonde Transmitter Replacement,Install new 512Hz sonde beacon in camera head,Maintenance,job,300
+Annual Maintenance Service,Complete cleaning and check of sewer camera unit,Maintenance,job,200
+Grease Trap Pumping,Pumping and hauling waste from commercial grease interceptor,Commercial,gallon,1
+Floor Drain Jetting,High-pressure cleaning of commercial floor drain lines,Commercial,each,220
+Roof Vent Stack Inspection,Camera inspection introduced from roof vent opening,Specialty,job,200
+Storm Drain Line Inspection,Camera inspection of exterior storm water drainage system,Specialty,job,275
+French Drain Scope and Clean,Inspection and high-pressure flush of French drain system,Specialty,job,350
+Septic Tank Inlet Line Scope,Camera inspection of pipe leading into septic tank,Specialty,job,250
+Drywell Inspection,Visual and camera check of drainage drywell condition,Specialty,job,300
+Under-Slab Leak Detection,Acoustic detection of leak beneath concrete floor slab,Specialty,job,500
+Municipal Tap Connection Inspection,Inspection of sewer tie-in at city main connection,Specialty,job,325
+Hydro Excavation Potholing,Non-destructive water excavation to expose utility lines,Specialty,hour,275
+Odor Isolation Smoke Test,Non-toxic smoke test to locate sewer gas leaks,Specialty,job,375
+Biochemical Drain Treatment Supply,Monthly supply of enzyme-based maintenance bacteria,Upsells,each,45
+Main Line Protection Plan,Annual subscription for yearly sewer scope and priority service,Upsells,visit,199
+Smart Leak Sensor Installation,Install Wi-Fi connected water leak detector near main,Upsells,each,150
+Digital Report Archiving,Lifetime cloud storage and access to inspection videos,Upsells,job,50
+Priority Dispatch Upgrade,Guaranteed same-day service dispatch for emergencies,Upsells,job,100
+Home Sale Warranty Package,Transferable sewer line warranty for property buyers,Upsells,job,300
+Pre-Listing Maintenance Tune-Up,Minor clearing and inspection before listing home for sale,Upsells,job,400
+Root Shield Preventative Treatment,Long-term chemical barrier installation against tree roots,Upsells,job,350
+Extra Camera Monitor Rental,Additional viewing monitor for real estate agents on site,Add-ons,job,50
+Night Shift Premium,Labor surcharge for approved night work operations,Labor,hour,75
+Holiday Labor Rate,Hourly rate for recognized public holidays,Labor,hour,300
+Hand Digging under Deck,Manual excavation in restricted access crawl spaces,Labor,hour,115
+Confined Space Entry Fee,Safety compliance and equipment fee for manhole entry,Permits & Fees,job,450
+Special Waste Disposal Permit,Specialty municipal permit for industrial waste disposal,Permits & Fees,job,200
+Clay Tile to PVC Transition Adapter,Specialty coupling for joining old clay to modern PVC,Materials,each,65
+Cast Iron to PVC Transition Band,Shielded coupling designed for dissimilar pipe materials,Materials,each,35
+Cleanout Cover Box,Flush-to-grade plastic box and lid for yard cleanout,Materials,each,45
+Warning Detectable Tape,Buried utility warning tape marked Sewer Line,Materials,linear ft,1
+Geotextile Filter Fabric,Roll of permeable fabric used in trench backfilling,Materials,sq ft,1
+Tamper Rental,Daily rental fee for jumping jack soil tamper,Equipment Rental,day,110
+Generator Rental,Daily portable power generator rental fee,Equipment Rental,day,90
+Debris Haul-Away Fee,Load fee for removal of excavated soil and old pipe,Disposal,job,200
+Concrete Disposal Fee,Disposal fee for broken concrete sidewalk or driveway,Disposal,job,150
+Asphalt Disposal Fee,Disposal fee for removed chunks of asphalt,Disposal,job,175

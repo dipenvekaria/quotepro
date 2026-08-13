@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Drywall Hanging Labor,Hanging 1/2 inch drywall on walls per square foot.,Drywall Hanging,sq ft,2
+Ceiling Drywall Hanging Labor,Hanging 1/2 inch or 5/8 inch drywall on ceilings.,Drywall Hanging,sq ft,3
+Moisture Resistant Drywall Hanging,Hanging greenboard or purple board in wet areas.,Drywall Hanging,sq ft,3
+Type X Fire Rated Drywall Hanging,Hanging 5/8 inch fire-rated drywall for garages and assemblies.,Drywall Hanging,sq ft,3
+Thick Drywall Hanging 5/8 Inch,Hanging 5/8 inch standard drywall for sound or span.,Drywall Hanging,sq ft,3
+Thin Drywall Hanging 1/4 Inch,Hanging 1/4 inch flexible drywall over curved surfaces or old plaster.,Drywall Hanging,sq ft,3
+Shaftliner Panel Installation,Installing 1 inch shaftliner for shafts and separation walls.,Drywall Hanging,sq ft,5
+Soffit Framing and Drywall,Building and hanging custom drywall soffits.,Drywall Hanging,linear ft,25
+Vaulted Ceiling Drywall Hanging,Hanging drywall on high vaulted or cathedral ceilings.,Drywall Hanging,sq ft,4
+Curved Wall Drywall Installation,Hanging flexible drywall on curved radius walls.,Drywall Hanging,sq ft,6
+Level 3 Finish Tape and Mud,Tape embedded and one coat of mud over joints and fasteners.,Taping and Finishing,sq ft,1
+Level 4 Finish Standard,Tape embedded and three coats of mud on all surfaces.,Taping and Finishing,sq ft,2
+Level 5 Finish Skim Coat,Full skim coat over entire surface for smooth walls.,Taping and Finishing,sq ft,3
+Paper Tape Application,Applying joint tape to seams with all-purpose compound.,Taping and Finishing,linear ft,1
+Fiberglass Mesh Tape Application,Applying self-adhesive mesh tape to drywall joints.,Taping and Finishing,linear ft,1
+Corner Bead Installation Metal,Installing standard galvanized metal outside corner beads.,Taping and Finishing,linear ft,2
+Corner Bead Installation Vinyl,Installing rust-proof vinyl outside corner beads with spray adhesive.,Taping and Finishing,linear ft,2
+Bullnose Corner Bead Installation,Installing rounded architectural corner beads.,Taping and Finishing,linear ft,3
+L-Metal Trim Installation,Installing L-trim metal edging at dissimilar materials.,Taping and Finishing,linear ft,2
+Control Joint Installation,Installing expansion control joints in long drywall runs.,Taping and Finishing,linear ft,6
+Orange Peel Texture Spray Fine,Applying fine orange peel texture using a hopper gun.,Texturing,sq ft,1
+Orange Peel Texture Spray Medium,Applying medium orange peel texture across walls and ceilings.,Texturing,sq ft,1
+Knockdown Texture Application,Spraying texture and flattening with a knockdown knife.,Texturing,sq ft,2
+Popcorn Ceiling Texture Spray,Applying acoustic popcorn texture to ceilings.,Texturing,sq ft,2
+Hand Applied Skip Trowel Texture,Applying ornamental skip trowel texture by hand.,Texturing,sq ft,3
+Comb Texture Application,Creating patterned comb lines in wet joint compound.,Texturing,sq ft,2
+Stomp Brush Ceiling Texture,Applying stomp brush fan or crowfoot texture to ceilings.,Texturing,sq ft,2
+Popcorn Ceiling Removal Wet Method,Scraping off textured acoustic popcorn ceiling material.,Texturing,sq ft,2
+Asbestos Popcorn Testing Kit,Collecting and submitting ceiling sample for asbestos lab test.,Texturing,each,150
+Texture Matching Labor,Blending new repair texture to match existing surrounding walls.,Texturing,sq ft,3
+Small Hole Patch Up to 4 Inches,Repairing doorknob holes and small surface penetrations.,Repairs and Patching,each,125
+Medium Hole Patch 4 to 8 Inches,Repairing cutouts with backer wood and drywall patch.,Repairs and Patching,each,200
+Large Hole Patch 8 to 16 Inches,Framing in support and patching larger drywall sections.,Repairs and Patching,each,325
+California Patch Drywall Repair,Installing a butterfly patch for medium wall damage.,Repairs and Patching,each,175
+Water Damage Ceiling Repair Small,Cutting out saggy wet drywall and replacing section.,Repairs and Patching,each,350
+Water Damage Wall Repair Large,Demo and replacement of flood-damaged lower wall sections.,Repairs and Patching,sq ft,12
+Corner Bead Impact Repair,Replacing dented and smashed metal outside corner bead.,Repairs and Patching,linear ft,25
+Stress Crack Joint Repair,V-grooving and retaping settling wall and ceiling cracks.,Repairs and Patching,linear ft,15
+Screwnail Pop Fastener Repair,Resetting protruding fasteners and spotting over with mud.,Repairs and Patching,each,20
+Plaster Wall Crack Repair,Routing out and patching traditional plaster cracks with bonding agent.,Repairs and Patching,linear ft,22
+Standard Primer Application,Rolling one coat of PVA drywall primer sealer.,Priming and Painting,sq ft,1
+PVA Sealer Spray Application,Spraying high build primer sealer over new drywall.,Priming and Painting,sq ft,1
+Kilz Stain Blocking Primer,Applying oil or shellac based primer over water stains and smoke.,Priming and Painting,sq ft,2
+Wall Paint Finish Two Coats,Applying two coats of customer supplied latex paint to walls.,Priming and Painting,sq ft,2
+Ceiling Paint Flat White,Rolling two coats of flat white ceiling paint.,Priming and Painting,sq ft,2
+Spot Prime Repair Areas,Priming patched areas before painting or texturing.,Priming and Painting,each,45
+Baseboard Masking and Protection,Taping and masking trim floors and fixtures prior to work.,Priming and Painting,linear ft,1
+Full Room Plastic Containment,Setting up zipper dust barriers and plastic room enclosures.,Priming and Painting,each,150
+Trim Caulk and Sealant Application,Applying paintable acrylic latex caulk at trim lines.,Priming and Painting,linear ft,1
+Touch Up Paint Labor,Touch up painting on repaired areas using customer paint.,Priming and Painting,hour,85
+Standard Drywall Sheet 1/2 Inch 4x8,Material cost for standard wall drywall panel.,Materials and Deliveries,each,18
+Moisture Resistant Board 1/2 Inch 4x8,Material cost for greenboard moisture resistant panel.,Materials and Deliveries,each,22
+Fire Rated Board Type X 5/8 Inch 4x8,Material cost for 5/8 inch Type X fire code panel.,Materials and Deliveries,each,24
+Lightweight Joint Compound 4.5 Gallon,Bucket of all-purpose or lightweight joint compound mud.,Materials and Deliveries,each,22
+Setting Type Joint Compound 45 Min,Bag of hot mud for fast setting structural fills.,Materials and Deliveries,each,25
+Drywall Screws 5 Pound Box,Box of coarse or fine thread drywall screws.,Materials and Deliveries,each,20
+Paper Joint Tape Roll 500 Feet,Roll of standard drywall joint paper tape.,Materials and Deliveries,each,12
+Corner Bead Galvanized 8 Foot,Metal corner bead stick for outside wall corners.,Materials and Deliveries,each,5
+Job Site Material Delivery Fee,Delivery and stocking of drywall sheets inside the home.,Materials and Deliveries,job,150
+Staircase Stocking Surcharge,Extra labor fee for carrying heavy drywall up stairs.,Materials and Deliveries,job,100
+Standard Diagnostic Service Call,Onsite inspection and assessment of drywall damage.,Diagnostics and Labor,visit,125
+Standard Drywall Labor Hourly,Hourly rate for skilled drywall hanging and finishing labor.,Diagnostics and Labor,hour,85
+Master Finisher Hourly Rate,Hourly rate for high-end taping and level 5 finishing.,Diagnostics and Labor,hour,110
+After Hours Emergency Service Call,Emergency response rate for urgent structural or water damage.,Diagnostics and Labor,visit,250
+Minimum Repair Trip Charge,Minimum labor charge for small minor wall patches.,Diagnostics and Labor,job,175
+Insurance Claim Documentation Fee,Preparing detailed itemized scope and photos for insurance claims.,Diagnostics and Labor,job,150
+Engineer Consultation Fee,Coordination and meeting with structural engineer onsite.,Diagnostics and Labor,visit,300
+Project Management Fee,Oversight and scheduling for multi-trade drywall remodels.,Diagnostics and Labor,day,150
+Overtime Labor Surcharge,Additional hourly rate multiplier for weekend or night work.,Diagnostics and Labor,hour,50
+Out of Area Travel Surcharge,Travel fee for job sites outside standard service radius.,Diagnostics and Labor,visit,75
+Debris Disposal Bagster Service,Removal and disposal of drywall scrap using disposal bags.,Prep and Disposal,each,250
+Dumpster Rental Fee 10 Yard,Roll off dumpster rental for large scale demolition debris.,Prep and Disposal,job,450
+Construction Debris Haul Away,Loading and hauling away drywall scraps and trash in truck.,Prep and Disposal,load,200
+Floor Protection Heavy Ram Board,Installing heavy duty cardboard protection over finished floors.,Prep and Disposal,sq ft,1
+Plastic Dust Barrier Setup,Hanging zipper plastic partitions to contain sanding dust.,Prep and Disposal,each,75
+HEPA Air Scrubber Rental,Renting air filtration machine to capture fine drywall dust.,Prep and Disposal,day,75
+Post Construction HEPA Vacuuming,Detailed vacuuming of floors and surfaces after sanding.,Prep and Disposal,sq ft,1
+Carpet Protection Film Application,Rolling adhesive plastic film over carpets to protect from mud.,Prep and Disposal,sq ft,1
+Moving Furniture Labor,Labor to safely move furniture out of work areas and back.,Prep and Disposal,hour,65
+Building Permit Acquisition Fee,Pulling local municipal building permits for major wall work.,Prep and Disposal,job,175
+Soundproofing Insulation Batt Installation,Installing mineral wool or fiberglass sound insulation in walls.,Upgrades and Specialty,sq ft,2
+Resilient Channel Sound Isolation,Installing metal resilient channels for sound damping assemblies.,Upgrades and Specialty,linear ft,3
+Mass Loaded Vinyl Installation,Hanging acoustic mass loaded vinyl barrier between drywall layers.,Upgrades and Specialty,sq ft,4
+Level 5 Smooth Wall Upgrade,Upgrading standard finish to flawless level 5 skim coat.,Upgrades and Specialty,sq ft,2
+Arched Doorway Framing and Drywall,Custom framing and drywalling for arched architectural openings.,Upgrades and Specialty,each,350
+Recessed Niche Installation,Building custom wall niche for showers or decorative displays.,Upgrades and Specialty,each,300
+Access Panel Installation,Installing metal or plastic plumbing and electrical access panel.,Upgrades and Specialty,each,150
+Pocket Door Drywall Rebuild,Repairing or replacing drywall around operational pocket doors.,Upgrades and Specialty,job,400
+Bullnose Corner Upgrade,Upgrading standard sharp corners to rounded bullnose corners.,Upgrades and Specialty,linear ft,2
+Mold Resistant Upgrade Add-On,Upgrading standard drywall to high-grade mold resistant panels.,Upgrades and Specialty,sq ft,1
+Drywall Patch Complete Kit Supply,Supplying homeowner with touch-up kit and matching paint.,Upsells and Extras,each,50
+Extra Gallon Matching Paint,Purchasing custom color matched paint from local supplier.,Upsells and Extras,gallon,75
+Baseboard Trim Reinstallation,Reinstalling baseboards removed during bottom wall repairs.,Upsells and Extras,linear ft,4
+Quarter Round Trim Installation,Installing quarter round shoe molding along baseboards.,Upsells and Extras,linear ft,3
+Crown Molding Installation,Installing decorative crown molding at ceiling and wall junctions.,Upsells and Extras,linear ft,12
+Drywall Anchor Heavy Duty Install,Installing heavy toggle bolts for mounting TVs or heavy art.,Upsells and Extras,each,25
+Picture Hanging Service,Professional leveling and hanging of art and mirrors.,Upsells and Extras,hour,75
+Smoke Detector Reinstallation,Reinstalling and testing hardwired smoke detectors after ceiling work.,Upsells and Extras,each,35
+Vent Cover Reinstallation,Reattaching HVAC supply and return vent covers.,Upsells and Extras,each,20
+Extended Labor Warranty Add-On,Purchasing extended 3-year warranty on all crack and patch repairs.,Upsells and Extras,job,150

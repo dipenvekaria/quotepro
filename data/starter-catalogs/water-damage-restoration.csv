@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Emergency Service Call Fee,After-hours dispatch and initial on-site arrival,Diagnostics & Callout,visit,250
+Standard Inspection and Assessment,Moisture mapping and damage scope evaluation,Diagnostics & Callout,visit,175
+Thermal Imaging Scan,Infrared camera detection of hidden moisture pockets,Diagnostics & Callout,job,150
+Moisture Meter Reading,Daily atmospheric and structural moisture documentation,Diagnostics & Callout,visit,95
+Hazardous Material Testing,Sampling for asbestos or lead before demolition,Diagnostics & Callout,each,275
+Emergency Water Extraction,Standing water removal using truck-mounted or portable pumps,Extraction & Mitigation,hour,175
+Weighted Extraction,Extraction from carpet and pad using weighted tools,Extraction & Mitigation,sq ft,0.35
+Hardwood Floor Extraction,Specialized panel extraction for hardwood drying systems,Extraction & Mitigation,sq ft,0.85
+Sewage Extraction and Cleanup,Category 3 contaminated water removal and site flush,Extraction & Mitigation,hour,225
+Debris Cleanup and Bagging,Gathering and bagging wet unusable contents and debris,Extraction & Mitigation,hour,85
+Anti-Microbial Application,Disinfectant spray to prevent mold growth on surfaces,Antimicrobial & Cleaning,sq ft,0.25
+Deodorization Fogging,ULV fogging for odor neutralization in affected areas,Antimicrobial & Cleaning,sq ft,0.3
+HEPA Vacuuming,"Vacuuming of soot, fine dust, and mold spores",Antimicrobial & Cleaning,sq ft,0.35
+Content Cleaning and Sanitization,Manual cleaning of salvageable personal property,Antimicrobial & Cleaning,hour,95
+HVAC Duct Cleaning and Sanitization,Cleaning and antimicrobial treatment of ductwork,Antimicrobial & Cleaning,job,450
+Industrial Air Mover Rental,High-velocity centrifugal air mover for structural drying,Equipment Rental,day,35
+LGR Dehumidifier Rental,Low Grain Refrigerant dehumidifier for moisture removal,Equipment Rental,day,175
+Desiccant Dehumidifier Rental,High-capacity desiccant dehumidifier for large structures,Equipment Rental,day,350
+HEPA Air Scrubber Rental,Negative air machine with HEPA filtration,Equipment Rental,day,125
+Subfloor Drying System Rental,Injected air drying setup for hardwood and subfloors,Equipment Rental,day,200
+Temporary Power Distribution Box Rental,Spider box and heavy-duty cords for drying equipment,Equipment Rental,day,50
+Equipment Setup and Monitoring,Initial placement and daily equipment check labor,Equipment Rental,hour,95
+Drywall Demolition - Flood Cut,Removal of water-damaged drywall up to 2 feet,Demolition & Removal,linear ft,4.5
+Drywall Removal - Full Sheet,Removal of entire water-damaged wall panels,Demolition & Removal,sq ft,1.75
+Wet Insulation Removal,Pulling saturated fiberglass or cellulose wall insulation,Demolition & Removal,sq ft,1.25
+Baseboard Removal and Salvage,Careful extraction of baseboards for potential reuse,Demolition & Removal,linear ft,1.5
+Carpet Removal and Disposal,Pulling and cutting water-ruined carpet,Demolition & Removal,sq ft,0.5
+Carpet Pad Removal,Tearing up wet and unsalvageable cushion padding,Demolition & Removal,sq ft,0.35
+Tack Strip Removal,Pulling rusted or damaged carpet tack strips,Demolition & Removal,linear ft,0.75
+Laminate Flooring Removal,Pry-out and disposal of swollen laminate flooring,Demolition & Removal,sq ft,2
+Engineered Hardwood Removal,Removal of glued or nailed engineered wood flooring,Demolition & Removal,sq ft,3.25
+Tile Flooring Demolition,Breaking out ceramic or porcelain wet tile and backer board,Demolition & Removal,sq ft,5.5
+Cabinetry Removal - Lower,Detaching and removing water-logged base cabinets,Demolition & Removal,linear ft,35
+Vanity Removal,Disconnecting plumbing and removing bathroom vanity,Demolition & Removal,each,125
+Interior Door Removal,Taking off swollen interior doors,Demolition & Removal,each,35
+Popcorn Ceiling Scraping,Scraping water-damaged textured acoustic ceiling,Demolition & Removal,sq ft,2.25
+Debris Disposal - Dumpster Load,Roll-off dumpster rental and haul-away fee,Disposal & Permits,each,650
+Debris Disposal - Truck Load,Box truck load of bagged demolition debris,Disposal & Permits,job,350
+Hazardous Material Disposal Fee,Special disposal fee for mold or sewage-tainted materials,Disposal & Permits,job,250
+Local Building Permit,Municipal permit fee for structural repairs,Disposal & Permits,job,175
+Drywall Installation - Hanging,Hanging new drywall sheets on studs,Reconstruction & Drywall,sq ft,2.5
+Drywall Taping and Mudding,Three-coat tape and joint compound application,Reconstruction & Drywall,sq ft,2.25
+Drywall Texture Matching,"Applying knockdown, orange peel, or smooth finish",Reconstruction & Drywall,sq ft,1.25
+Interior Wall Painting,Primer and two coats of finish paint on walls,Reconstruction & Drywall,sq ft,1.85
+Ceiling Painting,Primer and ceiling paint application,Reconstruction & Drywall,sq ft,2.1
+Baseboard Installation,Installing and nailing new primed baseboards,Reconstruction & Drywall,linear ft,3.5
+Quarter Round Installation,Installing shoe molding along baseboards,Reconstruction & Drywall,linear ft,1.75
+Casing Installation - Doors/Windows,Installing trim molding around openings,Reconstruction & Drywall,linear ft,3
+Blow-In Insulation Replacement,Adding blown-in cellulose or fiberglass insulation,Reconstruction & Drywall,sq ft,2.2
+Batt Insulation Installation,Installing fiberglass batt insulation in walls,Reconstruction & Drywall,sq ft,1.65
+Carpet Installation,"Laying down tack strips, pad, and new carpet",Flooring Restoration,sq ft,4.5
+Carpet Stretching,Power stretching loose or buckled wet carpet,Flooring Restoration,sq ft,1.1
+Carpet Seam Repair,Gluing and hot-seaming carpet edges,Flooring Restoration,linear ft,6.5
+LVP Flooring Installation,Installing Luxury Vinyl Plank click-lock flooring,Flooring Restoration,sq ft,3.85
+Laminate Flooring Installation,Installing laminate flooring over underlayment,Flooring Restoration,sq ft,3.5
+Engineered Hardwood Installation,Gluing or floating engineered hardwood flooring,Flooring Restoration,sq ft,6.5
+Solid Hardwood Installation,Nailing down solid hardwood flooring planks,Flooring Restoration,sq ft,8
+Hardwood Floor Sanding and Refinishing,Sanding and applying polyurethane to hardwood,Flooring Restoration,sq ft,4.75
+Ceramic Tile Installation,Laying tile over cement backer board,Flooring Restoration,sq ft,9.5
+Floor Underlayment Replacement,Installing new plywood subfloor panels,Flooring Restoration,sq ft,3.25
+Plumbing Supply Line Repair,Fixing leaking PEX or copper water supply pipe,Plumbing & Electrical,each,225
+Drain Line Leak Repair,Repairing PVC or cast iron waste water leak,Plumbing & Electrical,each,275
+Toilet Rebuild and Reset,Replacing wax ring and reconnecting water supply,Plumbing & Electrical,each,185
+Water Heater Replacement,Swapping out a failed leaking water heater tank,Plumbing & Electrical,each,1450
+Angle Stop Replacement,Replacing stuck or leaking water shutoff valves,Plumbing & Electrical,each,115
+Sump Pump Replacement,Installing new primary pit sump pump unit,Plumbing & Electrical,each,450
+Battery Backup Sump Pump System,Installing auxiliary backup pump and battery,Plumbing & Electrical,each,850
+Outlet and Switch Replacement,Replacing water-damaged electrical boxes and devices,Plumbing & Electrical,each,95
+GFCI Breaker Replacement,Replacing tripped or damaged GFCI circuit breaker,Plumbing & Electrical,each,175
+Temporary Power Pole Hookup,Connecting temporary generator or temporary feed,Plumbing & Electrical,job,350
+Pack-Out Service - Labor,"Careful cataloging, boxing, and moving of contents",Contents Restoration,hour,65
+Pack-Back Service - Labor,Returning and placing restored items back in rooms,Contents Restoration,hour,65
+Content Storage Box Supply,Heavy-duty corrugated boxes used for packing,Contents Restoration,each,5
+Secure Off-Site Storage,Monthly climate-controlled facility storage space,Contents Restoration,day,15
+Electronics Restoration Processing,Specialized cleaning and testing of wet electronics,Contents Restoration,hour,125
+Document Freeze-Drying Service,"Restoration of wet books, files, and legal documents",Contents Restoration,box,275
+Soft Goods Laundering,Ozone washing and dry cleaning of textiles and linens,Contents Restoration,load,45
+Content Inventory Barcoding,Digital cataloging and photo logging of possessions,Contents Restoration,hour,75
+Upholstery Cleaning,Steam extraction cleaning of upholstered furniture,Contents Restoration,each,150
+Rug Cleaning - Offsite,Deep immersion washing and drying of area rugs,Contents Restoration,sq ft,2.5
+General Laborer Rate,Unskilled labor for clean-up and support tasks,General Labor,hour,65
+Technician Hourly Rate,Certified water damage restoration technician time,General Labor,hour,95
+Project Manager Hourly Rate,Job site coordination and insurance documentation,General Labor,hour,125
+After-Hours Labor Premium,"Surcharge for night, weekend, or holiday work",General Labor,hour,50
+Supervisor Inspection Rate,Senior technical review and quality control check,General Labor,hour,150
+Containment Barrier Setup,ZipWall plastic containment dust barrier erection,Specialized Mitigation,job,225
+Negative Air Chamber Setup,Sealed containment area with air scrubber exhaust,Specialized Mitigation,job,375
+Crawlspace Vapor Barrier Installation,Laydown heavy poly sheeting on crawlspace floor,Specialized Mitigation,sq ft,0.75
+Crawlspace Dehumidifier Installation,Hanging or placing commercial crawlspace unit,Specialized Mitigation,each,350
+Attic Insulation Extraction,Vacuum removal of contaminated attic insulation,Specialized Mitigation,sq ft,1.75
+Structural Framing Treatment,Wire brushing and sealing framing exposed to moisture,Specialized Mitigation,sq ft,1.5
+Slab Leak Detection,Acoustic and electronic locating of under-slab leaks,Specialized Mitigation,job,350
+Concrete Core Drilling,Drilling through slab for sub-surface drying access,Specialized Mitigation,each,85
+Concrete Core Patching,Filling core holes with hydraulic cement,Specialized Mitigation,each,45
+Ozone Generator Treatment,Shock treatment for severe structural odors,Specialized Mitigation,day,150
+Hydroxyl Generator Rental,Safe continuous chemical-free odor oxidation,Specialized Mitigation,day,185
+Mold Remediation Protocol Generation,Third-party or in-house remediation protocol writing,Specialized Mitigation,job,300
+Insurance Claim Documentation Package,"Compilation of logs, photos, and moisture readings",Specialized Mitigation,job,150
+Re-Inspection and Clearance Test,Post-mitigation moisture verification check,Specialized Mitigation,visit,125
+Final Project Clean,Detailed broom sweep and wipe-down of work area,Specialized Mitigation,hour,75

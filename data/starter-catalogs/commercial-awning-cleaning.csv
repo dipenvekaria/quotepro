@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Awning Cleaning Service,Low pressure wash and specialized detergent application,Cleaning,sq ft,1
+Deep Scrub Awning Cleaning,Hand scrubbing for heavy pollution and soot,Cleaning,sq ft,2
+Vinyl Awning Wash and Rinse,Surface cleaning for standard vinyl coated fabric,Cleaning,sq ft,1
+Canvas Awning Gentle Wash,Fabric safe cleaning for woven canvas materials,Cleaning,sq ft,2
+Acrylic Awning Maintenance Clean,Routine wash for solution dyed acrylic fabric,Cleaning,sq ft,1
+Mesh Awning Power Flush,High volume flushing for solar screen mesh,Cleaning,sq ft,1
+Backlit Awning Restoration Wash,Interior and exterior clean for illuminated signage,Cleaning,sq ft,2
+Entrance Canopy Cleaning,Detailed cleaning of small entryway canopy,Cleaning,each,175
+Large Storefront Awning Cleaning,Cleaning for wide continuous storefront run,Cleaning,linear ft,12
+Multi-Story Awning Cleaning,Awning cleaning requiring boom lift access,Cleaning,sq ft,3
+Awning UV Protective Coating,Spray applied ultraviolet inhibitor for vinyl awnings,Protection,sq ft,1
+Fabric Water Repellent Treatment,Silicone based waterproofing spray for canvas,Protection,sq ft,1
+Vinyl Sealer Application,Clear protective topcoat to prevent cracking,Protection,sq ft,1
+Anti-Fungal Awning Treatment,Chemical application to inhibit mold and mildew,Protection,sq ft,1
+Bird Dropping Spot Treatment,Enzyme removal for stubborn organic staining,Spot Treatment,each,45
+Tree Sap Removal Service,Solvent treatment for heavy sap deposits,Spot Treatment,sq ft,1
+Rust Stain Removal,Acid based neutralization for metal bleeding,Spot Treatment,each,65
+Graffiti Removal from Awning,Safe solvent removal of paint and ink,Spot Treatment,sq ft,4
+Industrial Pollutant Descaling,Specialized acid wash for heavy fallout,Spot Treatment,sq ft,2
+Smoke Damage Remediation Wash,Chemical soot removal after nearby fire,Spot Treatment,sq ft,2
+Awning Seam Repair,Stitching reinforcement for separated fabric seams,Repair,linear ft,15
+Vinyl Patch Repair Small,Heat welded patch for small puncture up to 3 inches,Repair,each,95
+Vinyl Patch Repair Large,Heat welded patch for tear between 3 and 12 inches,Repair,each,175
+Grommet Replacement,Install new brass eyelet in fabric edge,Repair,each,25
+Valance Replacement,Install new hanging fabric valance piece,Repair,linear ft,22
+Lacing Cord Replacement,Replace worn nylon tie cord on frame,Repair,linear ft,4
+Awning Frame Weld Repair,On-site structural aluminum or steel weld fix,Repair,hour,150
+Frame Bolt Tightening,Secure loose mounting and structural hardware,Repair,hour,95
+Retractable Arm Adjustment,Align and tension folding lateral awning arms,Repair,each,120
+Awning Take Down Service,Careful removal of canopy for winter or storage,Removal & Install,linear ft,14
+Awning Reinstallation Service,Rehang previously removed awning onto brackets,Removal & Install,linear ft,16
+New Fabric Cover Installation,Install customer supplied fabric cover over frame,Removal & Install,sq ft,2
+Wall Anchor Replacement,Drill and install heavy duty masonry expansion anchors,Removal & Install,each,45
+Silicone Caulk Sealant Application,Waterproof sealing where frame meets building wall,Removal & Install,linear ft,6
+Manual Crank Replacement,Install new gearbox manual operation handle,Hardware,each,85
+Gearbox Replacement,Replace internal bevel gear assembly for roll-up awnings,Hardware,each,250
+Retractable Motor Replacement,Swap out failed tubular electric motor inside roller tube,Hardware,each,450
+Motor Limit Switch Adjustment,Calibrate stop limits for motorized retractable awning,Hardware,each,110
+Remote Control Programming,Sync new handheld transmitter with motorized awning,Hardware,each,75
+Wind Sensor Installation,Mount and wire automatic motion safety sensor,Hardware,each,220
+LED Strip Light Installation,Mount waterproof lighting channel under awning frame,Hardware,linear ft,35
+Support Pole Installation,Add vertical ground or deck support posts,Hardware,each,175
+Awning Inspection and Assessment,Comprehensive structural and fabric condition report,Diagnostics,visit,150
+Emergency Storm Service Call,Rapid dispatch for wind damaged or hanging awnings,Diagnostics,visit,250
+Insurance Claim Damage Estimate,Detailed written report and photo log for carriers,Diagnostics,job,200
+After Hours Service Surcharge,Labor premium for night or weekend emergency work,Labor,hour,125
+Standard Technician Labor Rate,Standard hourly rate for cleaning and light repair,Labor,hour,95
+Lead Installer Labor Rate,Hourly rate for advanced structural and mechanical work,Labor,hour,125
+Scissor Lift Rental Surcharge,Daily fee for motorized aerial platform equipment,Equipment,day,350
+Boom Lift Rental Surcharge,Daily fee for articulated articulating boom lift,Equipment,day,650
+Scaffolding Setup and Tear Down,Erect temporary scaffolding for multi-level access,Equipment,job,400
+Water Truck Supply Fee,Bring dedicated water source for remote job sites,Equipment,job,200
+Generator Power Rental,Provide portable generator when site power is unavailable,Equipment,day,125
+Traffic Control Setup,"Cones, signage, and sidewalk safety corridor setup",Permits & Safety,job,150
+Pedestrian Walkway Protection Tunnel,Temporary overhead scaffolding tunnel for safety,Permits & Safety,linear ft,45
+Municipal Right of Way Permit,Acquire local city sidewalk obstruction permits,Permits & Safety,job,175
+Environmental Runoff Containment,Capture system to prevent wash water entering storm drains,Permits & Safety,job,225
+Hazardous Material Disposal Fee,Disposal of contaminated chemical wash water per EPA rules,Permits & Safety,gallon,2
+Old Awning Disposal Fee,Haul away and dump old ruined fabric and metal frames,Permits & Safety,linear ft,5
+Quarterly Maintenance Program Visit,Scheduled recurring wash every three months,Maintenance Plans,visit,250
+Semi-Annual Maintenance Contract,Scheduled bi-annual deep cleaning and inspection,Maintenance Plans,visit,300
+Annual Awning Care Program,Yearly wash plus protective coating application,Maintenance Plans,visit,450
+Priority Service Agreement,Guaranteed 24-hour response time for storm repairs,Maintenance Plans,job,150
+Restaurant Awning Grease Removal Wash,Degreasing treatment for awnings near exhaust vents,Cleaning,sq ft,2
+Awning Frame Power Washing,Bare metal frame wash prior to recovering,Cleaning,linear ft,4
+Under-Awning Ceiling Panel Wash,Cleaning soffit and underside ceiling panels,Cleaning,sq ft,1
+Retractable Awning Fabric Brush Down,Dry brushing of loose debris from rolled fabric,Cleaning,each,75
+Awning Window Contact Clean,Wash windows directly beneath awning during service,Cleaning,linear ft,3
+Signage Face Cleaning Add-On,Wash integrated logo panels attached to awning,Cleaning,sq ft,2
+Awning Stitching Sealant,Liquid thread sealant applied to prevent seam leaks,Protection,linear ft,2
+Salt Air Corrosion Inhibitor,Protective spray for coastal metal frames,Protection,linear ft,3
+Awning Deodorizing Treatment,Enzyme spray to eliminate mildew odors from fabric,Protection,sq ft,1
+Spider and Cobweb Removal,Detailed sweep of frame underside and corners,Spot Treatment,each,35
+Adhesive Residue Removal,Clean off old tape or banner glue from awning surface,Spot Treatment,sq ft,3
+Hard Water Mineral Deposit Removal,Specialized chemical treatment for sprinkler staining,Spot Treatment,sq ft,2
+Awning Corner Cap Replacement,Install new plastic or metal corner frame fitting,Repair,each,40
+Roller Tube Dent Repair,Straighten minor bends in steel or aluminum roller tube,Repair,each,110
+Arm Cable Replacement,Replace internal tension cable in spring loaded arm,Repair,each,140
+Awning End Plate Replacement,Install new mounting bracket end cap assembly,Repair,each,95
+Valance Fringe Replacement,Sew or staple decorative fabric fringe to valance,Repair,linear ft,12
+Awning Hood Cover Installation,Mount protective metal hood over retracted canvas,Removal & Install,linear ft,25
+Lateral Arm Pitch Adjustment,Tilt awning angle for better rain runoff,Removal & Install,each,85
+Awning Relocation Service,Take down and remount awning at new building location,Removal & Install,linear ft,35
+Awning Storage Preparation,"Clean, dry, and wrap removed awning for off-season",Removal & Install,linear ft,10
+Wall Bracket Reinforcement Plate,Install steel backing plate to strengthen weak wall studs,Removal & Install,each,130
+Manual Crank Handle Extension,Install longer crank rod for high clearance awnings,Hardware,each,65
+Automatic Sun Sensor Installation,Mount and configure light activated extension sensor,Hardware,each,195
+Weatherproof Control Switch,Install outdoor rated rocker switch for motorized awning,Hardware,each,120
+Roller Tube Replacement,Install new central rolling cylinder for fabric,Hardware,linear ft,40
+Awning Frame Touch-Up Paint,Apply matching enamel paint to scratched metal frame,Hardware,each,55
+Awning Fabric Sample Test,Test fabric porosity and colorfastness prior to cleaning,Diagnostics,job,75
+Wind Damage Safety Securing,Emergency tie-down of flapping torn fabric,Diagnostics,visit,175
+Awning Leak Detection Service,Hose test to locate source of water penetration,Diagnostics,hour,95
+Holiday Lighting Removal Add-On,Take down seasonal lights attached to awning frame,Labor,linear ft,5
+Holiday Lighting Installation Add-On,Hang customer provided lights along awning structure,Labor,linear ft,8
+Awning Fastener Rust Replacement,Swap standard steel screws for stainless steel fasteners,Hardware,each,8
+Awning Drip Edge Installation,Add aluminum flashing above awning to divert roof water,Hardware,linear ft,28
+Expansion Project Site Survey,Measure and plan for new multi-awning installation,Diagnostics,visit,100
+Awning Webbing Strap Replacement,Replace worn reinforcement straps on retractable arms,Repair,each,45
+Debris Clearing Top Sweep,Remove leaves and standing water from fixed dome top,Cleaning,sq ft,1

@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call Fee,Initial on-site assessment and travel fee.,Diagnostics & Fees,visit,75
+After-Hours Emergency Dispatch,Immediate dispatch outside normal business hours.,Diagnostics & Fees,visit,150
+Detailed On-Site Written Estimate,Comprehensive property measuring and quote generation.,Diagnostics & Fees,job,50
+Water Source Flow Rate Test,Measuring GPM and PSI of property water supply.,Diagnostics & Fees,each,40
+Surface Pre-Inspection and Mapping,Identifying delicate areas and pre-existing damage.,Diagnostics & Fees,job,60
+Standard Pressure Washing Labor,General labor for equipment operation and setup.,Labor Rates,hour,95
+Two-Man Crew Hourly Rate,Combined labor rate for lead and assistant tech.,Labor Rates,hour,160
+Specialized Surface Prep Labor,Extra manual scrubbing and scraping of stubborn areas.,Labor Rates,hour,110
+Height Access Setup Labor,Rigging safety lines and multi-story ladder setup.,Labor Rates,hour,125
+Overtime Labor Surcharge,Additional hourly rate for weekend or holiday work.,Labor Rates,hour,75
+Vinyl Siding Pressure Washing,Low-pressure chemical wash of vinyl exterior walls.,House Washing,sq ft,0.25
+Aluminum Siding Pressure Washing,Washing and rinsing of painted aluminum siding.,House Washing,sq ft,0.28
+Stucco Exterior Soft Wash,Low-pressure surfactant wash safe for delicate stucco.,House Washing,sq ft,0.35
+Brick Exterior Pressure Wash,High-flow washing of exterior brick masonry walls.,House Washing,sq ft,0.3
+Wood Siding Soft Wash,Gentle chemical wash to protect weathered wood planks.,House Washing,sq ft,0.32
+Single Story House Wash Package,Complete exterior wash for single story homes.,House Washing,job,275
+Two Story House Wash Package,Complete exterior wash for two story homes.,House Washing,job,425
+Three Story House Wash Package,Complete exterior wash for three story homes.,House Washing,job,650
+Eaves and Soffit Cleaning,Washing overhangs and removing wasp nest residue.,House Washing,linear ft,0.75
+Foundation Perimeter Wash,Pressure cleaning exposed concrete or block foundations.,House Washing,linear ft,0.5
+Concrete Driveway Surface Cleaning,Surface cleaner rotary attachment for concrete driveways.,Flatwork & Concrete,sq ft,0.35
+Concrete Sidewalk Pressure Washing,Cleaning walkways and pedestrian concrete paths.,Flatwork & Concrete,sq ft,0.3
+Back Patio Pressure Washing,"Washing concrete, stone, or paver rear patios.",Flatwork & Concrete,sq ft,0.35
+Front Porch Surface Cleaning,Deep cleaning entryway concrete or tiled porches.,Flatwork & Concrete,sq ft,0.4
+Pool Deck Pressure Washing,Cleaning concrete or cool-deck pool surrounds.,Flatwork & Concrete,sq ft,0.4
+Paver Stone Cleaning,Low-pressure wash of interlocking brick paver areas.,Flatwork & Concrete,sq ft,0.45
+Garage Floor Degreasing and Washing,Applying degreaser and surface cleaning concrete slabs.,Flatwork & Concrete,sq ft,0.5
+Concrete Oil Stain Spot Treatment,Chemical treatment for deep-set automotive oil stains.,Flatwork & Concrete,each,45
+Paver Joint Sand Installation,Sweeping polymeric sand into dry paver joints.,Flatwork & Concrete,sq ft,0.75
+Paver Joint Sealer Application,Spraying protective sealer over cleaned paver surfaces.,Flatwork & Concrete,sq ft,0.85
+Aluminum Gutter Brightening,Chemical removal of tiger stripes on exterior gutters.,Gutters & Roofs,linear ft,1.25
+Gutter Interior Debris Flush,Flushing out leaves and dirt from gutter troughs.,Gutters & Roofs,linear ft,1
+Downspout Clog Clearing,Disconnecting and forcing clogs out of downspouts.,Gutters & Roofs,each,35
+Asphalt Shingle Roof Soft Wash,ARMA-approved chemical wash to remove black algae streaks.,Gutters & Roofs,sq ft,0.4
+Tile Roof Soft Wash,Low-pressure wash for concrete or clay tile roofs.,Gutters & Roofs,sq ft,0.48
+Metal Roof Pressure Washing,Washing dust and mildew off standing seam metal roofs.,Gutters & Roofs,sq ft,0.35
+Skylight Exterior Glass Cleaning,Washing grime and debris off skylight panes.,Gutters & Roofs,each,40
+Solar Panel Soft Wash,Deionized water wash for residential solar panel arrays.,Gutters & Roofs,each,25
+Roof Moss Treatment Application,Applying residual moss killer to prevent future growth.,Gutters & Roofs,sq ft,0.2
+Chimney Exterior Pressure Wash,Washing brick or stone chimney stacks above roofline.,Gutters & Roofs,job,150
+Wood Deck Pressure Washing,Cleaning dirt and gray wood fibers off plank decks.,Wood & Fencing,sq ft,0.35
+Wood Fence Pressure Washing,Washing vertical wood picket or privacy fences.,Wood & Fencing,linear ft,1.5
+Composite Deck Washing,Low-pressure wash of composite decking materials.,Wood & Fencing,sq ft,0.3
+Pergola Pressure Washing,Washing overhead wood beams and posts.,Wood & Fencing,sq ft,0.45
+Wood Brightener Application,Applying oxalic acid to restore pH and wood color.,Wood & Fencing,sq ft,0.2
+Transparent Wood Sealer Application,Spraying clear protective water repellant on dry wood.,Wood & Fencing,sq ft,0.65
+Semi-Transparent Stain Application,Applying tinted wood stain to clean deck surfaces.,Wood & Fencing,sq ft,1.1
+Vinyl Fence Pressure Washing,Washing mildew and mud off PVC fencing.,Wood & Fencing,linear ft,1.2
+Chain Link Fence Washing,Washing dirt and organic growth off chain link mesh.,Wood & Fencing,linear ft,0.85
+Wrought Iron Fence Wash,Low-pressure rinse of metal ornamental fencing.,Wood & Fencing,linear ft,1
+Standard Surface Cleaner Repair,Replacing worn nozzles or swivel on rotary cleaner.,Repairs & Maintenance,each,65
+High Pressure Hose Replacement,Supplying and installing new 100ft pressure hose.,Repairs & Maintenance,each,180
+Spray Gun and Wand Replacement,Replacing trigger gun and quick-connect lance.,Repairs & Maintenance,each,95
+Quick Connect Fitting Replacement,Swapping out corroded brass couplers or nipples.,Repairs & Maintenance,each,30
+Pressure Washer Pump Unloader Adjustment,Calibrating pressure output and bypass valves.,Repairs & Maintenance,each,85
+Downstream Chemical Injector Replacement,Replacing worn brass soap injector and check valve.,Repairs & Maintenance,each,55
+Gas Engine Tune-Up,"Spark plug, air filter, and oil change for power unit.",Repairs & Maintenance,each,120
+Surface Cleaner Caster Wheel Replacement,Replacing broken or seized caster wheels.,Repairs & Maintenance,each,45
+Spray Tip Nozzle Set Replacement,Supplying a full 5-pack of color-coded spray nozzles.,Repairs & Maintenance,each,25
+Buffer Tank Float Valve Replacement,Replacing mechanical water inlet shutoff valve.,Repairs & Maintenance,each,90
+Sodium Hypochlorite Surfactant Mix,House wash chemical solution per application gallon.,Materials & Consumables,gallon,8
+Eco-Friendly Biodegradable Degreaser,Heavy-duty degreaser chemical for oil stains.,Materials & Consumables,gallon,15
+Oxalic Acid Wood Brightener Mix,Concentrated wood restoration chemical solution.,Materials & Consumables,gallon,12
+Roof Cleaning Surfactant Booster,Wetting agent added to roof wash mixes.,Materials & Consumables,gallon,18
+Polymeric Paver Sand Bag,50lb bag of joint stabilization sand.,Materials & Consumables,each,22
+Penetrating Concrete Sealer,Siloxane-based sealer per gallon of product used.,Materials & Consumables,gallon,45
+Fuel Surcharge for Remote Locations,Travel fee for properties outside standard service radius.,Materials & Consumables,visit,35
+Rust Stain Removal Chemical,Acidic spot cleaner for fertilizer and battery rust stains.,Materials & Consumables,gallon,30
+Graffiti Removal Solvent,Specialized chemical gel for spray paint removal.,Materials & Consumables,gallon,55
+Water Source Hose Extension,Supplying extra 100ft garden hose for water supply.,Materials & Consumables,each,40
+Patio Furniture Pressure Wash,Cleaning outdoor dining sets and lounge chairs.,Specialty & Upsells,job,75
+Trash Can Sanitizing and Washing,High-pressure interior wash and deodorizing of bins.,Specialty & Upsells,each,25
+Playground Equipment Wash,Sanitizing and washing wooden or plastic swing sets.,Specialty & Upsells,job,120
+Retaining Wall Pressure Wash,Washing dirt and moss off stone or block retaining walls.,Specialty & Upsells,sq ft,0.35
+Shed Exterior Pressure Wash,Washing exterior walls of backyard storage sheds.,Specialty & Upsells,job,150
+RV or Camper Exterior Soft Wash,Washing roof and siding of recreational vehicles.,Specialty & Upsells,linear ft,12
+Boat Hull Pressure Wash,Washing algae and scum off boat hulls on trailers.,Specialty & Upsells,linear ft,15
+Window Screen Pressure Wash,Gently washing removed window insect screens.,Specialty & Upsells,each,6
+Brick Paver Sealer Add-On,Applying clear gloss sealer to clean pavers.,Specialty & Upsells,sq ft,0.6
+Window Exterior Water-Fed Pole Rinse,Basic spot-free rinse of exterior glass post house wash.,Specialty & Upsells,job,95
+Environmental Runoff Water Recovery Fee,Setup of vacuum reclamation system for EPA compliance.,Permits & Environmental,job,250
+Storm Drain Blockage Protection Kit,Installing drain covers and absorbent booms on site.,Permits & Environmental,job,75
+Municipal Discharge Permit Processing,Filing paperwork for commercial or large residential wash.,Permits & Environmental,each,100
+Washwater Neutralization Treatment,Balancing pH of captured runoff before disposal.,Permits & Environmental,job,85
+Hazardous Waste Disposal Fee,Disposing of contaminated washwater at facility.,Permits & Environmental,gallon,1.5
+HOA Compliance Documentation Packet,Providing insurance and before-and-after reports.,Permits & Environmental,each,25
+Backflow Preventer Rental,Supplying certified reduced pressure zone device.,Permits & Environmental,visit,50
+Temporary Water Meter Rental Fee,Hydrant meter rental for remote water access.,Permits & Environmental,visit,150
+Traffic Cone and Safety Sign Setup,Deploying cones for street-side or alleyway jobs.,Permits & Environmental,job,40
+Environmental Compliance Inspection,Pre-job site assessment for protected runoff zones.,Permits & Environmental,job,75
+Annual Maintenance Service Plan,Discounted bi-annual house wash and flatwork cleaning.,Service Packages,visit,600
+Spring Cleaning Combo Package,"House wash, driveway cleaning, and gutter flush bundle.",Service Packages,job,550
+Real Estate Pre-Sale Wash Bundle,"Full exterior wash, front walkway, and back patio clean.",Service Packages,job,650
+Holiday Light Take-Down Wash,Quick rinse of roofline where clips left residue.,Service Packages,job,120
+Multi-Unit Townhome Discount Tier,Per-unit rate discount for adjoining townhome blocks.,Service Packages,each,200
+Post-Construction Cleanup Wash,Removing drywall dust and mortar splatter from siding.,Service Packages,sq ft,0.4
+Solar & Window Maintenance Bundle,Cleaning solar panels and exterior glass surfaces.,Service Packages,job,250
+Fence & Deck Restoration Package,"Washing, brightening, and sealing wood structures.",Service Packages,job,850
+Roof & Gutter Protection Package,Roof soft wash combined with full gutter cleaning.,Service Packages,job,450
+Complete Estate Wash Package,"Comprehensive washing of main house, guest house, and all flatwork.",Service Packages,job,1500

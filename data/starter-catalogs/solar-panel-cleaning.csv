@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Solar Panel Cleaning,Deionized water wash for residential panels up to 20 modules.,Routine Cleaning,job,250
+Large Array Solar Panel Cleaning,Deionized water wash for residential arrays between 21 and 40 modules.,Routine Cleaning,job,400
+Commercial Solar Panel Cleaning,Per square foot cleaning for commercial ground or roof arrays.,Routine Cleaning,sq ft,1
+Per Panel Add-On Cleaning,Additional cost per panel for systems exceeding standard package limits.,Routine Cleaning,each,15
+Three-Story Roof Surcharge,Safety and equipment surcharge for three-story roof access.,Routine Cleaning,job,150
+Steep Pitch Roof Surcharge,Safety harness and rigging surcharge for roofs over 30-degree pitch.,Routine Cleaning,job,125
+Heavy Soiling Removal,Specialized scrubbing and biodegradable detergent for heavy bird droppings.,Routine Cleaning,sq ft,2
+Construction Debris Cleaning,"Removal of drywall dust, stucco, or paint overspray from modules.",Routine Cleaning,sq ft,3
+Soot and Ash Remediation,Specialized wash for wildfire ash or heavy industrial soot buildup.,Routine Cleaning,sq ft,2
+Hard Water Spot Removal,Acidic mineral deposit treatment and spot removal per panel.,Routine Cleaning,each,20
+Ground Mount Brush Clearing,Clearing tall grass and weeds touching the bottom of ground mounts.,Routine Cleaning,hour,95
+Bi-Annual Maintenance Contract,Discounted scheduled cleaning service twice per year.,Routine Cleaning,visit,220
+Quarterly Maintenance Contract,Scheduled cleaning service four times per year for high-dust areas.,Routine Cleaning,visit,200
+Annual Maintenance Contract,Scheduled annual cleaning service for residential arrays.,Routine Cleaning,visit,240
+Initial System Inspection,"Visual check of frames, glass, and wiring prior to cleaning.",Diagnostics and Service,job,75
+Diagnostic Service Call,Troubleshooting system output drops or inverter error codes.,Diagnostics and Service,visit,175
+Thermal Imaging Scan,Infrared camera inspection to detect hot spots and failing diodes.,Diagnostics and Service,job,250
+String Voltage Testing,Multimeter testing of open circuit voltage across string arrays.,Diagnostics and Service,hour,150
+Microinverter Communication Check,Troubleshooting gateway connection and module-level monitoring data.,Diagnostics and Service,hour,125
+Post-Cleaning Production Audit,Comparing energy generation output before and after cleaning.,Diagnostics and Service,job,90
+Standard Labor Rate,Hourly rate for general technician labor and repairs.,Labor Rates,hour,110
+Lead Technician Labor Rate,Hourly rate for certified solar technician or system lead.,Labor Rates,hour,145
+Emergency Callout Fee,After-hours or weekend dispatch fee for urgent issues.,Labor Rates,visit,250
+Two-Man Crew Hourly Rate,Combined hourly rate for a two-person installation or cleaning crew.,Labor Rates,hour,220
+Roof Access Setup Labor,"Labor to set up ladders, safety anchors, and lifeline systems.",Labor Rates,hour,110
+Bird Proofing Mesh Installation,Galvanized coated wire mesh installation around array perimeter.,Repairs and Bird Proofing,linear ft,12
+Solar Skirt Fastener Replacement,Replacement of lost or broken clips for pest screen mesh.,Repairs and Bird Proofing,each,8
+Nesting Material Removal,Cleaning out pigeon or bird debris underneath solar panels.,Repairs and Bird Proofing,job,175
+Solar Panel Debris Guard,Perforated aluminum guard installation to block leaves and twigs.,Repairs and Bird Proofing,linear ft,15
+Critter Guard Corner Piece,Custom bent corner bracket for wire mesh pest barrier.,Repairs and Bird Proofing,each,25
+Pigeon Waste Sanitization,Application of enzymatic sanitizer spray on heavily soiled roofs.,Repairs and Bird Proofing,job,150
+Wire Management Clip Replacement,Securing loose dangling wires up against panel frames.,Repairs and Bird Proofing,each,10
+Panel Mid Clamp Replacement,Replacement of standard aluminum mid clamp and stainless bolt.,Hardware Replacement,each,18
+Panel End Clamp Replacement,Replacement of standard aluminum end clamp and hardware.,Hardware Replacement,each,18
+Grounding Lug Replacement,Replacement of corroded copper-to-aluminum grounding lug.,Hardware Replacement,each,35
+Rail Splice Replacement,Replacement of structural rail connector joiner.,Hardware Replacement,each,45
+Roof Ling Bolt Flashing Repair,Resealing around penetrating roof mount hanger bolts.,Hardware Replacement,each,65
+Tilt Leg Adjustment,Adjusting angle of tilt-up roof or ground mount brackets.,Hardware Replacement,each,40
+Torque Verification Check,Checking and retightening all structural mounting bolts.,Hardware Replacement,hour,120
+MC4 Connector Replacement,Cringing and replacing damaged DC wire plug connectors.,Electrical Repairs,each,45
+DC Extension Wire Installation,Running new 10 AWG USE-2 wire for relocated string connections.,Electrical Repairs,linear ft,6
+Junction Box Lid Replacement,Replacement of weatherproof rooftop electrical junction box cover.,Electrical Repairs,each,55
+Conduit Repair,Replacing damaged PVC or EMT exterior electrical conduit sections.,Electrical Repairs,linear ft,22
+Microinverter Replacement Labor,Labor to swap out a failed module-level inverter.,Electrical Repairs,each,150
+Optimizer Replacement Labor,Labor to swap out a failed DC power optimizer.,Electrical Repairs,each,140
+String Fuse Replacement,Replacement of blown DC inline or combiner box fuses.,Electrical Repairs,each,60
+AC Disconnect Switch Replacement,Replacement of exterior safety disconnect switch box.,Electrical Repairs,job,280
+Solar Panel Uninstall,Carefully removing a solar module from racking system.,Module Services,each,75
+Solar Panel Reinstall,Mounting and securing a solar module back onto racking.,Module Services,each,75
+Damaged Glass Panel Exchange,Removal of cracked module and replacement with customer-supplied unit.,Module Services,job,220
+Module Bypass Diode Test,Testing junction box diodes for reverse current leakage.,Module Services,each,35
+Anti-Soofing Coating Application,Hydrophobic nano-coating spray to reduce future dust adhesion.,Upgrades and Coatings,sq ft,1
+Self-Cleaning Glass Treatment,Photocatalytic coating treatment for rain-assisted dirt rinsing.,Upgrades and Coatings,sq ft,2
+Wi-Fi Gateway Upgrade,Installing upgraded monitoring data logger and antenna.,Upgrades and Coatings,job,250
+Production Meter Installation,Adding a revenue-grade generation meter to electrical panel.,Upgrades and Coatings,job,350
+Snow Guard Attachment,Installing polycarbonate snow guards to prevent sliding avalanches.,Upgrades and Coatings,each,30
+Reflective Roof Coating Under Array,Painting white cool roof coating beneath panel footprint.,Upgrades and Coatings,sq ft,2
+Deionized Water System Rental,Daily rental fee for portable DI tank filtration system.,Equipment and Materials,day,75
+Extension Pole Brush Head,Replacement dual-trim water-fed flow-through brush head.,Equipment and Materials,each,120
+Water-Fed Carbon Fiber Pole,Hourly rental fee for multi-story telescopic reach pole.,Equipment and Materials,hour,35
+Replacement DI Resin Bag,Mixed bed deionizing resin refill for spot-free water filtration.,Equipment and Materials,each,85
+Rooftop Safety Harness Kit,"Daily rental for OSHA compliant harness, lanyard, and anchor.",Equipment and Materials,day,45
+Extension Ladder Rental,Daily rental for 28-foot fiberglass extension ladder.,Equipment and Materials,day,50
+Suburban Travel Fee,Trip charge for service locations outside standard metropolitan radius.,Permits and Logistics,job,75
+HOA Compliance Documentation,Preparing and submitting cleaning or repair notices to homeowners association.,Permits and Logistics,job,60
+Commercial Site Safety Plan,Drafting OSHA compliant JSA and fall protection plan for commercial roof.,Permits and Logistics,job,200
+Solar Panel Disposal Fee,Recycling and disposal fee for broken or obsolete photovoltaic modules.,Permits and Logistics,each,50
+Hazardous Waste Runoff Permit,Environmental compliance fee for washing commercial roofs with runoff limits.,Permits and Logistics,job,150
+Parking Permit Coordination,Securing city street permits for service vehicle and trailer parking.,Permits and Logistics,job,85
+Eco-Friendly Biodegradable Soap,Gallon of plant-based surfactant for solar glass cleaning.,Consumables,gallon,45
+Butyl Tape Roll,Waterproofing sealant tape for flashing and junction repairs.,Consumables,each,20
+Dielectric Grease Tube,Silicone compound for protecting electrical plug connections from corrosion.,Consumables,each,15
+Zip Ties UV Resistant,Pack of 100 heavy-duty black weather-resistant wire ties.,Consumables,each,18
+Heat Shrink Tubing Kit,Assorted marine-grade adhesive lined wire splices.,Consumables,job,25
+Stainless Steel Screws Box,Box of #14 self-tapping screws for framing and mesh attachment.,Consumables,each,30
+Solar Array Inverter Filter Cleaning,Removing and washing cooling air filters on string inverters.,Routine Cleaning,each,40
+Skylight Cleaning Add-On,Washing glass skylights while servicing adjacent solar panels.,Routine Cleaning,each,35
+Solar Thermal Tube Cleaning,Cleaning glass vacuum tubes for solar hot water heating systems.,Routine Cleaning,each,20
+Ground Mount Snow Clearing,Brushing heavy snow accumulation off ground-mounted solar arrays.,Routine Cleaning,job,175
+Roof Mount Snow Clearing,Carefully removing snow from slanted roof arrays to restore power.,Routine Cleaning,job,250
+Inverter Screen Polishing,Cleaning weathered LCD display screens on string inverters.,Diagnostics and Service,each,25
+Data Logger Hard Reset,Power cycling and re-provisioning internet gateway hardware.,Diagnostics and Service,job,85
+Array Ground Continuity Test,Verifying bonding resistance across all module frames and rails.,Diagnostics and Service,job,130
+After-Hours Emergency Dispatch,Urgent on-site technician response outside normal business hours.,Labor Rates,hour,195
+Holiday Surcharge,Labor multiplier for services performed on recognized holidays.,Labor Rates,job,150
+Squirrel Guard Barrier Upgrade,Upgrading standard mesh to heavy-duty steel wire for aggressive squirrels.,Repairs and Bird Proofing,linear ft,18
+Solar Panel Scratch Polishing,Buffing light surface abrasions out of anti-reflective glass coating.,Repairs and Bird Proofing,each,65
+Inverter Fan Replacement,Replacing failed cooling fans inside central inverter housing.,Electrical Repairs,job,320
+Rapid Shutdown Device Check,Testing rapid shutdown compliance switch per NEC code requirements.,Electrical Repairs,job,150
+Surge Protector Replacement,Replacing fried AC/DC surge protection device after lightning strike.,Electrical Repairs,job,210
+Module Level Monitoring Setup,Configuring app and software accounts for per-panel production tracking.,Upgrades and Coatings,job,110
+Bird Spike Installation,Installing stainless steel deterrent spikes on high points above array.,Repairs and Bird Proofing,linear ft,14
+Roof Tile Repair Under Array,Replacing broken concrete or clay roof tiles discovered under mounts.,Hardware Replacement,each,45
+Shingle Patch Under Mount,Replacing damaged asphalt shingles beneath removed solar attachments.,Hardware Replacement,each,55
+Safety Anchor Point Installation,Installing permanent permanent roof fall arrest anchor for future servicing.,Upgrades and Coatings,each,175
+System Health Report Generation,Detailed PDF report including cleaning photos and production analysis.,Diagnostics and Service,job,50
+Water Quality TDS Testing,Measuring total dissolved solids parts-per-million of wash water source.,Diagnostics and Service,job,25
+Commercial Site Mobilization Fee,Logistical setup fee for commercial projects requiring heavy equipment.,Permits and Logistics,job,500
+Scissor Lift Daily Rental,Daily rental fee for motorized platform lift on commercial sites.,Equipment and Materials,day,300
+Roof Walkway Pad Installation,Installing rubber safety tread pads across delicate commercial roofs.,Upgrades and Coatings,linear ft,16

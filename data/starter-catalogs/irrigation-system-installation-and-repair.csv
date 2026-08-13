@@ -1,0 +1,99 @@
+name,description,category,unit,price
+Service Call and Diagnostic,Initial troubleshooting and system inspection,Diagnostics & Service,visit,125
+Standard Labor Rate,Hourly labor for irrigation repairs and maintenance,Diagnostics & Service,hour,95
+Emergency After-Hours Service Call,Urgent diagnostics outside normal business hours,Diagnostics & Service,visit,250
+System Audit and Inspection,"Comprehensive check of all zones, heads, and controllers",Diagnostics & Service,job,175
+Main Water Line Locating,Trace and mark underground pressurized water supply pipe,Diagnostics & Service,hour,120
+Valve Wire Tracing,Locate lost underground valve solenoids and control wires,Diagnostics & Service,hour,130
+Flow Meter Diagnostic,Troubleshoot digital flow sensor and meter communication,Diagnostics & Service,hour,110
+Rain Sensor Diagnostic,Test rain or freeze sensor operation and wiring,Diagnostics & Service,each,75
+Spring Startup Service,"Pressurize system, check all zones, and adjust heads",Seasonal Services,job,150
+Winterization Blowout,Drain system using compressed air to prevent freeze damage,Seasonal Services,job,140
+Mid-Season Tune-Up,"Inspect coverage, clean filters, and adjust run times",Seasonal Services,job,125
+Backflow Preventer Winterization,Insulate and protect exterior backflow assembly,Seasonal Services,each,65
+Additional Zone Startup,Startup service for systems exceeding standard zone counts,Seasonal Services,each,25
+Basic Rotor Head Replacement,Replace broken gear-driven rotor sprinkler head,Sprinkler Heads,each,45
+High-Efficiency Rotary Nozzle Replacement,Install multi-stream rotating spray nozzle,Sprinkler Heads,each,35
+Pop-Up Spray Head Replacement,Replace standard 4-inch spray head body and nozzle,Sprinkler Heads,each,30
+6-Inch Pop-Up Spray Head Replacement,Replace taller spray head for ground clearance,Sprinkler Heads,each,40
+12-Inch Pop-Up Spray Head Replacement,Replace shrub bed pop-up sprinkler body,Sprinkler Heads,each,55
+Impact Sprinkler Replacement,Replace brass or plastic impact sprinkler head,Sprinkler Heads,each,50
+Bubbler Head Replacement,Replace tree or shrub flood bubbler,Sprinkler Heads,each,28
+Check Valve Installation,Install low-head drainage check valve in head,Sprinkler Heads,each,22
+Swing Joint Assembly Replacement,Replace flexible pipe swing joint connected to sprinkler,Sprinkler Heads,each,32
+Nozzle Clean and Flush,Clear clogged spray nozzle and flush line debris,Sprinkler Heads,each,18
+1-Inch Irrigation Valve Replacement,Replace electric inline remote control valve,Valves & Manifolds,each,165
+3/4-Inch Irrigation Valve Replacement,Replace smaller residential zone control valve,Valves & Manifolds,each,150
+1.5-Inch Commercial Valve Replacement,Replace large commercial zone control valve,Valves & Manifolds,each,285
+Valve Solenoid Replacement,Replace 24V electric valve coil and connectors,Valves & Manifolds,each,65
+Valve Diaphragm Replacement,Rebuild internal valve components and rubber seal,Valves & Manifolds,each,75
+Valve Box Replacement,Install plastic underground valve enclosure and lid,Valves & Manifolds,each,85
+Jumbo Valve Box Replacement,Install large rectangular valve vault and cover,Valves & Manifolds,each,140
+Manifold Reconstruction,Rebuild cracked PVC or poly valve manifold assembly,Valves & Manifolds,job,320
+Master Valve Installation,Install main system shutoff valve linked to controller,Valves & Manifolds,each,220
+Pressure Regulator Replacement,Install inline pressure reducing valve assembly,Valves & Manifolds,each,195
+4-Station Outdoor Smart Controller,Install Wi-Fi enabled irrigation timer up to 4 zones,Controllers & Electrical,each,295
+8-Station Outdoor Smart Controller,Install Wi-Fi enabled irrigation timer up to 8 zones,Controllers & Electrical,each,385
+12-Station Outdoor Smart Controller,Install Wi-Fi enabled irrigation timer up to 12 zones,Controllers & Electrical,each,475
+Standard Indoor Timer Replacement,Replace basic non-smart indoor transformer and clock,Controllers & Electrical,each,180
+Wireless Rain and Freeze Sensor,Install wireless weather shutoff sensor kit,Controllers & Electrical,each,160
+Transformer Replacement,Replace 24V plug-in or hardwired controller power supply,Controllers & Electrical,each,85
+Control Wire Repair Splice,Repair broken underground low-voltage wire with gel caps,Controllers & Electrical,each,45
+Multi-Strand Wire Run,Pull and connect new multi-wire control cable,Controllers & Electrical,linear ft,4
+Flow Sensor Installation,Install digital water flow meter and wire to controller,Controllers & Electrical,each,340
+Lightning Surge Protector,Install electrical grounding and lightning arrestor,Controllers & Electrical,each,150
+PVC Pipe Repair (Up to 1 Inch),Cut and couple broken PVC mainline or lateral line,Pipes & Fittings,each,95
+PVC Pipe Repair (1.25 to 2 Inch),Repair larger diameter cracked PVC supply pipe,Pipes & Fittings,each,145
+Poly Pipe Repair,Repair flexible polyethylene pipe with insert fittings,Pipes & Fittings,each,80
+Mainline Leak Isolation and Repair,Locate and patch high-pressure main supply leak,Pipes & Fittings,job,220
+Lateral Line Reroute,Reroute damaged zone pipe around obstacle or hardscape,Pipes & Fittings,linear ft,15
+Sleeve Bore Under Sidewalk,Bore and sleeve pipe under concrete walkway or driveway,Pipes & Fittings,linear ft,35
+PVC Primer and Cement Materials,Solvent weld supplies for pipe joint assembly,Pipes & Fittings,job,15
+Brass Fitting Upgrade,Install heavy-duty brass nipple or adapter fitting,Pipes & Fittings,each,25
+Backflow Preventer Testing,Certified test of RPZ or PVB backflow assembly with report,Backflow & Permits,each,95
+RPZ Backflow Preventer Replacement (1 Inch),Replace reduced pressure zone backflow assembly,Backflow & Permits,each,550
+PVB Backflow Preventer Replacement (1 Inch),Replace pressure vacuum breaker assembly,Backflow & Permits,each,420
+Backflow Enclosure Insulation Bag,Install insulated heated pouch over backflow preventer,Backflow & Permits,each,75
+Municipal Plumbing Permit,Acquire local government permit for water connection,Backflow & Permits,job,125
+Backflow Ball Valve Replacement,Replace shutoff isolation valve on backflow assembly,Backflow & Permits,each,85
+New Residential System Installation,Turnkey complete automated irrigation system install,New Installation,job,3800
+Additional Irrigation Zone,Add new complete watering zone to existing system,New Installation,each,650
+Drip Irrigation Zone Installation,Install low-volume emitter tubing for garden beds,New Installation,zone,450
+Drip Emitter Tubing,Install inline pressure-compensating drip irrigation line,New Installation,linear ft,2
+Drip System Pressure Regulator and Filter,Install 25 PSI pressure reducer and screen filter,New Installation,each,65
+Trenching Service,Mechanical trenching for mainline and lateral piping,New Installation,linear ft,3
+Vibratory Plow Installation,Pull pipe underground with minimal turf disruption,New Installation,linear ft,2.5
+Manual Hand Digging,Careful excavation around utilities or delicate landscape,New Installation,hour,85
+Turf Repair and Re-Sodding,Patch grass disturbed by trenching or major repairs,New Installation,sq ft,4
+Sub-Main Tie-In Connection,Tap into existing water service line with saddle tee,New Installation,each,175
+Well Pump Relay Kit,Install pump start relay for private well water source,New Installation,each,280
+Booster Pump Installation,Install water pressure boosting pump for low-flow systems,New Installation,each,750
+Rain Barrel Integration,Connect rainwater harvesting tank to irrigation pump,New Installation,job,950
+System Coverage Redesign,Redining and reconfiguring head placement for dry spots,Upgrades & Optimization,job,350
+Smart Wi-Fi Controller Upgrade,Upgrade old dial timer to weather-based smart controller,Upgrades & Optimization,job,320
+High-Efficiency Nozzle Retrofit,Upgrade standard spray nozzles to matched precipitation rate,Upgrades & Optimization,zone,110
+Head Conversion to Rotor,Convert dry spray zone to gear-driven rotor heads,Upgrades & Optimization,each,65
+Landscape Bed Drip Retrofit,Convert spray heads in flower beds to efficient drip line,Upgrades & Optimization,zone,275
+Master Valve and Flow Sensor Package,Add leak detection protection to existing system,Upgrades & Optimization,job,480
+Grade Adjustment of Sunken Heads,Raise or level sprinkler heads flush with turf grade,Upgrades & Optimization,each,25
+Extension Nipple Installation,Raise sprinkler head height using threaded riser,Upgrades & Optimization,each,18
+Pressure Optimization Tuning,Adjust zone pressure regulation for optimal throw,Upgrades & Optimization,job,95
+Annual Maintenance Agreement (Standard),"Includes spring startup, winterization, and one tune-up",Maintenance Plans,visit,380
+Annual Maintenance Agreement (Premium),"Includes startup, blowout, 2 tune-ups, and priority dispatch",Maintenance Plans,visit,540
+Bi-Monthly System Check,Scheduled inspection of coverage and run times every 2 months,Maintenance Plans,visit,110
+Priority Service Dispatch Add-On,Guaranteed 24-hour response time for repair requests,Maintenance Plans,job,99
+Filter Cleaning Service,Clean inline main water filters and pressure regulators,Maintenance Plans,each,45
+Excavation Spoils Haul Away,Remove excess dirt and debris from major pipe repairs,Disposal & Cleanup,job,75
+Concrete Patching After Boring,Re-pour concrete core holes after sidewalk boring,Disposal & Cleanup,each,120
+Asphalt Patching After Trenching,Cold patch asphalt cut across driveway or street,Disposal & Cleanup,linear ft,45
+Old Controller Recycling Fee,Eco-friendly disposal of obsolete electronic controllers,Disposal & Cleanup,each,20
+Debris Disposal Fee,"Haul away broken pipes, old valves, and rocky soil",Disposal & Cleanup,job,50
+Root Cutting and Clearing,Saw tree roots interfering with underground trenching,Disposal & Cleanup,hour,110
+Temporary Bypass Hose Assembly,Rig temporary above-ground hose supply during major repairs,Miscellaneous,job,65
+Non-Standard Hardware Surcharge,Specialty fittings required for older or custom systems,Miscellaneous,job,35
+Travel Surcharge (Out of Service Area),Additional mileage fee for remote rural locations,Miscellaneous,visit,50
+System Mapping and Documentation,"Create digital diagram of valves, pipes, and zones",Miscellaneous,job,150
+Water Meter Calibration Check,Verify municipal meter flow rates against system draw,Miscellaneous,job,90
+Rust Stain Removal Treatment,Treat hardscape rust stains caused by well water spray,Miscellaneous,job,125
+Hose Bib Integration,Add garden hose spigot connection off irrigation mainline,Miscellaneous,each,110
+Hand-Digging Obstruction Surcharge,Extra labor for hand digging in rocky or root-bound soil,Miscellaneous,hour,40

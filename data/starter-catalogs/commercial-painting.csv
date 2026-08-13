@@ -1,0 +1,100 @@
+name,description,category,unit,price
+Initial Site Inspection and Measure,Onsite walk-through and digital measurement for estimating.,Diagnostics and Consulting,visit,150
+Color Consultation and Drawdown,Professional color matching and sample board creation.,Diagnostics and Consulting,each,250
+Substrate Moisture Testing,Concrete and drywall moisture content meter testing.,Diagnostics and Consulting,each,175
+Lead Paint Testing,EPA compliant XRF or chemical swab testing.,Diagnostics and Consulting,each,225
+Adhesion Testing,Cross-hatch tape test for existing coating integrity.,Diagnostics and Consulting,each,200
+Standard Painter Labor,Hourly rate for production painting and prep work.,Labor Rates,hour,65
+Foreman Supervision Labor,"Site management, quality control, and crew direction.",Labor Rates,hour,85
+After Hours Shift Surcharge,Night or weekend shift labor premium rate.,Labor Rates,hour,45
+Union Painter Labor,Hourly rate for mandated union labor projects.,Labor Rates,hour,110
+Safety Monitor Labor,Dedicated safety watch for confined spaces or scaffolding.,Labor Rates,hour,55
+Drywall Patch and Repair,Patching holes up to 12 inches square.,Surface Preparation and Repairs,each,75
+Drywall Tape and Mud Repair,Repairing cracked or damaged drywall tape seams.,Surface Preparation and Repairs,linear ft,12
+Plaster Crack Repair,V-grooving and filling structural plaster cracks.,Surface Preparation and Repairs,linear ft,18
+Wallpaper Removal,Stripping existing wallpaper and backing paper.,Surface Preparation and Repairs,sq ft,2
+Wallpaper Glue Residue Removal,Washing and neutralizing residual adhesive.,Surface Preparation and Repairs,sq ft,1
+Caulking Gaps and Joints,Applying elastomeric sealant to gaps and joints.,Surface Preparation and Repairs,linear ft,2
+Acoustic Ceiling Texture Patch,Repatching and texturing popcorn ceiling areas.,Surface Preparation and Repairs,sq ft,8
+Concrete Spall Repair,Patching minor concrete surface spalls prior to coating.,Surface Preparation and Repairs,each,95
+Metal Surface Rust Neutralization,Wire brushing and applying rust convertor to steel.,Surface Preparation and Repairs,sq ft,3
+Wood Millwork Sanding,"Sanding down doors, frames, and baseboards.",Surface Preparation and Repairs,linear ft,3
+Interior Wall Washing,Cleaning grease and dust from walls with TSP.,Surface Preparation and Repairs,sq ft,1
+Popcorn Ceiling Scrape and Smooth,Removing acoustic texture and skimming smooth.,Ceiling Finishes,sq ft,4
+Drop Ceiling Tile Spray Painting,Field painting acoustic drop ceiling tiles in place.,Ceiling Finishes,sq ft,2
+Open Structure Deck Spraying,"Spraying exposed joists, pipes, and metal decking.",Ceiling Finishes,sq ft,3
+Standard Flat Ceiling Painting,Applying two coats of flat latex to drywall ceiling.,Ceiling Finishes,sq ft,1
+Dryfall Ceiling Coating,Applying dryfall paint to high commercial ceilings.,Ceiling Finishes,sq ft,2
+Standard Wall Painting,Applying two coats of latex paint to drywall walls.,Wall Coatings,sq ft,2
+Accent Wall Painting,Applying contrasting color to a single feature wall.,Wall Coatings,sq ft,3
+PVA Primer Application,Sealing new unpainted drywall with PVA primer.,Wall Coatings,sq ft,1
+Bond Primer Application,Applying bonding primer to glossy or difficult surfaces.,Wall Coatings,sq ft,1
+Stain Blocking Primer Application,Applying shellac or oil primer over water stains.,Wall Coatings,sq ft,2
+Antimicrobial Paint Application,Applying mold resistant coating in damp areas.,Wall Coatings,sq ft,3
+Dry Erase Coating Application,Applying clear or white markerboard wall coating.,Wall Coatings,sq ft,12
+Elastomeric Wall Coating,Applying high build elastomeric waterproofing coating.,Wall Coatings,sq ft,4
+Intumescent Fire Retardant Paint,Applying certified fire rated intumescent steel coating.,Wall Coatings,sq ft,15
+Anti-Graffiti Clear Coating,Applying sacrificial or permanent anti-graffiti seal.,Wall Coatings,sq ft,5
+Interior Door Painting,Painting both sides of a standard hollow metal door.,Doors and Trim,each,125
+Interior Double Door Painting,Painting both leaves of a double door set.,Doors and Trim,each,220
+Door Frame and Jamb Painting,Painting single metal or wood door frame and stops.,Doors and Trim,each,65
+Storefront Door Painting,Painting aluminum or steel storefront entry door.,Doors and Trim,each,175
+Fire Door Intumescent Edge Painting,Applying rated paint code to fire door edges.,Doors and Trim,each,90
+Baseboard Painting,Painting wood or rubber baseboard trim.,Doors and Trim,linear ft,2
+Crown Molding Painting,Painting architectural crown molding up to 6 inches.,Doors and Trim,linear ft,5
+Chair Rail Painting,Painting wall chair rail or wainscot trim.,Doors and Trim,linear ft,3
+Window Frame and Sill Painting,Painting interior window casing and sill.,Doors and Trim,each,75
+Handrail and Baluster Painting,Painting stairs handrail system and spindles.,Doors and Trim,linear ft,15
+Epoxy Floor Coating System,"Applying primer, solid color epoxy, and clear topcoat.",Flooring and Specialty Finishes,sq ft,6
+Epoxy Flake Floor System,Full broadcast decorative vinyl flake epoxy flooring.,Flooring and Specialty Finishes,sq ft,8
+Urethane Cement Flooring,Heavy duty thermal shock resistant flooring system.,Flooring and Specialty Finishes,sq ft,12
+Concrete Floor Diamond Grinding,Mechanical prep and grinding of concrete slabs.,Flooring and Specialty Finishes,sq ft,2
+Concrete Acid Staining,Applying reactive chemical stain to concrete floors.,Flooring and Specialty Finishes,sq ft,5
+Line Striping and Floor Markings,Painting safety lines and walkways on warehouse floors.,Flooring and Specialty Finishes,linear ft,3
+Warehouse Stenciling,Painting zone numbers or safety text on floors or walls.,Flooring and Specialty Finishes,each,45
+Concrete Sealer Application,Applying clear acrylic or penetrating sealer to concrete.,Flooring and Specialty Finishes,sq ft,1
+Electrostatic Metal Painting,Spraying metal office furniture or lockers onsite.,Metal and Specialized Coatings,sq ft,7
+Structural Steel Priming,Applying shop or field primer to bare structural steel.,Metal and Specialized Coatings,sq ft,3
+Structural Steel Finish Painting,Applying alkyd or polyurethane finish coat to steel.,Metal and Specialized Coatings,sq ft,4
+Metal Pipe Racks Painting,Painting exposed overhead or wall conduit and pipes.,Metal and Specialized Coatings,linear ft,5
+Security Bollard Painting,Painting and striping steel safety bollards.,Metal and Specialized Coatings,each,65
+Elevator Door Metal Refinishing,Refinishing or painting elevator cab doors.,Metal and Specialized Coatings,each,350
+Commercial Radiator Cover Painting,"Removing, painting, and reinstalling radiator covers.",Metal and Specialized Coatings,each,95
+Commercial Vinyl Wallcovering Installation,Hanging commercial grade Type II vinyl wallcovering.,Wallcovering,sq ft,4
+Murals and Graphics Installation,Installing client supplied large format vinyl wall graphics.,Wallcovering,sq ft,6
+Acoustic Wall Panel Installation,Fabric wrapped acoustic panel mounting and alignment.,Wallcovering,sq ft,10
+Corner Guard Installation,Surface mounting vinyl or stainless steel corner guards.,Wallcovering,linear ft,12
+Plastic Wall Protection Sheet Installation,Installing impact resistant FRP panels in high wear areas.,Wallcovering,sq ft,7
+Floor Protection Poly and Tape,Laying heavy duty rosin paper and plastic film protection.,Protection and Containment,sq ft,1
+Ram Board Floor Protection,Installing heavy duty temporary floor protection board.,Protection and Containment,sq ft,1
+Carpet Protection Film,Applying adhesive polyethylene carpet shield film.,Protection and Containment,sq ft,1
+Dust Containment Plastic Barrier,Building temporary floor-to-ceiling plastic containment walls.,Protection and Containment,linear ft,15
+ZipWall Dust Barrier System,Erecting spring loaded pole dust barrier with zipper access.,Protection and Containment,linear ft,18
+Negative Air Machine Rental,HEPA air scrubber rental for dust and odor control.,Protection and Containment,day,125
+HVAC System Masking and Sealing,Sealing vents and diffusers to prevent dust circulation.,Protection and Containment,each,25
+Furniture and Fixture Masking,Covering desks and equipment with plastic sheeting.,Protection and Containment,each,20
+Scaffolding Rental and Setup,Erecting rolling frame scaffolding up to two tiers.,Access Equipment,week,350
+Scissor Lift Rental,Daily rental of electric indoor scissor lift.,Access Equipment,day,250
+Boom Lift Rental,Daily rental of electric articulated boom lift.,Access Equipment,day,450
+Personnel Lift Rental,Daily rental of push-around vertical mast lift.,Access Equipment,day,175
+Extension Ladder Safety Setup,Deploying levelers and tie-offs for high wall access.,Access Equipment,each,75
+OSHA Compliance Safety Plan,Drafting site specific safety and hazard communication plan.,Permits and Compliance,job,200
+City Building Permit Fee,Securing local municipal commercial painting permits.,Permits and Compliance,job,300
+Environmental Disposal Fee,Disposal fees for leftover paint and hazardous materials.,Permits and Compliance,job,150
+Dumpster Rental,Roll-off dumpster for construction debris and trash.,Permits and Compliance,each,600
+After-Hours Building Security Guard,Mandatory security escort during off-hour painting shifts.,Permits and Compliance,hour,50
+Final Construction Cleanup,Detailed broom clean and wipe down of painted areas.,Cleanup and Handover,sq ft,1
+HEPA Vacuum Detailed Cleaning,"Vacuuming dust from floors, ledges, and fixtures.",Cleanup and Handover,sq ft,1
+Window Glass Paint Spot Removal,Scraping and cleaning paint overspray off glass.,Cleanup and Handover,sq ft,1
+Touch-Up Paint Kit Left Behind,Labeled quart cans of each color for facility maintenance.,Cleanup and Handover,each,75
+Punch List Completion Visit,Dedicated site visit for client walkthrough touch-ups.,Cleanup and Handover,visit,250
+Zero-VOC Paint Upgrade,Upgrading standard paint to premium zero-VOC formulation.,Material Upgrades,sq ft,1
+High-Durability Epoxy Eggshell Upgrade,Upgrading to moisture and scrub resistant wall coating.,Material Upgrades,sq ft,1
+Drywall Level 5 Finish Upgrade,Skim coating entire wall surface to eliminate lighting flaws.,Material Upgrades,sq ft,2
+Custom Corporate Color Matching,Formulating custom PMS color matched paint batches.,Material Upgrades,each,100
+Stain Grade Clear Wood Finish,Applying sanding sealer and two coats of polyurethane to wood.,Material Upgrades,sq ft,4
+Weekend Rush Execution,Mobilizing accelerated crew to complete work over one weekend.,Material Upgrades,job,1500
+Daily Facility Maintenance Touch-Up,Ongoing monthly maintenance painting hours contract.,Material Upgrades,hour,75
+Cabinetry Spray Refinishing,Factory finish spraying of commercial millwork cabinets.,Material Upgrades,sq ft,9
+Epoxy Cove Base Installation,Installing seamless resinous cove base in wet areas.,Material Upgrades,linear ft,14
+Whiteboard Paint Application,Applying specialty dry-erase clear coat over accent walls.,Material Upgrades,sq ft,10

@@ -1,0 +1,102 @@
+name,description,category,unit,price
+Standard Service Call,Initial diagnostic visit and basic troubleshooting labor.,Diagnostics & Labor,visit,150
+After-Hours Emergency Service Call,Urgent dispatch outside of normal business hours.,Diagnostics & Labor,visit,300
+General Labor Rate,Hourly rate for standard pool repair services.,Diagnostics & Labor,hour,125
+Master Technician Hourly Rate,Hourly rate for complex electrical and automation work.,Diagnostics & Labor,hour,175
+Leak Detection Service,Pressure testing and electronic listening for pool leaks.,Diagnostics & Labor,job,450
+Filter Cleaning Service,"Disassemble, clean, and reassemble pool filter elements.",Maintenance & Cleaning,each,175
+Salt Cell Cleaning,Acid wash and inspect saltwater chlorine generator cell.,Maintenance & Cleaning,each,125
+Green Pool Recovery Chemical Treatment,Shock treatment and algaecide application for algae blooms.,Maintenance & Cleaning,job,350
+Weekly Chemical Balance Service,Test water chemistry and add balancing chemicals.,Maintenance & Cleaning,visit,65
+Bi-Weekly Full Service,"Chemical check, brushing, skimming, and basket emptying.",Maintenance & Cleaning,visit,95
+Single-Speed Pump Motor Replacement,Replace standard pump motor with matching unit.,Pump Repair & Replacement,each,480
+Variable-Speed Pump Replacement,Install energy-efficient variable-speed pool pump.,Pump Repair & Replacement,each,1450
+Pump Lid O-Ring Replacement,Replace worn pump lid gasket to restore suction.,Pump Repair & Replacement,each,45
+Pump Basket Replacement,Replace cracked or broken pump strainer basket.,Pump Repair & Replacement,each,65
+Pump Impeller Replacement,Replace clogged or damaged pump impeller.,Pump Repair & Replacement,each,180
+Pump Seal Kit Installation,Replace shaft seal and housing gaskets.,Pump Repair & Replacement,job,220
+Complete Pump Assembly Replacement,Remove and replace entire pool pump unit.,Pump Repair & Replacement,each,850
+Cartridge Filter Replacement Set,Replace internal filter cartridges with new elements.,Filter Repair & Replacement,each,280
+DE Filter Grid Assembly Replacement,Replace complete set of diatomaceous earth filter grids.,Filter Repair & Replacement,each,380
+Single DE Filter Grid Replacement,Replace one broken or torn filter grid.,Filter Repair & Replacement,each,75
+Sand Filter Sand Replacement,Empty old filter sand and refill with fresh media.,Filter Repair & Replacement,job,420
+Multiport Valve Replacement,Replace top-mount or side-mount multiport backwash valve.,Filter Repair & Replacement,each,450
+Filter Pressure Gauge Replacement,Replace broken or stuck pressure gauge.,Filter Repair & Replacement,each,55
+Air Relief Valve Replacement,Replace manual air bleed valve on filter tank.,Filter Repair & Replacement,each,45
+Backwash Hose Replacement,Replace flexible vinyl backwash discharge hose.,Filter Repair & Replacement,each,65
+Gas Heater Burner Tray Replacement,Replace corroded or faulty gas burner assembly.,Heater Repair & Replacement,each,650
+Gas Heater Ignitor Replacement,Replace electronic hot surface ignitor.,Heater Repair & Replacement,each,250
+Gas Heater Pressure Switch Replacement,Replace faulty flow pressure safety switch.,Heater Repair & Replacement,each,190
+Gas Heater Thermostat Replacement,Replace electronic thermostat or temperature control board.,Heater Repair & Replacement,each,380
+Gas Heater Heat Exchanger Replacement,Replace leaking copper heat exchanger core.,Heater Repair & Replacement,job,1850
+Gas Heater Replacement (Standard),Replace natural gas or propane pool heater.,Heater Repair & Replacement,each,3400
+Heat Pump Replacement,Replace electric heat pump unit.,Heater Repair & Replacement,each,4800
+Heater Flow Switch Replacement,Replace paddle-style flow switch on heater.,Heater Repair & Replacement,each,210
+Salt System Control Board Replacement,Replace failed power supply and logic board.,Salt Systems & Automation,each,750
+Salt Chlorine Generator Cell Replacement,Replace spent electrolytic salt cell.,Salt Systems & Automation,each,850
+Automation Main Control Board Replacement,Replace pool automation system controller board.,Salt Systems & Automation,each,1100
+Automation Valve Actuator Replacement,Replace motorized automatic valve actuator.,Salt Systems & Automation,each,380
+Water Temperature Sensor Replacement,Replace thermistor temperature sensor.,Salt Systems & Automation,each,150
+Air Temperature Sensor Replacement,Replace outdoor ambient air temperature sensor.,Salt Systems & Automation,each,150
+Time Clock Replacement,Replace mechanical electromechanical pool timer.,Salt Systems & Automation,each,275
+Skimmer Lid Replacement,Replace cracked plastic skimmer cover lid.,"Skimmers, Drains & Plumbing",each,75
+Skimmer Basket Replacement,Replace skimmer debris collection basket.,"Skimmers, Drains & Replacement",each,45
+Skimmer Weir Door Replacement,Replace skimmer flap door to trap debris.,"Skimmers, Drains & Plumbing",each,55
+Skimmer Throat Repair,Epoxy repair around skimmer mouth to stop leaks.,"Skimmers, Drains & Plumbing",job,350
+Main Drain Cover Replacement (Anti-Entrapment),Replace VGB compliant main drain grate covers.,"Skimmers, Drains & Plumbing",each,250
+PVC Ball Valve Replacement,Replace 2-inch PVC plumbing ball valve.,"Skimmers, Drains & Plumbing",each,180
+PVC Check Valve Replacement,Replace swing or spring check valve in plumbing line.,"Skimmers, Drains & Plumbing",each,210
+PVC Pipe Repair (Up to 2 Inch),Cut and couple broken PVC pressure pipe.,"Skimmers, Drains & Plumbing",job,220
+Pool Light Bulb Replacement (Incandescent),Replace standard underwater pool light bulb and gasket.,Lighting & Electrical,each,125
+LED Pool Light Fixture Replacement,Replace entire niche light with color-changing LED.,Lighting & Electrical,each,650
+Pool Light Niche Repair,Epoxy repair for leaking light niche conduit.,Lighting & Electrical,job,450
+Time Clock Motor Replacement,Replace internal motor drive for mechanical timer.,Lighting & Electrical,each,140
+Pool Transformer Replacement,Replace 12V/13V lighting step-down transformer.,Lighting & Electrical,each,280
+Bonding Wire Repair,Repair copper equipment grounding and bonding wire.,Lighting & Electrical,job,220
+Circuit Breaker Replacement,Replace tripped or faulty breaker in sub-panel.,Lighting & Electrical,each,160
+Sub-Panel Installation,Install new equipment pad electrical disconnect panel.,Lighting & Electrical,job,650
+Automatic Pool Cleaner Repair,Rebuild suction or pressure side cleaner mechanism.,Cleaners & Accessories,job,250
+Booster Pump Replacement,Replace pressure cleaner booster pump.,Cleaners & Accessories,each,620
+Booster Pump Seal Repair,Replace leaking shaft seal on booster pump.,Cleaners & Accessories,job,190
+Cleaner Hose Replacement Set,Replace complete feed hose assembly for cleaner.,Cleaners & Accessories,each,220
+Cleaner Sweep Tail Scrubber Replacement,Replace worn tail sweep foam scrubbers.,Cleaners & Accessories,each,35
+In-Floor Cleaning Head Replacement,Replace popup pop-up cleaning nozzle head.,Cleaners & Accessories,each,95
+Tile Line Acid Wash,Clean calcium and scale buildup from waterline tile.,Surface & Tile Repair,linear ft,25
+Plaster Patch Repair (Underwater),Epoxy patch for minor plaster delamination or chips.,Surface & Tile Repair,job,275
+Skimmer Area Tile Replacement,Replace broken frost-damaged waterline tiles.,Surface & Tile Repair,linear ft,45
+Coping Stone Resetting,Mortar loose or shifting pool coping stones.,Surface & Tile Repair,linear ft,55
+Expansion Joint Caulking,Remove and replace old mastic expansion joint.,Surface & Tile Repair,linear ft,18
+Standard Winterization (Closing),"Blow out lines, add winter chemicals, and cover pool.",Seasonal Openings & Closings,job,375
+Mesh Safety Cover Installation,Install anchors and stretch safety cover over pool.,Seasonal Openings & Closings,job,450
+Solid Cover Installation with Pump,Install solid winter cover and submersible pump.,Seasonal Openings & Closings,job,480
+Spring Opening Service,"Remove cover, start equipment, and add start-up chemicals.",Seasonal Openings & Closings,job,375
+Winter Plug and Gizmo Installation,Install expansion plugs and skimmer protection bottles.,Seasonal Openings & Closings,job,120
+Submersible Cover Pump Placement,Set up automatic rain water removal pump on cover.,Seasonal Openings & Closings,each,150
+Liquid Chlorine (Sodium Hypochlorite) 1 Gal,Standard 10.5 percent liquid chlorine gallon.,Chemicals & Consumables,each,8
+Muriatic Acid 1 Gal,Commercial grade acid for pH and alkalinity reduction.,Chemicals & Consumables,each,14
+Sodium Bicarbonate 50 lb,Alkalinity increaser bag.,Chemicals & Consumables,each,45
+Soda Ash 50 lb,pH increaser bag.,Chemicals & Consumables,each,48
+Calcium Chloride 50 lb,Water hardness increaser bag.,Chemicals & Consumables,each,52
+Cyanuric Acid 25 lb,Stabilizer and conditioner bag.,Chemicals & Consumables,each,65
+Non-Chlorine Shock 1 lb,Oxidizing shock treatment bag.,Chemicals & Consumables,each,12
+Pool Salt 40 lb,High purity evaporated salt bag for salt systems.,Chemicals & Consumables,each,12
+Enzyme Clarifier 1 Qt,Natural enzyme water clarifier bottle.,Chemicals & Consumables,each,28
+Phosphate Remover 1 Qt,Chemical treatment to eliminate algae food source.,Chemicals & Consumables,each,45
+Filter Cleaner Degreaser 1 Qt,Chemical soak solution for oily filter elements.,Chemicals & Consumables,each,25
+Metal Sequestrant 1 Qt,Stain and scale prevention chemical.,Chemicals & Consumables,each,35
+Pool Handrail Installation,Anchor and install stainless steel deck handrail.,Hardware & Accessories,each,350
+Pool Ladder Installation,Anchor and install stainless steel pool ladder.,Hardware & Accessories,each,420
+Handrail Escutcheon Plate Replacement,Replace stainless steel base cover plates.,Hardware & Accessories,each,35
+Diving Board Replacement,Replace residential fiberglass diving board.,Hardware & Accessories,each,850
+Diving Board Stand Replacement,Replace steel diving board mounting base stand.,Hardware & Accessories,each,650
+Slide Water Supply Line Repair,Repair feed line for pool slide.,Hardware & Accessories,job,220
+Municipal Building Permit Processing,Admin fee for local electrical or plumbing permits.,Permits & Disposal,each,150
+Debris Disposal Fee,Haul away and dump old large equipment or covers.,Permits & Disposal,job,125
+Hazardous Waste Neutralization,Proper disposal of expired or compromised pool chemicals.,Permits & Disposal,job,175
+Crane Rental for Heavy Equipment,Crane service to lift large heat pumps or chillers.,Permits & Disposal,job,950
+Core Drilling Concrete Deck,Drill core hole in concrete for new handrail anchor.,Permits & Disposal,each,150
+Concrete Pad Pour for Equipment,Pour new concrete pad for upgraded pump and filter.,Permits & Disposal,job,450
+Electrical Whip Replacement,Replace flexible conduit and wiring whip to pump.,Hardware & Accessories,each,110
+Equipment Pad Re-plumbing,Re-pipe entire equipment pad for clean layout.,"Skimmers, Drains & Plumbing",job,1200
+UV System Replacement,Replace ultraviolet pool water sanitizing system.,Salt Systems & Automation,each,1150
+Ozone Generator Replacement,Replace corona discharge pool ozone water purifier.,Salt Systems & Automation,each,680

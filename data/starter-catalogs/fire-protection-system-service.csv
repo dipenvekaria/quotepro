@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call,Initial technician dispatch and first hour of diagnostics,Labor & Diagnostics,visit,185
+After-Hours Emergency Dispatch,Emergency callout outside normal business hours,Labor & Diagnostics,visit,375
+Journeyman Fitter Hourly Rate,Standard hourly rate for pipefitting and system repairs,Labor & Diagnostics,hour,125
+Lead Inspector Hourly Rate,Hourly rate for certified system inspection and testing,Labor & Diagnostics,hour,145
+Helper Hourly Rate,Hourly rate for apprentice support labor,Labor & Diagnostics,hour,85
+System Diagnostic and Trouble Isolation,Tracing wiring or pressure faults in control panels,Labor & Diagnostics,hour,150
+Project Management Fee,Coordination and scheduling for major repair projects,Labor & Diagnostics,job,250
+Engineering Drawing Review,Review of shop drawings by certified designer,Labor & Diagnostics,hour,175
+Fire Department Connection Hydro Test,Five-year hydrostatic test of FDC piping,Testing & Certification,job,650
+Main Drain Test,Annual flow test of system main drain,Testing & Certification,each,175
+Backflow Preventer Annual Test,Certified test of double check or RPZ valve,Testing & Certification,each,225
+Fire Pump Annual Flow Test,"Full churn, rated, and peak flow test of fire pump",Testing & Certification,job,1200
+Wet Pipe System Annual Inspection,Visual inspection of all accessible wet sprinkler components,Testing & Certification,visit,450
+Dry Pipe System Annual Inspection,Inspection including trip test of dry valve,Testing & Certification,visit,550
+Pre-Action System Functional Test,Full trip test and verification of pre-action panel,Testing & Certification,each,750
+Clean Agent System Annual Inspection,Inspection and weighing of gaseous suppression cylinders,Testing & Certification,visit,600
+Kitchen Suppression System Semi-Annual Test,Bi-annual service of wet chemical kitchen system,Testing & Certification,visit,325
+Fire Alarm Interface Verification,Testing waterflow and tamper switch signals to panel,Testing & Certification,hour,135
+Standpipe System Five-Year Test,Hydrostatic test of manual or automatic standpipes,Testing & Certification,job,850
+Obstruction Investigation,Internal pipe inspection via flush or camera,Testing & Certification,job,950
+Upright Sprinkler Head Replacement,Replace standard response upright sprinkler head,Sprinkler Heads,each,95
+Pendent Sprinkler Head Replacement,Replace standard response pendent sprinkler head,Sprinkler Heads,each,95
+Sidewall Sprinkler Head Replacement,Replace standard response sidewall sprinkler head,Sprinkler Heads,each,110
+Concealed Pendent Head and Cover Plate Replacement,Replace concealed sprinkler head and matching cover plate,Sprinkler Heads,each,145
+Extended Coverage Sprinkler Replacement,Replace specialized large area coverage sprinkler head,Sprinkler Heads,each,165
+In-Rack Sprinkler Replacement,Replace specialized storage rack sprinkler head,Sprinkler Heads,each,130
+ESFR Sprinkler Head Replacement,Replace early suppression fast response storage sprinkler,Sprinkler Heads,each,195
+Institutional Security Sprinkler Replacement,Replace heavy-duty tamper-resistant correctional sprinkler,Sprinkler Heads,each,220
+Dry Pendent Sprinkler Replacement,Replace extended barrel dry pendent sprinkler head,Sprinkler Heads,each,275
+Open Water Spray Nozzle Replacement,Replace deluge or open spray discharge nozzle,Sprinkler Heads,each,185
+2-Inch Butterfly Valve Replacement,Replace 2-inch grooved butterfly control valve,Valves & Trim,each,450
+4-Inch Butterfly Valve Replacement,Replace 4-inch grooved butterfly control valve,Valves & Trim,each,650
+6-Inch Butterfly Valve Replacement,Replace 6-inch grooved butterfly control valve,Valves & Trim,each,850
+8-Inch Butterfly Valve Replacement,Replace 8-inch grooved butterfly control valve,Valves & Trim,each,1200
+2-Inch OS&Y Gate Valve Replacement,Replace 2-inch outside screw and yoke valve,Valves & Trim,each,520
+4-Inch OS&Y Gate Valve Replacement,Replace 4-inch outside screw and yoke valve,Valves & Trim,each,780
+6-Inch OS&Y Gate Valve Replacement,Replace 6-inch outside screw and yoke valve,Valves & Trim,each,1100
+2-Inch Check Valve Replacement,Replace 2-inch swing check valve,Valves & Trim,each,380
+4-Inch Check Valve Replacement,Replace 4-inch swing check valve,Valves & Trim,each,620
+6-Inch Check Valve Replacement,Replace 6-inch swing check valve,Valves & Trim,each,890
+Alarm Check Valve Rebuild Kit,"Replace clapper, seat, and rubber gaskets in alarm valve",Valves & Trim,each,550
+Dry Pipe Valve Rebuild Kit,Replace internal rubber parts on dry sprinkler valve,Valves & Trim,each,750
+Backflow Preventer Rebuild Kit (2-Inch),Replace internal check modules and relief valve rubber,Valves & Trim,each,450
+Backflow Preventer Rebuild Kit (4-Inch),Replace internal check modules and relief valve rubber,Valves & Trim,each,950
+Pressure Reducing Valve Replacement,Replace 2.5-inch standpipe hose connection PRV,Valves & Trim,each,480
+Waterflow Detector Replacement (Vane),Replace paddle-type waterflow flow switch,Switches & Devices,each,320
+Pressure Switch Replacement,Replace supervisory or alarm pressure switch,Switches & Devices,each,280
+Tamper Switch Replacement (Butterfly),Replace supervisory switch for butterfly valve,Switches & Devices,each,250
+Tamper Switch Replacement (OS&Y),Replace supervisory switch for gate valve,Switches & Devices,each,275
+Mechanical Water Motor Gong Replacement,Replace exterior water-powered mechanical alarm bell,Switches & Devices,each,650
+Electric Water Alarm Strobe/Horn Replacement,Replace combination fire alarm notification appliance,Switches & Devices,each,290
+Fire Department Connection Swivel Replacement,Replace 2.5-inch brass FDC swivel and gasket,Switches & Devices,each,195
+Fire Department Connection Plugs and Chains,Replace missing brass caps and chain sets for FDC,Switches & Devices,each,125
+Air Maintenance Device Replacement,Replace automatic air pressure regulator for dry system,Switches & Devices,each,420
+Air Compressor Replacement (1/3 HP),Replace riser-mounted dry system air compressor,Switches & Devices,each,1150
+Fire Pump Packing Replacement,Repack stuffing boxes on centrifugal fire pump,Fire Pumps,job,650
+Fire Pump Controller Board Replacement,Replace main logic printed circuit board in controller,Fire Pumps,each,1800
+Jockey Pump Replacement,Replace small pressure-maintenance pump for sprinkler system,Fire Pumps,each,1450
+Jockey Pump Pressure Switch Replacement,Replace cycle control pressure switch for jockey pump,Fire Pumps,each,310
+Fire Pump Relief Valve Replacement,Replace main casing relief valve assembly,Fire Pumps,each,2200
+Black Steel Pipe Repair (1-Inch),Cut and thread 1-inch schedule 40 steel pipe,Piping & Repairs,linear ft,35
+Black Steel Pipe Repair (2-Inch),Cut and thread 2-inch schedule 40 steel pipe,Piping & Repairs,linear ft,55
+Grooved Steel Pipe Installation (4-Inch),Install 4-inch roll-grooved steel piping,Piping & Repairs,linear ft,75
+Grooved Steel Pipe Installation (6-Inch),Install 6-inch roll-grooved steel piping,Piping & Repairs,linear ft,110
+CPVC Pipe Repair (1-Inch),Solvent cement repair on fire-rated CPVC pipe,Piping & Repairs,linear ft,25
+CPVC Pipe Repair (2-Inch),Solvent cement repair on fire-rated CPVC pipe,Piping & Repairs,linear ft,40
+Underground Pipe Leak Repair,Excavate and repair ductile iron supply pipe leak,Piping & Repairs,job,2500
+Mechanical Tee Installation,Install bolt-on mechanical branch outlet on steel pipe,Piping & Repairs,each,145
+Pipe Hanger Replacement,Replace broken or missing seismic riser clamp or hanger,Piping & Repairs,each,85
+Flexible Sprinkler Drop Installation,Install braided stainless steel drop and bracket,Piping & Repairs,each,175
+Wet Chemical Cylinder Recharging,Recharge kitchen system wet chemical agent tanks,Special Systems,each,450
+Fusible Link Replacement,Replace mechanical temperature-rated links in kitchen hood,Special Systems,each,65
+Gas Cartridge Replacement,Replace actuation propellant gas cartridge,Special Systems,each,125
+Clean Agent Cylinder Recharging,Refill FM-200 or Novec suppression agent cylinder,Special Systems,pound,45
+Deluge Valve Solenoid Replacement,Replace electrical release solenoid on deluge valve,Special Systems,each,520
+Foam Concentrate Replenishment,Supply and pump new foam concentrate into bladder tank,Special Systems,gallon,85
+Nitrogen Generator Maintenance Service,Service membrane and filters on corrosion-inhibiting generator,Special Systems,visit,550
+Backflow Preventer Enclosure Heater Replacement,Replace freeze-protection heating element in backflow box,Special Systems,each,320
+Fire Pump Fuel Tank Polishing,Clean and filter diesel fuel for emergency fire pump,Special Systems,job,1100
+Alarm Panel Battery Replacement (Pair),Replace 12V backup batteries for fire control panel,Special Systems,visit,175
+Municipal Permit Acquisition,Process required local fire department permits for work,Permits & Compliance,job,200
+Plan Submittal and Engineering Stamp,Prepare and submit engineered drawings to authorities,Permits & Compliance,job,750
+AHJ On-Site Witnessing Coordination,Stand by with inspector during official acceptance test,Permits & Compliance,hour,145
+System Tagging and Compliance Report,Issue official NFPA inspection certificates and green tags,Permits & Compliance,visit,125
+Impairment Coordination Service,Manage formal fire watch and insurance notification filings,Permits & Compliance,job,250
+Hydraulic Calculation Service,Computer-generated hydraulic calcs for system additions,Permits & Compliance,job,450
+Code Violation Correction Review,Evaluate and quote repairs for municipal citation notices,Permits & Compliance,visit,150
+Sprinkler Head Cabinet and Wrench Set,Supply spare heads and wrench per NFPA requirement,Permits & Compliance,each,185
+Main Drain Discharge Disposal Fee,Environmental fee for high-volume water flow disposal,Permits & Compliance,job,95
+Hazardous Material Disposal Fee,Disposal fee for old chemical suppression agents,Permits & Compliance,job,220
+Internal Pipe Condition Assessment,Borescope inspection of branch line microbiologically influenced corrosion,Upgrades & Retrofits,job,650
+Seismic Bracing Retrofit,Install lateral and longitudinal earthquake sway braces,Upgrades & Retrofits,each,380
+Anti-Freeze Loop Conversion,Convert old anti-freeze system to dry pipe or compliant fluid,Upgrades & Retrofits,job,1800
+Corrosion Management Air Vent Installation,Install automatic air vent to reduce pipe oxidation,Upgrades & Retrofits,each,450
+Fire Department Connection Relocation,Move exterior FDC to accessible street-facing location,Upgrades & Retrofits,job,2400
+High-Temperature Sprinkler Upgrade,Replace standard heads near unit heaters with high-temp rating,Upgrades & Retrofits,each,110
+Staged Evacuation Speaker Upgrade,Upgrade notification appliances to voice evacuation speakers,Upgrades & Retrofits,each,275
+Control Valve Tamper Lock Installation,Install chain and padlock or supervisory lock on isolation valve,Upgrades & Retrofits,each,95
+Backflow Preventer Installation (2-Inch),Install new reduced pressure zone backflow assembly,Upgrades & Retrofits,each,1850
+Backflow Preventer Installation (4-Inch),Install new reduced pressure zone backflow assembly,Upgrades & Retrofits,each,3800

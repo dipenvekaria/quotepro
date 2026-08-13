@@ -1,0 +1,104 @@
+name,description,category,unit,price
+Standard Diagnostic Fee,Initial troubleshooting and system fault diagnosis.,Diagnostics and Service,visit,150
+After-Hours Service Call,Emergency dispatch outside of normal business hours.,Diagnostics and Service,visit,300
+System Health Audit,Comprehensive inspection of all controllers and readers.,Diagnostics and Service,visit,250
+Firmware Upgrade Service,Updating controller and panel firmware versions.,Diagnostics and Service,hour,125
+Wire Trace and Identification,Tracing unknown or unlabeled control wiring.,Diagnostics and Service,hour,135
+Standard Technician Labor,Hourly rate for standard access control installation.,Labor Rates,hour,115
+Senior Systems Programmer Labor,Hourly rate for software configuration and database setup.,Labor Rates,hour,150
+After-Hours Labor Rate,Emergency or night-shift labor per hour.,Labor Rates,hour,225
+Apprentice Labor Rate,Supporting assistant labor per hour.,Labor Rates,hour,75
+Project Management,On-site coordination and scheduling per day.,Labor Rates,day,600
+Single-Door Controller Replacement,Replacing failed single-door access control panel.,Repairs and Replacements,each,450
+Two-Door Controller Replacement,Replacing failed two-door expansion controller.,Repairs and Replacements,each,650
+Four-Door Controller Replacement,Replacing failed main four-door panel.,Repairs and Replacements,each,1100
+Power Supply Board Replacement,Replacing 12V/24V fused access control power supply.,Repairs and Replacements,each,350
+Backup Battery Replacement,Replacing 12V 7Ah sealed lead-acid battery.,Repairs and Replacements,each,75
+Magnetic Lock Replacement,Replacing standard 1200lb electromagnetic lock.,Repairs and Replacements,each,380
+Electric Strike Replacement,Replacing failed mortise or cylindrical electric strike.,Repairs and Replacements,each,320
+Electrified Panic Bar Replacement,Replacing heavy-duty electrified exit device.,Repairs and Replacements,each,950
+Prox Card Reader Replacement,Replacing standard 125kHz proximity reader.,Repairs and Replacements,each,220
+Smart Card Reader Replacement,Replacing 13.56MHz high-security smart card reader.,Repairs and Replacements,each,280
+Biometric Reader Replacement,Replacing fingerprint or facial recognition reader.,Repairs and Replacements,each,850
+Request-to-Exit Sensor Replacement,Replacing PIR motion detector for free egress.,Repairs and Replacements,each,190
+Emergency Pull Station Replacement,Replacing emergency door release push button.,Repairs and Replacements,each,150
+Door Contact Replacement,Replacing recessed or surface door position switch.,Repairs and Replacements,each,65
+Door Closer Adjustment,Tuning hydraulic closer for proper latching.,Repairs and Replacements,each,120
+Single-Door Controller Hardware,IP-based single door access control panel unit.,Materials and Hardware,each,350
+Four-Door Main Panel Hardware,Scalable four-door access controller board.,Materials and Hardware,each,890
+12VDC 4A Power Supply Enclosure,Locked metal enclosure with power distribution board.,Materials and Hardware,each,240
+Standard Proximity Card Reader,Wiegand output 125kHz wall-mount card reader.,Materials and Hardware,each,140
+Multi-Technology Smart Reader,BLE and 13.56MHz credentials wall reader.,Materials and Hardware,each,210
+Keypad and Prox Reader Combo,Outdoor-rated reader with integrated pin pad.,Materials and Hardware,each,290
+1200lb Electromagnetic Lock,High-security shear or surface mount maglock.,Materials and Hardware,each,260
+600lb Electromagnetic Lock,Standard duty single door magnetic lock.,Materials and Hardware,each,180
+Heavy-Duty Electric Strike,Grade 1 fail-secure/fail-safe electric door strike.,Materials and Hardware,each,220
+Electrified Exit Trim,Commercial grade electrified lever handle trim.,Materials and Hardware,each,650
+PIR Request-to-Exit Detector,Focused motion sensor for unlatching doors.,Materials and Hardware,each,110
+Wave-to-Open Touchless Switch,Infrared hands-free exit activation button.,Materials and Hardware,each,145
+ADA Handicap Push Plate,Hardwired large stainless steel activation button.,Materials and Hardware,each,175
+Wireless 915MHz Receiver Kit,Long-range remote receiver and two transmitters.,Materials and Hardware,each,310
+Additional Wireless FOB Transmitter,Keyfob for gate or door remote activation.,Materials and Hardware,each,65
+Emergency Break-Glass Station,Manual override pull station with clear cover.,Materials and Hardware,each,85
+Door Position Switch Set,Armored cable magnetic door contact.,Materials and Hardware,each,25
+Rex Wall Plate Button,Green illuminated mushroom push button exit switch.,Materials and Hardware,each,75
+Access Control Cable Plenum,Shielded multi-conductor wire per foot.,Materials and Hardware,linear ft,2
+CAT6 Shielded Data Cable,High-speed network cable for IP controllers per foot.,Materials and Hardware,linear ft,2
+EMT Conduit Installation,Electrical metallic tubing run per linear foot.,Materials and Hardware,linear ft,12
+Surface Wiremold Raceway,Surface-mounted metal raceway per linear foot.,Materials and Hardware,linear ft,9
+Standard Proximity Cards,Pack of 25 printable clamshell or graphic cards.,Credentials and Accessories,each,75
+High-Security Smart Cards,Pack of 25 MIFARE DESFire EV3 credentials.,Credentials and Accessories,each,150
+Keyfob Style Credentials,Pack of 10 durable molded keyfobs.,Credentials and Accessories,each,60
+Maglock Brackets Z and L Set,Mounting bracket kit for outward swinging doors.,Credentials and Accessories,each,95
+Glass Door U-Bracket Mount,Clamp bracket for frameless glass door maglock.,Credentials and Accessories,each,120
+Weatherproof Hood Enclosure,Protective rain cover for outdoor card readers.,Credentials and Accessories,each,45
+Transfer Hinge Loop Set,Door cord loop for hinge side power transfer.,Credentials and Accessories,each,35
+Electric Power Transfer Hinge,Concealed 4-wire continuous contact door hinge.,Credentials and Accessories,each,180
+Municipal Electrical Permit,Filing and processing local low-voltage permit.,Permits and Compliance,job,175
+Fire Life Safety Plan Review,Submitting door integration plans to fire marshal.,Permits and Compliance,job,350
+Old Equipment Disposal Fee,Eco-safe recycling of legacy access hardware.,Permits and Compliance,job,65
+After-Hours Inspection Accompaniment,Meeting city inspector on-site for sign-off.,Permits and Compliance,visit,200
+Lift Rental Daily Fee,Scissor lift or boom lift rental for high ceilings.,Permits and Compliance,day,350
+Single Door Complete Install,Labor to install controller reader lock and button.,Installation Packages,job,850
+Gate Operator Interface Setup,Connecting access panel to automatic sliding gate.,Installation Packages,job,450
+Turnstile Integration Labor,Mechanical and electrical integration of optical turnstile.,Installation Packages,job,1200
+Intercom Substation Integration,Wiring video intercom call box to access system.,Installation Packages,job,350
+Elevator Floor Control Setup,Wiring relay board for cab access restrictions.,Installation Packages,job,950
+Software Setup and Database Import,Configuring cloud server and uploading user roster.,Software and Network,job,500
+Client Workstation Client Install,Installing management software on PC terminal.,Software and Network,hour,125
+Active Directory Integration,Syncing user credentials with corporate LDAP database.,Software and Network,job,600
+Mobile Credential Activation,Setting up cloud-based smartphone door keys.,Software and Network,job,300
+Network Switch PoE 8-Port,Power over Ethernet switch for IP controllers.,Software and Network,each,250
+Annual Maintenance Silver Plan,Yearly functional test and battery check per panel.,Maintenance Agreements,each,150
+Annual Maintenance Gold Plan,Includes yearly check plus priority response and firmware.,Maintenance Agreements,each,350
+Quarterly Preventive Check,Four visits per year for testing and adjustments.,Maintenance Agreements,visit,200
+Database Backup Service,Cloud backup configuration and periodic verification.,Maintenance Agreements,job,180
+Priority Service SLA Add-on,Guaranteed 4-hour on-site response time per year.,Maintenance Agreements,job,750
+CCTV Integration Module,Linking camera snapshots to door access events.,System Upgrades,job,400
+Visitor Management Kiosk Setup,Configuring self-service visitor check-in terminal.,System Upgrades,job,550
+Elevator Destination Dispatch Add-on,Integrating floor selection with reader scan.,System Upgrades,job,850
+License Plate Recognition Camera,Vehicle LPR camera for automated parking gate.,System Upgrades,each,1400
+Intercom Master Station Upgrade,Upgrading to touch-screen video intercom master.,System Upgrades,each,900
+Long-Range Vehicle Tag Reader,UHF windshield sticker reader for parking lanes.,System Upgrades,each,1100
+Biometric Enrollment Station,Desktop USB fingerprint scanner for HR office.,System Upgrades,each,350
+Intrusion Alarm Panel Interface,Arming/disarming burglar alarm via access reader.,System Upgrades,job,450
+Custom Graphic Floor Map,Designing multi-floor UI map for monitoring software.,System Upgrades,job,600
+Interlock / Mantrap Logic Setup,Programming interlocking doors to prevent tailgating.,System Upgrades,job,750
+Strobe Light Door Indicator,Visual alert beacon for hearing impaired egress.,Safety and Signaling,each,110
+Audible Piezo Sounder Buzzer,Loud alarm buzzer for forced door conditions.,Safety and Signaling,each,65
+Fire Alarm Drop Relay Module,Interface relay to cut power during fire alarm.,Safety and Signaling,each,130
+Emergency Power Off Button,Main power kill switch for maglock systems.,Safety and Signaling,each,95
+Protective Steel Reader Guard,Heavy-duty cage to protect outdoor card readers.,Safety and Signaling,each,85
+Key Switch Override Station,Keyswitch to permanently unlock door for service.,Safety and Signaling,each,140
+Tamper Switch Sensor,Enclosure tamper switch for access control panel.,Safety and Signaling,each,40
+Surge Protector Low Voltage,Lightning and surge suppressor for data lines.,Safety and Signaling,each,90
+End of Line Resistor Pack,Supervised loop resistor set for panels.,Safety and Signaling,job,25
+Warning Decal Signage Kit,Decals for monitored doors and video surveillance.,Safety and Signaling,job,35
+Staff Training Session,On-site training for system administrators and staff.,Training and Consulting,hour,150
+End-User Quick Guide Manual,Custom printed operation guide for staff.,Training and Consulting,job,75
+Security System Design Consultation,Engineering review and drawing generation per hour.,Training and Consulting,hour,175
+Badge Design and Printing Service,Designing custom corporate ID card layout.,Training and Consulting,hour,120
+As-Built Drawing Documentation,Updating schematics with exact field wiring routes.,Training and Consulting,job,350
+Remote Support Helpdesk,Remote troubleshooting session per half-hour.,Diagnostics and Service,visit,75
+Door Alignment and Adjustment,Fixing sagging doors to ensure electric strike engagement.,Repairs and Replacements,each,160
+Standard Lift Gate Arm Repair,Realigning or resetting automatic barrier arm.,Repairs and Replacements,each,250

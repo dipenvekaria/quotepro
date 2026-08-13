@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Service Call,Diagnostic fee for exterior lighting troubleshooting,Diagnostics,visit,125
+After Hours Emergency Call,Urgent dispatch fee for critical lighting failure,Diagnostics,visit,250
+Electrical System Diagnostic,Detailed voltage and load testing per hour,Diagnostics,hour,150
+Line Voltage Troubleshooting,Isolating shorts or breaks in 120V lines,Diagnostics,hour,165
+Low Voltage Troubleshooting,Testing transformer output and cable runs,Diagnostics,hour,140
+Journeyman Electrician Labor,Hourly rate for licensed installation work,Labor,hour,125
+Master Electrician Labor,Hourly rate for complex design and code compliance,Labor,hour,165
+Apprentice Labor,Hourly rate for assistant installation support,Labor,hour,75
+Trenching Labor and Machine,Per linear foot of underground cable trench,Labor,linear ft,8
+Boring Under Sidewalk,Directional boring for wire protection under hardscape,Labor,linear ft,25
+LED Path Light Installation,Mounting and wiring standard low voltage path light,Path Lighting,each,95
+Cast Brass Path Light Upgrade,Heavy duty corrosion resistant path light fixture,Path Lighting,each,175
+Path Light Bulb Replacement,LED wedge base or G4 bulb swap,Path Lighting,each,25
+Path Light Stake Replacement,Heavy duty mounting stake and wire connector,Path Lighting,each,35
+Path Light Fixture Repair,Re-securing fixture stem and waterproof splice,Path Lighting,each,55
+LED Spotlight Installation,Mounting and aiming directional landscape spotlight,Spotlights,each,125
+Wide Beam Floodlight Installation,High output fixture for washing large surfaces,Spotlights,each,150
+Tree Mounted Spotlight Installation,Hanging fixture with slack loop for tree growth,Spotlights,each,175
+Spotlight Shield Accessory,Glare guard hood for directional fixture,Spotlights,each,30
+Spotlight Bulb Replacement,MR16 LED lamp replacement,Spotlights,each,35
+In-Grade Well Light Installation,Flush mounted uplight in soil or concrete cutout,Well Lights,each,210
+Driveway Rated Well Light,Heavy duty vehicle weight rated ingrade fixture,Well Lights,each,320
+Well Light Debris Cleaning,Removing dirt and water from ingrade housing,Well Lights,each,65
+Well Light Lens Replacement,Tempered glass lens and gasket swap,Well Lights,each,85
+Well Light Waterproof Driver Swap,Internal driver replacement for LED well light,Well Lights,each,140
+Deck Post Cap Light Installation,Surface mount light for wooden or vinyl posts,Deck Lighting,each,95
+Stair Riser Light Installation,Low profile LED light for steps and stairways,Deck Lighting,each,85
+Under Rail LED Strip Light,Waterproof tape light installation under handrail,Deck Lighting,linear ft,35
+Recessed Deck Light Installation,Hole saw cut and flush mount stair light,Deck Lighting,each,90
+Deck Lighting Controller Install,Wireless dimmer module for deck circuit,Deck Lighting,each,160
+Eave Mounted Floodlight Installation,Standard motion activated double floodlight fixture,Security Lighting,each,185
+Commercial Grade Wall Pack Install,High output exterior LED wall pack fixture,Security Lighting,each,275
+Photocell Sensor Replacement,Dusk to dawn light sensor swap,Security Lighting,each,110
+Motion Sensor Replacement,PIR motion detector head replacement,Security Lighting,each,135
+Security Floodlight Bulb Swap,PAR38 LED flood lamp replacement,Security Lighting,each,45
+Architectural Wash Light Install,Linear LED wall washer for building facade,Architectural,each,350
+Column Accent Light Installation,Specialty narrow beam fixture for columns,Architectural,each,220
+Eaves Soaking Downlight Install,Recessed can light in soffit overhang,Architectural,each,175
+Signage Illumination Fixture,Gooseneck LED barn light for business sign,Architectural,each,295
+Holiday Lighting Peak Hook Install,Permanent hanging clips for seasonal lights,Architectural,linear ft,12
+100W Low Voltage Transformer,Standard magnetic step down transformer supply,Transformers,each,250
+300W Low Voltage Transformer,Mid-size multi tap landscape transformer supply,Transformers,each,450
+600W Low Voltage Transformer,Heavy duty multi tap landscape transformer supply,Transformers,each,750
+Smart Wi-Fi Transformer Upgrade,App controlled landscape lighting transformer,Transformers,each,550
+Transformer Replacement Labor,Swapping old transformer and reconnecting zones,Transformers,each,175
+Mechanical Timer Installation,Plug in or hardwired analog lighting timer,Controls,each,95
+Astronomic Digital Timer Install,Sunset to sunrise programmable wall switch,Controls,each,185
+Smart Hub Lighting Gateway,Wireless hub for smart landscape control system,Controls,each,220
+Photocell Add-On Kit,Adding standalone light sensor to manual system,Controls,each,150
+Remote Control Keyfob System,RF receiver and keychain transmitter install,Controls,each,210
+12/2 Direct Burial Cable,Per foot of heavy duty low voltage wire,Wiring,linear ft,2
+10/2 Direct Burial Cable,Per foot of heavy duty low voltage wire for runs,Wiring,linear ft,3
+8/2 Direct Burial Cable,Per foot of heavy gauge low voltage trunk line,Wiring,linear ft,5
+PVC Conduit Run,Per foot of protective schedule 40 PVC conduit,Wiring,linear ft,6
+UF-B 12/2 Line Voltage Cable,Per foot of underground feeder cable for 120V,Wiring,linear ft,4
+Weatherproof Outlet Box Install,GFCI receptacle in exterior wet location box,Line Voltage,each,175
+GFCI Breaker Installation,Main panel breaker replacement for outdoor safety,Line Voltage,each,220
+Post Light Fixture Replacement,Swapping top lantern on existing yard pole,Line Voltage,each,250
+Yard Post Erection,Setting new direct burial or anchored light post,Line Voltage,each,320
+Junction Box Repair,Rebuilding water damaged underground splice box,Line Voltage,each,140
+Tree Guard Wire Protection,Expanding spiral guard for trunk mounted wires,Hardware,each,25
+Gel Filled Wire Connectors,Waterproof wire nut pack of 10,Hardware,pack,30
+Copper Ground Rod Kit,Earth grounding rod and clamp installation,Hardware,each,125
+Concrete Mounting Pad,Precast pad for transformer or heavy fixture mount,Hardware,each,90
+Zip Tie and Stake Bundle,Cable management fasteners for wire routing,Hardware,job,20
+Electrical Permit Acquisition,Municipal permit filing and processing fee,Permits,job,175
+Electrical Inspection Coordination,Meeting city inspector on site for sign off,Permits,job,150
+Commercial Plan Review Fee,Engineering drawing submission for large layout,Permits,job,350
+Excavation Debris Haul Away,Removal of excess dirt from trenching work,Disposal,job,150
+Old Fixture Disposal,Hauling away scrap metal and old light fixtures,Disposal,job,75
+Annual Maintenance Visit,"System check, lens cleaning, and fixture aiming",Maintenance,visit,220
+Spring System Startup,Testing timers and replacing damaged bulbs,Maintenance,visit,175
+Winterization Check,Securing transformers and exposed wire runs,Maintenance,visit,150
+Fixture Re-Aiming Service,Adjusting beam angles after landscape growth,Maintenance,visit,125
+Line Voltage Wattage Audit,Testing circuit load limits across all zones,Maintenance,visit,160
+Moonlighting Branch Mount,High tree install casting down shadow effects,Upsells,each,380
+RGBW Smart Color Spotlight,Color changing app controlled accent light,Upsells,each,240
+Smart Zone Expansion Module,Adding independent control zone to transformer,Upsells,each,195
+Hardscape Under-Cap Light,Paver wall lighting integrated during install,Upsells,each,110
+Fountain Uplight Kit,Submersible waterproof light for water feature,Upsells,each,275
+Surge Protector for Transformer,Lightning arrestor protection device for power unit,Upsells,each,130
+Path Light Cowl Accessory,Directional top shield to prevent upward light spill,Upsells,each,40
+Custom Brass Nameplate,Engraved fixture tag for commercial properties,Upsells,each,60
+Backup Battery Pack,Uninterruptible power supply for smart controller,Upsells,each,180
+Extra Long Stake Extension,Raised mounting stem for heavy snow or tall mulch,Upsells,each,45
+Core Drill Concrete,Diamond bit core drilling for hardscape wire run,Specialty,each,150
+Aerial Lift Rental,Scissor lift or boom lift daily rental fee,Specialty,day,450
+Traffic Control Setup,Safety cones and signage for roadside work,Specialty,day,200
+Hand Digging Obstacle Area,Manual excavation around tree roots or utilities,Specialty,hour,95
+Sod Repair per Yard,Replacing turf cut during trenching process,Specialty,sq ft,5
+Multi-Transformer Sync Kit,Hardware to link multiple power units together,Controls,each,160
+Brass Well Light Upgrade,Solid brass housing swap for corrosion resistance,Well Lights,each,290
+Low Voltage Hub Terminal,Central wire distribution block enclosure,Hardware,each,75
+Replacement Transformer Fuse,Glass or blade fuse replacement,Hardware,each,20
+Weatherproof Cover Plate,In-use wet location heavy duty outlet cover,Line Voltage,each,65
+Direct Burial Splice Kit,Epoxy resin pour splice kit for main lines,Wiring,each,50
+LED Retrofit Lamp Kit,Converting older halogen fixture to LED module,Path Lighting,each,45
+Sub-Panel Installation,Outdoor rated electrical sub-panel for heavy loads,Line Voltage,each,650
+Design Consultation Fee,Onsite lighting layout design and demonstration,Diagnostics,visit,200
+Emergency Wire Repair,Locating and splicing severed underground cable line,Diagnostics,job,225

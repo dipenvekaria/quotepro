@@ -1,0 +1,100 @@
+name,description,category,unit,price
+Comprehensive Home Energy Audit,Full home energy assessment with diagnostic testing report,Diagnostics & Testing,job,450
+Blower Door Test,Air leakage quantification using calibrated fan system,Diagnostics & Testing,visit,250
+Infrared Thermal Imaging Scan,Thermal camera inspection for insulation and air leaks,Diagnostics & Testing,visit,200
+Combustion Safety Test,Testing gas appliances for draft and carbon monoxide,Diagnostics & Testing,visit,175
+Duct Blaster Test,HVAC duct leakage measurement and pressure testing,Diagnostics & Testing,visit,225
+Indoor Air Quality Test,"Measurement of VOCs, humidity, and particulate levels",Diagnostics & Testing,visit,200
+Baseload Energy Analysis,"Audit of lighting, appliances, and phantom loads",Diagnostics & Testing,visit,150
+Solar Potential Assessment,Shade analysis and roof orientation feasibility check,Diagnostics & Testing,visit,175
+Gas Leak Detection,Electronic sniff testing of natural gas or propane lines,Diagnostics & Testing,visit,125
+Energy Audit Consultation,Review of audit findings and upgrade prioritization,Diagnostics & Testing,hour,125
+Standard Energy Auditor Labor,Hourly rate for general auditing and diagnostic setup,Labor Rates,hour,95
+Master Energy Analyst Labor,Hourly rate for advanced engineering and consulting,Labor Rates,hour,150
+Air Sealing Technician Labor,Hourly rate for physical air sealing application,Labor Rates,hour,85
+Insulation Installer Labor,Hourly rate for insulation placement and removal,Labor Rates,hour,90
+HVAC Specialist Labor,Hourly rate for heating and cooling modifications,Labor Rates,hour,125
+Electrical Contractor Labor,Hourly rate for electrical safety and panel work,Labor Rates,hour,135
+After Hours Emergency Labor,Hourly rate for urgent service calls outside normal hours,Labor Rates,hour,185
+Project Management Fee,Coordination and oversight of multi-trade retrofit projects,Labor Rates,job,350
+Attic Air Sealing,"Sealing top plates, penetrations, and chases in attic",Air Sealing,sq ft,1.5
+Basement Rim Joist Air Sealing,Sealing and insulating band joists in foundation,Air Sealing,linear ft,8
+Crawlspace Air Sealing,Sealing foundation vents and encapsulation perimeter,Air Sealing,sq ft,2
+Door Weatherstripping Replacement,Install new compression weatherstripping on exterior door,Air Sealing,each,75
+Exterior Door Threshold Replacement,Install adjustable aluminum and vinyl door threshold,Air Sealing,each,125
+Window Air Sealing and Caulking,Caulk interior and exterior window trim perimeters,Air Sealing,each,35
+Attic Hatch Weatherstripping,Install gasket seal and latch on attic access door,Air Sealing,each,95
+Recessed Light Air Seal Cover,Install airtight LED retrofit or cover box in attic,Air Sealing,each,45
+Plumbing Penetration Sealing,Seal gaps around pipe penetrations with firestop foam,Air Sealing,each,25
+Whole House Caulk Package,General exterior gap sealing around siding and penetrations,Air Sealing,job,350
+Fiberglass Batt Attic Insulation,Install R-30 unfaced fiberglass batts in open attic,Insulation,sq ft,2.25
+Blown-In Cellulose Attic Insulation,Blow loose-fill cellulose to achieve R-49 in attic,Insulation,sq ft,2.5
+Blow-In Fiberglass Attic Insulation,Blow loose-fill fiberglass to achieve R-49 in attic,Insulation,sq ft,2.75
+Spray Foam Open Cell Insulation,Apply open cell polyurethane foam to roofline,Insulation,sq ft,3.5
+Spray Foam Closed Cell Insulation,Apply closed cell polyurethane foam to walls or rim joists,Insulation,sq ft,5
+Dense Pack Cellulose Wall Insulation,Drill and fill exterior wall cavities with dense cellulose,Insulation,sq ft,3.25
+Crawlspace Vapor Barrier Installation,Lay 6-mil polyethylene sheet across crawlspace floor,Insulation,sq ft,0.75
+Rigid Foam Board Wall Insulation,Install extruded polystyrene board on exterior or interior,Insulation,sq ft,3
+Pipe Insulation Wrap,Install foam sleeve insulation on domestic hot water pipes,Insulation,linear ft,3.5
+Water Heater Blanket Installation,Wrap standard tank water heater in fiberglass insulation jacket,Insulation,each,110
+Duct Mastic Sealing,Brush or trowel water-based mastic on all HVAC duct joints,HVAC & Ductwork,linear ft,4.5
+Duct Wrap Insulation,Wrap unconditioned basement or attic ductwork with foil-faced insulation,HVAC & Ductwork,sq ft,2
+Flexible Duct Replacement,Remove and replace damaged flexible supply or return duct,HVAC & Ductwork,linear ft,22
+Programmable Thermostat Installation,Install and program standard 7-day digital thermostat,HVAC & Ductwork,each,175
+Smart Wi-Fi Thermostat Installation,Install learning thermostat with C-wire configuration,HVAC & Ductwork,each,320
+HVAC Filter Replacement Service,Replace standard pleated air filter with MERV 11 filter,HVAC & Ductwork,each,45
+Supply Register Replacement,Install adjustable floor or ceiling air supply diffuser,HVAC & Ductwork,each,35
+Return Air Jumper Duct Installation,Install transfer grille or jumper duct to balance room pressure,HVAC & Ductwork,each,275
+HVAC System Tune-Up,"Clean coils, check refrigerant, and test system efficiency",HVAC & Ductwork,visit,195
+Combustion Appliance Zone Dampers,Install motorized fresh air intake damper for furnace room,HVAC & Ductwork,each,450
+HVAC Balancing Service,Adjust damper positions to equalize airflow across rooms,HVAC & Ductwork,job,325
+LED Bulb Retrofit Package,Replace standard incandescent bulbs with energy-efficient LEDs,Lighting & Electrical,each,12
+Smart Power Strip Installation,Install advanced surge strip to eliminate phantom vampire loads,Lighting & Electrical,each,55
+Occupancy Sensor Switch Installation,Replace standard wall switch with motion-sensing light switch,Lighting & Electrical,each,95
+Timer Switch Installation,Install countdown timer switch for bathroom exhaust fan,Lighting & Electrical,each,85
+Attic Exhaust Fan Installation,Install gable or roof-mounted solar powered attic ventilation fan,Lighting & Electrical,each,550
+Whole House Fan Installation,Install ceiling-mounted cooling fan with automatic louvers,Lighting & Electrical,each,1200
+Electrical Panel Energy Monitor,Install clamp-on circuit level energy use monitor system,Lighting & Electrical,each,350
+Exterior LED Flood Light,Install motion-activated energy-saving security light fixture,Lighting & Electrical,each,175
+Dimmer Switch Installation,Replace standard switch with LED-compatible dimmer switch,Lighting & Electrical,each,75
+Smoke and CO Combo Detector,Install interconnected hardwired safety alarm unit,Lighting & Electrical,each,90
+Energy Recovery Ventilator (ERV),Install whole-house balanced ventilation with heat recovery,Ventilation,each,2400
+Heat Recovery Ventilator (HRV),Install balanced ventilation system for cold climate moisture control,Ventilation,each,2200
+Bathroom Exhaust Fan Replacement,Replace noisy low-cfm fan with quiet energy star rated model,Ventilation,each,275
+Dryer Vent Duct Cleaning,Clear lint buildup from flexible and rigid exhaust ductwork,Ventilation,job,150
+Rigid Metal Dryer Vent Upgrade,Replace flexible plastic dryer duct with smooth metal ducting,Ventilation,linear ft,25
+Dryer Vent Seal Damper,Install magnetic backdraft damper on exterior dryer vent hood,Ventilation,each,65
+Crawlspace Exhaust Fan,Install continuous ventilation fan for crawlspace moisture removal,Ventilation,each,350
+Radon Mitigation System,Install sub-slab depressurization radon gas reduction system,Ventilation,job,1650
+Make-Up Air Unit Installation,Install dedicated combustion air supply for high-cfm range hood,Ventilation,each,950
+Attic Soffit Baffle Installation,Install cardboard or plastic ventilation chutes between rafters,Ventilation,each,18
+Hybrid Heat Pump Water Heater,Install high-efficiency hybrid electric water heater tank,Water Heating,each,2800
+Tankless Gas Water Heater,Install on-demand high-efficiency condensing gas water heater,Water Heating,each,3200
+Standard Electric Water Heater,Replace failing standard electric resistance water heater tank,Water Heating,each,1600
+Gas Water Heater Thermocouple Replacement,Replace faulty pilot assembly thermocouple safety device,Water Heating,each,140
+Anode Rod Replacement,Replace sacrificial magnesium anode rod in water heater tank,Water Heating,each,175
+Low-Flow Showerhead Installation,Install water-saving aerated showerhead (1.5 gpm),Water Heating,each,45
+Faucet Aerator Replacement,Install water-saving aerators on kitchen and bathroom sinks,Water Heating,each,25
+Solar Thermal Water Heater Repair,Service circulating pump and fluid in solar water heating system,Water Heating,visit,295
+Expansion Tank Installation,Install thermal expansion tank on closed-loop water heater system,Water Heating,each,250
+Recirculation Pump Installation,Install instant hot water recirculating pump under sink or at tank,Water Heating,each,380
+High-Efficiency Gas Furnace Replacement,Install 96% AFUE multi-stage modulating gas furnace,Major Retrofits,each,5200
+Mini-Split Heat Pump Installation,Install single-zone ductless inverter heat pump system,Major Retrofits,each,3800
+Multi-Zone Mini-Split Heat Pump,Install outdoor compressor with three indoor air handler heads,Major Retrofits,each,8500
+Central Heat Pump Replacement,Install 16 SEER split system heat pump condenser and air handler,Major Retrofits,each,7500
+Solar PV System Installation,Turnkey 6kW rooftop solar photovoltaic panel array installation,Major Retrofits,job,18000
+Home Battery Storage System,Install 10kWh lithium-ion battery backup energy storage unit,Major Retrofits,each,11000
+Double Pane Window Replacement,Remove old window and install Low-E argon filled vinyl window,Major Retrofits,each,750
+Triple Pane Window Upgrade,Install premium high-performance triple pane fiberglass window,Major Retrofits,each,1100
+Insulated Exterior Door Replacement,Install fiberglass insulated exterior entry door with frame,Major Retrofits,each,1400
+Attic Stair Insulation Box,Build and install insulated tent box over pull-down attic stairs,Major Retrofits,each,275
+Building Permit Acquisition Fee,Pulling local municipal building and energy upgrade permits,Permits & Disposal,each,150
+HVAC Mechanical Permit Fee,Filing required local permits for furnace or heat pump swap,Permits & Disposal,each,125
+Electrical Permit Fee,Municipal permit filing for electrical panel or solar work,Permits & Disposal,each,100
+Old Insulation Vacuum Removal,Vacuum out contaminated or wet blown insulation from attic,Permits & Disposal,sq ft,1.25
+Construction Debris Disposal Fee,Dumpster rental and disposal fees for retrofit waste materials,Permits & Disposal,job,350
+Hazardous Material Abatement,Safe removal and disposal of asbestos insulation wrapping,Permits & Disposal,job,1500
+Energy Rebate Processing Fee,Filing paperwork for utility and government energy efficiency rebates,Permits & Disposal,job,75
+HERS Rating Certification,Official Home Energy Rating System index score certificate,Permits & Disposal,each,300
+Scaffolding Setup and Rental,Erect temporary scaffolding for high ceiling insulation work,Permits & Disposal,job,400
+Floor Protection and Site Cleanup,Laying protective drop cloths and thorough post-work cleanup,Permits & Disposal,job,100

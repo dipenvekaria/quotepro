@@ -1,0 +1,100 @@
+name,description,category,unit,price
+Standard Service Call,On-site diagnostic and troubleshooting visit,Diagnostics & Service,visit,99
+After-Hours Emergency Service Call,Emergency diagnostic visit outside normal business hours,Diagnostics & Service,visit,199
+Weekend Service Call,Diagnostic visit scheduled on a Saturday or Sunday,Diagnostics & Service,visit,149
+General Labor Rate,Hourly labor for repairs and maintenance,Diagnostics & Service,hour,125
+Two-Man Labor Crew Rate,Hourly rate for a two-technician installation crew,Diagnostics & Service,hour,200
+Annual Tune-Up and Safety Inspection,"Lubrication, balance check, and 25-point safety inspection",Diagnostics & Service,visit,129
+Single Torsion Spring Replacement,Replace one broken standard torsion spring,Springs,each,195
+Double Torsion Spring Replacement,Replace a pair of matching broken torsion springs,Springs,each,275
+High-Cycle Torsion Spring Upgrade,Upgrade to 50000-cycle high endurance springs,Springs,pair,350
+Extension Spring Replacement,Replace a pair of worn extension springs,Springs,pair,215
+Extension Spring Safety Cable Installation,Install safety containment cables on extension springs,Springs,pair,65
+Torsion Spring Conversion,Convert extension spring system to a torsion setup,Springs,job,495
+Standard Roller Replacement,Replace standard steel garage door roller,Rollers & Hinges,each,25
+Nylon Sealed Bearing Roller Replacement,Replace with quiet nylon roller featuring sealed bearings,Rollers & Hinges,each,35
+Full Set Nylon Rollers Replacement,Replace all rollers with 10-ball nylon sealed bearings,Rollers & Hinges,job,225
+Garage Door Hinge Replacement (#1 through #3),Replace standard gauge door hinge,Rollers & Hinges,each,30
+End Hinge and Roller Replacement,Replace heavy-duty end hinge and attached roller,Rollers & Hinges,each,45
+Full Set Hinge Replacement,Replace all worn door hinges with heavy-duty steel,Rollers & Hinges,job,285
+Center Bearing Plate Replacement,Replace worn stationary center bearing bracket,Tracks & Hardware,each,115
+Torsion Shaft Replacement,Replace bent or damaged 1-inch solid steel shaft,Tracks & Hardware,each,185
+Drum Replacement,Replace standard cable drum for torsion system,Tracks & Hardware,pair,140
+Lift Cable Replacement,Replace frayed or snapped galvanized aircraft lift cables,Tracks & Hardware,pair,125
+Vertical Track Replacement,Replace damaged vertical track section,Tracks & Hardware,each,110
+Horizontal Track Replacement,Replace bent horizontal track section,Tracks & Hardware,pair,250
+Track Realignment and Adjustment,"Loosen, plumb, square, and secure existing tracks",Tracks & Hardware,job,135
+Bottom Bracket Replacement,Replace bottom corner bracket and cable attachment point,Tracks & Hardware,pair,95
+Top Fixture Replacement,Replace adjustable top bracket and roller carrier,Tracks & Hardware,pair,85
+Strut Reinforcement Installation,Install 2-inch steel reinforcement strut on door section,Tracks & Hardware,each,115
+Quiet Glide Nylon Bushing Repair,Replace worn drum end bearing inserts,Tracks & Hardware,pair,75
+Bottom Weather Seal Replacement,Replace rubber bulb weather stripping on door bottom,Seals & Insulation,linear ft,7
+Vinyl Jamb Seal Replacement,Replace exterior side and top weather molding,Seals & Insulation,linear ft,8
+Brush Seal Installation,Install brush-style weather seal against drafts,Seals & Insulation,linear ft,12
+Threshold Seal Installation,Glue rubber floor threshold barrier to garage floor,Seals & Insulation,linear ft,15
+Section Insulation Kit Installation,Install rigid polystyrene backing panels on uninsulated door,Seals & Insulation,job,185
+Chain Drive Opener Installation,Install customer or contractor provided chain drive operator,Openers & Operators,each,225
+Belt Drive Opener Installation,Install quiet belt drive automatic garage door opener,Openers & Operators,each,250
+Wall-Mount Jackshaft Opener Installation,Install side-mount direct drive premium garage opener,Openers & Operators,each,350
+Opener Replacement Labor Only,Remove old unit and install new motor on existing mounts,Openers & Operators,each,180
+Opener Gear and Sprocket Assembly Replacement,Replace stripped internal nylon drive gear kit,Openers & Operators,job,165
+Opener Logic Board Replacement,Replace main electronic circuit board in opener unit,Openers & Operators,each,195
+Capacitor Replacement,Replace motor start capacitor inside operator housing,Openers & Operators,each,110
+Motor Assembly Replacement,Replace electric motor unit inside operator chassis,Openers & Operators,each,275
+Travel Limit Switch Repair,Adjust or replace optical or mechanical limit switches,Openers & Operators,each,95
+Safety Photo Eye Sensor Replacement,Replace aligned safety reversing sensors and wire harness,Accessories & Controls,pair,125
+Safety Sensor Alignment and Wiring Repair,Troubleshoot and realign existing optical safety eyes,Accessories & Controls,job,85
+Wireless Keypad Installation,Mount and program exterior digital entry keypad,Accessories & Controls,each,95
+Standard Handheld Remote Control,Provide and program single-button visor remote,Accessories & Controls,each,55
+Multi-Button Universal Remote Control,Provide and program multi-door handheld remote,Accessories & Controls,each,75
+Interior Wall Control Button Replacement,Replace wired push button switch on garage wall,Accessories & Controls,each,70
+Multi-Function LCD Wall Console Replacement,Replace deluxe wall station with timer-to-close feature,Accessories & Controls,each,110
+Wi-Fi Bridge and App Setup,Connect garage door operator to home wireless network,Accessories & Controls,job,85
+Battery Backup Unit Installation,Install rechargeable DC battery backup system for operator,Accessories & Controls,each,175
+Emergency Release Lock Cylinder,Install keyed disconnect for garages without secondary access,Accessories & Controls,each,95
+Single Section Panel Replacement,Replace one damaged intermediate garage door section,Door Panel Repairs,each,450
+Bottom Panel Section Replacement,Replace damaged bottom door panel including weather seal,Door Panel Repairs,each,495
+Section Dent Straightening and Reinforcement,Hammer out minor panel dent and secure with backing strut,Door Panel Repairs,job,150
+Wood Section Splitting Repair,Repair cracked wooden garage door panel section,Door Panel Repairs,job,220
+Single Car Non-Insulated Door Installation,Install standard steel single garage door up to 9x7,New Door Installation,job,850
+Single Car Insulated Door Installation,Install insulated steel sandwich single door up to 9x7,New Door Installation,job,1150
+Double Car Non-Insulated Door Installation,Install standard steel double garage door up to 16x7,New Door Installation,job,1350
+Double Car Insulated Door Installation,Install insulated steel sandwich double door up to 16x7,New Door Installation,job,1750
+Carriage House Style Door Installation,Install decorative custom carriage house design garage door,New Door Installation,job,2400
+Modern Full-View Aluminum Glass Door Installation,Install contemporary glass and aluminum frame garage door,New Door Installation,job,3800
+Custom Wood Garage Door Installation,Install heavy custom natural wood panel garage door,New Door Installation,job,4500
+Extra Height Door Surcharge (8 Foot),Additional material and labor for 8-foot tall door,New Door Installation,job,250
+Commercial Rolling Steel Door Installation,Install heavy-duty commercial service door,Commercial Doors,job,3200
+Commercial Sectional Door Installation,Install heavy commercial duty insulated sectional door,Commercial Doors,job,2800
+Commercial High-Lift Track Conversion,Modify tracks to raise door closer to ceiling line,Commercial Doors,job,650
+Commercial Vertical Lift Track Installation,Install straight vertical tracking for high clearance bay,Commercial Doors,job,750
+Commercial Heavy-Duty Operator Installation,Install commercial trolley or hoist operator,Commercial Doors,each,850
+Commercial Safety Edge Sensor Installation,Install pneumatic or electric bottom edge safety buffer,Commercial Doors,job,450
+Old Garage Door Removal and Haul Away,Disassemble and dispose of old existing garage door,Removal & Disposal,job,125
+Old Opener Removal and Disposal,Remove old motor unit and rails for recycling,Removal & Disposal,job,50
+Hazardous Material Disposal Fee,Disposal fee for insulated panels with rigid foam core,Removal & Disposal,job,75
+Local Building Permit Processing,Obtain required municipal installation permit,Permits & Compliance,job,110
+Windload Reinforcement Package,Install heavy bracing and struts to meet hurricane codes,Permits & Compliance,job,350
+High Wind Impact Rated Glass Upgrade,Upgrade windows to certified high-velocity hurricane glass,Permits & Compliance,job,450
+Frame Wood Replacement (Jamb and Header),Replace rotted exterior wood framing around garage opening,Carpentry & Framing,linear ft,28
+Header Reinforcement Steel Lintel Installation,Install structural steel angle iron above garage opening,Carpentry & Framing,job,450
+Drywall Patch and Repair around Track,Patch interior drywall damaged during track relocation,Carpentry & Framing,job,175
+Side Mount Operator Mounting Board Installation,Secure wooden mounting block to wall for jackshaft motor,Carpentry & Framing,job,90
+Standard Window Insert Replacement,Replace cracked acrylic window pane in garage door section,Decorative & Windows,each,65
+Decorative Hardware Kit Installation,Install magnetic or screw-on decorative handles and hinges,Decorative & Windows,job,95
+Custom Paint Prep and Priming,Prime factory steel door for custom field painting,Decorative & Windows,job,250
+Powder Coat Track and Springs,Custom color finish on hardware components,Decorative & Windows,job,300
+Gate Operator Repair Diagnostic,Diagnose electronic automatic driveway gate operator,Gate & Specialty,visit,150
+Slide Gate Operator Installation,Install automatic sliding driveway gate motor,Gate & Specialty,job,950
+Swing Gate Dual Operator Installation,Install dual swing gate operators for driveway entry,Gate & Specialty,job,1250
+Gate Loop Detector Installation,Sawcut driveway and install inductive vehicle safety loop,Gate & Specialty,job,550
+Roll-Up Sheet Door Installation,Install mini warehouse style corrugated roll-up door,Commercial Doors,job,950
+Low Headroom Conversion Kit,Install dual-track low headroom hardware system,Tracks & Hardware,job,220
+Exposed Torsion Spring Safety Containment,Install solid steel safety containment tubes over springs,Springs,pair,110
+Silencer Stem Roller Upgrade,Install long stem sealed bearing rollers for quiet operation,Rollers & Hinges,each,40
+Emergency Unlock Key Switch Box,Install flush-mount exterior key switch for power outage override,Accessories & Controls,each,115
+Laser Parking Assist Installation,Install ceiling laser guide for perfect vehicle parking alignment,Accessories & Controls,each,75
+Smart Garage Video Camera Integration,Install accessory streaming video camera to garage operator,Accessories & Controls,each,130
+Sectional Door Reinforcement Bracket Set,Install full-height vertical reinforcement stiles,Door Panel Repairs,job,280
+Same-Day Rush Dispatch Surcharge,Priority dispatch fee for immediate same-day service request,Diagnostics & Service,job,75
+Service Call Travel Surcharge (Extended Radius),Additional travel fee for locations outside standard service area,Diagnostics & Service,visit,50

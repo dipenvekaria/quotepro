@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Commercial Site Assessment,On-site inspection and scope measurement,Diagnostics and Mobilization,visit,150
+Water Recovery Compliance Setup,EPA compliant storm drain blocking and vacuum rig setup,Diagnostics and Mobilization,job,350
+Night Shift Surcharge,Labor differential for overnight execution,Diagnostics and Mobilization,hour,75
+Traffic Control Setup,"Cone placement, signage, and pedestrian safety corridor",Diagnostics and Mobilization,job,250
+Lift Rental Delivery and Pickup,Transport fees for articulating boom lift,Diagnostics and Mobilization,each,400
+Environmental Water Test Kit,PH and heavy metal testing prior to disposal,Diagnostics and Mobilization,each,125
+Emergency Spill Kit Deployment,Absorbent booms and drain pads placement,Diagnostics and Mobilization,job,175
+Mobile Water Tanker Haul,Transporting 500 gallons of water to remote site,Diagnostics and Mobilization,job,300
+Permit Acquisition Fee,Local municipality discharge permit processing,Diagnostics and Mobilization,job,225
+Core Wash Technician Labor,Standard hourly rate for pressure washing technician,Labor Rates,hour,85
+Lead Technician and Rig Operator,Skilled operator for high-pressure surface cleaners,Labor Rates,hour,115
+Hot Water Pressure Washing Rig,Daily rate for diesel-fired commercial hot water unit,Labor Rates,day,650
+Surface Cleaner Attachment Fee,Daily rental of 30-inch commercial flat surface cleaner,Labor Rates,day,120
+Vacuum Recovery Rig Operation,Daily rate for wastewater vacuum extraction system,Labor Rates,day,450
+Articulating Boom Lift Rental,Daily rate for 40-foot aerial work platform,Labor Rates,day,550
+Scissor Lift Rental,Daily rate for 32-foot electric scissor lift,Labor Rates,day,350
+Overtime Labor Surcharge,After-hours labor rate multiplier add-on,Labor Rates,hour,50
+Confined Space Entry Watch,Dedicated safety attendant for underground parking garages,Labor Rates,hour,95
+Concrete Flatwork Pressure Wash,Hot water surface cleaning of sidewalks and walkways,Concrete and Pavement Cleaning,sq ft,0.25
+Heavy Oil Stain Treatment,Application and scrubbing of industrial degreaser on concrete,Concrete and Pavement Cleaning,sq ft,0.45
+Drive-Thru Pad Deep Clean,Hot water pressure wash and degrease of drive-thru lane,Concrete and Pavement Cleaning,sq ft,0.35
+Parking Garage Floor Wash,Surface cleaning of multi-level concrete parking deck,Concrete and Pavement Cleaning,sq ft,0.2
+Loading Dock Power Wash,Deep cleaning of concrete loading bay and ramps,Concrete and Pavement Cleaning,sq ft,0.3
+Gum Removal Treatment,Steam spot treatment for discarded chewing gum,Concrete and Pavement Cleaning,each,1.5
+Rust Stain Removal on Concrete,Acid-based chemical application for fertilizer or iron stains,Concrete and Pavement Cleaning,sq ft,0.6
+Tire Mark Removal,Targeted solvent and pressure treatment for rubber skid marks,Concrete and Pavement Cleaning,sq ft,0.4
+Paver Patio Pressure Wash,Gentle pressure washing of interlocking concrete pavers,Concrete and Pavement Cleaning,sq ft,0.3
+Concrete Sealer Application,Clear penetrating silane siloxane sealer application,Concrete and Pavement Cleaning,sq ft,0.55
+Brick Paver Joint Sanding,Sweeping and compacting polymeric sand into paver joints,Concrete and Pavement Cleaning,sq ft,0.65
+Curb and Gutter Wash,Power washing of property line curbs and gutters,Concrete and Pavement Cleaning,linear ft,0.75
+EIFS Exterior Wall Wash,Low-pressure chemical soft wash for synthetic stucco,Building Exterior Soft Washing,sq ft,0.35
+Brick Veneer Soft Wash,Low-pressure biocide application to remove mold and algae,Building Exterior Soft Washing,sq ft,0.3
+Metal Panel Building Wash,Soft wash cleaning of corrugated metal warehouse siding,Building Exterior Soft Washing,sq ft,0.28
+Stucco Façade Cleaning,Low-pressure chemical wash for traditional cement stucco,Building Exterior Soft Washing,sq ft,0.32
+Vinyl Siding Commercial Wash,Low-pressure detergent wash for commercial vinyl siding,Building Exterior Soft Washing,sq ft,0.25
+Tilt-Up Concrete Wall Wash,Low-pressure rinse and chemical wash for precast concrete,Building Exterior Soft Washing,sq ft,0.27
+Awning Fabric Deep Clean,Hand brush and low-pressure rinse for canvas awnings,Building Exterior Soft Washing,sq ft,0.85
+Storefront Glass Pre-Wash,Rinsing heavy dust and debris from large glass panes,Building Exterior Soft Washing,sq ft,0.15
+Signage Hydro Clean,Low-pressure wash of monument signs and pylons,Building Exterior Soft Washing,sq ft,0.5
+Graffiti Removal on Masonry,Chemical paint stripper and hot water pressure wash,Building Exterior Soft Washing,sq ft,3.5
+Graffiti Removal on Metal,Safe solvent wipe and low-pressure rinse for metal surfaces,Building Exterior Soft Washing,sq ft,2.75
+Sacrificial Anti-Graffiti Coating,Application of clear protective coating against tagging,Building Exterior Soft Washing,sq ft,0.9
+Commercial Roof Soft Wash,Low-pressure biocide treatment to remove black streaks and moss,Roof and Overhead Cleaning,sq ft,0.4
+Metal Roof Pressure Clean,Low-pressure wash for commercial standing seam metal roofs,Roof and Overhead Cleaning,sq ft,0.35
+Tile Roof Soft Wash,Specialized low-pressure chemical wash for concrete roof tiles,Roof and Overhead Cleaning,sq ft,0.45
+Gutter Interior Flush,Clearing debris and pressure flushing commercial gutters,Roof and Overhead Cleaning,linear ft,1.25
+Downspout Unclogging,Pressure jetting to clear blocked downspouts,Roof and Overhead Cleaning,each,45
+Commercial Skylight Wash,Hand scrubbing and pressure rinsing of roof skylights,Roof and Overhead Cleaning,each,65
+Solar Panel Array Wash,Deionized water brush cleaning for commercial solar panels,Roof and Overhead Cleaning,sq ft,0.5
+Parapet Wall Power Wash,Washing perimeter roof parapets and caps,Roof and Overhead Cleaning,linear ft,1.5
+Driveway Commercial Degreaser,Heavy-duty industrial surfactant for petroleum spills,Chemicals and Additives,gallon,45
+Sodium Hypochlorite Soft Wash Blend,Concentrated biocide mix for organic growth removal,Chemicals and Additives,gallon,18
+Hydrochloric Acid Brightener,Acidic wash for rust and stubborn mineral stain removal,Chemicals and Additives,gallon,35
+Surfactant Agent Additive,Foaming agent for extended chemical dwell time on vertical walls,Chemicals and Additives,gallon,25
+Eco-Friendly Degreaser,Biodegradable organic solvent for food court and restaurant pads,Chemicals and Additives,gallon,55
+Efflorescence Cleaner Solution,Specialized acid wash to remove white salt deposits from brick,Chemicals and Additives,gallon,40
+Deionized Water System Usage,Spot-free rinse water filtration system daily fee,Chemicals and Additives,day,150
+High-Pressure Hose Replacement,50-foot 4000 PSI wire-braid pressure washer hose,Parts and Hardware,each,120
+Quick Connect Fitting Kit,Stainless steel 3/8 inch pressure washer couplers,Parts and Hardware,each,35
+Spray Nozzle Tip Replacement,Hardened stainless steel spray nozzle orifice,Parts and Hardware,each,15
+Surface Cleaner Swivel Repair,Replacement rotary swivel for flat surface cleaner,Parts and Hardware,each,185
+Trigger Gun and Wand Assembly,Commercial 5000 PSI spray gun and insulated lance,Parts and Hardware,each,95
+Unloader Valve Replacement,Pressure regulating unloader valve for power washer pump,Repairs and Equipment Maintenance,each,220
+Triplex Pump Rebuild Kit,"Water seals, packing, and valves replacement service",Repairs and Equipment Maintenance,job,350
+Burner Coil Descaling,Acid flush to remove scale inside hot water pressure washer coil,Repairs and Equipment Maintenance,job,275
+Small Engine Tune-Up,"Spark plug, oil, and air filter service for gas power washer",Repairs and Equipment Maintenance,each,150
+Fuel Pump Replacement,Diesel burner fuel pump replacement on hot water unit,Repairs and Equipment Maintenance,each,320
+Drive Belt Replacement,Engine to pump belt replacement and alignment,Repairs and Equipment Maintenance,each,110
+Trash Enclosure Pressure Wash,Hot water wash and sanitize of commercial dumpster pad,Specialty Commercial Cleaning,sq ft,0.45
+Dumpster Pad Deodorizing,Enzyme treatment application to eliminate foul organic odors,Specialty Commercial Cleaning,job,125
+Loading Dock Pit Debris Extraction,Manual muck removal and pressure wash of dock drainage pits,Specialty Commercial Cleaning,each,250
+Playground Equipment Sanitize Wash,Low-pressure disinfection wash for commercial park structures,Specialty Commercial Cleaning,job,350
+Stadium Bleacher Power Wash,Hot water high-pressure cleaning of aluminum seating sections,Specialty Commercial Cleaning,sq ft,0.3
+Tennis Court Pressure Wash,Surface cleaning of asphalt or concrete sports court surfaces,Specialty Commercial Cleaning,sq ft,0.22
+Running Track Deep Clean,Low-pressure wash of synthetic rubber athletic running tracks,Specialty Commercial Cleaning,sq ft,0.28
+Drive-Thru Canopy Underside Wash,Removal of exhaust soot and grime from drive-thru roof,Specialty Commercial Cleaning,sq ft,0.4
+Fleet Yard Concrete Wash,Heavy-duty cleaning of truck terminal parking areas,Specialty Commercial Cleaning,sq ft,0.18
+Industrial Machinery Degreasing,Targeted pressure wash and degrease of factory equipment,Specialty Commercial Cleaning,hour,125
+Oil Water Separator Pumping Coordination,Hauling and disposal coordination for wash water interceptor,Wastewater and Disposal Management,job,600
+Vacuum Boom Sludge Disposal,Disposal fee for collected silt and heavy sediment per drum,Wastewater and Disposal Management,each,175
+Wastewater Haul Off Fee,Transporting captured wash water to approved treatment facility,Wastewater and Disposal Management,gallon,0.35
+Storm Drain Filter Sock Supply,Geotextile insert to catch debris in catch basins,Wastewater and Disposal Management,each,85
+Berm Containment Wall Setup,Inflatable water containment berms deployment,Wastewater and Disposal Management,linear ft,8
+Flocculant Treatment Additive,Chemical polymer to solidify suspended solids in wash water,Wastewater and Disposal Management,gallon,65
+Catch Basin Cleanout,Vactor truck service to clear storm drain silt and debris,Wastewater and Disposal Management,each,450
+Sewer Line Jetting,High-pressure water jetting of commercial lateral lines,Wastewater and Disposal Management,linear ft,4.5
+Post-Construction Concrete Splash Wash,Removal of mortar and stucco splatter from new brickwork,Post-Construction Cleanup,sq ft,0.45
+Window Frame Paint Overspray Removal,Chemical solvent and razor scraping of glass and frames,Post-Construction Cleanup,sq ft,0.85
+New Build Final Exterior Wash,Comprehensive wash of entire building exterior prior to handover,Post-Construction Cleanup,sq ft,0.35
+Heavy Mud and Silt Power Wash,Washing tracked-in mud and clay from new construction paving,Post-Construction Cleanup,sq ft,0.2
+Masonry Acid Wash Finish,Final acid wash on new brick buildings to enhance mortar color,Post-Construction Cleanup,sq ft,0.5
+Bi-Annual Soft Wash Package,Scheduled spring and fall exterior building soft wash,Maintenance Agreements and Upsells,job,1200
+Monthly Drive-Thru Maintenance Plan,Contracted monthly hot water wash of restaurant drive-thru,Maintenance Agreements and Upsells,visit,300
+Quarterly Parking Garage Wash Plan,Recurring multi-level deck sweep and pressure wash service,Maintenance Agreements and Upsells,visit,2500
+Priority Dispatch Add-On,Guaranteed 24-hour response time for emergency cleaning calls,Maintenance Agreements and Upsells,job,200
+Before and After Digital Photo Report,Detailed high-resolution photo documentation delivered digitally,Maintenance Agreements and Upsells,job,75
+Exterior Lighting Fixture Rinse,Low-pressure rinse of wall pack lights and pole fixtures,Maintenance Agreements and Upsells,each,15
+Security Camera Lens Wipe Down,Manual cleaning of exterior surveillance camera housings,Maintenance Agreements and Upsells,each,25
+Mailbox Kiosk Pressure Wash,Washing commercial cluster mailboxes and surrounding slab,Maintenance Agreements and Upsells,each,150
+Outdoor Patio Furniture Wash,Pressure cleaning of commercial dining tables and chairs,Maintenance Agreements and Upsells,each,20

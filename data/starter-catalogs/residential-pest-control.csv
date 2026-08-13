@@ -1,0 +1,100 @@
+name,description,category,unit,price
+General Pest Control Quarterly Service,Quarterly exterior perimeter spray and interior spot treatment.,Recurring Services,visit,125
+General Pest Control Bi-Monthly Service,Bi-monthly exterior barrier spray and web removal.,Recurring Services,visit,95
+General Pest Control Monthly Service,Monthly comprehensive pest barrier maintenance.,Recurring Services,visit,75
+Initial Pest Control Cleanout,Initial heavy-duty interior and exterior treatment.,Recurring Services,job,225
+Commercial Pest Control Monthly,Monthly commercial facility pest inspection and treatment.,Recurring Services,visit,175
+German Cockroach Cleanout Initial,Heavy-duty flushout and baiting for German roaches.,Crawling Insects,job,350
+German Cockroach Follow-Up,Follow-up treatment for German cockroach elimination.,Crawling Insects,visit,125
+Ant Infestation Treatment,Targeted liquid application and baiting for ant colonies.,Crawling Insects,job,175
+Pharaoh Ant Treatment,Non-repellent baiting program for Pharaoh ants.,Crawling Insects,job,220
+Carpenter Ant Treatment,Drill and treat wall voids and exterior perimeter.,Crawling Insects,job,295
+Bed Bug Heat Treatment - Studio,Whole-room thermal remediation for bed bugs.,Bed Bugs,job,750
+Bed Bug Heat Treatment - 1 Bedroom,Whole-home thermal remediation for one bedroom.,Bed Bugs,job,950
+Bed Bug Heat Treatment - 2 Bedroom,Thermal remediation for two bedroom residence.,Bed Bugs,job,1250
+Bed Bug Heat Treatment - 3 Bedroom,Thermal remediation for three bedroom residence.,Bed Bugs,job,1550
+Bed Bug Chemical Treatment Initial,Comprehensive liquid and dust application for bed bugs.,Bed Bugs,job,450
+Bed Bug Chemical Follow-Up,Secondary chemical application for bed bug lifecycle.,Bed Bugs,visit,200
+Bed Bug Canine Inspection,Scent-detection dog sweep for live bed bugs.,Bed Bugs,job,300
+Termite Liquid Soil Treatment,Trench and treat perimeter soil for subterranean termites.,Termites,linear ft,9
+Termite Bait Station Installation,Install in-ground monitoring and baiting stations.,Termites,each,35
+Termite Bait Station Annual Monitoring,Annual service check of in-ground termite stations.,Termites,visit,275
+Termite Spot Treatment,Local drill and treat for localized subterranean termites.,Termites,job,250
+Drywood Termite Fumigation,Tent fumigation for drywood termite eradication.,Termites,sq ft,4
+Wood Destroying Organism Report,Real estate inspection report for termite activity.,Termites,job,150
+Pre-Construction Termite Soil Treatment,Pre-slab preventative termiticide application.,Termites,sq ft,0.65
+Boric Acid Dusting - Attic,Blow insecticidal dust across open attic flooring.,Attic & Crawlspace,sq ft,0.35
+Crawlspace Vapor Barrier Installation,Install 6-mil poly sheeting over crawlspace soil.,Attic & Crawlspace,sq ft,0.85
+Crawlspace Dehumidifier Installation,Install moisture control unit in sub-area.,Attic & Crawlspace,each,1450
+Attic Insulation Removal,Vacuum out contaminated and soiled blown insulation.,Attic & Crawlspace,sq ft,2.25
+Attic Insulation Replacement,Blow in new fiberglass or cellulose insulation.,Attic & Crawlspace,sq ft,2.5
+Rodent Exclusion - Small Home,Seal all entry points around foundation and roofline.,Rodents & Wildlife,job,450
+Rodent Exclusion - Medium Home,Comprehensive sealing of gaps and weep holes.,Rodents & Wildlife,job,750
+Rodent Exclusion - Large Home,Extensive wildlife and mouse proofing for large estates.,Rodents & Wildlife,job,1150
+Rodent Bait Station Placement,Secure tamper-resistant exterior rodent stations.,Rodents & Wildlife,each,45
+Rodent Bait Station Service,Clean and restock exterior rodent bait boxes.,Rodents & Wildlife,visit,85
+Mouse Trap Set and Monitor,Interior snap trap placement and monitoring service.,Rodents & Wildlife,visit,95
+Rat Trapping Program Initial,Set and monitor large rodent snap traps.,Rodents & Wildlife,job,225
+Raccoon Live Trapping,"Set, monitor, and remove nuisance raccoons.",Rodents & Wildlife,job,350
+Squirrel Live Trapping,Trap and relocate squirrels from attic space.,Rodents & Wildlife,job,320
+Opossum Live Trapping,Capture and remove nuisance opossum.,Rodents & Wildlife,job,300
+Bat Exclusion Service,Install one-way bat doors and seal roosting gaps.,Rodents & Wildlife,job,650
+Dead Animal Extraction,Locate and remove dead animal from wall or attic.,Rodents & Wildlife,job,225
+Attic Sanitization and Deodorizing,Fog contaminated attic space with enzymatic cleaner.,Rodents & Wildlife,sq ft,0.75
+Wasp Nest Removal,Locate and treat aerial wasp or hornet nest.,Stinging Insects,each,125
+Yellow Jacket Underground Nest Treatment,Dust and seal subterranean yellow jacket nest.,Stinging Insects,job,175
+Hornet Nest Removal,Removal of large paper hornet nest from tree or eave.,Stinging Insects,each,150
+Bee Hive Removal and Extraction,Cut open structure to remove live honey bee hive.,Stinging Insects,job,450
+Flea Treatment - Interior,Broadcast spray and IGR application for flea infestation.,Yard & Fleas,sq ft,0.25
+Tick Yard Spray,Granular and liquid perimeter tick barrier treatment.,Yard & Fleas,sq ft,0.12
+Mosquito Barrier Spray - Monthly,Mister application to foliage for adult mosquito control.,Yard & Fleas,visit,85
+Mosquito Automated Mist System Install,Install property-wide permanent mosquito misting lines.,Yard & Fleas,job,2400
+Mosquito Mist System Refill,Refill insecticide reservoir for automated mist system.,Yard & Fleas,gallon,65
+Fire Ant Mound Treatment,Individual mound drench for invasive fire ants.,Yard & Fleas,each,45
+Yard Granular Pest Application,Broadcast spreaders for lawn-dwelling pests.,Yard & Fleas,sq ft,0.1
+Spider De-Webbing Service,Brush down eaves and overhangs for spider removal.,Miscellaneous Pests,visit,75
+Silverfish and Earwig Treatment,Targeted baseboard and garage moisture pest spray.,Miscellaneous Pests,job,150
+Scorpion Barrier Treatment,Specialized micro-encapsulated spray for scorpion control.,Miscellaneous Pests,job,195
+Black Widow Spider Treatment,Targeted dust and spray for venomous spiders.,Miscellaneous Pests,job,165
+Pantry Pest Treatment,Treat shelving and inspect for stored product beetles.,Miscellaneous Pests,job,180
+Pigeon Proofing Solar Panels,Install mesh barrier around solar panel perimeter.,Bird Control,linear ft,18
+Bird Netting Installation,Install exclusion netting under loading dock or patio.,Bird Control,sq ft,3.5
+Bird Spike Installation,Glue stainless steel deterrent spikes to ledges.,Bird Control,linear ft,15
+Bird Dropping Pressure Washing,Sanitize and wash away guano buildup from ledges.,Bird Control,hour,125
+Pest Control Emergency Service Call,After-hours urgent dispatch for unexpected pests.,Special Services,visit,250
+Pest Inspection Only,General visual pest inspection without treatment.,Special Services,job,125
+Standard Labor Rate,Hourly labor rate for custom remediation work.,Special Services,hour,95
+Eco-Friendly Botanical Spray Upgrade,Upgrade perimeter treatment to all-natural essential oils.,Upgrades & Add-ons,visit,25
+Interior Dusting Add-On,Dust all switch plates and plumbing penetrations.,Upgrades & Add-ons,visit,35
+Garage Detailed Treatment,Thorough flush and spray of entire garage interior.,Upgrades & Add-ons,visit,30
+Shed or Outbuilding Treatment,Add detached structure to general pest service plan.,Upgrades & Add-ons,each,40
+Perimeter Shrub Bed Treatment,Drench ornamental bushes for pest harborage reduction.,Upgrades & Add-ons,visit,45
+Crawlspace Access Door Replacement,Install new heavy-duty metal crawlspace access hatch.,Repairs & Hardware,each,220
+Foundation Vent Screen Replacement,Replace rusted mesh screens on crawlspace vents.,Repairs & Hardware,each,35
+Roof Vent Guard Installation,Install wire mesh over plumbing and attic air vents.,Repairs & Hardware,each,75
+Chimney Cap Installation,Install stainless steel animal guard on chimney flue.,Repairs & Hardware,each,250
+Weep Hole Screen Insertion,Insert stainless steel mesh plugs into brick weep holes.,Repairs & Hardware,each,8
+Drywall Patching - Pest Entry,Patch small drywall hole cut during rodent remediation.,Repairs & Hardware,each,110
+Subfloor Wood Replacement,Cut out and replace termite or water damaged plywood.,Repairs & Hardware,sq ft,45
+Soffit Board Repair,Replace chewed or rotted wooden soffit sections.,Repairs & Hardware,linear ft,35
+Foam Sealant Perimeter Blockage,Inject expandable pest foam into large utility gaps.,Repairs & Hardware,each,25
+Commercial Health Department Compliance Report,Detailed logbook and pest audit for food service.,Commercial,visit,150
+Fly Light Trap Installation,Wall-mounted ultraviolet insect light trap unit.,Commercial,each,225
+Fly Light Trap Glue Board Replacement,Service visit to replace sticky boards and bulbs.,Commercial,visit,65
+Air Curtain Installation,Install commercial doorway insect barrier fan.,Commercial,each,550
+Multi-Unit Apartment Complex Monthly Pest Control,Per-unit monthly pest service for apartment buildings.,Commercial,visit,45
+Restaurant Kitchen Bi-Weekly Service,Bi-weekly intensive kitchen inspection and treatment.,Commercial,visit,195
+Food Processing Facility Audit Service,AIB-compliant audit and pesticide application service.,Commercial,visit,350
+Warehouse Rodent Control Program,Extensive trap line management for large industrial space.,Commercial,visit,275
+School District Monthly Pest Maintenance,Integrated pest management service for educational facility.,Commercial,visit,325
+Hotel Room Floor Sweep,Bulk room inspection for hospitality bed bug prevention.,Commercial,room,35
+Eco-Mist Botanical Flying Insect Service,Aerosol natural pyrethrin dispensing system setup.,Commercial,each,145
+Debris Disposal Fee,Haul away of contaminated insulation and animal nests.,Fees & Permits,job,150
+Hazardous Waste Handling Fee,Special disposal fee for heavy guano and biohazard materials.,Fees & Permits,job,100
+Local Structural Fumigation Permit,County and municipal permit fees for termite tenting.,Fees & Permits,job,75
+After-Hours Surcharge,Additional fee for weekend or night service requests.,Fees & Permits,job,100
+Distant Location Travel Fee,Travel surcharge for service outside standard coverage zone.,Fees & Permits,job,50
+Termite Warranty Transfer Fee,Transfer existing termite bond to new property owner.,Fees & Permits,job,100
+Annual Termite Warranty Renewal,Annual renewal and re-inspection for termite bond.,Termites,visit,225
+Pest Control Starter Kit (DIY Prevention),Retail container of professional-grade caulks and sprays.,Upgrades & Add-ons,each,65
+Wood Rot Treatment and Hardener,Apply liquid epoxy wood hardener to damp framing.,Repairs & Hardware,each,85

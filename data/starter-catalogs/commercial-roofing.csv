@@ -1,0 +1,98 @@
+name,description,category,unit,price
+Standard Service Call,Initial roof inspection and problem diagnosis visit,Service & Diagnostics,visit,350
+After-Hours Emergency Service Call,Emergency dispatch outside normal business hours,Service & Diagnostics,visit,650
+Infrared Moisture Scan,Thermal imaging to detect trapped water in insulation,Service & Diagnostics,sq ft,1
+Core Cut Sample Analysis,Extracting and analyzing roof deck and membrane layers,Service & Diagnostics,each,250
+Roof Leak Investigation,Water testing and exploratory path tracing,Service & Diagnostics,hour,175
+Standard Roofing Labor Rate,Hourly rate for general roofing technician,Labor Rates,hour,125
+Master Roofer Labor Rate,Hourly rate for specialized lead technician,Labor Rates,hour,165
+Overtime Labor Surcharge,Additional hourly charge for weekend or night work,Labor Rates,hour,95
+Crane and Operator Rental,Daily rate for crane service and certified operator,Labor Rates,day,2500
+Safety Setup and Harness Rigging,OSHA compliant fall protection anchor installation,Labor Rates,job,450
+TPO Membrane Patch Repair,Heat welding single ply patch over damaged area,Repairs,each,300
+EPDM Rubber Patch Repair,Adhering EPDM patch with primer and splice tape,Repairs,each,275
+Modified Bitumen Torch Down Repair,Torch applied membrane patch over blister or tear,Repairs,each,350
+Built Up Roof Tar Patch,Asphalt and felt repair on built up roof,Repairs,sq ft,15
+Metal Roof Panel Fastener Replacement,Replacing stripped screws with oversized fasteners and washers,Repairs,each,12
+Standing Seam Clip Repair,Fixing or replacing broken metal roof concealed clips,Repairs,each,65
+Pipe Boot Flashing Replacement,Replacing rubber penetration flashing and clamping ring,Repairs,each,225
+Pitch Pocket Pourable Sealant Refill,Filling penetration pitch pocket with new polyurethane sealant,Repairs,each,180
+Control Joint Sealant Replacement,Removing old elastomeric caulk and installing new sealant,Repairs,linear ft,22
+Skylight Flashing Repair,Sealing curb flashing around commercial skylight,Repairs,each,400
+Hatch Flashing Repair,Re-sealing roof access hatch curb flashing,Repairs,each,375
+Parapet Wall Coping Re-sealing,Applying polyurethane sealant to coping metal joints,Repairs,linear ft,14
+TPO Roof Tear Off and Replacement,Complete removal of old roof and installation of new TPO,Replacements,sq ft,12
+EPDM Roof Tear Off and Replacement,Complete removal of old roof and installation of new EPDM,Replacements,sq ft,11
+Modified Bitumen Replacement,Full tear off and two ply modified bitumen installation,Replacements,sq ft,14
+Standing Seam Metal Roof Replacement,Tear off and installation of architectural metal panels,Replacements,sq ft,22
+R-Value 20 Polyiso Insulation Board,Installing four inch rigid polyisocyanurate roof insulation,Replacements,sq ft,4
+Cover Board Installation,Laying half inch high density gypsum cover board,Replacements,sq ft,2
+Gypsum Roof Deck Repair,Replacing damaged or soft gypsum roof deck panels,Replacements,sq ft,28
+Steel Roof Deck Replacement,Cutting out and welding new corrugated steel decking,Replacements,sq ft,32
+Wood Deck Replacement,Replacing rotted plywood or plank roof decking,Replacements,sq ft,18
+Commercial Skylight Replacement,Replacing dome and metal curb frame assembly,Replacements,each,1800
+Roof Hatch Replacement,Installing new insulated single leaf roof access hatch,Replacements,each,2400
+TPO Membrane Roll (60 mil),White thermoplastic polyolefin membrane roll,Materials & Parts,sq ft,2
+EPDM Membrane Roll (60 mil),Black ethylene propylene diene terpolymer membrane roll,Materials & Parts,sq ft,2
+Modified Bitumen Cap Sheet,Granulated SBS modified bitumen roll,Materials & Parts,sq ft,3
+Modified Bitumen Base Sheet,Smooth surfaced SBS base ply roll,Materials & Parts,sq ft,2
+Self Adhering Underlayment,High temperature ice and water shield membrane,Materials & Parts,sq ft,2
+Polyisocyanurate Insulation (2 inch),Two inch rigid foam insulation board,Materials & Parts,sq ft,2
+TPO Bonding Adhesive,Contact adhesive for single ply membrane attachment,Materials & Parts,gallon,85
+EPDM Primer,Solvent based primer for rubber membrane seams,Materials & Parts,gallon,95
+Roof Asphalt Bitumen,Mopped or cold applied asphalt adhesive,Materials & Parts,gallon,45
+Polyurethane Joint Sealant,One part elastomeric joint sealing caulk,Materials & Parts,each,24
+Pipe Penetration Boot,Standard EPDM or TPO pipe flashing umbrella,Materials & Parts,each,35
+Preformed Pitch Pocket,Plastic or metal modular pitch pocket form,Materials & Parts,each,45
+Pourable Sealer Two Part,Urethane based pourable pocket filler,Materials & Parts,gallon,110
+Metal Edge Flashing,Prefinished aluminum drip edge profile,Materials & Parts,linear ft,18
+Parapet Coping Metal,Custom bent metal coping cap for top of wall,Materials & Parts,linear ft,28
+Aluminum Counter Flashing,Surface mounted wall counter flashing,Materials & Parts,linear ft,16
+Box Gutter Fabrication,Custom fabricated commercial internal box gutter,Materials & Parts,linear ft,45
+Downspout Replacement,Four inch commercial aluminum downspout,Materials & Parts,linear ft,15
+Roof Drain Body Replacement,Cast iron commercial roof drain assembly,Materials & Parts,each,450
+Roof Drain Strainer Dome,Cast aluminum or cast iron leaf strainer,Materials & Parts,each,85
+Lightning Protection Cable Mount,Adhesive pad and holder for grounding cable,Materials & Parts,each,45
+Heavy Duty Walkway Pad,Rubber service traffic pad for roof pathways,Materials & Parts,each,65
+Roof Pipe Support Stand,Polycarbonate base with strut for gas lines and conduit,Materials & Parts,each,95
+Commercial Building Permit,Municipal paperwork and filing fees,Permits & Disposal,job,600
+Engineering Wind Uplift Calculation,Sealed structural engineering letter for roof attachment,Permits & Disposal,job,950
+Dumpster Roll Off Rental,Thirty yard waste container delivery and haul off,Permits & Disposal,each,850
+Hazardous Material Disposal Fee,Asbestos or toxic waste disposal surcharge,Permits & Disposal,ton,350
+Debris Disposal Fee,Standard landfill dumping fee for old roofing materials,Permits & Disposal,ton,120
+Traffic Control and Flaggers,Street closure permits and safety flagger service,Permits & Disposal,day,1200
+Elastomeric Roof Coating System,Acrylic reflective coating applied over entire roof,Coatings & Restoration,sq ft,3
+Silicone Roof Coating Application,High solids moisture cured silicone membrane coating,Coatings & Restoration,sq ft,4
+Polyurethane Foam Coating,Spray polyurethane foam insulation with elastomeric topcoat,Coatings & Restoration,sq ft,6
+Roof Power Washing,High pressure chemical wash to prep roof for coating,Coatings & Restoration,sq ft,1
+Seam Reinforcement Fabric,Polyester stitchweb embedded in base coat over seams,Coatings & Restoration,linear ft,2
+Bi-Annual Preventative Maintenance,Spring and fall roof inspection and minor debris clearing,Maintenance Plans,visit,750
+Quarterly Roof Inspection,Four times a year comprehensive drainage and membrane check,Maintenance Plans,visit,500
+Annual Gutter and Drain Cleaning,"Clearing all internal drains, scuppers, and box gutters",Maintenance Plans,job,600
+Emergency Leak Repair Guarantee Package,Priority dispatch and four free minor leak repairs per year,Maintenance Plans,job,2500
+Photovoltaic Solar Panel R&R,Temporarily removing and reinstalling solar array for re-roof,Solar & Ancillary,each,350
+Solar Anchor Flashing Kit,Weathertight mounting attachment base for solar racking,Solar & Ancillary,each,120
+HVAC Curb Extension,Raising mechanical unit curb for thicker insulation layers,Solar & Ancillary,each,1500
+Gas Line Disconnect and Reconnect,Licensed plumber to disconnect HVAC gas feed during curb work,Solar & Ancillary,each,650
+Satellite Dish Relocation,Moving and re-anchoring commercial communication dish,Solar & Ancillary,each,400
+Security Camera Mount R&R,Relocating roof mounted security equipment,Solar & Ancillary,each,250
+Fall Protection Lifeline System,Installing permanent horizontal cable safety lifeline,Safety Upgrades,linear ft,45
+Safety Guardrail System,Freestanding non penetrating perimeter guardrail,Safety Upgrades,linear ft,85
+Roof Hatch Safety Post,Telescoping grab handle mounted to roof hatch interior,Safety Upgrades,each,350
+Skylight Fall Protection Screen,Metal security screen mounted over skylight curb,Safety Upgrades,each,450
+Internal Roof Drain Guard,Security dome to prevent debris entry into plumbing,Safety Upgrades,each,120
+Commercial Snow Removal Service,Clearing heavy snow load from flat commercial roof,Emergency Storm,sq ft,1
+Emergency Tarping Service,Securing heavy poly sheeting over storm damaged roof,Emergency Storm,sq ft,2
+Hail Damage Comprehensive Report,Detailed impact mapping and test square analysis for insurance,Emergency Storm,job,1200
+Wind Damage Metal Panel Securement,Emergency fastening of blown off or loose metal panels,Emergency Storm,hour,195
+Fallen Tree Debris Removal,Cutting and lifting tree limbs off damaged roof structure,Emergency Storm,hour,250
+Interior Ceiling Tile Replacement,Replacing water stained drop ceiling tiles after leak,General Labor,each,35
+Drywall Patch and Paint,Repairing interior wall damage caused by roof leak,General Labor,sq ft,25
+Manufacturer 20 Year NDL Warranty,No Dollar Limit twenty year parts and labor warranty upgrade,Warranties,sq ft,1
+Extended Hail Warranty Endorsement,Manufacturer coverage against specific hail impact damage,Warranties,sq ft,1
+Pitched Roof Architectural Shingle,High wind rated dimensional asphalt shingle replacement,Pitched Roofing,sq ft,5
+Standing Seam Metal Pitched Roof,Architectural concealed fastener metal roof installation,Pitched Roofing,sq ft,14
+Synthetic Underlayment,Heavy duty woven polypropylene roofing underlayment,Pitched Roofing,sq ft,1
+Aluminum Ridge Vent,Continuous low profile attic ventilation system,Pitched Roofing,linear ft,18
+Eave Drip Edge and Rake Metal,Prefinished steel edge metal for pitched roofing,Pitched Roofing,linear ft,12
+Chimney Flashing Kit,Step flashing and counter flashing installation for masonry chimney,Pitched Roofing,each,450

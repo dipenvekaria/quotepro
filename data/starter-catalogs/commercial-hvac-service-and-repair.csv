@@ -1,0 +1,101 @@
+name,description,category,unit,price
+Standard Diagnostic Fee,Initial troubleshooting and system evaluation during normal hours,Diagnostics,visit,185
+After-Hours Diagnostic Fee,Emergency troubleshooting outside normal business hours,Diagnostics,visit,325
+Holiday Diagnostic Fee,Emergency troubleshooting on observed holidays,Diagnostics,visit,450
+Refrigerant Leak Detection,Electronic and nitrogen pressure testing for leaks,Diagnostics,hour,220
+Chiller Efficiency Audit,Comprehensive performance analysis of centrifugal chiller,Diagnostics,each,1250
+Airflow Balancing Assessment,Static pressure and CFM measurement across system,Diagnostics,each,650
+Indoor Air Quality Test,"CO2, temperature, and humidity data logging",Diagnostics,visit,450
+Vibration Analysis,Bearing and shaft alignment vibration testing,Diagnostics,each,550
+Thermostat Calibration Check,Verification of sensor accuracy and control loop,Diagnostics,each,150
+Electrical Circuit Tracing,Troubleshooting complex low and line voltage wiring,Diagnostics,hour,195
+Standard Journeyman Labor,Hourly rate for single technician HVAC repair,Labor Rates,hour,165
+Two-Man Crew Labor,Hourly rate for lead technician and helper,Labor Rates,hour,295
+After-Hours Labor Rate,Overtime hourly rate for emergency repairs,Labor Rates,hour,275
+Holiday Labor Rate,Double-time hourly rate for holiday service,Labor Rates,hour,350
+Crane Operation and Operator,Rental of crane with certified operator,Labor Rates,day,2500
+Rigging and Placement Crew,Specialized crew for heavy equipment hoisting,Labor Rates,day,1800
+Control Systems Programmer,Specialized labor for DDC and BAS programming,Labor Rates,hour,225
+Curb Adapter Fabrication,Custom sheet metal adapter installation,Labor Rates,job,1200
+Ductwork Modification Labor,Sheet metal alteration during equipment swap,Labor Rates,hour,150
+Welding and Brazing Labor,Certified structural or pipe welding services,Labor Rates,hour,195
+Condenser Fan Motor Replacement,Swap direct drive fractional horsepower motor,Repairs & Components,each,680
+Belt-Drive Blower Motor Replacement,Replace commercial air handler blower motor,Repairs & Components,each,1450
+Compressor Replacement 5 Ton,Replace scroll compressor including burnout cleanup,Repairs & Components,each,3200
+Compressor Replacement 10 Ton,Replace semi-hermetic compressor in packaged unit,Repairs & Components,each,5400
+Dual Run Capacitor Replacement,Replace failed motor run capacitor,Repairs & Components,each,245
+Potential Relay Replacement,Replace compressor start relay,Repairs & Components,each,285
+Contactor Replacement 3-Pole,Replace heavy duty compressor or heater contactor,Repairs & Components,each,310
+Transformer Replacement 24V,Replace step-down control circuit transformer,Repairs & Components,each,275
+Thermostatic Expansion Valve Replacement,Replace TXV and insulate bulb,Repairs & Components,each,850
+Filter Drier Replacement,Replace liquid line filter drier core,Repairs & Components,each,320
+Reversing Valve Replacement,Replace heat pump 4-way reversing valve,Repairs & Components,each,1100
+Evaporator Coil Repair,Brazing refrigerant leak on copper coil,Repairs & Components,each,750
+Condenser Coil Replacement,Replace damaged outdoor air-cooled coil section,Repairs & Components,job,2800
+Draft Inducer Motor Replacement,Replace furnace or boiler combustion blower,Repairs & Components,each,820
+Gas Valve Replacement,Replace commercial multi-stage gas valve,Repairs & Components,each,780
+Ignition Control Module Replacement,Replace direct spark or intermittent pilot control,Repairs & Components,each,590
+Flame Sensor Replacement,Clean or replace safety flame rectification rod,Repairs & Components,each,195
+High Limit Switch Replacement,Replace furnace safety temperature limit control,Repairs & Components,each,240
+Pressure Switch Replacement,Replace air proving switch on forced air heater,Repairs & Components,each,260
+Condensate P-Trap Repair,Replace cracked or blocked condensate drain trap,Repairs & Components,each,185
+Condensate Removal Pump Replacement,Replace automatic electric condensate pump,Repairs & Components,each,350
+Blower Belt Replacement,Replace matched set of air handler V-belts,Repairs & Components,each,165
+Blower Pulley Replacement,Replace adjustable or fixed cast iron sheave,Repairs & Components,each,290
+Blower Bearing Replacement,Replace pillow block shaft bearings,Repairs & Components,each,650
+Economizer Actuator Replacement,Replace damper motor and linkage,Repairs & Components,each,950
+Fresh Air Damper Repair,Fix stuck or broken outdoor air louvers,Repairs & Components,each,420
+Commercial Split System 5 Ton,Furnish and install new rooftop or split system,Replacements & Retrofits,each,8500
+Commercial Rooftop Unit 10 Ton,Complete replacement of 10-ton packaged RTU,Replacements & Retrofits,each,16500
+Commercial Rooftop Unit 20 Ton,Complete replacement of 20-ton packaged RTU,Replacements & Retrofits,each,28000
+Make-Up Air Unit Replacement,Replace direct-fired commercial make-up air unit,Replacements & Retrofits,each,19500
+Split System Heat Pump 5 Ton,Replace commercial heat pump condenser and air handler,Replacements & Retrofits,each,9800
+Exhaust Fan Upblast Replacement,Replace roof-mounted kitchen or general exhaust fan,Replacements & Retrofits,each,2400
+Computer Room AC Unit Replacement,Replace server room precision cooling unit,Replacements & Retrofits,each,14500
+Water Source Heat Pump Replacement,Replace console or vertical stacked WSHP unit,Replacements & Retrofits,each,5500
+VAV Terminal Box Replacement,Replace variable air volume box with electric reheat,Replacements & Retrofits,each,1800
+Unit Heater Gas Replacement,Replace suspended warehouse gas-fired unit heater,Replacements & Retrofits,each,2900
+R410A Refrigerant Recovery and Recharge,Per pound charge for R410A refrigerant,Materials & Consumables,pound,85
+R22 Refrigerant Recovery and Recharge,Per pound charge for reclaimed R22 refrigerant,Materials & Consumables,pound,195
+Nitrogen Purge Material,High pressure nitrogen used during brazing,Materials & Consumables,job,75
+Standard Pleated Air Filters,Bulk commercial MERV 8 filter replacement set,Materials & Consumables,each,35
+High Efficiency MERV 13 Filters,Rigid cell high efficiency air filter replacement,Materials & Consumables,each,120
+HEPA Filter Element,Absolute filtration media for critical spaces,Materials & Consumables,each,380
+Armaflex Pipe Insulation,Per foot insulation for refrigerant suction lines,Materials & Consumables,linear ft,18
+Electrical Wire THHN,Copper power feed wire per foot installed,Materials & Consumables,linear ft,12
+Liquid-Tight Conduit,Flexible outdoor electrical conduit per foot,Materials & Consumables,linear ft,15
+PVC Condensate Piping,Drain line piping and fittings material,Materials & Consumables,linear ft,9
+Sheet Metal Ductwork Fabrication,Galvanized rectangular duct material per square foot,Materials & Consumables,sq ft,28
+Vibration Isolator Springs,Heavy duty seismic and vibration spring mounts,Materials & Consumables,each,140
+Rooftop Equipment Curb,Pre-fabricated insulated roof mounting curb,Materials & Consumables,each,950
+Refrigerant Oil Charge,Synthetic POE or mineral oil for compressors,Materials & Consumables,gallon,160
+Commercial HVAC Preventative Maintenance Visit,Quarterly comprehensive tune-up and filter change,Maintenance & Service,visit,450
+Annual Chiller Maintenance Service,"Tube brushing, eddy current test, and oil analysis",Maintenance & Service,visit,2800
+Boiler Annual Tune-Up,"Combustion analysis, burner clean, and safety check",Maintenance & Service,visit,650
+Cooling Tower Cleaning and Sanitization,"Basin flush, scale removal, and biocide treatment",Maintenance & Service,visit,1200
+Coil Chemical Wash Outdoor,Foaming alkaline wash for air-cooled condenser coils,Maintenance & Service,each,350
+Coil Chemical Wash Indoor,Non-acid foaming wash for air handler evaporator coils,Maintenance & Service,each,450
+Belt Tension and Alignment Service,Adjust pulleys and replace tension on belt drives,Maintenance & Service,visit,220
+Grease Bearings Service,Lubricate motor and blower pillow block bearings,Maintenance & Service,visit,195
+Combustion Efficiency Analysis,Flue gas test and report for gas-fired equipment,Maintenance & Service,each,275
+Economizer Functional Test,Calibrate enthalpy sensors and damper actuators,Maintenance & Service,visit,310
+Municipal HVAC Permit Processing,Pulling local mechanical and structural permits,Permits & Environmental,job,350
+Electrical Wiring Permit,Required municipal electrical connection permit,Permits & Environmental,job,220
+Crane Road Closure Permit,City street permit and police detail coordination,Permits & Environmental,job,850
+EPA Refrigerant Recovery Disposal Fee,Certified destruction and recycling of old refrigerant,Permits & Environmental,pound,25
+Scrap Metal Recycling Disposal,Removal and hauling of old metal units and coils,Permits & Environmental,job,250
+Hazardous Material Disposal,Disposal fee for contaminated oil or insulation,Permits & Environmental,job,400
+Asbestos Testing and Clearance,Lab testing of duct mastic or pipe wrap,Permits & Environmental,each,600
+Mechanical Engineering Stamp,PE stamp for structural or seismic calculations,Permits & Environmental,job,1500
+Smart Wi-Fi Commercial Thermostat,Programmable thermostat with remote app control,Upgrades & Enhancements,each,450
+BACnet DDC Controller Upgrade,Standalone microprocessor controller for building automation,Upgrades & Enhancements,each,1850
+Hard Start Kit Installation,Capacitor and potential relay for compressor longevity,Upgrades & Enhancements,each,380
+Phase Monitor Relay Installation,Protection against voltage unbalance and single-phasing,Upgrades & Enhancements,each,420
+Surge Protection Device 3-Phase,Main electrical panel transient surge suppressor,Upgrades & Enhancements,each,650
+UV-C Germicidal Lamp System,In-duct ultraviolet light kit for coil sterilization,Upgrades & Enhancements,each,1200
+Motorized Fresh Air Damper Retrofit,Automated ventilation damper for ASHRAE 62.1 compliance,Upgrades & Enhancements,each,1400
+Variable Frequency Drive Retrofit,VFD installation on blower motor for energy savings,Upgrades & Enhancements,each,3200
+Low Ambient Control Kit,Head pressure control for cooling in cold weather,Upgrades & Enhancements,each,750
+Coil Protective Coating Application,Anti-corrosion factory coating for coastal environments,Upgrades & Enhancements,each,950
+Water Leak Detection Sensor System,Floor moisture alarm tied to automatic system shutoff,Upgrades & Enhancements,each,550
+Remote Monitoring Gateway,Cellular or internet gateway for 24/7 fault alerts,Upgrades & Enhancements,each,890
