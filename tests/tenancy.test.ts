@@ -63,6 +63,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     match: "settings->>'tax_rate'",
     reason: 'where id = $1 is the companyId the caller took from getSession()',
   },
+  {
+    file: 'src/app/app/onboarding/actions.ts',
+    match: 'update companies',
+    reason: 'where id = $2 is the company bootstrap_company just created for this caller',
+  },
 
   // --- child rows reached through a parent already verified ----------------
   {

@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
   // its inline default.
   outputFileTracingIncludes: {
     '/*': ['./prompts/**/*.md'],
+    // The starter catalogs are ~1.2MB and only onboarding reads them, so this
+    // stays scoped to that route rather than riding along in every function.
+    '/app/onboarding': ['./data/starter-catalogs/**/*'],
   },
   compiler: {
     // Strip console.log noise from production, but keep error and warn — this
