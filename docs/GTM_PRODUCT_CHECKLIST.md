@@ -21,15 +21,16 @@ fast-follow · **Never** deliberately out of scope.
 
 | # | Item | Status | Priority |
 | --- | --- | --- | --- |
-| 1.1 | **Catalog CRUD** — create/edit/delete price book items | ❌ **No insert path exists anywhere.** Catalog page buttons are inert. | **P0** |
-| 1.2 | **CSV import** for price books | ❌ Button exists, does nothing | **P0** |
-| 1.3 | **Per-trade starter catalogs** (HVAC first) so a new account is never empty | ❌ | **P0** |
-| 1.4 | **Invoice online payment** | ❌ Viewer says *"Online payments coming soon"* while you sell "get paid faster" | **P0** |
-| 1.5 | **AI backend authentication** — currently no auth, CORS `*`, `company_id` from request body | ❌ Cross-tenant read with no exploit required | **P0** |
+| 1.1 | **Catalog CRUD** — create/edit/delete price book items | ✅ Done 2026-08-11 | — |
+| 1.2 | **CSV import** for price books | ✅ Done 2026-08-11 | — |
+| 1.3 | **Per-trade starter catalogs** so a new account is never empty | ✅ Done 2026-08-12 — 100 trades, 9,945 items, priced from the contractor's own rates at onboarding | — |
+| 1.4 | **Invoice online payment** | ✅ Built — Stripe Connect checkout from the public invoice viewer. The "coming soon" copy only shows when the contractor has not connected Stripe | — |
+| 1.5 | **AI backend authentication** | ✅ Dissolved 2026-08-11 — the AI runs in-process inside the authenticated server action, so there is no second origin to secure ([ADR 0009](adr/0009-ai-in-process.md)) | — |
 | 1.6 | Signup → first real quote in **under 10 minutes**, timed | ❌ | **P0** |
 
-**Nothing else on this page matters until section 1 is done.** A new account cannot generate a
-quote today — AI generation returns `400 No active catalog items`.
+**Section 1 is done apart from 1.6.** A new account now picks a trade at onboarding and lands on
+a ~100-item catalog priced at its own rates. The remaining gap is that nobody has *timed* the
+signup-to-first-quote path, which is the claim the whole positioning rests on.
 
 ---
 
@@ -46,7 +47,7 @@ Every competitor has these. Missing any one is a lost deal.
 | E-signature | ✅ SignNow | ✅ | ✅ | ✅ | — |
 | PDF quote/invoice | ✅ | ✅ | ✅ | ✅ | — |
 | Invoicing | ✅ | ✅ | ✅ | ✅ | — |
-| **Online invoice payment** | ❌ | ✅ | ✅ | ✅ | **P0** |
+| Online invoice payment | ✅ | ✅ | ✅ | ✅ | — |
 | Scheduling + calendar | ✅ | ✅ | ✅ | ✅ | — |
 | Customer records | ✅ | ✅ | ✅ | ✅ | — |
 | Team roles/permissions | ✅ 4 roles | ✅ | ✅ | ✅ | — |
@@ -64,7 +65,7 @@ weapon.
 
 | Capability | Rivet | Jobber tier | Priority | Why it matters |
 | --- | --- | --- | --- | --- |
-| **Automated quote follow-up** | ❌ | Connect $80+ | **P1** | Biggest revenue lever in the category. A quote sent and never chased is a lost job. You already have `sent_at`/`viewed_at`/`accepted_at` and a working reminder path in `src/features/invoices/reminders.ts`. |
+| **Automated quote follow-up** | ✅ Done 2026-08-13 | Connect $80+ | — | Biggest revenue lever in the category. A quote sent and never chased is a lost job. You already have `sent_at`/`viewed_at`/`accepted_at` and a working reminder path in `src/features/invoices/reminders.ts`. |
 | **Good/better/best options** | ❌ schema exists | Grow $120+ | **P1** | Raises average ticket. `quote_options` table with `tier` column already built, no UI. |
 | **Consumer financing at quote time** | ❌ | ✅ Wisetack | **P1** | Biggest single lever for HVAC. A $12k system closes far more often with monthly payments in the quote. Raises close rate *and* ticket, pays you a referral fee. |
 | **Missed-call text-back** | ❌ | ❌ | **P1** | 20–30% of contractor calls go unanswered; 85% of voicemail callers never ring back. Async, cheap, reliable — the 80/20 of an AI receptionist without 24/7 voice risk. |

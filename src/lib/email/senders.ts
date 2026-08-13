@@ -82,6 +82,76 @@ export async function sendQuoteEmail(input: SendQuoteEmailInput): Promise<SendRe
 
 // ---------------------------------------------------------------------------
 
+type SendQuoteFollowUpInput = {
+  to: string
+  customerName: string
+  quoteNumber: string
+  total: number
+  publicUrl: string
+  /** 1 for the first nudge, 2 for the last. Changes the wording, not the ask. */
+  attempt: number
+  fromLabel?: string
+  replyTo?: string
+}
+
+/**
+ * The nudge for a quote that was sent and never answered.
+ *
+ * Deliberately short and plain rather than a re-send of the full quote. This
+ * has to read like the contractor typed it on their phone — a second copy of
+ * the formatted quote reads as automated, and a homeowner who feels marketed at
+ * is a homeowner who stops replying. No urgency, no discount, no chasing tone:
+ * the contractor still has to work with these people.
+ */
+export async function sendQuoteFollowUpEmail(
+  input: SendQuoteFollowUpInput,
+): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) {
+    return { ok: true, skipped: true, reason: 'RESEND_API_KEY not configured' }
+  }
+
+  const company = input.fromLabel ?? 'We'
+  const opening =
+    input.attempt === 1
+      ? `Just checking you got the quote we sent over.`
+      : `Following up one last time on the quote we sent.`
+  const closing =
+    input.attempt === 1
+      ? `Happy to talk it through or adjust anything — just reply to this email.`
+      : `If the timing isn't right, no problem at all. Reply any time and we'll pick it back up.`
+
+  const html = `
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;color:#18181b;max-width:520px">
+  <p>Hi ${escapeHtml(input.customerName)},</p>
+  <p>${escapeHtml(opening)}</p>
+  <p style="margin:24px 0">
+    <a href="${input.publicUrl}" style="display:inline-block;background:#18181b;color:#fff;text-decoration:none;padding:12px 22px;border-radius:6px;font-weight:600">
+      View quote ${escapeHtml(input.quoteNumber)} — ${fmtMoney(input.total)}
+    </a>
+  </p>
+  <p>${escapeHtml(closing)}</p>
+  <p style="margin-top:28px">— ${escapeHtml(company)}</p>
+</div>`.trim()
+
+  const { data, error } = await resend.emails.send({
+    from: input.fromLabel
+      ? `${input.fromLabel} <${extractAddress(getFromAddress())}>`
+      : getFromAddress(),
+    to: input.to,
+    // A reply, not a new announcement — "Re:" keeps it in the same mental
+    // thread as the quote they already have.
+    subject: `Re: your quote ${input.quoteNumber}`,
+    html,
+    replyTo: input.replyTo,
+  })
+
+  if (error) return { ok: false, error: error.message }
+  return { ok: true, id: data?.id ?? '' }
+}
+
+// ---------------------------------------------------------------------------
+
 type SendInvoiceEmailInput = {
   to: string
   customerName: string
