@@ -10,11 +10,17 @@
  * output is parsed. Money and JSON must be deterministic.
  */
 
-import { GoogleGenAI, ThinkingLevel, Type, type Schema } from '@google/genai'
+import {
+  GoogleGenAI,
+  ThinkingLevel,
+  Type,
+  type ContentListUnion,
+  type Schema,
+} from '@google/genai'
 
 import { envServer } from '@/lib/env'
 
-export { Type, type Schema }
+export { Type, type ContentListUnion, type Schema }
 
 // Tried in order; a quota limit degrades to the next rather than failing.
 //
@@ -68,7 +74,11 @@ export type GeminiJsonResult = { data: unknown; model: string }
  */
 export async function generateJson(opts: {
   system: string
-  contents: string
+  /**
+   * A prompt string, or parts for multimodal input — an `inlineData` part
+   * carries a PDF or photo the model reads directly.
+   */
+  contents: ContentListUnion
   schema: Schema
   temperature?: number
   maxOutputTokens?: number
@@ -77,40 +87,46 @@ export async function generateJson(opts: {
   if (!ai) return null
 
   for (const model of geminiModels()) {
-    try {
-      const resp = await ai.models.generateContent({
-        model,
-        contents: opts.contents,
-        config: {
-          systemInstruction: opts.system,
-          responseMimeType: 'application/json',
-          responseSchema: opts.schema,
-          temperature: opts.temperature ?? 0,
-          // `gemini-flash-latest` resolves to a thinking model, and thinking on
-          // a schema-constrained extraction bought nothing but latency —
-          // measured 70-230s per quote, with one response reaching 63KB of JSON
-          // before it failed to parse. These tasks pick items from a supplied
-          // list; there is little to reason about.
-          //
-          // `thinkingBudget: 0` is rejected with 400 INVALID_ARGUMENT by these
-          // models — they will not turn thinking off entirely — so ask for the
-          // least of it instead.
-          thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL },
-          // A quote is a handful of line items; an unbounded response is what
-          // turned a 3-second call into a 4-minute one. Thinking tokens count
-          // against this budget on these models, so it has to clear the reply
-          // by a wide margin — 4096 truncated the JSON mid-object and the parse
-          // failed, which is a worse failure than a slow success.
-          maxOutputTokens: opts.maxOutputTokens ?? 16384,
-        },
-      })
-      const raw = resp.text
-      if (!raw) continue
-      return { data: JSON.parse(raw), model }
-    } catch (e) {
-      // Try the next model. A single model being over quota, or returning
-      // something unparseable, should not take the feature down.
-      console.error(`gemini ${model} failed`, e)
+    for (const thinking of [true, false]) {
+      try {
+        const resp = await ai.models.generateContent({
+          model,
+          contents: opts.contents,
+          config: {
+            systemInstruction: opts.system,
+            responseMimeType: 'application/json',
+            responseSchema: opts.schema,
+            temperature: opts.temperature ?? 0,
+            // Thinking buys nothing on a schema-constrained extraction and
+            // costs a great deal: unbounded, these calls took 70-230s and one
+            // reply reached 63KB of JSON before failing to parse.
+            //
+            // But the level a model accepts is not stable. `thinkingBudget: 0`
+            // is rejected outright, and MINIMAL was accepted one day and 400ing
+            // with "not supported for this model" the next — the floating
+            // aliases resolve to different models over time. So it is an
+            // attempt, not a requirement: on rejection the same model is
+            // retried with whatever thinking it defaults to. A slow answer
+            // beats no answer.
+            ...(thinking ? { thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL } } : {}),
+            // An unbounded response is what turned a 3-second call into a
+            // 4-minute one. Thinking tokens count against this budget, so it
+            // has to clear the reply by a wide margin — 4096 truncated the JSON
+            // mid-object, and a failed parse is worse than a slow success.
+            maxOutputTokens: opts.maxOutputTokens ?? 16384,
+          },
+        })
+        const raw = resp.text
+        if (!raw) break
+        return { data: JSON.parse(raw), model }
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e)
+        // Only the thinking level was unacceptable — same model, second pass.
+        if (thinking && /thinking/i.test(msg)) continue
+        // Anything else is this model's problem; move on to the next one.
+        console.error(`gemini ${model} failed`, e)
+        break
+      }
     }
   }
 
