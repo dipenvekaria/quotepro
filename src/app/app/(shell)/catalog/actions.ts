@@ -6,6 +6,13 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { mapHeaders, parseCsv, parsePrice } from '@/lib/csv'
+import {
+  ACCEPTED_MIME,
+  MAX_FILE_BYTES,
+  extractCatalogFromDocument,
+  itemsToCsv,
+  type ExtractedItem,
+} from '@/lib/ai/extract-catalog'
 import { hasPermission, type UserRole } from '@/lib/permissions'
 
 /**
@@ -311,4 +318,89 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
       errors: errors.slice(0, 20),
     },
   }
+}
+
+// -----------------------------------------------------------------------------
+// AI catalog extraction from existing paperwork.
+//
+// Returns rows for review; it deliberately does not write. Saving goes through
+// importCatalogCsv, the same path a contractor's own spreadsheet takes, so
+// there is one set of validation and one error report. See
+// src/lib/ai/extract-catalog.ts for why the review step is load-bearing.
+// -----------------------------------------------------------------------------
+
+export type ExtractResult = {
+  items: ExtractedItem[]
+  documentType: string
+  notes: string
+  mode: string
+}
+
+export async function extractCatalogFromUpload(formData: FormData): Promise<Result<ExtractResult>> {
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+
+  const file = formData.get('file')
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: 'Choose a file to read.' }
+  }
+
+  if (!ACCEPTED_MIME.includes(file.type as (typeof ACCEPTED_MIME)[number])) {
+    return {
+      ok: false,
+      error: 'That file type is not supported. Use a PDF or a photo (PNG, JPG, HEIC).',
+    }
+  }
+
+  if (file.size > MAX_FILE_BYTES) {
+    const mb = Math.round(MAX_FILE_BYTES / (1024 * 1024))
+    return { ok: false, error: `That file is too large. The limit is ${mb}MB.` }
+  }
+
+  let result: ExtractResult
+  try {
+    result = await extractCatalogFromDocument({
+      data: Buffer.from(await file.arrayBuffer()),
+      mimeType: file.type,
+    })
+  } catch (e) {
+    console.error('extractCatalogFromUpload failed', e)
+    return { ok: false, error: 'Could not read that document. Try again.' }
+  }
+
+  if (result.mode === 'mock') {
+    return { ok: false, error: 'AI is not available right now. You can still import a CSV.' }
+  }
+  if (result.items.length === 0) {
+    return {
+      ok: false,
+      error:
+        'No priced items found in that document. A quote, invoice or price sheet works best — make sure prices are visible.',
+    }
+  }
+
+  return { ok: true, data: result }
+}
+
+/** Saves reviewed rows through the CSV importer. */
+export async function importExtractedItems(items: unknown): Promise<Result<ImportResult>> {
+  const parsed = z
+    .array(
+      z.object({
+        name: z.string().trim().min(1).max(200),
+        description: z.string().max(500).optional().default(''),
+        category: z.string().max(100).optional().default(''),
+        unit: z.string().max(40).optional().default('each'),
+        price: z.coerce.number().positive().max(9_999_999.99),
+      }),
+    )
+    .min(1, 'Nothing selected to import')
+    .max(2000)
+    .safeParse(items)
+
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid items' }
+  }
+
+  return importCatalogCsv({ csv: itemsToCsv(parsed.data) })
 }

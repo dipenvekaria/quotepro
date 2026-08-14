@@ -26,6 +26,7 @@ import {
   importCatalogCsv,
   updateCatalogItem,
 } from './actions'
+import { CatalogExtract } from './catalog-extract'
 
 export type CatalogItem = {
   id: string
@@ -211,8 +212,10 @@ export function CatalogManager({
             onChange={onFile}
             aria-label="Import a CSV price list"
           />
-          <span className="text-xs text-muted-foreground">
-            Needs a name and price column. Category, description and unit are optional.
+          <CatalogExtract />
+          <span className="w-full text-xs text-muted-foreground">
+            CSV needs a name and price column. Or read your prices straight off an old quote,
+            invoice or supplier price sheet — PDF or a photo.
           </span>
         </div>
       )}
