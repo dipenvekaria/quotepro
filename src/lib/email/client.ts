@@ -14,8 +14,18 @@ export function getResend(): Resend | null {
   return _resend
 }
 
+/**
+ * The From header on everything we send.
+ *
+ * `onboarding@resend.dev` is Resend's sandbox sender: it only delivers to the
+ * account's own verified address, so leaving it in place means every customer
+ * email is accepted by the API and never arrives. Set RESEND_FROM_EMAIL to an
+ * address on a domain verified in Resend before sending to anyone real.
+ */
 export function getFromAddress(): string {
   const email = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
-  const name = process.env.RESEND_FROM_NAME || 'QuotePro'
+  // Was 'QuotePro' — the pre-rename product name, which would have gone out on
+  // the From line of every quote and invoice. See docs/adr/0004.
+  const name = process.env.RESEND_FROM_NAME || 'Rivet'
   return `${name} <${email}>`
 }

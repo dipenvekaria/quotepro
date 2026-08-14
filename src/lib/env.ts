@@ -74,7 +74,11 @@ const serverEnvSchema = z.object({
   // src/lib/ai/gemini.ts.
   GEMINI_MODELS: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
-  RESEND_FROM_EMAIL: z.string().email().default('no-reply@quotepro.demo'),
+  // No default: src/lib/email/client.ts owns the fallback, and declaring a
+  // second, different one here (it said no-reply@quotepro.demo) meant the two
+  // disagreed about what unset means.
+  RESEND_FROM_EMAIL: z.string().email().optional(),
+  RESEND_FROM_NAME: z.string().optional(),
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),

@@ -81,6 +81,7 @@ export async function sendQuoteFollowUps(companyId: string) {
 
   let sent = 0
   let failed = 0
+  let skipped = 0
 
   for (const q of due) {
     if (!q.customer_email) continue
@@ -107,10 +108,15 @@ export async function sendQuoteFollowUps(companyId: string) {
       replyTo: q.company_email ?? undefined,
     })
 
-    if (result.ok) {
+    if (result.ok && !result.skipped) {
       sent++
     } else {
-      failed++
+      // `skipped` means no RESEND_API_KEY — nothing was delivered. Counting it
+      // as sent would spend both of a quote's follow-ups on emails that never
+      // existed, and the quote could never be chased again once email was
+      // configured. An unconfigured mailer must consume nothing.
+      if (result.ok) skipped++
+      else failed++
       // Give the quote its attempt back so a Resend outage doesn't silently
       // consume a customer's only follow-up.
       await query(
@@ -120,11 +126,17 @@ export async function sendQuoteFollowUps(companyId: string) {
           where id = $1 and company_id = $2`,
         [q.id, companyId, q.followup_count === 0 ? null : new Date().toISOString()],
       )
-      console.error(`quote followup failed for ${q.id}: ${result.error}`)
+      if (!result.ok) console.error(`quote followup failed for ${q.id}: ${result.error}`)
     }
   }
 
-  return { due: due.length, sent, failed }
+  if (skipped > 0) {
+    console.warn(
+      `quote followups: ${skipped} not sent — RESEND_API_KEY is not configured, so no customer is being chased`,
+    )
+  }
+
+  return { due: due.length, sent, failed, skipped }
 }
 
 /**
