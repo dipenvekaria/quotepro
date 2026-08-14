@@ -182,7 +182,13 @@ export async function sendQuote(id: string) {
   }
 
   // Best-effort email (never blocks the send action).
-  let emailResult: 'sent' | 'skipped' | 'error' = 'skipped'
+  //
+  // The outcomes are reported separately because they need different actions
+  // from the contractor. This used to collapse them all into "skipped", and the
+  // UI rendered that as "no email on file" — so an unconfigured mailer looked
+  // like a missing customer address, and the contractor went hunting through
+  // their customer record for a problem that was ours.
+  let emailResult: 'sent' | 'no_address' | 'not_configured' | 'error' = 'no_address'
   if (item.customer_email) {
     const publicUrl = `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/q/${item.public_token}`
     const items = quoteItemRows
@@ -199,8 +205,18 @@ export async function sendQuote(id: string) {
         fromLabel: item.company_name ?? undefined,
         replyTo: item.company_email ?? undefined,
       })
-      emailResult = res.ok && !('skipped' in res && res.skipped) ? 'sent' : res.ok ? 'skipped' : 'error'
-    } catch {
+      if (!res.ok) {
+        console.error(`sendQuote: email failed for ${id}: ${res.error}`)
+        emailResult = 'error'
+      } else if ('skipped' in res && res.skipped) {
+        // The mailer is off, not the customer's address missing.
+        console.error(`sendQuote: email not configured (${res.reason})`)
+        emailResult = 'not_configured'
+      } else {
+        emailResult = 'sent'
+      }
+    } catch (e) {
+      console.error(`sendQuote: email threw for ${id}`, e)
       emailResult = 'error'
     }
   }

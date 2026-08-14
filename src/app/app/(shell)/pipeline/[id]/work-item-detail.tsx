@@ -59,6 +59,7 @@ type WorkItem = {
   tax_rate: number
   tax_amount: number
   total: number
+  customer_summary: string | null
   scheduled_start: string | null
   scheduled_end: string | null
   sent_at: string | null
@@ -260,7 +261,12 @@ export function WorkItemDetail({
       setSentToken(res.data.public_token)
       setSendOpen(true)
       if (res.data.email === 'sent') toast.success('Quote sent — email delivered.')
-      else if (res.data.email === 'skipped') toast.info('Quote sent — no email on file, share the link.')
+      else if (res.data.email === 'no_address')
+        toast.info('Quote sent — this customer has no email address, so share the link.')
+      else if (res.data.email === 'not_configured')
+        toast.warning('Quote sent, but email is not set up — nothing was delivered.', {
+          description: 'Share the link for now. RESEND_API_KEY is missing.',
+        })
       else if (res.data.email === 'error') toast.warning('Quote sent, but email failed.')
       router.refresh()
     })
@@ -365,7 +371,9 @@ export function WorkItemDetail({
               ) : (
                 <Sparkles className="h-3.5 w-3.5" />
               )}
-              <span className="hidden sm:inline">Explain for customer</span>
+              <span className="hidden sm:inline">
+                {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
+              </span>
             </Button>
           )}
           {isDraft && workItem.status === 'quote_draft' ? (
@@ -581,6 +589,25 @@ export function WorkItemDetail({
               </div>
             </dl>
           </div>
+
+          {/* What the customer reads above the prices on the public quote.
+              Shown here because it was previously written, saved, and then only
+              visible by opening the public link — so "Explain for customer"
+              appeared to do nothing at all. */}
+          {workItem.customer_summary && (
+            <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <h2 className="text-sm font-semibold">Customer explanation</h2>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Shown to the customer above the prices.
+              </p>
+              <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                {workItem.customer_summary}
+              </p>
+            </div>
+          )}
 
           {/* Public link */}
           {(workItem.status !== 'lead' && workItem.status !== 'quote_draft') && (
