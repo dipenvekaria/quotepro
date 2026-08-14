@@ -25,11 +25,28 @@ import {
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
-import { changeStatus, generateCustomerSummary, sendQuote, updateWorkItem } from './actions'
+import {
+  changeStatus,
+  generateCustomerSummary,
+  getSchedulingContext,
+  sendQuote,
+  updateWorkItem,
+  type SchedulingContext,
+} from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
 import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
 
@@ -59,6 +76,7 @@ type WorkItem = {
   tax_rate: number
   tax_amount: number
   total: number
+  customer_summary: string | null
   scheduled_start: string | null
   scheduled_end: string | null
   sent_at: string | null
@@ -123,6 +141,19 @@ const STATUS_ACTIONS: Record<string, { label: string; to: string; primary?: bool
 
 // ---------------------------------------------------------------------------
 
+/**
+ * Tomorrow morning, or whatever is already on the item. A contractor scheduling
+ * a job they just won almost never means "right now", and an empty picker is a
+ * decision we are making them make for no reason.
+ */
+function defaultScheduleSlot(existing: string | null): string {
+  if (existing) return isoToLocal(existing)
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  d.setHours(9, 0, 0, 0)
+  return isoToLocal(d.toISOString())
+}
+
 export function WorkItemDetail({
   workItem,
   lineItems: initialItems,
@@ -151,6 +182,10 @@ export function WorkItemDetail({
   const [transitioning, startTransition_] = useTransition()
 
   const [explaining, startExplain] = useTransition()
+  const [scheduleOpen, setScheduleOpen] = useState(false)
+  const [scheduleAt, setScheduleAt] = useState('')
+  const [schedCtx, setSchedCtx] = useState<SchedulingContext | null>(null)
+  const [loadingCtx, startLoadCtx] = useTransition()
 
   function writeCustomerSummary() {
     startExplain(async () => {
@@ -238,16 +273,45 @@ export function WorkItemDetail({
     })
   }
 
-  function transition(to: string) {
+  function transition(to: string, scheduledAt?: string) {
     startTransition_(async () => {
-      const res = await changeStatus({ id: workItem.id, to: to as never })
+      const res = await changeStatus({
+        id: workItem.id,
+        to: to as never,
+        scheduled_start: scheduledAt ?? undefined,
+      })
       if (!res.ok) {
         toast.error(res.error)
         return
       }
-      toast.success(`Moved to ${to.replaceAll('_', ' ')}`)
+      if (to === 'job_scheduled' && scheduledAt) {
+        toast.success('Job scheduled', {
+          description: `${new Date(scheduledAt).toLocaleString('en-US', {
+            weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+          })} — it's on your calendar.`,
+        })
+      } else {
+        toast.success(`Moved to ${to.replaceAll('_', ' ')}`)
+      }
       router.refresh()
     })
+  }
+
+  /** Scheduling needs a date, so it opens a picker instead of firing straight away. */
+  function onNextStep(to: string) {
+    if (to === 'job_scheduled') {
+      setScheduleAt(defaultScheduleSlot(workItem.scheduled_start))
+      setSchedCtx(null)
+      setScheduleOpen(true)
+      // Loaded on open rather than with the page: most visits to a work item
+      // are not scheduling it, and this is three queries.
+      startLoadCtx(async () => {
+        const res = await getSchedulingContext(workItem.id)
+        if (res.ok) setSchedCtx(res.data)
+      })
+      return
+    }
+    transition(to)
   }
 
   function doSend() {
@@ -260,7 +324,12 @@ export function WorkItemDetail({
       setSentToken(res.data.public_token)
       setSendOpen(true)
       if (res.data.email === 'sent') toast.success('Quote sent — email delivered.')
-      else if (res.data.email === 'skipped') toast.info('Quote sent — no email on file, share the link.')
+      else if (res.data.email === 'no_address')
+        toast.info('Quote sent — this customer has no email address, so share the link.')
+      else if (res.data.email === 'not_configured')
+        toast.warning('Quote sent, but email is not set up — nothing was delivered.', {
+          description: 'Share the link for now. RESEND_API_KEY is missing.',
+        })
       else if (res.data.email === 'error') toast.warning('Quote sent, but email failed.')
       router.refresh()
     })
@@ -365,7 +434,9 @@ export function WorkItemDetail({
               ) : (
                 <Sparkles className="h-3.5 w-3.5" />
               )}
-              <span className="hidden sm:inline">Explain for customer</span>
+              <span className="hidden sm:inline">
+                {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
+              </span>
             </Button>
           )}
           {isDraft && workItem.status === 'quote_draft' ? (
@@ -382,10 +453,9 @@ export function WorkItemDetail({
               {actions.map((a) => (
                 <Button
                   key={a.to}
-                  onClick={() => transition(a.to)}
+                  onClick={() => onNextStep(a.to)}
                   disabled={transitioning}
                   variant={a.primary ? 'default' : 'outline'}
-                  className="h-9"
                 >
                   {a.label}
                 </Button>
@@ -562,6 +632,153 @@ export function WorkItemDetail({
           <Activity workItem={workItem} />
         </div>
 
+        {/* Scheduling asks when, then does both halves at once — the status and
+            the date. Splitting them is what put "scheduled" jobs nowhere near
+            the calendar. */}
+        <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Schedule this job</DialogTitle>
+              <DialogDescription>
+                It will appear on your calendar and on the dashboard for that day.
+              </DialogDescription>
+            </DialogHeader>
+            {/* The duration comes from the quote's own line items, so the
+                contractor never types it. That is the whole reason the
+                suggestions below can be trusted. */}
+            {schedCtx?.estimatedHours ? (
+              <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm">
+                This job is about{' '}
+                <span className="font-semibold">{schedCtx.estimatedHours} hours</span> of work,
+                from its line items.
+              </p>
+            ) : schedCtx ? (
+              <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm text-muted-foreground">
+                No time estimate — these line items carry no labour hours. Pick a time below.
+              </p>
+            ) : null}
+
+            {loadingCtx && (
+              <p className="text-sm text-muted-foreground">Checking your calendar…</p>
+            )}
+
+            {schedCtx && schedCtx.suggestions.length > 0 && (
+              <div className="min-w-0 space-y-1.5">
+                <Label className="text-sm font-medium">Next available</Label>
+                <div className="grid min-w-0 gap-2">
+                  {schedCtx.suggestions.map((s) => {
+                    const start = new Date(s.startsAt)
+                    const end = new Date(s.endsAt)
+                    const iso = isoToLocal(s.startsAt)
+                    const chosen = scheduleAt === iso
+                    return (
+                      <button
+                        key={s.startsAt}
+                        type="button"
+                        onClick={() => setScheduleAt(iso)}
+                        className={cn(
+                          'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
+                          chosen
+                            ? 'border-primary bg-primary/5'
+                            : 'border-border hover:bg-muted/60',
+                        )}
+                      >
+                        <span className="font-medium">
+                          {start.toLocaleDateString('en-US', {
+                            weekday: 'short', month: 'short', day: 'numeric',
+                          })}
+                        </span>
+                        <span className="text-muted-foreground tabular">
+                          {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          {' – '}
+                          {end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {schedCtx && schedCtx.suggestions.length === 0 && !loadingCtx && (
+              <p className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+                Nothing free in the next two weeks that fits this job. Pick a time below, or open
+                up more hours in Settings.
+              </p>
+            )}
+
+            {/* The fortnight at a glance, so a contractor can see the shape of
+                their week rather than only the three offered slots. */}
+            {schedCtx && (
+              <div className="min-w-0 space-y-1.5">
+                <Label className="text-sm font-medium">Next two weeks</Label>
+                {/* min-w-0 is load-bearing: grid children default to
+                    min-width:auto, so without it the strip's intrinsic width
+                    stretched the dialog past its max-width instead of
+                    scrolling, and every row spilled outside the panel. */}
+                <div className="flex min-w-0 gap-1 overflow-x-auto pb-1">
+                  {schedCtx.days.map((d) => {
+                    const day = new Date(`${d.date}T00:00:00`)
+                    const closed = d.capacityHours === 0
+                    const load = closed ? 0 : Math.min(d.bookedHours / d.capacityHours, 1)
+                    return (
+                      <div
+                        key={d.date}
+                        title={
+                          closed
+                            ? 'Closed'
+                            : `${d.bookedHours}h booked of ${d.capacityHours}h`
+                        }
+                        className="min-w-[2.6rem] shrink-0 rounded-md border border-border/60 px-1 py-1.5 text-center"
+                      >
+                        <div className="text-[10px] uppercase text-muted-foreground">
+                          {day.toLocaleDateString('en-US', { weekday: 'narrow' })}
+                        </div>
+                        <div className="text-xs font-medium tabular">{day.getDate()}</div>
+                        <div className="mt-1 h-1 rounded-full bg-muted">
+                          {!closed && (
+                            <div
+                              className="h-1 rounded-full bg-primary"
+                              style={{ width: `${Math.round(load * 100)}%` }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-1.5">
+              <Label htmlFor="schedule-at" className="text-sm font-medium">
+                Start
+              </Label>
+              <Input
+                id="schedule-at"
+                type="datetime-local"
+                value={scheduleAt}
+                onChange={(e) => setScheduleAt(e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setScheduleOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                disabled={!scheduleAt || transitioning}
+                onClick={() => {
+                  setScheduleOpen(false)
+                  transition('job_scheduled', new Date(scheduleAt).toISOString())
+                }}
+              >
+                Schedule job
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         {/* Right column — summary + share */}
         <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
           <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
@@ -581,6 +798,25 @@ export function WorkItemDetail({
               </div>
             </dl>
           </div>
+
+          {/* What the customer reads above the prices on the public quote.
+              Shown here because it was previously written, saved, and then only
+              visible by opening the public link — so "Explain for customer"
+              appeared to do nothing at all. */}
+          {workItem.customer_summary && (
+            <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
+              <div className="flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <h2 className="text-sm font-semibold">Customer explanation</h2>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Shown to the customer above the prices.
+              </p>
+              <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                {workItem.customer_summary}
+              </p>
+            </div>
+          )}
 
           {/* Public link */}
           {(workItem.status !== 'lead' && workItem.status !== 'quote_draft') && (

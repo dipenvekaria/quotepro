@@ -23,6 +23,7 @@ export default async function WorkItemDetailPage({
     notes: string | null
     job_name: string | null
     quote_number: string | null
+    customer_summary: string | null
     invoice_number: string | null
     job_number: string | null
     subtotal: number | null
@@ -60,7 +61,7 @@ export default async function WorkItemDetailPage({
             w.subtotal, w.discount_amount, w.tax_rate, w.tax_amount, w.total,
             w.scheduled_start, w.scheduled_end,
             w.sent_at, w.viewed_at, w.accepted_at, w.rejected_at, w.completed_at,
-            w.public_token, w.created_at, w.updated_at,
+            w.public_token, w.customer_summary, w.created_at, w.updated_at,
             w.customer_id, w.address_id, w.created_by, w.assigned_to,
             c.id as c_id, c.name as c_name, c.email as c_email, c.phone as c_phone,
             a.address as a_address, a.city as a_city, a.state as a_state, a.zip as a_zip,
@@ -86,6 +87,7 @@ export default async function WorkItemDetailPage({
     notes: row.notes,
     job_name: row.job_name,
     quote_number: row.quote_number,
+    customer_summary: row.customer_summary,
     invoice_number: row.invoice_number,
     job_number: row.job_number,
     subtotal: row.subtotal,
