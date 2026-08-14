@@ -84,6 +84,8 @@ const statusSchema = z.object({
     'job_cancelled',
     'archived',
   ]),
+  /** Required when moving to job_scheduled. Ignored otherwise. */
+  scheduled_start: z.string().datetime().nullable().optional(),
 })
 
 export async function changeStatus(input: z.infer<typeof statusSchema>) {
@@ -93,9 +95,35 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
 
+  // A job is not scheduled until it has a date. "Schedule job" used to change
+  // only the status, leaving scheduled_start null — so the work item said
+  // "scheduled" everywhere while the calendar, which requires a date, never
+  // showed it. The two halves are now one action.
+  if (parsed.data.to === 'job_scheduled' && !parsed.data.scheduled_start) {
+    return { ok: false as const, error: 'Pick a date and time to schedule this job.' }
+  }
+
+  // Work cannot start before it is booked in. Enforced here and not only in the
+  // UI, because the button layout is not access control.
+  if (parsed.data.to === 'job_in_progress') {
+    const [row] = await query<{ scheduled_start: string | null }>(
+      `select scheduled_start from work_items where id = $1 and company_id = $2`,
+      [parsed.data.id, session.companyId],
+    )
+    if (!row) return { ok: false as const, error: 'Not found' }
+    if (!row.scheduled_start) {
+      return { ok: false as const, error: 'Schedule this job before starting it.' }
+    }
+  }
+
   const now = new Date().toISOString()
   const values: unknown[] = [parsed.data.to]
   const sets = ['status = $1::work_item_status']
+
+  if (parsed.data.to === 'job_scheduled' && parsed.data.scheduled_start) {
+    values.push(parsed.data.scheduled_start)
+    sets.push(`scheduled_start = $${values.length}`)
+  }
   const tsCol: Record<string, string | undefined> = {
     quote_sent: 'sent_at',
     quote_viewed: 'viewed_at',
@@ -127,6 +155,9 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
 
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
+  // Scheduling puts the job on the calendar, so that view is now stale too.
+  revalidatePath('/app/calendar')
+  revalidatePath('/app/dashboard')
   return { ok: true as const }
 }
 

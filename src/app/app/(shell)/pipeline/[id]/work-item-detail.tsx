@@ -25,6 +25,16 @@ import {
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
@@ -124,6 +134,19 @@ const STATUS_ACTIONS: Record<string, { label: string; to: string; primary?: bool
 
 // ---------------------------------------------------------------------------
 
+/**
+ * Tomorrow morning, or whatever is already on the item. A contractor scheduling
+ * a job they just won almost never means "right now", and an empty picker is a
+ * decision we are making them make for no reason.
+ */
+function defaultScheduleSlot(existing: string | null): string {
+  if (existing) return isoToLocal(existing)
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  d.setHours(9, 0, 0, 0)
+  return isoToLocal(d.toISOString())
+}
+
 export function WorkItemDetail({
   workItem,
   lineItems: initialItems,
@@ -152,6 +175,8 @@ export function WorkItemDetail({
   const [transitioning, startTransition_] = useTransition()
 
   const [explaining, startExplain] = useTransition()
+  const [scheduleOpen, setScheduleOpen] = useState(false)
+  const [scheduleAt, setScheduleAt] = useState('')
 
   function writeCustomerSummary() {
     startExplain(async () => {
@@ -239,16 +264,38 @@ export function WorkItemDetail({
     })
   }
 
-  function transition(to: string) {
+  function transition(to: string, scheduledAt?: string) {
     startTransition_(async () => {
-      const res = await changeStatus({ id: workItem.id, to: to as never })
+      const res = await changeStatus({
+        id: workItem.id,
+        to: to as never,
+        scheduled_start: scheduledAt ?? undefined,
+      })
       if (!res.ok) {
         toast.error(res.error)
         return
       }
-      toast.success(`Moved to ${to.replaceAll('_', ' ')}`)
+      if (to === 'job_scheduled' && scheduledAt) {
+        toast.success('Job scheduled', {
+          description: `${new Date(scheduledAt).toLocaleString('en-US', {
+            weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+          })} — it's on your calendar.`,
+        })
+      } else {
+        toast.success(`Moved to ${to.replaceAll('_', ' ')}`)
+      }
       router.refresh()
     })
+  }
+
+  /** Scheduling needs a date, so it opens a picker instead of firing straight away. */
+  function onNextStep(to: string) {
+    if (to === 'job_scheduled') {
+      setScheduleAt(defaultScheduleSlot(workItem.scheduled_start))
+      setScheduleOpen(true)
+      return
+    }
+    transition(to)
   }
 
   function doSend() {
@@ -390,10 +437,9 @@ export function WorkItemDetail({
               {actions.map((a) => (
                 <Button
                   key={a.to}
-                  onClick={() => transition(a.to)}
+                  onClick={() => onNextStep(a.to)}
                   disabled={transitioning}
                   variant={a.primary ? 'default' : 'outline'}
-                  className="h-9"
                 >
                   {a.label}
                 </Button>
@@ -569,6 +615,46 @@ export function WorkItemDetail({
           {/* Activity */}
           <Activity workItem={workItem} />
         </div>
+
+        {/* Scheduling asks when, then does both halves at once — the status and
+            the date. Splitting them is what put "scheduled" jobs nowhere near
+            the calendar. */}
+        <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Schedule this job</DialogTitle>
+              <DialogDescription>
+                It will appear on your calendar and on the dashboard for that day.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-1.5">
+              <Label htmlFor="schedule-at" className="text-sm font-medium">
+                Start
+              </Label>
+              <Input
+                id="schedule-at"
+                type="datetime-local"
+                value={scheduleAt}
+                onChange={(e) => setScheduleAt(e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setScheduleOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                disabled={!scheduleAt || transitioning}
+                onClick={() => {
+                  setScheduleOpen(false)
+                  transition('job_scheduled', new Date(scheduleAt).toISOString())
+                }}
+              >
+                Schedule job
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Right column — summary + share */}
         <aside className="space-y-4 lg:sticky lg:top-6 lg:self-start">
