@@ -6,7 +6,10 @@ import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { ROLE_LABEL } from '@/lib/team-personas'
 
+import { loadBusinessHours } from '@/lib/scheduling/availability'
+
 import { SettingsForm } from './settings-form'
+import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 
 // ---------------------------------------------------------------------------
@@ -67,6 +70,8 @@ export default async function SettingsPage() {
 
   if (!company) redirect('/app/onboarding')
 
+  const businessHours = await loadBusinessHours(companyId)
+
   const canEdit = role === 'owner' || role === 'admin'
   const canManageTeam = role === 'owner' || role === 'office'
   const settings = (company.settings ?? {}) as { tax_rate?: number }
@@ -101,6 +106,12 @@ export default async function SettingsPage() {
           />
         </div>
       </section>
+
+      {canEdit && (
+        <div className="mt-6">
+          <WorkingHours initial={businessHours} />
+        </div>
+      )}
 
       {/* Team */}
       <section id="team" className="mt-6 scroll-mt-24 rounded-xl border border-border/70 bg-card shadow-sm">

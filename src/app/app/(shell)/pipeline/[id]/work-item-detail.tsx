@@ -39,7 +39,14 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
-import { changeStatus, generateCustomerSummary, sendQuote, updateWorkItem } from './actions'
+import {
+  changeStatus,
+  generateCustomerSummary,
+  getSchedulingContext,
+  sendQuote,
+  updateWorkItem,
+  type SchedulingContext,
+} from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
 import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
 
@@ -177,6 +184,8 @@ export function WorkItemDetail({
   const [explaining, startExplain] = useTransition()
   const [scheduleOpen, setScheduleOpen] = useState(false)
   const [scheduleAt, setScheduleAt] = useState('')
+  const [schedCtx, setSchedCtx] = useState<SchedulingContext | null>(null)
+  const [loadingCtx, startLoadCtx] = useTransition()
 
   function writeCustomerSummary() {
     startExplain(async () => {
@@ -292,7 +301,14 @@ export function WorkItemDetail({
   function onNextStep(to: string) {
     if (to === 'job_scheduled') {
       setScheduleAt(defaultScheduleSlot(workItem.scheduled_start))
+      setSchedCtx(null)
       setScheduleOpen(true)
+      // Loaded on open rather than with the page: most visits to a work item
+      // are not scheduling it, and this is three queries.
+      startLoadCtx(async () => {
+        const res = await getSchedulingContext(workItem.id)
+        if (res.ok) setSchedCtx(res.data)
+      })
       return
     }
     transition(to)
@@ -620,13 +636,120 @@ export function WorkItemDetail({
             the date. Splitting them is what put "scheduled" jobs nowhere near
             the calendar. */}
         <Dialog open={scheduleOpen} onOpenChange={setScheduleOpen}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Schedule this job</DialogTitle>
               <DialogDescription>
                 It will appear on your calendar and on the dashboard for that day.
               </DialogDescription>
             </DialogHeader>
+            {/* The duration comes from the quote's own line items, so the
+                contractor never types it. That is the whole reason the
+                suggestions below can be trusted. */}
+            {schedCtx?.estimatedHours ? (
+              <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm">
+                This job is about{' '}
+                <span className="font-semibold">{schedCtx.estimatedHours} hours</span> of work,
+                from its line items.
+              </p>
+            ) : schedCtx ? (
+              <p className="rounded-lg bg-muted/60 px-3 py-2 text-sm text-muted-foreground">
+                No time estimate — these line items carry no labour hours. Pick a time below.
+              </p>
+            ) : null}
+
+            {loadingCtx && (
+              <p className="text-sm text-muted-foreground">Checking your calendar…</p>
+            )}
+
+            {schedCtx && schedCtx.suggestions.length > 0 && (
+              <div className="min-w-0 space-y-1.5">
+                <Label className="text-sm font-medium">Next available</Label>
+                <div className="grid min-w-0 gap-2">
+                  {schedCtx.suggestions.map((s) => {
+                    const start = new Date(s.startsAt)
+                    const end = new Date(s.endsAt)
+                    const iso = isoToLocal(s.startsAt)
+                    const chosen = scheduleAt === iso
+                    return (
+                      <button
+                        key={s.startsAt}
+                        type="button"
+                        onClick={() => setScheduleAt(iso)}
+                        className={cn(
+                          'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
+                          chosen
+                            ? 'border-primary bg-primary/5'
+                            : 'border-border hover:bg-muted/60',
+                        )}
+                      >
+                        <span className="font-medium">
+                          {start.toLocaleDateString('en-US', {
+                            weekday: 'short', month: 'short', day: 'numeric',
+                          })}
+                        </span>
+                        <span className="text-muted-foreground tabular">
+                          {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                          {' – '}
+                          {end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {schedCtx && schedCtx.suggestions.length === 0 && !loadingCtx && (
+              <p className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+                Nothing free in the next two weeks that fits this job. Pick a time below, or open
+                up more hours in Settings.
+              </p>
+            )}
+
+            {/* The fortnight at a glance, so a contractor can see the shape of
+                their week rather than only the three offered slots. */}
+            {schedCtx && (
+              <div className="min-w-0 space-y-1.5">
+                <Label className="text-sm font-medium">Next two weeks</Label>
+                {/* min-w-0 is load-bearing: grid children default to
+                    min-width:auto, so without it the strip's intrinsic width
+                    stretched the dialog past its max-width instead of
+                    scrolling, and every row spilled outside the panel. */}
+                <div className="flex min-w-0 gap-1 overflow-x-auto pb-1">
+                  {schedCtx.days.map((d) => {
+                    const day = new Date(`${d.date}T00:00:00`)
+                    const closed = d.capacityHours === 0
+                    const load = closed ? 0 : Math.min(d.bookedHours / d.capacityHours, 1)
+                    return (
+                      <div
+                        key={d.date}
+                        title={
+                          closed
+                            ? 'Closed'
+                            : `${d.bookedHours}h booked of ${d.capacityHours}h`
+                        }
+                        className="min-w-[2.6rem] shrink-0 rounded-md border border-border/60 px-1 py-1.5 text-center"
+                      >
+                        <div className="text-[10px] uppercase text-muted-foreground">
+                          {day.toLocaleDateString('en-US', { weekday: 'narrow' })}
+                        </div>
+                        <div className="text-xs font-medium tabular">{day.getDate()}</div>
+                        <div className="mt-1 h-1 rounded-full bg-muted">
+                          {!closed && (
+                            <div
+                              className="h-1 rounded-full bg-primary"
+                              style={{ width: `${Math.round(load * 100)}%` }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-1.5">
               <Label htmlFor="schedule-at" className="text-sm font-medium">
                 Start

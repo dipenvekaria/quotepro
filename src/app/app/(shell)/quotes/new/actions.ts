@@ -173,6 +173,32 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 
   const { subtotal, taxAmount, total } = computeTotals(parsed.data.items, taxRate)
 
+  // Labour hours come from the catalog, matched by name, and are snapshotted
+  // onto the line exactly as unit_price already is — a quote must not change
+  // because someone edited the price book afterwards, and that applies to the
+  // hours as much as the money.
+  //
+  // This is what lets the scheduler know a job is 5.5 hours without anyone
+  // typing it. Competitors ask a dispatcher, because their price book is a name
+  // and a price.
+  const catalogHours = new Map<string, number>()
+  {
+    const rows = await query<{ name: string; labor_hours: number | null }>(
+      `select name, labor_hours from catalog_items
+        where company_id = $1 and labor_hours is not null`,
+      [companyId],
+    )
+    for (const r of rows) {
+      if (r.labor_hours !== null) catalogHours.set(r.name.trim().toLowerCase(), Number(r.labor_hours))
+    }
+  }
+  const hoursFor = (name: string) => catalogHours.get(name.trim().toLowerCase()) ?? null
+
+  const estimatedHours = parsed.data.items.reduce((sum, i) => {
+    const h = hoursFor(i.name)
+    return h === null ? sum : sum + h * i.quantity
+  }, 0)
+
   try {
     await withTransaction(async (q) => {
       await q('delete from quote_items where work_item_id = $1', [parsed.data.work_item_id])
@@ -180,7 +206,7 @@ export async function saveLineItems(input: SaveLineItemsInput) {
       if (parsed.data.items.length) {
         const values: unknown[] = []
         const tuples = parsed.data.items.map((i, idx) => {
-          const b = idx * 8
+          const b = idx * 9
           values.push(
             parsed.data.work_item_id,
             i.name,
@@ -190,12 +216,13 @@ export async function saveLineItems(input: SaveLineItemsInput) {
             i.sort_order,
             i.is_upsell ?? false,
             i.is_discount ?? false,
+            hoursFor(i.name),
           )
-          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8})`
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9})`
         })
         await q(
           `insert into quote_items
-             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount)
+             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount, labor_hours)
            values ${tuples.join(', ')}`,
           values,
         )
@@ -203,9 +230,13 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 
       await q(
         `update work_items
-            set subtotal = $1, tax_rate = $2, tax_amount = $3, total = $4
-          where id = $5`,
-        [subtotal, taxRate, taxAmount, total, parsed.data.work_item_id],
+            set subtotal = $1, tax_rate = $2, tax_amount = $3, total = $4,
+                estimated_hours = $5
+          where id = $6`,
+        // Null rather than zero when nothing carries hours. A job of unknown
+        // length must not read as an instant one, and the scheduler shows no
+        // estimate instead of a wrong one.
+        [subtotal, taxRate, taxAmount, total, estimatedHours > 0 ? estimatedHours : null, parsed.data.work_item_id],
       )
     })
   } catch (e) {

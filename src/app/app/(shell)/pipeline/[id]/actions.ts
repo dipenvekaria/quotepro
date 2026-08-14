@@ -8,6 +8,14 @@ import { explainQuote } from '@/lib/ai/explain'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
+import {
+  NOMINAL_JOB_HOURS,
+  bookedHoursOn,
+  capacityOn,
+  loadBookings,
+  loadBusinessHours,
+  suggestSlots,
+} from '@/lib/scheduling/availability'
 
 // ---------------------------------------------------------------------------
 
@@ -340,4 +348,89 @@ export async function generateCustomerSummary(input: unknown) {
 
   revalidatePath(`/app/pipeline/${parsed.data.work_item_id}`)
   return { ok: true as const, data: { summary } }
+}
+
+// ---------------------------------------------------------------------------
+// Scheduling context
+//
+// What the scheduling dialog needs to be useful rather than a blank date field:
+// how long this job actually takes, what is already booked, and which times
+// genuinely fit. The duration comes from the quote's own line items, which is
+// the thing no competitor can do — their price book is a name and a price.
+// ---------------------------------------------------------------------------
+
+export type SchedulingDay = {
+  /** ISO date, yyyy-mm-dd. */
+  date: string
+  capacityHours: number
+  bookedHours: number
+  jobs: { id: string; title: string; startsAt: string; hours: number | null }[]
+}
+
+export type SchedulingContext = {
+  estimatedHours: number | null
+  suggestions: { startsAt: string; endsAt: string }[]
+  days: SchedulingDay[]
+}
+
+export async function getSchedulingContext(workItemId: string): Promise<
+  { ok: true; data: SchedulingContext } | { ok: false; error: string }
+> {
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+
+  const [item] = await query<{ estimated_hours: number | null; assigned_to: string | null }>(
+    `select estimated_hours, assigned_to from work_items
+      where id = $1 and company_id = $2 limit 1`,
+    [workItemId, session.companyId],
+  )
+  if (!item) return { ok: false, error: 'Not found' }
+
+  const from = new Date()
+  const to = new Date(from)
+  to.setDate(to.getDate() + 14)
+
+  const [businessHours, bookings] = await Promise.all([
+    loadBusinessHours(session.companyId),
+    loadBookings(session.companyId, from, to),
+  ])
+
+  // Exclude this job's own existing booking, or rescheduling it would collide
+  // with itself and every suggestion would skip its current slot.
+  const others = bookings.filter((b) => b.id !== workItemId)
+
+  const hours = item.estimated_hours === null ? null : Number(item.estimated_hours)
+
+  const suggestions = suggestSlots({
+    hours: hours ?? NOMINAL_JOB_HOURS,
+    bookings: others,
+    businessHours,
+    from,
+    assignedTo: item.assigned_to,
+  }).map((s) => ({ startsAt: s.start.toISOString(), endsAt: s.end.toISOString() }))
+
+  const days: SchedulingDay[] = []
+  for (let i = 0; i < 14; i++) {
+    const day = new Date(from)
+    day.setDate(day.getDate() + i)
+    day.setHours(0, 0, 0, 0)
+    const next = new Date(day)
+    next.setDate(next.getDate() + 1)
+
+    days.push({
+      date: day.toISOString().slice(0, 10),
+      capacityHours: capacityOn(day, businessHours),
+      bookedHours: Math.round(bookedHoursOn(day, others) * 10) / 10,
+      jobs: others
+        .filter((b) => b.start >= day && b.start < next)
+        .map((b) => ({
+          id: b.id,
+          title: b.customerName ?? b.title,
+          startsAt: b.start.toISOString(),
+          hours: b.estimatedHours,
+        })),
+    })
+  }
+
+  return { ok: true, data: { estimatedHours: hours, suggestions, days } }
 }

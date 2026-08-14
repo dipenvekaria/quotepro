@@ -61,3 +61,63 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
   revalidatePath('/app')
   return { ok: true as const }
 }
+
+// ---------------------------------------------------------------------------
+// Working hours
+//
+// Slot suggestions are only honest if we know when this contractor works —
+// without these, "next available" would happily offer 2am on a Sunday.
+// ---------------------------------------------------------------------------
+
+const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/
+
+const dayHoursSchema = z
+  .object({ start: z.string().regex(HHMM, 'Use HH:MM'), end: z.string().regex(HHMM, 'Use HH:MM') })
+  .nullable()
+  .refine((v) => v === null || v.start < v.end, { message: 'The end has to be after the start' })
+
+const businessHoursSchema = z.object({
+  mon: dayHoursSchema,
+  tue: dayHoursSchema,
+  wed: dayHoursSchema,
+  thu: dayHoursSchema,
+  fri: dayHoursSchema,
+  sat: dayHoursSchema,
+  sun: dayHoursSchema,
+})
+
+export type BusinessHoursInput = z.infer<typeof businessHoursSchema>
+
+export async function updateBusinessHours(input: unknown) {
+  const parsed = businessHoursSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid hours' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  if (session.role !== 'owner' && session.role !== 'admin') {
+    return { ok: false as const, error: 'Only owners and admins can change working hours' }
+  }
+
+  const open = Object.values(parsed.data).filter(Boolean).length
+  if (open === 0) {
+    return { ok: false as const, error: 'Leave at least one day open, or nothing can be scheduled.' }
+  }
+
+  try {
+    await query(`update companies set business_hours = $1::jsonb where id = $2`, [
+      JSON.stringify(parsed.data),
+      session.companyId,
+    ])
+  } catch (e) {
+    console.error('updateBusinessHours failed', e)
+    return { ok: false as const, error: 'Could not save your hours. Please try again.' }
+  }
+
+  revalidatePath('/app/settings')
+  // Capacity and slot suggestions both read these.
+  revalidatePath('/app/calendar')
+  revalidatePath('/app/pipeline')
+  return { ok: true as const }
+}
