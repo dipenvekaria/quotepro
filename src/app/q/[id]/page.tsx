@@ -48,7 +48,17 @@ export default async function PublicQuotePage({
 
   const { data: items } = await admin
     .from('quote_items')
-    .select('id, name, description, quantity, unit_price, is_upsell, is_discount, sort_order')
+    .select(
+      'id, name, description, quantity, unit_price, is_upsell, is_discount, sort_order, option_tier',
+    )
+    .eq('work_item_id', quote.id)
+    .order('sort_order', { ascending: true })
+
+  // Good/better/best. Absent for most quotes, in which case the viewer renders
+  // the single list it always has.
+  const { data: options } = await admin
+    .from('quote_options')
+    .select('id, tier, name, description, total, is_selected, sort_order')
     .eq('work_item_id', quote.id)
     .order('sort_order', { ascending: true })
 
@@ -56,6 +66,7 @@ export default async function PublicQuotePage({
     <QuoteViewer
       quote={quote as unknown as Parameters<typeof QuoteViewer>[0]['quote']}
       items={(items ?? []) as Parameters<typeof QuoteViewer>[0]['items']}
+      options={(options ?? []) as Parameters<typeof QuoteViewer>[0]['options']}
     />
   )
 }
