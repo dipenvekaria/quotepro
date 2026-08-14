@@ -171,9 +171,6 @@ export function WorkItemDetail({
   const [items, setItems] = useState<LineItem[]>(initialItems)
   const [description, setDescription] = useState(workItem.description ?? '')
   const [notes, setNotes] = useState(workItem.notes ?? '')
-  const [scheduledStart, setScheduledStart] = useState(
-    workItem.scheduled_start ? isoToLocal(workItem.scheduled_start) : '',
-  )
 
   const [savingItems, startItemsSave] = useTransition()
   const [savingMeta, startMetaSave] = useTransition()
@@ -205,10 +202,23 @@ export function WorkItemDetail({
   const [sentToken, setSentToken] = useState<string | null>(null)
 
   const taxRate = workItem.tax_rate
-  const { subtotal, taxAmount, total } = useMemo(
-    () => computeTotals(items, taxRate),
-    [items, taxRate],
-  )
+  const computed = useMemo(() => computeTotals(items, taxRate), [items, taxRate])
+
+  // A quote can carry a stored total with no line items behind it — imported
+  // data, or rows deleted without a re-save. Recomputing from nothing showed
+  // $0.00 here while the pipeline card and the calendar both showed the real
+  // figure, and a contractor who sees $0 on a five-figure job stops trusting
+  // the software. Fall back to what was actually quoted, and say so.
+  const storedTotal = Number(workItem.total ?? 0)
+  const missingLineItems = items.length === 0 && storedTotal > 0
+
+  const { subtotal, taxAmount, total } = missingLineItems
+    ? {
+        subtotal: Number(workItem.subtotal ?? 0),
+        taxAmount: Number(workItem.tax_amount ?? 0),
+        total: storedTotal,
+      }
+    : computed
 
   const actions = STATUS_ACTIONS[workItem.status] ?? []
   const publicUrl = typeof window === 'undefined'
@@ -262,7 +272,6 @@ export function WorkItemDetail({
         id: workItem.id,
         description,
         notes,
-        scheduled_start: scheduledStart ? new Date(scheduledStart).toISOString() : null,
       })
       if (!res.ok) {
         toast.error(res.error)
@@ -533,12 +542,31 @@ export function WorkItemDetail({
                   <CalendarIcon className="mr-1 inline h-3 w-3" />
                   Scheduled start
                 </label>
-                <input
-                  type="datetime-local"
-                  value={scheduledStart}
-                  onChange={(e) => setScheduledStart(e.target.value)}
-                  className="rounded-md border border-input bg-background px-3 py-2 text-sm tabular shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                />
+                {/* Read-only on purpose. This used to be an editable field that
+                    saved separately from the "Schedule job" button, so one
+                    mental action had two unrelated homes — and being seeded from
+                    useState it went stale the moment the job was scheduled
+                    elsewhere. Scheduling has one door now. */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm tabular">
+                    {workItem.scheduled_start
+                      ? new Date(workItem.scheduled_start).toLocaleString('en-US', {
+                          weekday: 'short', month: 'short', day: 'numeric',
+                          hour: 'numeric', minute: '2-digit',
+                        })
+                      : 'Not scheduled'}
+                  </span>
+                  {workItem.scheduled_start && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onNextStep('job_scheduled')}
+                      disabled={transitioning}
+                    >
+                      Reschedule
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </section>
@@ -797,6 +825,12 @@ export function WorkItemDetail({
                 <dd className="text-lg font-semibold tabular">{fmtMoney(total)}</dd>
               </div>
             </dl>
+            {missingLineItems && (
+              <p className="mt-3 rounded-lg border border-border bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+                This total has no line items behind it. The customer will see an empty quote —
+                add the rows before sending.
+              </p>
+            )}
           </div>
 
           {/* What the customer reads above the prices on the public quote.
