@@ -16,7 +16,7 @@ export default async function PublicInvoicePage({
   const { id: token } = await params
   const admin = sbAdmin()
 
-  const { data: invoice } = await admin
+  const { data: invoice, error } = await admin
     .from('invoices')
     .select(`
       id, invoice_number, subtotal, tax_amount, total, amount_paid, status,
@@ -31,6 +31,14 @@ export default async function PublicInvoicePage({
     .eq('public_token', token)
     .maybeSingle()
 
+  // A failed query used to fall through to notFound(), so a database problem
+  // reached the customer as "page not found" and left the contractor no signal
+  // at all. Distinguish them: a bad token is a 404, a broken query is a 500 the
+  // platform will surface and log.
+  if (error) {
+    console.error('public invoice view failed', error)
+    throw new Error(`Could not load this invoice: ${error.message}`)
+  }
   if (!invoice) notFound()
 
   const wi = invoice.work_items as unknown as {
