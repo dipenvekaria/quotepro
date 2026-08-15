@@ -138,8 +138,9 @@ These are real and worth knowing before you trust any single file:
    test runner. CI as written cannot pass.
 3. **`.github/workflows/{test,deploy}.yml` are pre-rebuild** and reference `npm run type-check`,
    which does not exist.
-4. **`docker-compose.yml`, `k8s/deployment.yaml`, `railway.json`, `Procfile`** each describe a
-   different deployment shape. Only Railway is on the chosen path.
+4. **Deployment config is settled and singular.** `docker-compose.yml`, `k8s/deployment.yaml`,
+   `railway.json` and `Procfile` all described abandoned directions and have been deleted. Vercel
+   plus Supabase Cloud is the whole topology.
 5. **`.env.local` points at expired Cloudflare quick tunnels** for both Supabase and the backend.
 6. **`node_modules` is a symlink to a `node_modules.nosync` directory that doesn't exist.**
    Nothing builds until `npm install` recreates it.

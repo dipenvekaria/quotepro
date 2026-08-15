@@ -94,7 +94,20 @@ looking, not by being told.
 
 Wire Sentry and PostHog before anything else on this list. They are configured already.
 
-## The third thing: AI runs inside the request
+## The third thing: AI runs inside the request — amended 2026-08-15
+
+**The reasoning below was wrong for this platform, and the fix was different.** Fluid Compute
+bills *active CPU*, so the seconds spent awaiting Gemini are largely idle and not billed as CPU,
+and per-instance concurrency means a waiting request does not block others. Moving drafting to a
+job queue would have added polling and state for little real gain.
+
+The actual defect was that there was no timeout anywhere in the AI path: an unresponsive model
+held the request until the platform killed it at 300 seconds. That is fixed — a 25s budget shared
+across the model chain, after which it degrades to keyword matching in milliseconds instead of
+hanging. The original text is kept below because the concurrency reasoning is still worth knowing
+if the platform ever changes.
+
+### Original reasoning
 
 `generateQuote()` is awaited inline in a Server Action. It is fast now — `gemini-2.5-flash-lite`
 answers in a couple of seconds — but it was 23–70s before the model chain was tuned, and a
