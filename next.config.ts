@@ -14,6 +14,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
   reactStrictMode: true,
+  experimental: {
+    serverActions: {
+      // Photo upload goes through a Server Action, and Next caps those bodies
+      // at 1MB. A phone photo is 2-5MB, so every upload was rejected before the
+      // action ran — the storage bucket had zero objects in it. The action
+      // itself validates at 10MB; this clears that with room for the multipart
+      // overhead so the two limits cannot disagree again.
+      bodySizeLimit: '12mb',
+    },
+  },
   // The AI prompts are read from disk at runtime (src/lib/ai/prompts.ts), and
   // Next.js cannot trace a path it only sees as a string. Without this they are
   // missing from the serverless bundle and every prompt silently falls back to

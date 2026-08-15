@@ -494,6 +494,11 @@ export function WorkItemDetail({
               onClick={writeCustomerSummary}
               disabled={explaining}
               className="h-9 gap-1.5"
+              aria-label={
+                workItem.customer_summary
+                  ? 'Rewrite the plain-language explanation for the customer'
+                  : 'Write a plain-language explanation for the customer'
+              }
               title="Write a plain-language explanation the customer sees on the quote"
             >
               {explaining ? (
@@ -635,14 +640,14 @@ export function WorkItemDetail({
 
           {/* Line items */}
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
-            <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
+            <header className="flex flex-col gap-3 border-b border-border/70 px-5 py-3.5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold">Line items</h2>
+                <h2 className="whitespace-nowrap text-sm font-semibold">Line items</h2>
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-1">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-1">
                 <button
                   onClick={draftWithAi}
                   disabled={drafting}
