@@ -104,7 +104,7 @@ export function CustomerLookup({
               setField('name')
               if (matches.length) setOpen(true)
             }}
-            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            onBlur={() => setOpen(false)}
             placeholder="Sarah Johnson"
             className="h-11"
             autoComplete="off"
@@ -128,7 +128,7 @@ export function CustomerLookup({
               setField('phone')
               if (matches.length) setOpen(true)
             }}
-            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            onBlur={() => setOpen(false)}
             placeholder="+1 (555) 000-0000"
             className="h-11"
             autoComplete="off"
@@ -194,6 +194,9 @@ export function CustomerLookup({
               type="button"
               role="option"
               aria-selected={false}
+              // See add-line-item.tsx: preventDefault keeps the input focused
+              // so the click cannot be beaten by the list closing.
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => pick(c)}
               className={cn(
                 'flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-muted/60',
