@@ -45,29 +45,47 @@ type LineItem = {
 
 // -----------------------------------------------------------------------------
 
+export type InitialCustomer = {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  address: string | null
+  city: string | null
+  state: string | null
+  zip: string | null
+  job_count: number
+}
+
 export function QuoteEditor({
   defaultTaxRate,
   catalog,
+  initialCustomer,
 }: {
   defaultTaxRate: number
   catalog: CatalogItem[]
+  initialCustomer?: InitialCustomer | null
 }) {
   const router = useRouter()
 
   // Customer + description state
-  const [customerName, setCustomerName] = useState('')
-  const [customerEmail, setCustomerEmail] = useState('')
-  const [customerPhone, setCustomerPhone] = useState('')
-  const [address, setAddress] = useState('')
+  const [customerName, setCustomerName] = useState(initialCustomer?.name ?? '')
+  const [customerEmail, setCustomerEmail] = useState(initialCustomer?.email ?? '')
+  const [customerPhone, setCustomerPhone] = useState(initialCustomer?.phone ?? '')
+  const [address, setAddress] = useState(initialCustomer?.address ?? '')
   // Only set when an address is picked from the suggestions; typed addresses
   // leave these empty and the row stores just the street line, as before.
-  const [addressParts, setAddressParts] = useState({ city: '', state: '', zip: '' })
+  const [addressParts, setAddressParts] = useState({
+    city: initialCustomer?.city ?? '',
+    state: initialCustomer?.state ?? '',
+    zip: initialCustomer?.zip ?? '',
+  })
   // What actually produced the last draft. `mock` means Gemini never ran and
   // these are keyword matches — the contractor has to know that before sending.
   const [draftMode, setDraftMode] = useState<string | null>(null)
   // Set when an existing customer was picked, so the draft links to that record
   // rather than being re-derived from contact details.
-  const [customerId, setCustomerId] = useState<string | null>(null)
+  const [customerId, setCustomerId] = useState<string | null>(initialCustomer?.id ?? null)
   const [description, setDescription] = useState('')
 
   // Line items + tax
@@ -363,6 +381,7 @@ export function QuoteEditor({
                   ...addressParts,
                 }}
                 disabled={saving}
+                initialLinked={initialCustomer}
                 onChange={(next) => {
                   if (next.customerId !== undefined) setCustomerId(next.customerId)
                   if (next.name !== undefined) setCustomerName(next.name)
