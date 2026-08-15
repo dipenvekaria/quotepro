@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getSession } from '@/lib/auth/session'
 import { query, withUser } from '@/lib/db'
 import { env } from '@/lib/env'
-import { sendEmail } from '@/lib/email/email-sender'
+import { sendTeamInviteEmail } from '@/lib/email/senders'
 
 const inviteSchema = z.object({
   email: z.string().email(),
@@ -50,27 +50,31 @@ export async function inviteTeammate(input: { email: string; role: string }) {
 
   const link = joinLink(token)
 
-  // Best-effort email — skipped cleanly when RESEND isn't configured.
+  // Best-effort email. Failures are surfaced rather than swallowed: the invite
+  // used to report success while Resend had refused it outright.
   let emailed = false
+  let emailError: string | null = null
   try {
-    const [company] = await query<{ name: string }>(
-      'select name from companies where id = $1',
-      [session.companyId],
-    )
-    const res = await sendEmail({
+    const [company] = await query<{ name: string }>('select name from companies where id = $1', [
+      session.companyId,
+    ])
+    const inviter = session.profile as { first_name?: string; last_name?: string } | null
+    const res = await sendTeamInviteEmail({
       to: email,
-      subject: `You're invited to join ${company?.name ?? 'the team'} on Rivet`,
-      html: `<p>You've been invited to join <strong>${company?.name ?? 'the team'}</strong> on Rivet.</p>
-             <p><a href="${link}">Accept your invitation</a></p>
-             <p>Or open this link: ${link}</p>`,
+      companyName: company?.name ?? 'the team',
+      inviterName:
+        [inviter?.first_name, inviter?.last_name].filter(Boolean).join(' ') || session.email || null,
+      link,
     })
-    emailed = res.success
-  } catch {
-    emailed = false
+    emailed = res.ok && !('skipped' in res && res.skipped)
+    if (!res.ok) emailError = res.error
+    else if ('skipped' in res && res.skipped) emailError = res.reason
+  } catch (e) {
+    emailError = e instanceof Error ? e.message : 'Send failed'
   }
 
   revalidatePath('/app/settings')
-  return { ok: true as const, data: { link, emailed, email } }
+  return { ok: true as const, data: { link, emailed, email, emailError } }
 }
 
 export async function revokeInvitation(id: string) {

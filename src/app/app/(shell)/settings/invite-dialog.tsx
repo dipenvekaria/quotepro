@@ -25,6 +25,7 @@ export function InviteTeammateDialog() {
   const [busy, setBusy] = useState(false)
   const [link, setLink] = useState<string | null>(null)
   const [emailed, setEmailed] = useState(false)
+  const [emailError, setEmailError] = useState<string | null>(null)
 
 
   function reset() {
@@ -49,7 +50,16 @@ export function InviteTeammateDialog() {
     }
     setLink(res.data.link)
     setEmailed(res.data.emailed)
-    toast.success(res.data.emailed ? `Invite emailed to ${res.data.email}` : 'Invite link ready')
+    setEmailError(res.data.emailError ?? null)
+    if (res.data.emailed) {
+      toast.success(`Invite emailed to ${res.data.email}`)
+    } else {
+      // "Invite link ready" read like success while Resend had refused the
+      // send outright, so nobody knew the teammate heard nothing.
+      toast.warning('Invite created, but the email did not send', {
+        description: 'Share the link below instead.',
+      })
+    }
   }
 
   return (
@@ -90,8 +100,13 @@ export function InviteTeammateDialog() {
                 <p className="text-xs text-muted-foreground">
                   {emailed
                     ? 'We emailed the invite. You can also share this link:'
-                    : 'Share this link with your teammate to join:'}
+                    : 'The email did not send, so share this link with your teammate:'}
                 </p>
+                {!emailed && emailError && (
+                  <p className="rounded-md border border-amber-500/30 bg-amber-500/10 p-2 text-[11px] leading-relaxed text-foreground">
+                    {emailError}
+                  </p>
+                )}
                 <div className="flex items-center gap-2">
                   <input
                     readOnly

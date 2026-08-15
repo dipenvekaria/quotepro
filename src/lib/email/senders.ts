@@ -243,3 +243,57 @@ function escapeHtml(s: string): string {
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string),
   )
 }
+
+// ---------------------------------------------------------------------------
+
+/**
+ * The invitation to join a company.
+ *
+ * This lived in a second module that hardcoded `onboarding@resend.dev` and
+ * never read RESEND_FROM_EMAIL. That address is Resend's sandbox: it delivers
+ * only to the account owner, so every invite to an actual teammate was refused
+ * with "You can only send testing emails to your own email address" — while
+ * quotes, which went through this module and the verified domain, arrived fine.
+ *
+ * One sender, one from-address, so the two cannot disagree again.
+ */
+export async function sendTeamInviteEmail(input: {
+  to: string
+  companyName: string
+  inviterName: string | null
+  link: string
+}): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
+
+  const who = input.inviterName ? `${input.inviterName} has invited you` : 'You have been invited'
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: input.to,
+      subject: `Join ${input.companyName} on Rivet`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          <h1 style="font-size:20px;margin:0 0 12px">Join ${escapeHtml(input.companyName)} on Rivet</h1>
+          <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 20px">
+            ${escapeHtml(who)} to join <strong>${escapeHtml(input.companyName)}</strong>.
+          </p>
+          <p style="margin:0 0 24px">
+            <a href="${input.link}"
+               style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:15px;font-weight:500">
+              Accept invitation
+            </a>
+          </p>
+          <p style="font-size:13px;color:#666;line-height:1.6;margin:0">
+            Or paste this link into your browser:<br />
+            <span style="word-break:break-all">${input.link}</span>
+          </p>
+        </div>`,
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true, id: data?.id ?? '' }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
+  }
+}
