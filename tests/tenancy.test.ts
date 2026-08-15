@@ -54,6 +54,18 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'where id = $7 is session.companyId',
   },
   {
+    file: 'src/app/app/(shell)/settings/danger-actions.ts',
+    match: 'select id, name from companies where id = $1',
+    reason: '$1 is session.companyId; companies.id is itself the tenant key',
+  },
+  {
+    file: 'src/app/app/(shell)/settings/danger-actions.ts',
+    match: 'select archive_and_delete_company($1, $2, $3)',
+    reason:
+      'closing an account. $1 is the session company, re-read and name-confirmed first; ' +
+      'the function scopes every statement inside it by that one company id',
+  },
+  {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: 'from customer_addresses where customer_id',
     reason: 'the customer was verified against company_id before the transaction opened',
