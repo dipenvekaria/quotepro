@@ -8,8 +8,15 @@ import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 
 import { NewCustomer } from './new-customer'
+import { CustomerSearch } from './customer-search'
 
-export default async function CustomersPage() {
+export default async function CustomersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>
+}) {
+  const { q } = await searchParams
+  const term = (q ?? '').trim()
   const { companyId, userId, role } = await requireSession()
   const scope = customerScope({ companyId, userId, role: role as UserRole }, 1, 'customers')
 
@@ -24,10 +31,25 @@ export default async function CustomersPage() {
   }>(
     `select id, name, email, phone, created_at
        from customers
-      where company_id = $1${scope.sql}
+      where company_id = $1${scope.sql}${
+        term
+          ? ` and (
+              name ilike '%' || $${2 + scope.params.length} || '%'
+              or email ilike '%' || $${2 + scope.params.length} || '%'
+              or (
+                -- Guarded: a term with no digits strips to '', and
+                -- like '%' || '' || '%' matches every row — which silently
+                -- turned any name search into "show everything".
+                regexp_replace($${2 + scope.params.length}, '\\D', '', 'g') <> ''
+                and regexp_replace(coalesce(phone, ''), '\\D', '', 'g')
+                    like '%' || regexp_replace($${2 + scope.params.length}, '\\D', '', 'g') || '%'
+              )
+            )`
+          : ''
+      }
       order by created_at desc
       limit 200`,
-    [companyId],
+    [companyId, ...scope.params, ...(term ? [term] : [])],
   )
 
   const addressRows = list.length
@@ -61,14 +83,23 @@ export default async function CustomersPage() {
             <span className="text-foreground">Customers</span>
           </div>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Customers</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {list.length} {list.length === 1 ? 'customer' : 'customers'} in your book.
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">Everyone you have quoted or added.</p>
         </div>
         <NewCustomer />
       </div>
 
-      {list.length === 0 ? (
+      {list.length === 0 && term ? (
+        /* An empty search is not an empty book — offering "add your first
+           customer" to someone who just mistyped a name is nonsense. */
+        <section className="mt-6 overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+          <div className="border-b border-border/70 px-5 py-3">
+            <CustomerSearch initial={term} count={0} />
+          </div>
+          <p className="px-5 py-10 text-center text-sm text-muted-foreground">
+            No customer matches “{term}”.
+          </p>
+        </section>
+      ) : list.length === 0 ? (
         <div className="mt-8">
           <EmptyState
             icon={Users}
@@ -79,6 +110,9 @@ export default async function CustomersPage() {
         </div>
       ) : (
         <section className="mt-6 overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
+          <div className="border-b border-border/70 px-5 py-3">
+            <CustomerSearch initial={term} count={list.length} />
+          </div>
           <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 border-b border-border/70 bg-muted/40 px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
             <div>Name</div>
             <div className="hidden sm:block">Contact</div>
