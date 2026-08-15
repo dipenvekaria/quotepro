@@ -76,6 +76,19 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'same verified customer; company_id was checked on the picked id',
   },
   {
+    file: 'src/app/app/(shell)/customers/actions.ts',
+    match: 'select id from customer_addresses where customer_id = $1',
+    reason:
+      'updateCustomer. The same transaction has already run "update customers ... and ' +
+      'company_id = $5 returning id" and thrown NOT_FOUND on an empty result, so the ' +
+      'customer id is proven to belong to the caller before this runs',
+  },
+  {
+    file: 'src/app/app/(shell)/customers/actions.ts',
+    match: 'update customer_addresses',
+    reason: 'same verified customer, same transaction as the ownership check above',
+  },
+  {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: 'update customer_addresses',
     reason:

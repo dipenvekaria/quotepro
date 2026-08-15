@@ -205,18 +205,28 @@ export function CustomerLookup({
       </div>
 
       {linked && (
-        <p className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-          <Check className="h-3.5 w-3.5 text-primary" />
-          Existing customer
-          {linked.job_count > 0 && ` · ${linked.job_count} previous ${linked.job_count === 1 ? 'job' : 'jobs'}`}
+        /*
+          Two things this has to answer, and the old copy answered neither:
+          which record did it attach to, and what do I press if that is wrong.
+          "different person" was a bare fragment with no verb — it read as a
+          statement about the customer rather than a way out.
+        */
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <Check className="h-3.5 w-3.5 shrink-0 text-primary" />
+            This quote will go to{' '}
+            <span className="font-medium text-foreground">{linked.name}</span>
+            {linked.job_count > 0 &&
+              ` · ${linked.job_count} previous ${linked.job_count === 1 ? 'job' : 'jobs'}`}
+          </span>
           <button
             type="button"
             onClick={useNewCustomer}
-            className="ml-1 underline hover:text-foreground"
+            className="inline-flex min-h-11 items-center underline underline-offset-2 hover:text-foreground lg:min-h-0"
           >
-            different person
+            Not them? Start a new customer
           </button>
-        </p>
+        </div>
       )}
 
       {open && matches.length > 0 && !linked && (

@@ -16,6 +16,8 @@ import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { StatusBadge } from '@/components/shared/status-badge'
 
+import { EditCustomer } from './edit-customer'
+
 // ---------------------------------------------------------------------------
 
 export default async function CustomerDetailPage({
@@ -105,7 +107,7 @@ export default async function CustomerDetailPage({
       </div>
 
       {/* Header card */}
-      <header className="mt-3 flex items-start justify-between gap-6 rounded-xl border border-border/70 bg-card p-6 shadow-sm">
+      <header className="mt-3 flex flex-col items-start justify-between gap-4 rounded-xl border border-border/70 bg-card p-5 shadow-sm sm:flex-row sm:items-center sm:gap-6 sm:p-6">
         <div className="flex items-center gap-4">
           <div className="grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 text-lg font-semibold text-primary">
             {initials}
@@ -138,13 +140,27 @@ export default async function CustomerDetailPage({
             </div>
           </div>
         </div>
-        <Link
-          href={`/app/quotes/new?customer_id=${customer.id}`}
-          className="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
-        >
-          <Plus className="h-3.5 w-3.5" />
-          New quote
-        </Link>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <EditCustomer
+            customer={{
+              id: customer.id,
+              name: customer.name,
+              email: customer.email,
+              phone: customer.phone,
+              address: primary?.address ?? null,
+              city: primary?.city ?? null,
+              state: primary?.state ?? null,
+              zip: primary?.zip ?? null,
+            }}
+          />
+          <Link
+            href={`/app/quotes/new?customer_id=${customer.id}`}
+            className="inline-flex h-11 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90 lg:h-9"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            New quote
+          </Link>
+        </div>
       </header>
 
       {/* Grid: stats + address + history */}
