@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { sbAdmin } from '@/lib/supabase/untyped'
 import { createSignNowClient } from '@/lib/signnow'
 
 export async function POST(request: NextRequest) {
   try {
-    const { quote_id } = await request.json()
+    // The token is the authorization here, exactly as it is for /q. The route
+    // previously took `quote_id` and matched `id`, while the only caller passed
+    // a public_token — so every lookup matched zero rows and the whole signing
+    // flow, plus its fallback, silently did nothing.
+    const { token } = await request.json()
 
-    if (!quote_id) {
-      return NextResponse.json(
-        { error: 'Missing quote_id' },
-        { status: 400 }
-      )
+    if (typeof token !== 'string' || token.length < 20 || token.length > 64) {
+      return NextResponse.json({ error: 'Missing or invalid token' }, { status: 400 })
     }
 
-    const supabase = await createClient()
+    // Service role: the caller is an anonymous customer holding a token, and
+    // `authenticated` policies do not apply to them. The token is the check.
+    const supabase = sbAdmin()
 
     const { data: quote, error: quoteError } = await supabase
       .from('work_items')
@@ -22,8 +25,8 @@ export async function POST(request: NextRequest) {
         companies(*),
         customer:customers(*)
       `)
-      .eq('id', quote_id)
-      .single()
+      .eq('public_token', token)
+      .maybeSingle()
 
     if (quoteError || !quote) {
       return NextResponse.json({ error: 'Quote not found' }, { status: 404 })
@@ -41,9 +44,10 @@ export async function POST(request: NextRequest) {
     const company = quote_.companies
     const customer = quote_.customer
     const quoteData = quote_
+    const quoteId = (quote as unknown as { id: string }).id
     
     // Generate PDF 
-    const pdfUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/quotes/${quote_id}/pdf`
+    const pdfUrl = `${process.env.NEXT_PUBLIC_APP_URL}/q/${token}/pdf`
     
     try {
       // Fetch the PDF as a buffer
@@ -75,7 +79,7 @@ export async function POST(request: NextRequest) {
       await supabase
         .from('signed_documents')
         .insert({
-          quote_id,
+          quote_id: quoteId,
           signnow_document_id: documentId,
           signnow_invite_id: inviteId,
           status: 'pending',
@@ -88,7 +92,7 @@ export async function POST(request: NextRequest) {
           status: 'sent',
           sent_at: new Date().toISOString(),
         })
-        .eq('id', quote_id)
+        .eq('id', (quote as unknown as { id: string }).id)
 
       return NextResponse.json({
         success: true,
@@ -106,7 +110,7 @@ export async function POST(request: NextRequest) {
           status: 'sent',
           sent_at: new Date().toISOString(),
         })
-        .eq('id', quote_id)
+        .eq('id', (quote as unknown as { id: string }).id)
 
       return NextResponse.json({
         success: true,

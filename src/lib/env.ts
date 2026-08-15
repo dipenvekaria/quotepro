@@ -20,6 +20,7 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
   NEXT_PUBLIC_POSTHOG_HOST: z.string().url().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+  NEXT_PUBLIC_COMPANY_EMAIL: z.string().email().optional(),
 })
 
 // Reject `process.env.X` reads from client bundles — Next.js already does
@@ -32,6 +33,7 @@ const rawClient = {
   NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  NEXT_PUBLIC_COMPANY_EMAIL: process.env.NEXT_PUBLIC_COMPANY_EMAIL,
 }
 
 function parseClient() {
@@ -84,6 +86,21 @@ const serverEnvSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_PLATFORM_FEE_BPS: z.string().optional(),
+  // The database. Read directly in src/lib/db/index.ts at module load, which is
+  // why it is optional here — but it belongs in the contract, or the list of
+  // what this app needs is wrong. Either name works; the Supabase integration
+  // provisions POSTGRES_URL.
+  DATABASE_URL: z.string().optional(),
+  POSTGRES_URL: z.string().optional(),
+  // E-signature. A live integration reached from /api/quotes/sign, and every
+  // one of these was read straight from process.env with no validation.
+  SIGNNOW_API_BASE_URL: z.string().url().optional(),
+  SIGNNOW_CLIENT_ID: optionalSecret(8),
+  SIGNNOW_CLIENT_SECRET: optionalSecret(8),
+  SIGNNOW_USERNAME: z.string().optional(),
+  SIGNNOW_PASSWORD: optionalSecret(6),
+  // Overrides the AI chain's time budget. Used to exercise the degrade path.
+  GEMINI_TIMEOUT_MS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),
   // Address autocomplete. Either credential works and the service account wins
   // when both are set; absent means the address fields stay plain text boxes.

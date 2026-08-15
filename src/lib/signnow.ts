@@ -1,3 +1,4 @@
+import { envServer } from '@/lib/env'
 /** Subset of SignNow's document payload that this client actually reads. */
 export type SignNowDocumentStatus = {
   id: string
@@ -232,11 +233,11 @@ export class SignNowClient {
  */
 export function createSignNowClient(): SignNowClient {
   const config: SignNowConfig = {
-    clientId: process.env.SIGNNOW_CLIENT_ID || '',
-    clientSecret: process.env.SIGNNOW_CLIENT_SECRET || '',
-    apiBaseUrl: process.env.SIGNNOW_API_BASE_URL || 'https://api-eval.signnow.com',
-    username: process.env.SIGNNOW_USERNAME,
-    password: process.env.SIGNNOW_PASSWORD,
+    clientId: envServer().SIGNNOW_CLIENT_ID || '',
+    clientSecret: envServer().SIGNNOW_CLIENT_SECRET || '',
+    apiBaseUrl: envServer().SIGNNOW_API_BASE_URL || 'https://api-eval.signnow.com',
+    username: envServer().SIGNNOW_USERNAME,
+    password: envServer().SIGNNOW_PASSWORD,
   }
 
   if (!config.clientId || !config.clientSecret) {
