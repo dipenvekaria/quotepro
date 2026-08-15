@@ -1,10 +1,12 @@
 import Link from 'next/link'
-import { Filter, Inbox, Plus } from 'lucide-react'
+import { Inbox, Plus } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
-import { workItemScope } from '@/lib/auth/scope'
+import { canAssignWork, workItemScope } from '@/lib/auth/scope'
+
+import { PipelineFilter } from './pipeline-filter'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
@@ -27,8 +29,15 @@ const COLUMNS: Column[] = [
   { key: 'closed',    label: 'Completed', statuses: ['job_completed'],                       dot: 'bg-emerald-500' },
 ]
 
-export default async function PipelinePage() {
+export default async function PipelinePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; assignee?: string }>
+}) {
   const { companyId, userId, role } = await requireSession()
+  const params = await searchParams
+  const term = (params.q ?? '').trim()
+  const assignee = (params.assignee ?? '').trim()
 
   // A technician sees the jobs they were sent to; sales sees their own. Without
   // this the board showed everyone the whole company's book of business.
@@ -51,11 +60,37 @@ export default async function PipelinePage() {
        from work_items w
        left join customers c on c.id = w.customer_id
       where w.company_id = $1
-        and w.status <> 'archived'${scope.sql}
+        and w.status <> 'archived'${scope.sql}${
+          assignee ? ` and w.assigned_to = $${2 + scope.params.length}` : ''
+        }${
+          term
+            ? ` and (
+                c.name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+                or w.job_name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+                or w.description ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+              )`
+            : ''
+        }
       order by w.updated_at desc
       limit 500`,
-    [companyId, ...scope.params],
+    [
+      companyId,
+      ...scope.params,
+      ...(assignee ? [assignee] : []),
+      ...(term ? [term] : []),
+    ],
   )
+
+  // Only owners and office can hand work out, so only they get a person picker.
+  const team = canAssignWork(role as UserRole)
+    ? await query<{ id: string; email: string | null; profile: Record<string, unknown> | null }>(
+        `select u.id, au.email, u.profile
+           from users u join auth.users au on au.id = u.id
+          where u.company_id = $1 and u.is_active
+          order by au.email`,
+        [companyId],
+      )
+    : []
 
   const customerMap = new Map(
     workItems
@@ -85,12 +120,17 @@ export default async function PipelinePage() {
             {total} active {total === 1 ? 'item' : 'items'} across all stages.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm text-muted-foreground shadow-sm hover:text-foreground lg:h-auto lg:py-1.5">
-            <Filter className="h-3.5 w-3.5" />
-            Filter
-          </button>
-        </div>
+        <PipelineFilter
+          members={team.map((m) => ({
+            id: m.id,
+            label:
+              [m.profile?.first_name, m.profile?.last_name].filter(Boolean).join(' ') ||
+              (m.email ?? 'Teammate'),
+          }))}
+          assignee={assignee}
+          initialTerm={term}
+          count={workItems.length}
+        />
       </div>
 
       {/* Board */}

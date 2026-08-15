@@ -1,12 +1,16 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Users } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 /**
- * Whose calendar you are looking at.
+ * Whose work you are looking at.
+ *
+ * Shared by the calendar and the pipeline — the question is the same on both
+ * and the query parameter is the same, so a person filtered on one board stays
+ * filtered when they switch to the other.
  *
  * Everyone by default, because the question the owner opens this page with is
  * "who is free on Thursday", not "what is Marcus doing" — and a board that
@@ -28,6 +32,7 @@ export function AssigneeFilter({
   active: string
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const params = useSearchParams()
 
   // Nobody to filter between.
@@ -37,7 +42,7 @@ export function AssigneeFilter({
     const next = new URLSearchParams(params.toString())
     if (id) next.set('assignee', id)
     else next.delete('assignee')
-    router.push(`/app/calendar?${next.toString()}`)
+    router.push(`${pathname}?${next.toString()}`)
   }
 
   return (
