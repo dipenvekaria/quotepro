@@ -77,6 +77,11 @@ const createDraftSchema = z.object({
   customer_email: z.string().email().optional().or(z.literal('')),
   customer_phone: z.string().optional(),
   address: z.string().optional(),
+  // Present only when the address came from autocomplete. A hand-typed address
+  // stores just the street line, which is what this field always did.
+  city: z.string().max(120).optional(),
+  state: z.string().max(40).optional(),
+  zip: z.string().max(20).optional(),
   description: z.string().min(1).max(2000),
 })
 
@@ -120,12 +125,30 @@ export async function createDraftQuote(input: CreateDraftInput) {
           addressId = found[0]?.id ?? null
           if (!addressId) {
             const made = await q<{ id: string }>(
-              `insert into customer_addresses (customer_id, address, is_primary)
-               select $1, $2, not exists (select 1 from customer_addresses where customer_id = $1)
+              `insert into customer_addresses (customer_id, address, city, state, zip, is_primary)
+               select $1, $2, nullif($3, ''), nullif($4, ''), nullif($5, ''),
+                      not exists (select 1 from customer_addresses where customer_id = $1)
                returning id`,
-              [pickedCustomerId, parsed.data.address],
+              [
+                pickedCustomerId,
+                parsed.data.address,
+                parsed.data.city ?? '',
+                parsed.data.state ?? '',
+                parsed.data.zip ?? '',
+              ],
             )
             addressId = made[0]?.id ?? null
+          } else if (parsed.data.state) {
+            // The address existed as a bare street line from before this
+            // shipped. Backfill the components rather than leaving it partial.
+            await q(
+              `update customer_addresses
+                  set city = coalesce(nullif($2, ''), city),
+                      state = coalesce(nullif($3, ''), state),
+                      zip = coalesce(nullif($4, ''), zip)
+                where id = $1`,
+              [addressId, parsed.data.city ?? '', parsed.data.state, parsed.data.zip ?? ''],
+            )
           }
         }
 

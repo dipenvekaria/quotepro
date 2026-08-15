@@ -17,6 +17,10 @@ const schema = z.object({
   email: z.string().trim().email('That email does not look right').optional().or(z.literal('')),
   phone: z.string().trim().max(40).optional().or(z.literal('')),
   address: z.string().trim().max(300).optional().or(z.literal('')),
+  // Set only when the address came from autocomplete.
+  city: z.string().trim().max(120).optional().or(z.literal('')),
+  state: z.string().trim().max(40).optional().or(z.literal('')),
+  zip: z.string().trim().max(20).optional().or(z.literal('')),
 })
 
 export type NewCustomerInput = z.infer<typeof schema>
@@ -32,7 +36,7 @@ export async function createCustomer(input: unknown): Promise<Result<{ id: strin
   const session = await getSession()
   if (!session) return { ok: false, error: 'Not authenticated' }
   const { companyId } = session
-  const { name, email, phone, address } = parsed.data
+  const { name, email, phone, address, city, state, zip } = parsed.data
 
   // Same matching rule create_work_item_with_customer uses, so adding someone
   // here and quoting them later lands on one record rather than two.
@@ -62,9 +66,9 @@ export async function createCustomer(input: unknown): Promise<Result<{ id: strin
       const customerId = rows[0]?.id
       if (customerId && address) {
         await q(
-          `insert into customer_addresses (customer_id, address, is_primary)
-           values ($1, $2, true)`,
-          [customerId, address],
+          `insert into customer_addresses (customer_id, address, city, state, zip, is_primary)
+           values ($1, $2, nullif($3, ''), nullif($4, ''), nullif($5, ''), true)`,
+          [customerId, address, city ?? '', state ?? '', zip ?? ''],
         )
       }
       return customerId

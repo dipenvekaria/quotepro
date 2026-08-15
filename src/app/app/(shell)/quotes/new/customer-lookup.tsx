@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Check, User } from 'lucide-react'
 
 import { Input } from '@/components/ui/input'
+import { AddressAutocomplete } from '@/components/shared/address-autocomplete'
 import { cn } from '@/lib/utils'
 
 import { searchCustomers, type CustomerMatch } from './actions'
@@ -13,6 +14,11 @@ export type CustomerFields = {
   email: string
   phone: string
   address: string
+  // Filled only when an address is picked from the suggestions. Typing by hand
+  // leaves them blank, exactly as the plain text field always did.
+  city: string
+  state: string
+  zip: string
 }
 
 /**
@@ -178,14 +184,23 @@ export function CustomerLookup({
           <label htmlFor="cust-address" className="text-sm font-medium">
             Address
           </label>
-          <Input
+          <AddressAutocomplete
             id="cust-address"
             value={value.address}
             disabled={disabled}
-            onChange={(e) => onChange({ address: e.target.value })}
+            // Typing by hand clears any components from a previous pick, so a
+            // half-edited address never keeps the old city and ZIP.
+            onChange={(address) => onChange({ address, city: '', state: '', zip: '' })}
+            onResolved={(a) =>
+              onChange({ address: a.address, city: a.city, state: a.state, zip: a.zip })
+            }
             placeholder="123 Market St, San Francisco, CA 94103"
-            className="h-11"
           />
+          {value.city && value.state && (
+            <p className="text-xs text-muted-foreground">
+              {value.city}, {value.state} {value.zip}
+            </p>
+          )}
         </div>
       </div>
 

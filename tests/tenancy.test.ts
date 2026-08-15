@@ -77,6 +77,13 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
+    match: 'update customer_addresses',
+    reason:
+      'backfills city/state/zip on an address row found by customer_id, where that ' +
+      'customer id was already checked against company_id before the transaction opened',
+  },
+  {
+    file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: "settings->>'tax_rate'",
     reason: 'where id = $1 is session.companyId',
   },
