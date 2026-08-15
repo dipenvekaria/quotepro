@@ -42,6 +42,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
         <Input
           id="name"
           name="name"
+          autoComplete="organization"
           required
           placeholder="Acme HVAC & Plumbing"
           autoFocus
@@ -53,17 +54,24 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="phone" className="text-sm font-medium">Phone</Label>
-          <Input id="phone" name="phone" placeholder="+1 (555) 000-0000" className="h-11" disabled={pending} />
+          <Input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="+1 (555) 000-0000" className="h-11" disabled={pending} />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="email" className="text-sm font-medium">Business email</Label>
-          <Input id="email" name="email" type="email" placeholder="hello@yourbiz.com" className="h-11" disabled={pending} />
+          <Input id="email" name="email" type="email" autoComplete="email" placeholder="hello@yourbiz.com" className="h-11" disabled={pending} />
         </div>
       </div>
 
       <div className="space-y-1.5">
         <Label htmlFor="address" className="text-sm font-medium">Address</Label>
-        <Input id="address" name="address" placeholder="123 Main St, San Francisco, CA 94103" className="h-11" disabled={pending} />
+        <Input
+          id="address"
+          name="address"
+          autoComplete="street-address"
+          placeholder="123 Main St, San Francisco, CA 94103"
+          className="h-11"
+          disabled={pending}
+        />
         <p className="text-xs text-muted-foreground">
           We use this to auto-calculate state sales tax on your quotes.
         </p>

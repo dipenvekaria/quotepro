@@ -68,6 +68,9 @@ export function QuoteEditor({
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
   const [address, setAddress] = useState('')
+  // Only set when an address is picked from the suggestions; typed addresses
+  // leave these empty and the row stores just the street line, as before.
+  const [addressParts, setAddressParts] = useState({ city: '', state: '', zip: '' })
   // Set when an existing customer was picked, so the draft links to that record
   // rather than being re-derived from contact details.
   const [customerId, setCustomerId] = useState<string | null>(null)
@@ -253,6 +256,9 @@ export function QuoteEditor({
           customer_email: customerEmail,
           customer_phone: customerPhone,
           address,
+          city: addressParts.city,
+          state: addressParts.state,
+          zip: addressParts.zip,
           description: description || 'Quote',
         })
         if (!res.ok) {
@@ -345,7 +351,13 @@ export function QuoteEditor({
             </header>
             <div className="space-y-4 p-5">
               <CustomerLookup
-                value={{ name: customerName, email: customerEmail, phone: customerPhone, address }}
+                value={{
+                  name: customerName,
+                  email: customerEmail,
+                  phone: customerPhone,
+                  address,
+                  ...addressParts,
+                }}
                 disabled={saving}
                 onChange={(next) => {
                   if (next.customerId !== undefined) setCustomerId(next.customerId)
@@ -353,6 +365,13 @@ export function QuoteEditor({
                   if (next.email !== undefined) setCustomerEmail(next.email)
                   if (next.phone !== undefined) setCustomerPhone(next.phone)
                   if (next.address !== undefined) setAddress(next.address)
+                  if (next.city !== undefined || next.state !== undefined || next.zip !== undefined) {
+                    setAddressParts((p) => ({
+                      city: next.city ?? p.city,
+                      state: next.state ?? p.state,
+                      zip: next.zip ?? p.zip,
+                    }))
+                  }
                 }}
               />
               <FieldRow className="sm:col-span-2">

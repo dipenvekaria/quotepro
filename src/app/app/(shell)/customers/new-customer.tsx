@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { AddressAutocomplete } from '@/components/shared/address-autocomplete'
 
 import { createCustomer } from './actions'
 
@@ -30,7 +31,7 @@ export function NewCustomer({ variant = 'default' }: { variant?: 'default' | 'ou
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [saving, startSave] = useTransition()
-  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', city: '', state: '', zip: '' })
 
   function set(patch: Partial<typeof form>) {
     setForm((f) => ({ ...f, ...patch }))
@@ -45,7 +46,7 @@ export function NewCustomer({ variant = 'default' }: { variant?: 'default' | 'ou
       }
       toast.success(`${form.name.trim()} added`)
       setOpen(false)
-      setForm({ name: '', email: '', phone: '', address: '' })
+      setForm({ name: '', email: '', phone: '', address: '', city: '', state: '', zip: '' })
       router.refresh()
     })
   }
@@ -110,14 +111,19 @@ export function NewCustomer({ variant = 'default' }: { variant?: 'default' | 'ou
 
             <div className="space-y-1.5">
               <Label htmlFor="new-cust-address">Address</Label>
-              <Input
+              <AddressAutocomplete
                 id="new-cust-address"
                 value={form.address}
-                onChange={(e) => set({ address: e.target.value })}
+                onChange={(address) => set({ address, city: '', state: '', zip: '' })}
+                onResolved={(a) => set({ address: a.address, city: a.city, state: a.state, zip: a.zip })}
                 placeholder="123 Market St, San Francisco, CA 94103"
-                className="h-11"
                 disabled={saving}
               />
+              {form.city && form.state && (
+                <p className="text-xs text-muted-foreground">
+                  {form.city}, {form.state} {form.zip}
+                </p>
+              )}
             </div>
 
             <p className="text-xs text-muted-foreground">
