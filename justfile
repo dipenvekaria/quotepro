@@ -1,5 +1,9 @@
-# QuotePro command runner. Install just: https://github.com/casey/just
+# Rivet command runner. Install just: https://github.com/casey/just
 # Run `just` to see all commands.
+#
+# These are the commands that actually work. The previous version drove a
+# python-backend/ that was deleted (ADR 0009) with pnpm, biome, uv and ruff —
+# none of which are installed — so every recipe in it failed.
 
 set dotenv-load := true
 set shell := ["bash", "-uc"]
@@ -10,36 +14,16 @@ default:
 # ---- Install / setup ------------------------------------------------------
 
 install:
-    corepack enable
-    pnpm install --frozen-lockfile
-    cd python-backend && uv sync
-
-install-hooks:
-    lefthook install
+    npm install
 
 # ---- Local dev ------------------------------------------------------------
 
-# Start everything (Supabase local, Next.js, FastAPI, indexer worker)
+# Everything. One process runs the whole product — there is no second service.
 dev:
     #!/usr/bin/env bash
     set -euo pipefail
     supabase start > /dev/null 2>&1 || true
-    pnpm dev &
-    (cd python-backend && uv run uvicorn quotepro.main:create_app --factory --reload --port 8000) &
-    (cd python-backend && uv run arq quotepro.workers.indexer_worker.WorkerSettings) &
-    wait
-
-# Frontend only
-dev-web:
-    pnpm dev
-
-# Backend only
-dev-api:
-    cd python-backend && uv run uvicorn quotepro.main:create_app --factory --reload --port 8000
-
-# Indexer worker only
-dev-worker:
-    cd python-backend && uv run arq quotepro.workers.indexer_worker.WorkerSettings
+    npm run dev
 
 # ---- Database -------------------------------------------------------------
 
@@ -49,54 +33,47 @@ migrate:
 reset:
     supabase db reset
 
-seed:
-    psql "$SUPABASE_DB_URL" -f supabase/seed.sql
-
 types:
-    supabase gen types typescript --local > src/types/database.ts
+    npm run db:types
+
+psql:
+    npm run db:psql
 
 verify-rls:
-    pnpm tsx scripts/verify-rls.ts
+    npm run verify:rls
 
-reindex:
-    curl -X POST http://localhost:8000/api/admin/reindex \
-        -H "Authorization: Bearer $QP_ADMIN_TOKEN"
+# Fill a company with believable data. Pass the account's login email.
+seed-demo email:
+    npx tsx scripts/seed-demo-data.ts --email {{email}}
+
+# Draft quotes across several trades and print what came back.
+eval-ai:
+    npx tsx scripts/eval-quote-ai.ts
 
 # ---- Quality gates --------------------------------------------------------
 
+# What CI runs, in the order CI runs it.
+check: typecheck lint test build
+
 typecheck:
-    pnpm tsc --noEmit
+    npm run typecheck
 
 lint:
-    pnpm biome check .
-    cd python-backend && uv run ruff check .
-
-format:
-    pnpm biome format --write .
-    cd python-backend && uv run ruff format .
+    npm run lint
 
 test:
-    pnpm vitest run
-    cd python-backend && uv run pytest
+    npm run test
 
 test-watch:
-    pnpm vitest
-
-e2e:
-    pnpm playwright test
-
-# ---- Build / deploy -------------------------------------------------------
+    npm run test:watch
 
 build:
-    pnpm build
-
-storybook:
-    pnpm storybook
+    npm run build
 
 # ---- Utilities ------------------------------------------------------------
 
 clean:
-    rm -rf .next node_modules python-backend/.venv coverage playwright-report test-results
+    rm -rf .next node_modules coverage
 
 env-example:
     cp .env.example .env.local

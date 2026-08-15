@@ -13,7 +13,7 @@ concurrency:
 # This pipeline reflects what the repo actually runs today: npm, eslint, and a
 # typecheck scoped to live code via tsconfig.ci.json.
 #
-# The target toolchain is pnpm + biome + vitest + uv + ruff (docs/adr/0006).
+# Toolchain: npm + eslint + vitest (docs/adr/0006, amended 2026-08-15).
 # Swap this file over as part of Cleanup Phase 3 — not before, or CI goes red on
 # tooling that isn't installed yet.
 
