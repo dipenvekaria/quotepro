@@ -8,10 +8,17 @@ export default async function CatalogPage() {
   const { companyId, role } = await requireSession()
 
   const items = await query<CatalogItem>(
-    `select id, name, description, category, base_price, unit, is_active
-       from catalog_items
-      where company_id = $1
-      order by category asc nulls last, name asc
+    `select ci.id, ci.name, ci.description, ci.category, ci.base_price, ci.unit, ci.is_active,
+            coalesce(
+              (select array_agg(l.name order by l.name)
+                 from catalog_item_labels il
+                 join catalog_labels l on l.id = il.label_id
+                where il.catalog_item_id = ci.id),
+              '{}'
+            ) as labels
+       from catalog_items ci
+      where ci.company_id = $1
+      order by ci.category asc nulls last, ci.name asc
       limit 500`,
     [companyId],
   )

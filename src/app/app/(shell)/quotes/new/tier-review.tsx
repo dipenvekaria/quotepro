@@ -85,9 +85,17 @@ export function TierReview({
         </button>
       </header>
 
-      {included.length < 2 && (
+      {/* One kept option is not an error — it is the contractor deciding which
+          one to send. Say what will happen rather than blocking them. */}
+      {included.length === 1 && (
         <p className="border-b border-border/70 bg-muted/40 px-5 py-2 text-xs text-muted-foreground">
-          Keep at least two options, or send this as a single quote instead.
+          Only {included[0].name} is ticked — this will go out as a normal quote, with no options
+          for the customer to choose between.
+        </p>
+      )}
+      {included.length === 0 && (
+        <p className="border-b border-border/70 bg-muted/40 px-5 py-2 text-xs text-muted-foreground">
+          Tick at least one option, or discard them.
         </p>
       )}
 

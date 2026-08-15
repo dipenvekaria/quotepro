@@ -22,11 +22,13 @@ import { cn } from '@/lib/utils'
 
 import {
   createCatalogItem,
+  setCatalogItemLabels,
   deleteCatalogItem,
   importCatalogCsv,
   updateCatalogItem,
 } from './actions'
 import { CatalogExtract } from './catalog-extract'
+import { LabelPicker } from './label-picker'
 
 export type CatalogItem = {
   id: string
@@ -36,6 +38,7 @@ export type CatalogItem = {
   base_price: number
   unit: string | null
   is_active: boolean
+  labels?: string[]
 }
 
 type Draft = {
@@ -43,6 +46,7 @@ type Draft = {
   name: string
   description: string
   category: string
+  labels: string[]
   base_price: string
   unit: string
   is_active: boolean
@@ -52,6 +56,7 @@ const EMPTY: Draft = {
   name: '',
   description: '',
   category: '',
+  labels: [],
   base_price: '',
   unit: 'each',
   is_active: true,
@@ -81,6 +86,14 @@ export function CatalogManager({
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [, startDelete] = useTransition()
   const [importing, startImport] = useTransition()
+
+  // The label set is whatever the catalog already uses, so the picker offers
+  // real options without a second round trip.
+  const allLabels = useMemo(() => {
+    const s = new Set<string>()
+    for (const i of items) for (const l of i.labels ?? []) s.add(l)
+    return [...s].sort((a, b) => a.localeCompare(b))
+  }, [items])
   const fileRef = useRef<HTMLInputElement>(null)
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -133,6 +146,7 @@ export function CatalogManager({
       name: item.name,
       description: item.description ?? '',
       category: item.category ?? '',
+      labels: item.labels ?? [],
       base_price: String(item.base_price),
       unit: item.unit ?? 'each',
       is_active: item.is_active,
@@ -168,6 +182,13 @@ export function CatalogManager({
         toast.error(res.error)
         return
       }
+
+      // Labels are a separate write because they live in a join table. A
+      // failure here must not read as the item failing to save — it did save.
+      const savedId = res.data.id
+      const labelRes = await setCatalogItemLabels({ item_id: savedId, labels: draft.labels })
+      if (!labelRes.ok) toast.warning(`Item saved, but labels did not: ${labelRes.error}`)
+
       toast.success(editing ? 'Item updated' : 'Item added')
       setOpen(false)
       setDraft(EMPTY)
@@ -365,13 +386,15 @@ export function CatalogManager({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="ci-category">Category</Label>
-              <Input
-                id="ci-category"
-                value={draft.category}
-                onChange={(e) => setDraft((d) => ({ ...d, category: e.target.value }))}
-                placeholder="Labor, Equipment, Materials…"
+              <Label>Labels</Label>
+              <LabelPicker
+                value={draft.labels}
+                options={allLabels}
+                onChange={(labels: string[]) => setDraft((d) => ({ ...d, labels }))}
               />
+              <p className="text-xs text-muted-foreground">
+                Pick from the ones you already use, or type a new one. An item can carry several.
+              </p>
             </div>
 
             <div className="space-y-1.5">

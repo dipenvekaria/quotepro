@@ -32,7 +32,6 @@ export default async function NewQuotePage() {
 
   return (
     <QuoteEditor
-      companyId={companyId}
       defaultTaxRate={defaultTaxRate}
       catalog={catalog as CatalogItem[]}
     />

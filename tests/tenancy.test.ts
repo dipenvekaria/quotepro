@@ -55,6 +55,16 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
+    match: 'from customer_addresses where customer_id',
+    reason: 'the customer was verified against company_id before the transaction opened',
+  },
+  {
+    file: 'src/app/app/(shell)/quotes/new/actions.ts',
+    match: 'insert into customer_addresses',
+    reason: 'same verified customer; company_id was checked on the picked id',
+  },
+  {
+    file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: "settings->>'tax_rate'",
     reason: 'where id = $1 is session.companyId',
   },
@@ -79,6 +89,23 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     file: 'src/app/app/(shell)/customers/[id]/page.tsx',
     match: 'from customer_addresses',
     reason: 'customer fetched with company_id above; notFound() when missing',
+  },
+  {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'delete from catalog_item_labels',
+    reason: 'the catalog item was verified against company_id earlier in the action',
+  },
+  {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'insert into catalog_item_labels',
+    reason:
+      'item verified against company_id above, and every label id came from resolveLabel which is company-scoped',
+  },
+  {
+    file: 'src/app/app/(shell)/customers/actions.ts',
+    match: 'insert into customer_addresses',
+    reason:
+      'same transaction as the customers insert immediately above, which carried company_id from the session',
   },
   {
     file: 'src/app/app/(shell)/customers/page.tsx',
@@ -144,6 +171,13 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     file: 'src/features/invoices/actions.ts',
     match: 'update invoices set',
     reason: 'invoice verified with id = $1 and company_id = $2',
+  },
+
+  {
+    file: 'src/app/app/(shell)/pipeline/[id]/photo-actions.ts',
+    match: 'from quote_items where id = $1 and work_item_id = $2',
+    reason:
+      'the work item was verified against company_id immediately above; this only confirms the line belongs to that same quote',
   },
 
   // --- keyed on an unguessable token rather than a session ------------------

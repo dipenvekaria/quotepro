@@ -1,0 +1,184 @@
+'use server'
+
+import { randomUUID } from 'node:crypto'
+
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
+
+import { getSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
+import { createAdminClient } from '@/lib/supabase/admin'
+
+/**
+ * Photos on quotes.
+ *
+ * Housecall Pro sells "estimates with photos to improve conversion." Ours
+ * attach to a line item rather than the quote as a whole — a picture of the
+ * failing compressor belongs beside the compressor line, where it answers the
+ * question the price raises.
+ */
+
+const BUCKET = 'quote-photos'
+const MAX_BYTES = 10 * 1024 * 1024
+const ACCEPTED = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']
+const MAX_PER_QUOTE = 20
+
+export type QuotePhoto = {
+  id: string
+  url: string
+  caption: string | null
+  quote_item_id: string | null
+  sort_order: number
+}
+
+type Result<T> = { ok: true; data: T } | { ok: false; error: string }
+
+export async function uploadQuotePhoto(formData: FormData): Promise<Result<QuotePhoto>> {
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+  const { companyId } = session
+
+  const workItemId = String(formData.get('work_item_id') ?? '')
+  const rawItemId = formData.get('quote_item_id')
+  const quoteItemId = rawItemId ? String(rawItemId) : null
+
+  if (!z.string().uuid().safeParse(workItemId).success) {
+    return { ok: false, error: 'Invalid quote' }
+  }
+
+  const file = formData.get('file')
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: 'Choose a photo.' }
+  }
+  if (!ACCEPTED.includes(file.type)) {
+    return { ok: false, error: 'That file type is not supported. Use a JPG, PNG or HEIC.' }
+  }
+  if (file.size > MAX_BYTES) {
+    return { ok: false, error: `That photo is over ${MAX_BYTES / 1024 / 1024}MB.` }
+  }
+
+  // The work item must belong to the caller — pg bypasses RLS, so this is the
+  // check that matters, not the storage policy.
+  const owns = await query<{ id: string }>(
+    'select id from work_items where id = $1 and company_id = $2 limit 1',
+    [workItemId, companyId],
+  )
+  if (!owns[0]) return { ok: false, error: 'Quote not found' }
+
+  // A line item, if given, has to belong to the same quote — otherwise a photo
+  // could be attached across quotes by passing an id from another one.
+  if (quoteItemId) {
+    const line = await query<{ id: string }>(
+      'select id from quote_items where id = $1 and work_item_id = $2 limit 1',
+      [quoteItemId, workItemId],
+    )
+    if (!line[0]) return { ok: false, error: 'Line item not found on this quote' }
+  }
+
+  const [{ count }] = await query<{ count: number }>(
+    'select count(*)::int as count from quote_photos where work_item_id = $1 and company_id = $2',
+    [workItemId, companyId],
+  )
+  if (count >= MAX_PER_QUOTE) {
+    return { ok: false, error: `A quote can carry ${MAX_PER_QUOTE} photos.` }
+  }
+
+  const ext = file.name.includes('.') ? file.name.split('.').pop()!.toLowerCase() : 'jpg'
+  // Tenant first, so the storage policy can authorise on the path alone.
+  const path = `${companyId}/${workItemId}/${randomUUID()}.${ext}`
+
+  const admin = createAdminClient()
+  const { error: uploadError } = await admin.storage
+    .from(BUCKET)
+    .upload(path, Buffer.from(await file.arrayBuffer()), {
+      contentType: file.type,
+      upsert: false,
+    })
+  if (uploadError) {
+    console.error('uploadQuotePhoto storage failed', uploadError)
+    return { ok: false, error: 'Could not upload that photo. Try again.' }
+  }
+
+  let row: { id: string; sort_order: number } | undefined
+  try {
+    const rows = await query<{ id: string; sort_order: number }>(
+      `insert into quote_photos
+         (company_id, work_item_id, quote_item_id, storage_path, sort_order, created_by)
+       values ($1, $2, $3, $4, $5, $6)
+       returning id, sort_order`,
+      [companyId, workItemId, quoteItemId, path, count, session.userId],
+    )
+    row = rows[0]
+  } catch (e) {
+    // Don't leave the object orphaned in the bucket if the row failed.
+    await admin.storage.from(BUCKET).remove([path])
+    console.error('uploadQuotePhoto insert failed', e)
+    return { ok: false, error: 'Could not save that photo. Try again.' }
+  }
+  if (!row) return { ok: false, error: 'Could not save that photo.' }
+
+  revalidatePath(`/app/pipeline/${workItemId}`)
+
+  const { data } = admin.storage.from(BUCKET).getPublicUrl(path)
+  return {
+    ok: true,
+    data: {
+      id: row.id,
+      url: data.publicUrl,
+      caption: null,
+      quote_item_id: quoteItemId,
+      sort_order: row.sort_order,
+    },
+  }
+}
+
+export async function deleteQuotePhoto(input: unknown): Promise<Result<{ id: string }>> {
+  const parsed = z.object({ id: z.string().uuid() }).safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid photo' }
+
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+
+  const rows = await query<{ id: string; storage_path: string; work_item_id: string }>(
+    `delete from quote_photos
+      where id = $1 and company_id = $2
+      returning id, storage_path, work_item_id`,
+    [parsed.data.id, session.companyId],
+  )
+  const photo = rows[0]
+  if (!photo) return { ok: false, error: 'Photo not found' }
+
+  // The row is the record; a leftover object costs storage but cannot show a
+  // customer anything, so a failure here is logged rather than surfaced.
+  const { error } = await createAdminClient().storage.from(BUCKET).remove([photo.storage_path])
+  if (error) console.error('deleteQuotePhoto storage remove failed', error)
+
+  revalidatePath(`/app/pipeline/${photo.work_item_id}`)
+  return { ok: true, data: { id: photo.id } }
+}
+
+/** Photos for a quote, with public URLs resolved. */
+export async function listQuotePhotos(workItemId: string, companyId: string): Promise<QuotePhoto[]> {
+  const rows = await query<{
+    id: string
+    storage_path: string
+    caption: string | null
+    quote_item_id: string | null
+    sort_order: number
+  }>(
+    `select id, storage_path, caption, quote_item_id, sort_order
+       from quote_photos
+      where work_item_id = $1 and company_id = $2
+      order by sort_order, created_at`,
+    [workItemId, companyId],
+  )
+
+  const admin = createAdminClient()
+  return rows.map((r) => ({
+    id: r.id,
+    url: admin.storage.from(BUCKET).getPublicUrl(r.storage_path).data.publicUrl,
+    caption: r.caption,
+    quote_item_id: r.quote_item_id,
+    sort_order: r.sort_order,
+  }))
+}

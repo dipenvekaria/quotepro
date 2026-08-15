@@ -5,6 +5,8 @@ import { EmptyState } from '@/components/shared/empty-state'
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 
+import { NewCustomer } from './new-customer'
+
 export default async function CustomersPage() {
   const { companyId } = await requireSession()
 
@@ -60,6 +62,7 @@ export default async function CustomersPage() {
             {list.length} {list.length === 1 ? 'customer' : 'customers'} in your book.
           </p>
         </div>
+        <NewCustomer />
       </div>
 
       {list.length === 0 ? (
@@ -67,15 +70,8 @@ export default async function CustomersPage() {
           <EmptyState
             icon={Users}
             title="No customers yet"
-            description="Customers get added automatically when you create a lead or quote."
-            action={
-              <Link
-                href="/app/quotes/new"
-                className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
-              >
-                <Plus className="h-3.5 w-3.5" /> New quote
-              </Link>
-            }
+            description="They get added automatically when you quote someone — or add one now and quote them later."
+            action={<NewCustomer />}
           />
         </div>
       ) : (

@@ -68,6 +68,10 @@ export async function generateQuoteItems(input: unknown) {
 // -----------------------------------------------------------------------------
 
 const createDraftSchema = z.object({
+  // Set when the contractor picked an existing customer from the lookup. The
+  // RPC otherwise matches on phone or email, which silently duplicates anyone
+  // who has neither.
+  customer_id: z.string().uuid().optional(),
   customer_name: z.string().min(1).max(200),
   customer_email: z.string().email().optional().or(z.literal('')),
   customer_phone: z.string().optional(),
@@ -87,9 +91,53 @@ export async function createDraftQuote(input: CreateDraftInput) {
   if (!session) return { ok: false as const, error: 'Not authenticated' }
   const { companyId, userId } = session
 
+  // A picked customer must belong to this company; an id from anywhere else is
+  // ignored rather than trusted.
+  let pickedCustomerId: string | null = null
+  if (parsed.data.customer_id) {
+    const owned = await query<{ id: string }>(
+      'select id from customers where id = $1 and company_id = $2 limit 1',
+      [parsed.data.customer_id, companyId],
+    )
+    pickedCustomerId = owned[0]?.id ?? null
+  }
+
   let workItemId: string | undefined
   try {
     workItemId = await withUser(userId, async (q) => {
+      // A customer the contractor picked is used directly. Falling through to
+      // the RPC would re-derive them from name, phone and email — and it
+      // matches on contact details, so anyone with neither would be duplicated
+      // every time they were quoted.
+      if (pickedCustomerId) {
+        let addressId: string | null = null
+        if (parsed.data.address) {
+          const found = await q<{ id: string }>(
+            `select id from customer_addresses where customer_id = $1 and address = $2 limit 1`,
+            [pickedCustomerId, parsed.data.address],
+          )
+          addressId = found[0]?.id ?? null
+          if (!addressId) {
+            const made = await q<{ id: string }>(
+              `insert into customer_addresses (customer_id, address, is_primary)
+               select $1, $2, not exists (select 1 from customer_addresses where customer_id = $1)
+               returning id`,
+              [pickedCustomerId, parsed.data.address],
+            )
+            addressId = made[0]?.id ?? null
+          }
+        }
+
+        const made = await q<{ id: string }>(
+          `insert into work_items
+             (company_id, customer_id, address_id, description, status, created_by)
+           values ($1, $2, $3, $4, 'quote_draft'::work_item_status, $5)
+           returning id`,
+          [companyId, pickedCustomerId, addressId, parsed.data.description, userId],
+        )
+        return made[0]?.id
+      }
+
       const rows = await q<{ id: string }>(
         `select create_work_item_with_customer(
            p_company_id => $1,
