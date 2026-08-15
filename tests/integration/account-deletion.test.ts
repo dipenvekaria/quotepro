@@ -73,10 +73,9 @@ async function readArchive(id: string) {
     company_id: string
     stats: Record<string, number>
     snapshot: Record<string, unknown>
-    purge_after: string
     archived_by_email: string | null
   }>(
-    `select company_name, company_id, stats, snapshot, purge_after, archived_by_email
+    `select company_name, company_id, stats, snapshot, archived_by_email
        from archived_accounts where id = $1`,
     [id],
   )
@@ -129,13 +128,27 @@ describe('archiving a company', () => {
     expect(row.archived_by_email).toBe('actor@test.local')
   })
 
-  it('sets a purge date, because erasure still has to be possible', async () => {
+  it('does not expire, so nothing ages out of the record', async () => {
+    // Archives are permanent by decision. A purge_after column here would mean
+    // someone had reintroduced a retention window without saying so.
     const { co } = await populated('Archive Test Five')
-    const row = await readArchive(await archive(co.id))
+    await archive(co.id)
 
-    const days = (new Date(row.purge_after).getTime() - Date.now()) / 86_400_000
-    expect(days).toBeGreaterThan(85)
-    expect(days).toBeLessThan(95)
+    const cols = await query<{ column_name: string }>(
+      `select column_name from information_schema.columns
+        where table_name = 'archived_accounts' and table_schema = 'public'`,
+    )
+    expect(cols.map((c) => c.column_name)).not.toContain('purge_after')
+  })
+
+  it('can still be erased on request, which is one statement', async () => {
+    // Retention is indefinite, not mandatory. GDPR Art. 17 needs this to work.
+    const { co } = await populated('Archive Test Erasure')
+    const id = await archive(co.id)
+    expect(await readArchive(id)).toBeTruthy()
+
+    await query('delete from archived_accounts where id = $1', [id])
+    expect(await readArchive(id)).toBeUndefined()
   })
 
   it('counts what it stored', async () => {

@@ -25,7 +25,7 @@ function AccountDeletedNotice() {
       role="status"
       className="mb-6 rounded-lg border border-border bg-muted/50 p-3 text-sm text-muted-foreground"
     >
-      Your account is closed. Signing in again starts from scratch — an archived copy is kept for 90 days if you need anything back.
+      Your account is closed. Signing in again starts from scratch — an archived copy is kept on record if you ever need anything back.
     </div>
   )
 }
