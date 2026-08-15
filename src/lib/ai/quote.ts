@@ -113,7 +113,25 @@ function mockGenerate(catalog: CatalogItem[], description: string) {
     .map((item) => ({ item, score: scoreItem(item, q) }))
     .sort((a, b) => b.score - a.score)
 
-  let picks = ranked.filter((r) => r.score > 0).slice(0, 4).map((r) => r.item)
+  // One item per category, best score wins.
+  //
+  // Without this, "install a smart thermostat" returned all four thermostats in
+  // the catalog — Standard, Programmable, Wi-Fi and Smart-with-Sensor — because
+  // every one of them scores on the word "thermostat". They are alternatives,
+  // not a bill of materials, and a contractor reads four of them as duplicates.
+  // reconcile() cannot catch this: they are genuinely different catalog rows.
+  //
+  // Categories are the catalog's own statement about what competes with what,
+  // so they are a better signal than any string-similarity guess. Items with no
+  // category keep their own slot rather than collapsing into one bucket.
+  const bestPerCategory = new Map<string, CatalogItem>()
+  for (const r of ranked) {
+    if (r.score <= 0) continue
+    const group = r.item.category?.trim().toLowerCase() || `__ungrouped:${r.item.id}`
+    if (!bestPerCategory.has(group)) bestPerCategory.set(group, r.item)
+  }
+
+  let picks = [...bestPerCategory.values()].slice(0, 4)
   if (picks.length === 0) {
     picks = catalog
       .filter((it) => ['labor', 'trip', 'diagnos'].some((k) => it.name.toLowerCase().includes(k)))
@@ -130,8 +148,8 @@ function mockGenerate(catalog: CatalogItem[], description: string) {
   }))
 
   const reasoning =
-    `Mock mode: matched ${line_items.length} catalog items on keywords ` +
-    `${JSON.stringify([...q].sort().slice(0, 5))}.`
+    `Keyword match, not AI: picked ${line_items.length} catalog items on ` +
+    `${JSON.stringify([...q].sort().slice(0, 5))}. Check every line before sending.`
 
   return { line_items, reasoning, sources: picks.map((it) => ({ id: it.id, name: it.name })) }
 }

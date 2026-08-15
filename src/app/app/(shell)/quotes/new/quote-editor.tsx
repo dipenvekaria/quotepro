@@ -2,16 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
-import {
-  ArrowLeft,
-  Loader2,
-  Save,
-  Sparkles,
-  Trash2,
-  User,
-  X,
-  Zap,
-} from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -71,6 +62,9 @@ export function QuoteEditor({
   // Only set when an address is picked from the suggestions; typed addresses
   // leave these empty and the row stores just the street line, as before.
   const [addressParts, setAddressParts] = useState({ city: '', state: '', zip: '' })
+  // What actually produced the last draft. `mock` means Gemini never ran and
+  // these are keyword matches — the contractor has to know that before sending.
+  const [draftMode, setDraftMode] = useState<string | null>(null)
   // Set when an existing customer was picked, so the draft links to that record
   // rather than being re-derived from contact details.
   const [customerId, setCustomerId] = useState<string | null>(null)
@@ -190,6 +184,13 @@ export function QuoteEditor({
       }
 
       const data = res.data
+      setDraftMode(data.mode)
+      if (!data.mode.startsWith('gemini')) {
+        toast.warning('AI unavailable — these lines are keyword matches', {
+          description: 'Check every line and price before sending.',
+          duration: 8000,
+        })
+      }
       setItems(
         data.line_items.map((li) => ({
           key: crypto.randomUUID(),
@@ -402,6 +403,22 @@ export function QuoteEditor({
             />
           ) : (
             <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+              {draftMode && !draftMode.startsWith('gemini') && (
+                /*
+                  Degrading silently is the trap: a keyword-matched quote looks
+                  like a badly written one, so the contractor blames the product
+                  and fixes nothing. Say plainly that the AI did not run.
+                */
+                <div className="flex items-start gap-2 border-b border-amber-500/30 bg-amber-500/10 px-5 py-3">
+                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <p className="text-xs leading-relaxed text-foreground">
+                    <span className="font-semibold">These lines were matched on keywords, not drafted by AI.</span>{' '}
+                    Rivet couldn’t reach the AI service, so it picked the closest catalog items by
+                    name. Check every line and price before sending — and see Integrations if this
+                    keeps happening.
+                  </p>
+                </div>
+              )}
               <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
                 <div className="flex items-center gap-2">
                   <h2 className="text-sm font-semibold">Line items</h2>
