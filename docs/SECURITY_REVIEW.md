@@ -6,6 +6,10 @@ Scope: the whole running system — routes, data access, dependencies, secrets, 
 Every finding was reproduced against the code or the database. Where something is theory rather
 than tested, it says so. Findings are ordered by what an attacker or an accident reaches first.
 
+> **This repository is public.** Keep project ids, account ids, emails and hostnames out of this
+> document. Describe a weakness precisely enough to fix and never precisely enough to locate —
+> anything more belongs in a private issue.
+
 ## Summary
 
 There is no cross-tenant data leak reachable today, and that is not luck — the hand-written
@@ -110,7 +114,43 @@ several files with more exported actions than `safeParse` calls. Some are legiti
 taking no input cannot validate one), so this is a list to audit rather than a list of holes.
 Worth doing once, deliberately, and worth a lint rule afterwards.
 
-### 7. Leaked credentials from earlier sessions still need rotation
+### 7. Everything runs on one person's personal accounts — **go-live blocker**
+
+Confirmed during this review, not assumed:
+
+| Service | Owner today |
+| --- | --- |
+| Google Cloud project — Vertex AI, Places | a personal Google account, sole `roles/owner` |
+| Google billing account | same person, sole `roles/billing.admin` |
+| Vercel project | personal account, no team |
+| Supabase project | personal |
+| Stripe, Resend | personal |
+| Production domain | personal, and still registered under the legacy product name |
+
+(Identifiers deliberately omitted — this repository is public. They are in the
+Vercel and Google consoles.)
+
+Every key, project id and service account in production belongs to an individual. Three
+consequences, in order of how much they hurt:
+
+1. **Single point of failure.** If that Google account is lost, suspended or locked out, Vertex
+   AI and Places stop and there is no second owner to restore them. The same holds for Vercel and
+   Supabase.
+2. **Nothing is transferable.** Company data sitting on personal accounts is a problem the first
+   time there is an entity, an investor or an acquirer, and migrating live infrastructure is much
+   harder than starting it correctly.
+3. **No separation between a person and the business** for audit, DPA or subprocessor purposes —
+   the subprocessor list in `GTM_BUSINESS_CHECKLIST.md` names organisations, and none of these
+   are one.
+
+**Before going live**, move to organisation-owned accounts and reissue everything: Google Cloud
+org and project, service account and its key, Vercel team, Supabase organisation, Stripe account,
+Resend domain, and the production domain itself. Treat every credential currently in use as
+disposable — they were created for a prototype and several have been pasted into chat transcripts.
+
+This is planned. Recording it so it is a gate rather than a memory.
+
+### 8. Leaked credentials from earlier sessions still need rotation
 
 A Supabase access token (`sbp_db77…`) and a Google OAuth client secret (`GOCSPX-…`) were pasted
 into a chat transcript. Neither has been rotated. The repository is **public**, and although
@@ -145,6 +185,7 @@ stands.
 | - | ------- | ------ |
 | 1 | Private photo bucket + signed URLs | ~1 hour |
 | 2 | Rotate the two leaked credentials | Minutes, needs you |
+| 2b | Move off personal accounts and reissue every key — **go-live gate** | Days, needs you |
 | 3 | Rate limit the public accept/sign routes and the AI actions | ~1 day |
 | 4 | Audit server actions for input validation, then lint it | ~1 day |
 | 5 | Connect as a non-superuser role so RLS is in force | Days — see `ARCHITECTURE_SCALE.md` |
