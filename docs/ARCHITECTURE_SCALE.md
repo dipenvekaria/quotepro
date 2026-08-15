@@ -1,7 +1,7 @@
 # Scaling architecture — recommendation
 
 Date: 2026-08-15
-Status: Recommendation, not yet decided
+Status: Recommendation. Vendor questions decided 2026-08-15; the ordered plan is still a proposal.
 
 Grounded in the running system, not in general advice. Every claim below was checked against the
 code or the database; where something is a judgement call it says so.
@@ -135,8 +135,14 @@ optimisation you should not pay for until something hurts.
 
 Asked and answered concretely, so they stop being relitigated:
 
-**Storage → GCS** is fine and cheap: 5 call sites, roughly a day. Do it if fewer vendors is worth
-that to you. It changes nothing structural.
+**Storage stays on Supabase.** Decided 2026-08-15. Moving to GCS was costed at 5 call sites and
+about a day, and it was genuinely viable — but it buys one fewer vendor and nothing else. Storage
+sits behind the same auth as the database, the bucket already enforces the same five image types
+and 10MB ceiling the upload action checks, and the failure that prompted the question turned out
+to be Next's 1MB Server Action body limit, which would have failed identically on any backend.
+
+There is no open runtime decision left. The stack is Vercel, Supabase Postgres and Auth, Supabase
+Storage, Vertex AI, Stripe and Resend.
 
 **Database → Cloud SQL or AlloyDB** breaks 10 foreign keys to `auth.users` and the 44 policies
 above. AlloyDB additionally costs more than Cloud SQL, which already costs more than the bundled
