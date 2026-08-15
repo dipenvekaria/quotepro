@@ -193,7 +193,8 @@ Invoke by name:
 | [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Railway + Supabase Cloud |
 | [`docs/PROTOTYPE_DEPLOYMENT.md`](docs/PROTOTYPE_DEPLOYMENT.md) | **Current focus** — get the prototype deployed and a second engineer contributing |
 | [`docs/STRATEGY.md`](docs/STRATEGY.md) | **Start here for direction.** Wedge, 90-day plan, where the moat comes from. |
-| [`docs/PRODUCT_REVIEW.md`](docs/PRODUCT_REVIEW.md) | Product gaps and v1 scope. **Note: there is no way to create a catalog item, so a new account cannot generate a quote.** |
+| [`docs/PRODUCT_REVIEW.md`](docs/PRODUCT_REVIEW.md) | Product gaps and v1 scope. Parts are stale — the catalog blocker it leads with was fixed. |
+| [`docs/PRODUCT_UX_REVIEW.md`](docs/PRODUCT_UX_REVIEW.md) | **Current** PM + UI/UX review, with findings marked verified or inferred |
 | [`docs/COMPETITIVE_ANALYSIS.md`](docs/COMPETITIVE_ANALYSIS.md) | Jobber, Housecall Pro, QuoteIQ, ServiceTitan, AI-native entrants, market economics |
 | [`docs/LAUNCH_PLAN.md`](docs/LAUNCH_PLAN.md) | Sequenced path to production |
 | [`docs/GTM_PRODUCT_CHECKLIST.md`](docs/GTM_PRODUCT_CHECKLIST.md) | Feature gaps vs competitors; the launch gate |
