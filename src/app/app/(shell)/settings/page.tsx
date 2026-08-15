@@ -11,6 +11,7 @@ import { loadBusinessHours } from '@/lib/scheduling/availability'
 import { SettingsForm } from './settings-form'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
+import { DangerZone } from './danger-zone'
 
 // ---------------------------------------------------------------------------
 
@@ -231,6 +232,8 @@ export default async function SettingsPage() {
           </Link>
         </div>
       </section>
+
+      <DangerZone isOwner={role === 'owner'} />
     </div>
   )
 }
