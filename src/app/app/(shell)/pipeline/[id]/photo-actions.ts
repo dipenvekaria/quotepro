@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { signPhotoUrl, signPhotoUrls } from '@/lib/storage/signed-url'
 
 /**
  * Photos on quotes.
@@ -119,12 +120,12 @@ export async function uploadQuotePhoto(formData: FormData): Promise<Result<Quote
 
   revalidatePath(`/app/pipeline/${workItemId}`)
 
-  const { data } = admin.storage.from(BUCKET).getPublicUrl(path)
+  const signed = await signPhotoUrl(path)
   return {
     ok: true,
     data: {
       id: row.id,
-      url: data.publicUrl,
+      url: signed,
       caption: null,
       quote_item_id: quoteItemId,
       sort_order: row.sort_order,
@@ -173,10 +174,13 @@ export async function listQuotePhotos(workItemId: string, companyId: string): Pr
     [workItemId, companyId],
   )
 
-  const admin = createAdminClient()
+  // One batched signing call rather than one per photo — a quote can carry
+  // twenty, and this page already waits on the database.
+  const signedUrls = await signPhotoUrls(rows.map((r) => r.storage_path))
+
   return rows.map((r) => ({
     id: r.id,
-    url: admin.storage.from(BUCKET).getPublicUrl(r.storage_path).data.publicUrl,
+    url: signedUrls.get(r.storage_path) ?? '',
     caption: r.caption,
     quote_item_id: r.quote_item_id,
     sort_order: r.sort_order,

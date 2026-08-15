@@ -1,4 +1,6 @@
 import { notFound } from 'next/navigation'
+
+import { signPhotoUrls } from '@/lib/storage/signed-url'
 import Link from 'next/link'
 
 import { sbAdmin } from '@/lib/supabase/untyped'
@@ -70,9 +72,14 @@ export default async function PublicQuotePage({
     .eq('work_item_id', quote.id)
     .order('sort_order', { ascending: true })
 
+  // Signed per request. The customer's link keeps working while they read it;
+  // the same URL forwarded to anyone else is dead within the hour.
+  const photoSigned = await signPhotoUrls(
+    (photoRows ?? []).map((p: { storage_path: string }) => p.storage_path),
+  )
   const photos = (photoRows ?? []).map((p: { id: string; storage_path: string; caption: string | null; quote_item_id: string | null }) => ({
     id: p.id,
-    url: admin.storage.from('quote-photos').getPublicUrl(p.storage_path).data.publicUrl,
+    url: photoSigned.get(p.storage_path) ?? '',
     caption: p.caption,
     quote_item_id: p.quote_item_id,
   }))
