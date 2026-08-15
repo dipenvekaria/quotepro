@@ -78,19 +78,4 @@ describe('membership', () => {
   })
 })
 
-/**
- * Known gaps, written down as failing expectations would be noise — these
- * describe work that has not been done, not defects in what has.
- *
- * Raised on 2026-08-15: a technician should see only work assigned to them, and
- * sales only what they created. The permission matrix expresses intent, but the
- * page queries still read company-wide, so any teammate can see every job,
- * customer and price.
- */
-describe('role-scoped data access (not yet implemented)', () => {
-  it.todo('a technician sees only work items assigned to them')
-  it.todo('a technician sees only customers attached to their assigned work')
-  it.todo('sales sees only leads and quotes they created')
-  it.todo('only owner and office can assign work to someone')
-  it.todo('technicians and sales cannot read the catalog or analytics')
-})
+// Row-level scoping is proved against real data in ./role-scoping.test.ts.

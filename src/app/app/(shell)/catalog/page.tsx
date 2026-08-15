@@ -1,4 +1,7 @@
+import { notFound } from 'next/navigation'
+
 import { requireSession } from '@/lib/auth/session'
+import { canSeeCatalog } from '@/lib/auth/scope'
 import { query } from '@/lib/db'
 import { hasPermission, type UserRole } from '@/lib/permissions'
 
@@ -6,6 +9,10 @@ import { CatalogManager, type CatalogItem } from './catalog-manager'
 
 export default async function CatalogPage() {
   const { companyId, role } = await requireSession()
+
+  // The price book is the contractor's margin. permissions.ts has always said
+  // canViewCatalog is false for sales and technicians; nothing enforced it.
+  if (!canSeeCatalog(role as UserRole)) notFound()
 
   const items = await query<CatalogItem>(
     `select ci.id, ci.name, ci.description, ci.category, ci.base_price, ci.unit, ci.is_active,

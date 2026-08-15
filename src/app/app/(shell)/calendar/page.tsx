@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Calendar, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
+import { workItemScope, customerScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -25,7 +27,9 @@ export default async function CalendarPage({
 }: {
   searchParams: Promise<{ view?: string; date?: string; week?: string }>
 }) {
-  const { companyId } = await requireSession()
+  const { companyId, userId, role } = await requireSession()
+  // "Only sees their own schedule" is what permissions.ts already promised.
+  const scope = workItemScope({ companyId, userId, role: role as UserRole }, 3)
 
   // View (week | month) + anchor date from the query string.
   const params = await searchParams
@@ -60,9 +64,9 @@ export default async function CalendarPage({
       where w.company_id = $1
         and w.scheduled_start is not null
         and w.scheduled_start >= $2
-        and w.scheduled_start < $3
+        and w.scheduled_start < $3${scope.sql}
       order by w.scheduled_start asc`,
-    [companyId, rangeStart.toISOString(), rangeEnd.toISOString()],
+    [companyId, rangeStart.toISOString(), rangeEnd.toISOString(), ...scope.params],
   )
 
   const list: ScheduledJob[] = rows.map((r) => ({
