@@ -91,7 +91,15 @@ const serverEnvSchema = z.object({
   GOOGLE_MAPS_API_KEY: optionalSecret(20),
   // The service account's JSON key, base64-encoded (raw JSON is accepted too).
   // Not a token: tokens expire in an hour and are minted from this at runtime.
+  // Also authenticates Vertex AI when that is switched on.
   GOOGLE_SERVICE_ACCOUNT_JSON: optionalSecret(50),
+  // Route Gemini through Vertex AI instead of the AI Studio developer API.
+  // Same models; the difference is billing — Vertex draws on the GCP billing
+  // account, so GCP credit (including free trial) applies, whereas AI Studio
+  // uses its own separate prepay balance.
+  GOOGLE_GENAI_USE_VERTEXAI: z.string().optional(),
+  GOOGLE_CLOUD_PROJECT: z.string().optional(),
+  GOOGLE_CLOUD_LOCATION: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
   // Vercel sends this as `Authorization: Bearer <secret>` on scheduled runs.
   // Unset means the cron endpoint refuses to run rather than running open.
