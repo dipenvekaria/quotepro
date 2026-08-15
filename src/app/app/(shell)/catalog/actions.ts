@@ -404,3 +404,142 @@ export async function importExtractedItems(items: unknown): Promise<Result<Impor
 
   return importCatalogCsv({ csv: itemsToCsv(parsed.data) })
 }
+
+// -----------------------------------------------------------------------------
+// Labels
+//
+// `category` was free text, so "Diagnostics", "diagnostic" and "Diagnostic Fees"
+// all coexisted and the grouping stopped meaning anything. Labels are a real set
+// the contractor picks from, created on first use — the same lookup-or-create
+// shape as adding a line item or finding a customer.
+// -----------------------------------------------------------------------------
+
+export type CatalogLabel = { id: string; name: string; item_count: number }
+
+export async function listLabels(): Promise<CatalogLabel[]> {
+  const session = await getSession()
+  if (!session) return []
+  return query<CatalogLabel>(
+    `select l.id, l.name,
+            (select count(*)::int from catalog_item_labels il where il.label_id = l.id) as item_count
+       from catalog_labels l
+      where l.company_id = $1
+      order by l.name`,
+    [session.companyId],
+  )
+}
+
+const labelNameSchema = z.string().trim().min(1, 'Label needs a name').max(60)
+
+/**
+ * Find a label by name or create it. Case-insensitive, so "Diagnostics" typed
+ * a second time as "diagnostics" resolves to the one that exists — which is the
+ * entire reason labels replaced free text.
+ */
+async function resolveLabel(companyId: string, rawName: string): Promise<string | null> {
+  const name = rawName.trim()
+  if (!name) return null
+
+  const existing = await query<{ id: string }>(
+    `select id from catalog_labels
+      where company_id = $1 and lower(trim(name)) = lower($2)
+      limit 1`,
+    [companyId, name],
+  )
+  if (existing[0]) return existing[0].id
+
+  const created = await query<{ id: string }>(
+    `insert into catalog_labels (company_id, name) values ($1, $2)
+     on conflict do nothing
+     returning id`,
+    [companyId, name],
+  )
+  if (created[0]) return created[0].id
+
+  // Lost a race with a concurrent insert; the row exists now.
+  const again = await query<{ id: string }>(
+    `select id from catalog_labels
+      where company_id = $1 and lower(trim(name)) = lower($2) limit 1`,
+    [companyId, name],
+  )
+  return again[0]?.id ?? null
+}
+
+const setLabelsSchema = z.object({
+  item_id: z.string().uuid(),
+  labels: z.array(labelNameSchema).max(10),
+})
+
+/** Replaces an item's labels, creating any that are new. */
+export async function setCatalogItemLabels(input: unknown): Promise<Result<{ id: string }>> {
+  const parsed = setLabelsSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid labels' }
+  }
+
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+  const { companyId } = auth.session
+
+  const owns = await query<{ id: string }>(
+    'select id from catalog_items where id = $1 and company_id = $2 limit 1',
+    [parsed.data.item_id, companyId],
+  )
+  if (!owns[0]) return { ok: false, error: 'Item not found' }
+
+  // De-duplicate case-insensitively before touching the database — the same
+  // label typed twice in one edit is one label.
+  const seen = new Set<string>()
+  const names = parsed.data.labels.filter((n) => {
+    const k = n.trim().toLowerCase()
+    if (!k || seen.has(k)) return false
+    seen.add(k)
+    return true
+  })
+
+  try {
+    const ids: string[] = []
+    for (const name of names) {
+      const id = await resolveLabel(companyId, name)
+      if (id) ids.push(id)
+    }
+
+    await query('delete from catalog_item_labels where catalog_item_id = $1', [parsed.data.item_id])
+    if (ids.length) {
+      const values: unknown[] = []
+      const tuples = ids.map((id, i) => {
+        values.push(parsed.data.item_id, id)
+        return `($${i * 2 + 1}, $${i * 2 + 2})`
+      })
+      await query(
+        `insert into catalog_item_labels (catalog_item_id, label_id)
+         values ${tuples.join(', ')} on conflict do nothing`,
+        values,
+      )
+    }
+  } catch (e) {
+    console.error('setCatalogItemLabels failed', e)
+    return { ok: false, error: 'Could not save those labels. Please try again.' }
+  }
+
+  revalidate()
+  return { ok: true, data: { id: parsed.data.item_id } }
+}
+
+/** Removes a label everywhere. The items keep their own free-text category. */
+export async function deleteLabel(input: unknown): Promise<Result<{ id: string }>> {
+  const parsed = z.object({ id: z.string().uuid() }).safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid label' }
+
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+
+  const rows = await query<{ id: string }>(
+    'delete from catalog_labels where id = $1 and company_id = $2 returning id',
+    [parsed.data.id, auth.session.companyId],
+  )
+  if (!rows[0]) return { ok: false, error: 'Label not found' }
+
+  revalidate()
+  return { ok: true, data: { id: rows[0].id } }
+}

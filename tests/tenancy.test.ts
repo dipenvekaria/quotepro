@@ -81,6 +81,17 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'customer fetched with company_id above; notFound() when missing',
   },
   {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'delete from catalog_item_labels',
+    reason: 'the catalog item was verified against company_id earlier in the action',
+  },
+  {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'insert into catalog_item_labels',
+    reason:
+      'item verified against company_id above, and every label id came from resolveLabel which is company-scoped',
+  },
+  {
     file: 'src/app/app/(shell)/customers/actions.ts',
     match: 'insert into customer_addresses',
     reason:
