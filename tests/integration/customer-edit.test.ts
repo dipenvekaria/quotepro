@@ -101,3 +101,31 @@ describe('editing a customer', () => {
     expect(rows[0].city).toBe('Dallas')
   })
 })
+
+describe('unique phone and email per company', () => {
+  it('reports the constraint name so the action can explain the clash', async () => {
+    // The action maps these names to a usable message. If a migration ever
+    // renames the index, this fails rather than the user getting "try again"
+    // forever on something retrying cannot fix.
+    const a = await createCustomer(co.id, 'First', '+1-555-7777')
+    const b = await createCustomer(co.id, 'Second', '+1-555-8888')
+    expect(a).not.toBe(b)
+
+    await expect(
+      query('update customers set phone = $1 where id = $2', ['+1-555-7777', b]),
+    ).rejects.toMatchObject({ constraint: 'customers_unique_phone_per_company' })
+  })
+
+  it('lets two companies hold the same phone number', async () => {
+    // The constraint is per company, so one contractor's customer list cannot
+    // block another's.
+    await createCustomer(co.id, 'Shared Number', '+1-555-4321')
+    await expect(createCustomer(other.id, 'Same Number Elsewhere', '+1-555-4321')).resolves.toBeTruthy()
+  })
+
+  it('allows two customers with the same name', async () => {
+    // Deliberate: two people really can share a name.
+    await createCustomer(co.id, 'John Smith', '+1-555-1111')
+    await expect(createCustomer(co.id, 'John Smith', '+1-555-2222')).resolves.toBeTruthy()
+  })
+})
