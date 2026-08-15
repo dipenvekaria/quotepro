@@ -40,10 +40,26 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # The integration suite needs a real database. It exists because an
+      # invitation bug reached production that no pure-function test could have
+      # caught — an owner opening their own invite link was demoted, leaving a
+      # company with no owner. Tests that cannot run in CI protect nothing, so
+      # Supabase starts here.
+      - name: Start Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Database
+        run: supabase start -x realtime,storage-api,imgproxy,studio,mailpit,edge-runtime,logflare,vector
+
       # The pg pool bypasses RLS, so `where company_id = $n` in each statement is
-      # the primary access control. This asserts no statement is missing one.
+      # the primary access control. The static check asserts no statement is
+      # missing one; the integration suite proves the predicates are also right.
       - name: Test
         run: npm run test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
 
       - name: Build
         run: npm run build
