@@ -14,11 +14,15 @@ type Column = {
   dot: string
 }
 
+// "Won" used to hold quote_accepted, job_scheduled and job_in_progress
+// together, which hid the question the board exists to answer: which won jobs
+// still need a date. Splitting them makes the work to do visible.
 const COLUMNS: Column[] = [
-  { key: 'leads',   label: 'Leads',    statuses: ['lead'],                                                         dot: 'bg-primary' },
-  { key: 'quotes',  label: 'Quotes',   statuses: ['quote_draft','quote_sent','quote_viewed'],                      dot: 'bg-violet-500' },
-  { key: 'accepted',label: 'Won',      statuses: ['quote_accepted','job_scheduled','job_in_progress'],             dot: 'bg-amber-500' },
-  { key: 'closed',  label: 'Completed',statuses: ['job_completed'],                                                dot: 'bg-emerald-500' },
+  { key: 'leads',     label: 'Leads',     statuses: ['lead'],                                dot: 'bg-primary' },
+  { key: 'quotes',    label: 'Quotes',    statuses: ['quote_draft','quote_sent','quote_viewed'], dot: 'bg-violet-500' },
+  { key: 'accepted',  label: 'To schedule', statuses: ['quote_accepted'],                    dot: 'bg-amber-500' },
+  { key: 'scheduled', label: 'Scheduled', statuses: ['job_scheduled','job_in_progress'],     dot: 'bg-sky-500' },
+  { key: 'closed',    label: 'Completed', statuses: ['job_completed'],                       dot: 'bg-emerald-500' },
 ]
 
 export default async function PipelinePage() {
@@ -101,7 +105,7 @@ export default async function PipelinePage() {
           />
         </div>
       ) : (
-        <div className="mt-6 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:overflow-visible sm:px-0 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+        <div className="mt-6 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:overflow-visible sm:px-0 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
           {COLUMNS.map((col) => {
             const items = grouped[col.key] ?? []
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)

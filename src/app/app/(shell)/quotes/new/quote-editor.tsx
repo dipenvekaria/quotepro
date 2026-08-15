@@ -55,11 +55,9 @@ type LineItem = {
 // -----------------------------------------------------------------------------
 
 export function QuoteEditor({
-  companyId,
   defaultTaxRate,
   catalog,
 }: {
-  companyId: string
   defaultTaxRate: number
   catalog: CatalogItem[]
 }) {
@@ -70,6 +68,9 @@ export function QuoteEditor({
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerPhone, setCustomerPhone] = useState('')
   const [address, setAddress] = useState('')
+  // Set when an existing customer was picked, so the draft links to that record
+  // rather than being re-derived from contact details.
+  const [customerId, setCustomerId] = useState<string | null>(null)
   const [description, setDescription] = useState('')
 
   // Line items + tax
@@ -247,6 +248,7 @@ export function QuoteEditor({
       let currentId = workItemId
       if (!currentId) {
         const res = await createDraftQuote({
+          customer_id: customerId ?? undefined,
           customer_name: customerName,
           customer_email: customerEmail,
           customer_phone: customerPhone,
@@ -346,6 +348,7 @@ export function QuoteEditor({
                 value={{ name: customerName, email: customerEmail, phone: customerPhone, address }}
                 disabled={saving}
                 onChange={(next) => {
+                  if (next.customerId !== undefined) setCustomerId(next.customerId)
                   if (next.name !== undefined) setCustomerName(next.name)
                   if (next.email !== undefined) setCustomerEmail(next.email)
                   if (next.phone !== undefined) setCustomerPhone(next.phone)

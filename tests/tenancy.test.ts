@@ -55,6 +55,16 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
+    match: 'from customer_addresses where customer_id',
+    reason: 'the customer was verified against company_id before the transaction opened',
+  },
+  {
+    file: 'src/app/app/(shell)/quotes/new/actions.ts',
+    match: 'insert into customer_addresses',
+    reason: 'same verified customer; company_id was checked on the picked id',
+  },
+  {
+    file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: "settings->>'tax_rate'",
     reason: 'where id = $1 is session.companyId',
   },

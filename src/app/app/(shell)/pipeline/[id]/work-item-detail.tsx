@@ -469,10 +469,14 @@ export function WorkItemDetail({
                   {a.label}
                 </Button>
               ))}
+              {/* Invoicing needs something to bill. The button used to appear
+                  on an accepted job with no line items, which would have sent a
+                  customer an invoice for $0.00. */}
               {(workItem.status === 'quote_accepted' ||
                 workItem.status === 'job_scheduled' ||
                 workItem.status === 'job_in_progress' ||
                 workItem.status === 'job_completed') &&
+                total > 0 &&
                 !invoice && (
                   <Button
                     onClick={doSendInvoice}
