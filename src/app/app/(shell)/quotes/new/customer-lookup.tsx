@@ -83,9 +83,29 @@ export function CustomerLookup({
     })
   }
 
-  function unlink() {
+  /** The contractor edited a field — stop treating the match as chosen. */
+  function unlinkOnEdit() {
     setLinked(null)
     onChange({ customerId: null })
+  }
+
+  /**
+   * "This is a different person."
+   *
+   * Clearing the flag alone did nothing: the fields still held the matched
+   * customer's phone and email, and create_work_item_with_customer matches on
+   * exactly those — so saving re-linked the same record and the button had no
+   * effect at all.
+   *
+   * The name is kept because the overwhelming reason to click this is two
+   * people sharing one, which is also why matching is on contact details rather
+   * than names.
+   */
+  function useNewCustomer() {
+    setLinked(null)
+    setMatches([])
+    setOpen(false)
+    onChange({ customerId: null, phone: '', email: '', address: '' })
   }
 
   return (
@@ -100,7 +120,7 @@ export function CustomerLookup({
             value={value.name}
             disabled={disabled}
             onChange={(e) => {
-              if (linked) unlink()
+              if (linked) unlinkOnEdit()
               setField('name')
               onChange({ name: e.target.value })
             }}
@@ -124,7 +144,7 @@ export function CustomerLookup({
             value={value.phone}
             disabled={disabled}
             onChange={(e) => {
-              if (linked) unlink()
+              if (linked) unlinkOnEdit()
               setField('phone')
               onChange({ phone: e.target.value })
             }}
@@ -176,10 +196,10 @@ export function CustomerLookup({
           {linked.job_count > 0 && ` · ${linked.job_count} previous ${linked.job_count === 1 ? 'job' : 'jobs'}`}
           <button
             type="button"
-            onClick={unlink}
+            onClick={useNewCustomer}
             className="ml-1 underline hover:text-foreground"
           >
-            use a new one instead
+            different person
           </button>
         </p>
       )}
