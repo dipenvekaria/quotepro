@@ -419,3 +419,50 @@ export async function saveQuoteTiers(input: unknown) {
   revalidatePath(`/app/pipeline/${workItemId}`)
   return { ok: true as const, data: { total: headlineTotals.total } }
 }
+
+// -----------------------------------------------------------------------------
+// Customer lookup
+//
+// A contractor quoting a repeat customer should not retype their details, and
+// should not have to decide up front whether this is a new customer or an
+// existing one. They start typing a name or a phone number; if we know the
+// person, they pick them.
+// -----------------------------------------------------------------------------
+
+export type CustomerMatch = {
+  id: string
+  name: string
+  email: string | null
+  phone: string | null
+  address: string | null
+  job_count: number
+}
+
+export async function searchCustomers(q: unknown): Promise<CustomerMatch[]> {
+  const term = typeof q === 'string' ? q.trim() : ''
+  if (term.length < 2) return []
+
+  const session = await getSession()
+  if (!session) return []
+
+  // Digits only for the phone comparison, so "(555) 010-1234" matches
+  // "5550101234" — nobody types a stored number the way it was stored.
+  const digits = term.replace(/\D/g, '')
+
+  return query<CustomerMatch>(
+    `select c.id, c.name, c.email, c.phone,
+            (select a.address from customer_addresses a
+              where a.customer_id = c.id order by a.created_at limit 1) as address,
+            (select count(*) from work_items w where w.customer_id = c.id) as job_count
+       from customers c
+      where c.company_id = $1
+        and (
+          c.name ilike '%' || $2 || '%'
+          or c.email ilike '%' || $2 || '%'
+          or ($3 <> '' and regexp_replace(coalesce(c.phone, ''), '\\D', '', 'g') like '%' || $3 || '%')
+        )
+      order by c.name
+      limit 6`,
+    [session.companyId, term, digits],
+  )
+}

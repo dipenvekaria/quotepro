@@ -17,7 +17,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 
 import { AddLineItem } from './add-line-item'
-import { Input } from '@/components/ui/input'
+import { CustomerLookup } from './customer-lookup'
 import { Label } from '@/components/ui/label'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
@@ -327,51 +327,17 @@ export function QuoteEditor({
               <User className="h-4 w-4 text-muted-foreground" />
               <h2 className="text-sm font-semibold">Customer</h2>
             </header>
-            <div className="grid grid-cols-1 gap-4 p-5 sm:grid-cols-2">
-              <FieldRow>
-                <Label htmlFor="customer_name" className="text-sm font-medium">
-                  Name <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="customer_name"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="Sarah Johnson"
-                  className="h-10"
-                  required
-                />
-              </FieldRow>
-              <FieldRow>
-                <Label htmlFor="customer_phone" className="text-sm font-medium">Phone</Label>
-                <Input
-                  id="customer_phone"
-                  value={customerPhone}
-                  onChange={(e) => setCustomerPhone(e.target.value)}
-                  placeholder="+1 (555) 000-0000"
-                  className="h-10"
-                />
-              </FieldRow>
-              <FieldRow>
-                <Label htmlFor="customer_email" className="text-sm font-medium">Email</Label>
-                <Input
-                  id="customer_email"
-                  type="email"
-                  value={customerEmail}
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                  placeholder="sarah@example.com"
-                  className="h-10"
-                />
-              </FieldRow>
-              <FieldRow>
-                <Label htmlFor="address" className="text-sm font-medium">Address</Label>
-                <Input
-                  id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="123 Market St, San Francisco, CA 94103"
-                  className="h-10"
-                />
-              </FieldRow>
+            <div className="space-y-4 p-5">
+              <CustomerLookup
+                value={{ name: customerName, email: customerEmail, phone: customerPhone, address }}
+                disabled={saving}
+                onChange={(next) => {
+                  if (next.name !== undefined) setCustomerName(next.name)
+                  if (next.email !== undefined) setCustomerEmail(next.email)
+                  if (next.phone !== undefined) setCustomerPhone(next.phone)
+                  if (next.address !== undefined) setAddress(next.address)
+                }}
+              />
               <FieldRow className="sm:col-span-2">
                 <Label htmlFor="description" className="text-sm font-medium">Job description</Label>
                 <textarea
