@@ -667,7 +667,7 @@ function Zone({
         </div>
         <Link
           href={linkHref}
-          className="text-[11px] text-muted-foreground hover:text-foreground"
+          className="inline-flex min-h-11 items-center text-[11px] text-muted-foreground hover:text-foreground lg:min-h-0"
         >
           {linkLabel}
         </Link>

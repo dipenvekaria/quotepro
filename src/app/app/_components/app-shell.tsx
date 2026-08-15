@@ -257,7 +257,7 @@ function TopBar({
       </button>
 
       {/* Mobile brand */}
-      <Link href="/app/dashboard" className="flex items-center gap-1.5 lg:hidden">
+      <Link href="/app/dashboard" className="flex min-h-11 items-center gap-1.5 lg:hidden">
         <BrandMark tile="h-7 w-7" mark="h-4 w-4" />
         <span className="text-sm font-semibold sm:hidden">
           {company?.name?.split(' ')[0] ?? BRAND_NAME}
