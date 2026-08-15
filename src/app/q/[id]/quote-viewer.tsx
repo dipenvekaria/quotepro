@@ -38,6 +38,13 @@ type LineItem = {
   option_tier?: string | null
 }
 
+export type ViewerPhoto = {
+  id: string
+  url: string
+  caption: string | null
+  quote_item_id: string | null
+}
+
 export type QuoteOption = {
   id: string
   tier: 'good' | 'better' | 'best'
@@ -87,10 +94,12 @@ export function QuoteViewer({
   quote,
   items,
   options = [],
+  photos = [],
 }: {
   quote: Quote
   items: LineItem[]
   options?: QuoteOption[]
+  photos?: ViewerPhoto[]
 }) {
   const [signOpen, setSignOpen] = useState(false)
   const [declineOpen, setDeclineOpen] = useState(false)
@@ -113,6 +122,9 @@ export function QuoteViewer({
   // With options, the quote shows the chosen column; without, everything.
   const visibleItems = hasOptions ? items.filter((i) => i.option_tier === chosenTier) : items
   const chosenOption = options.find((o) => o.tier === chosenTier)
+
+  const photosFor = (itemId: string) => photos.filter((p) => p.quote_item_id === itemId)
+  const generalPhotos = photos.filter((p) => !p.quote_item_id)
 
   const nonDiscountItems = visibleItems.filter((i) => !i.is_discount)
   const discounts = visibleItems.filter((i) => i.is_discount)
@@ -311,6 +323,26 @@ export function QuoteViewer({
           </section>
         )}
 
+        {generalPhotos.length > 0 && (
+          <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
+            <header className="border-b border-border/70 px-6 py-4">
+              <h2 className="text-sm font-semibold">Photos</h2>
+            </header>
+            <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">
+              {generalPhotos.map((p) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={p.id}
+                  src={p.url}
+                  alt={p.caption ?? 'Photo of the work'}
+                  loading="lazy"
+                  className="aspect-square w-full rounded-lg border border-border/70 object-cover"
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Line items */}
         <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
           <header className="flex items-center justify-between border-b border-border/70 px-6 py-4">
@@ -343,6 +375,23 @@ export function QuoteViewer({
                     <p className="mt-0.5 text-[11px] tabular text-muted-foreground">
                       {item.quantity} × {fmtMoney(item.unit_price)}
                     </p>
+                  )}
+                  {/* A photo of the actual part, beside the line that charges
+                      for it — which is where the question "what am I paying for?"
+                      gets asked. */}
+                  {photosFor(item.id).length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {photosFor(item.id).map((p) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={p.id}
+                          src={p.url}
+                          alt={p.caption ?? item.name}
+                          loading="lazy"
+                          className="h-16 w-16 rounded-md border border-border/70 object-cover"
+                        />
+                      ))}
+                    </div>
                   )}
                 </div>
                 <div className="whitespace-nowrap text-right text-sm font-semibold tabular">

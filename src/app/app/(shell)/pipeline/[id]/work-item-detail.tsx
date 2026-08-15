@@ -39,6 +39,8 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
+import type { QuotePhoto } from './photo-actions'
+import { QuotePhotos } from './quote-photos'
 import {
   changeStatus,
   generateCustomerSummary,
@@ -160,12 +162,14 @@ export function WorkItemDetail({
   teammates,
   invoice,
   payments,
+  photos,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
   teammates: Teammate[]
   invoice: Invoice | null
   payments: Payment[]
+  photos: QuotePhoto[]
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
@@ -661,6 +665,14 @@ export function WorkItemDetail({
           </section>
 
           {/* Activity */}
+          <QuotePhotos
+            workItemId={workItem.id}
+            photos={photos}
+            lineItems={items
+              .filter((i) => i.id && i.name)
+              .map((i) => ({ id: i.id as string, name: i.name }))}
+          />
+
           <Activity workItem={workItem} />
         </div>
 

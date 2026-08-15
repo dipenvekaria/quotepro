@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 
+import { listQuotePhotos } from './photo-actions'
 import { WorkItemDetail, type LineItem } from './work-item-detail'
 
 // ---------------------------------------------------------------------------
@@ -120,6 +121,8 @@ export default async function WorkItemDetailPage({
     assignee: row.assignee_profile ? { profile: row.assignee_profile } : null,
   }
 
+  const photos = await listQuotePhotos(id, companyId)
+
   const quoteItems = await query<{
     id: string
     name: string
@@ -183,6 +186,7 @@ export default async function WorkItemDetailPage({
     <WorkItemDetail
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
       lineItems={(quoteItems ?? []) as LineItem[]}
+      photos={photos}
       teammates={
         (teammates ?? []).map((t) => {
           const p = (t.profile as { full_name?: string } | null)

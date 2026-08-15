@@ -62,11 +62,27 @@ export default async function PublicQuotePage({
     .eq('work_item_id', quote.id)
     .order('sort_order', { ascending: true })
 
+  // Public bucket, so URLs resolve without a signed request on a page that has
+  // to load fast on a phone in a driveway.
+  const { data: photoRows } = await admin
+    .from('quote_photos')
+    .select('id, storage_path, caption, quote_item_id, sort_order')
+    .eq('work_item_id', quote.id)
+    .order('sort_order', { ascending: true })
+
+  const photos = (photoRows ?? []).map((p: { id: string; storage_path: string; caption: string | null; quote_item_id: string | null }) => ({
+    id: p.id,
+    url: admin.storage.from('quote-photos').getPublicUrl(p.storage_path).data.publicUrl,
+    caption: p.caption,
+    quote_item_id: p.quote_item_id,
+  }))
+
   return (
     <QuoteViewer
       quote={quote as unknown as Parameters<typeof QuoteViewer>[0]['quote']}
       items={(items ?? []) as Parameters<typeof QuoteViewer>[0]['items']}
       options={(options ?? []) as Parameters<typeof QuoteViewer>[0]['options']}
+      photos={photos}
     />
   )
 }
