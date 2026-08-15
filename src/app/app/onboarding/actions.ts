@@ -12,13 +12,15 @@ const inputSchema = z.object({
   phone: z.string().optional(),
   email: z.string().email().optional().or(z.literal('')),
   address: z.string().optional(),
-  // Trade + rates build the starter catalog. All optional: skipping them lands
-  // the contractor on the minimal seed catalog, which is what used to happen
-  // for everyone.
-  trade: z.string().max(120).optional(),
-  labor_rate: z.coerce.number().min(1).max(1000).optional(),
-  materials_markup: z.coerce.number().min(0).max(300).optional(),
-  service_call_fee: z.coerce.number().min(0).max(10_000).optional(),
+  // Required. A new account without a catalog cannot produce a quote — AI
+  // generation has nothing to ground on — so the first thing it does is fail.
+  // Picking a trade is the whole of setup, and it takes one dropdown.
+  trade: z.string().min(1, 'Choose your trade so we can build your price book').max(120),
+  // Defaulted rather than optional, so the catalog is always priced. The
+  // contractor changes them here or later in Settings.
+  labor_rate: z.coerce.number().min(1).max(1000).default(125),
+  materials_markup: z.coerce.number().min(0).max(300).default(50),
+  service_call_fee: z.coerce.number().min(0).max(10_000).default(99),
 })
 
 export type BootstrapCompanyState = {
@@ -46,15 +48,19 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
   if (!user) return { ok: false, error: 'Not authenticated' }
 
   const rates = {
-    laborRate: parsed.data.labor_rate ?? 0,
-    markup: (parsed.data.materials_markup ?? 0) / 100,
-    serviceCallFee: parsed.data.service_call_fee ?? 0,
+    laborRate: parsed.data.labor_rate,
+    markup: parsed.data.materials_markup / 100,
+    serviceCallFee: parsed.data.service_call_fee,
   }
 
-  // Priced from the contractor's own numbers, so an empty rate means we have
-  // nothing to price with and fall back to the minimal seed.
-  const starter =
-    parsed.data.trade && rates.laborRate > 0 ? loadStarterCatalog(parsed.data.trade, rates) : []
+  const starter = loadStarterCatalog(parsed.data.trade, rates)
+
+  // An unknown slug reads an empty catalog, which would land the contractor on
+  // the same empty screen this requirement exists to prevent. Say so rather
+  // than creating a workspace that cannot quote.
+  if (starter.length === 0) {
+    return { ok: false, error: 'We could not find a price book for that trade. Pick another.' }
+  }
 
   let companyId: string | undefined
   try {
@@ -72,9 +78,9 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
           parsed.data.phone || null,
           parsed.data.email || null,
           parsed.data.address || null,
-          // The built-in seed is four generic rows. Skip it when a real trade
-          // catalog is going in, or the contractor starts with duplicates.
-          starter.length === 0,
+          // A real trade catalog is always going in now, so the built-in
+          // four-row seed would only create duplicates.
+          false,
         ],
       )
       return rows[0]?.id
@@ -85,14 +91,13 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
 
   if (!companyId) return { ok: false, error: 'Unknown error' }
 
-  if (starter.length > 0) {
-    try {
-      await seedCatalog(companyId, starter, parsed.data)
-    } catch (e) {
-      // The workspace exists and is usable; only the catalog is missing, and
-      // they can import one. Failing signup here would be worse.
-      console.error('starter catalog seed failed', e)
-    }
+  try {
+    await seedCatalog(companyId, starter, parsed.data)
+  } catch (e) {
+    // The workspace exists and is usable; only the catalog is missing, and they
+    // can still import one. Failing signup after the company was created would
+    // leave them worse off than an empty price book.
+    console.error('starter catalog seed failed', e)
   }
 
   revalidatePath('/app')
