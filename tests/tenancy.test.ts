@@ -81,6 +81,12 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'customer fetched with company_id above; notFound() when missing',
   },
   {
+    file: 'src/app/app/(shell)/customers/actions.ts',
+    match: 'insert into customer_addresses',
+    reason:
+      'same transaction as the customers insert immediately above, which carried company_id from the session',
+  },
+  {
     file: 'src/app/app/(shell)/customers/page.tsx',
     match: 'from customer_addresses',
     reason: 'customer ids come from a company-scoped query',
