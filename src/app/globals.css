@@ -186,11 +186,6 @@
   p     { @apply text-sm leading-relaxed text-foreground/90 sm:text-[15px]; }
   small { @apply text-xs text-muted-foreground sm:text-sm; }
 
-  /* iOS prefers 16px+ on form fields to avoid auto-zoom on focus. */
-  input, select, textarea { font-size: 16px; }
-  @media (min-width: 640px) {
-    input, select, textarea { font-size: 14px; }
-  }
 
   /* Tabular numerics anywhere numbers matter */
   .tabular, table td, table th, [data-tabular] { font-variant-numeric: tabular-nums; }
@@ -254,5 +249,23 @@
     iframe[src*="react-devtools"] {
       display: none !important;
     }
+  }
+}
+
+/*
+  iOS zooms the whole page when a focused field is under 16px, and it does not
+  zoom back out — you land on the next screen scrolled sideways with the edges
+  cut off.
+
+  This lived in @layer base and lost: Tailwind utilities beat layered styles, so
+  `text-sm` on the Input primitive won and every field computed to 14px.
+  Unlayered, it wins, which also covers the hand-rolled inputs that never used
+  the primitive.
+*/
+@media (max-width: 639px) {
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    font-size: 16px;
   }
 }

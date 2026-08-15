@@ -314,7 +314,7 @@ export function QuoteEditor({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pb-6 lg:px-10 lg:py-8">
       {/* Header. Actions drop to their own row on a phone — side by side with the
           title there is not room for a breadcrumb and two labelled buttons, and
           the breadcrumb wraps into the title. */}
@@ -332,8 +332,11 @@ export function QuoteEditor({
             <h1 className="truncate text-2xl font-semibold tracking-tight">Quote draft</h1>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <Button onClick={save} disabled={saving} className="flex-1 gap-1.5 shadow-sm sm:flex-none">
+        {/* On a phone the primary action lives in the bar at the bottom, within
+            thumb reach; up here it sat above the fold and scrolled away as soon
+            as you started filling the form. */}
+        <div className="hidden shrink-0 items-center gap-2 sm:flex">
+          <Button onClick={save} disabled={saving} className="gap-1.5 shadow-sm">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save quote
           </Button>
@@ -498,7 +501,7 @@ export function QuoteEditor({
               </div>
             </dl>
             <p className="mt-4 text-center text-[11px] text-muted-foreground">
-              Use “Save quote” above — drafts stay private until you send.
+              Drafts stay private until you send.
             </p>
           </div>
 
@@ -529,6 +532,15 @@ export function QuoteEditor({
           onClose={() => setAiOpen(false)}
         />
       )}
+
+      {/* Thumb-reachable primary action. Phones only — from sm the button is in
+          the header, where there is room for it. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden">
+        <Button onClick={save} disabled={saving} className="w-full gap-1.5 shadow-sm">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          Save quote
+        </Button>
+      </div>
     </div>
   )
 }

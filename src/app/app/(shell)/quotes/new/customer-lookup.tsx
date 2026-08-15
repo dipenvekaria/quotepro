@@ -114,10 +114,58 @@ export function CustomerLookup({
     onChange({ customerId: null, phone: '', email: '', address: '' })
   }
 
+  /*
+    Anchored to the field being typed in, not to the wrapper.
+    `absolute top-full` on the outer container put this below the entire
+    customer block — past the email and address rows — so the matches appeared
+    somewhere the eye never goes while typing a name. Nobody found them.
+  */
+  const suggestions =
+    open && matches.length > 0 && !linked ? (
+      <div
+        role="listbox"
+        className="absolute inset-x-0 top-full z-30 mt-1 overflow-hidden rounded-lg border border-border bg-popover shadow-lg"
+      >
+        <p className="border-b border-border/70 px-3 py-1.5 text-[11px] text-muted-foreground">
+          Existing customers
+        </p>
+        {matches.map((c) => (
+          <button
+            key={c.id}
+            type="button"
+            role="option"
+            aria-selected={false}
+            // See add-line-item.tsx: preventDefault keeps the input focused
+            // so the click cannot be beaten by the list closing.
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => pick(c)}
+            className={cn(
+              'flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-muted/60',
+            )}
+          >
+            <span className="flex min-w-0 items-center gap-2">
+              <User className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+              <span className="min-w-0">
+                <span className="block truncate font-medium">{c.name}</span>
+                <span className="block truncate text-xs text-muted-foreground">
+                  {[c.phone, c.email].filter(Boolean).join(' · ') || 'No contact details'}
+                </span>
+              </span>
+            </span>
+            {c.job_count > 0 && (
+              <span className="shrink-0 text-xs text-muted-foreground">
+                {c.job_count} {c.job_count === 1 ? 'job' : 'jobs'}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+    ) : null
+
   return (
-    <div ref={boxRef} className="relative">
+    <div ref={boxRef}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5">
+        <div className="relative space-y-1.5">
           <label htmlFor="cust-name" className="text-sm font-medium">
             Name <span className="text-destructive">*</span>
           </label>
@@ -139,9 +187,10 @@ export function CustomerLookup({
             className="h-11"
             autoComplete="off"
           />
+          {field === 'name' && suggestions}
         </div>
 
-        <div className="space-y-1.5">
+        <div className="relative space-y-1.5">
           <label htmlFor="cust-phone" className="text-sm font-medium">
             Phone
           </label>
@@ -163,6 +212,7 @@ export function CustomerLookup({
             className="h-11"
             autoComplete="off"
           />
+          {field === 'phone' && suggestions}
         </div>
 
         <div className="space-y-1.5">
@@ -229,46 +279,6 @@ export function CustomerLookup({
         </div>
       )}
 
-      {open && matches.length > 0 && !linked && (
-        <div
-          role="listbox"
-          className="absolute inset-x-0 top-full z-20 mt-1 overflow-hidden rounded-lg border border-border bg-popover shadow-lg"
-        >
-          <p className="border-b border-border/70 px-3 py-1.5 text-[11px] text-muted-foreground">
-            Existing customers
-          </p>
-          {matches.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              role="option"
-              aria-selected={false}
-              // See add-line-item.tsx: preventDefault keeps the input focused
-              // so the click cannot be beaten by the list closing.
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => pick(c)}
-              className={cn(
-                'flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm hover:bg-muted/60',
-              )}
-            >
-              <span className="flex min-w-0 items-center gap-2">
-                <User className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                <span className="min-w-0">
-                  <span className="block truncate font-medium">{c.name}</span>
-                  <span className="block truncate text-xs text-muted-foreground">
-                    {[c.phone, c.email].filter(Boolean).join(' · ') || 'No contact details'}
-                  </span>
-                </span>
-              </span>
-              {c.job_count > 0 && (
-                <span className="shrink-0 text-xs text-muted-foreground">
-                  {c.job_count} {c.job_count === 1 ? 'job' : 'jobs'}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
