@@ -1,12 +1,13 @@
 // Sign page - Initiates SignNow signing flow
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { acceptQuote } from '../actions'
 
 interface SignPageProps {
   params: Promise<{ id: string }>
@@ -18,69 +19,58 @@ export default function SignPage({ params }: SignPageProps) {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    // Unwrap params promise
-    params.then(({ id }) => {
-      setQuoteId(id)
-      initiateSigningFlow(id)
-    })
-  }, [params])
-
-  const initiateSigningFlow = async (id: string) => {
-    try {
+  /**
+   * Start the signing flow for a public token.
+   *
+   * Declared before the effect that calls it: it was a `const` defined below,
+   * so the effect referenced it in its temporal dead zone and only worked
+   * because effects run after render.
+   */
+  const startSigning = useCallback(
+    async (token: string) => {
       setIsLoading(true)
       setError(null)
 
-      // Call the sign API to upload to SignNow and create invite
-      const response = await fetch('/api/quotes/sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quote_id: id }),
-      })
+      let signingUrl: string | null = null
+      try {
+        const response = await fetch('/api/quotes/sign', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        })
+        const data = await response.json()
+        if (response.ok && data.signing_url) signingUrl = data.signing_url as string
+      } catch {
+        // Falls through to acceptance below — e-signature is a nicety, and a
+        // customer who has decided to accept should not be blocked by it.
+      }
 
-      const data = await response.json()
-      console.log('Sign API response:', data) // Debug log
-
-      // Check if we got a signing URL from SignNow
-      if (response.ok && data.signing_url) {
-        // SignNow is working - redirect to signing page
-        console.log('Redirecting to SignNow:', data.signing_url)
-        window.location.href = data.signing_url
+      if (signingUrl) {
+        window.location.href = signingUrl
         return
       }
 
-      // SignNow failed or not configured - fall back to instant acceptance
-      console.log('SignNow unavailable, falling back to instant acceptance. Response:', response.ok, 'Data:', data)
-      await fallbackToInstantAcceptance(id)
-    } catch (err) {
-      console.error('Signing error:', err)
-      // On any error, fall back to instant acceptance
-      await fallbackToInstantAcceptance(id)
-    }
-  }
-
-  const fallbackToInstantAcceptance = async (id: string) => {
-    try {
-      const response = await fetch('/api/quotes/accept', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quote_id: id }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to accept quote')
+      // The same server action the Accept button uses. The route this replaced
+      // looked the quote up by `id` while being handed a public_token, and wrote
+      // a status that is not in the enum — so it matched nothing, and could not
+      // have written anything if it had.
+      const res = await acceptQuote({ token, signer_name: 'Customer' })
+      if (!res.ok) {
+        setError(res.error)
+        setIsLoading(false)
+        return
       }
+      router.push(`/q/${token}/accepted`)
+    },
+    [router],
+  )
 
-      // Redirect to success page
-      router.push(`/q/${id}/accepted`)
-    } catch (err) {
-      console.error('Acceptance error:', err)
-      setError('Unable to accept quote. Please contact the company directly.')
-      setIsLoading(false)
-    }
-  }
+  useEffect(() => {
+    params.then(({ id }) => {
+      setQuoteId(id)
+      void startSigning(id)
+    })
+  }, [params, startSigning])
 
   if (isLoading) {
     return (
@@ -123,7 +113,7 @@ export default function SignPage({ params }: SignPageProps) {
                 <Button
                   className="w-full"
                   variant="outline"
-                  onClick={() => initiateSigningFlow(quoteId)}
+                  onClick={() => void startSigning(quoteId)}
                 >
                   Try Again
                 </Button>
