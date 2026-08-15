@@ -107,6 +107,80 @@ Dropping to $99 nearly triples the customer count for the same income — and tr
 load, the onboarding hours and the churn surface, for a two-person team. **Price is not a
 marketing decision here; it decides whether the business is operable.**
 
+## Customer acquisition — paid influencers
+
+Acquisition is paid: trade creators promoting Rivet to their audience. That is the one real cost
+in this model, and it dwarfs everything measured above. Infrastructure is $111 a month; acquiring
+a single customer plausibly costs more than a year of it.
+
+Two payment shapes, and they behave very differently.
+
+### Model A — flat sponsorship, i.e. a cost per acquired customer
+
+| CAC | Payback | LTV at 3%/mo churn | LTV:CAC | LTV at 5%/mo churn | LTV:CAC |
+| --- | --- | --- | --- | --- | --- |
+| $250 | 1.0 month | $8,041 | 32 | $4,825 | 19 |
+| $500 | 2.1 months | $8,041 | 16 | $4,825 | 10 |
+| $1,000 | 4.1 months | $8,041 | 8.0 | $4,825 | 4.8 |
+| $2,000 | 8.3 months | $8,041 | 4.0 | $4,825 | 2.4 |
+| $3,000 | 12.4 months | $8,041 | 2.7 | $4,825 | **1.6** |
+
+The conventional bars are LTV:CAC above 3 and payback under 12 months. **Anything up to about
+$2,000 per acquired customer clears both, even at 5% monthly churn.** That is an unusually wide
+tolerance, and it is a direct consequence of the 97% margin — there is simply a lot of room
+between $249 and what it costs to serve.
+
+Read the bottom row as the warning: at $3,000 CAC and 5% churn the ratio collapses to 1.6 and the
+business stops working. The variable that breaks it is churn, not price.
+
+### Model B — affiliate revenue share, paid for as long as the customer stays
+
+| Share | Contribution per month | Margin |
+| --- | --- | --- |
+| 10% | $216.34 | 86.9% |
+| 20% | $191.44 | 76.9% |
+| 30% | $166.54 | 66.9% |
+
+A permanent 20–30% share still leaves a margin most software businesses would take. But it is a
+permanent claim on revenue, and it converts a fixed acquisition cost into one that grows with
+success.
+
+**Prefer Model A where the creator will accept it.** A flat fee is bounded, it is cheapest exactly
+when a campaign works well, and it does not encumber the revenue line if the business is ever
+sold. Use revenue share only to get a creator to take a risk they otherwise would not — and cap
+it in time, twelve months rather than for life, so a good customer stops paying rent forever.
+
+### Breakeven, with acquisition included
+
+Replacing churn is a permanent cost: at 3% monthly churn, a customer base of *N* needs 0.03 × *N*
+new customers every month just to stand still.
+
+| CAC | Customers to cover one full salary | Monthly churn-replacement spend |
+| --- | --- | --- |
+| $0 | 45 | — |
+| $500 | **48** | $726 |
+| $1,000 | **52** | $1,554 |
+| $2,000 | **60** | $3,623 |
+
+**Acquisition cost barely moves the breakeven point.** At $1,000 per customer it rises from 45 to
+52. This is the clearest evidence that the model is sound: even expensive acquisition changes the
+target by a seventh.
+
+What it does change is **cash timing**. Forty-five customers at $1,000 CAC is $45,000 spent before
+the revenue arrives, and at 4.1 months payback that money is out of the account for a third of a
+year. With no funding round, the constraint is not whether influencer marketing pays — it is
+whether there is cash to run it at any pace worth having.
+
+### What to measure from the first campaign
+
+- **Cost per signup and cost per paying customer**, separately. The gap between them is the
+  onboarding conversion rate, and it is the number most likely to disappoint.
+- **Churn by acquisition source.** Influencer-acquired customers frequently churn faster than
+  referrals, and every figure above is far more sensitive to churn than to CAC.
+- **Whether the audience is the buyer.** A creator's audience is often technicians; the buyer is
+  the owner. That mismatch is the most common way trade-influencer spend produces attention and
+  no revenue.
+
 ## What would change this analysis
 
 **A live payment.** Everything above assumes contractors will pay $249. Nothing has tested that.
@@ -129,7 +203,8 @@ the one most worth proving early.
 ## The honest summary
 
 The economics are excellent and largely irrelevant. At 97% gross margin with $111 of fixed cost,
-the business cannot fail for cost reasons. It will succeed or fail on whether 45 trades
+the business cannot fail on cost of service — and acquisition, the one real cost, barely moves
+the breakeven point: 45 customers becomes 52 even at $1,000 per customer. It will succeed or fail on whether 45 trades
 contractors can be found, sold and kept by two part-time people — and on whether they will pay
 $249 for something no one has yet paid anything for.
 
