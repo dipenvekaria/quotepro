@@ -48,7 +48,7 @@ Priority: **P0** before taking money · **P1** before real marketing · **P2** f
 | 3.1 | **Terms of Service** | **P0** | Liability cap, no warranty on AI-generated quotes, termination, payment terms |
 | 3.2 | **Privacy Policy** | **P0** | You hold contractor *and* homeowner PII |
 | 3.3 | **Data Processing Addendum** | **P1** | You are a processor for your contractors' customer data |
-| 3.4 | Subprocessor list — Supabase, Vercel, Railway, Google/Gemini, Stripe, Resend, Twilio, SignNow | **P1** | Required by the DPA |
+| 3.4 | Subprocessor list — Supabase, Vercel, Google Cloud (Vertex AI, Places), Stripe, Resend, Sentry, Twilio, SignNow | **P1** | Required by the DPA |
 | 3.5 | **AI output disclaimer** | **P0** | Explicit: quotes are drafts, the contractor is responsible for verifying pricing before sending. A hallucinated price the customer accepts is a contract. |
 | 3.6 | Acceptable Use Policy | P2 | |
 | 3.7 | Refund / cancellation policy on the pricing page | **P1** | |

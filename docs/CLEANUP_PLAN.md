@@ -131,8 +131,9 @@ Only after the dead code is gone, because several of these get simpler once it i
 - **Regenerate `src/types/database.types.ts`** from the live schema; delete `database.new.ts`.
 - **Extract repeated query shapes.** `select company_id from users where id = $1` appears in
   most action files even though `getSession()` already returns it.
-- **Consolidate deployment config.** `docker-compose.yml`, `k8s/deployment.yaml`, `railway.json`,
-  and `Procfile` describe four different topologies. All are gone.
+- [x] ~~**Consolidate deployment config.**~~ Done. `docker-compose.yml`, `k8s/deployment.yaml`,
+  `railway.json` and `Procfile` described four different topologies; all four are deleted. Vercel
+  plus Supabase Cloud is the whole of it.
 
 ---
 

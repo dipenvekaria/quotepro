@@ -18,7 +18,7 @@ Nothing else is real until this is done. Roughly a week of focused work.
 - [ ] **Provision hosted Supabase** — separate `production` and `staging` projects. Run the four
       migrations. Do *not* run the seed against production.
 - [ ] **Deploy the frontend to Vercel** from `main`. Preview deploys on PRs.
-- [ ] **Deploy `ai_backend.py` to Railway** (`railway.json` exists). Stable HTTPS URL.
+- [x] ~~Deploy the AI service~~ — the AI runs in-process in the Next.js app (ADR 0009). No separate service, nothing to deploy.
 - [ ] **Domain, DNS, TLS.** Decide the production domain — this is also the Rivet naming
       decision made concrete.
 - [ ] **Remove every `*.trycloudflare.com` URL** from all environments.
@@ -143,7 +143,7 @@ capacity allows.
 
 Two people, minimal collision:
 
-- **Infrastructure and backend track** — hosted Supabase, Vercel, Railway, secrets, AI backend
+- **Infrastructure track** — hosted Supabase, Vercel, secrets
   lockdown, Stripe live mode, webhooks, email deliverability.
 - **Codebase and product track** — Phase 1 deletions, toolchain migration, tenancy audit,
   landing page, onboarding/catalog activation, mobile QA.

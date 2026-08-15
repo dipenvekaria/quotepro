@@ -194,7 +194,7 @@ Invoke by name:
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit and why |
 | [`docs/DATA_MODEL.md`](docs/DATA_MODEL.md) | Schema, lifecycle, RLS |
 | [`docs/CONVENTIONS.md`](docs/CONVENTIONS.md) | How we write code here |
-| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Railway + Supabase Cloud |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Vercel + Supabase Cloud |
 | [`docs/PROTOTYPE_DEPLOYMENT.md`](docs/PROTOTYPE_DEPLOYMENT.md) | **Current focus** — get the prototype deployed and a second engineer contributing |
 | [`docs/STRATEGY.md`](docs/STRATEGY.md) | **Start here for direction.** Wedge, 90-day plan, where the moat comes from. |
 | [`docs/PRODUCT_REVIEW.md`](docs/PRODUCT_REVIEW.md) | Product gaps and v1 scope. Parts are stale — the catalog blocker it leads with was fixed. |
