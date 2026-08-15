@@ -171,6 +171,62 @@ the revenue arrives, and at 4.1 months payback that money is out of the account 
 year. With no funding round, the constraint is not whether influencer marketing pays — it is
 whether there is cash to run it at any pace worth having.
 
+### Which channel, and why "cheapest" is the wrong question
+
+The ceiling above is roughly **$2,000 per acquired customer** — the point where payback still
+lands inside twelve months and LTV:CAC stays above 3 at 5% monthly churn. That is a great deal of
+headroom, and it changes what to optimise for. **The right channel is the one that converts, not
+the one with the cheapest impressions.** A $10 click that finds a buyer beats a $0.60 click that
+finds a technician.
+
+Cost assumptions below are indicative and should be replaced with real numbers after the first
+campaign. The arithmetic is the point, not the inputs.
+
+| Channel | Assumed CPC | End-to-end conversion needed to stay under $2,000 |
+| --- | --- | --- |
+| Google Search, in-market terms | $10 | 0.50% |
+| Meta / Instagram, cold | $1.50 | 0.07% |
+| YouTube, cold | $0.60 | 0.03% |
+| Comparison pages / SEO | — | costs time, not media |
+
+Those thresholds look easy until you apply plausible funnel rates:
+
+| Channel | Visitor→trial | Trial→paid | Implied CAC | Verdict |
+| --- | --- | --- | --- | --- |
+| Google Search | 3% | 25% | **$1,333** | clears |
+| YouTube cold | 0.3% | 12% | $1,667 | marginal |
+| Meta cold | 0.5% | 15% | **$2,000** | fails |
+| Retargeting site visitors | 6% | 30% | **$111** | clears easily |
+
+**AI-generated creative changes the cost of making ads, not the cost of buying attention.**
+Generating fifty variants is nearly free now, and that genuinely helps — creative testing is
+normally the slow, expensive part. But Meta and YouTube inventory is priced by auction, and no
+amount of cheap creative lowers a CPM.
+
+The harder problem on paid social is targeting. The buyer is an owner of a small trades business
+— a few hundred thousand people in the US. Meta cannot target "owns an HVAC company"; interest
+targeting on HVAC reaches technicians, students and enthusiasts, with owners a thin slice. On a
+small audience, frequency rises and CPMs follow.
+
+**The order worth testing:**
+
+1. **Google Search on in-market terms** — "HVAC quoting software", "Housecall Pro alternative".
+   Expensive per click and the only channel where the buyer identifies themselves. Comfortably
+   inside the ceiling.
+2. **Comparison pages** — "Rivet vs Jobber", "Rivet vs Housecall Pro". Captures the same intent,
+   compounds over time, costs time rather than media. `docs/COMPETITIVE_ANALYSIS.md` is most of
+   the raw material already.
+3. **Owner-focused communities**, not ads. Trades owners genuinely congregate in Facebook groups
+   and trade forums, and that is where "has anyone tried X" gets asked.
+4. **Retargeting**, once the pages above have traffic. At $111 implied CAC this is the cheapest
+   customer available, and it is where a library of AI-generated variants finally pays off.
+5. **Cold paid social last**, if at all, and only against an audience built from people who have
+   already visited.
+
+**On influencers versus paid social:** the influencer route is likely the better of the two, on
+one condition — the creator's audience must be owners rather than technicians. That mismatch is
+the most common way trade-creator spend buys attention and produces no revenue.
+
 ### What to measure from the first campaign
 
 - **Cost per signup and cost per paying customer**, separately. The gap between them is the
