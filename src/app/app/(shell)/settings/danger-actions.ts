@@ -17,8 +17,8 @@ import { createClient } from '@/lib/supabase/server'
  *
  * Closing is immediate and total as far as the product is concerned: the rows
  * leave the live tables, the logins stop working, and public quote links go
- * dead. What survives is one snapshot in `archived_accounts`, kept for ninety
- * days so a mistake or a change of heart is recoverable, then purged.
+ * dead. What survives is one snapshot in `archived_accounts`, kept on record
+ * indefinitely, so a mistake or a change of heart is always recoverable.
  *
  * The guard rails are still all in front — the caller is shown what will be
  * removed, warned about money still in motion, and made to type the company

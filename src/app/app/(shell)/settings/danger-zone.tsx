@@ -76,7 +76,7 @@ export function DangerZone({ isOwner }: { isOwner: boolean }) {
       <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
         <p className="max-w-prose text-sm text-muted-foreground">
           {isOwner
-            ? 'Closes this company and removes everything from Rivet — customers, quotes, jobs, invoices, your price book, and every login on the team. An archived copy is kept for 90 days in case you need it back, then permanently deleted.'
+            ? 'Closes this company and removes everything from Rivet — customers, quotes, jobs, invoices, your price book, and every login on the team. An archived copy is kept on record, so nothing is lost if you need it back.'
             : 'Deletes your login. Your company keeps its customers, quotes and jobs — you just lose access to them.'}
         </p>
         <Button variant="destructive" onClick={openDialog} className="shrink-0">
@@ -92,7 +92,7 @@ export function DangerZone({ isOwner }: { isOwner: boolean }) {
             </DialogTitle>
             <DialogDescription>
               {isOwner
-                ? 'Everything below leaves Rivet the moment you confirm. An archived copy is held for 90 days — getting it back means contacting support, not clicking undo.'
+                ? 'Everything below leaves Rivet the moment you confirm. An archived copy is kept on record indefinitely — getting it back means contacting support, not clicking undo.'
                 : 'You will be signed out and will lose access to this company.'}
             </DialogDescription>
           </DialogHeader>

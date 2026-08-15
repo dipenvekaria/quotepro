@@ -17,8 +17,8 @@ history, and there is nothing anyone can do on Monday.
 ## Decision
 
 Closing an account snapshots the whole tenant into `archived_accounts` as a
-single JSONB document, then deletes the live rows. The snapshot is retained for
-90 days and then purged.
+single JSONB document, then deletes the live rows. The snapshot is retained
+permanently.
 
 `archive_and_delete_company(company_id, actor, actor_email)` does both in one
 transaction, in that order. The delete cannot happen without the snapshot
@@ -66,13 +66,25 @@ and are listed explicitly in the function, with their join.
 with no policy at all, which denies `authenticated` everything and leaves it
 reachable only by the service role.
 
-**Erasure still works.** `purge_after` defaults to 90 days out. A request for
-real deletion is served by deleting the archive row, which is one statement.
+**Retention is indefinite.** The table originally expired archives after 90
+days, on the reasoning that an archive nobody ever deletes is itself a
+compliance problem. That was reversed by decision on 2026-08-15: the record of a
+business that used Rivet is worth keeping, and a contractor returning after two
+years should find their history intact rather than just outside a window nobody
+told them about. `purge_after` and its index were dropped in
+`20260817000000_archives_are_permanent.sql`.
 
-**The purge is not yet automated.** Nothing deletes expired archives on a
-schedule; a Vercel cron hitting a route that clears rows past `purge_after` is
-the intended follow-up. Until it exists, retention is a manual operation, and an
-archive left past 90 days is a compliance gap rather than a bug.
+**Erasure is possible but no longer automatic.** A request for real deletion is
+served by `delete from archived_accounts where company_id = $1`, which is one
+statement. Nothing runs it on a timer.
+
+This is the open risk in this decision and it should be stated plainly: GDPR
+Art. 17 and CCPA give a data subject the right to have their data erased, and
+indefinite retention with a purely manual deletion path means compliance depends
+on someone acting on a request rather than on the system. That is acceptable at
+prototype scale with no EU customers. It stops being acceptable the moment there
+are, and the fix at that point is a documented erasure runbook and probably an
+admin route, not a return to timed purging.
 
 **Closing a single login is unchanged.** Only owners archive a company. Anyone
 else deletes their own auth user, their `users` row cascades away with it, and
