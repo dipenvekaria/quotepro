@@ -4,6 +4,7 @@ import { requireSession } from '@/lib/auth/session'
 import { workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
+import { liveTierPredicate } from '@/lib/quotes/items'
 
 import { listQuotePhotos } from './photo-actions'
 import { WorkItemDetail, type LineItem } from './work-item-detail'
@@ -141,8 +142,8 @@ export default async function WorkItemDetailPage({
     is_discount: boolean
   }>(
     `select id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount
-       from quote_items
-      where work_item_id = $1
+       from quote_items qi
+      where work_item_id = $1${liveTierPredicate(1)}
       order by sort_order asc`,
     [id],
   )

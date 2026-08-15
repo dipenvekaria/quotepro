@@ -8,6 +8,7 @@ import { explainQuote } from '@/lib/ai/explain'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
+import { liveTierPredicate } from '@/lib/quotes/items'
 import { canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import {
@@ -215,7 +216,8 @@ export async function sendQuote(id: string) {
     unit_price: number
     sort_order: number | null
   }>(
-    `select name, quantity, unit_price, sort_order from quote_items where work_item_id = $1`,
+    `select name, quantity, unit_price, sort_order from quote_items qi
+      where work_item_id = $1${liveTierPredicate(1)}`,
     [id],
   )
 
@@ -319,7 +321,7 @@ export async function generateCustomerSummary(input: unknown) {
     `select qi.name, qi.description, qi.quantity
        from quote_items qi
        join work_items w on w.id = qi.work_item_id
-      where qi.work_item_id = $1 and w.company_id = $2
+      where qi.work_item_id = $1 and w.company_id = $2${liveTierPredicate(1)}
       order by qi.sort_order`,
     [parsed.data.work_item_id, companyId],
   )
