@@ -1,10 +1,12 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowRight, Building2, CreditCard, Mail, Users } from 'lucide-react'
+import { ArrowRight, Building2, CreditCard, Download, Mail, Users } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { ROLE_LABEL } from '@/lib/team-personas'
+import { canSeeCatalogPrices } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 
@@ -232,6 +234,37 @@ export default async function SettingsPage() {
           </Link>
         </div>
       </section>
+
+      {canSeeCatalogPrices(role as UserRole) && (
+        <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+          <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
+            <Download className="h-4 w-4 text-muted-foreground" />
+            <h2 className="text-sm font-semibold">Bookkeeping exports</h2>
+          </header>
+          <div className="space-y-3 px-5 py-4">
+            <p className="max-w-prose text-sm text-muted-foreground">
+              CSV in the shape QuickBooks imports, so invoices and payments do not get re-keyed
+              by hand at month end. Works with QuickBooks Online and Desktop.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { kind: 'invoices', label: 'Invoices' },
+                { kind: 'payments', label: 'Payments' },
+                { kind: 'customers', label: 'Customers' },
+              ].map((x) => (
+                <a
+                  key={x.kind}
+                  href={`/api/export/${x.kind}`}
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm font-medium hover:bg-muted lg:min-h-0 lg:py-1.5"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  {x.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <DangerZone isOwner={role === 'owner'} />
     </div>
