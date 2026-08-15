@@ -4,6 +4,7 @@ import {
   canAssignWork,
   canSeeAnalytics,
   canSeeCatalog,
+  canSeeCatalogPrices,
   customerScope,
   workItemScope,
   type Scope,
@@ -75,11 +76,27 @@ describe('customerScope', () => {
 })
 
 describe('what each role may see', () => {
-  it('keeps the price book from technicians and sales', () => {
+  it('lets everyone look an item up', () => {
+    // A technician explaining a part in a customer's utility room needs the
+    // name, the description and the picture. Hiding the whole catalog to
+    // protect the prices hid the one thing that helps them sell.
     expect(canSeeCatalog('owner')).toBe(true)
     expect(canSeeCatalog('office')).toBe(true)
-    expect(canSeeCatalog('sales')).toBe(false)
-    expect(canSeeCatalog('technician')).toBe(false)
+    expect(canSeeCatalog('sales')).toBe(true)
+    expect(canSeeCatalog('technician')).toBe(true)
+  })
+
+  it('keeps the prices from technicians and sales', () => {
+    // The price book is the business — someone who can export it can hand a
+    // competitor the contractor's margins.
+    expect(canSeeCatalogPrices('owner')).toBe(true)
+    expect(canSeeCatalogPrices('office')).toBe(true)
+    expect(canSeeCatalogPrices('sales')).toBe(false)
+    expect(canSeeCatalogPrices('technician')).toBe(false)
+  })
+
+  it('fails closed on an unrecognised role', () => {
+    expect(canSeeCatalogPrices('nonsense' as UserRole)).toBe(false)
   })
 
   it('keeps revenue figures from technicians and sales', () => {
