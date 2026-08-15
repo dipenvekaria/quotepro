@@ -572,7 +572,7 @@ function LineItemRow({
       </div>
       <button
         onClick={onRemove}
-        className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100"
+        className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive lg:h-7 lg:w-7 lg:opacity-0 lg:group-hover:opacity-100"
         aria-label={`Remove row ${idx + 1}`}
       >
         <Trash2 className="h-3.5 w-3.5" />
@@ -614,7 +614,7 @@ function AiPanel({
             <div className="text-sm font-semibold">Draft this quote</div>
             <div className="text-[11px] text-muted-foreground">Grounded in your catalog</div>
           </div>
-          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-muted">
+          <button onClick={onClose} className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7">
             <X className="h-3.5 w-3.5" />
           </button>
         </header>
@@ -663,7 +663,7 @@ function AiPanel({
             </button>
           )}
           <div className="flex items-center justify-end gap-2">
-            <Button variant="outline" onClick={onClose} className="h-9">
+            <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
               Cancel
             </Button>
             <Button onClick={onGenerate} disabled={generating} className="h-9 gap-1.5 shadow-sm">

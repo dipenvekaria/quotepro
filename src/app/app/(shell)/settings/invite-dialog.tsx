@@ -56,7 +56,7 @@ export function InviteTeammateDialog() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm hover:opacity-90"
+        className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-sm hover:opacity-90 lg:min-h-0 lg:px-2.5"
       >
         <UserPlus className="h-3.5 w-3.5" />
         Invite teammate
@@ -75,7 +75,7 @@ export function InviteTeammateDialog() {
               <div className="text-sm font-semibold">Invite a teammate</div>
               <button
                 onClick={reset}
-                className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-muted"
+                className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7"
               >
                 <X className="h-3.5 w-3.5" />
               </button>

@@ -226,7 +226,7 @@ export default async function SettingsPage() {
           </div>
           <Link
             href="/app/integrations"
-            className="mt-3 inline-flex h-8 items-center gap-1 text-xs font-medium text-primary hover:underline"
+            className="mt-3 inline-flex h-11 items-center gap-1 text-xs font-medium text-primary hover:underline lg:h-8"
           >
             Manage integrations <ArrowRight className="h-3 w-3" />
           </Link>

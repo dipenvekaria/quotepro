@@ -573,11 +573,11 @@ function SignModal({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Sarah Johnson"
-            className="h-10"
+            className="h-11 lg:h-10"
           />
         </div>
         <div className="mt-6 flex items-center justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="h-9">
+          <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
             Cancel
           </Button>
           <Button onClick={submit} disabled={busy} className="h-9 gap-1.5 shadow-sm">
@@ -626,10 +626,10 @@ function DeclineModal({ token, onClose }: { token: string; onClose: () => void }
           className="mt-4 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
         <div className="mt-4 flex items-center justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="h-9">
+          <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
             Cancel
           </Button>
-          <Button onClick={submit} disabled={busy} variant="outline" className="h-9">
+          <Button onClick={submit} disabled={busy} variant="outline" className="h-11 lg:h-9">
             {busy ? 'Sending…' : 'Send decline'}
           </Button>
         </div>

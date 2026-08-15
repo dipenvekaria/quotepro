@@ -161,7 +161,7 @@ export function CatalogExtract() {
                             prev!.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)),
                           )
                         }
-                        className="h-9"
+                        className="h-11 lg:h-9"
                       />
                     </td>
                     <td className="px-2 py-1.5 text-muted-foreground">{r.category || '—'}</td>

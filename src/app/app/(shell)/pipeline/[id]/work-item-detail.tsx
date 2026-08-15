@@ -514,7 +514,7 @@ export function WorkItemDetail({
                 disabled={savingMeta}
                 size="sm"
                 variant="outline"
-                className="h-7 gap-1"
+                className="h-11 gap-1 lg:h-7"
               >
                 {savingMeta ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
                 Save
@@ -600,7 +600,7 @@ export function WorkItemDetail({
                   onClick={saveItems}
                   disabled={savingItems}
                   size="sm"
-                  className="h-7 gap-1"
+                  className="h-11 gap-1 lg:h-7"
                 >
                   {savingItems ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
                   Save items
@@ -617,19 +617,19 @@ export function WorkItemDetail({
             ) : (
               <div className="divide-y divide-border/70">
                 {items.map((it, idx) => (
-                  <div key={idx} className="group grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-3 px-5 py-3">
-                    <div className="min-w-0">
+                  <div key={idx} className="group flex flex-wrap items-center gap-x-3 gap-y-2 px-5 py-3 lg:grid lg:grid-cols-[1fr_auto_auto_auto_auto] lg:flex-nowrap">
+                    <div className="w-full min-w-0 lg:w-auto">
                       <input
                         value={it.name}
                         onChange={(e) => updateItem(idx, { name: e.target.value })}
                         placeholder="Item name"
-                        className="w-full bg-transparent text-sm font-medium focus:outline-none"
+                        className="h-11 w-full bg-transparent text-sm font-medium focus:outline-none lg:h-auto"
                       />
                       <input
                         value={it.description ?? ''}
                         onChange={(e) => updateItem(idx, { description: e.target.value })}
                         placeholder="Optional description"
-                        className="mt-0.5 w-full bg-transparent text-xs text-muted-foreground focus:outline-none"
+                        className="mt-0.5 h-11 w-full bg-transparent text-xs text-muted-foreground focus:outline-none lg:h-auto"
                       />
                     </div>
                     <input
@@ -637,7 +637,7 @@ export function WorkItemDetail({
                       step="0.01"
                       value={it.quantity}
                       onChange={(e) => updateItem(idx, { quantity: Number(e.target.value) })}
-                      className="h-8 w-16 rounded border border-input bg-background px-2 text-right text-sm tabular"
+                      className="h-11 w-16 rounded border border-input bg-background px-2 text-right text-sm tabular lg:h-8"
                     />
                     <div className="flex items-center gap-1">
                       <span className="text-xs text-muted-foreground">$</span>
@@ -646,15 +646,15 @@ export function WorkItemDetail({
                         step="0.01"
                         value={it.unit_price}
                         onChange={(e) => updateItem(idx, { unit_price: Number(e.target.value) })}
-                        className="h-8 w-24 rounded border border-input bg-background px-2 text-right text-sm tabular"
+                        className="h-11 w-24 rounded border border-input bg-background px-2 text-right text-sm tabular lg:h-8"
                       />
                     </div>
-                    <div className="w-24 text-right text-sm font-semibold tabular">
+                    <div className="ml-auto text-right text-sm font-semibold tabular lg:ml-0 lg:w-24">
                       {fmtMoney(it.quantity * it.unit_price)}
                     </div>
                     <button
                       onClick={() => removeItem(idx)}
-                      className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
+                      className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive lg:h-7 lg:w-7 lg:opacity-0 lg:group-hover:opacity-100"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -881,7 +881,7 @@ export function WorkItemDetail({
                 </div>
                 <button
                   onClick={copyLink}
-                  className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="grid h-11 w-11 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
                   title="Copy link"
                 >
                   <Copy className="h-3.5 w-3.5" />
@@ -890,7 +890,7 @@ export function WorkItemDetail({
                   href={publicUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="grid h-11 w-11 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
                   title="Open"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
@@ -1040,7 +1040,7 @@ function AssignSelect({
       value={current ?? ''}
       onChange={onChange}
       disabled={busy}
-      className="h-7 rounded border border-input bg-background px-1.5 text-xs"
+      className="h-11 rounded border border-input bg-background px-1.5 text-xs lg:h-7"
     >
       <option value="">Unassigned</option>
       {teammates.map((t) => (
@@ -1077,7 +1077,7 @@ function SentModal({ publicUrl, onClose }: { publicUrl: string; onClose: () => v
           <button
             onClick={copy}
             className={cn(
-              'grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground',
+              'grid h-11 w-11 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7',
               copied && 'bg-emerald-500/10 text-emerald-600',
             )}
           >
@@ -1085,7 +1085,7 @@ function SentModal({ publicUrl, onClose }: { publicUrl: string; onClose: () => v
           </button>
         </div>
         <div className="mt-6 flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="h-9">
+          <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
             Close
           </Button>
           <a
@@ -1167,7 +1167,7 @@ function InvoiceCard({
             navigator.clipboard.writeText(publicUrl)
             toast.success('Link copied')
           }}
-          className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+          className="grid h-11 w-11 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
           title="Copy link"
         >
           <Copy className="h-3.5 w-3.5" />
@@ -1176,7 +1176,7 @@ function InvoiceCard({
           href={publicUrl}
           target="_blank"
           rel="noreferrer"
-          className="grid h-7 w-7 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+          className="grid h-11 w-11 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
           title="Open"
         >
           <ExternalLink className="h-3.5 w-3.5" />
@@ -1303,7 +1303,7 @@ function RecordPaymentModal({
         </div>
 
         <div className="mt-6 flex items-center justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="h-9">
+          <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
             Cancel
           </Button>
           <Button onClick={submit} disabled={busy} className="h-9 gap-1.5 shadow-sm">

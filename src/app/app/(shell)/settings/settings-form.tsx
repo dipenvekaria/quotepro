@@ -49,20 +49,20 @@ export function SettingsForm({
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       <Field label="Company name" required>
-        <Input {...bind('name')} disabled={!canEdit} className="h-10" />
+        <Input {...bind('name')} disabled={!canEdit} className="h-11 lg:h-10" />
       </Field>
       <Field label="Logo URL" hint="Public HTTPS URL for your logo">
-        <Input {...bind('logo_url')} disabled={!canEdit} className="h-10" placeholder="https://…" />
+        <Input {...bind('logo_url')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="https://…" />
       </Field>
       <Field label="Phone">
-        <Input {...bind('phone')} disabled={!canEdit} className="h-10" placeholder="+1 (555) 000-0000" />
+        <Input {...bind('phone')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="+1 (555) 000-0000" />
       </Field>
       <Field label="Email">
-        <Input {...bind('email')} disabled={!canEdit} type="email" className="h-10" placeholder="hello@company.com" />
+        <Input {...bind('email')} disabled={!canEdit} type="email" className="h-11 lg:h-10" placeholder="hello@company.com" />
       </Field>
       <div className="sm:col-span-2">
         <Field label="Business address">
-          <Input {...bind('address')} disabled={!canEdit} className="h-10" placeholder="123 Main St, City, State ZIP" />
+          <Input {...bind('address')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="123 Main St, City, State ZIP" />
         </Field>
       </div>
       <Field label="Default tax rate (%)" hint="Applied to new quotes; per-quote override still allowed">
@@ -72,12 +72,12 @@ export function SettingsForm({
           value={values.tax_rate}
           onChange={(e) => setValues((prev) => ({ ...prev, tax_rate: Number(e.target.value) }))}
           disabled={!canEdit}
-          className="h-10 tabular"
+          className="h-11 tabular lg:h-10"
         />
       </Field>
       <div className="flex items-end justify-end">
         {canEdit ? (
-          <Button onClick={submit} disabled={saving} className="h-10 gap-1.5">
+          <Button onClick={submit} disabled={saving} className="h-11 gap-1.5 lg:h-10">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save changes
           </Button>
