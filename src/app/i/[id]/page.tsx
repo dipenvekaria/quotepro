@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { sbAdmin } from '@/lib/supabase/untyped'
 
 import { InvoiceViewer } from './invoice-viewer'
+import { showsRivetBadge } from '@/lib/branding'
 
 // ---------------------------------------------------------------------------
 
@@ -21,7 +22,7 @@ export default async function PublicInvoicePage({
     .select(`
       id, invoice_number, subtotal, tax_amount, total, amount_paid, status,
       due_date, sent_at, paid_at, public_token, notes,
-      companies (id, name, logo_url, phone, email, address, stripe_charges_enabled),
+      companies (id, name, logo_url, phone, email, address, stripe_charges_enabled, plan),
       customers (name, email, phone),
       work_items (
         id, description, tax_rate,
@@ -61,6 +62,9 @@ export default async function PublicInvoicePage({
       items={items}
       payments={(payments ?? []) as Parameters<typeof InvoiceViewer>[0]['payments']}
       workItemDescription={wi?.description ?? null}
+      showBadge={showsRivetBadge(
+        (invoice as unknown as { companies?: { plan?: string | null } }).companies?.plan,
+      )}
     />
   )
 }

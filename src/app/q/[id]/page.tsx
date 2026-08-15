@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { signPhotoUrls } from '@/lib/storage/signed-url'
+import { showsRivetBadge } from '@/lib/branding'
 import Link from 'next/link'
 
 import { sbAdmin } from '@/lib/supabase/untyped'
@@ -27,7 +28,7 @@ export default async function PublicQuotePage({
       subtotal, discount_amount, tax_rate, tax_amount, total,
       sent_at, viewed_at, accepted_at, rejected_at, expires_at,
       public_token, metadata,
-      companies (id, name, logo_url, phone, email, address),
+      companies (id, name, logo_url, phone, email, address, plan),
       customers (name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip)
     `)
@@ -90,6 +91,9 @@ export default async function PublicQuotePage({
       items={(items ?? []) as Parameters<typeof QuoteViewer>[0]['items']}
       options={(options ?? []) as Parameters<typeof QuoteViewer>[0]['options']}
       photos={photos}
+      showBadge={showsRivetBadge(
+        (quote as unknown as { companies?: { plan?: string | null } }).companies?.plan,
+      )}
     />
   )
 }

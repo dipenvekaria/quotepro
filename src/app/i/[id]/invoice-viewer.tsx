@@ -65,11 +65,14 @@ export function InvoiceViewer({
   items,
   payments,
   workItemDescription,
+  showBadge = true,
 }: {
   invoice: Invoice
   items: LineItem[]
   payments: Payment[]
   workItemDescription: string | null
+  /** False on a paid plan — see src/lib/branding.ts. */
+  showBadge?: boolean
 }) {
   const amountDue = Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
   const isPaid = invoice.status === 'paid'
@@ -326,9 +329,11 @@ export function InvoiceViewer({
               </div>
             </div>
           </div>
-          <div className="mt-6 text-center text-[10px] text-muted-foreground">
-            Powered by <span className="font-medium text-foreground">Rivet</span>
-          </div>
+          {showBadge && (
+            <div className="mt-6 text-center text-[10px] text-muted-foreground">
+              Powered by <span className="font-medium text-foreground">Rivet</span>
+            </div>
+          )}
         </footer>
       </main>
     </div>
