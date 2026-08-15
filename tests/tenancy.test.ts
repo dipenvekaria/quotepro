@@ -146,6 +146,13 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'invoice verified with id = $1 and company_id = $2',
   },
 
+  {
+    file: 'src/app/app/(shell)/pipeline/[id]/photo-actions.ts',
+    match: 'from quote_items where id = $1 and work_item_id = $2',
+    reason:
+      'the work item was verified against company_id immediately above; this only confirms the line belongs to that same quote',
+  },
+
   // --- keyed on an unguessable token rather than a session ------------------
   {
     file: 'src/app/join/[token]/page.tsx',

@@ -212,11 +212,33 @@ export function QuoteEditor({
     }
     const keptTiers = tiers?.filter((t) => t.include) ?? []
     const savingTiers = keptTiers.length >= 2
-    if (tiers && !savingTiers) {
-      toast.error('Keep at least two options, or discard them and send a single quote.')
+    if (tiers && keptTiers.length === 0) {
+      toast.error('Keep at least one option, or discard them.')
       return
     }
-    if (!savingTiers && items.length === 0) {
+    // Unticking down to one is the contractor saying "just send this one". They
+    // have already made the choice, so it goes out as an ordinary quote rather
+    // than as a set of options with a single column.
+    const singleFromTier = tiers && keptTiers.length === 1 ? keptTiers[0] : null
+    const outgoingItems = singleFromTier
+      ? singleFromTier.items.map((i) => ({
+          name: i.name,
+          description: i.description || null,
+          quantity: i.quantity,
+          unit_price: i.unit_price,
+          is_upsell: false,
+          is_discount: false,
+        }))
+      : items.map((i) => ({
+          name: i.name,
+          description: i.description || null,
+          quantity: i.quantity,
+          unit_price: i.unit_price,
+          is_upsell: i.is_upsell ?? false,
+          is_discount: i.is_discount ?? false,
+        }))
+
+    if (!savingTiers && outgoingItems.length === 0) {
       toast.error('Add at least one line item.')
       return
     }
@@ -267,15 +289,7 @@ export function QuoteEditor({
 
       const saveRes = await saveLineItems({
         work_item_id: currentId,
-        items: items.map((i, idx) => ({
-          name: i.name,
-          description: i.description || null,
-          quantity: i.quantity,
-          unit_price: i.unit_price,
-          sort_order: idx,
-          is_upsell: i.is_upsell ?? false,
-          is_discount: i.is_discount ?? false,
-        })),
+        items: outgoingItems.map((i, idx) => ({ ...i, sort_order: idx })),
         tax_rate: taxRate,
       })
       if (!saveRes.ok) {
@@ -283,7 +297,7 @@ export function QuoteEditor({
         return
       }
 
-      toast.success('Quote saved')
+      toast.success(singleFromTier ? `Quote saved — ${singleFromTier.name}` : 'Quote saved')
       router.push('/app/pipeline')
     })
   }
