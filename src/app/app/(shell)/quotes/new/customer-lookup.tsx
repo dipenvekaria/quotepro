@@ -35,14 +35,28 @@ export function CustomerLookup({
   value,
   onChange,
   disabled,
+  initialLinked,
 }: {
   value: CustomerFields
   onChange: (next: Partial<CustomerFields> & { customerId?: string | null }) => void
   disabled?: boolean
+  /** Arriving from a customer's page — already decided who this is for. */
+  initialLinked?: { id: string; name: string; job_count: number } | null
 }) {
   const [matches, setMatches] = useState<CustomerMatch[]>([])
   const [open, setOpen] = useState(false)
-  const [linked, setLinked] = useState<CustomerMatch | null>(null)
+  const [linked, setLinked] = useState<CustomerMatch | null>(
+    initialLinked
+      ? {
+          id: initialLinked.id,
+          name: initialLinked.name,
+          email: null,
+          phone: null,
+          address: null,
+          job_count: initialLinked.job_count,
+        }
+      : null,
+  )
   const [field, setField] = useState<'name' | 'phone'>('name')
   const boxRef = useRef<HTMLDivElement>(null)
 

@@ -39,6 +39,8 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
+import { generateQuoteItems } from '@/app/app/(shell)/quotes/new/actions'
+
 import type { QuotePhoto } from './photo-actions'
 import { QuotePhotos } from './quote-photos'
 import {
@@ -173,6 +175,7 @@ export function WorkItemDetail({
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
+  const [drafting, startDraft] = useTransition()
   const [description, setDescription] = useState(workItem.description ?? '')
   const [notes, setNotes] = useState(workItem.notes ?? '')
 
@@ -230,6 +233,57 @@ export function WorkItemDetail({
     : `${window.location.origin}/q/${workItem.public_token}`
 
   // -----------------------------------------------------------------------
+
+  /**
+   * Drafting on a quote that already exists.
+   *
+   * Appends rather than replaces. On a new quote there is nothing to lose, but
+   * here the contractor may have priced half of it by hand already, and
+   * throwing that away to make room for a suggestion is not a trade anyone
+   * would accept.
+   */
+  function draftWithAi() {
+    if (!description.trim()) {
+      toast.error('Add a job description first — that is what the draft is built from.')
+      return
+    }
+    startDraft(async () => {
+      const res = await generateQuoteItems({
+        description,
+        customer_name: '',
+        customer_address: null,
+      })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      const drafted = res.data.line_items
+      if (drafted.length === 0) {
+        toast.error('Nothing in your catalog matched that description.')
+        return
+      }
+      setItems((prev) => [
+        ...prev,
+        ...drafted.map((li, i) => ({
+          name: li.name,
+          description: li.description ?? '',
+          quantity: li.quantity,
+          unit_price: li.unit_price,
+          sort_order: prev.length + i,
+        })),
+      ])
+      if (!res.data.mode.startsWith('gemini')) {
+        toast.warning(`Added ${drafted.length} keyword matches — AI was unavailable`, {
+          description: 'Check every line and price before sending.',
+          duration: 8000,
+        })
+      } else {
+        toast.success(`Added ${drafted.length} ${drafted.length === 1 ? 'line' : 'lines'}`, {
+          description: 'Review them, then Save items.',
+        })
+      }
+    })
+  }
 
   function addItem() {
     setItems((prev) => [
@@ -588,10 +642,22 @@ export function WorkItemDetail({
                   {items.length}
                 </span>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex flex-wrap items-center gap-1">
+                <button
+                  onClick={draftWithAi}
+                  disabled={drafting}
+                  className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted disabled:opacity-50 lg:min-h-0 lg:py-1"
+                >
+                  {drafting ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-3 w-3 text-primary" />
+                  )}
+                  Draft with AI
+                </button>
                 <button
                   onClick={addItem}
-                  className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted"
+                  className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted lg:min-h-0 lg:py-1"
                 >
                   <Plus className="h-3 w-3" />
                   Add row
