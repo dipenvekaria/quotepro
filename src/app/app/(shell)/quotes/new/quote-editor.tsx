@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 
 import { AddLineItem } from './add-line-item'
+import { DraftQuestions } from './draft-questions'
 import { CustomerLookup } from './customer-lookup'
 import { Label } from '@/components/ui/label'
 import { computeTotals } from '@/lib/money'
@@ -83,6 +84,8 @@ export function QuoteEditor({
   // What actually produced the last draft. `mock` means Gemini never ran and
   // these are keyword matches — the contractor has to know that before sending.
   const [draftMode, setDraftMode] = useState<string | null>(null)
+  const [questions, setQuestions] = useState<{ question: string; options: string[] }[]>([])
+  const [unmet, setUnmet] = useState<string[]>([])
   // Set when an existing customer was picked, so the draft links to that record
   // rather than being re-derived from contact details.
   const [customerId, setCustomerId] = useState<string | null>(initialCustomer?.id ?? null)
@@ -203,6 +206,8 @@ export function QuoteEditor({
 
       const data = res.data
       setDraftMode(data.mode)
+      setQuestions(data.questions ?? [])
+      setUnmet(data.unmet ?? [])
       if (!data.mode.startsWith('gemini')) {
         toast.warning('AI unavailable — these lines are keyword matches', {
           description: 'Check every line and price before sending.',
@@ -425,6 +430,20 @@ export function QuoteEditor({
             />
           ) : (
             <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+              <DraftQuestions
+                questions={questions}
+                unmet={unmet}
+                disabled={generating}
+                onAnswer={(question, option) => {
+                  // Folded into the description so the next draft reads it and
+                  // the contractor can see and edit what was assumed.
+                  setDescription((d) => `${d.trim()}\n${question} ${option}`.trim())
+                  setQuestions((qs) => qs.filter((q) => q.question !== question))
+                  toast.success('Added to the job description', {
+                    description: 'Draft again to use it.',
+                  })
+                }}
+              />
               {draftMode && !draftMode.startsWith('gemini') && (
                 /*
                   Degrading silently is the trap: a keyword-matched quote looks
