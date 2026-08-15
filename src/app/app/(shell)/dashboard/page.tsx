@@ -267,21 +267,21 @@ export default async function DashboardPage() {
               <div className="mt-3 flex flex-wrap gap-2">
                 <Link
                   href="/app/integrations"
-                  className="inline-flex h-8 items-center gap-1.5 rounded-md border border-primary/40 bg-background px-3 text-xs font-medium text-primary hover:bg-primary/5"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-primary/40 bg-background px-3 text-xs font-medium text-primary hover:bg-primary/5 lg:h-8"
                 >
                   <Plug className="h-3 w-3" />
                   Connect Stripe
                 </Link>
                 <Link
                   href="/app/catalog"
-                  className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8"
                 >
                   <Package className="h-3 w-3" />
                   Add catalog items
                 </Link>
                 <Link
                   href="/app/settings?invite=1#team"
-                  className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8"
                 >
                   <Users className="h-3 w-3" />
                   Invite team
@@ -488,7 +488,7 @@ export default async function DashboardPage() {
           </div>
           <Link
             href="/app/pipeline"
-            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+            className="inline-flex items-center gap-1 -my-3 py-3 lg:my-0 lg:py-0 text-xs text-primary hover:underline"
           >
             Pipeline <ArrowUpRight className="h-3 w-3" />
           </Link>

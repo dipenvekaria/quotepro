@@ -230,30 +230,63 @@ export default async function AnalyticsPage() {
             No quote-sending activity yet.
           </div>
         ) : (
-          <table className="w-full text-sm">
-            <thead className="border-b border-border/70 bg-muted/30 text-xs text-muted-foreground">
-              <tr>
-                <th className="px-5 py-2.5 text-left font-medium">Rep</th>
-                <th className="px-5 py-2.5 text-right font-medium">Sent</th>
-                <th className="px-5 py-2.5 text-right font-medium">Accepted</th>
-                <th className="px-5 py-2.5 text-right font-medium">Close rate</th>
-                <th className="px-5 py-2.5 text-right font-medium">Revenue</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/70">
+          <>
+            {/* Cards on a phone, table from md. Five numeric columns cannot fit
+                375px, and this one was overflowing the viewport by 50px. */}
+            <ul className="divide-y divide-border/70 md:hidden">
               {repList.map((r) => (
-                <tr key={r.name} className="hover:bg-muted/20">
-                  <td className="px-5 py-3 font-medium">{r.name}</td>
-                  <td className="px-5 py-3 text-right tabular">{r.sent}</td>
-                  <td className="px-5 py-3 text-right tabular">{r.accepted}</td>
-                  <td className="px-5 py-3 text-right tabular">
-                    {r.sent > 0 ? `${Math.round((r.accepted / r.sent) * 100)}%` : '—'}
-                  </td>
-                  <td className="px-5 py-3 text-right font-semibold tabular">{fmtMoney(r.revenue)}</td>
-                </tr>
+                <li key={r.name} className="px-5 py-3">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="min-w-0 truncate text-sm font-medium">{r.name}</span>
+                    <span className="shrink-0 text-sm font-semibold tabular">
+                      {fmtMoney(r.revenue)}
+                    </span>
+                  </div>
+                  <dl className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                    <div className="flex gap-1">
+                      <dt>Sent</dt>
+                      <dd className="tabular text-foreground">{r.sent}</dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt>Accepted</dt>
+                      <dd className="tabular text-foreground">{r.accepted}</dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt>Close rate</dt>
+                      <dd className="tabular text-foreground">
+                        {r.sent > 0 ? `${Math.round((r.accepted / r.sent) * 100)}%` : '—'}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
               ))}
-            </tbody>
-          </table>
+            </ul>
+
+            <table className="hidden w-full text-sm md:table">
+              <thead className="border-b border-border/70 bg-muted/30 text-xs text-muted-foreground">
+                <tr>
+                  <th className="px-5 py-2.5 text-left font-medium">Rep</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Sent</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Accepted</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Close rate</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Revenue</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/70">
+                {repList.map((r) => (
+                  <tr key={r.name} className="hover:bg-muted/20">
+                    <td className="px-5 py-3 font-medium">{r.name}</td>
+                    <td className="px-5 py-3 text-right tabular">{r.sent}</td>
+                    <td className="px-5 py-3 text-right tabular">{r.accepted}</td>
+                    <td className="px-5 py-3 text-right tabular">
+                      {r.sent > 0 ? `${Math.round((r.accepted / r.sent) * 100)}%` : '—'}
+                    </td>
+                    <td className="px-5 py-3 text-right font-semibold tabular">{fmtMoney(r.revenue)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         )}
       </div>
 
@@ -261,7 +294,7 @@ export default async function AnalyticsPage() {
       <div className="rounded-xl border border-border/70 bg-card shadow-sm">
         <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
           <h2 className="text-sm font-semibold">Recently sent quotes</h2>
-          <Link href="/app/pipeline" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+          <Link href="/app/pipeline" className="inline-flex items-center gap-1 -my-3 py-3 lg:my-0 lg:py-0 text-xs text-primary hover:underline">
             Open pipeline <ArrowUpRight className="h-3 w-3" />
           </Link>
         </header>
