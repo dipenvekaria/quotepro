@@ -47,13 +47,17 @@ export function CustomerLookup({
     // details would only re-offer them.
     if (linked) return
     const t = term.trim()
-    if (t.length < 2) {
-      setMatches([])
-      return
-    }
     let cancelled = false
-    // Debounced — this fires on every keystroke across two fields.
+    // Everything runs inside the timer, including clearing. Calling setState
+    // synchronously here instead cascades renders on every keystroke.
     const timer = setTimeout(async () => {
+      if (t.length < 2) {
+        if (!cancelled) {
+          setMatches([])
+          setOpen(false)
+        }
+        return
+      }
       const found = await searchCustomers(t)
       if (!cancelled) {
         setMatches(found)
