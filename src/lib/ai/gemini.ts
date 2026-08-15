@@ -110,6 +110,29 @@ export function aiEnabled(): boolean {
 export type GeminiJsonResult = { data: unknown; model: string }
 
 /**
+ * How long the whole chain may take before the caller gives up and degrades.
+ *
+ * There was no timeout at all. An unresponsive model held the request until the
+ * platform killed it at 300 seconds, so a contractor pressing "Draft with AI"
+ * could watch a spinner for five minutes and then get nothing. The keyword
+ * fallback exists precisely so there is something to degrade to; it just had no
+ * way of being reached.
+ *
+ * 25s is generous — flash-lite answers in about two seconds — and the budget is
+ * shared, so trying a second model cannot double the wait.
+ */
+const DEFAULT_CHAIN_BUDGET_MS = 25_000
+
+function chainBudgetMs(): number {
+  // Configurable so the degrade path can be exercised deliberately rather than
+  // only when a model happens to hang.
+  const raw = Number(process.env.GEMINI_TIMEOUT_MS)
+  return Number.isFinite(raw) && raw > 0 ? raw : DEFAULT_CHAIN_BUDGET_MS
+}
+/** Never leave less than this for an attempt; below it, fail fast instead. */
+const MIN_ATTEMPT_MS = 4_000
+
+/**
  * Call Gemini and parse a JSON object out of it, walking the model chain until
  * one succeeds. Returns null when AI is off or every model failed — callers
  * decide what to do with that, because the right answer differs: quoting falls
@@ -143,13 +166,30 @@ export async function generateJson(opts: {
   const ai = client()
   if (!ai) return null
 
+  const deadline = Date.now() + chainBudgetMs()
+
   for (const model of geminiModels()) {
+    const remaining = deadline - Date.now()
+    if (remaining < Math.min(MIN_ATTEMPT_MS, chainBudgetMs())) {
+      console.error(`gemini: out of time before trying ${model}`)
+      break
+    }
+
     for (const thinking of [true, false]) {
+      const attemptMs = Math.max(
+        Math.min(MIN_ATTEMPT_MS, chainBudgetMs()),
+        deadline - Date.now(),
+      )
+      const abort = AbortSignal.timeout(attemptMs)
       try {
         const resp = await ai.models.generateContent({
           model,
           contents: opts.contents,
           config: {
+            // Both, because they bound different layers: httpOptions covers the
+            // request, the signal covers everything after it.
+            abortSignal: abort,
+            httpOptions: { timeout: attemptMs },
             systemInstruction: opts.system,
             responseMimeType: 'application/json',
             responseSchema: opts.schema,
@@ -178,6 +218,14 @@ export async function generateJson(opts: {
         return { data: JSON.parse(raw), model }
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
+
+        // Out of time. Retrying the same model with different settings cannot
+        // help, and the next one has no budget left either.
+        if (abort.aborted || /abort|timeout|timed out/i.test(msg)) {
+          console.error(`gemini ${model} timed out after ${attemptMs}ms`)
+          return null
+        }
+
         // Only the thinking level was unacceptable — same model, second pass.
         if (thinking && /thinking/i.test(msg)) continue
 
