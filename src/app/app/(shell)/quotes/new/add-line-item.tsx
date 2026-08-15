@@ -114,8 +114,9 @@ export function AddLineItem({
             openList()
           }}
           onFocus={openList}
-          // A click on a suggestion has to land before the list unmounts.
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          // Suggestions call preventDefault on mousedown, so the input keeps
+          // focus and this only fires when the contractor genuinely leaves.
+          onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
           placeholder="Add a line — type to search your price book, or write your own"
           className="h-11 w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
@@ -142,6 +143,12 @@ export function AddLineItem({
               role="option"
               aria-selected={i === cursor}
               onMouseEnter={() => setCursor(i)}
+              // Keeps focus on the input, so blur never fires and the click
+              // always lands. Closing the list on a blur timer instead meant a
+              // real click — where mousedown and mouseup are milliseconds apart
+              // rather than instantaneous — could unmount the row it was
+              // landing on. Automated clicks never caught it.
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => addCatalog(c)}
               className={cn(
                 'flex min-h-11 w-full items-center justify-between gap-3 px-3 py-2 text-left text-sm',
@@ -169,6 +176,7 @@ export function AddLineItem({
           {q.trim() && (
             <button
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={addCustom}
               className="flex min-h-11 w-full items-center gap-2 border-t border-border/70 px-3 py-2 text-left text-sm hover:bg-muted/60"
             >
