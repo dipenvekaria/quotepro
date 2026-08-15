@@ -7,6 +7,12 @@ import { getSession } from '@/lib/auth/session'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
+import {
+  TIERS,
+  TIER_DB_KEY,
+  NoCatalogError as NoTierCatalogError,
+  generateTieredQuote,
+} from '@/lib/ai/tiers'
 
 // -----------------------------------------------------------------------------
 // AI quote generation.
@@ -247,4 +253,169 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/quotes/${parsed.data.work_item_id}`)
   return { ok: true as const, data: { subtotal, tax_amount: taxAmount, total } }
+}
+
+// -----------------------------------------------------------------------------
+// Good/better/best
+//
+// Generation returns tiers for review; nothing is written until the contractor
+// saves, because these are prices a customer will be shown.
+// -----------------------------------------------------------------------------
+
+const tierGenerateSchema = z.object({
+  description: z.string().min(3).max(4000),
+  tax_rate: z.number().min(0).max(30).optional(),
+})
+
+export async function generateQuoteTiers(input: unknown) {
+  const parsed = tierGenerateSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  let taxRate = parsed.data.tax_rate
+  if (taxRate === undefined) {
+    const rows = await query<{ tax_rate: number | null }>(
+      `select (settings->>'tax_rate')::numeric as tax_rate from companies where id = $1`,
+      [session.companyId],
+    )
+    taxRate = Number(rows[0]?.tax_rate ?? 8.5)
+  }
+
+  try {
+    const result = await generateTieredQuote({
+      companyId: session.companyId,
+      description: parsed.data.description,
+      taxRate,
+    })
+    if (!result) {
+      return {
+        ok: false as const,
+        error: 'Could not build options from your catalog for this job. Try a single quote.',
+      }
+    }
+    if (result.tiers.length < 2) {
+      return {
+        ok: false as const,
+        error: 'Your catalog only supports one honest option for this job.',
+      }
+    }
+    return { ok: true as const, data: result }
+  } catch (e) {
+    if (e instanceof NoTierCatalogError) {
+      return {
+        ok: false as const,
+        error: 'No pricing items in your catalog yet — add some before generating options.',
+      }
+    }
+    console.error('generateQuoteTiers failed', e)
+    return { ok: false as const, error: 'Could not generate options. Try again.' }
+  }
+}
+
+const saveTiersSchema = z.object({
+  work_item_id: z.string().uuid(),
+  tax_rate: z.number().min(0).max(30),
+  tiers: z
+    .array(
+      z.object({
+        tier: z.enum(TIERS),
+        name: z.string().min(1).max(120),
+        description: z.string().max(500),
+        is_recommended: z.boolean(),
+        items: z.array(
+          z.object({
+            name: z.string().min(1).max(300),
+            description: z.string().nullable().optional(),
+            quantity: z.number().positive(),
+            unit_price: z.number().min(0),
+          }),
+        ),
+      }),
+    )
+    .min(2)
+    .max(3),
+})
+
+export async function saveQuoteTiers(input: unknown) {
+  const parsed = saveTiersSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const { companyId } = session
+
+  const owns = await query<{ id: string }>(
+    'select id from work_items where id = $1 and company_id = $2 limit 1',
+    [parsed.data.work_item_id, companyId],
+  )
+  if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
+
+  const { work_item_id: workItemId, tax_rate: taxRate, tiers } = parsed.data
+  // The work item's own totals track the recommended tier, so the pipeline and
+  // the calendar show the figure the contractor expects to win.
+  const headline = tiers.find((t) => t.is_recommended) ?? tiers[tiers.length - 1]
+  const headlineTotals = computeTotals(headline.items, taxRate)
+
+  try {
+    await withTransaction(async (q) => {
+      await q('delete from quote_items where work_item_id = $1', [workItemId])
+      await q('delete from quote_options where work_item_id = $1', [workItemId])
+
+      for (const tier of tiers) {
+        const dbTier = TIER_DB_KEY[tier.tier]
+        const totals = computeTotals(tier.items, taxRate)
+
+        await q(
+          `insert into quote_options
+             (work_item_id, tier, name, description, total, is_selected, sort_order)
+           values ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            workItemId,
+            dbTier,
+            tier.name,
+            tier.description,
+            totals.total,
+            // Nothing is selected until the customer chooses; `is_recommended`
+            // is our suggestion, not their decision.
+            false,
+            TIERS.indexOf(tier.tier),
+          ],
+        )
+
+        if (tier.items.length === 0) continue
+        const values: unknown[] = []
+        const tuples = tier.items.map((i, idx) => {
+          const b = idx * 6
+          values.push(workItemId, i.name, i.description ?? null, i.quantity, i.unit_price, dbTier)
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6})`
+        })
+        await q(
+          `insert into quote_items
+             (work_item_id, name, description, quantity, unit_price, option_tier)
+           values ${tuples.join(', ')}`,
+          values,
+        )
+      }
+
+      await q(
+        `update work_items
+            set subtotal = $1, tax_rate = $2, tax_amount = $3, total = $4
+          where id = $5`,
+        [headlineTotals.subtotal, taxRate, headlineTotals.taxAmount, headlineTotals.total, workItemId],
+      )
+    })
+  } catch (e) {
+    console.error('saveQuoteTiers failed', e)
+    return { ok: false as const, error: 'Could not save the options. Please try again.' }
+  }
+
+  revalidatePath('/app/pipeline')
+  revalidatePath(`/app/pipeline/${workItemId}`)
+  return { ok: true as const, data: { total: headlineTotals.total } }
 }

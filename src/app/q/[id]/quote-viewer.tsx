@@ -21,6 +21,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { acceptQuote, declineQuote } from './actions'
+import { cn } from '@/lib/utils'
+import { computeTotals } from '@/lib/money'
 
 // ---------------------------------------------------------------------------
 
@@ -32,6 +34,17 @@ type LineItem = {
   unit_price: number
   is_upsell: boolean
   is_discount: boolean
+  sort_order: number
+  option_tier?: string | null
+}
+
+export type QuoteOption = {
+  id: string
+  tier: 'good' | 'better' | 'best'
+  name: string
+  description: string | null
+  total: number
+  is_selected: boolean
   sort_order: number
 }
 
@@ -70,7 +83,15 @@ type Quote = {
 
 // ---------------------------------------------------------------------------
 
-export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] }) {
+export function QuoteViewer({
+  quote,
+  items,
+  options = [],
+}: {
+  quote: Quote
+  items: LineItem[]
+  options?: QuoteOption[]
+}) {
   const [signOpen, setSignOpen] = useState(false)
   const [declineOpen, setDeclineOpen] = useState(false)
 
@@ -78,8 +99,49 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
   const isAccepted = quote.status === 'quote_accepted'
   const isRejected = quote.status === 'quote_rejected'
 
-  const nonDiscountItems = items.filter((i) => !i.is_discount)
-  const discounts = items.filter((i) => i.is_discount)
+  // Good/better/best. The middle option is pre-selected — the point of showing
+  // three is that the customer chooses a level of work, not whether to proceed,
+  // and an unselected set of columns puts them back on that yes/no decision.
+  const hasOptions = options.length >= 2
+  const [chosenTier, setChosenTier] = useState<string>(() => {
+    if (options.length === 0) return ''
+    const already = options.find((o) => o.is_selected)
+    if (already) return already.tier
+    return options[Math.min(1, options.length - 1)].tier
+  })
+
+  // With options, the quote shows the chosen column; without, everything.
+  const visibleItems = hasOptions ? items.filter((i) => i.option_tier === chosenTier) : items
+  const chosenOption = options.find((o) => o.tier === chosenTier)
+
+  const nonDiscountItems = visibleItems.filter((i) => !i.is_discount)
+  const discounts = visibleItems.filter((i) => i.is_discount)
+
+  // Every figure on the page follows the selection. The stored total is the
+  // recommended tier, so a customer choosing Complete would otherwise see the
+  // Recommended price on the button they are about to approve — which is the
+  // single worst place in the product to show a number that is not the one they
+  // picked.
+  const shown = hasOptions
+    ? computeTotals(visibleItems, quote.tax_rate)
+    : { subtotal: quote.subtotal, taxAmount: quote.tax_amount, total: quote.total }
+
+  /**
+   * Option prices are computed from their own line items, not read from
+   * `quote_options.total`.
+   *
+   * The stored figure was correct when it was written, but it drifts: the
+   * contractor can edit a line afterwards, and the two paths rounded
+   * differently anyway — a card read $4,720.84 while the same option totalled
+   * $4,721.06 everywhere else on the page. One source of truth is worth more
+   * here than one fewer calculation, because this is the screen where a
+   * stranger agrees to a number.
+   */
+  const optionTotal = (tier: string) =>
+    computeTotals(
+      items.filter((i) => i.option_tier === tier),
+      quote.tax_rate,
+    ).total
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -178,10 +240,10 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
                 Total
               </div>
               <div className="mt-0.5 text-3xl font-semibold tabular sm:text-4xl">
-                {fmtMoney(quote.total)}
+                {fmtMoney(shown.total)}
               </div>
               <div className="mt-1 text-[11px] text-muted-foreground">
-                {items.length} line item{items.length === 1 ? '' : 's'}
+                {visibleItems.length} line item{visibleItems.length === 1 ? '' : 's'}
               </div>
             </div>
           </div>
@@ -198,10 +260,63 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
           )}
         </div>
 
+        {/* Options. The customer picks a level of work rather than answering
+            yes or no, which is the entire reason for offering three. Each tier
+            contains everything in the one below, so the differences read as
+            additions. */}
+        {hasOptions && (
+          <section className="mt-6">
+            <h2 className="text-sm font-semibold">Choose your option</h2>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Each option includes everything in the one before it.
+            </p>
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
+              {options.map((o) => {
+                const chosen = o.tier === chosenTier
+                const count = items.filter((i) => i.option_tier === o.tier && !i.is_discount).length
+                return (
+                  <button
+                    key={o.id}
+                    type="button"
+                    onClick={() => setChosenTier(o.tier)}
+                    aria-pressed={chosen}
+                    className={cn(
+                      'relative flex flex-col rounded-2xl border p-4 text-left transition-colors',
+                      chosen
+                        ? 'border-primary bg-primary/[0.04] shadow-sm ring-1 ring-primary'
+                        : 'border-border/70 bg-card hover:border-border',
+                    )}
+                  >
+                    {o.tier === 'better' && (
+                      <span className="absolute -top-2 left-4 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold text-primary-foreground">
+                        Most popular
+                      </span>
+                    )}
+                    <span className="text-sm font-semibold">{o.name}</span>
+                    <span className="mt-1 text-2xl font-semibold tabular">
+                      {fmtMoney(optionTotal(o.tier))}
+                    </span>
+                    {o.description && (
+                      <span className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                        {o.description}
+                      </span>
+                    )}
+                    <span className="mt-3 text-[11px] text-muted-foreground">
+                      {count} {count === 1 ? 'item' : 'items'}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Line items */}
         <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
           <header className="flex items-center justify-between border-b border-border/70 px-6 py-4">
-            <h2 className="text-sm font-semibold">What’s included</h2>
+            <h2 className="text-sm font-semibold">
+              {chosenOption ? `What’s included — ${chosenOption.name}` : 'What’s included'}
+            </h2>
             <span className="text-xs text-muted-foreground">
               {nonDiscountItems.length} items
             </span>
@@ -242,7 +357,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
             <dl className="space-y-1.5 text-sm">
               <div className="flex justify-between text-muted-foreground">
                 <dt>Subtotal</dt>
-                <dd className="tabular text-foreground">{fmtMoney(quote.subtotal)}</dd>
+                <dd className="tabular text-foreground">{fmtMoney(shown.subtotal)}</dd>
               </div>
               {discounts.map((d) => (
                 <div key={d.id} className="flex justify-between text-emerald-600">
@@ -252,11 +367,11 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
               ))}
               <div className="flex justify-between text-muted-foreground">
                 <dt>Tax ({quote.tax_rate}%)</dt>
-                <dd className="tabular text-foreground">{fmtMoney(quote.tax_amount)}</dd>
+                <dd className="tabular text-foreground">{fmtMoney(shown.taxAmount)}</dd>
               </div>
               <div className="mt-2 flex items-baseline justify-between border-t border-border/70 pt-2">
                 <dt className="text-base font-semibold">Total</dt>
-                <dd className="text-xl font-semibold tabular">{fmtMoney(quote.total)}</dd>
+                <dd className="text-xl font-semibold tabular">{fmtMoney(shown.total)}</dd>
               </div>
             </dl>
           </div>
@@ -286,7 +401,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
                 className="gap-1.5 shadow-sm"
               >
                 <Check className="h-4 w-4" />
-                Approve quote · {fmtMoney(quote.total)}
+                Approve quote · {fmtMoney(shown.total)}
               </Button>
             </div>
           </section>
@@ -342,7 +457,7 @@ export function QuoteViewer({ quote, items }: { quote: Quote; items: LineItem[] 
       {signOpen && (
         <SignModal
           token={quote.public_token}
-          total={quote.total}
+          total={shown.total}
           onClose={() => setSignOpen(false)}
         />
       )}

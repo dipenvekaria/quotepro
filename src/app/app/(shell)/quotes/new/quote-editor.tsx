@@ -5,10 +5,7 @@ import { useMemo, useState, useTransition } from 'react'
 import {
   ArrowLeft,
   Loader2,
-  Package,
-  Plus,
   Save,
-  Search,
   Sparkles,
   Trash2,
   User,
@@ -18,6 +15,8 @@ import {
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+
+import { AddLineItem } from './add-line-item'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { computeTotals } from '@/lib/money'
@@ -72,7 +71,6 @@ export function QuoteEditor({
   const [workItemId, setWorkItemId] = useState<string | null>(null)
 
   // Catalog picker + AI panel
-  const [catalogOpen, setCatalogOpen] = useState(false)
   const [aiOpen, setAiOpen] = useState(false)
 
   const [aiPrompt, setAiPrompt] = useState('')
@@ -110,15 +108,6 @@ export function QuoteEditor({
     setItems((prev) => prev.filter((i) => i.key !== key))
   }
 
-  function pickCatalog(c: CatalogItem) {
-    addItem({
-      name: c.name,
-      description: c.description ?? '',
-      quantity: 1,
-      unit_price: c.base_price,
-    })
-    setCatalogOpen(false)
-  }
 
   // ---- AI generation --------------------------------------------------------
 
@@ -235,14 +224,6 @@ export function QuoteEditor({
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <Button
-            onClick={() => setAiOpen(true)}
-            variant="outline"
-            className="flex-1 gap-1.5 border-primary/40 text-primary hover:bg-primary/5 sm:flex-none"
-          >
-            <Sparkles className="h-4 w-4" />
-            Draft quote
-          </Button>
           <Button onClick={save} disabled={saving} className="flex-1 gap-1.5 shadow-sm sm:flex-none">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             Save quote
@@ -331,22 +312,15 @@ export function QuoteEditor({
                   {items.length}
                 </span>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setCatalogOpen(true)}
-                  className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium hover:bg-muted"
-                >
-                  <Package className="h-3 w-3" />
-                  From catalog
-                </button>
-                <button
-                  onClick={() => addItem()}
-                  className="inline-flex items-center gap-1 rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground hover:opacity-90"
-                >
-                  <Plus className="h-3 w-3" />
-                  Blank row
-                </button>
-              </div>
+              {/* Drafting lives with the lines it drafts. This used to sit in
+                  the page header, two cards away from the thing it changes. */}
+              <button
+                onClick={() => setAiOpen(true)}
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/5 lg:min-h-0"
+              >
+                <Sparkles className="h-3 w-3" />
+                Draft with AI
+              </button>
             </header>
 
             {items.length === 0 ? (
@@ -354,7 +328,7 @@ export function QuoteEditor({
                 <Sparkles className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
                 <p className="text-sm font-medium">No line items yet</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Add from your catalog, insert a blank row, or draft one automatically.
+                  Start typing below to pull from your price book, or draft the whole quote with AI.
                 </p>
               </div>
             ) : (
@@ -370,6 +344,13 @@ export function QuoteEditor({
                 ))}
               </div>
             )}
+
+            <div className="border-t border-border/70">
+              <AddLineItem
+                catalog={catalog}
+                onAdd={(item) => addItem({ ...item, quantity: 1 })}
+              />
+            </div>
           </section>
         </div>
 
@@ -419,15 +400,6 @@ export function QuoteEditor({
           </div>
         </aside>
       </div>
-
-      {/* Catalog picker */}
-      {catalogOpen && (
-        <CatalogPicker
-          items={catalog}
-          onPick={pickCatalog}
-          onClose={() => setCatalogOpen(false)}
-        />
-      )}
 
       {/* AI prompt panel */}
       {aiOpen && (
@@ -505,76 +477,6 @@ function LineItemRow({
       >
         <Trash2 className="h-3.5 w-3.5" />
       </button>
-      </div>
-    </div>
-  )
-}
-
-// -----------------------------------------------------------------------------
-
-function CatalogPicker({
-  items,
-  onPick,
-  onClose,
-}: {
-  items: CatalogItem[]
-  onPick: (i: CatalogItem) => void
-  onClose: () => void
-}) {
-  const [q, setQ] = useState('')
-  const filtered = items.filter(
-    (i) =>
-      !q ||
-      i.name.toLowerCase().includes(q.toLowerCase()) ||
-      (i.description ?? '').toLowerCase().includes(q.toLowerCase()) ||
-      (i.category ?? '').toLowerCase().includes(q.toLowerCase()),
-  )
-  return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-background/70 p-4 backdrop-blur-sm">
-      <div className="mt-24 w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl">
-        <header className="flex items-center gap-2 border-b border-border/70 px-4 py-3">
-          <Search className="h-4 w-4 text-muted-foreground" />
-          <input
-            autoFocus
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search catalog…"
-            className="flex-1 bg-transparent text-sm focus:outline-none"
-          />
-          <span className="text-xs text-muted-foreground tabular">
-            {filtered.length}/{items.length}
-          </span>
-          <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-md text-muted-foreground hover:bg-muted">
-            <X className="h-3.5 w-3.5" />
-          </button>
-        </header>
-        <ul className="max-h-[60vh] overflow-y-auto divide-y divide-border/70">
-          {filtered.slice(0, 50).map((i) => (
-            <li key={i.id}>
-              <button
-                onClick={() => onPick(i)}
-                className="flex w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-muted/50"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm font-medium">{i.name}</div>
-                  <div className="mt-0.5 text-xs text-muted-foreground">
-                    {i.category ?? 'Uncategorized'}
-                    {i.description ? ` · ${i.description}` : ''}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-semibold tabular">{fmtMoney(i.base_price)}</div>
-                  <div className="text-[10px] text-muted-foreground">per {i.unit}</div>
-                </div>
-              </button>
-            </li>
-          ))}
-          {filtered.length === 0 && (
-            <li className="px-4 py-8 text-center text-sm text-muted-foreground">
-              No matches. Try different keywords or add items in the Catalog page.
-            </li>
-          )}
-        </ul>
       </div>
     </div>
   )
