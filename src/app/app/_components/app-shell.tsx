@@ -4,26 +4,7 @@ import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
-import {
-  BarChart3,
-  Bell,
-  Calendar,
-  ChevronDown,
-  Command,
-  Home,
-  Inbox,
-  Loader2,
-  LogOut,
-  Menu,
-  Package,
-  Plug,
-  Plus,
-  Search,
-  Settings,
-  Users,
-  X,
-  type LucideIcon,
-} from 'lucide-react'
+import { BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
@@ -264,24 +245,18 @@ function TopBar({
         </span>
       </Link>
 
-      {/* Search (hidden on mobile) */}
-      <button className="group hidden max-w-md flex-1 items-center gap-2 rounded-lg border border-border bg-background px-3 py-1.5 text-left text-sm text-muted-foreground shadow-sm transition-colors hover:border-border/80 md:flex">
-        <Search className="h-4 w-4" />
-        <span className="flex-1">Search…</span>
-        <kbd className="flex items-center gap-0.5 rounded border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-          <Command className="h-3 w-3" />K
-        </kbd>
-      </button>
+      {/*
+        A global search box lived here with no handler behind it. Beside a list
+        search that works — the one on Customers — it read as two search bars,
+        one of which silently ignored you. A control that does nothing is worse
+        than an absent one: it teaches people the app is broken.
+
+        It comes back when it does something: a command palette over customers,
+        quotes, jobs and the catalog. pg_trgm is already on customers.name.
+      */}
 
       <div className="ml-auto flex items-center gap-1">
-        {/* Search icon on mobile */}
-        <button className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground transition-[background-color,transform] hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted active:text-foreground lg:h-9 lg:w-9 md:hidden">
-          <Search className="h-4 w-4" />
-        </button>
-
-        <button className="grid h-11 w-11 place-items-center rounded-lg text-muted-foreground transition-[background-color,transform] hover:bg-muted hover:text-foreground active:scale-95 active:bg-muted active:text-foreground lg:h-9 lg:w-9">
-          <Bell className="h-4 w-4" />
-        </button>
+        {/* The bell had no handler either, and no notifications exist to show. */}
 
         <Link
           href="/app/quotes/new"
