@@ -14,6 +14,7 @@ import {
   type ExtractedItem,
 } from '@/lib/ai/extract-catalog'
 import { hasPermission, type UserRole } from '@/lib/permissions'
+import { isLive, type DiscountType } from '@/lib/promotions'
 
 /**
  * Catalog CRUD.
@@ -539,6 +540,169 @@ export async function deleteLabel(input: unknown): Promise<Result<{ id: string }
     [parsed.data.id, auth.session.companyId],
   )
   if (!rows[0]) return { ok: false, error: 'Label not found' }
+
+  revalidate()
+  return { ok: true, data: { id: rows[0].id } }
+}
+
+// -----------------------------------------------------------------------------
+// Promotions
+//
+// Contractor-applied, targeting labels so one rule covers every matching item.
+// See src/lib/promotions.ts for the pricing rules and why the customer never
+// enters a code.
+// -----------------------------------------------------------------------------
+
+export type PromotionRow = {
+  id: string
+  name: string
+  code: string | null
+  discount_type: DiscountType
+  discount_value: number
+  starts_at: string | null
+  ends_at: string | null
+  is_active: boolean
+  labels: string[]
+  /** Whether it is in force right now, which is what the contractor asks. */
+  live: boolean
+}
+
+export async function listPromotions(): Promise<PromotionRow[]> {
+  const session = await getSession()
+  if (!session) return []
+
+  const rows = await query<Omit<PromotionRow, 'live'>>(
+    `select p.id, p.name, p.code, p.discount_type, p.discount_value,
+            p.starts_at, p.ends_at, p.is_active,
+            coalesce(
+              (select array_agg(l.name order by l.name)
+                 from promotion_labels pl
+                 join catalog_labels l on l.id = pl.label_id
+                where pl.promotion_id = p.id),
+              '{}'
+            ) as labels
+       from promotions p
+      where p.company_id = $1
+      order by p.is_active desc, p.created_at desc`,
+    [session.companyId],
+  )
+
+  const now = new Date()
+  return rows.map((r) => ({
+    ...r,
+    discount_value: Number(r.discount_value),
+    live: isLive(
+      {
+        id: r.id,
+        name: r.name,
+        discountType: r.discount_type,
+        discountValue: Number(r.discount_value),
+        startsAt: r.starts_at ? new Date(r.starts_at) : null,
+        endsAt: r.ends_at ? new Date(r.ends_at) : null,
+        isActive: r.is_active,
+        labelIds: r.labels.length ? ['x'] : [],
+      },
+      now,
+    ),
+  }))
+}
+
+const promotionSchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().trim().min(1, 'Give the promotion a name').max(120),
+  code: z.string().trim().max(40).optional().or(z.literal('')),
+  discount_type: z.enum(['percent', 'amount', 'fixed_price']),
+  discount_value: z.coerce.number().min(0),
+  starts_at: z.string().datetime().nullable().optional(),
+  ends_at: z.string().datetime().nullable().optional(),
+  is_active: z.boolean().default(true),
+  labels: z.array(z.string().trim().min(1).max(60)).min(1, 'Pick at least one label to discount'),
+})
+
+export async function savePromotion(input: unknown): Promise<Result<{ id: string }>> {
+  const parsed = promotionSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid promotion' }
+  }
+
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+  const { companyId } = auth.session
+  const d = parsed.data
+
+  if (d.discount_type === 'percent' && d.discount_value > 100) {
+    return { ok: false, error: 'A percentage discount cannot exceed 100%.' }
+  }
+  if (d.starts_at && d.ends_at && new Date(d.ends_at) <= new Date(d.starts_at)) {
+    return { ok: false, error: 'The end date has to be after the start date.' }
+  }
+
+  try {
+    let id = d.id
+    if (id) {
+      const rows = await query<{ id: string }>(
+        `update promotions
+            set name = $1, code = $2, discount_type = $3, discount_value = $4,
+                starts_at = $5, ends_at = $6, is_active = $7, updated_at = now()
+          where id = $8 and company_id = $9
+          returning id`,
+        [d.name, d.code || null, d.discount_type, d.discount_value,
+         d.starts_at ?? null, d.ends_at ?? null, d.is_active, id, companyId],
+      )
+      if (!rows[0]) return { ok: false, error: 'Promotion not found' }
+    } else {
+      const rows = await query<{ id: string }>(
+        `insert into promotions
+           (company_id, name, code, discount_type, discount_value, starts_at, ends_at, is_active)
+         values ($1, $2, $3, $4, $5, $6, $7, $8)
+         returning id`,
+        [companyId, d.name, d.code || null, d.discount_type, d.discount_value,
+         d.starts_at ?? null, d.ends_at ?? null, d.is_active],
+      )
+      id = rows[0].id
+    }
+
+    // Labels are resolved through the same lookup-or-create the catalog uses, so
+    // a promotion can name a label that does not exist yet.
+    const labelIds: string[] = []
+    for (const name of d.labels) {
+      const labelId = await resolveLabel(companyId, name)
+      if (labelId) labelIds.push(labelId)
+    }
+    await query('delete from promotion_labels where promotion_id = $1', [id])
+    if (labelIds.length) {
+      const values: unknown[] = []
+      const tuples = labelIds.map((lid, i) => {
+        values.push(id, lid)
+        return `($${i * 2 + 1}, $${i * 2 + 2})`
+      })
+      await query(
+        `insert into promotion_labels (promotion_id, label_id) values ${tuples.join(', ')}
+         on conflict do nothing`,
+        values,
+      )
+    }
+
+    revalidate()
+    return { ok: true, data: { id: id! } }
+  } catch (e) {
+    console.error('savePromotion failed', e)
+    return { ok: false, error: 'Could not save that promotion. Please try again.' }
+  }
+}
+
+export async function deletePromotion(input: unknown): Promise<Result<{ id: string }>> {
+  const parsed = z.object({ id: z.string().uuid() }).safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid promotion' }
+
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+
+  const rows = await query<{ id: string }>(
+    'delete from promotions where id = $1 and company_id = $2 returning id',
+    [parsed.data.id, auth.session.companyId],
+  )
+  if (!rows[0]) return { ok: false, error: 'Promotion not found' }
 
   revalidate()
   return { ok: true, data: { id: rows[0].id } }

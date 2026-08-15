@@ -92,6 +92,17 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'delete from promotion_labels',
+    reason: 'the promotion was inserted or updated with company_id immediately above',
+  },
+  {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
+    match: 'insert into promotion_labels',
+    reason:
+      'promotion verified against company_id above, and every label id came from resolveLabel which is company-scoped',
+  },
+  {
+    file: 'src/app/app/(shell)/catalog/actions.ts',
     match: 'delete from catalog_item_labels',
     reason: 'the catalog item was verified against company_id earlier in the action',
   },

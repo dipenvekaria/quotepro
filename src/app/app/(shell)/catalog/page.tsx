@@ -5,7 +5,9 @@ import { canSeeCatalog } from '@/lib/auth/scope'
 import { query } from '@/lib/db'
 import { hasPermission, type UserRole } from '@/lib/permissions'
 
+import { listPromotions } from './actions'
 import { CatalogManager, type CatalogItem } from './catalog-manager'
+import { PromotionsManager } from './promotions-manager'
 
 export default async function CatalogPage() {
   const { companyId, role } = await requireSession()
@@ -31,6 +33,9 @@ export default async function CatalogPage() {
   )
 
   const canEdit = hasPermission(role as UserRole, 'canEditCatalog')
+  const promotions = await listPromotions()
+  const labelOptions = [...new Set(items.flatMap((i) => i.labels ?? []))].sort()
+
   const categories = new Set(items.map((i) => i.category?.trim() || 'Uncategorized'))
 
   return (
@@ -49,6 +54,14 @@ export default async function CatalogPage() {
               : `${items.length} pricing ${items.length === 1 ? 'item' : 'items'} across ${categories.size} ${categories.size === 1 ? 'category' : 'categories'}.`}
           </p>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <PromotionsManager
+          promotions={promotions}
+          labelOptions={labelOptions}
+          canEdit={canEdit}
+        />
       </div>
 
       <CatalogManager items={items} canEdit={canEdit} />

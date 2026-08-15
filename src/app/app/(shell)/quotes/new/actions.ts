@@ -7,6 +7,7 @@ import { getSession } from '@/lib/auth/session'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
+import { loadItemLabels, loadLivePromotions, priceWithPromotions } from '@/lib/promotions'
 import {
   TIERS,
   TIER_DB_KEY,
@@ -225,7 +226,36 @@ export async function saveLineItems(input: SaveLineItemsInput) {
     taxRate = Number(rows[0]?.tax_rate ?? 8.5)
   }
 
-  const { subtotal, taxAmount, total } = computeTotals(parsed.data.items, taxRate)
+  // Promotions are applied at save, not at the moment a line is added: the
+  // contractor may add a line today and save tomorrow, and the price that
+  // matters is the one on the quote they send.
+  const [promotions, itemLabels] = await Promise.all([
+    loadLivePromotions(companyId),
+    loadItemLabels(companyId),
+  ])
+
+  const pricedItems = parsed.data.items.map((i) => {
+    const priced = priceWithPromotions({
+      listPrice: i.unit_price,
+      labelIds: itemLabels.get(i.name.trim().toLowerCase()) ?? [],
+      promotions,
+    })
+    return { ...i, ...priced }
+  })
+
+  const discounted = pricedItems.filter((i) => i.promotionId)
+  if (discounted.length) {
+    console.warn(
+      `quotes: applied promotions to ${discounted.length} line(s): ${[
+        ...new Set(discounted.map((i) => i.promotionName)),
+      ].join(', ')}`,
+    )
+  }
+
+  const { subtotal, taxAmount, total } = computeTotals(
+    pricedItems.map((i) => ({ quantity: i.quantity, unit_price: i.unitPrice })),
+    taxRate,
+  )
 
   // Labour hours come from the catalog, matched by name, and are snapshotted
   // onto the line exactly as unit_price already is — a quote must not change
@@ -248,7 +278,7 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   }
   const hoursFor = (name: string) => catalogHours.get(name.trim().toLowerCase()) ?? null
 
-  const estimatedHours = parsed.data.items.reduce((sum, i) => {
+  const estimatedHours = parsed.data.items.reduce((sum: number, i) => {
     const h = hoursFor(i.name)
     return h === null ? sum : sum + h * i.quantity
   }, 0)
@@ -259,24 +289,28 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 
       if (parsed.data.items.length) {
         const values: unknown[] = []
-        const tuples = parsed.data.items.map((i, idx) => {
-          const b = idx * 9
+        const tuples = pricedItems.map((i, idx) => {
+          const b = idx * 11
           values.push(
             parsed.data.work_item_id,
             i.name,
             i.description ?? null,
             i.quantity,
-            i.unit_price,
+            // The charged price. list_price records what it would have been, so
+            // the customer can see the saving.
+            i.unitPrice,
             i.sort_order,
             i.is_upsell ?? false,
             i.is_discount ?? false,
             hoursFor(i.name),
+            i.promotionId,
+            i.listPrice,
           )
-          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9})`
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9}, $${b + 10}, $${b + 11})`
         })
         await q(
           `insert into quote_items
-             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount, labor_hours)
+             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount, labor_hours, promotion_id, list_price)
            values ${tuples.join(', ')}`,
           values,
         )
