@@ -13,6 +13,9 @@ import {
   itemsToCsv,
   type ExtractedItem,
 } from '@/lib/ai/extract-catalog'
+import { randomUUID } from 'node:crypto'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { PHOTO_BUCKET } from '@/lib/storage/signed-url'
 import { hasPermission, type UserRole } from '@/lib/permissions'
 import { isLive, type DiscountType } from '@/lib/promotions'
 
@@ -40,6 +43,9 @@ const itemSchema = z.object({
 const createSchema = itemSchema
 const updateSchema = itemSchema.extend({ id: z.string().uuid() })
 const idSchema = z.object({ id: z.string().uuid() })
+
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']
+const IMAGE_MAX_BYTES = 10 * 1024 * 1024
 
 export type CatalogItemInput = z.input<typeof itemSchema>
 
@@ -706,4 +712,79 @@ export async function deletePromotion(input: unknown): Promise<Result<{ id: stri
 
   revalidate()
   return { ok: true, data: { id: rows[0].id } }
+}
+
+// ---------------------------------------------------------------------------
+
+/**
+ * A picture on a catalog item.
+ *
+ * A technician explaining a part in someone's utility room has nothing to point
+ * at. The contractor's own photo of the thing they actually fit does more than
+ * any description — which is why technicians can see catalog images while the
+ * prices stay withheld.
+ *
+ * Lands in the same private bucket as quote photos, so it is served through
+ * short-lived signed URLs and never becomes a permanent public link.
+ */
+export async function setCatalogItemImage(formData: FormData): Promise<Result<{ path: string }>> {
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+  if (!hasPermission(session.role as UserRole, 'canEditCatalog')) {
+    return { ok: false, error: 'Only an owner can change the price book.' }
+  }
+
+  const itemId = String(formData.get('item_id') ?? '')
+  if (!z.string().uuid().safeParse(itemId).success) {
+    return { ok: false, error: 'Invalid item' }
+  }
+
+  const file = formData.get('file')
+  if (!(file instanceof File) || file.size === 0) return { ok: false, error: 'Choose a photo.' }
+  if (!IMAGE_TYPES.includes(file.type)) {
+    return { ok: false, error: 'Use a JPG, PNG or HEIC.' }
+  }
+  if (file.size > IMAGE_MAX_BYTES) {
+    return { ok: false, error: `That photo is over ${IMAGE_MAX_BYTES / 1024 / 1024}MB.` }
+  }
+
+  // The item must belong to the caller. pg bypasses RLS, so this is the check.
+  const owned = await query<{ id: string; image_path: string | null }>(
+    'select id, image_path from catalog_items where id = $1 and company_id = $2 limit 1',
+    [itemId, session.companyId],
+  )
+  if (!owned[0]) return { ok: false, error: 'Item not found' }
+
+  const ext = file.name.includes('.') ? file.name.split('.').pop()!.toLowerCase() : 'jpg'
+  const path = `${session.companyId}/catalog/${itemId}/${randomUUID()}.${ext}`
+
+  const admin = createAdminClient()
+  const { error: upErr } = await admin.storage
+    .from(PHOTO_BUCKET)
+    .upload(path, Buffer.from(await file.arrayBuffer()), { contentType: file.type, upsert: false })
+  if (upErr) {
+    console.error('setCatalogItemImage upload failed', upErr)
+    return { ok: false, error: 'Could not upload that photo. Try again.' }
+  }
+
+  try {
+    await query('update catalog_items set image_path = $1 where id = $2 and company_id = $3', [
+      path,
+      itemId,
+      session.companyId,
+    ])
+  } catch (e) {
+    // Don't strand the object if the row failed.
+    await admin.storage.from(PHOTO_BUCKET).remove([path])
+    console.error('setCatalogItemImage update failed', e)
+    return { ok: false, error: 'Could not save that photo. Try again.' }
+  }
+
+  // Replacing an image leaves the old object paying rent forever otherwise.
+  if (owned[0].image_path) {
+    await admin.storage.from(PHOTO_BUCKET).remove([owned[0].image_path])
+  }
+
+  revalidatePath('/app/catalog')
+  return { ok: true, data: { path } }
 }

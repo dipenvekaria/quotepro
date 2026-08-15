@@ -36,6 +36,7 @@ export type CatalogItem = {
   description: string | null
   category: string | null
   base_price: number
+  image_path?: string | null
   unit: string | null
   is_active: boolean
   labels?: string[]
@@ -76,9 +77,19 @@ function fmtMoney(n: number) {
 export function CatalogManager({
   items,
   canEdit,
+  showPrices = true,
+  imageUrls = {},
 }: {
   items: CatalogItem[]
   canEdit: boolean
+  /**
+   * False for technicians and sales. The server already omits base_price from
+   * the query for those roles, so this only stops an empty column being drawn —
+   * it is not the control.
+   */
+  showPrices?: boolean
+  /** Signed URLs by storage path — they expire, so they are not stored. */
+  imageUrls?: Record<string, string>
 }) {
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState<Draft>(EMPTY)
@@ -286,6 +297,16 @@ export function CatalogManager({
                       !it.is_active && 'opacity-50',
                     )}
                   >
+                    {/* The picture a technician points at while explaining the
+                        part. Shown to every role; the price beside it is not. */}
+                    {it.image_path && imageUrls[it.image_path] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={imageUrls[it.image_path]}
+                        alt=""
+                        className="h-11 w-11 shrink-0 rounded-md border border-border/70 object-cover"
+                      />
+                    ) : null}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 text-sm font-medium">
                         <span className="truncate">{it.name}</span>
@@ -306,7 +327,7 @@ export function CatalogManager({
                       per {it.unit ?? 'each'}
                     </div>
                     <div className="shrink-0 text-right text-sm font-semibold tabular">
-                      {fmtMoney(Number(it.base_price))}
+                      {showPrices ? fmtMoney(Number(it.base_price)) : '—'}
                     </div>
 
                     {canEdit && (

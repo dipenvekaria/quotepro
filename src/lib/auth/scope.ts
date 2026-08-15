@@ -95,6 +95,23 @@ export function customerScope(
 
 /** Whether this role may see the price book at all. */
 export function canSeeCatalog(role: UserRole): boolean {
+  // Everyone on the job can look an item up. A technician explaining a part to
+  // a customer in their utility room needs the name, the description and the
+  // picture; withholding the whole catalog to protect the prices withheld the
+  // one thing that helps them sell.
+  return role === 'owner' || role === 'office' || role === 'technician' || role === 'sales'
+}
+
+/**
+ * Whether this role may see what things cost.
+ *
+ * The price book is the business. A technician who can export it can hand a
+ * competitor the contractor's margins, so prices are withheld from them and
+ * from sales — and withheld in the *query*, not in the markup. Rendering a
+ * price behind a conditional still ships it to the browser, where anyone can
+ * read it in devtools, which is exactly the leak this is meant to prevent.
+ */
+export function canSeeCatalogPrices(role: UserRole): boolean {
   return role === 'owner' || role === 'office'
 }
 
