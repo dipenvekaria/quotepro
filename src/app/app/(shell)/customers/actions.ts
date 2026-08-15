@@ -153,6 +153,16 @@ export async function updateCustomer(input: unknown): Promise<Result<{ id: strin
     if (e instanceof Error && e.message === 'NOT_FOUND') {
       return { ok: false, error: 'Customer not found' }
     }
+    // Phone and email are unique per company. "Please try again" is useless
+    // advice for a collision — retrying does the same thing forever — so say
+    // which field clashed and let them go and merge the two records.
+    const constraint = (e as { constraint?: string } | null)?.constraint
+    if (constraint === 'customers_unique_phone_per_company') {
+      return { ok: false, error: 'Another customer already has that phone number.' }
+    }
+    if (constraint === 'customers_unique_email_per_company') {
+      return { ok: false, error: 'Another customer already has that email address.' }
+    }
     console.error('updateCustomer failed', e)
     return { ok: false, error: 'Could not save those changes. Please try again.' }
   }
