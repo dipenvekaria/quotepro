@@ -115,3 +115,74 @@ export function savingOn(item: { unitPrice: number; listPrice: number | null }, 
   if (item.listPrice === null) return 0
   return roundMoney((item.listPrice - item.unitPrice) * quantity)
 }
+
+// ---------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------
+
+/**
+ * Live promotions for a company, with the labels they cover.
+ *
+ * Loaded once per quote save rather than per line: a quote with twelve lines
+ * should not run twelve identical queries.
+ */
+export async function loadLivePromotions(companyId: string): Promise<Promotion[]> {
+  const { query } = await import('@/lib/db')
+
+  const rows = await query<{
+    id: string
+    name: string
+    discount_type: DiscountType
+    discount_value: number
+    starts_at: string | null
+    ends_at: string | null
+    is_active: boolean
+    label_ids: string[]
+  }>(
+    `select p.id, p.name, p.discount_type, p.discount_value,
+            p.starts_at, p.ends_at, p.is_active,
+            coalesce(
+              (select array_agg(pl.label_id) from promotion_labels pl
+                where pl.promotion_id = p.id),
+              '{}'
+            ) as label_ids
+       from promotions p
+      where p.company_id = $1
+        and p.is_active = true
+        and (p.starts_at is null or p.starts_at <= now())
+        and (p.ends_at is null or p.ends_at >= now())`,
+    [companyId],
+  )
+
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    discountType: r.discount_type,
+    discountValue: Number(r.discount_value),
+    startsAt: r.starts_at ? new Date(r.starts_at) : null,
+    endsAt: r.ends_at ? new Date(r.ends_at) : null,
+    isActive: r.is_active,
+    labelIds: r.label_ids,
+  }))
+}
+
+/** Label ids per catalog item name, for matching a quote line to a promotion. */
+export async function loadItemLabels(companyId: string): Promise<Map<string, string[]>> {
+  const { query } = await import('@/lib/db')
+
+  const rows = await query<{ name: string; label_ids: string[] }>(
+    `select ci.name,
+            coalesce(
+              (select array_agg(il.label_id) from catalog_item_labels il
+                where il.catalog_item_id = ci.id),
+              '{}'
+            ) as label_ids
+       from catalog_items ci
+      where ci.company_id = $1`,
+    [companyId],
+  )
+
+  // Keyed on the lowercased name because a quote line carries the name, not the
+  // catalog id — the same basis reconcile() matches on.
+  return new Map(rows.map((r) => [r.name.trim().toLowerCase(), r.label_ids]))
+}
