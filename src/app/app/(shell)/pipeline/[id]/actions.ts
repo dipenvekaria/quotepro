@@ -8,6 +8,8 @@ import { explainQuote } from '@/lib/ai/explain'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
+import { canAssignWork } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import {
   NOMINAL_JOB_HOURS,
   bookedHoursOn,
@@ -48,7 +50,15 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
   if (d.notes !== undefined) add('notes', d.notes)
   if (d.job_name !== undefined) add('job_name', d.job_name)
   if (d.scheduled_start !== undefined) add('scheduled_start', d.scheduled_start)
-  if (d.assigned_to !== undefined) add('assigned_to', d.assigned_to)
+  // Handing work to someone is a dispatch decision. A technician reassigning
+  // their own job — or someone else's — is not a thing the business wants, and
+  // the field being present in a payload is not authorisation.
+  if (d.assigned_to !== undefined) {
+    if (!canAssignWork(session.role as UserRole)) {
+      return { ok: false as const, error: 'Only an owner or the office can assign work.' }
+    }
+    add('assigned_to', d.assigned_to)
+  }
   if (!sets.length) return { ok: true as const }
 
   values.push(d.id)

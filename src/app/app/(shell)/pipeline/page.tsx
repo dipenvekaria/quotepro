@@ -4,6 +4,8 @@ import { Filter, Inbox, Plus } from 'lucide-react'
 import { EmptyState } from '@/components/shared/empty-state'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
+import { workItemScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
 
@@ -26,7 +28,11 @@ const COLUMNS: Column[] = [
 ]
 
 export default async function PipelinePage() {
-  const { companyId } = await requireSession()
+  const { companyId, userId, role } = await requireSession()
+
+  // A technician sees the jobs they were sent to; sales sees their own. Without
+  // this the board showed everyone the whole company's book of business.
+  const scope = workItemScope({ companyId, userId, role: role as UserRole }, 1)
 
   const workItems = await query<{
     id: string
@@ -45,10 +51,10 @@ export default async function PipelinePage() {
        from work_items w
        left join customers c on c.id = w.customer_id
       where w.company_id = $1
-        and w.status <> 'archived'
+        and w.status <> 'archived'${scope.sql}
       order by w.updated_at desc
       limit 500`,
-    [companyId],
+    [companyId, ...scope.params],
   )
 
   const customerMap = new Map(

@@ -3,12 +3,15 @@ import { Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { requireSession } from '@/lib/auth/session'
+import { workItemScope, customerScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 
 import { NewCustomer } from './new-customer'
 
 export default async function CustomersPage() {
-  const { companyId } = await requireSession()
+  const { companyId, userId, role } = await requireSession()
+  const scope = customerScope({ companyId, userId, role: role as UserRole }, 1, 'customers')
 
   // Data via the raw-Postgres layer. company_id is enforced here because this
   // connection is not RLS-bound.
@@ -21,7 +24,7 @@ export default async function CustomersPage() {
   }>(
     `select id, name, email, phone, created_at
        from customers
-      where company_id = $1
+      where company_id = $1${scope.sql}
       order by created_at desc
       limit 200`,
     [companyId],

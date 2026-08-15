@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation'
 
 import { requireSession } from '@/lib/auth/session'
+import { workItemScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 
+import { listQuotePhotos } from './photo-actions'
 import { WorkItemDetail, type LineItem } from './work-item-detail'
 
 // ---------------------------------------------------------------------------
@@ -13,7 +16,12 @@ export default async function WorkItemDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const { companyId } = await requireSession()
+  const { companyId, userId, role } = await requireSession()
+
+  // Scoping the board is not enough — a URL is guessable enough to try, and a
+  // technician opening a job they were not sent to should get a 404, not
+  // someone else's customer and pricing.
+  const scope = workItemScope({ companyId, userId, role: role as UserRole }, 2)
 
   const [row] = await query<{
     id: string
@@ -72,9 +80,9 @@ export default async function WorkItemDetailPage({
        left join customer_addresses a on a.id = w.address_id
        left join users cr on cr.id = w.created_by
        left join users asg on asg.id = w.assigned_to
-      where w.company_id = $1 and w.id = $2
+      where w.company_id = $1 and w.id = $2${scope.sql}
       limit 1`,
-    [companyId, id],
+    [companyId, id, ...scope.params],
   )
 
   if (!row) notFound()
@@ -119,6 +127,8 @@ export default async function WorkItemDetailPage({
     creator: row.creator_profile ? { profile: row.creator_profile } : null,
     assignee: row.assignee_profile ? { profile: row.assignee_profile } : null,
   }
+
+  const photos = await listQuotePhotos(id, companyId)
 
   const quoteItems = await query<{
     id: string
@@ -183,6 +193,7 @@ export default async function WorkItemDetailPage({
     <WorkItemDetail
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
       lineItems={(quoteItems ?? []) as LineItem[]}
+      photos={photos}
       teammates={
         (teammates ?? []).map((t) => {
           const p = (t.profile as { full_name?: string } | null)

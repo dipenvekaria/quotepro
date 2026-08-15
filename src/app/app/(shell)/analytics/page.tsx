@@ -1,13 +1,20 @@
+import { notFound } from 'next/navigation'
+
 import Link from 'next/link'
 import { ArrowUpRight, DollarSign, FileText, Sparkles, TrendingUp, Users } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
+import { canSeeAnalytics } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 
 // ---------------------------------------------------------------------------
 
 export default async function AnalyticsPage() {
-  const { companyId } = await requireSession()
+  const { companyId, role } = await requireSession()
+
+  // Revenue, close rate and pipeline value are the owner's numbers.
+  if (!canSeeAnalytics(role as UserRole)) notFound()
 
   // Server Component: this runs once per request on the server, not during a
   // client render, so the purity rule does not apply.

@@ -84,22 +84,25 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
             <h2 className="text-sm font-semibold">Your price book</h2>
           </div>
           <p className="mt-1.5 text-xs text-muted-foreground">
-            Pick your trade and tell us your rates. We build the price book from your numbers —
-            we never guess what you charge.
+            Pick your trade and we build the price book. Prices come from your own rates — we
+            never guess what you charge.
           </p>
 
           <div className="mt-4 space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="trade" className="text-sm font-medium">Trade</Label>
+              <Label htmlFor="trade" className="text-sm font-medium">
+                Trade <span className="text-destructive">*</span>
+              </Label>
               <select
                 id="trade"
                 name="trade"
+                required
                 value={trade}
                 onChange={(e) => setTrade(e.target.value)}
                 disabled={pending}
                 className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
               >
-                <option value="">Skip — I’ll add my own items</option>
+                <option value="">Choose your trade…</option>
                 {grouped.map(([category, list]) => (
                   <optgroup key={category} label={category}>
                     {list.map((t) => (
@@ -110,8 +113,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
               </select>
             </div>
 
-            {trade && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="labor_rate" className="text-sm font-medium">Labor / hour</Label>
                   <Input
@@ -154,8 +156,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
                     disabled={pending}
                   />
                 </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
       )}
@@ -171,9 +172,10 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
         <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
           {[
             trade
-              ? 'A full price book for your trade, priced at your rates'
-              : 'A starter catalog (labor, trip fee, permits) — edit or replace anytime',
-            '3 team roles: owner, office, technician',
+              ? `A full price book for ${trades.find((x) => x.slug === trade)?.name ?? 'your trade'}, priced at your rates`
+              : 'A full price book for your trade — choose one above',
+            // Four roles, not three: sales was missing from this list.
+            '4 team roles: owner, office, sales, technician',
             'Encrypted data with automatic backups',
             'One-click quote drafting built in',
           ].map((f) => (
@@ -193,7 +195,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
         >
           Sign out
         </button>
-        <Button type="submit" disabled={pending} className="shadow-sm">
+        <Button type="submit" disabled={pending || !trade} className="shadow-sm">
           {pending ? 'Creating…' : (
             <span className="inline-flex items-center gap-1.5">
               Create workspace <ArrowRight className="h-4 w-4" />
