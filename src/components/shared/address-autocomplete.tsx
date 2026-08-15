@@ -70,9 +70,11 @@ export function AddressAutocomplete({
     const timer = setTimeout(async () => {
       setLoading(true)
       const res = await searchAddresses({ input: value, sessionToken: sessionToken.current })
-      // A slower earlier request must not overwrite a newer one's results.
-      if (seq !== latest.current) return
+      // A slower earlier request must not overwrite a newer one's results. It
+      // must still clear the spinner though: returning early here left it
+      // running whenever the newer request was the one that got dropped.
       setLoading(false)
+      if (seq !== latest.current) return
       if (!res.ok || !res.available) {
         setSuggestions([])
         return
