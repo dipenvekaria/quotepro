@@ -1,12 +1,15 @@
-import { envServer } from '@/lib/env'
+import { placesAuthHeaders, placesConfigured } from './auth'
 
 /**
  * Address autocomplete, via the Google Places API (New).
  *
- * SERVER-ONLY. The key never reaches the browser — the drop-in JS widget wants
- * a public key restricted by HTTP referrer, which is a restriction anyone can
- * forge. Proxying keeps the key secret and, more importantly, keeps the session
+ * SERVER-ONLY. The credential never reaches the browser — the drop-in JS widget
+ * wants a public key restricted by HTTP referrer, which is a restriction anyone
+ * can forge. Proxying keeps it secret and, more importantly, keeps the session
  * token on our side where it cannot be dropped.
+ *
+ * Auth is whatever `./auth` resolves: a service-account bearer token, or an API
+ * key. Neither shape is visible from here.
  *
  * **Session tokens are the cost control, not an optimisation.** Google bills a
  * whole run of keystrokes as one session when every request in it carries the
@@ -39,21 +42,21 @@ export type StructuredAddress = {
 }
 
 export function placesAvailable(): boolean {
-  return Boolean(envServer().GOOGLE_MAPS_API_KEY)
+  return placesConfigured()
 }
 
 export async function autocompleteAddress(
   input: string,
   sessionToken: string,
 ): Promise<{ available: boolean; suggestions: Suggestion[] }> {
-  const key = envServer().GOOGLE_MAPS_API_KEY
-  if (!key) return { available: false, suggestions: [] }
+  const auth = await placesAuthHeaders()
+  if (!auth) return { available: false, suggestions: [] }
   if (input.trim().length < 3) return { available: true, suggestions: [] }
 
   try {
     const res = await fetch(AUTOCOMPLETE_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': key },
+      headers: { 'Content-Type': 'application/json', ...auth },
       body: JSON.stringify({
         input,
         sessionToken,
@@ -104,13 +107,13 @@ export async function addressDetails(
   placeId: string,
   sessionToken: string,
 ): Promise<StructuredAddress | null> {
-  const key = envServer().GOOGLE_MAPS_API_KEY
-  if (!key) return null
+  const auth = await placesAuthHeaders()
+  if (!auth) return null
 
   try {
     const res = await fetch(`${DETAILS_URL}/${encodeURIComponent(placeId)}?sessionToken=${encodeURIComponent(sessionToken)}`, {
       headers: {
-        'X-Goog-Api-Key': key,
+        ...auth,
         // Billed by field set, so ask only for what lands in the columns.
         'X-Goog-FieldMask': 'addressComponents,formattedAddress',
       },

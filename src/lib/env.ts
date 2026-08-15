@@ -85,9 +85,13 @@ const serverEnvSchema = z.object({
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_PLATFORM_FEE_BPS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),
-  // Absent means address autocomplete is off and the address fields stay plain
-  // text boxes. Server-side only — this key is never exposed to the browser.
+  // Address autocomplete. Either credential works and the service account wins
+  // when both are set; absent means the address fields stay plain text boxes.
+  // Server-side only — neither is ever exposed to the browser.
   GOOGLE_MAPS_API_KEY: optionalSecret(20),
+  // The service account's JSON key, base64-encoded (raw JSON is accepted too).
+  // Not a token: tokens expire in an hour and are minted from this at runtime.
+  GOOGLE_SERVICE_ACCOUNT_JSON: optionalSecret(50),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
   // Vercel sends this as `Authorization: Bearer <secret>` on scheduled runs.
   // Unset means the cron endpoint refuses to run rather than running open.
