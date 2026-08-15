@@ -1,11 +1,11 @@
 import Link from 'next/link'
-import { Calendar, ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
-import { workItemScope, customerScope } from '@/lib/auth/scope'
+import { CalendarBoard, type BoardJob } from './calendar-board'
+import { workItemScope, canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
-import { StatusBadge } from '@/components/shared/status-badge'
 import { EmptyState } from '@/components/shared/empty-state'
 import { cn } from '@/lib/utils'
 
@@ -50,12 +50,13 @@ export default async function CalendarPage({
     status: string
     scheduled_start: string
     total: number
+    estimated_hours: number | null
     customer_name: string | null
     address: string | null
     city: string | null
     state: string | null
   }>(
-    `select w.id, w.status, w.scheduled_start, w.total,
+    `select w.id, w.status, w.scheduled_start, w.total, w.estimated_hours,
             c.name as customer_name,
             a.address, a.city, a.state
        from work_items w
@@ -86,6 +87,23 @@ export default async function CalendarPage({
     const key = new Date(j.scheduled_start).toISOString().slice(0, 10)
     ;(jobsByDay[key] ??= []).push(j)
   }
+
+  // Only the instants. Day keys are derived in the browser, because the
+  // server's timezone is not the contractor's and two sets of keys that must
+  // agree will eventually not.
+  const boardDays = Array.from({ length: view === 'month' ? 42 : 7 }, (_, i) => ({
+    date: addDays(rangeStart, i).toISOString(),
+  }))
+
+  const boardJobs: BoardJob[] = rows.map((r) => ({
+    id: r.id,
+    status: r.status,
+    scheduled_start: r.scheduled_start,
+    total: Number(r.total ?? 0),
+    customer_name: r.customer_name,
+    place: [r.city, r.state].filter(Boolean).join(', ') || r.address,
+    estimated_hours: r.estimated_hours === null ? null : Number(r.estimated_hours),
+  }))
 
   // Prev/next anchors depend on the active view.
   const prev = view === 'month' ? addMonths(anchor, -1) : addDays(startOfWeek(anchor), -7)
@@ -160,10 +178,13 @@ export default async function CalendarPage({
             description="Won quotes with a scheduled date will appear here. Set a schedule on a work item from its detail page."
           />
         </div>
-      ) : view === 'month' ? (
-        <MonthGrid gridStart={rangeStart} month={startOfMonth(anchor).getMonth()} jobsByDay={jobsByDay} />
       ) : (
-        <WeekGrid weekStart={rangeStart} jobsByDay={jobsByDay} />
+        <CalendarBoard
+          days={boardDays}
+          jobs={boardJobs}
+          canReschedule={canAssignWork(role as UserRole)}
+          view={view}
+        />
       )}
     </div>
   )
@@ -187,10 +208,6 @@ function fmtRange(start: Date): string {
   return `${fmt(start)} – ${fmt(end)}`
 }
 
-function fmtMoney(n: number): string {
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
-}
-
 function startOfMonth(d: Date): Date {
   const out = new Date(d)
   out.setHours(0, 0, 0, 0)
@@ -211,116 +228,4 @@ function addDays(d: Date, n: number): Date {
   return out
 }
 
-function WeekGrid({ weekStart, jobsByDay }: { weekStart: Date; jobsByDay: Record<string, ScheduledJob[]> }) {
-  const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
-  const todayKey = new Date().toISOString().slice(0, 10)
-  return (
-    <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-7">
-      {days.map((d) => {
-        const key = d.toISOString().slice(0, 10)
-        const dayJobs = jobsByDay[key] ?? []
-        const isToday = key === todayKey
-        return (
-          <div key={key} className="rounded-xl border border-border/70 bg-card shadow-sm">
-            <header className={cn('border-b border-border/70 px-3 py-2', isToday && 'bg-primary/5')}>
-              <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                {d.toLocaleDateString('en-US', { weekday: 'short' })}
-              </div>
-              <div className={cn('text-lg font-semibold tabular', isToday && 'text-primary')}>{d.getDate()}</div>
-            </header>
-            <div className="space-y-1.5 p-2">
-              {dayJobs.length === 0 ? (
-                <div className="py-4 text-center text-[11px] text-muted-foreground">—</div>
-              ) : (
-                dayJobs.map((j) => (
-                  <Link
-                    key={j.id}
-                    href={`/app/pipeline/${j.id}`}
-                    className="block rounded-md border border-border/60 bg-background p-2 text-xs hover:border-primary/40 hover:shadow-sm"
-                  >
-                    <div className="flex items-center justify-between">
-                      <StatusBadge status={j.status as Parameters<typeof StatusBadge>[0]['status']} />
-                      <span className="tabular text-[10px] text-muted-foreground">
-                        {new Date(j.scheduled_start).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                      </span>
-                    </div>
-                    <div className="mt-1.5 truncate text-sm font-medium">{j.customers?.name ?? 'Customer'}</div>
-                    {j.addresses?.city ? (
-                      <div className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-muted-foreground">
-                        <MapPin className="h-2.5 w-2.5 shrink-0" />
-                        <span className="truncate">
-                          {j.addresses.city}
-                          {j.addresses.state ? `, ${j.addresses.state}` : ''}
-                        </span>
-                      </div>
-                    ) : null}
-                    <div className="mt-1 text-[11px] font-semibold tabular text-foreground/80">{fmtMoney(j.total)}</div>
-                  </Link>
-                ))
-              )}
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
 
-function MonthGrid({ gridStart, month, jobsByDay }: { gridStart: Date; month: number; jobsByDay: Record<string, ScheduledJob[]> }) {
-  const cells = Array.from({ length: 42 }, (_, i) => addDays(gridStart, i))
-  const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-  const todayKey = new Date().toISOString().slice(0, 10)
-  return (
-    <div className="mt-6 overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm">
-      <div className="grid grid-cols-7 border-b border-border/70 bg-muted/40">
-        {weekdays.map((w) => (
-          <div key={w} className="px-2 py-2 text-center text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            {w}
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-7">
-        {cells.map((d, i) => {
-          const key = d.toISOString().slice(0, 10)
-          const inMonth = d.getMonth() === month
-          const isToday = key === todayKey
-          const dayJobs = jobsByDay[key] ?? []
-          return (
-            <div
-              key={key}
-              className={cn(
-                'min-h-[104px] border-b border-border/60 p-1.5',
-                i % 7 !== 6 && 'border-r',
-                !inMonth && 'bg-muted/20',
-              )}
-            >
-              <div
-                className={cn(
-                  'mb-1 grid h-6 w-6 place-items-center rounded-full text-xs tabular',
-                  isToday ? 'bg-primary font-semibold text-primary-foreground' : inMonth ? 'text-foreground' : 'text-muted-foreground/50',
-                )}
-              >
-                {d.getDate()}
-              </div>
-              <div className="space-y-1">
-                {dayJobs.slice(0, 3).map((j) => (
-                  <Link
-                    key={j.id}
-                    href={`/app/pipeline/${j.id}`}
-                    className="block truncate rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary hover:bg-primary/20"
-                  >
-                    <span className="tabular">{new Date(j.scheduled_start).toLocaleTimeString('en-US', { hour: 'numeric' })}</span>{' '}
-                    {j.customers?.name ?? 'Customer'}
-                  </Link>
-                ))}
-                {dayJobs.length > 3 ? (
-                  <div className="px-1 text-[10px] text-muted-foreground">+{dayJobs.length - 3} more</div>
-                ) : null}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
