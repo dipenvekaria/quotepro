@@ -22,7 +22,14 @@ import { Label } from '@/components/ui/label'
 import { computeTotals } from '@/lib/money'
 import { cn } from '@/lib/utils'
 
-import { createDraftQuote, generateQuoteItems, saveLineItems } from './actions'
+import {
+  createDraftQuote,
+  generateQuoteItems,
+  generateQuoteTiers,
+  saveLineItems,
+  saveQuoteTiers,
+} from './actions'
+import { TierReview, type DraftTier } from './tier-review'
 
 // -----------------------------------------------------------------------------
 
@@ -74,15 +81,27 @@ export function QuoteEditor({
   const [aiOpen, setAiOpen] = useState(false)
 
   const [aiPrompt, setAiPrompt] = useState('')
+  // Whether this quote goes out as one price or three. The contractor's call,
+  // made before anything is generated — it changes what the customer decides
+  // between, so it is not something to infer.
+  const [aiMode, setAiMode] = useState<'single' | 'options'>('single')
+  const [tiers, setTiers] = useState<DraftTier[] | null>(null)
   const [generating, startAi] = useTransition()
   const [saving, startSave] = useTransition()
 
   // Totals
   // Same function the save action uses, so what is shown is what is stored.
-  const { subtotal, taxAmount, total } = useMemo(
-    () => computeTotals(items, taxRate),
-    [items, taxRate],
-  )
+  // With options in play the summary tracks the recommended tier — the figure
+  // the contractor expects to win. Computing from the flat `items` list left it
+  // reading $0.00 next to three priced options.
+  const { subtotal, taxAmount, total } = useMemo(() => {
+    const kept = tiers?.filter((t) => t.include) ?? []
+    if (kept.length >= 2) {
+      const headline = kept.find((t) => t.isRecommended) ?? kept[kept.length - 1]
+      return computeTotals(headline.items, taxRate)
+    }
+    return computeTotals(items, taxRate)
+  }, [items, tiers, taxRate])
 
   // ---- item mutations -------------------------------------------------------
 
@@ -110,6 +129,41 @@ export function QuoteEditor({
 
 
   // ---- AI generation --------------------------------------------------------
+
+  async function runAiGenerateTiers() {
+    const prompt = (aiPrompt.trim() || description).trim()
+    if (!prompt) {
+      toast.error('Describe the job first.')
+      return
+    }
+    startAi(async () => {
+      const res = await generateQuoteTiers({ description: prompt, tax_rate: taxRate })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setTiers(
+        res.data.tiers.map((t) => ({
+          tier: t.tier,
+          name: t.name,
+          description: t.description,
+          isRecommended: t.isRecommended,
+          include: true,
+          items: t.line_items.map((li) => ({
+            key: crypto.randomUUID(),
+            name: li.name,
+            description: li.description ?? '',
+            quantity: li.quantity,
+            unit_price: li.unit_price,
+          })),
+        })),
+      )
+      setAiOpen(false)
+      toast.success(`Built ${res.data.tiers.length} options`, {
+        description: 'Review them before you send.',
+      })
+    })
+  }
 
   async function runAiGenerate() {
     if (!aiPrompt.trim() && !description.trim()) {
@@ -156,7 +210,13 @@ export function QuoteEditor({
       toast.error('Add a customer name.')
       return
     }
-    if (items.length === 0) {
+    const keptTiers = tiers?.filter((t) => t.include) ?? []
+    const savingTiers = keptTiers.length >= 2
+    if (tiers && !savingTiers) {
+      toast.error('Keep at least two options, or discard them and send a single quote.')
+      return
+    }
+    if (!savingTiers && items.length === 0) {
       toast.error('Add at least one line item.')
       return
     }
@@ -177,6 +237,32 @@ export function QuoteEditor({
         }
         currentId = res.data.id
         setWorkItemId(currentId)
+      }
+
+      if (savingTiers) {
+        const res = await saveQuoteTiers({
+          work_item_id: currentId,
+          tax_rate: taxRate,
+          tiers: keptTiers.map((t) => ({
+            tier: t.tier,
+            name: t.name,
+            description: t.description,
+            is_recommended: t.isRecommended,
+            items: t.items.map((i) => ({
+              name: i.name,
+              description: i.description || null,
+              quantity: i.quantity,
+              unit_price: i.unit_price,
+            })),
+          })),
+        })
+        if (!res.ok) {
+          toast.error(res.error)
+          return
+        }
+        toast.success(`Quote saved with ${keptTiers.length} options`)
+        router.push('/app/pipeline')
+        return
       }
 
       const saveRes = await saveLineItems({
@@ -303,55 +389,65 @@ export function QuoteEditor({
             </div>
           </section>
 
-          {/* Line items */}
-          <section className="rounded-xl border border-border/70 bg-card shadow-sm">
-            <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
-              <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold">Line items</h2>
-                <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
-                  {items.length}
-                </span>
-              </div>
-              {/* Drafting lives with the lines it drafts. This used to sit in
-                  the page header, two cards away from the thing it changes. */}
-              <button
-                onClick={() => setAiOpen(true)}
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/5 lg:min-h-0"
-              >
-                <Sparkles className="h-3 w-3" />
-                Draft with AI
-              </button>
-            </header>
+          {/* Options replace the flat list while they exist — one quote is
+              either a single price or a set of them, never both. */}
+          {tiers ? (
+            <TierReview
+              tiers={tiers}
+              taxRate={taxRate}
+              onChange={setTiers}
+              onDiscard={() => setTiers(null)}
+            />
+          ) : (
+            <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+              <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold">Line items</h2>
+                  <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
+                    {items.length}
+                  </span>
+                </div>
+                {/* Drafting lives with the lines it drafts. This used to sit in
+                    the page header, two cards away from the thing it changes. */}
+                <button
+                  onClick={() => setAiOpen(true)}
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/5 lg:min-h-0"
+                >
+                  <Sparkles className="h-3 w-3" />
+                  Draft with AI
+                </button>
+              </header>
 
-            {items.length === 0 ? (
-              <div className="px-5 py-12 text-center">
-                <Sparkles className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
-                <p className="text-sm font-medium">No line items yet</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Start typing below to pull from your price book, or draft the whole quote with AI.
-                </p>
-              </div>
-            ) : (
-              <div className="divide-y divide-border/70">
-                {items.map((it, idx) => (
-                  <LineItemRow
-                    key={it.key}
-                    idx={idx}
-                    item={it}
-                    onChange={(patch) => updateItem(it.key, patch)}
-                    onRemove={() => removeItem(it.key)}
-                  />
-                ))}
-              </div>
-            )}
+              {items.length === 0 ? (
+                <div className="px-5 py-12 text-center">
+                  <Sparkles className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
+                  <p className="text-sm font-medium">No line items yet</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Start typing below to pull from your price book, or draft the whole quote with AI.
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-y divide-border/70">
+                  {items.map((it, idx) => (
+                    <LineItemRow
+                      key={it.key}
+                      idx={idx}
+                      item={it}
+                      onChange={(patch) => updateItem(it.key, patch)}
+                      onRemove={() => removeItem(it.key)}
+                    />
+                  ))}
+                </div>
+              )}
 
-            <div className="border-t border-border/70">
-              <AddLineItem
-                catalog={catalog}
-                onAdd={(item) => addItem({ ...item, quantity: 1 })}
-              />
-            </div>
-          </section>
+              <div className="border-t border-border/70">
+                <AddLineItem
+                  catalog={catalog}
+                  onAdd={(item) => addItem({ ...item, quantity: 1 })}
+                />
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Right column — totals */}
@@ -408,7 +504,9 @@ export function QuoteEditor({
           setPrompt={setAiPrompt}
           suggestedPrompt={description}
           generating={generating}
-          onGenerate={runAiGenerate}
+          mode={aiMode}
+          setMode={setAiMode}
+          onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
           onClose={() => setAiOpen(false)}
         />
       )}
@@ -489,6 +587,8 @@ function AiPanel({
   setPrompt,
   suggestedPrompt,
   generating,
+  mode,
+  setMode,
   onGenerate,
   onClose,
 }: {
@@ -496,6 +596,8 @@ function AiPanel({
   setPrompt: (v: string) => void
   suggestedPrompt: string
   generating: boolean
+  mode: 'single' | 'options'
+  setMode: (m: 'single' | 'options') => void
   onGenerate: () => void
   onClose: () => void
 }) {
@@ -515,6 +617,33 @@ function AiPanel({
           </button>
         </header>
         <div className="space-y-3 p-5">
+          {/* One price or three is a judgement about this customer, so the
+              contractor chooses before anything is generated. */}
+          <div className="grid grid-cols-2 gap-2">
+            {(
+              [
+                ['single', 'One quote', 'A single price'],
+                ['options', 'Three options', 'Good / better / best'],
+              ] as const
+            ).map(([value, label, hint]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setMode(value)}
+                aria-pressed={mode === value}
+                className={cn(
+                  'rounded-lg border p-3 text-left transition-colors',
+                  mode === value
+                    ? 'border-primary bg-primary/5'
+                    : 'border-border hover:bg-muted/60',
+                )}
+              >
+                <div className="text-sm font-medium">{label}</div>
+                <div className="text-[11px] text-muted-foreground">{hint}</div>
+              </button>
+            ))}
+          </div>
+
           <textarea
             autoFocus
             value={prompt}
@@ -541,9 +670,9 @@ function AiPanel({
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground">
-            Needs the Python backend running at{' '}
-            <code className="rounded bg-muted px-1 py-0.5 font-mono">python-backend/</code>{' '}
-            with a Gemini API key.
+            {mode === 'options'
+              ? 'Three options, each building on the one before. You review them before sending.'
+              : 'Priced from your catalog. Nothing is sent until you save.'}
           </p>
         </div>
       </div>
