@@ -39,9 +39,17 @@ export { Type, type ContentListUnion, type Schema }
 // buys nothing here and expires without warning; the aliases do not.
 const DEFAULT_MODELS = ['gemini-flash-lite-latest', 'gemini-flash-latest']
 
+/**
+ * Vertex does not carry the floating `-latest` aliases — those are an AI Studio
+ * convention, and asking for one there is a 404 that falls straight through to
+ * the keyword matcher. Vertex wants pinned ids, so it gets its own chain, in
+ * the same order: lite first for latency, full flash behind it.
+ */
+const DEFAULT_VERTEX_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash']
+
 export function geminiModels(): string[] {
   const configured = envServer().GEMINI_MODELS
-  if (!configured) return DEFAULT_MODELS
+  if (!configured) return vertexEnabled() ? DEFAULT_VERTEX_MODELS : DEFAULT_MODELS
   const list = configured
     .split(',')
     .map((m) => m.trim())
