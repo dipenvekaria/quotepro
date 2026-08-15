@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useActionState, useEffect, useMemo, useState } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { ArrowRight, CheckCircle2, Wrench } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { signOut } from '@/app/auth/actions'
 import type { Trade } from '@/lib/catalog/starter'
 import { bootstrapCompany, type BootstrapCompanyState } from './actions'
+import { TradePicker } from './trade-picker'
 
 const initial: BootstrapCompanyState = { ok: false }
 
@@ -31,15 +32,6 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
     if (state.ok) router.replace('/app/dashboard')
   }, [state.ok, router])
 
-  const grouped = useMemo(() => {
-    const byCategory = new Map<string, Trade[]>()
-    for (const t of trades) {
-      const list = byCategory.get(t.category) ?? []
-      list.push(t)
-      byCategory.set(t.category, list)
-    }
-    return [...byCategory.entries()].sort(([a], [b]) => a.localeCompare(b))
-  }, [trades])
 
   return (
     <form action={action} className="mt-8 space-y-5">
@@ -93,24 +85,12 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
               <Label htmlFor="trade" className="text-sm font-medium">
                 Trade <span className="text-destructive">*</span>
               </Label>
-              <select
-                id="trade"
-                name="trade"
-                required
+              <TradePicker
+                trades={trades}
                 value={trade}
-                onChange={(e) => setTrade(e.target.value)}
+                onChange={setTrade}
                 disabled={pending}
-                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-              >
-                <option value="">Choose your trade…</option>
-                {grouped.map(([category, list]) => (
-                  <optgroup key={category} label={category}>
-                    {list.map((t) => (
-                      <option key={t.slug} value={t.slug}>{t.name}</option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              />
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -122,7 +102,9 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
                     type="number"
                     inputMode="decimal"
                     min={1}
-                    step={1}
+                    // "any", not a fixed step: step={1} rejects $125.50, and
+                    // step={5} rejected the $99 this form fills in itself.
+                    step="any"
                     defaultValue={DEFAULT_LABOR_RATE}
                     className="h-11"
                     disabled={pending}
@@ -136,7 +118,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
                     type="number"
                     inputMode="decimal"
                     min={0}
-                    step={5}
+                    step="any"
                     defaultValue={DEFAULT_MARKUP}
                     className="h-11"
                     disabled={pending}
@@ -150,7 +132,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
                     type="number"
                     inputMode="decimal"
                     min={0}
-                    step={5}
+                    step="any"
                     defaultValue={DEFAULT_SERVICE_CALL}
                     className="h-11"
                     disabled={pending}
