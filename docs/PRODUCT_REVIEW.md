@@ -5,7 +5,10 @@ feature information for Jobber, Housecall Pro, ServiceM8, QuoteIQ, xBuild and De
 
 ## The verdict, in three lines
 
-1. **A new customer cannot use Rivet at all.** There is no way to create a catalog item anywhere
+1. ~~**A new customer cannot use Rivet at all.** There is no way to create a catalog item anywhere~~
+   **FIXED 2026-08-15.** Full catalog CRUD, CSV import and AI extraction exist, and onboarding
+   seeds a per-trade starter catalog. See `docs/PRODUCT_UX_REVIEW.md`. Original text:
+   There was no way to create a catalog item anywhere
    in the product, and AI quote generation returns a 400 without one.
 2. **"AI drafts the quote" is no longer a differentiator.** QuoteIQ ships AI photo-to-estimate on
    every plan from $29.99/month. Assuming this is Rivet's wedge is the most dangerous

@@ -73,7 +73,7 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
           disabled={pending}
         />
         <p className="text-xs text-muted-foreground">
-          We use this to auto-calculate state sales tax on your quotes.
+          Shown on your quotes and invoices.
         </p>
       </div>
 
