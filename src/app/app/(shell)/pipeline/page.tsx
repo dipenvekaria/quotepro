@@ -86,7 +86,7 @@ export default async function PipelinePage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground shadow-sm hover:text-foreground">
+          <button className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm text-muted-foreground shadow-sm hover:text-foreground lg:h-auto lg:py-1.5">
             <Filter className="h-3.5 w-3.5" />
             Filter
           </button>
@@ -111,13 +111,24 @@ export default async function PipelinePage() {
           />
         </div>
       ) : (
-        <div className="mt-6 -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:overflow-visible sm:px-0 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+        <div className="mt-6 flex flex-col gap-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+          {/*
+            Vertical on a phone, board from sm. The horizontal carousel this
+            replaces kept the desktop kanban shape, which costs more than it
+            gives on touch: the page scrolls vertically and the board scrolled
+            horizontally, so the gestures fought; four of five stages sat
+            off-screen, so "three quotes waiting on the customer" was invisible
+            until you swiped to find it; and dragging a card between stages —
+            the point of a board — is not a gesture that works on touch anyway.
+            Standing in a driveway the question is "what do I do next", which is
+            a list question.
+          */}
           {COLUMNS.map((col) => {
             const items = grouped[col.key] ?? []
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
             return (
-              <div key={col.key} className="w-[85vw] max-w-[320px] shrink-0 snap-start sm:w-auto sm:min-w-0 sm:max-w-none">
-                <div className="mb-2 flex items-center justify-between px-1">
+              <div key={col.key} className="w-full sm:w-auto sm:min-w-0 sm:max-w-none">
+                <div className="mb-2 flex items-center justify-between border-b border-border/60 px-1 pb-1.5 sm:border-0 sm:pb-0">
                   <div className="flex items-center gap-1.5 text-xs font-medium">
                     <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
                     {col.label}
@@ -147,7 +158,7 @@ export default async function PipelinePage() {
                   ))}
                   <Link
                     href="/app/quotes/new"
-                    className="flex items-center justify-center gap-1 rounded-lg border border-dashed border-border/80 py-2 text-xs text-muted-foreground hover:border-primary/60 hover:text-primary"
+                    className="flex min-h-11 items-center justify-center gap-1 rounded-lg border border-dashed border-border/80 py-2 text-xs text-muted-foreground hover:border-primary/60 hover:text-primary lg:min-h-0"
                   >
                     <Plus className="h-3 w-3" /> Add
                   </Link>
