@@ -124,6 +124,11 @@ export async function extractCatalogFromDocument(input: {
     // A price sheet can carry hundreds of rows, and a truncated reply is a
     // parse failure rather than a short list.
     maxOutputTokens: 32768,
+    // Reading a scanned price book is a harder problem than drafting a quote,
+    // and it happens once per contractor. Measured on a real HCP HVAC book:
+    // flash-lite 21 items, flash 42, pro 45.
+    models: ['gemini-2.5-pro', 'gemini-2.5-flash'],
+    budgetMs: 180_000,
   })
 
   if (!result) return { items: [], documentType: '', notes: '', mode: 'mock' }

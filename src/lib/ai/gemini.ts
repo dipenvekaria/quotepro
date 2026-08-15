@@ -162,13 +162,27 @@ export async function generateJson(opts: {
   schema: Schema
   temperature?: number
   maxOutputTokens?: number
+  /**
+   * Override the model chain for this call.
+   *
+   * Drafting a quote and reading a scanned price book are not the same
+   * problem. Drafting picks items from a text list and flash-lite does it well
+   * in about two seconds; extraction is OCR over dozens of scanned pages, and
+   * on a real competitor price book flash-lite found 21 items where pro found
+   * 45 — including the labour rates that are the pricing model rather than a
+   * line item. Extraction runs once per contractor at onboarding, so the extra
+   * minute costs nothing and the difference is most of their catalog.
+   */
+  models?: string[]
+  /** Longer budget for a call that legitimately takes a minute. */
+  budgetMs?: number
 }): Promise<GeminiJsonResult | null> {
   const ai = client()
   if (!ai) return null
 
-  const deadline = Date.now() + chainBudgetMs()
+  const deadline = Date.now() + (opts.budgetMs ?? chainBudgetMs())
 
-  for (const model of geminiModels()) {
+  for (const model of opts.models ?? geminiModels()) {
     const remaining = deadline - Date.now()
     if (remaining < Math.min(MIN_ATTEMPT_MS, chainBudgetMs())) {
       console.error(`gemini: out of time before trying ${model}`)
