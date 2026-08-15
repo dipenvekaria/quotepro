@@ -72,6 +72,20 @@ export type GeminiJsonResult = { data: unknown; model: string }
  * decide what to do with that, because the right answer differs: quoting falls
  * back to keyword matching, the customer summary shows nothing at all.
  */
+/**
+ * Whether a failure condemns every model, rather than just this one.
+ *
+ * 429 covers both "out of credit" and "too many requests"; neither is fixed by
+ * asking a different model on the same key. 401/403 are the key itself.
+ */
+function isKeyLevelFailure(e: unknown, msg: string): boolean {
+  const status = (e as { status?: number } | null)?.status
+  if (status === 429 || status === 401 || status === 403) return true
+  return /RESOURCE_EXHAUSTED|PERMISSION_DENIED|UNAUTHENTICATED|credits are depleted|quota/i.test(
+    msg,
+  )
+}
+
 export async function generateJson(opts: {
   system: string
   /**
@@ -123,8 +137,18 @@ export async function generateJson(opts: {
         const msg = e instanceof Error ? e.message : String(e)
         // Only the thinking level was unacceptable — same model, second pass.
         if (thinking && /thinking/i.test(msg)) continue
-        // Anything else is this model's problem; move on to the next one.
+
         console.error(`gemini ${model} failed`, e)
+
+        // Quota, billing and auth failures belong to the API key, not to the
+        // model, so the next model in the chain is guaranteed to fail the same
+        // way. Trying it anyway doubled the wasted calls and the latency the
+        // contractor waits through before the keyword fallback appears —
+        // observed as two identical "prepayment credits are depleted" errors
+        // per quote. Stop the whole chain.
+        if (isKeyLevelFailure(e, msg)) return null
+
+        // Anything else is this model's problem; move on to the next one.
         break
       }
     }
