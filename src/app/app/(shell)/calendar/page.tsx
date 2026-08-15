@@ -3,7 +3,10 @@ import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
 import { CalendarBoard, type BoardJob } from './calendar-board'
+import { WeekGrid } from './week-grid'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
+import { loadBusinessHours } from '@/lib/scheduling/availability'
+import { AssigneeFilter } from './assignee-filter'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -25,7 +28,7 @@ type ScheduledJob = {
 export default async function CalendarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; date?: string; week?: string }>
+  searchParams: Promise<{ view?: string; date?: string; week?: string; assignee?: string }>
 }) {
   const { companyId, userId, role } = await requireSession()
   // "Only sees their own schedule" is what permissions.ts already promised.
@@ -39,6 +42,23 @@ export default async function CalendarPage({
     : params.week
       ? new Date(params.week)
       : new Date()
+
+  // Who the board is showing. Layered on top of role scoping, so it can only
+  // ever narrow what that already allows — a technician picking someone else
+  // still sees nothing of theirs. Built as a single assignee now; teams and
+  // units slot in here as a second predicate later.
+  const assignee = typeof params.assignee === 'string' ? params.assignee : ''
+  const assigneeSql = assignee ? ` and w.assigned_to = $${4 + scope.params.length}` : ''
+
+  const team = canAssignWork(role as UserRole)
+    ? await query<{ id: string; email: string | null; profile: Record<string, unknown> | null }>(
+        `select u.id, au.email, u.profile
+           from users u join auth.users au on au.id = u.id
+          where u.company_id = $1 and u.is_active
+          order by au.email`,
+        [companyId],
+      )
+    : []
 
   // Query window: the visible week, or the full 6-week grid for a month.
   const rangeStart = view === 'month' ? startOfWeek(startOfMonth(anchor)) : startOfWeek(anchor)
@@ -65,9 +85,15 @@ export default async function CalendarPage({
       where w.company_id = $1
         and w.scheduled_start is not null
         and w.scheduled_start >= $2
-        and w.scheduled_start < $3${scope.sql}
+        and w.scheduled_start < $3${scope.sql}${assigneeSql}
       order by w.scheduled_start asc`,
-    [companyId, rangeStart.toISOString(), rangeEnd.toISOString(), ...scope.params],
+    [
+      companyId,
+      rangeStart.toISOString(),
+      rangeEnd.toISOString(),
+      ...scope.params,
+      ...(assignee ? [assignee] : []),
+    ],
   )
 
   const list: ScheduledJob[] = rows.map((r) => ({
@@ -94,6 +120,26 @@ export default async function CalendarPage({
   const boardDays = Array.from({ length: view === 'month' ? 42 : 7 }, (_, i) => ({
     date: addDays(rangeStart, i).toISOString(),
   }))
+
+  // The grid shows the working day, not a wall of empty night. Widened by an
+  // hour either side so a job booked slightly outside hours is still visible
+  // rather than silently clipped.
+  const hours = await loadBusinessHours(companyId)
+  const openTimes = Object.values(hours).filter(Boolean) as { start: string; end: string }[]
+  const hourOf = (s: string) => Number(s.split(':')[0] ?? 0)
+  //
+  // It also has to cover the jobs that are actually there. Clipping to business
+  // hours alone drew an empty week for a company whose jobs sat at 5:36am —
+  // real work, silently invisible, which reads as the calendar being broken.
+  const jobHours = rows.map((r) => new Date(r.scheduled_start).getHours())
+  const openStart = openTimes.length ? Math.min(...openTimes.map((h) => hourOf(h.start))) : 8
+  const openEnd = openTimes.length ? Math.max(...openTimes.map((h) => hourOf(h.end))) : 17
+
+  const gridStart = Math.max(0, Math.min(openStart, ...(jobHours.length ? jobHours : [openStart])) - 1)
+  const gridEnd = Math.min(
+    24,
+    Math.max(openEnd, ...(jobHours.length ? jobHours.map((h) => h + 1) : [openEnd])) + 1,
+  )
 
   const boardJobs: BoardJob[] = rows.map((r) => ({
     id: r.id,
@@ -125,7 +171,16 @@ export default async function CalendarPage({
             {title} · {list.length} scheduled
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <AssigneeFilter
+            members={team.map((m) => ({
+              id: m.id,
+              label:
+                [m.profile?.first_name, m.profile?.last_name].filter(Boolean).join(' ') ||
+                (m.email ?? 'Teammate'),
+            }))}
+            active={assignee}
+          />
           <div className="flex items-center rounded-md border border-border bg-card p-0.5 shadow-sm">
             <Link
               href={hrefFor(anchor, 'week')}
@@ -179,12 +234,24 @@ export default async function CalendarPage({
           />
         </div>
       ) : (
-        <CalendarBoard
-          days={boardDays}
-          jobs={boardJobs}
-          canReschedule={canAssignWork(role as UserRole)}
-          view={view}
-        />
+        <>
+          {view === 'week' ? (
+            <WeekGrid
+              days={boardDays}
+              jobs={boardJobs}
+              canReschedule={canAssignWork(role as UserRole)}
+              dayStartHour={gridStart}
+              dayEndHour={gridEnd}
+            />
+          ) : (
+            <CalendarBoard
+              days={boardDays}
+              jobs={boardJobs}
+              canReschedule={canAssignWork(role as UserRole)}
+              view={view}
+            />
+          )}
+        </>
       )}
     </div>
   )
