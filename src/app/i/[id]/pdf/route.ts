@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { renderInvoicePdf } from '@/lib/pdf/documents'
+import { showsRivetBadge } from '@/lib/branding'
 import { env } from '@/lib/env'
 import { sbAdmin } from '@/lib/supabase/untyped'
 
@@ -19,7 +20,7 @@ export async function GET(
     .select(`
       id, invoice_number, subtotal, tax_amount, total, amount_paid, status,
       due_date, sent_at, paid_at, public_token, notes, created_at,
-      companies (name, phone, email, address),
+      companies (name, phone, email, address, plan),
       customers (name, email, phone),
       work_items (
         id, description, tax_rate,
@@ -65,6 +66,9 @@ export async function GET(
     },
     publicUrl: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/i/${token}`,
     notes: inv.notes,
+    showBadge: showsRivetBadge(
+      (inv as unknown as { companies?: { plan?: string | null } }).companies?.plan,
+    ),
   })
 
   return new Response(buffer as unknown as BodyInit, {

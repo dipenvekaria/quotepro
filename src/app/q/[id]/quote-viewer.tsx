@@ -95,11 +95,14 @@ export function QuoteViewer({
   items,
   options = [],
   photos = [],
+  showBadge = true,
 }: {
   quote: Quote
   items: LineItem[]
   options?: QuoteOption[]
   photos?: ViewerPhoto[]
+  /** False on a paid plan — see src/lib/branding.ts. */
+  showBadge?: boolean
 }) {
   const [signOpen, setSignOpen] = useState(false)
   const [declineOpen, setDeclineOpen] = useState(false)
@@ -496,9 +499,11 @@ export function QuoteViewer({
               </div>
             </div>
           </div>
-          <div className="mt-6 text-center text-[10px] text-muted-foreground">
-            Powered by <span className="font-medium text-foreground">Rivet</span>
-          </div>
+          {showBadge && (
+            <div className="mt-6 text-center text-[10px] text-muted-foreground">
+              Powered by <span className="font-medium text-foreground">Rivet</span>
+            </div>
+          )}
         </footer>
       </main>
 

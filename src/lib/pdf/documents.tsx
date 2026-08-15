@@ -205,6 +205,8 @@ function fmt(n: number): string {
 // ---------------------------------------------------------------------------
 
 export type QuotePdfProps = {
+  /** False on a paid plan — see src/lib/branding.ts. */
+  showBadge?: boolean
   quoteNumber: string
   createdAt: Date
   expiresAt?: Date | null
@@ -328,7 +330,9 @@ function QuotePdf(props: QuotePdfProps): React.ReactElement {
           <Text style={styles.footerText}>
             {props.publicUrl ? `Interactive: ${props.publicUrl}` : ''}
           </Text>
-          <Text style={styles.footerBrand}>Powered by QuotePro</Text>
+          {props.showBadge !== false && (
+            <Text style={styles.footerBrand}>Powered by Rivet</Text>
+          )}
         </View>
       </Page>
     </Document>
@@ -345,6 +349,8 @@ export async function renderQuotePdf(props: QuotePdfProps): Promise<Buffer> {
 // ---------------------------------------------------------------------------
 
 export type InvoicePdfProps = {
+  /** False on a paid plan — see src/lib/branding.ts. */
+  showBadge?: boolean
   invoiceNumber: string
   createdAt: Date
   dueDate?: Date | null
@@ -490,7 +496,9 @@ function InvoicePdf(props: InvoicePdfProps): React.ReactElement {
           <Text style={styles.footerText}>
             {props.publicUrl ? `Pay online: ${props.publicUrl}` : ''}
           </Text>
-          <Text style={styles.footerBrand}>Powered by QuotePro</Text>
+          {props.showBadge !== false && (
+            <Text style={styles.footerBrand}>Powered by Rivet</Text>
+          )}
         </View>
       </Page>
     </Document>

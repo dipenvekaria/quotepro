@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { renderQuotePdf } from '@/lib/pdf/documents'
+import { showsRivetBadge } from '@/lib/branding'
 import { env } from '@/lib/env'
 import { sbAdmin } from '@/lib/supabase/untyped'
 
@@ -19,7 +20,7 @@ export async function GET(
     .select(`
       id, quote_number, description, subtotal, tax_rate, tax_amount, total,
       created_at, expires_at, public_token,
-      companies (name, phone, email, address),
+      companies (name, phone, email, address, plan),
       customers (name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip),
       quote_items (name, description, quantity, unit_price, is_upsell, is_discount, sort_order)
@@ -51,6 +52,9 @@ export async function GET(
       address: addressLine,
     },
     publicUrl: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/q/${token}`,
+    showBadge: showsRivetBadge(
+      (quote as unknown as { companies?: { plan?: string | null } }).companies?.plan,
+    ),
   })
 
   return new Response(buffer as unknown as BodyInit, {
