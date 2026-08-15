@@ -1,6 +1,7 @@
 import { GoogleAuth } from 'google-auth-library'
 
 import { envServer } from '@/lib/env'
+import { serviceAccountCredentials } from '@/lib/google/credentials'
 
 /**
  * How we authenticate to Google Maps Platform.
@@ -24,33 +25,12 @@ const SCOPE = 'https://www.googleapis.com/auth/cloud-platform'
 let _auth: GoogleAuth | null = null
 let _authFailed = false
 
-function serviceAccount(): Record<string, unknown> | null {
-  const raw = envServer().GOOGLE_SERVICE_ACCOUNT_JSON
-  if (!raw) return null
-  try {
-    // Accept raw JSON too — someone will paste it unencoded eventually and a
-    // silent failure here looks exactly like "autocomplete stopped working".
-    const text = raw.trim().startsWith('{')
-      ? raw
-      : Buffer.from(raw, 'base64').toString('utf8')
-    const parsed = JSON.parse(text) as Record<string, unknown>
-    if (!parsed.client_email || !parsed.private_key) {
-      console.error('GOOGLE_SERVICE_ACCOUNT_JSON parsed but has no client_email/private_key')
-      return null
-    }
-    return parsed
-  } catch (e) {
-    console.error('GOOGLE_SERVICE_ACCOUNT_JSON could not be decoded', e)
-    return null
-  }
-}
-
 /**
  * The Authorization/API-key header for a Maps request, or null when nothing is
  * configured — in which case the caller degrades to a plain text field.
  */
 export async function placesAuthHeaders(): Promise<Record<string, string> | null> {
-  const credentials = serviceAccount()
+  const credentials = serviceAccountCredentials()
 
   if (credentials && !_authFailed) {
     try {

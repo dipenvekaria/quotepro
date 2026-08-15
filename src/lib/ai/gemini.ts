@@ -19,6 +19,7 @@ import {
 } from '@google/genai'
 
 import { envServer } from '@/lib/env'
+import { serviceAccountCredentials } from '@/lib/google/credentials'
 
 export { Type, type ContentListUnion, type Schema }
 
@@ -38,9 +39,17 @@ export { Type, type ContentListUnion, type Schema }
 // buys nothing here and expires without warning; the aliases do not.
 const DEFAULT_MODELS = ['gemini-flash-lite-latest', 'gemini-flash-latest']
 
+/**
+ * Vertex does not carry the floating `-latest` aliases — those are an AI Studio
+ * convention, and asking for one there is a 404 that falls straight through to
+ * the keyword matcher. Vertex wants pinned ids, so it gets its own chain, in
+ * the same order: lite first for latency, full flash behind it.
+ */
+const DEFAULT_VERTEX_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash']
+
 export function geminiModels(): string[] {
   const configured = envServer().GEMINI_MODELS
-  if (!configured) return DEFAULT_MODELS
+  if (!configured) return vertexEnabled() ? DEFAULT_VERTEX_MODELS : DEFAULT_MODELS
   const list = configured
     .split(',')
     .map((m) => m.trim())
@@ -50,17 +59,51 @@ export function geminiModels(): string[] {
 
 let _client: GoogleGenAI | null = null
 
+/**
+ * Vertex AI or the AI Studio developer API — the same Gemini models either way.
+ *
+ * The difference is billing, and it matters: AI Studio runs on its own prepay
+ * balance, while Vertex bills the GCP account, so GCP credit (free trial
+ * included) only reaches Gemini through Vertex. Switched on with
+ * GOOGLE_GENAI_USE_VERTEXAI=true.
+ */
+function vertexEnabled(): boolean {
+  const flag = envServer().GOOGLE_GENAI_USE_VERTEXAI?.toLowerCase()
+  return flag === 'true' || flag === '1'
+}
+
 function client(): GoogleGenAI | null {
-  const { GEMINI_API_KEY } = envServer()
-  if (!GEMINI_API_KEY) return null
   // Cached across invocations — Fluid Compute reuses warm instances, so
   // rebuilding the client per request is wasted work.
-  if (!_client) _client = new GoogleGenAI({ apiKey: GEMINI_API_KEY })
+  if (_client) return _client
+
+  if (vertexEnabled()) {
+    const project = envServer().GOOGLE_CLOUD_PROJECT
+    if (!project) {
+      console.error('GOOGLE_GENAI_USE_VERTEXAI is set but GOOGLE_CLOUD_PROJECT is not')
+      return null
+    }
+    const credentials = serviceAccountCredentials()
+    _client = new GoogleGenAI({
+      vertexai: true,
+      project,
+      location: envServer().GOOGLE_CLOUD_LOCATION || 'us-central1',
+      // Explicit credentials when a key is configured; otherwise fall through
+      // to ADC, which is what a GCP-hosted runtime already has.
+      ...(credentials ? { googleAuthOptions: { credentials } } : {}),
+    })
+    return _client
+  }
+
+  const { GEMINI_API_KEY } = envServer()
+  if (!GEMINI_API_KEY) return null
+  _client = new GoogleGenAI({ apiKey: GEMINI_API_KEY })
   return _client
 }
 
 /** Whether real generation is available, or everything degrades to the mock. */
 export function aiEnabled(): boolean {
+  if (vertexEnabled()) return Boolean(envServer().GOOGLE_CLOUD_PROJECT)
   return Boolean(envServer().GEMINI_API_KEY)
 }
 
