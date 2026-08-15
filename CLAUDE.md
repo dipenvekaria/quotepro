@@ -47,15 +47,19 @@ Read paths are Server Components hitting `query()` directly. Write paths are Ser
 
 ## Commands
 
-Target toolchain is pnpm + biome + vitest + uv + ruff (see
-`docs/adr/0006-toolchain-pnpm-biome-vitest.md`). **The repo has not been migrated yet** — today
-it runs on npm with eslint and no tests. Until the migration lands:
+The toolchain is **npm + eslint + vitest**, and that is both the target and the reality — see
+[`docs/adr/0006`](docs/adr/0006-toolchain-pnpm-biome-vitest.md), amended 2026-08-15. uv and ruff
+were struck with the Python backend; biome and pnpm were never installed and are not pending.
 
 ```bash
-npm install                  # node_modules is currently a broken symlink; this fixes it
+npm install
 npm run dev                  # Next.js → http://localhost:3000
-npx tsc --noEmit             # typecheck (the real quality gate today)
+npm run typecheck            # tsc --noEmit
 npm run lint                 # eslint
+npm run test                 # vitest, incl. integration against local Postgres
+npm run build
+
+just check                   # all four, in CI's order (just is optional)
 
 supabase start               # local Postgres :54322, API :54321, Studio :54323
 supabase db reset            # migrations + seed (demo company, 15 work items)
@@ -63,8 +67,8 @@ supabase db reset            # migrations + seed (demo company, 15 work items)
 
 `npm run dev` is the entire stack. There is no second service to start.
 
-`justfile` and `.github/workflows/ci.yml` describe the *target* toolchain, not the current one.
-They will fail as written. Fixing that is an early task in `docs/CLEANUP_PLAN.md`.
+`just` is optional; `justfile` mirrors these commands and `just check` runs the full CI gate
+locally.
 
 Demo logins after `supabase db reset`: `owner@acme.demo`, `office@acme.demo`, `tech@acme.demo`
 — all `demo1234`.

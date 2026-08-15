@@ -79,3 +79,31 @@ the dead tree), because linting and typechecking ~200 dead files would generate 
 should spend time on.
 
 Done when a clean clone runs `pnpm install && just dev` successfully and `ci.yml` is green.
+
+---
+
+## Amendment — 2026-08-15
+
+**uv and ruff are struck.** They existed for `python-backend/`, which was deleted when the AI
+moved in-process ([ADR 0009](0009-ai-in-process.md)). What remains is three standalone scripts
+(`scripts/db-health-check.py`, `validate-data.py`, `refactor_settings.py`) that do not justify a
+Python toolchain, a lockfile or a CI step. This repo is TypeScript.
+
+**vitest is adopted and landed.** 185 tests, including integration tests against a real Postgres
+started by CI, a static tenancy scanner, and cross-tenant assertions. This is the only part of
+the original ADR that shipped.
+
+**biome is not adopted.** It was never installed — only a `biome.json` sat in the repo, config
+for a tool absent from `package.json`, which is worse than having neither. That file is removed.
+eslint is the linter, `npm run lint` is the command, and CI runs it. Adopting biome later is a
+live option and a small one; it is not pending work.
+
+**pnpm is not adopted.** `package-lock.json` and `npm ci` are the reality. The gain is install
+speed and disk on a repo with one developer; the cost is a lockfile migration and a CI change.
+Not worth it now.
+
+So the target toolchain is simply: **npm + eslint + vitest**, which is also the current one. The
+gap this ADR described is closed by narrowing the target, not by migrating to it.
+
+`justfile` has been rewritten to drive the commands that exist; it previously invoked pnpm, uv,
+ruff, biome, playwright, storybook and a deleted `python-backend/`, so every recipe failed.
