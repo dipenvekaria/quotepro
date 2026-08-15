@@ -1,6 +1,8 @@
 'use client'
 
+import { Suspense } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { ArrowRight, Sparkles, Zap } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -8,6 +10,25 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { BrandLogo } from '@/components/brand/logo'
 import { useAuth } from './use-auth'
+
+/**
+ * Confirmation that a deleted account really is gone.
+ *
+ * Behind Suspense so reading the query string does not push the whole sign-in
+ * page into client-side rendering for the sake of one optional banner.
+ */
+function AccountDeletedNotice() {
+  const deleted = useSearchParams().has('deleted')
+  if (!deleted) return null
+  return (
+    <div
+      role="status"
+      className="mb-6 rounded-lg border border-border bg-muted/50 p-3 text-sm text-muted-foreground"
+    >
+      Your account is closed. Signing in again starts from scratch — an archived copy is kept for 90 days if you need anything back.
+    </div>
+  )
+}
 
 export default function LoginPage() {
   const {
@@ -31,6 +52,10 @@ export default function LoginPage() {
         </header>
 
         <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
+          <Suspense fallback={null}>
+            <AccountDeletedNotice />
+          </Suspense>
+
           <div className="mb-8">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
               {isSignUp ? 'Create your account' : 'Welcome back'}
