@@ -105,7 +105,7 @@ export function TierReview({
           return (
             <div key={tier.tier} className={cn('p-5', !tier.include && 'opacity-50')}>
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="flex min-w-0 items-start gap-3">
+                <div className="flex w-full min-w-0 items-start gap-3 lg:w-auto">
                   <input
                     type="checkbox"
                     checked={tier.include}
@@ -117,14 +117,18 @@ export function TierReview({
                     <Input
                       value={tier.name}
                       onChange={(e) => patchTier(ti, { name: e.target.value })}
-                      className="h-9 w-48 font-medium"
+                      className="h-11 w-full font-medium lg:h-9 lg:w-48"
                       aria-label={`${tier.name} name`}
                     />
-                    <Input
+                    {/* A textarea, not an Input: this is the sentence the
+                        customer actually reads, and on a phone a single-line
+                        field hid all but the first few words of it. */}
+                    <textarea
                       value={tier.description}
                       onChange={(e) => patchTier(ti, { description: e.target.value })}
                       placeholder="One line the customer reads"
-                      className="mt-1.5 h-9 w-full max-w-md text-sm"
+                      rows={2}
+                      className="mt-1.5 w-full max-w-md resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                       aria-label={`${tier.name} description`}
                     />
                   </div>
@@ -156,8 +160,13 @@ export function TierReview({
               {tier.include && (
                 <ul className="mt-4 space-y-1.5">
                   {tier.items.map((it) => (
-                    <li key={it.key} className="flex items-center gap-2 text-sm">
-                      <span className="min-w-0 flex-1 truncate">{it.name}</span>
+                    <li
+                      key={it.key}
+                      className="flex flex-wrap items-center gap-2 text-sm lg:flex-nowrap"
+                    >
+                      <span className="w-full break-words font-medium lg:w-auto lg:min-w-0 lg:flex-1 lg:truncate lg:font-normal">
+                        {it.name}
+                      </span>
                       <Input
                         type="number"
                         step="0.25"
@@ -166,7 +175,7 @@ export function TierReview({
                         onChange={(e) =>
                           patchItem(ti, it.key, { quantity: Number(e.target.value) })
                         }
-                        className="h-9 w-20 text-right tabular"
+                        className="h-11 w-16 text-right tabular lg:h-9 lg:w-20"
                         aria-label={`${it.name} quantity`}
                       />
                       <span className="text-muted-foreground">×</span>
@@ -178,14 +187,14 @@ export function TierReview({
                         onChange={(e) =>
                           patchItem(ti, it.key, { unit_price: Number(e.target.value) })
                         }
-                        className="h-9 w-28 text-right tabular"
+                        className="h-11 w-24 text-right tabular lg:h-9 lg:w-28"
                         aria-label={`${it.name} price`}
                       />
                       <button
                         type="button"
                         onClick={() => removeItem(ti, it.key)}
                         aria-label={`Remove ${it.name}`}
-                        className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-destructive"
+                        className="ml-auto grid h-11 w-11 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-destructive lg:ml-0 lg:h-9 lg:w-9"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
