@@ -60,6 +60,13 @@ jobs:
         run: npm run test
         env:
           DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+          # src/lib/env.ts validates at import, and a test that reaches any
+          # module importing it needs these present. Placeholders only — the
+          # integration suite talks to Postgres directly, not to Supabase's API.
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key-for-tests-only
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          SUPABASE_SERVICE_ROLE_KEY: placeholder-service-role-key-tests-only
 
       - name: Build
         run: npm run build
