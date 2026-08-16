@@ -27,10 +27,24 @@ import {
 // separate FastAPI service — see docs/adr/0009-ai-in-process.md.
 // -----------------------------------------------------------------------------
 
+/**
+ * `.nullish()`, not `.optional()`.
+ *
+ * `.optional()` accepts `undefined` and rejects `null` — and every caller that
+ * reads a customer out of Postgres has `null`, because that is what an empty
+ * column is. Drafting from the pipeline passed `customer_address: null` and the
+ * contractor got "invalid input, expected string got null" while editing an
+ * existing quote; the new-quote editor happened to write `|| undefined` and so
+ * happened to work.
+ *
+ * Fixed at the contract rather than the one call site. An input schema that only
+ * accepts `undefined` is a trap for the next caller, and the next caller is
+ * always reading from a database.
+ */
 const generateSchema = z.object({
   description: z.string().min(3).max(4000),
-  customer_name: z.string().max(200).optional(),
-  customer_address: z.string().max(500).optional(),
+  customer_name: z.string().max(200).nullish(),
+  customer_address: z.string().max(500).nullish(),
 })
 
 export type GenerateQuoteInput = z.infer<typeof generateSchema>
