@@ -3,77 +3,110 @@
 _What Rivet must do to be a viable business against Jobber, Housecall Pro and QuoteIQ.
 Companion to [GTM_BUSINESS_CHECKLIST.md](GTM_BUSINESS_CHECKLIST.md)._
 
-**Target customer:** multi-truck HVAC shops (3–15 techs). Not solo operators — that's where
+**Reviewed 2026-08-16.** Every status below was checked against the code or the database on that
+date, not carried forward. Where something could not be checked it says so. The previous revision
+had four items marked ❌ that had shipped and a price that no longer matched
+[PRICING_STRATEGY.md](PRICING_STRATEGY.md) — statuses rot faster than plans, so re-verify rather
+than trust this file.
+
+**Target customer:** multi-truck HVAC shops (3–15 techs). Not solo operators — that is where
 QuoteIQ's 1.3M-subscriber audience already lives and you cannot win there. See
 [STRATEGY.md](STRATEGY.md) §3b.
 
-**Pricing:** Core $199/mo, Pro $349/mo. Flat, whole team, no per-seat, no AI credits.
+**Pricing:** Starter $99 · **Core $249** · Scale $499 when multi-crew lands. Flat, whole team, no
+per-seat, no AI credits. Per [PRICING_STRATEGY.md](PRICING_STRATEGY.md).
 
-**Viability bar:** 200 customers ≈ $600K ARR. You do not need feature parity with anyone — you
-need a contractor to be obviously better off choosing you for *their* specific situation.
+**Viability bar:** 45 customers replaces one full income; 200 ≈ $600K ARR. See
+[BUSINESS_ANALYSIS.md](BUSINESS_ANALYSIS.md). You do not need feature parity with anyone — you
+need a contractor obviously better off choosing you for *their* situation.
 
 Priority key: **P0** cannot sell without · **P1** needed for a credible launch · **P2**
 fast-follow · **Never** deliberately out of scope.
 
 ---
 
-## 1. Blocking — the product does not currently work for a new customer
+## 0. The two things nothing else can substitute for
+
+Both are unresolved, and every projection in `BUSINESS_ANALYSIS.md` rests on them.
 
 | # | Item | Status | Priority |
 | --- | --- | --- | --- |
-| 1.1 | **Catalog CRUD** — create/edit/delete price book items | ✅ Done 2026-08-11 | — |
-| 1.2 | **CSV import** for price books | ✅ Done 2026-08-11 | — |
-| 1.3 | **Per-trade starter catalogs** so a new account is never empty | ✅ Done 2026-08-12 — 100 trades, 9,945 items, priced from the contractor's own rates at onboarding | — |
-| 1.4 | **Invoice online payment** | ✅ Built — Stripe Connect checkout from the public invoice viewer. The "coming soon" copy only shows when the contractor has not connected Stripe | — |
-| 1.5 | **AI backend authentication** | ✅ Dissolved 2026-08-11 — the AI runs in-process inside the authenticated server action, so there is no second origin to secure ([ADR 0009](adr/0009-ai-in-process.md)) | — |
-| 1.6 | Signup → first real quote in **under 10 minutes**, timed | ❌ | **P0** |
+| 0.1 | **Signup → first sent quote, timed** | ❌ never measured | **P0** |
+| 0.2 | **One live payment through Stripe Connect** | ❌ zero connected accounts in production | **P0** |
 
-**Section 1 is done apart from 1.6.** A new account now picks a trade at onboarding and lands on
-a ~100-item catalog priced at its own rates. The remaining gap is that nobody has *timed* the
-signup-to-first-quote path, which is the claim the whole positioning rests on.
+0.1 is the claim the positioning and the price both rest on, and it is measurable in an
+afternoon. 0.2 is the difference between a business and a projection — and the payments
+take-rate, plausibly comparable to the entire subscription line, does not exist until a
+contractor collects through the product.
+
+---
+
+## 1. Blocking — can a new customer use the product at all
+
+| # | Item | Status |
+| --- | --- | --- |
+| 1.1 | Catalog CRUD | ✅ 2026-08-11 |
+| 1.2 | CSV import for price books | ✅ 2026-08-11 |
+| 1.3 | Per-trade starter catalogs | ✅ 2026-08-12 — 100 trades, 9,945 items, priced from the contractor's own rates at onboarding |
+| 1.4 | Invoice online payment | ✅ built — Stripe Connect checkout from the public invoice viewer |
+| 1.5 | AI backend authentication | ✅ dissolved 2026-08-11 — AI runs in-process in the authenticated server action ([ADR 0009](adr/0009-ai-in-process.md)) |
+| 1.6 | Onboarding cannot corrupt the account | ✅ 2026-08-16 — a second submit no longer re-seeds the price book (#80); duplicates archived and removed (#81) |
+
+**Section 1 is complete.** The timing measurement that used to live here is 0.1, because it is a
+go-to-market claim rather than a functional gap.
 
 ---
 
 ## 2. Quote-to-cash core — table stakes
 
-Every competitor has these. Missing any one is a lost deal.
+Every competitor has these. Missing one is a lost deal.
 
 | Capability | Rivet | Jobber | Housecall Pro | QuoteIQ | Priority |
 | --- | --- | --- | --- | --- | --- |
 | Create/send quotes | ✅ | ✅ | ✅ | ✅ | — |
-| AI-drafted quotes | ✅ text only | ❌ | ⚠️ pricing benchmarks | ✅ photo + voice | — |
+| AI-drafted quotes | ✅ text | ❌ | ⚠️ benchmarks | ✅ photo + voice | — |
 | Public quote viewer, no login | ✅ | ✅ | ✅ | ✅ | — |
 | Customer accept online | ✅ | ✅ | ✅ | ✅ | — |
 | E-signature | ✅ SignNow | ✅ | ✅ | ✅ | — |
 | PDF quote/invoice | ✅ | ✅ | ✅ | ✅ | — |
 | Invoicing | ✅ | ✅ | ✅ | ✅ | — |
 | Online invoice payment | ✅ | ✅ | ✅ | ✅ | — |
-| Scheduling + calendar | ✅ | ✅ | ✅ | ✅ | — |
+| Scheduling + calendar | ✅ drag-and-drop, time grid, assignee filter | ✅ | ✅ | ✅ | — |
 | Customer records | ✅ | ✅ | ✅ | ✅ | — |
 | Team roles/permissions | ✅ 4 roles | ✅ | ✅ | ✅ | — |
-| **Photos on quotes/jobs** | ❌ | ✅ | ✅ | ✅ | **P1** |
-| **Deposits on acceptance** | ❌ | ✅ | ✅ | ✅ | **P1** |
-| **Quote expiry** | ❌ `expires_at` exists unused | ✅ | ✅ | ✅ | **P1** |
+| **Photos on quotes/jobs** | ✅ per line item, private bucket + signed URLs | ✅ | ✅ | ✅ | — |
+| **Quote expiry** | ⚠️ **half-built** | ✅ | ✅ | ✅ | **P1** |
+| **Deposits on acceptance** | ❌ no schema | ✅ | ✅ | ✅ | **P1** |
+
+**Quote expiry is the sharp edge here.** `work_items.expires_at` is honoured everywhere it is
+read — the public viewer shows it, the PDF prints it, and follow-ups stop chasing an expired
+quote — but **there is no way for a contractor to set it.** The feature looks finished from the
+inside and is unreachable from the outside. Adding a date field to the quote editor completes it;
+this is the cheapest ✅ on the page.
 
 ---
 
 ## 3. Revenue features — where you win
 
-These make the contractor money rather than saving them time. **Jobber gates all three behind
-$80–120/month tiers.** Putting them in your base tier is both better product and a marketing
+These make the contractor money rather than saving them time. **Jobber gates the first two behind
+$80–120/month tiers.** Putting them in the base tier is both better product and a marketing
 weapon.
 
-| Capability | Rivet | Jobber tier | Priority | Why it matters |
-| --- | --- | --- | --- | --- |
-| **Automated quote follow-up** | ✅ Done 2026-08-13 | Connect $80+ | — | Biggest revenue lever in the category. A quote sent and never chased is a lost job. You already have `sent_at`/`viewed_at`/`accepted_at` and a working reminder path in `src/features/invoices/reminders.ts`. |
-| **Good/better/best options** | ❌ schema exists | Grow $120+ | **P1** | Raises average ticket. `quote_options` table with `tier` column already built, no UI. |
-| **Consumer financing at quote time** | ❌ | ✅ Wisetack | **P1** | Biggest single lever for HVAC. A $12k system closes far more often with monthly payments in the quote. Raises close rate *and* ticket, pays you a referral fee. |
-| **Missed-call text-back** | ❌ | ❌ | **P1** | 20–30% of contractor calls go unanswered; 85% of voicemail callers never ring back. Async, cheap, reliable — the 80/20 of an AI receptionist without 24/7 voice risk. |
-| Overdue invoice reminders | ✅ | ✅ | — | Already built |
+| Capability | Rivet | Jobber tier | Priority |
+| --- | --- | --- | --- |
+| **Automated quote follow-up** | ✅ 2026-08-13 | Connect $80+ | — |
+| **Good/better/best options** | ✅ 2026-08-15 — generated in one action | Grow $120+ | — |
+| Overdue invoice reminders | ✅ | ✅ | — |
+| **Consumer financing at quote time** | ❌ | ✅ Wisetack | **P1** |
+| **Missed-call text-back** | ❌ | ❌ | **P1** — read [business checklist §4.1](GTM_BUSINESS_CHECKLIST.md) first; TCPA is the largest legal exposure in the product |
 
 **Sales line this unlocks:** *"You sent 40 quotes last month. Twelve were never followed up.
-That's roughly $48,000 you left on the table."* That is a different conversation from "our
-software is easier to use."
+That's roughly $48,000 you left on the table."* A different conversation from "our software is
+easier to use."
+
+Good/better/best is the worked example of the product philosophy: both incumbents ship it, and
+adoption is low because building three options by hand is three times the work. Removing the
+tedium is the differentiator, not the feature.
 
 ---
 
@@ -81,42 +114,53 @@ software is easier to use."
 
 Parity loses to incumbents. These are the reasons to switch.
 
-| # | Item | Target | Priority |
+| # | Item | Status | Priority |
 | --- | --- | --- | --- |
-| 4.1 | **AI catalog ingestion** — upload old quotes/invoices/price sheets, Gemini extracts a structured price book | Nobody has solved this. It's where onboarding dies across the whole category. | **P1** |
-| 4.2 | **Flat pricing, unlimited AI** | No credits, no per-seat. QuoteIQ meters AI; Jobber charges $29/user. Neither can copy without repricing their book. | **P1** |
-| 4.3 | **Bundled AI minutes** | Core 200 / Pro 750. At 500 min/mo you are **2.7× cheaper than QuoteIQ** at 82% gross margin. | **P2** |
-| 4.4 | **Mobile-quality PWA** — installable, camera, offline read, push | Techs work from a driveway. Don't rewrite native — see [STRATEGY.md](STRATEGY.md) §4b. | **P1** |
-| 4.5 | **Public quote viewer polish** | The one screen the homeowner sees. Should feel like Stripe Checkout. | **P1** |
-| 4.6 | **Dashboard as a work queue** | Today it reports KPIs. A contractor at 7am wants: scheduled today, quotes to chase, who owes money. | **P2** |
+| 4.1 | **AI catalog ingestion** — read a price book off an old quote, invoice or supplier sheet | ✅ 2026-08-15 — measured against a real Housecall Pro book: 45 items and labour rates in ~1 minute for $0.83 | — |
+| 4.2 | **Flat pricing, unlimited AI** | ✅ decided — no credits, no per-seat | — |
+| 4.3 | **Mobile at 375px** | ⚠️ substantial work done; no full sweep | **P1** |
+| 4.4 | **Public quote viewer polish** | ⚠️ works; not audited against the Stripe-Checkout bar | **P1** |
+| 4.5 | **Dashboard as a work queue** | ✅ already is one — today's schedule, quotes worth chasing, overdue invoices | — |
+| 4.6 | **Installable PWA** — camera, offline read, push | ⚠️ `manifest.json` exists and is linked from the layout; nothing else built | **P2** |
+| 4.7 | Bundled AI voice minutes | ❌ | **P2** — in tension with §6; do not start before missed-call text-back proves the demand |
+
+**4.1 is the moat.** Re-keying a price book is the single biggest reason contractors do not
+switch, and it is the one thing that is now a one-minute job. It is also the mechanism that
+closes a sale — see the acquisition section of `BUSINESS_ANALYSIS.md`.
+
+**On 4.3:** mobile-first is a standing requirement, not a polish pass. The catalog, pipeline,
+calendar, customers and onboarding screens have been through it; the rest have not been looked at
+at 375px with touch. Assume a screen is non-compliant until seen.
 
 ---
 
 ## 5. Will cost you deals — plan for v2
 
-Not launch blockers, but every established contractor asks.
-
-| Capability | Priority | Note |
+| Capability | Status | Priority |
 | --- | --- | --- |
-| **QuickBooks Online sync** | **P2** | Jobber gates at Connect $80+. Bookkeepers demand it. |
-| **Recurring / maintenance agreements** | **P2** | How HVAC shops actually make money. 40%+ recurring revenue raises the owner's exit multiple by 0.5–1.0× EBITDA — a genuinely compelling pitch. |
-| **Two-way SMS** | **P2** | Jobber gates at Grow $120+. Needs TCPA consent handling first — see the business checklist. |
-| Job costing | P2 | Jobber Grow $120+ |
-| Time tracking | P2 | Jobber Connect $80+ |
-| Route optimisation | P2 | Housecall Pro shipped 2026 |
-| Review request automation | P2 | Jobber +$79/mo add-on |
-| Client portal beyond token links | P2 | |
-| Per-jurisdiction tax | P2 | Currently a single company-level default — silently wrong across state lines |
+| **QuickBooks** | ⚠️ CSV exports for invoices, payments and customers ✅; live sync ❌ | **P2** for sync |
+| **Recurring / maintenance agreements** | ❌ | **P2** — how HVAC shops actually make money; 40%+ recurring raises the owner's exit multiple by 0.5–1.0× EBITDA |
+| **Two-way SMS** | ❌ `ComingSoon` placeholder on the integrations page | **P2** — TCPA first |
+| Job costing | ❌ | P2 |
+| Time tracking | ❌ | P2 |
+| Review request automation | ❌ | P2 |
+| Client portal beyond token links | ❌ | P2 |
+| Per-jurisdiction tax | ❌ single company-level default — silently wrong across state lines | P2 |
+| Route optimisation | **declined** — needs geocoding and a solver, pays off at a fleet size this product is not aimed at | Never |
+
+Exports were chosen over an Intuit API sync deliberately: no OAuth, no per-tenant token to
+refresh, no exposure to an API that changes on Intuit's schedule, and it works for a product that
+has not yet taken a live payment. Build the sync when enough contractors ask twice.
 
 ---
 
 ## 6. Deliberately never
 
-Building these makes Rivet worse, not better. They are incumbents padding their tiers.
+Building these makes Rivet worse. They are incumbents padding their tiers.
 
 Website builder · marketing campaign suite · AI receptionist as a full real-time voice product
-(start with text-back; Avoca has $125M) · inventory management · GPS crew tracking · payroll ·
-aerial measurement · before/after image generation · serving 50+ trades
+(start with text-back) · inventory management · GPS crew tracking · payroll · aerial measurement ·
+before/after image generation · serving 50+ trades
 
 ---
 
@@ -124,31 +168,36 @@ aerial measurement · before/after image generation · serving 50+ trades
 
 Do not take money from a stranger until every one of these is true.
 
-- [ ] A brand-new signup can create a catalog and generate a real quote in under 10 minutes
-- [ ] An invoice can be paid online
-- [ ] The AI backend rejects unauthenticated requests and derives `company_id` from the session
-- [ ] Quote follow-up fires automatically
-- [ ] Good/better/best is usable in the quote editor
-- [ ] Photos attach to quotes
-- [ ] Works properly on a phone at 375px, tested on real devices
-- [ ] A second company cannot read the first company's data (manually verified)
-- [ ] `npm run typecheck` passes and `ignoreBuildErrors` is off
+- [x] A brand-new signup lands on a priced catalog and can generate a quote
+- [ ] **That path timed end to end, under 10 minutes** ← 0.1
+- [x] An invoice can be paid online
+- [ ] **An invoice has actually been paid online, once** ← 0.2
+- [x] The AI derives `company_id` from the session, not the caller
+- [x] Quote follow-up fires automatically
+- [x] Good/better/best is usable in the quote editor
+- [x] Photos attach to quotes
+- [ ] Quote expiry is settable, not just honoured
+- [ ] Works properly on a phone at 375px across **every** screen, on a real device
+- [x] A second company cannot read the first company's data — enforced by hand and guarded by a static scanner in `tests/tenancy.test.ts`
+- [x] `npm run typecheck` passes with `ignoreBuildErrors` off
 - [ ] Ten contractors have used it and at least three said they would pay
 
 ---
 
-## 8. Sequence
+## 8. Sequence from here
 
-**Weeks 1–2 — make it usable.** Section 1 in full. This is the difference between a demo and a
-product.
+Sections 1–3 are substantially done, which changes what comes next. The remaining work is not
+features.
 
-**Weeks 3–4 — make it worth paying for.** Quote follow-up, good/better/best, photos, expiry,
-deposits.
+**First — prove the two claims.** Time signup → first sent quote. Connect one Stripe account and
+take one real payment. Everything else is guesswork until these exist.
 
-**Weeks 5–6 — make it demoable.** AI catalog ingestion, HVAC starter catalog, PWA polish,
-public viewer polish, mobile QA.
+**Second — close the half-built edges.** Quote expiry needs a date field. Deposits need schema.
+Both are small and both get asked about in every demo.
 
-**Weeks 7–12 — sell it.** Ten paying customers. Build only what those ten ask for twice.
+**Third — sell.** Ten paying customers, personally onboarded. Build only what those ten ask for
+twice.
 
-The failure mode is spending a year reaching feature parity with Jobber. You will not get there,
-and it is not what wins. Ship section 1, then sell.
+The failure mode remains spending a year reaching feature parity with Jobber. You will not get
+there and it is not what wins. The product is now good enough to sell; the unproven parts are
+commercial, not technical.

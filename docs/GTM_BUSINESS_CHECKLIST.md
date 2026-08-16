@@ -8,6 +8,11 @@ _Everything that isn't product. Companion to
 > are flagged accordingly. Budget for a startup lawyer — it is the highest-ROI money we will
 > spend before launch.
 
+**Reviewed 2026-08-16.** Engineering statuses below were checked against the code on that date;
+legal, financial and marketing items are unchanged because nothing has been done on them. Two
+items previously marked P0 have since been resolved and are struck through rather than deleted,
+so the reasoning stays readable.
+
 Priority: **P0** before taking money · **P1** before real marketing · **P2** fast-follow.
 
 ---
@@ -56,6 +61,24 @@ Priority: **P0** before taking money · **P1** before real marketing · **P2** f
 Templates from Stripe Atlas, Clerky or Common Paper get you 80% there. Have a lawyer review
 1–3 and 3.5.
 
+**Verified 2026-08-16 — the sign-in page already links to three pages that do not exist.** Its
+footer carries `Pricing`, `Privacy` and `Terms`; all three return a redirect back to `/login`. A
+prospect who wants to read the terms before handing over a card goes in a circle, which is a
+worse first impression than having no link at all. Either ship the pages or remove the links —
+and the links are the honest short-term fix, because the pages are P0 anyway.
+
+**The AI output disclaimer (3.5) — ✅ shipped 2026-08-16 in the quote editor.** Worth being
+precise about the audience, because it is easy to put in the wrong place: the disclaimer protects
+Rivet against a *contractor* who sends a wrong AI-drafted price, so it belongs where the
+contractor reviews the draft before sending — not on the public quote viewer, where the homeowner
+is neither the responsible party nor helped by being told the pricing might be wrong.
+
+The editor already warned loudly when the AI was unavailable and the lines were keyword matches.
+It said nothing in the successful case, which is the one that actually creates the exposure. It
+now does, quietly: *"AI drafted these lines from your catalog. Check the quantities and prices —
+once your customer approves, this is the price you've agreed to."* The ToS clause is still needed;
+this is the version anyone will actually read.
+
 ---
 
 ## 4. Compliance — the two that carry real penalties
@@ -102,17 +125,23 @@ Deferred while you ship text-back first, which is exactly why that sequencing is
 
 | # | Item | Priority |
 | --- | --- | --- |
-| 5.1 | **Fix the unauthenticated AI backend** | **P0** |
-| 5.2 | ~~Manual tenancy audit~~ — **done 2026-08-10, clean.** 53 call sites, no leaks. Manual and unguarded; re-run after new data access | ✅ |
+| 5.1 | ~~Fix the unauthenticated AI backend~~ — **dissolved.** The AI runs in-process inside the authenticated server action; there is no second origin ([ADR 0009](adr/0009-ai-in-process.md)) | ✅ |
+| 5.2 | ~~Manual tenancy audit~~ — **done, and no longer manual.** `tests/tenancy.test.ts` scans every SQL statement in the tree and fails the build on one that touches company data without a `company_id` predicate or a written exemption | ✅ |
 | 5.3 | Run `scripts/verify-rls.ts` against production | **P0** |
-| 5.4 | **Rotate every key** — all have lived in tunnel-facing dev configs | **P0** |
+| 5.4 | **Rotate every key** — all have lived in tunnel-facing dev configs, and two were pasted into an agent transcript | **P0** |
 | 5.5 | Backups on with a **tested** restore | **P0** |
-| 5.6 | Remove the scratch routes (`/theme-test`, `/logo-test`, `/preview`, …) — publicly routable today | **P0** |
+| 5.6 | ~~Remove the scratch routes~~ — **gone** (`/theme-test`, `/preview`, `/logo-test` no longer exist) | ✅ |
 | 5.7 | CSP header | **P1** |
 | 5.8 | Incident response plan and a status page | **P1** |
 | 5.9 | Security page describing your practices honestly | **P1** |
-| 5.10 | **Remove the "SOC 2" claim from the login page** — you don't have it and implying it is a misrepresentation | **P0** |
+| 5.10 | ~~Remove the "SOC 2" claim from the login page~~ — **removed.** A comment now sits where the tile was, recording that claims on that page must be true | ✅ |
 | 5.11 | Cyber / E&O insurance (~$1–2K/yr) | **P1** |
+| 5.12 | **Rate limiting** on the public accept/sign routes and the AI actions — absent today, and both are reachable by anyone holding a quote token | **P0** |
+| 5.13 | Server-action input validation audit | **P1** |
+| 5.14 | Quote photos are private — bucket closed, short-lived signed URLs minted per read | ✅ |
+
+**On 5.4:** this is the one on the list that only gets more expensive to delay. It is also
+entirely mechanical, and nothing depends on it being done in any particular order.
 
 ---
 
@@ -143,8 +172,20 @@ not a funnel. Every channel below is chosen because it does not require live sel
 | 7.5 | Reddit r/HVAC and Facebook owner groups — **help for two weeks before mentioning the product** | **P1** | These communities eject salespeople instantly and reward genuine help |
 | 7.6 | Cold email to **office managers, not owners** | **P2** | Owners are on roofs; office managers feel the data entry |
 | 7.7 | Local trade association / supply house relationships | **P2** | |
-| 7.8 | Google Ads | **P2** | Only once you know your conversion rate; CAC in this space runs $500–2,000 |
-| 7.9 | App store presence via a Capacitor wrapper | **P2** | The prize is *reviews* as social proof, not the technology. Month 12, not month 1. |
+| 7.8 | **Google Search on in-market terms** — "HVAC quoting software", "Housecall Pro alternative" | **P1** | Expensive per click and the only channel where the buyer identifies themselves. At plausible funnel rates it implies ~$1,333 CAC, inside the ~$2,000 ceiling |
+| 7.9 | **Supply houses and distributors** — Ferguson, Watsco, SiteOne, local counters | **P1** | Owners are physically there most weeks. How trade tools have always spread, and no software company works it *because* it does not scale — which is why it is available |
+| 7.10 | **Local association chapters** — ACCA, PHCC, IEC, NRCA | **P1** | 20–50 owners in a room for a few hundred dollars. Owner-dense in a way no Meta audience is |
+| 7.11 | **Bookkeepers and accountants serving trades** | **P2** | They see the invoicing mess monthly and are already trusted. The QuickBooks exports make Rivet the thing that reduces *their* workload |
+| 7.12 | Capterra / G2 / Software Advice | **P2** | $30–100 a lead, boring, works, inside the ceiling |
+| 7.13 | Cold paid social | **P2** | **Fails the CAC ceiling at plausible rates (~$2,000).** Meta cannot target "owns an HVAC company"; interest targeting reaches technicians. Retargeting site visitors is a different story at ~$111 |
+| 7.14 | App store presence via a Capacitor wrapper | **P2** | The prize is *reviews* as social proof, not the technology. Month 12, not month 1 |
+
+**Full channel analysis with the arithmetic is in
+[BUSINESS_ANALYSIS.md](BUSINESS_ANALYSIS.md).** Two conclusions worth repeating here: with ~$2,000
+of CAC headroom **cheap is the wrong optimisation** — you can afford expensive clicks, you cannot
+afford clicks from people who do not own the business. And **AI-generated creative lowers the cost
+of making ads, not of buying attention**; it pays off against a retargeting audience, not a cold
+one.
 
 **Consider seriously:** if you speak a language with a large US contractor population — Spanish
 above all — that is an underserved wedge and a distribution advantage no competitor can copy.
@@ -156,16 +197,23 @@ Essentially all field-service software is English-only.
 
 | # | Item | Priority |
 | --- | --- | --- |
-| 8.1 | **Founding-customer offer** — first 10–20 at $149/mo locked forever, for feedback and a testimonial | **P0** |
+| 8.1 | **Founding-customer offer** — first 10–20 at $149/mo locked forever, for feedback and a testimonial. Against the $249 list price that is a 40% discount and ~$145 of contribution a month, which the 97% margin absorbs comfortably | **P0** |
+| 8.6 | **Build their price book for them, free** — from a PDF, a spreadsheet or photos of a binder | **P0** |
 | 8.2 | 14-day free trial, no card | **P1** |
 | 8.3 | **Personally onboard every early customer.** Set up their catalog, sit with them on their first quote | **P0** |
 | 8.4 | Written objection scripts | **P1** |
 | 8.5 | Ask every customer for one referral and one testimonial | **P0** |
 
-**8.3 is your structural advantage.** A bootstrapped competitor with 40,000 users at $29.99
-physically cannot do high-touch onboarding — their economics forbid it. At 200 customers you can
-onboard every single one, and *"the founder set it up with me and answers my texts"* beats any
-feature list for a contractor deciding whether to trust unknown software.
+**8.3 and 8.6 are your structural advantage.** A bootstrapped competitor with 40,000 users at
+$29.99 physically cannot do high-touch onboarding — their economics forbid it. At 200 customers
+you can onboard every single one, and *"the founder set it up with me and answers my texts"*
+beats any feature list for a contractor deciding whether to trust unknown software.
+
+8.6 is the sharper version. Re-keying a price book is the single biggest reason a contractor does
+not switch, and extraction is measured at about a minute and $0.83 per contractor. Offering to do
+it converts a demo into a live account holding their own prices — which is also the moment the
+product becomes hard to leave. At a $2,000 CAC ceiling you can afford roughly 20 hours of your own
+time per acquired customer, so this is not generosity, it is arithmetic.
 
 ---
 
@@ -176,10 +224,19 @@ feature list for a contractor deciding whether to trust unknown software.
 | 9.1 | Support email with a published response time you can actually meet on evenings | **P1** |
 | 9.2 | Help docs for the top 10 questions | **P1** |
 | 9.3 | Uptime monitoring + alerting to a phone | **P0** |
-| 9.4 | Sentry live with source maps | **P1** |
+| 9.4 | Sentry — ⚠️ **wired but inert.** `src/instrumentation.ts` and `instrumentation-client.ts` exist and do nothing without a DSN. One environment variable away from working | **P1** |
 | 9.5 | Product analytics (PostHog) — you cannot see where activation fails without it | **P1** |
-| 9.6 | **Alert if `ai_mode` is ever `mock` in production** — that means quotes are keyword-matched, not AI | **P0** |
+| 9.6 | **Alert if `ai_mode` is ever `mock` in production** — that means quotes are keyword-matched, not AI, and it fails silently as poor quality rather than as an outage | **P0** |
 | 9.7 | Churn exit interview, every single time | **P1** |
+| 9.8 | Acquisition source recorded at signup — ✅ 2026-08-15, `companies.acquisition_source`. Makes churn-by-channel answerable, which is the number §7 is otherwise guessing at | ✅ |
+
+**A part-time onboarding and support hire is planned** and is costed in
+[BUSINESS_ANALYSIS.md](BUSINESS_ANALYSIS.md): ~$2,165/month at 20 hrs/week, or 9 of the 45
+customers. The case for it is 9.7 and churn generally — but the better framing is that the free
+price-book build is simultaneously the sales close and the onboarding, so the hire is an
+acquisition mechanism rather than overhead. Hire on the trigger (onboarding eating selling time,
+realistically 10–15 customers), and hire an ex-office-manager from a trades business rather than a
+SaaS support rep.
 
 ---
 
@@ -203,9 +260,13 @@ feature list for a contractor deciding whether to trust unknown software.
 
 - [ ] Trademark cleared, entity formed
 - [ ] ToS, Privacy Policy and AI disclaimer live and lawyer-reviewed
+- [ ] The `Pricing` / `Privacy` / `Terms` links on the sign-in page resolve to real pages
 - [ ] TCPA consent flow built and reviewed **before** any SMS ships
-- [ ] Every key rotated; tenancy audit done; scratch routes removed
-- [ ] SOC 2 claim removed from the login page
+- [ ] Every key rotated
+- [x] Tenancy enforced and guarded by a test that fails the build
+- [x] Scratch routes removed
+- [x] SOC 2 claim removed from the login page
+- [ ] Rate limiting on the public accept/sign routes and the AI actions
 - [ ] Rivet's own billing works end to end; Stripe in live mode
 - [ ] Landing page with pricing and honest comparison
 - [ ] Recorded demo video

@@ -261,13 +261,16 @@ export default function LoginPage() {
           </p>
         </main>
 
+        {/*
+          /pricing, /privacy and /terms were linked here and none of them exist —
+          all three redirect straight back to this page. Someone who wants to
+          read the terms before handing over a card ends up in a circle, which
+          is a worse first impression than no link at all. Restore each link as
+          its page ships; the pages themselves are P0 in
+          docs/GTM_BUSINESS_CHECKLIST.md §3.
+        */}
         <footer className="flex items-center justify-between text-xs text-muted-foreground">
           <span>© {new Date().getFullYear()} Rivet</span>
-          <div className="flex items-center gap-4">
-            <Link href="/pricing" className="hover:text-foreground">Pricing</Link>
-            <Link href="/privacy" className="hover:text-foreground">Privacy</Link>
-            <Link href="/terms" className="hover:text-foreground">Terms</Link>
-          </div>
         </footer>
       </div>
 
