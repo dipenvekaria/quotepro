@@ -117,6 +117,14 @@ const serverEnvSchema = z.object({
   GOOGLE_GENAI_USE_VERTEXAI: z.string().optional(),
   GOOGLE_CLOUD_PROJECT: z.string().optional(),
   GOOGLE_CLOUD_LOCATION: z.string().optional(),
+  /**
+   * A file path, not a key. ADK resolves Vertex credentials through Application
+   * Default Credentials rather than the object @google/genai accepts, and ADC
+   * reads a path from here. src/lib/ai/adc.ts writes GOOGLE_SERVICE_ACCOUNT_JSON
+   * out to a temp file and sets this when it is not already set — so it is
+   * usually assigned at runtime rather than configured.
+   */
+  GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
   LEMONSQUEEZY_API_KEY: z.string().optional(),
   // Vercel sends this as `Authorization: Bearer <secret>` on scheduled runs.
   // Unset means the cron endpoint refuses to run rather than running open.
