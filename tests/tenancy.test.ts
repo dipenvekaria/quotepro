@@ -230,6 +230,14 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason:
       'unauthenticated invite page; the 128-bit token IS the credential and selects its own row',
   },
+  {
+    file: 'src/app/join/[token]/actions.ts',
+    match: 'from invitations',
+    reason:
+      'same token, same reason: resolves the invited email so the sign-up form can lock it. ' +
+      'Cannot be session-scoped — the whole point is that the invitee has no account yet. ' +
+      'Returns nothing for a used, expired or unknown token, and only ever the row that token names',
+  },
 
   // --- deliberately cross-tenant ---------------------------------------------
   {

@@ -1,8 +1,25 @@
+import { redirect } from 'next/navigation'
+
 import { listTrades } from '@/lib/catalog/starter'
+import { getSession } from '@/lib/auth/session'
+import { createClient } from '@/lib/supabase/server'
 
 import { OnboardingForm } from './onboarding-form'
 
-export default function OnboardingPage() {
+export default async function OnboardingPage() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  // getSession() returns a context only when the user has a company, so a
+  // non-null result here means setup is already done. Serving a working
+  // "create workspace" form to someone who has one is how the same price book
+  // got seeded twice — the action refuses it now, but offering the form at all
+  // is still a dead end dressed up as a task.
+  if (await getSession()) redirect('/app/dashboard')
+
   // Read on the server so the 100-trade list never ships to the browser as
   // props on a route that renders before anyone has an account.
   const trades = listTrades()
