@@ -21,6 +21,8 @@ import {
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
+import { canSeeAnalytics, workItemScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { cn } from '@/lib/utils'
 
@@ -29,7 +31,29 @@ import { SendRemindersButton } from './send-reminders-button'
 // ---------------------------------------------------------------------------
 
 export default async function DashboardPage() {
-  const { email, companyId, profile } = await requireSession()
+  const { email, companyId, profile, userId, role } = await requireSession()
+
+  /*
+    This page read no role at all, and it is where everyone lands after signing
+    in. A technician saw company-wide revenue, close rate, open pipeline value
+    and every unpaid invoice — the exact figures canSeeAnalytics exists to
+    withhold on /app/analytics, and the exact book of business canSeeCatalogPrices
+    withholds in the catalog. Two gates guarding a side door while the front one
+    stood open.
+
+    Money is gated. Work is scoped rather than hidden: a technician still needs
+    today's schedule, they just need *theirs*, which is what workItemScope
+    already does for the pipeline.
+  */
+  const seesMoney = canSeeAnalytics(role as UserRole)
+  const who = { companyId, userId, role: role as UserRole }
+  // One scope per query. workItemScope emits ${startIndex + 1}, so the number
+  // passed is how many parameters the query already uses, not the next slot —
+  // getting that wrong is a runtime "could not determine data type" and not a
+  // type error, which is why the integration test below runs the real SQL.
+  const jobScope = workItemScope(who, 3)
+  const stalledScope = workItemScope(who, 2)
+  const activityScope = workItemScope(who, 1)
 
   const fullName = (profile as { full_name?: string } | null)?.full_name?.trim()
   const emailLocal = (email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
@@ -56,9 +80,9 @@ export default async function DashboardPage() {
         `select w.id, w.status, w.description, w.total, w.scheduled_start, c.name as customer_name
            from work_items w
            left join customers c on c.id = w.customer_id
-          where w.company_id = $1 and w.scheduled_start >= $2 and w.scheduled_start < $3
+          where w.company_id = $1 and w.scheduled_start >= $2 and w.scheduled_start < $3${jobScope.sql}
           order by w.scheduled_start asc`,
-        [companyId, dayStart.toISOString(), dayEnd.toISOString()],
+        [companyId, dayStart.toISOString(), dayEnd.toISOString(), ...jobScope.params],
       ),
       query<{
         id: string
@@ -71,10 +95,10 @@ export default async function DashboardPage() {
         `select w.id, w.description, w.total, w.sent_at, w.viewed_at, c.name as customer_name
            from work_items w
            left join customers c on c.id = w.customer_id
-          where w.company_id = $1 and w.status = 'quote_sent' and w.sent_at < $2
+          where w.company_id = $1 and w.status = 'quote_sent' and w.sent_at < $2${stalledScope.sql}
           order by w.sent_at asc
           limit 5`,
-        [companyId, twoDaysAgo],
+        [companyId, twoDaysAgo, ...stalledScope.params],
       ),
       query<{
         id: string
@@ -91,9 +115,14 @@ export default async function DashboardPage() {
            from invoices i
            left join customers c on c.id = i.customer_id
           where i.company_id = $1 and i.status::text = any($2::text[]) and i.due_date < $3
+            and $4
           order by i.due_date asc
           limit 5`,
-        [companyId, ['sent', 'partial', 'overdue'], todayIso],
+        // Who owes the company money is not a technician's business, and unlike
+        // work items there is no sensible per-user slice of it. Withheld in the
+        // query rather than the markup: a conditional in JSX still ships the
+        // rows to the browser.
+        [companyId, ['sent', 'partial', 'overdue'], todayIso, seesMoney],
       ),
       query<{
         id: string
@@ -106,10 +135,10 @@ export default async function DashboardPage() {
         `select w.id, w.status, w.description, w.total, w.updated_at, c.name as customer_name
            from work_items w
            left join customers c on c.id = w.customer_id
-          where w.company_id = $1
+          where w.company_id = $1${activityScope.sql}
           order by w.updated_at desc
           limit 6`,
-        [companyId],
+        [companyId, ...activityScope.params],
       ),
       query<{
         id: string
@@ -122,8 +151,11 @@ export default async function DashboardPage() {
       }>(
         `select id, status, total, sent_at, accepted_at, created_at, updated_at
            from work_items
-          where company_id = $1 and created_at >= $2`,
-        [companyId, sixtyDaysAgo],
+          where company_id = $1 and created_at >= $2 and $3`,
+        // Revenue, close rate and pipeline value are derived from these rows,
+        // so the rows themselves are withheld — not just the tiles that render
+        // from them.
+        [companyId, sixtyDaysAgo, seesMoney],
       ),
       query<{ stripe_charges_enabled: boolean | null }>(
         `select stripe_charges_enabled from companies where id = $1 limit 1`,
@@ -292,42 +324,6 @@ export default async function DashboardPage() {
         </section>
       )}
 
-      {/* KPI strip */}
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Kpi
-          icon={FileText}
-          label="Quotes sent"
-          value={quotesSent.toString()}
-          hint={`${quotesAccepted} accepted (30d)`}
-          delta={quotesSentDelta}
-          series={sentSeries}
-        />
-        <Kpi
-          icon={TrendingUp}
-          label="Close rate"
-          value={`${acceptanceRate}%`}
-          hint={acceptanceRate >= 40 ? 'On target' : 'Room to grow'}
-          accent={acceptanceRate >= 40 ? 'good' : undefined}
-          delta={closeRateDelta}
-          series={rateSeries}
-        />
-        <Kpi
-          icon={CreditCard}
-          label="Revenue"
-          value={fmtCompact(revenue)}
-          hint="Last 30 days"
-          delta={revenueDelta}
-          series={revSeries}
-        />
-        <Kpi
-          icon={Zap}
-          label="Pipeline"
-          value={fmtCompact(pipelineValue)}
-          hint="Open + in progress"
-          series={pipeSeries}
-        />
-      </div>
-
       {/* Priority zones */}
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Today's schedule */}
@@ -423,7 +419,8 @@ export default async function DashboardPage() {
           )}
         </Zone>
 
-        {/* Overdue invoices */}
+        {/* Overdue invoices — owners and office only; see the query above. */}
+        {seesMoney && (
         <Zone
           icon={AlertCircle}
           title="Overdue invoices"
@@ -477,6 +474,7 @@ export default async function DashboardPage() {
             </>
           )}
         </Zone>
+        )}
       </div>
 
       {/* Recent activity */}
@@ -530,6 +528,69 @@ export default async function DashboardPage() {
           </ul>
         )}
       </section>
+
+      {/*
+        Metrics last, and only for someone who scrolled past the work.
+        These four tiles used to sit above the priority zones, which put close
+        rate and revenue on the first phone screen and pushed today's schedule
+        to roughly the third — the opposite of what a contractor opens this at
+        7am to find out. Nothing here is actionable; it is a pulse, and a pulse
+        belongs after the pulse-check.
+
+        Analytics owns the same numbers in more depth, so this strip is
+        explicitly a summary that hands off rather than a second, subtly
+        different report. Labels and rounding are matched to it deliberately:
+        the two screens previously disagreed cosmetically ("Close rate 71%"
+        against "Acceptance rate 71.4%") and read as two metrics that
+        contradicted each other.
+      */}
+      {seesMoney && (
+      <section className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-sm font-semibold">Last 30 days</h2>
+          <Link
+            href="/app/analytics"
+            className="inline-flex min-h-11 items-center gap-1 py-3 text-xs text-primary hover:underline lg:min-h-0 lg:py-0"
+          >
+            Full analytics <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Kpi
+            icon={FileText}
+            label="Quotes sent"
+            value={quotesSent.toString()}
+            hint={`${quotesAccepted} accepted`}
+            delta={quotesSentDelta}
+            series={sentSeries}
+          />
+          <Kpi
+            icon={TrendingUp}
+            label="Acceptance rate"
+            value={`${acceptanceRate}%`}
+            hint="Sent → accepted"
+            accent={acceptanceRate >= 40 ? 'good' : undefined}
+            delta={closeRateDelta}
+            series={rateSeries}
+          />
+          <Kpi
+            icon={CreditCard}
+            label="Revenue"
+            value={fmtCompact(revenue)}
+            hint="Paid + jobs done"
+            delta={revenueDelta}
+            series={revSeries}
+          />
+          <Kpi
+            icon={Zap}
+            label="Open pipeline"
+            value={fmtCompact(pipelineValue)}
+            hint="Sent + won + in progress"
+            series={pipeSeries}
+          />
+        </div>
+      </section>
+      )}
     </div>
   )
 }
