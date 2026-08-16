@@ -119,3 +119,34 @@ describe('parsePrice', () => {
     expect(parsePrice('   ')).toBeNull()
   })
 })
+
+describe('labour hours column', () => {
+  it('finds the spellings a real price book uses', () => {
+    // The field the product's scheduling advantage rests on. The import dropped
+    // it entirely, so a contractor bringing their own book silently lost it —
+    // and the calendar fell back to guessing an hour per job.
+    for (const header of [
+      ['name', 'price', 'labor hours'],
+      ['Item', 'Cost', 'Hrs'],
+      ['service', 'rate', 'estimated hours'],
+      ['task', 'charge', 'duration'],
+      ['name', 'price', 'Labour Hours'],
+      ['name', 'price', 'man hours'],
+    ]) {
+      expect(mapHeaders(header).labor_hours, header.join('|')).toBe(2)
+    }
+  })
+
+  it('is optional — a book without hours still imports', () => {
+    const cols = mapHeaders(['name', 'price'])
+    expect(cols.labor_hours).toBeUndefined()
+    expect(cols.name).toBe(0)
+    expect(cols.base_price).toBe(1)
+  })
+
+  it('does not steal the price column', () => {
+    // "rate" and "cost" are price aliases; "labor" must not outrank them.
+    const cols = mapHeaders(['item', 'labor rate', 'hours'])
+    expect(cols.labor_hours).toBe(2)
+  })
+})

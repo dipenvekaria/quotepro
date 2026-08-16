@@ -23,7 +23,7 @@ export default async function CatalogPage() {
   const showPrices = canSeeCatalogPrices(role as UserRole)
 
   const items = await query<CatalogItem>(
-    `select ci.id, ci.name, ci.description, ci.category, ci.unit, ci.is_active,
+    `select ci.id, ci.name, ci.description, ci.category, ci.unit, ci.is_active, ci.labor_hours,
             ci.image_path,
             ${showPrices ? 'ci.base_price' : 'null::numeric as base_price'},
             coalesce(

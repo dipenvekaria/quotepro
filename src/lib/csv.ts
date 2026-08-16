@@ -69,12 +69,29 @@ export function parseCsv(input: string): string[][] {
  * to rename headers before importing is exactly the friction this feature
  * exists to remove.
  */
-const ALIASES: Record<'name' | 'base_price' | 'category' | 'description' | 'unit', string[]> = {
+const ALIASES: Record<
+  'name' | 'base_price' | 'category' | 'description' | 'unit' | 'labor_hours',
+  string[]
+> = {
   name: ['name', 'item', 'item name', 'service', 'product', 'title', 'task'],
   base_price: ['price', 'base price', 'base_price', 'rate', 'cost', 'amount', 'unit price', 'charge'],
   category: ['category', 'type', 'group', 'section', 'trade'],
   description: ['description', 'details', 'notes', 'desc', 'summary'],
   unit: ['unit', 'uom', 'per', 'units', 'measure'],
+  /**
+   * How long the work takes.
+   *
+   * Imported because it is the field the product's advantage rests on: an
+   * accepted quote that knows its own duration is what makes calendar capacity
+   * honest, and competitors cannot copy it without rebuilding their price book.
+   * The import dropped it, so the moment a contractor brought their own book —
+   * which is exactly what the product asks them to do — the advantage switched
+   * off and the calendar fell back to guessing an hour.
+   */
+  labor_hours: [
+    'labor hours', 'labour hours', 'hours', 'hrs', 'labor', 'labour',
+    'time', 'duration', 'est hours', 'estimated hours', 'man hours',
+  ],
 }
 
 function normalise(header: string): string {
