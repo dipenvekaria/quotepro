@@ -1,6 +1,9 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { after } from 'next/server'
+
+import { indexCatalog, indexCatalogItem, unindexCatalogItem } from '@/lib/ai/catalog-index'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
@@ -67,6 +70,39 @@ function revalidate() {
   revalidatePath('/app/quotes/new')
 }
 
+/**
+ * Keep the search index in step with the price book.
+ *
+ * After the response, not before it: embedding takes a round trip to Vertex and
+ * a contractor saving a price should not wait for it. `after()` runs once the
+ * response is sent, and on Fluid Compute that time is largely unbilled.
+ *
+ * The write path owns this rather than a nightly job. An index that drifts
+ * answers confidently with last week's prices, and nobody notices until a
+ * customer accepts one.
+ */
+function reindex(companyId: string, itemId: string) {
+  after(async () => {
+    try {
+      await indexCatalogItem(companyId, itemId)
+    } catch (e) {
+      // Never fail a save because search is unavailable — the item is in the
+      // catalog either way, and the keyword path still finds it.
+      console.error('catalog reindex failed', e)
+    }
+  })
+}
+
+function reindexAll(companyId: string) {
+  after(async () => {
+    try {
+      await indexCatalog(companyId)
+    } catch (e) {
+      console.error('catalog bulk reindex failed', e)
+    }
+  })
+}
+
 export async function createCatalogItem(input: unknown): Promise<Result<{ id: string }>> {
   const parsed = createSchema.safeParse(input)
   if (!parsed.success) {
@@ -96,6 +132,7 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
     const id = rows[0]?.id
     if (!id) return { ok: false, error: 'Could not add the item. Please try again.' }
     revalidate()
+    reindex(auth.session.companyId, id)
     return { ok: true, data: { id } }
   } catch (e) {
     console.error('createCatalogItem failed', e)
@@ -135,6 +172,7 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
     revalidate()
+    reindex(auth.session.companyId, rows[0].id)
     return { ok: true, data: { id: rows[0].id } }
   } catch (e) {
     console.error('updateCatalogItem failed', e)
@@ -168,6 +206,7 @@ export async function setCatalogItemActive(input: unknown): Promise<Result<{ id:
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
     revalidate()
+    reindex(auth.session.companyId, rows[0].id)
     return { ok: true, data: { id: rows[0].id } }
   } catch (e) {
     console.error('setCatalogItemActive failed', e)
@@ -193,6 +232,10 @@ export async function deleteCatalogItem(input: unknown): Promise<Result<{ id: st
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
     revalidate()
+    after(async () => {
+      try { await unindexCatalogItem(auth.session.companyId, rows[0].id) }
+      catch (e) { console.error('catalog unindex failed', e) }
+    })
     return { ok: true, data: { id: rows[0].id } }
   } catch (e) {
     console.error('deleteCatalogItem failed', e)
@@ -317,6 +360,7 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
   }
 
   revalidate()
+  reindexAll(auth.session.companyId)
   return {
     ok: true,
     data: {

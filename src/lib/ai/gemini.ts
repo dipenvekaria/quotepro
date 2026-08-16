@@ -101,6 +101,17 @@ function client(): GoogleGenAI | null {
   return _client
 }
 
+/**
+ * The same configured client, for embedding.
+ *
+ * Exported rather than duplicated: embeddings must go to the same project and
+ * credentials as generation, and two client factories would drift the moment
+ * one of them learned about a new auth path.
+ */
+export function embeddingClient(): GoogleGenAI | null {
+  return client()
+}
+
 /** Whether real generation is available, or everything degrades to the mock. */
 export function aiEnabled(): boolean {
   if (vertexEnabled()) return Boolean(envServer().GOOGLE_CLOUD_PROJECT)
