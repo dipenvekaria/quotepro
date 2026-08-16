@@ -38,24 +38,38 @@ nothing.
 
 ## Decision
 
-**Build the agent in TypeScript against Vertex AI function calling, in-process. Do not
-reintroduce Python or ADK.**
+**Build the agent with `@google/adk` (adk-js) in TypeScript, in-process, with a Postgres-backed
+session service.** No Python, no second service — see the correction below for how this ADR first
+got that wrong.
 
-### Why not ADK
+### Correction, 2026-08-16 — use ADK
 
-ADK is a Python framework. [ADR 0009](0009-ai-in-process.md) deleted the Python backend and moved
-the AI in-process precisely to remove a service that two part-time people had to deploy, monitor
-and keep in sync. Bringing ADK back means bringing that cost back.
+This ADR originally recommended *against* ADK, on the grounds that it is a Python framework and
+that reintroducing Python would undo [ADR 0009](0009-ai-in-process.md), which deleted the Python
+backend to remove a service two part-time people had to operate.
 
-The label is not the goal. What was actually asked for is: an agent that retrieves from the
-company's own catalog, holds a session per quote, and edits rather than regenerates. Gemini's
-function calling gives all three, in the process that already exists, with the session in a table
-that already exists.
+**That was wrong on the fact it rested on.** `@google/adk` — Google's official
+[adk-js](https://github.com/google/adk-js) — is on npm at v1.6.0, is TypeScript, and already
+depends on `@google/genai`, which this repo uses. It is a library in the existing process, not a
+service. The objection does not survive, so the recommendation changes.
 
-If ADK is wanted specifically — for its evaluation harness or multi-agent routing — that is a
-separate decision with a real operational cost, and it should be taken on its own merits after
-this ships. Nothing here forecloses it: the tools below are plain functions, and a future ADK
-agent would call the same ones.
+Verified before adopting:
+
+- `BaseSessionService` is an **abstract class**, so session persistence is pluggable. Rivet
+  implements it over raw `pg` against `ai_conversations`. ADK ships `DatabaseSessionService`
+  (MikroORM) and `VertexAiSessionService`; neither is used, because this codebase's rule is raw
+  SQL and no ORM, and a session store is not the place to make the first exception.
+- `LlmAgent`, `FunctionTool`, `Runner` and `BaseTool` provide the loop, so the tool contract below
+  is defined once and ADK drives it.
+
+What that buys over a hand-rolled function-calling loop: the turn loop, tool schema generation,
+streaming, and an evaluation harness — all of which would otherwise be written and maintained
+here.
+
+The cost is dependency weight. ADK pulls Express, MikroORM, the OpenTelemetry stack and
+`@google-cloud/storage` even though this uses none of them. That is worth watching in cold-start
+time, and worth revisiting if it shows up in the numbers — but it is a bundle question, not an
+architecture one, and it does not add a process.
 
 ### The shape
 
