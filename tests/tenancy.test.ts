@@ -186,6 +186,14 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'preceded by an ownership check on work_items',
   },
   {
+    file: 'src/lib/ai/quote-tools.ts',
+    match: 'insert into quote_items',
+    reason:
+      'every tool calls assertOwned() first, which selects the work item by id AND company_id ' +
+      'and throws if it is not the caller\'s. quote_items has no company_id of its own — it ' +
+      'inherits tenancy from its work item, same as the existing exemptions above',
+  },
+  {
     file: 'src/app/app/(shell)/quotes/new/actions.ts',
     match: 'update work_items',
     reason: 'preceded by an ownership check on work_items',
