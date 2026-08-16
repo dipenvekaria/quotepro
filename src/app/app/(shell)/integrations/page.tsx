@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import {
   Calendar,
   CreditCard,
-  ExternalLink,
+  Download,
   FileText,
   MessageSquare,
   Package,
@@ -42,7 +41,7 @@ export default async function IntegrationsPage() {
         <div className="text-xs text-muted-foreground">Workspace</div>
         <h1 className="text-2xl font-semibold tracking-tight">Integrations</h1>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          Connect your own accounts. Your data flows directly between QuotePro and each service —
+          Connect your own accounts. Your data flows directly between Rivet and each service —
           we never touch your money or store credentials for you.
         </p>
       </header>
@@ -76,10 +75,10 @@ export default async function IntegrationsPage() {
         <IntegrationShell
           logo={<FileText className="h-5 w-5" />}
           name="QuickBooks Online"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Auto-post each paid invoice as a sales receipt. Match Stripe payouts to deposits."
+          badge={{ label: 'Exports ready', tone: 'good' }}
+          tagline="Download invoices, payments and customers in the format QuickBooks imports. Live sync is still to come."
         >
-          <ComingSoon feature="quickbooks" />
+          <BookkeepingExports />
         </IntegrationShell>
         <IntegrationShell
           logo={<FileText className="h-5 w-5" />}
@@ -87,7 +86,7 @@ export default async function IntegrationsPage() {
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Same as QuickBooks — one-click sync of invoices, payments, and payouts."
         >
-          <ComingSoon feature="xero" />
+          <ComingSoon />
         </IntegrationShell>
       </IntegrationCategory>
 
@@ -97,9 +96,9 @@ export default async function IntegrationsPage() {
           logo={<Calendar className="h-5 w-5" />}
           name="Google Calendar"
           badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Scheduled jobs appear on your Google Calendar. Two-way sync so reschedules land in QuotePro."
+          tagline="Scheduled jobs appear on your Google Calendar. Two-way sync so reschedules land in Rivet."
         >
-          <ComingSoon feature="google-calendar" />
+          <ComingSoon />
         </IntegrationShell>
         <IntegrationShell
           logo={<MessageSquare className="h-5 w-5" />}
@@ -107,7 +106,7 @@ export default async function IntegrationsPage() {
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Text quote and appointment reminders from your own Twilio number."
         >
-          <ComingSoon feature="twilio" />
+          <ComingSoon />
         </IntegrationShell>
       </IntegrationCategory>
 
@@ -119,7 +118,7 @@ export default async function IntegrationsPage() {
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Trigger flows on new lead, quote sent, quote accepted, or invoice paid."
         >
-          <ComingSoon feature="zapier" />
+          <ComingSoon />
         </IntegrationShell>
         <IntegrationShell
           logo={<Slack className="h-5 w-5" />}
@@ -127,7 +126,7 @@ export default async function IntegrationsPage() {
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Post to a channel when a big quote is accepted or an invoice hits paid."
         >
-          <ComingSoon feature="slack" />
+          <ComingSoon />
         </IntegrationShell>
         <IntegrationShell
           logo={<Package className="h-5 w-5" />}
@@ -135,7 +134,7 @@ export default async function IntegrationsPage() {
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Raw HTTP POST for every workflow event. Bring your own endpoint."
         >
-          <ComingSoon feature="webhooks" />
+          <ComingSoon />
         </IntegrationShell>
       </IntegrationCategory>
 
@@ -151,12 +150,14 @@ export default async function IntegrationsPage() {
               Housecall Pro, ServiceTitan, Jobber, HubSpot, Salesforce — tell us your stack and we’ll
               prioritize. Every integration launches with a one-click connect and a live status card here.
             </p>
-            <Link
-              href="mailto:hello@quotepro.demo?subject=Integration%20request"
-              className="mt-3 inline-flex h-8 items-center gap-1 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted"
-            >
-              Request an integration <ExternalLink className="h-3 w-3" />
-            </Link>
+            {/*
+              The "Request an integration" button pointed at
+              hello@quotepro.demo, which does not resolve — the request went
+              nowhere and the contractor had no way to know. Restore this as a
+              real control once a support address exists (GTM business
+              checklist §9.1); a button that silently discards the request is
+              worse than the sentence alone.
+            */}
           </div>
         </div>
       </section>
@@ -227,19 +228,53 @@ function IntegrationShell({
   )
 }
 
-function ComingSoon({ feature }: { feature: string }) {
+/**
+ * The bookkeeping exports, which already worked and which nothing linked to.
+ *
+ * `/api/export/[kind]` has been live, authenticated and permission-gated for a
+ * while, and the only mention of QuickBooks on this page said "Coming soon" —
+ * so a contractor had no way to reach a finished feature, and was told it did
+ * not exist. Month-end re-keying is the actual QuickBooks complaint; this
+ * answers it today, and a live sync can replace it later.
+ */
+function BookkeepingExports() {
+  const kinds = [
+    { kind: 'invoices', label: 'Invoices' },
+    { kind: 'payments', label: 'Payments' },
+    { kind: 'customers', label: 'Customers' },
+  ]
+  return (
+    <div className="rounded-md border border-border bg-muted/20 p-3">
+      <p className="text-xs text-muted-foreground">
+        CSV, ready to import. Owners and office staff only — this is your revenue by customer.
+      </p>
+      <div className="mt-2.5 grid grid-cols-1 gap-2 sm:grid-cols-3">
+        {kinds.map((k) => (
+          <a
+            key={k.kind}
+            href={`/api/export/${k.kind}`}
+            download
+            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:min-h-9"
+          >
+            <Download className="h-3.5 w-3.5" />
+            {k.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ComingSoon() {
   return (
     <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-center">
-      <p className="text-xs text-muted-foreground">
-        In development —{' '}
-        <a
-          href={`mailto:hello@quotepro.demo?subject=Interested%20in%20${encodeURIComponent(feature)}`}
-          className="text-primary hover:underline"
-        >
-          notify me
-        </a>{' '}
-        when it launches.
-      </p>
+      {/*
+        Was a "notify me" mailto to hello@quotepro.demo — a domain that does not
+        exist, so the one interactive thing on this card opened a mail client
+        addressed to nobody. No real support address is configured yet; saying
+        less is better than offering a link that goes nowhere.
+      */}
+      <p className="text-xs text-muted-foreground">In development.</p>
     </div>
   )
 }

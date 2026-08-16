@@ -166,12 +166,12 @@ export default function AcceptedPage({ params }: AcceptedPageProps) {
 
             {/* Back to Quote Button */}
             <div className="pt-4">
-              <Link href={`/q/${quoteId}`}>
-                <Button variant="outline" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Quote
+              <Button asChild variant="outline" className="gap-2">
+                  <Link href={`/q/${quoteId}`}>
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Quote
+                  </Link>
                 </Button>
-              </Link>
             </div>
           </div>
         </CardContent>
