@@ -104,14 +104,46 @@ technicians because it read no role at all while two other screens gated the sam
 Withholding must happen in the **query**. A conditional in JSX still ships the data to the
 browser, where it is readable in devtools.
 
-## Accessibility
+## Accessibility — audit against WCAG 2.2 AA
+
+`rivet-ui` carries the full standard. Test it in this order, because automated tooling catches
+roughly a third and the rest needs hands.
+
+**1. Automated sweep** — cheap, run it first, believe the failures and not the passes.
+
+```bash
+npx @axe-core/cli http://localhost:3000/app/dashboard
+```
+
+**2. Keyboard only.** Unplug the mouse. Tab the whole screen. Anything you cannot reach or
+operate fails 2.1.1 whatever axe reported. Watch for focus disappearing behind the sticky top bar
+or the sticky action bar — that is 2.4.11 Focus Not Obscured, new in 2.2, and Rivet has both bars.
+
+**3. The 2.2 additions**, which older checklists and older tooling miss:
+
+- **2.5.7 Dragging Movements (AA).** Anything done by dragging needs a non-drag single-pointer
+  path. **Known failure: rescheduling a job is drag-only** — `rescheduleJob` is reachable from
+  the drag handlers in `calendar-board.tsx` and `week-grid.tsx` and nowhere else, and the job
+  dialog has no date or time control. Re-check this before reporting it fixed.
+- **2.5.8 Target Size** 24×24 minimum — the 44px house rule clears it.
+- **3.3.7 Redundant Entry** — is anything asked twice in one flow?
+- **3.3.8 Accessible Authentication** — paste must work on the password field, and
+  `autoComplete` must be accurate or password managers break.
+- **3.2.6 Consistent Help** — help and contact stay in the same relative position.
+
+**4. Structure and naming**
 
 - `aria-label` on every icon-only button.
-- Visible `:focus-visible`; keyboard reachable in a sane order.
 - Semantic elements — a `div` with `onClick` is not a button.
 - No nested interactive content. `<Link><Button>` renders `<a><button>`, which is invalid; use
   `asChild`.
-- Contrast ≥ 4.5:1. `text-muted-foreground` on `bg-muted` is the pairing that fails.
+- Contrast ≥ 4.5:1 text, 3:1 for UI components and focus rings. `text-muted-foreground` on
+  `bg-muted` is the pairing that fails here.
+- Errors are identified in text and say how to fix them; a red border is not a message.
+
+**5. Zoom and reflow** — 200% zoom without losing content, reflow at 320px.
+
+Do not report **4.1.1 Parsing**. It was removed in WCAG 2.2.
 
 ## Reporting
 

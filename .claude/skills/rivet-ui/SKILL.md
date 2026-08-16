@@ -129,7 +129,71 @@ who thinks the app is broken doesn't send the quote.
 Empty states should say what to do next, not just that there's nothing there. "No quotes yet —
 create your first one" beats "No results."
 
-## Accessibility
+## Accessibility — WCAG 2.2 Level AA
+
+**Target: WCAG 2.2 AA.** 2.2 is the current W3C Recommendation; 3.0 is a working draft and not a
+standard to build against. AA is also the level US ADA web claims are argued at, and those are a
+live litigation area — see `docs/GTM_BUSINESS_CHECKLIST.md` §4.3.f.
+
+### Carried over from 2.1, and non-negotiable
+
+- **1.4.3 Contrast** ≥ 4.5:1 for text, 3:1 for large text and UI components.
+  `text-muted-foreground` on `bg-muted` is the pairing that fails here.
+- **1.4.11 Non-text Contrast** — borders, focus rings and icons that carry meaning need 3:1.
+- **2.1.1 Keyboard** — everything reachable and operable, no traps.
+- **2.4.7 Focus Visible** — `:focus-visible` is styled globally; do not remove it.
+- **4.1.2 Name, Role, Value** — `aria-label` on every icon-only button; a `div` with `onClick`
+  is not a button.
+- **1.3.1 Info and Relationships** — real headings, real lists, real labels tied to inputs.
+- **3.3.1 / 3.3.3 Errors** — identify the error in text and say how to fix it. A red border is
+  not an error message.
+
+### New in 2.2 — the ones that actually bite this product
+
+- **2.5.7 Dragging Movements (AA).** Anything achievable by dragging needs a single-pointer
+  alternative that is not dragging. **Rivet fails this today: rescheduling a job is drag-only.**
+  `rescheduleJob` is called from the drag handlers in `calendar-board.tsx` and `week-grid.tsx`
+  and from nowhere else, and the job dialog has no date or time control. The fix is a date/time
+  field in that dialog — which also helps anyone on a phone in a moving vehicle, not only
+  someone with a motor impairment.
+- **2.5.8 Target Size (Minimum) (AA)** — 24×24 CSS px. The house rule of 44px already clears it
+  comfortably; keep using `h-11`.
+- **3.2.6 Consistent Help (A)** — if help or contact exists, it stays in the same relative place
+  across pages.
+- **3.3.7 Redundant Entry (A)** — do not ask for information already given in the same process.
+  The invite flow prefills and locks the invited address for exactly this reason.
+- **3.3.8 Accessible Authentication (Minimum) (AA)** — no cognitive function test without an
+  alternative. **Never block paste on a password field**, and keep `autoComplete` accurate
+  (`current-password` / `new-password`) so password managers work. Currently satisfied — do not
+  regress it.
+- **2.4.11 Focus Not Obscured (Minimum) (AA)** — a focused element must not be completely hidden
+  by sticky headers, bottom bars or toasts. Rivet has a sticky top bar and a sticky action bar,
+  so check keyboard focus at 375px where they are closest together.
+
+4.1.1 Parsing was **removed** in 2.2. Do not report it.
+
+### Beyond WCAG
+
+- **Reduced motion** — honour `prefers-reduced-motion` on anything that animates.
+- **Zoom to 200%** without loss of content or function (1.4.4), and reflow at 320px CSS width
+  (1.4.10).
+- **Language** — `<html lang>` set.
+- **Autofill** — correct `autocomplete` tokens on name, email, tel, address (1.3.5). Contractors
+  fill these on a phone.
+
+### Checking it
+
+Automated tools catch perhaps a third. Keyboard-only and a screen reader catch the rest.
+
+```bash
+npx @axe-core/cli http://localhost:3000/app/dashboard   # or the axe devtools extension
+```
+
+Tab through the whole screen. If you cannot reach or operate something, it fails, whatever axe
+says.
+
+<!-- superseded section retained below for the specifics it names -->
+## Accessibility (detail)
 
 WCAG AA. Non-negotiable parts:
 
@@ -162,3 +226,30 @@ single unguided attempt from someone who will never see it again.
 - Icon-only buttons are labelled; focus is visible; tab order is sane.
 - Works in dark mode — the tokens handle it, but check.
 - `npx tsc --noEmit` is clean.
+
+## Every screen knows who is looking
+
+A page rendering company data must read `role` from `requireSession()` and use it. The dashboard
+did not, and shipped revenue, close rate, pipeline value and every unpaid invoice to technicians
+— on the page everyone lands on after signing in, while `/app/analytics` gated the same figures.
+
+Withhold in the **query**, not the markup: a value behind a JSX conditional still ships to the
+browser. See the roles table in `rivet-data`.
+
+## Controls must do something
+
+Never render a control without a handler. Four shipped that way — a global search box, a mobile
+search icon, a notification bell and a pipeline Filter button.
+
+The same bug wears other hats, and a scanner misses all of them:
+
+- A link to a route that does not exist. The sign-in footer linked `/pricing`, `/privacy` and
+  `/terms`; all three redirected back to sign-in.
+- A `mailto:` to a domain that does not resolve — two buttons pointed at `hello@quotepro.demo`.
+- Copy that contradicts the code: the integrations page said QuickBooks was "Coming soon" while
+  a finished, authenticated export sat behind no link.
+
+A control that silently discards the user's action is worse than no control.
+
+Use `asChild` for a link styled as a button — `<Link><Button>` renders `<a><button>`, which is
+invalid nested-interactive HTML.
