@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { dayKey, toDateTimeLocal } from '@/lib/scheduling/day'
+import { formatTravel } from '@/lib/scheduling/travel'
+import type { JobLeg } from '@/lib/scheduling/legs'
 import { cn } from '@/lib/utils'
 
 import { rescheduleJob } from './actions'
@@ -41,12 +43,15 @@ const SLOT_PX = 26
 export function WeekGrid({
   days,
   jobs,
+  legs = {},
   canReschedule,
   dayStartHour,
   dayEndHour,
 }: {
   days: { date: string }[]
   jobs: BoardJob[]
+  /** Drive from the previous job, keyed by the job it arrives at. */
+  legs?: Record<string, JobLeg>
   canReschedule: boolean
   /** Business hours, so the grid shows the working day rather than midnight. */
   dayStartHour: number
@@ -247,8 +252,31 @@ export function WeekGrid({
                         'absolute inset-x-1 overflow-hidden rounded-md border border-primary/30 bg-primary/10 px-1.5 py-1 text-left transition-colors hover:bg-primary/20',
                         canReschedule && 'cursor-grab active:cursor-grabbing',
                         dragging?.id === job.id && 'opacity-40',
+                        // The whole reason drive times are here: this job cannot
+                        // be reached from the previous one in the gap available.
+                        legs[job.id]?.impossible && 'border-destructive/60 bg-destructive/10',
                       )}
                     >
+                      {legs[job.id] && (
+                        /*
+                          Drive from the previous job, on the block it arrives
+                          at rather than floating between two — a label between
+                          blocks has nowhere to live when they are adjacent, and
+                          this reads as a property of arriving here.
+                        */
+                        <div
+                          className={cn(
+                            'truncate text-[10px] leading-tight',
+                            legs[job.id].impossible
+                              ? 'font-medium text-destructive'
+                              : 'text-muted-foreground',
+                          )}
+                        >
+                          {legs[job.id].impossible
+                            ? `${formatTravel(legs[job.id].travel.seconds)} drive — won't make it`
+                            : `${formatTravel(legs[job.id].travel.seconds)} drive`}
+                        </div>
+                      )}
                       <div className="truncate text-[11px] font-medium leading-tight">
                         {job.customer_name ?? 'Job'}
                       </div>

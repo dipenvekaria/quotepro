@@ -6,6 +6,7 @@ import { CalendarBoard, type BoardJob } from './calendar-board'
 import { WeekGrid } from './week-grid'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
 import { loadBusinessHours } from '@/lib/scheduling/availability'
+import { computeLegs } from '@/lib/scheduling/legs'
 import { AssigneeFilter } from '@/components/shared/assignee-filter'
 import { RoleFilter } from '@/components/shared/role-filter'
 import { ASSIGNABLE_ROLES } from '@/lib/team-personas'
@@ -103,10 +104,14 @@ export default async function CalendarPage({
     address: string | null
     city: string | null
     state: string | null
+    assigned_to: string | null
+    lat: number | null
+    lng: number | null
   }>(
     `select w.id, w.status, w.scheduled_start, w.total, w.estimated_hours,
             c.name as customer_name,
-            a.address, a.city, a.state
+            a.address, a.city, a.state,
+            w.assigned_to, a.lat, a.lng
        from work_items w
        left join customers c on c.id = w.customer_id
        left join customer_addresses a on a.id = w.address_id
@@ -125,6 +130,20 @@ export default async function CalendarPage({
       ...(roleParam ? [roleParam] : []),
     ],
   )
+
+  // Drive times between one job and the next for the same person. Cache-first
+  // and degrades to {} — no key, no coordinates or a Google outage means no
+  // estimates shown, never a broken calendar.
+  const legs = await computeLegs(
+    rows.map((r) => ({
+      id: r.id,
+      scheduled_start: r.scheduled_start,
+      estimated_hours: r.estimated_hours,
+      assigned_to: r.assigned_to,
+      lat: r.lat,
+      lng: r.lng,
+    })),
+  ).catch(() => ({}))
 
   const list: ScheduledJob[] = rows.map((r) => ({
     id: r.id,
@@ -270,6 +289,7 @@ export default async function CalendarPage({
             <WeekGrid
               days={boardDays}
               jobs={boardJobs}
+              legs={legs}
               canReschedule={canAssignWork(role as UserRole)}
               dayStartHour={gridStart}
               dayEndHour={gridEnd}
