@@ -1,178 +1,112 @@
-// Quote Acceptance Success Page
-'use client'
-
-import { useEffect, useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { CheckCircle, Phone, Mail, ArrowLeft } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/client'
+import { notFound } from 'next/navigation'
+import { ArrowLeft, CheckCircle, Mail, Phone } from 'lucide-react'
 
-interface AcceptedPageProps {
-  params: Promise<{ id: string }>
-}
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { sbAdmin } from '@/lib/supabase/untyped'
 
-type AcceptedQuote = {
-  quote_number: string | null
-  customer_name: string | null
-  total: number | null
-}
+/**
+ * Where a customer lands after signing.
+ *
+ * This was a client component that fetched with the browser's anon key and
+ * matched `.eq('id', token)`. Two failures at once: a 32-hex public token is not
+ * a UUID so it matched nothing, and `anon` has no select grant on `work_items`
+ * anyway. It failed silently — the page rendered its generic "Thank You!" with
+ * no quote number, no amount and no way to reach the contractor, and only the
+ * browser console said why.
+ *
+ * That is the worst possible moment for a blank page. Someone has just committed
+ * to a five-figure contract with a company they met once, and the screen
+ * confirming it knew nothing about their quote.
+ *
+ * Now a Server Component reading through the service role by `public_token`,
+ * the same way `/q/[id]` has always worked.
+ */
 
-type AcceptedCompany = {
-  phone: string | null
-  email: string | null
-}
+export default async function AcceptedPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: token } = await params
 
-export default function AcceptedPage({ params }: AcceptedPageProps) {
-  const [quoteId, setQuoteId] = useState<string>('')
-  const [quote, setQuote] = useState<AcceptedQuote | null>(null)
-  const [company, setCompany] = useState<AcceptedCompany | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: quote } = await sbAdmin()
+    .from('work_items')
+    .select('quote_number, total, accepted_at, companies(name, phone, email)')
+    .eq('public_token', token)
+    .single()
 
-  useEffect(() => {
-    params.then(({ id }) => {
-      setQuoteId(id)
-      loadQuoteData(id)
-    })
-  }, [params])
+  if (!quote) notFound()
 
-  const loadQuoteData = async (id: string) => {
-    try {
-      const supabase = createClient()
-      
-      const { data, error } = await supabase
-        .from('work_items')
-        .select(`
-          *,
-          companies (*)
-        `)
-        .eq('id', id)
-        .single()
-
-      if (error) throw error
-
-      setQuote(data)
-      setCompany(data.companies)
-    } catch (err) {
-      console.error('Failed to load quote:', err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-muted flex items-center justify-center p-4">
-        <Card className="max-w-2xl w-full">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <div className="animate-spin h-12 w-12 border-4 border-foreground border-t-transparent rounded-full mx-auto"></div>
-              <p className="mt-4 text-muted-foreground">Loading...</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
+  const company = quote.companies as { name?: string; phone?: string; email?: string } | null
+  const money = (n: number | null) =>
+    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(n ?? 0))
 
   return (
-    <div className="min-h-screen bg-muted flex items-center justify-center p-4">
-      <Card className="max-w-2xl w-full shadow-xl">
-        <CardContent className="pt-8 pb-8 px-6 sm:px-12">
-          <div className="text-center space-y-6">
-            {/* Success Icon */}
-            <div className="flex justify-center">
-              <div className="bg-muted rounded-full p-4">
-                <CheckCircle className="h-16 w-16 text-foreground" />
-              </div>
-            </div>
+    <div className="grid min-h-dvh place-items-center bg-background px-4 py-10">
+      <Card className="w-full max-w-md">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <CheckCircle className="mx-auto h-12 w-12 text-emerald-600 dark:text-emerald-400" />
+            <h1 className="mt-4 text-xl font-semibold tracking-tight">Signed and accepted</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {company?.name ?? 'Your contractor'} has been notified.
+            </p>
+          </div>
 
-            {/* Success Message */}
-            <div>
-              <h1 className="text-sm font-bold text-foreground mb-2">
-                Thank You!
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Your quote has been accepted.
-              </p>
-            </div>
-
-            {/* Quote Details */}
-            {quote && (
-              <div className="bg-muted rounded-lg p-6 space-y-3">
-                <div className="text-sm text-muted-foreground">
-                  Quote #{quote.quote_number}
-                </div>
-                <div className="text-sm font-bold text-foreground">
-                  ${quote.total?.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                </div>
-                {quote.customer_name && (
-                  <div className="text-sm text-muted-foreground">
-                    for {quote.customer_name}
-                  </div>
-                )}
+          {/* The specifics, because a confirmation that names nothing confirms
+              nothing. This is the receipt for a decision worth thousands. */}
+          <dl className="mt-6 space-y-2 rounded-lg border border-border/70 bg-muted/30 p-4 text-sm">
+            {quote.quote_number && (
+              <div className="flex justify-between">
+                <dt className="text-muted-foreground">Quote</dt>
+                <dd className="font-medium">{quote.quote_number}</dd>
               </div>
             )}
-
-            {/* Next Steps */}
-            <div className="bg-muted border border-border rounded-lg p-6 space-y-4">
-              <h2 className="font-bold text-sm text-foreground">
-                What happens next?
-              </h2>
-              <ul className="text-left space-y-3 text-muted-foreground">
-                <li className="flex items-start gap-3">
-                  <span className="text-foreground font-bold mt-0.5">1.</span>
-                  <span>We’ll call you shortly to schedule the work</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-foreground font-bold mt-0.5">2.</span>
-                  <span>Our team will confirm the date and time that works best for you</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-foreground font-bold mt-0.5">3.</span>
-                  <span>We’ll arrive on time and complete the job to your satisfaction</span>
-                </li>
-              </ul>
+            <div className="flex justify-between">
+              <dt className="text-muted-foreground">Total</dt>
+              <dd className="font-semibold tabular">{money(quote.total)}</dd>
             </div>
-
-            {/* Company Contact Info */}
-            {company && (
-              <div className="border-t pt-6 space-y-4">
-                <p className="text-sm text-muted-foreground">
-                  Questions? Contact us anytime:
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {company.phone && (
-                    <a
-                      href={`tel:${company.phone}`}
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <Phone className="h-4 w-4" />
-                      <span className="font-bold">{company.phone}</span>
-                    </a>
-                  )}
-                  {company.email && (
-                    <a
-                      href={`mailto:${company.email}`}
-                      className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-card border border-border rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <Mail className="h-4 w-4" />
-                      <span className="font-bold">{company.email}</span>
-                    </a>
-                  )}
-                </div>
+            {quote.accepted_at && (
+              <div className="flex justify-between">
+                <dt className="text-muted-foreground">Accepted</dt>
+                <dd>{new Date(quote.accepted_at).toLocaleDateString()}</dd>
               </div>
             )}
+          </dl>
 
-            {/* Back to Quote Button */}
-            <div className="pt-4">
-              <Button asChild variant="outline" className="gap-2">
-                  <Link href={`/q/${quoteId}`}>
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Quote
-                  </Link>
-                </Button>
+          <div className="mt-6">
+            <h2 className="text-sm font-semibold">What happens next</h2>
+            <ol className="mt-2 space-y-1.5 text-sm text-muted-foreground">
+              <li>1. {company?.name ?? 'Your contractor'} will call to book a time.</li>
+              <li>2. You will get an invoice when the work is done.</li>
+              <li>3. Keep this page — it is your copy of what you agreed to.</li>
+            </ol>
+          </div>
+
+          {/* No dead ends: every terminal state says how to reach a human. */}
+          {(company?.phone || company?.email) && (
+            <div className="mt-6 space-y-2 border-t border-border/70 pt-4 text-sm">
+              <p className="text-muted-foreground">Questions?</p>
+              {company.phone && (
+                <a href={`tel:${company.phone}`} className="flex min-h-11 items-center gap-2 font-medium">
+                  <Phone className="h-4 w-4" />
+                  {company.phone}
+                </a>
+              )}
+              {company.email && (
+                <a href={`mailto:${company.email}`} className="flex min-h-11 items-center gap-2 font-medium">
+                  <Mail className="h-4 w-4" />
+                  {company.email}
+                </a>
+              )}
             </div>
+          )}
+
+          <div className="mt-6">
+            <Button asChild variant="outline" className="h-11 w-full gap-2">
+              <Link href={`/q/${token}`}>
+                <ArrowLeft className="h-4 w-4" />
+                Back to the quote
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
