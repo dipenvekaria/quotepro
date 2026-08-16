@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
-import { AlertTriangle, ArrowLeft, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -457,6 +457,24 @@ export function QuoteEditor({
                     Rivet couldn’t reach the AI service, so it picked the closest catalog items by
                     name. Check every line and price before sending — and see Integrations if this
                     keeps happening.
+                  </p>
+                </div>
+              )}
+              {draftMode?.startsWith('gemini') && (
+                /*
+                  The successful case needs saying too, and nothing said it.
+                  Once the customer accepts, the price on this quote is what the
+                  contractor has agreed to do the work for — a wrong line is
+                  their loss, not a bad suggestion they can withdraw. Deliberately
+                  quiet rather than alarming: the amber banner above is for the
+                  failure the contractor must act on, and if both shouted neither
+                  would be read.
+                */
+                <div className="flex items-start gap-2 border-b border-border/70 bg-muted/30 px-5 py-2.5">
+                  <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    AI drafted these lines from your catalog. Check the quantities and prices —
+                    once your customer approves, this is the price you’ve agreed to.
                   </p>
                 </div>
               )}
