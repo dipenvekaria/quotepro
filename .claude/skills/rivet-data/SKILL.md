@@ -216,3 +216,51 @@ The token is the authorisation. This is a deliberate exception to "everything go
 - `npx tsc --noEmit` is clean.
 - Manually: log in as a second company in the seed data and confirm you cannot see the first
   company's rows.
+
+## Roles — which rows, and which columns
+
+Tenancy answers *whose company*. Roles answer *which of it*, and this codebase forgets the
+second. The dashboard read no role at all and shipped company revenue, close rate, pipeline
+value and every unpaid invoice to technicians, while two other screens gated the same numbers.
+
+| Gate | Who |
+| --- | --- |
+| `canSeeCatalog` | all roles |
+| `canSeeCatalogPrices` | owner, office |
+| `canSeeAnalytics` | owner, office |
+| `canAssignWork` | owner, office |
+| `workItemScope` / `customerScope` | narrow rows per role |
+
+**Withhold in the query, never the markup.** A value behind a JSX conditional is still in the
+HTML payload and readable in devtools — which is exactly the export the gate exists to prevent.
+
+```ts
+const seesMoney = canSeeAnalytics(role as UserRole)
+await query('select … where company_id = $1 and created_at >= $2 and $3', [companyId, since, seesMoney])
+```
+
+**`workItemScope(scope, startIndex)` emits `$${startIndex + 1}`.** The number you pass is how
+many parameters the query *already* uses, not the next slot. Getting it wrong is a runtime
+`could not determine data type of parameter $N` — invisible to `tsc`, so cover new scoped queries
+with an integration test that runs the real SQL.
+
+Unrecognised roles must fail closed. `workItemScope` returns `and false`; keep it that way.
+
+## Idempotence
+
+Ask what a second submit does, because users double-tap, reload, and hit back.
+
+`bootstrap_company` is idempotent and hands back the existing company. The catalog seed that ran
+after it was not, and `catalog_items` has no uniqueness — so a second onboarding submit stocked
+the price book twice. 101 items became 202, in a real contractor's account.
+
+Guard the operation, not the button. `where not exists (…)` inside the insert holds even when two
+submits race; a disabled button does not.
+
+## Destructive operations archive
+
+Data is retained in archived form rather than deleted. Account closure copies everything into
+`archived_accounts` and keeps it permanently. A repair migration that deletes rows copies them out
+first, and writes its restore command into the migration header — use
+`jsonb_populate_record(null::table, item)` rather than a hand-written column list, which silently
+gets NOT NULL columns wrong.

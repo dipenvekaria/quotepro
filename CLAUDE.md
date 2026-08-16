@@ -188,36 +188,57 @@ when the work spans them.
 - `rivet-ai` — AI behaviour: prompts, models, grounding
 - `rivet-ship` — the verification gates before a PR
 
-### Build
+### Build — skills, loaded into the current context
 
 - `rivet-build-feature` — **the lead.** Anything spanning a screen, an action and the schema.
-  Scopes, sequences, decides which specialists to bring in, owns the definition of done.
-- `rivet-build-frontend` — screens and components: server-first composition, states, 375px
-- `rivet-build-backend` — Server Actions, queries, `/api` routes: tenancy, Zod, roles, idempotence
-- `rivet-build-docs` — `docs/`, ADRs, keeping checklists true
+  Scopes, sequences, pulls in the specialists, owns the definition of done.
 
-### Review
+Screens go through `rivet-ui`, data through `rivet-data`, schema through `rivet-migration`. There
+are no separate "frontend builder" / "backend builder" skills: those references already carry the
+build rules, and a second file restating them drifts from the first.
 
-- `rivet-test-ui` — drives a real browser at 375px; dead controls, mobile, dark mode, roles
-- `rivet-test-functional` — walks the flow, then checks the database changed
-- `rivet-review-security` — tenancy, roles, public routes, secrets, rate limiting
-- `rivet-review-architecture` — coupling, scale, cost, what deserves an ADR
-- `rivet-review-product` — is this the right feature; redundancy; fewer and better
+### Test — skills, because they need the context of what just changed
+
+- `rivet-test-ui` — drives a real browser at 375px; dead controls, mobile, dark mode, roles,
+  WCAG 2.2 AA
+- `rivet-test-functional` — walks the flow, then checks the database actually changed
+
+### Review — **agents**, because the value is independence
+
+Spawn these with the Agent tool. They start cold, they have no attachment to the code, and they
+have **no Edit or Write tool** — they find and prove problems, they do not fix them.
+
+- `security-reviewer` — tenancy, roles, public routes, secrets, rate limiting
+- `architecture-reviewer` — coupling, scale, cost, what deserves an ADR
+- `product-reviewer` — is this the right feature; redundancy; fewer and better
+
+Each loads its matching `rivet-review-*` skill for the checklist, so there is one source of
+truth. **The skills remain invocable inline** — use the skill for a quick targeted check, spawn
+the agent when independence is worth a fresh context window.
 
 ### Who plays when
 
 | Situation | Load |
 | --- | --- |
-| "Build X" spanning more than one file | `rivet-build-feature` first; it pulls the rest in |
-| A screen, or anything visual | `rivet-build-frontend` → `rivet-test-ui` |
-| An action, query or `/api` route | `rivet-build-backend` → `rivet-test-functional` |
-| A schema change | `rivet-migration` → `rivet-build-backend` |
-| Auth, roles, public routes, payments, customer data | `rivet-review-security`, always |
-| Adds a process, queue, worker or dependency | `rivet-review-architecture` before building |
-| "Should we build this?", a competitor shipped something | `rivet-review-product` |
-| "Does this look right?", "check the UI", "is it mobile friendly" | `rivet-test-ui` |
+| "Build X" spanning more than one file | `rivet-build-feature`; it pulls the rest in |
+| A screen, or anything visual | `rivet-ui` → `rivet-test-ui` |
+| An action, query or `/api` route | `rivet-data` → `rivet-test-functional` |
+| A schema change | `rivet-migration` → `rivet-data` |
+| Auth, roles, public routes, payments, customer data | **`security-reviewer` agent**, always |
+| Adds a process, queue, worker or dependency | **`architecture-reviewer` agent** before building |
+| "Should we build this?", a competitor shipped something | **`product-reviewer` agent** |
+| "Does this look right?", "is it mobile friendly" | `rivet-test-ui` |
 | "Does it work?", reproducing a bug, before claiming done | `rivet-test-functional` |
 | Before any PR | `rivet-ship` |
+
+### Enforced mechanically
+
+Two hooks in `.claude/settings.json` do not rely on anyone remembering:
+
+- **`git commit` is gated** on `tsc --noEmit` and the tenancy scan. Code commits are blocked when
+  either fails; docs- and skills-only commits skip it.
+- **`git push` and `gh pr create` are blocked** if the diff looks like it carries a secret. The
+  repo is public.
 
 **Two rules that override convenience.** Verification is not optional and not self-assessed: a
 screen goes to `rivet-test-ui` and a flow goes to `rivet-test-functional` before it is called

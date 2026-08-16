@@ -124,3 +124,16 @@ No new markdown files unless asked. Non-obvious decision → ADR in `docs/adr/`.
 Say what you ran and what it printed. If `tsc` fails, show the failure — don't describe the
 change as done. If you skipped a check, say which and why. "Builds clean, verified the accept
 flow at 375px, did not test Stripe live mode" is a useful report; "all done" is not.
+
+## Update what the change made untrue
+
+Docs here load into agent sessions, so a stale claim does not sit quietly — it gets believed and
+acted on. `CLAUDE.md` once led with a finding that no catalog item could be created, while
+`catalog/actions.ts` had full CRUD, CSV import and AI extraction.
+
+If the change shipped something a checklist tracks, update the checklist **in the same PR**. A
+checklist claiming ❌ for something built sends the next person to rebuild it — that is how a
+finished QuickBooks export ended up behind a "Coming soon" label.
+
+Verify status claims against the code on the day you write them, and mark findings **verified**
+(you ran it) or **inferred** (you read it).
