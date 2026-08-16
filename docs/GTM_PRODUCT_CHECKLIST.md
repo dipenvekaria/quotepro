@@ -31,13 +31,47 @@ Both are unresolved, and every projection in `BUSINESS_ANALYSIS.md` rests on the
 
 | # | Item | Status | Priority |
 | --- | --- | --- | --- |
-| 0.1 | **Signup → first sent quote, timed** | ❌ never measured | **P0** |
+| 0.1 | **Signup → first sent quote, timed** | ✅ **4m 25s measured 2026-08-16** — clears the 10-minute gate | — |
 | 0.2 | **One live payment through Stripe Connect** | ❌ zero connected accounts in production | **P0** |
 
-0.1 is the claim the positioning and the price both rest on, and it is measurable in an
-afternoon. 0.2 is the difference between a business and a projection — and the payments
-take-rate, plausibly comparable to the entire subscription line, does not exist until a
-contractor collects through the product.
+### 0.1 — the measurement
+
+Walked end to end on 2026-08-16: real signup form, real onboarding, real Gemini draft, quote
+saved and sent. Timed from `auth.users.created_at` to `work_items.sent_at`, both read from the
+database rather than a stopwatch.
+
+| Segment | Seconds |
+| --- | --- |
+| Signup → workspace with a 101-item priced catalog | **37** |
+| Workspace → draft saved (includes a ~20s AI generation) | **89** |
+| Draft saved → sent | **139** |
+| **Signup → sent quote** | **265 (4m 25s)** |
+
+**The claim survives contact with the product.** The under-ten-minutes gate is met with more than
+half the budget to spare, and that is with a real AI call against a real catalog rather than a
+rehearsed demo.
+
+Three honest caveats. This was driven by an agent, so decision time is zero and typing is instant
+— a contractor reading each screen for the first time will be slower, though they will also be
+typing a job they already understand. It was run against local Postgres, so page loads are
+faster than production. And it is one run, of one trade, by someone who knows the app.
+
+**The third segment is the finding.** 139 seconds to go from a saved draft to a sent quote is
+longer than drafting it, and the reason is that sending is not reachable from the editor: saving
+drops you on the pipeline, and you have to know to open the quote to find "Send quote". That is
+the single largest piece of avoidable friction on the activation path, and unlike the rest of the
+number it is not an artefact of the measurement.
+
+**Now measured continuously.** `company_activation` (migration `20260823000000`) computes this per
+company from timestamps that already existed — no instrumentation was needed. Read it once real
+signups land; a median above ten minutes means the onboarding burden falls on the two people who
+are the binding constraint, and the price argument gets harder. Negative intervals are nulled,
+because seeded and backfilled rows carry a `sent_at` older than their own account and would
+otherwise drag the median.
+
+0.2 remains the difference between a business and a projection — and the payments take-rate,
+plausibly comparable to the entire subscription line, does not exist until a contractor collects
+through the product.
 
 ---
 
@@ -169,7 +203,7 @@ before/after image generation · serving 50+ trades
 Do not take money from a stranger until every one of these is true.
 
 - [x] A brand-new signup lands on a priced catalog and can generate a quote
-- [ ] **That path timed end to end, under 10 minutes** ← 0.1
+- [x] **That path timed end to end, under 10 minutes** — 4m 25s on 2026-08-16
 - [x] An invoice can be paid online
 - [ ] **An invoice has actually been paid online, once** ← 0.2
 - [x] The AI derives `company_id` from the session, not the caller
@@ -189,11 +223,13 @@ Do not take money from a stranger until every one of these is true.
 Sections 1–3 are substantially done, which changes what comes next. The remaining work is not
 features.
 
-**First — prove the two claims.** Time signup → first sent quote. Connect one Stripe account and
-take one real payment. Everything else is guesswork until these exist.
+**First — prove the remaining claim.** Signup → first sent quote is measured and clears the gate
+at 4m 25s. Connect one Stripe account and take one real payment; that is the last thing standing
+between a projection and a business.
 
 **Second — close the half-built edges.** Quote expiry needs a date field. Deposits need schema.
-Both are small and both get asked about in every demo.
+Sending needs to be reachable from the editor rather than only from the pipeline — that is 139 of
+the 265 activation seconds, and the cheapest of the three to fix.
 
 **Third — sell.** Ten paying customers, personally onboarded. Build only what those ten ask for
 twice.
