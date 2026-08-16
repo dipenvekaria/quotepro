@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowRight, Sparkles, Zap } from 'lucide-react'
@@ -9,7 +9,57 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { BrandLogo } from '@/components/brand/logo'
+import { inviteContext, type InviteContext } from '@/app/join/[token]/actions'
+import { ROLE_LABEL } from '@/lib/team-personas'
+import type { UserRole } from '@/lib/permissions'
+import { cn } from '@/lib/utils'
 import { useAuth } from './use-auth'
+
+/** `/join/<token>` and nothing else — this decides what gets sent to a server action. */
+const JOIN_NEXT = /^\/join\/([A-Za-z0-9_-]{16,128})$/
+
+/**
+ * Fills in the invited address when someone arrives from a team invitation.
+ *
+ * Without this the invitee lands on a blank sign-up form and types whichever
+ * address they think of. `accept_invitation` requires the address on the
+ * invitation, so a mismatch fails — but only after the account exists, leaving
+ * them with a dead account and an error naming an address they cannot now use.
+ *
+ * The address comes from the token via a server action rather than a query
+ * parameter, so it stays out of URLs, logs and history.
+ */
+function InvitePrefill({
+  setEmail,
+  setIsSignUp,
+  onResolved,
+}: {
+  setEmail: (v: string) => void
+  setIsSignUp: (v: boolean) => void
+  onResolved: (ctx: InviteContext) => void
+}) {
+  const next = useSearchParams().get('next')
+
+  useEffect(() => {
+    const token = next?.match(JOIN_NEXT)?.[1]
+    if (!token) return
+
+    let cancelled = false
+    void inviteContext({ token }).then((ctx) => {
+      if (cancelled || !ctx) return
+      setEmail(ctx.email)
+      // Someone being invited to a workspace usually has no account yet, so
+      // open on the form they actually need. The toggle still works.
+      setIsSignUp(true)
+      onResolved(ctx)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [next, setEmail, setIsSignUp, onResolved])
+
+  return null
+}
 
 /**
  * Confirmation that a deleted account really is gone.
@@ -43,6 +93,9 @@ export default function LoginPage() {
     handleGoogleLogin,
   } = useAuth()
 
+  const [invite, setInvite] = useState<InviteContext | null>(null)
+  const onResolved = useCallback((ctx: InviteContext) => setInvite(ctx), [])
+
   return (
     <div className="grid min-h-dvh grid-cols-1 bg-background lg:grid-cols-2">
       {/* ─────────── LEFT: form ─────────── */}
@@ -55,6 +108,26 @@ export default function LoginPage() {
           <Suspense fallback={null}>
             <AccountDeletedNotice />
           </Suspense>
+          <Suspense fallback={null}>
+            <InvitePrefill
+              setEmail={setEmail}
+              setIsSignUp={setIsSignUp}
+              onResolved={onResolved}
+            />
+          </Suspense>
+
+          {invite && (
+            <div className="mb-6 rounded-lg border border-border bg-muted/50 p-3 text-sm">
+              <div className="font-medium text-foreground">
+                Joining {invite.company ?? 'the team'} as{' '}
+                {ROLE_LABEL[invite.role as UserRole] ?? invite.role}
+              </div>
+              <p className="mt-1 text-muted-foreground">
+                Choose a password below — there is no temporary one to look up. Already have a
+                Rivet account on this address? Switch to sign in.
+              </p>
+            </div>
+          )}
 
           <div className="mb-8">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
@@ -80,8 +153,19 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-11"
+                // Locked to the invited address: the invitation is addressed to
+                // one person and accepting under any other fails. Better to
+                // refuse the typo than to let them build an account that
+                // cannot join.
+                readOnly={Boolean(invite)}
+                aria-describedby={invite ? 'email-locked' : undefined}
+                className={cn('h-11', invite && 'bg-muted text-muted-foreground')}
               />
+              {invite && (
+                <p id="email-locked" className="text-xs text-muted-foreground">
+                  The invitation was sent to this address, so your account has to use it.
+                </p>
+              )}
             </div>
 
             <div className="space-y-1.5">

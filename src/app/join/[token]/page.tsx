@@ -73,17 +73,22 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
                 </div>
               ) : (
                 <div className="mt-6 space-y-3">
+                  {/* The most common question an invitee has is what their
+                      password is. There isn't one — say so before they go
+                      looking for it in the email. */}
                   <p className="text-sm text-muted-foreground">
-                    Sign in or create your account to accept.
+                    Next you’ll set a password for{' '}
+                    <span className="font-medium text-foreground">{inv!.email}</span>. There’s no
+                    temporary password to find — you choose your own.
                   </p>
                   <Link
                     href={`/login?next=${encodeURIComponent(`/join/${token}`)}`}
-                    className="inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
+                    className="inline-flex h-11 w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90"
                   >
-                    Continue
+                    Set up my account
                   </Link>
                   <p className="text-xs text-muted-foreground">
-                    Invited as <span className="font-medium">{inv!.email}</span>
+                    Already have a Rivet account on that address? The same button signs you in.
                   </p>
                 </div>
               )}
