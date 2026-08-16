@@ -162,7 +162,10 @@ export function PromotionsManager({
       </header>
 
       {promotions.length === 0 ? (
-        <p className="px-5 py-8 text-center text-sm text-muted-foreground">
+        // Tight and left-aligned. Centred text in a tall box reads as an empty
+        // state for the whole page, and on a phone it pushed the actual price
+        // book below the fold before the contractor had seen a single item.
+        <p className="px-5 py-3 text-xs text-muted-foreground">
           Discount everything with a label at once — a $9.99 service call this autumn, say. Prices
           apply automatically when you build a quote.
         </p>

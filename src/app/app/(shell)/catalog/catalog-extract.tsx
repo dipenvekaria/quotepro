@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 
 import { extractCatalogFromUpload, importExtractedItems, type ExtractResult } from './actions'
 
@@ -22,7 +23,7 @@ const ACCEPT = '.pdf,.png,.jpg,.jpeg,.webp,.heic,.heif,application/pdf,image/*'
  * up on a customer's quote, so nothing is saved until a human has looked at it.
  * Rows stay editable here for the same reason.
  */
-export function CatalogExtract() {
+export function CatalogExtract({ className }: { className?: string }) {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
   const [reading, startRead] = useTransition()
@@ -77,7 +78,7 @@ export function CatalogExtract() {
     <>
       <Button
         variant="outline"
-        className="gap-1.5"
+        className={cn('gap-1.5', className)}
         onClick={() => fileRef.current?.click()}
         disabled={reading}
       >

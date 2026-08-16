@@ -1,7 +1,7 @@
 'use client'
 
-import { useMemo, useRef, useState, useTransition } from 'react'
-import { Loader2, Package, Pencil, Plus, Trash2, Upload } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
+import { ChevronDown, Loader2, Package, Pencil, Plus, Search, Trash2, Upload, X } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -18,6 +18,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { EmptyState } from '@/components/shared/empty-state'
+import { matchesCatalogSearch } from '@/lib/catalog/search'
 import { cn } from '@/lib/utils'
 
 import {
@@ -66,6 +67,20 @@ const EMPTY: Draft = {
 function fmtMoney(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n)
 }
+
+/**
+ * Which categories the contractor left open, remembered across visits. A price
+ * book is opened dozens of times a week and almost always for the same two or
+ * three categories.
+ */
+const OPEN_CATEGORIES_KEY = 'rivet.catalog.openCategories'
+
+/**
+ * Above this many categories the list stops being scannable in one screen, so
+ * it starts closed and the categories themselves become the index. A trade
+ * starter catalog lands around thirteen; a hand-built one is often three.
+ */
+const COLLAPSE_THRESHOLD = 4
 
 /**
  * The price book: list plus add/edit/delete.
@@ -137,14 +152,59 @@ export function CatalogManager({
 
   const editing = Boolean(draft.id)
 
+  const [term, setTerm] = useState('')
+  const searching = term.trim().length > 0
+
+  const filtered = useMemo(
+    () => (searching ? items.filter((i) => matchesCatalogSearch(i, term)) : items),
+    [items, term, searching],
+  )
+
   const grouped = useMemo(() => {
     const out: Record<string, CatalogItem[]> = {}
-    for (const item of items) {
+    for (const item of filtered) {
       const key = item.category?.trim() || 'Uncategorized'
       ;(out[key] ??= []).push(item)
     }
     return out
-  }, [items])
+  }, [filtered])
+
+  const categoryNames = Object.keys(grouped)
+  const startsOpen = new Set(items.map((i) => i.category?.trim() || 'Uncategorized')).size
+    <= COLLAPSE_THRESHOLD
+
+  // Read after mount, not during render: localStorage is not available on the
+  // server and reading it in render is a hydration mismatch.
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({})
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(OPEN_CATEGORIES_KEY)
+      if (raw) setOpenCategories(JSON.parse(raw) as Record<string, boolean>)
+    } catch {
+      // A corrupt or unavailable store is not worth failing the page over.
+    }
+  }, [])
+
+  function persist(next: Record<string, boolean>) {
+    setOpenCategories(next)
+    try {
+      window.localStorage.setItem(OPEN_CATEGORIES_KEY, JSON.stringify(next))
+    } catch {
+      // Private browsing and full quotas both land here. The UI still works;
+      // it just forgets.
+    }
+  }
+
+  // While searching every section is open — a hit hidden inside a collapsed
+  // category reads as no result at all.
+  const isOpen = (category: string) =>
+    searching || (openCategories[category] ?? startsOpen)
+
+  const allOpen = categoryNames.length > 0 && categoryNames.every((c) => isOpen(c))
+
+  function toggleAll() {
+    persist(Object.fromEntries(categoryNames.map((c) => [c, !allOpen])))
+  }
 
   function openNew() {
     setDraft(EMPTY)
@@ -222,33 +282,40 @@ export function CatalogManager({
   return (
     <>
       {canEdit && (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Button onClick={openNew} className="gap-1.5">
-            <Plus className="h-4 w-4" />
-            Add item
-          </Button>
-          <Button
-            variant="outline"
-            className="gap-1.5"
-            onClick={() => fileRef.current?.click()}
-            disabled={importing}
-          >
-            {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-            {importing ? 'Importing…' : 'Import CSV'}
-          </Button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept=".csv,text/csv"
-            className="sr-only"
-            onChange={onFile}
-            aria-label="Import a CSV price list"
-          />
-          <CatalogExtract />
-          <span className="w-full text-xs text-muted-foreground">
+        // Two columns on a phone with the third spanning both, rather than a
+        // wrap that leaves one button stranded on its own line looking like a
+        // mistake. Flows back into a normal row at sm:.
+        <div className="mt-4">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center [&>*]:w-full sm:[&>*]:w-auto">
+            <Button onClick={openNew} className="h-11 gap-1.5 sm:h-9">
+              <Plus className="h-4 w-4" />
+              Add item
+            </Button>
+            <Button
+              variant="outline"
+              className="h-11 gap-1.5 sm:h-9"
+              onClick={() => fileRef.current?.click()}
+              disabled={importing}
+            >
+              {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+              {importing ? 'Importing…' : 'Import CSV'}
+            </Button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".csv,text/csv"
+              className="sr-only"
+              onChange={onFile}
+              aria-label="Import a CSV price list"
+            />
+            {/* Not wrapped in a div: the extract renders its review table as a
+                sibling, and a wrapper would trap that table at button width. */}
+            <CatalogExtract className="col-span-2 h-11 w-full sm:col-auto sm:h-9 sm:w-auto" />
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
             CSV needs a name and price column. Or read your prices straight off an old quote,
             invoice or supplier price sheet — PDF or a photo.
-          </span>
+          </p>
         </div>
       )}
 
@@ -273,22 +340,89 @@ export function CatalogManager({
           />
         </div>
       ) : (
-        <div className="mt-6 space-y-6">
+        <div className="mt-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative min-w-0 flex-1 sm:max-w-xs">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={term}
+                onChange={(e) => setTerm(e.target.value)}
+                placeholder="Search the price book"
+                aria-label="Search catalog items"
+                className="h-11 pl-9 pr-9 lg:h-9"
+              />
+              {term && (
+                <button
+                  type="button"
+                  onClick={() => setTerm('')}
+                  aria-label="Clear search"
+                  className="absolute right-1 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-md text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+            {!searching && categoryNames.length > 1 && (
+              <button
+                type="button"
+                onClick={toggleAll}
+                className="min-h-11 shrink-0 rounded-md px-2 text-xs text-muted-foreground hover:text-foreground lg:min-h-9"
+              >
+                {allOpen ? 'Collapse all' : 'Expand all'}
+              </button>
+            )}
+            {searching && (
+              <span className="shrink-0 text-xs tabular text-muted-foreground">
+                {filtered.length} {filtered.length === 1 ? 'match' : 'matches'}
+              </span>
+            )}
+          </div>
+
+          {categoryNames.length === 0 ? (
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+              Nothing matches “{term.trim()}”. Try a shorter word, or the category name.
+            </p>
+          ) : (
+          <div className="mt-4 space-y-3">
           {Object.entries(grouped).map(([category, catItems]) => (
             <section
               key={category}
               className="overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm"
             >
-              <header className="flex items-center justify-between border-b border-border/70 bg-muted/40 px-5 py-2.5">
-                <div className="flex items-center gap-2 text-sm font-medium">
-                  {category}
-                  <span className="rounded-full bg-background px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
-                    {catItems.length}
+              <h3>
+                <button
+                  type="button"
+                  onClick={() => persist({ ...openCategories, [category]: !isOpen(category) })}
+                  aria-expanded={isOpen(category)}
+                  aria-controls={`catalog-cat-${category.replace(/\W+/g, '-')}`}
+                  // Full width and 44px tall: on a phone this is the primary
+                  // way through the list, so the whole bar is the target.
+                  className={cn(
+                    'flex min-h-11 w-full items-center justify-between gap-2 bg-muted/40 px-5 py-2.5 text-left',
+                    'hover:bg-muted/70',
+                    isOpen(category) && 'border-b border-border/70',
+                  )}
+                >
+                  <span className="flex min-w-0 items-center gap-2 text-sm font-medium">
+                    <span className="truncate">{category}</span>
+                    <span className="shrink-0 rounded-full bg-background px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
+                      {catItems.length}
+                    </span>
                   </span>
-                </div>
-              </header>
+                  <ChevronDown
+                    className={cn(
+                      'h-4 w-4 shrink-0 text-muted-foreground transition-transform',
+                      isOpen(category) && 'rotate-180',
+                    )}
+                  />
+                </button>
+              </h3>
 
-              <ul className="divide-y divide-border/70">
+              <ul
+                id={`catalog-cat-${category.replace(/\W+/g, '-')}`}
+                hidden={!isOpen(category)}
+                className="divide-y divide-border/70"
+              >
                 {catItems.map((it) => (
                   <li
                     key={it.id}
@@ -360,6 +494,8 @@ export function CatalogManager({
               </ul>
             </section>
           ))}
+          </div>
+          )}
         </div>
       )}
 
