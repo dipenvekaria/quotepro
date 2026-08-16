@@ -227,6 +227,55 @@ small audience, frequency rises and CPMs follow.
 one condition — the creator's audience must be owners rather than technicians. That mismatch is
 the most common way trade-creator spend buys attention and produces no revenue.
 
+### The channels that do not involve buying attention
+
+Everything above is about paid media, which is the smaller half of the picture. At a **$2,000
+CAC ceiling**, roughly **20 hours of founder time per acquired customer** still clears the bar.
+That rules *in* almost every high-touch channel that an ad-funded competitor cannot afford, and
+45 customers is a small enough number that they can all be found by hand.
+
+Ranked for a two-part-time-person team with no marketing budget:
+
+**1. Direct founder sales.** Around 45 closes implies 400–600 real conversations. Part-time over
+a year that is a handful of approaches a day. No cash, fastest learning, and every rejection
+carries information no ad ever returns.
+
+**2. Supply houses and distributors.** Ferguson, Watsco, SiteOne, and the local counters.
+Owners are physically there most weeks, early. This is how trade tools have always spread, and
+no software company works it *because* it does not scale — which is precisely why it is
+available.
+
+**3. Local association chapters.** ACCA, PHCC, IEC, NRCA. A chapter meeting is 20–50 owners in
+one room and sponsoring one costs a few hundred dollars. Owner-dense in a way no Meta audience
+is.
+
+**4. Referrals.** The highest-converting channel in this category, and it compounds. Contractors
+in different trades or towns are not competitors and they talk. Nothing supports this in the
+product today — no referral or promo-code table exists.
+
+**5. Bookkeepers and accountants serving trades.** They see the invoicing mess monthly and they
+are already trusted. The QuickBooks exports make Rivet the thing that reduces *their* workload,
+which is a materially easier pitch than reducing someone else's.
+
+**6. Software review marketplaces.** Capterra, G2, Software Advice. Pay-per-lead at roughly
+$30–100, high intent, unglamorous, and comfortably inside the ceiling.
+
+**The same mechanism closes all six: offer to build their price book for them, free.** Re-keying
+a price book is the single biggest reason contractors do not switch, and extraction from a
+scanned PDF is measured at about a minute and $0.83 per contractor. It converts a demo into a
+live account holding their own prices — which is also the moment the product becomes hard to
+leave.
+
+### Attribution
+
+`companies.acquisition_source` and `acquisition_detail` are asked once at onboarding, optional,
+and shipped as of 2026-08-15. Self-reported rather than UTM-derived on purpose: the channels
+most likely to work here leave no click trail, so link-based attribution would be precise about
+the small half and silent about the rest. Cookie-based UTM capture is deliberately deferred
+until paid spend starts, because a half-working version produces data nobody should trust.
+
+`detail` is where the value is — which supply house, which creator, which contractor to thank.
+
 ### What to measure from the first campaign
 
 - **Cost per signup and cost per paying customer**, separately. The gap between them is the
@@ -236,6 +285,46 @@ the most common way trade-creator spend buys attention and produces no revenue.
 - **Whether the audience is the buyer.** A creator's audience is often technicians; the buyer is
   the owner. That mismatch is the most common way trade-influencer spend produces attention and
   no revenue.
+
+## The part-time onboarding and support hire
+
+Planned: one part-time person doing onboarding, explaining the product, and customer care.
+
+| | |
+| --- | --- |
+| 20 hrs/week at $25/hr | ~$2,165/month |
+| Cost expressed in customers | **9 of the 45** |
+| Plausible load one person carries | ~50–80 accounts at this product's complexity |
+
+**Treating this as a support hire undersells it.** The free price-book build described above is
+simultaneously the sales close, the activation event, and the first support interaction. It is
+the same work. So this person is not overhead attached to the customer base — they are the
+mechanism that converts prospects and the reason the ones who convert stay.
+
+**Hire on a trigger, not a customer count.** The moment to do it is when onboarding starts
+consuming the hours that would otherwise go into selling, realistically somewhere around 10–15
+customers. Waiting until support is visibly painful means the pain has already been paid in
+churn.
+
+**Hire an ex-office manager from a trades business, not a SaaS support rep.** They already know
+what a price book is, they have run dispatch, and they speak the customer's language on the
+first call. That person is both cheaper to find and materially better at the job than a generic
+CS hire, and they are the best product-feedback channel the business will have — worth building
+a standing route for what they hear.
+
+**Why it pays for itself:** churn is the variable every projection here is most sensitive to. At
+5% monthly churn a $3,000 CAC collapses LTV:CAC to 1.6 and the model stops working; at 3% it is
+2.7 and it holds. Onboarding quality is the main lever on that number that is under direct
+control, and one person at $2,165/month is a cheap way to move it.
+
+| Monthly churn | Annual run-rate lost at 60 customers |
+| --- | --- |
+| 2% | $3,586 |
+| 3% | $5,378 |
+| 5% | $8,964 |
+
+The hire costs ~$26k a year. It only has to move churn by a couple of points across a customer
+base of this size to be self-funding, before counting a single sale it closes.
 
 ## What would change this analysis
 

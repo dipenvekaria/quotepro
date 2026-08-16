@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { signOut } from '@/app/auth/actions'
+import { ACQUISITION_SOURCES, acquisitionSource } from '@/lib/acquisition'
 import type { Trade } from '@/lib/catalog/starter'
 import { bootstrapCompany, type BootstrapCompanyState } from './actions'
 import { TradePicker } from './trade-picker'
@@ -27,6 +28,8 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
   const router = useRouter()
   const [state, action, pending] = useActionState(bootstrapCompany, initial)
   const [trade, setTrade] = useState('')
+  const [source, setSource] = useState('')
+  const detailLabel = acquisitionSource(source)?.detailLabel
 
   useEffect(() => {
     if (state.ok) router.replace('/app/dashboard')
@@ -150,6 +153,37 @@ export function OnboardingForm({ trades }: { trades: Trade[] }) {
           </div>
         </div>
       )}
+
+      <div className="space-y-1.5">
+        <Label htmlFor="acquisition_source" className="text-sm font-medium">
+          How did you hear about us?
+        </Label>
+        <select
+          id="acquisition_source"
+          name="acquisition_source"
+          value={source}
+          onChange={(e) => setSource(e.target.value)}
+          disabled={pending}
+          className="h-11 w-full rounded-lg border border-border bg-background px-3 text-sm shadow-sm lg:h-9"
+        >
+          <option value="">Prefer not to say</option>
+          {ACQUISITION_SOURCES.map((s) => (
+            <option key={s.value} value={s.value}>
+              {s.label}
+            </option>
+          ))}
+        </select>
+        {detailLabel && (
+          <Input
+            name="acquisition_detail"
+            placeholder={detailLabel}
+            aria-label={detailLabel}
+            maxLength={200}
+            className="mt-2 h-11"
+            disabled={pending}
+          />
+        )}
+      </div>
 
       {state.error && (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">

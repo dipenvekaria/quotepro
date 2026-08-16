@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
+import { ACQUISITION_VALUES, wantsDetail } from '@/lib/acquisition'
 import { loadStarterCatalog } from '@/lib/catalog/starter'
 import { query, withUser } from '@/lib/db'
 
@@ -21,6 +22,11 @@ const inputSchema = z.object({
   labor_rate: z.coerce.number().min(1).max(1000).default(125),
   materials_markup: z.coerce.number().min(0).max(300).default(50),
   service_call_fee: z.coerce.number().min(0).max(10_000).default(99),
+  // Optional on purpose. This is the one field on the form that serves us
+  // rather than the contractor, and activation matters more than attribution —
+  // a required question here would be paid for in abandoned signups.
+  acquisition_source: z.enum(ACQUISITION_VALUES as [string, ...string[]]).optional(),
+  acquisition_detail: z.string().max(200).optional(),
 })
 
 export type BootstrapCompanyState = {
@@ -38,6 +44,8 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
     labor_rate: formData.get('labor_rate') || undefined,
     materials_markup: formData.get('materials_markup') || undefined,
     service_call_fee: formData.get('service_call_fee') || undefined,
+    acquisition_source: formData.get('acquisition_source') || undefined,
+    acquisition_detail: formData.get('acquisition_detail') || undefined,
   })
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
@@ -90,6 +98,30 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
   }
 
   if (!companyId) return { ok: false, error: 'Unknown error' }
+
+  // Its own statement, and its own failure domain. Attribution is the one thing
+  // on this form that cannot be reconstructed later — the contractor will not
+  // remember in six months, and nothing else records it — so it is written
+  // before the catalog seed rather than alongside it, where a seeding failure
+  // would take it down too.
+  if (parsed.data.acquisition_source) {
+    try {
+      await query(
+        `update companies set acquisition_source = $1, acquisition_detail = $2 where id = $3`,
+        [
+          parsed.data.acquisition_source,
+          // A detail typed against one source and then left behind after
+          // switching to another is stale, not data.
+          wantsDetail(parsed.data.acquisition_source)
+            ? parsed.data.acquisition_detail?.trim() || null
+            : null,
+          companyId,
+        ],
+      )
+    } catch (e) {
+      console.error('acquisition source not recorded', e)
+    }
+  }
 
   try {
     await seedCatalog(companyId, starter, parsed.data)
