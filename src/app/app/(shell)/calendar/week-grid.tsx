@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { dayKey, toDateTimeLocal } from '@/lib/scheduling/day'
-import { formatTravel } from '@/lib/scheduling/travel'
+import { formatTravel } from '@/lib/scheduling/travel-format'
 import type { JobLeg } from '@/lib/scheduling/legs'
 import { cn } from '@/lib/utils'
 

@@ -1,5 +1,9 @@
 import { query } from '@/lib/db'
 
+import { type TravelEstimate } from './travel-format'
+
+export { formatTravel, isImpossible, type Leg, type TravelEstimate } from './travel-format'
+
 /**
  * How long it takes to drive from one job to the next.
  *
@@ -57,12 +61,6 @@ const TRIVIAL_KM = 0.4
 /** Above this, no road answer changes the verdict — the day is already broken. */
 const ABSURD_KM = 300
 
-export type TravelEstimate = {
-  seconds: number
-  meters: number | null
-  /** `cache` and `estimate` cost nothing; `google` was a billed request. */
-  source: 'cache' | 'google' | 'estimate'
-}
 
 /**
  * Drive time between two points, cache first.
@@ -156,29 +154,5 @@ async function askGoogle(from: LatLng, to: LatLng): Promise<TravelEstimate | nul
   }
 }
 
-/** "25 min", "1h 10m". Minutes, because nobody schedules to the second. */
-export function formatTravel(seconds: number): string {
-  const mins = Math.round(seconds / 60)
-  if (mins < 1) return 'next door'
-  if (mins < 60) return `${mins} min`
-  const h = Math.floor(mins / 60)
-  const m = mins % 60
-  return m ? `${h}h ${m}m` : `${h}h`
-}
 
-export type Leg = {
-  /** Minutes between the previous job ending and this one starting. */
-  gapMinutes: number
-  travel: TravelEstimate
-}
 
-/**
- * Whether the gap between two jobs is long enough to make the drive.
- *
- * The whole reason this feature exists. A five-minute buffer is not padding —
- * it is the difference between "tight" and "already late", and a contractor
- * would rather see the warning while they can still move something.
- */
-export function isImpossible({ gapMinutes, travel }: Leg): boolean {
-  return gapMinutes < Math.round(travel.seconds / 60)
-}
