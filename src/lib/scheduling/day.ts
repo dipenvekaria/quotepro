@@ -38,3 +38,21 @@ export function moveToDay(instant: Date | string, key: string): Date {
   next.setFullYear(y, m - 1, day)
   return next
 }
+
+/**
+ * An instant as the value a `<input type="datetime-local">` expects.
+ *
+ * `toISOString().slice(0, 16)` is the obvious way to do this and it is wrong for
+ * the same reason `slice(0, 10)` was wrong above: it yields UTC, so a
+ * contractor in California opens the picker and sees a time hours from the one
+ * on the job. The control has no timezone — it is local wall-clock by
+ * definition — so the value must be built from local getters.
+ *
+ * Reading back needs no helper: `new Date('2026-08-16T09:00')` has no offset and
+ * is parsed as local time by specification, which is what we want.
+ */
+export function toDateTimeLocal(instant: Date | string): string {
+  const d = typeof instant === 'string' ? new Date(instant) : instant
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${dayKey(d)}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}

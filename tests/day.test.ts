@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { dayKey, moveToDay } from '@/lib/scheduling/day'
+import { dayKey, moveToDay, toDateTimeLocal } from '@/lib/scheduling/day'
 
 /**
  * These run in the machine's timezone, so they assert relationships rather than
@@ -76,5 +76,25 @@ describe('moveToDay', () => {
     const original = new Date(2026, 7, 12, 9, 0)
     moveToDay(original, '2026-08-20')
     expect(dayKey(original)).toBe('2026-08-12')
+  })
+})
+
+describe('toDateTimeLocal', () => {
+  it('is local wall-clock, not UTC', () => {
+    // The bug this guards: toISOString().slice(0,16) on a 9pm job west of
+    // Greenwich yields tomorrow's date and the wrong hour, so the picker opens
+    // showing a time the contractor never booked.
+    const d = new Date(2026, 7, 16, 21, 30) // 16 Aug 2026, 9:30pm local
+    expect(toDateTimeLocal(d)).toBe('2026-08-16T21:30')
+  })
+
+  it('zero-pads', () => {
+    expect(toDateTimeLocal(new Date(2026, 0, 5, 9, 5))).toBe('2026-01-05T09:05')
+  })
+
+  it('round-trips through the input value', () => {
+    // datetime-local strings carry no offset and parse as local time.
+    const d = new Date(2026, 7, 16, 14, 0)
+    expect(new Date(toDateTimeLocal(d)).getTime()).toBe(d.getTime())
   })
 })

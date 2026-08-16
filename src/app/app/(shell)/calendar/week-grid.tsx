@@ -1,9 +1,9 @@
 'use client'
 
-import { useMemo, useRef, useState, useTransition } from 'react'
+import { useCallback, useMemo, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Clock, ExternalLink, MapPin, User } from 'lucide-react'
+import { CalendarClock, Clock, ExternalLink, MapPin, User } from 'lucide-react'
 import { toast } from 'sonner'
 
 import {
@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
-import { dayKey } from '@/lib/scheduling/day'
+import { dayKey, toDateTimeLocal } from '@/lib/scheduling/day'
 import { cn } from '@/lib/utils'
 
 import { rescheduleJob } from './actions'
@@ -87,6 +87,40 @@ export function WeekGrid({
     [days, jobs, moved],
   )
 
+  /**
+   * One reschedule path, reached by dragging and by the date field in the job
+   * dialog. WCAG 2.2 SC 2.5.7 requires a single-pointer alternative to any
+   * dragging movement, and this was drag-only — which also excluded anyone
+   * holding a phone one-handed in a truck.
+   */
+  const applyReschedule = useCallback(
+    (job: BoardJob, next: Date, onDone?: () => void) => {
+      if (!canReschedule) return
+      const previous = moved[job.id] ?? job.scheduled_start
+      if (new Date(previous).getTime() === next.getTime()) {
+        onDone?.()
+        return
+      }
+
+      setMoved((m) => ({ ...m, [job.id]: next.toISOString() }))
+      onDone?.()
+
+      startMove(async () => {
+        const res = await rescheduleJob({ id: job.id, scheduled_start: next.toISOString() })
+        if (!res.ok) {
+          setMoved((m) => ({ ...m, [job.id]: previous }))
+          toast.error(res.error)
+          return
+        }
+        toast.success(
+          `Moved to ${next.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${next.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
+        )
+        router.refresh()
+      })
+    },
+    [canReschedule, moved, router],
+  )
+
   function drop(day: Date, slotIndex: number) {
     const job = dragging
     setDragging(null)
@@ -96,24 +130,7 @@ export function WeekGrid({
     const next = new Date(day)
     const minutes = startMin + slotIndex * SLOT_MINUTES
     next.setHours(Math.floor(minutes / 60), minutes % 60, 0, 0)
-
-    const previous = moved[job.id] ?? job.scheduled_start
-    if (new Date(previous).getTime() === next.getTime()) return
-
-    setMoved((m) => ({ ...m, [job.id]: next.toISOString() }))
-
-    startMove(async () => {
-      const res = await rescheduleJob({ id: job.id, scheduled_start: next.toISOString() })
-      if (!res.ok) {
-        setMoved((m) => ({ ...m, [job.id]: previous }))
-        toast.error(res.error)
-        return
-      }
-      toast.success(
-        `Moved to ${next.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${next.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
-      )
-      router.refresh()
-    })
+    applyReschedule(job, next)
   }
 
   const hourRows = Array.from({ length: Math.ceil((endMin - startMin) / 60) }, (_, i) => dayStartHour + i)
@@ -248,7 +265,12 @@ export function WeekGrid({
         </div>
       </div>
 
-      <JobDialog job={open} onClose={() => setOpen(null)} />
+      <JobDialog
+        job={open}
+        canReschedule={canReschedule}
+        onReschedule={applyReschedule}
+        onClose={() => setOpen(null)}
+      />
     </>
   )
 }
@@ -256,7 +278,17 @@ export function WeekGrid({
 // ---------------------------------------------------------------------------
 
 /** What you need before deciding whether to move a job or ring the customer. */
-function JobDialog({ job, onClose }: { job: BoardJob | null; onClose: () => void }) {
+function JobDialog({
+  job,
+  canReschedule,
+  onReschedule,
+  onClose,
+}: {
+  job: BoardJob | null
+  canReschedule: boolean
+  onReschedule: (job: BoardJob, next: Date, onDone?: () => void) => void
+  onClose: () => void
+}) {
   if (!job) return null
   const start = new Date(job.scheduled_start)
 
@@ -286,6 +318,10 @@ function JobDialog({ job, onClose }: { job: BoardJob | null; onClose: () => void
             </Row>
           </dl>
 
+          {canReschedule && (
+            <RescheduleField job={job} start={start} onReschedule={onReschedule} onClose={onClose} />
+          )}
+
           <Link
             href={`/app/pipeline/${job.id}`}
             className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
@@ -303,6 +339,64 @@ function Row({ icon, children }: { icon: React.ReactNode; children: React.ReactN
     <div className="flex items-start gap-2 text-muted-foreground">
       <span className="mt-0.5 shrink-0">{icon}</span>
       <span className="text-foreground">{children}</span>
+    </div>
+  )
+}
+
+/**
+ * Rescheduling without dragging.
+ *
+ * WCAG 2.2 SC 2.5.7 (Dragging Movements, AA) requires a single-pointer path to
+ * anything achievable by dragging. Until this existed, moving a job required a
+ * press-drag-release across a seven-column grid — impossible with a keyboard,
+ * hard with a tremor, and unpleasant on a phone held one-handed.
+ *
+ * A native datetime-local control on purpose: iOS and Android render their own
+ * wheel pickers, which are already accessible and already familiar, and it is
+ * keyboard-operable for free.
+ */
+function RescheduleField({
+  job,
+  start,
+  onReschedule,
+  onClose,
+}: {
+  job: BoardJob
+  start: Date
+  onReschedule: (job: BoardJob, next: Date, onDone?: () => void) => void
+  onClose: () => void
+}) {
+  const [value, setValue] = useState(() => toDateTimeLocal(start))
+  const parsed = new Date(value)
+  const valid = !Number.isNaN(parsed.getTime())
+  const changed = valid && parsed.getTime() !== start.getTime()
+
+  return (
+    <div className="rounded-lg border border-border/70 bg-muted/30 p-3">
+      <label htmlFor="reschedule-at" className="flex items-center gap-1.5 text-xs font-medium">
+        <CalendarClock className="h-3.5 w-3.5 text-muted-foreground" />
+        Move this job
+      </label>
+      <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+        <input
+          id="reschedule-at"
+          type="datetime-local"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          className="h-11 min-w-0 flex-1 rounded-lg border border-border bg-background px-3 text-sm shadow-sm lg:h-9"
+        />
+        <button
+          type="button"
+          onClick={() => onReschedule(job, parsed, onClose)}
+          disabled={!changed}
+          className="inline-flex h-11 shrink-0 items-center justify-center rounded-lg border border-border bg-background px-4 text-sm font-medium hover:bg-muted disabled:opacity-50 lg:h-9"
+        >
+          Move
+        </button>
+      </div>
+      <p className="mt-1.5 text-[11px] text-muted-foreground">
+        The job keeps its length — the end time shifts with the start.
+      </p>
     </div>
   )
 }

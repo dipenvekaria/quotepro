@@ -151,11 +151,11 @@ live litigation area — see `docs/GTM_BUSINESS_CHECKLIST.md` §4.3.f.
 ### New in 2.2 — the ones that actually bite this product
 
 - **2.5.7 Dragging Movements (AA).** Anything achievable by dragging needs a single-pointer
-  alternative that is not dragging. **Rivet fails this today: rescheduling a job is drag-only.**
-  `rescheduleJob` is called from the drag handlers in `calendar-board.tsx` and `week-grid.tsx`
-  and from nowhere else, and the job dialog has no date or time control. The fix is a date/time
-  field in that dialog — which also helps anyone on a phone in a moving vehicle, not only
-  someone with a motor impairment.
+  alternative that is not dragging. Rivet failed this — rescheduling was drag-only — and now
+  satisfies it: the job dialog carries a `datetime-local` field and a Move button, sharing one
+  `applyReschedule` path with the drag handler. Native controls on purpose, so the platform's own
+  picker and keyboard behaviour come for free. **Any new drag interaction needs the same
+  treatment.**
 - **2.5.8 Target Size (Minimum) (AA)** — 24×24 CSS px. The house rule of 44px already clears it
   comfortably; keep using `h-11`.
 - **3.2.6 Consistent Help (A)** — if help or contact exists, it stays in the same relative place

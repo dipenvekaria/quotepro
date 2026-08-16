@@ -122,9 +122,8 @@ or the sticky action bar — that is 2.4.11 Focus Not Obscured, new in 2.2, and 
 **3. The 2.2 additions**, which older checklists and older tooling miss:
 
 - **2.5.7 Dragging Movements (AA).** Anything done by dragging needs a non-drag single-pointer
-  path. **Known failure: rescheduling a job is drag-only** — `rescheduleJob` is reachable from
-  the drag handlers in `calendar-board.tsx` and `week-grid.tsx` and nowhere else, and the job
-  dialog has no date or time control. Re-check this before reporting it fixed.
+  path. The calendar was drag-only and now has a date/time field in the job dialog. Check any
+  *new* drag interaction the same way: can it be done without a press-drag-release?
 - **2.5.8 Target Size** 24×24 minimum — the 44px house rule clears it.
 - **3.3.7 Redundant Entry** — is anything asked twice in one flow?
 - **3.3.8 Accessible Authentication** — paste must work on the password field, and
