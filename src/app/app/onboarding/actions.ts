@@ -70,6 +70,21 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
     return { ok: false, error: 'We could not find a price book for that trade. Pick another.' }
   }
 
+  // bootstrap_company is idempotent: a caller who already has a company gets
+  // that id back rather than an error. Nothing downstream could tell the
+  // difference, so a second submit re-ran the seed against an already-stocked
+  // company and doubled the price book — 101 items became 202, every one of
+  // them twice, which is what a contractor saw in production. Detect the
+  // already-onboarded case here, where there is still something to decide.
+  const [existing] = await query<{ company_id: string | null }>(
+    'select company_id from users where id = $1',
+    [user.id],
+  )
+  if (existing?.company_id) {
+    revalidatePath('/app')
+    return { ok: true }
+  }
+
   let companyId: string | undefined
   try {
     companyId = await withUser(user.id, async (q) => {
@@ -161,13 +176,23 @@ async function seedCatalog(
       item.material_cost || null,
       input.trade ?? null,
     )
-    return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9})`
+    // The first tuple carries the casts. Postgres infers the rest of the rows
+    // from it, and a bare VALUES list read as a subquery has nothing else to
+    // infer parameter types from.
+    return i === 0
+      ? `($1::uuid, $2::text, $3::text, $4::text, $5::numeric, $6::text, $7::numeric, $8::numeric, $9::text)`
+      : `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9})`
   })
 
+  // Second line of defence behind the already-onboarded check in the caller,
+  // and the one that holds if two submits race: seeding a company that already
+  // has items is never right, whatever got us here.
   await query(
     `insert into catalog_items
        (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade)
-     values ${tuples.join(', ')}`,
+     select v.* from (values ${tuples.join(', ')}) as v
+       (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade)
+     where not exists (select 1 from catalog_items c where c.company_id = $1)`,
     values,
   )
 
