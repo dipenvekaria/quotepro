@@ -35,7 +35,15 @@ import { geminiModels } from './gemini'
  */
 
 const APP_NAME = 'rivet-quoting'
-const ENTITY_TYPE = 'work_item'
+
+/**
+ * What the session hangs off.
+ *
+ * `work_item` for quoting — one conversation per quote. `user` for the
+ * product-wide assistant, which is one continuing conversation per person
+ * rather than per record. Same table, same code; only the key differs.
+ */
+export type SessionEntity = 'work_item' | 'user'
 const LIST_LIMIT = 100
 
 type Row = {
@@ -69,7 +77,10 @@ function toSession(row: Row): Session {
  * the only thing standing between one contractor's quoting history and another's.
  */
 export class PostgresSessionService extends BaseSessionService {
-  constructor(private readonly companyId: string) {
+  constructor(
+    private readonly companyId: string,
+    private readonly entityType: SessionEntity = 'work_item',
+  ) {
     super()
   }
 
@@ -92,7 +103,7 @@ export class PostgresSessionService extends BaseSessionService {
       [
         this.companyId,
         request.userId || null,
-        ENTITY_TYPE,
+        this.entityType,
         id,
         APP_NAME,
         JSON.stringify({ state: request.state ?? {} }),
@@ -108,7 +119,7 @@ export class PostgresSessionService extends BaseSessionService {
          from ai_conversations
         where company_id = $1 and entity_type = $2 and entity_id = $3
         limit 1`,
-      [this.companyId, ENTITY_TYPE, request.sessionId],
+      [this.companyId, this.entityType, request.sessionId],
     )
     return row ? toSession(row) : undefined
   }
@@ -120,7 +131,7 @@ export class PostgresSessionService extends BaseSessionService {
         where company_id = $1 and entity_type = $2 and ($3::uuid is null or user_id = $3)
         order by created_at desc
         limit ${LIST_LIMIT}`,
-      [this.companyId, ENTITY_TYPE, request.userId || null],
+      [this.companyId, this.entityType, request.userId || null],
     )
     // Deliberately unpaginated: a company has one quoting session per quote,
     // and the cap below is an upper bound rather than a page.
@@ -141,7 +152,7 @@ export class PostgresSessionService extends BaseSessionService {
     await query(
       `update ai_conversations set status = 'closed'
         where company_id = $1 and entity_type = $2 and entity_id = $3`,
-      [this.companyId, ENTITY_TYPE, request.sessionId],
+      [this.companyId, this.entityType, request.sessionId],
     )
   }
 
@@ -162,7 +173,7 @@ export class PostgresSessionService extends BaseSessionService {
         where company_id = $1 and entity_type = $2 and entity_id = $3`,
       [
         this.companyId,
-        ENTITY_TYPE,
+        this.entityType,
         request.session.id,
         JSON.stringify([request.event]),
       ],
