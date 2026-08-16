@@ -12,6 +12,8 @@ import type {
 
 import { query } from '@/lib/db'
 
+import { geminiModels } from './gemini'
+
 /**
  * ADK sessions, stored in Postgres.
  *
@@ -76,9 +78,14 @@ export class PostgresSessionService extends BaseSessionService {
     if (!id) throw new Error('a quote session must be created with the work item id')
 
     const [row] = await query<Row>(
+      // `model` is NOT NULL on this table — it was designed to log one
+      // completion per row, where the model was known at insert. A session spans
+      // many completions and may span a model change mid-chain, so the column
+      // records which chain this session started on rather than pretending to a
+      // single answer.
       `insert into ai_conversations
-         (company_id, user_id, entity_type, entity_id, agent_name, purpose, messages, metadata)
-       values ($1, $2, $3, $4, $5, 'quoting', '[]'::jsonb, $6)
+         (company_id, user_id, entity_type, entity_id, agent_name, model, purpose, messages, metadata)
+       values ($1, $2, $3, $4, $5, $7, 'quoting', '[]'::jsonb, $6)
        on conflict (company_id, entity_type, entity_id) where purpose = 'quoting'
          do update set updated_at = now()
        returning entity_id, user_id, messages, metadata, created_at, updated_at`,
@@ -89,6 +96,7 @@ export class PostgresSessionService extends BaseSessionService {
         id,
         APP_NAME,
         JSON.stringify({ state: request.state ?? {} }),
+        geminiModels()[0],
       ],
     )
     return toSession(row)
