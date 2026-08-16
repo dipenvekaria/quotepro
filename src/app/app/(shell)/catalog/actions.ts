@@ -40,6 +40,17 @@ const itemSchema = z.object({
   // NUMERIC(12,2) with CHECK (base_price >= 0)
   base_price: z.coerce.number().min(0, 'Price cannot be negative').max(9_999_999.99),
   unit: z.string().trim().min(1).max(40).default('each'),
+  /**
+   * Hours the work takes. Optional, because plenty of items are materials.
+   *
+   * This is the field Rivet's scheduling advantage rests on, and every
+   * contractor-facing way of adding an item used to drop it — only the
+   * onboarding starter seed wrote it. So it looked healthy on demo data and
+   * turned itself off the moment somebody customised their own price book.
+   */
+  labor_hours: z.coerce.number().min(0).max(999).optional().or(z.literal('')).transform(
+    (v) => (v === '' || v === undefined ? null : Number(v)),
+  ),
   is_active: z.boolean().default(true),
 })
 
@@ -116,8 +127,8 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
   try {
     const rows = await query<{ id: string }>(
       `insert into catalog_items
-         (company_id, name, description, category, base_price, unit, is_active)
-       values ($1, $2, $3, $4, $5, $6, $7)
+         (company_id, name, description, category, base_price, unit, is_active, labor_hours)
+       values ($1, $2, $3, $4, $5, $6, $7, $8)
        returning id`,
       [
         auth.session.companyId,
@@ -127,6 +138,7 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
         d.base_price,
         d.unit,
         d.is_active,
+        d.labor_hours,
       ],
     )
     const id = rows[0]?.id
@@ -156,7 +168,7 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
     const rows = await query<{ id: string }>(
       `update catalog_items
           set name = $1, description = $2, category = $3,
-              base_price = $4, unit = $5, is_active = $6
+              base_price = $4, unit = $5, is_active = $6, labor_hours = $9
         where id = $7 and company_id = $8
         returning id`,
       [
@@ -168,6 +180,7 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
         d.is_active,
         d.id,
         auth.session.companyId,
+        d.labor_hours,
       ],
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
@@ -329,6 +342,12 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
     const category = cols.category !== undefined ? (row[cols.category] ?? '').trim() : ''
     const unit = cols.unit !== undefined ? (row[cols.unit] ?? '').trim() : ''
 
+    // A bad hours value skips the field, never the row. Someone's price book is
+    // worth importing without its hours; it is not worth rejecting over them.
+    const rawHours = cols.labor_hours !== undefined ? (row[cols.labor_hours] ?? '').trim() : ''
+    const hours = rawHours ? Number(rawHours.replace(/[^0-9.]/g, '')) : NaN
+    const laborHours = Number.isFinite(hours) && hours >= 0 && hours <= 999 ? hours : null
+
     const b = values.length
     values.push(
       auth.session.companyId,
@@ -337,8 +356,9 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
       category || null,
       Math.round(price * 100) / 100,
       unit || 'each',
+      laborHours,
     )
-    tuples.push(`($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6})`)
+    tuples.push(`($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7})`)
   })
 
   if (tuples.length === 0) {
@@ -350,7 +370,8 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
 
   try {
     await query(
-      `insert into catalog_items (company_id, name, description, category, base_price, unit)
+      `insert into catalog_items
+         (company_id, name, description, category, base_price, unit, labor_hours)
        values ${tuples.join(', ')}`,
       values,
     )

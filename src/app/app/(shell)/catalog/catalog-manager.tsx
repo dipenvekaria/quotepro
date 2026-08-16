@@ -39,6 +39,7 @@ export type CatalogItem = {
   base_price: number
   image_path?: string | null
   unit: string | null
+  labor_hours?: number | null
   is_active: boolean
   labels?: string[]
 }
@@ -51,6 +52,7 @@ type Draft = {
   labels: string[]
   base_price: string
   unit: string
+  labor_hours: string
   is_active: boolean
 }
 
@@ -61,6 +63,7 @@ const EMPTY: Draft = {
   labels: [],
   base_price: '',
   unit: 'each',
+  labor_hours: '',
   is_active: true,
 }
 
@@ -220,6 +223,7 @@ export function CatalogManager({
       labels: item.labels ?? [],
       base_price: String(item.base_price),
       unit: item.unit ?? 'each',
+      labor_hours: item.labor_hours == null ? '' : String(item.labor_hours),
       is_active: item.is_active,
     })
     setOpen(true)
@@ -243,6 +247,7 @@ export function CatalogManager({
         category: draft.category,
         base_price: price,
         unit: draft.unit || 'each',
+        labor_hours: draft.labor_hours.trim() === '' ? '' : Number(draft.labor_hours),
         is_active: draft.is_active,
       }
       const res = draft.id
@@ -540,6 +545,22 @@ export function CatalogManager({
                   placeholder="each, hour, ft"
                 />
               </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="ci-hours">Labour hours</Label>
+              <Input
+                id="ci-hours"
+                inputMode="decimal"
+                value={draft.labor_hours}
+                onChange={(e) => setDraft((d) => ({ ...d, labor_hours: e.target.value }))}
+                placeholder="e.g. 2.5"
+              />
+              <p className="text-xs text-muted-foreground">
+                How long this takes. An accepted quote uses it to size the job on the calendar,
+                so a schedule built from real hours stops being a guess. Leave blank for
+                materials.
+              </p>
             </div>
 
             <div className="space-y-1.5">
