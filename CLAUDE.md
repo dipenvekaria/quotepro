@@ -170,18 +170,61 @@ route actually needs it.
   [`0009`](docs/adr/0009-ai-in-process.md) — Railway is no longer part of it). Don't propose a
   GCP migration off the back of those artifacts; deleting them is Phase 5 of the cleanup plan.
 
-## Skills
+## Skills — the team
 
 Project skills live in `.claude/skills/` and are committed, so they arrive with the clone.
 New engineer setting up Claude Code: [`docs/CLAUDE_CODE_SETUP.md`](docs/CLAUDE_CODE_SETUP.md).
-Invoke by name:
+
+They are organised as a team. **Reference** skills are the specs for a subject. **Build** and
+**review** skills are roles — load the one whose job the current work is, and load more than one
+when the work spans them.
+
+### Reference — the subject matter
 
 - `rivet-dev` — boot the full local stack, resolve setup failures
-- `rivet-data` — write a query or mutation correctly (tenancy, transactions, actions)
+- `rivet-data` — query and mutation patterns (tenancy, transactions, actions)
 - `rivet-migration` — schema change → migration → types → RLS verification
-- `rivet-ui` — the Rivet design system; build a page that matches the product
-- `rivet-ai` — change AI behaviour: prompts, models, grounding
-- `rivet-ship` — verification gates before opening a PR
+- `rivet-ui` — the design system: tokens, primitives, what "best in class" means here
+- `rivet-ai` — AI behaviour: prompts, models, grounding
+- `rivet-ship` — the verification gates before a PR
+
+### Build
+
+- `rivet-build-feature` — **the lead.** Anything spanning a screen, an action and the schema.
+  Scopes, sequences, decides which specialists to bring in, owns the definition of done.
+- `rivet-build-frontend` — screens and components: server-first composition, states, 375px
+- `rivet-build-backend` — Server Actions, queries, `/api` routes: tenancy, Zod, roles, idempotence
+- `rivet-build-docs` — `docs/`, ADRs, keeping checklists true
+
+### Review
+
+- `rivet-test-ui` — drives a real browser at 375px; dead controls, mobile, dark mode, roles
+- `rivet-test-functional` — walks the flow, then checks the database changed
+- `rivet-review-security` — tenancy, roles, public routes, secrets, rate limiting
+- `rivet-review-architecture` — coupling, scale, cost, what deserves an ADR
+- `rivet-review-product` — is this the right feature; redundancy; fewer and better
+
+### Who plays when
+
+| Situation | Load |
+| --- | --- |
+| "Build X" spanning more than one file | `rivet-build-feature` first; it pulls the rest in |
+| A screen, or anything visual | `rivet-build-frontend` → `rivet-test-ui` |
+| An action, query or `/api` route | `rivet-build-backend` → `rivet-test-functional` |
+| A schema change | `rivet-migration` → `rivet-build-backend` |
+| Auth, roles, public routes, payments, customer data | `rivet-review-security`, always |
+| Adds a process, queue, worker or dependency | `rivet-review-architecture` before building |
+| "Should we build this?", a competitor shipped something | `rivet-review-product` |
+| "Does this look right?", "check the UI", "is it mobile friendly" | `rivet-test-ui` |
+| "Does it work?", reproducing a bug, before claiming done | `rivet-test-functional` |
+| Before any PR | `rivet-ship` |
+
+**Two rules that override convenience.** Verification is not optional and not self-assessed: a
+screen goes to `rivet-test-ui` and a flow goes to `rivet-test-functional` before it is called
+done, and both assume the builder checked nothing. And anything touching who-can-see-what goes
+through `rivet-review-security` — the gates in this codebase exist and get forgotten, which is
+how the dashboard shipped company revenue to technicians while two other screens gated the same
+numbers.
 
 ## Docs
 
