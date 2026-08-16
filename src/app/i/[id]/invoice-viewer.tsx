@@ -113,7 +113,7 @@ export function InvoiceViewer({
               href={`/i/${invoice.public_token}/pdf`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex h-8 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-[11px] font-medium hover:bg-muted"
+              className="inline-flex h-11 items-center gap-1 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8 lg:px-2.5 lg:text-[11px]"
             >
               <Download className="h-3 w-3" />
               PDF

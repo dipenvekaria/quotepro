@@ -222,11 +222,40 @@ export async function sendQuote(id: string) {
   )
 
   const sentAt = item.sent_at ?? new Date().toISOString()
+
+  /*
+    Give the quote a shelf life.
+
+    `expires_at` has been honoured everywhere it is read — the public viewer,
+    the PDF, and follow-ups which stop chasing an expired quote — and there was
+    nothing anywhere that could set it. A column read by three consumers and
+    written by none.
+
+    Set at send rather than at draft, because a quote is not offered until it
+    is sent, and set only if it is still unset so re-sending never quietly
+    shortens a deadline the customer has already been given.
+
+    Thirty days is the default a contractor would pick themselves, and it is
+    long enough that nobody is caught out by software they did not configure.
+    `settings.quote_valid_days` overrides it.
+  */
+  const [companyRow] = await query<{ settings: { quote_valid_days?: number } | null }>(
+    'select settings from companies where id = $1 limit 1',
+    [session.companyId],
+  )
+  const validDays = Number(companyRow?.settings?.quote_valid_days ?? 30)
+  const expiresAt = new Date(
+    new Date(sentAt).getTime() + Math.max(1, validDays) * 86_400_000,
+  ).toISOString()
+
   try {
     await query(
-      `update work_items set status = 'quote_sent'::work_item_status, sent_at = $1
+      `update work_items
+          set status = 'quote_sent'::work_item_status,
+              sent_at = $1,
+              expires_at = coalesce(expires_at, $4::timestamptz)
         where id = $2 and company_id = $3`,
-      [sentAt, id, session.companyId],
+      [sentAt, id, session.companyId, expiresAt],
     )
   } catch (e) {
     return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }

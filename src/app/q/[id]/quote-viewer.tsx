@@ -585,7 +585,10 @@ function SignModal({
           <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
             Cancel
           </Button>
-          <Button onClick={submit} disabled={busy} className="h-9 gap-1.5 shadow-sm">
+          {/* 44px, and not smaller than the Cancel beside it. This was h-9 —
+              36px — which made the highest-stakes tap in the product both below
+              the touch minimum and harder to hit than the way out of it. */}
+          <Button onClick={submit} disabled={busy} className="h-11 gap-1.5 shadow-sm lg:h-9">
             {busy ? 'Approving…' : `Approve · ${fmtMoney(total)}`}
           </Button>
         </div>

@@ -59,6 +59,13 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: '$1 is session.companyId; companies.id is itself the tenant key',
   },
   {
+    file: 'src/app/app/(shell)/pipeline/[id]/actions.ts',
+    match: 'select settings from companies where id = $1',
+    reason:
+      '$1 is session.companyId; companies.id is itself the tenant key. Reads quote_valid_days ' +
+      'to set an expiry when a quote is sent',
+  },
+  {
     file: 'src/app/app/(shell)/settings/danger-actions.ts',
     match: 'select archive_and_delete_company($1, $2, $3)',
     reason:
