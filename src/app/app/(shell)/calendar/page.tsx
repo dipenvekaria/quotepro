@@ -7,6 +7,8 @@ import { WeekGrid } from './week-grid'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 import { AssigneeFilter } from '@/components/shared/assignee-filter'
+import { RoleFilter } from '@/components/shared/role-filter'
+import { ASSIGNABLE_ROLES } from '@/lib/team-personas'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { EmptyState } from '@/components/shared/empty-state'
@@ -28,7 +30,7 @@ type ScheduledJob = {
 export default async function CalendarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; date?: string; week?: string; assignee?: string }>
+  searchParams: Promise<{ view?: string; date?: string; week?: string; assignee?: string; role?: string }>
 }) {
   const { companyId, userId, role } = await requireSession()
   // "Only sees their own schedule" is what permissions.ts already promised.
@@ -48,17 +50,43 @@ export default async function CalendarPage({
   // still sees nothing of theirs. Built as a single assignee now; teams and
   // units slot in here as a second predicate later.
   const assignee = typeof params.assignee === 'string' ? params.assignee : ''
-  const assigneeSql = assignee ? ` and w.assigned_to = $${4 + scope.params.length}` : ''
+  const roleParam =
+    typeof params.role === 'string' && ASSIGNABLE_ROLES.includes(params.role as UserRole)
+      ? params.role
+      : ''
+
+  // Two predicates, numbered after the scope params. Role filters on the
+  // assignee's role rather than the job, so it joins through assigned_to.
+  const filterSql = [
+    assignee ? ` and w.assigned_to = $${4 + scope.params.length}` : '',
+    roleParam ? ` and asg.role = $${4 + scope.params.length + (assignee ? 1 : 0)}::user_role` : '',
+  ].join('')
 
   const team = canAssignWork(role as UserRole)
-    ? await query<{ id: string; email: string | null; profile: Record<string, unknown> | null }>(
-        `select u.id, au.email, u.profile
+    ? await query<{
+        id: string
+        email: string | null
+        profile: Record<string, unknown> | null
+        role: string
+      }>(
+        `select u.id, au.email, u.profile, u.role::text as role
            from users u join auth.users au on au.id = u.id
           where u.company_id = $1 and u.is_active
           order by au.email`,
         [companyId],
       )
     : []
+
+  // Counts drive the role dropdown, so it only ever offers a role somebody
+  // actually holds.
+  const roleCounts = team.reduce<Record<string, number>>((acc, m) => {
+    acc[m.role] = (acc[m.role] ?? 0) + 1
+    return acc
+  }, {})
+
+  // Picking a role narrows the people list beside it: the two controls read as
+  // one question getting more specific.
+  const visibleTeam = roleParam ? team.filter((m) => m.role === roleParam) : team
 
   // Query window: the visible week, or the full 6-week grid for a month.
   const rangeStart = view === 'month' ? startOfWeek(startOfMonth(anchor)) : startOfWeek(anchor)
@@ -82,10 +110,11 @@ export default async function CalendarPage({
        from work_items w
        left join customers c on c.id = w.customer_id
        left join customer_addresses a on a.id = w.address_id
+       left join users asg on asg.id = w.assigned_to
       where w.company_id = $1
         and w.scheduled_start is not null
         and w.scheduled_start >= $2
-        and w.scheduled_start < $3${scope.sql}${assigneeSql}
+        and w.scheduled_start < $3${scope.sql}${filterSql}
       order by w.scheduled_start asc`,
     [
       companyId,
@@ -93,6 +122,7 @@ export default async function CalendarPage({
       rangeEnd.toISOString(),
       ...scope.params,
       ...(assignee ? [assignee] : []),
+      ...(roleParam ? [roleParam] : []),
     ],
   )
 
@@ -172,8 +202,9 @@ export default async function CalendarPage({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <RoleFilter active={roleParam} counts={roleCounts} />
           <AssigneeFilter
-            members={team.map((m) => ({
+            members={visibleTeam.map((m) => ({
               id: m.id,
               label:
                 [m.profile?.first_name, m.profile?.last_name].filter(Boolean).join(' ') ||
