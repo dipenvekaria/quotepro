@@ -35,6 +35,10 @@ const NOT_COMPANY_DATA = new Set([
   'archived_accounts', // archives of other tenants
   'webhooks_inbound', // raw provider payloads, not tenant-owned
   'adk_sessions_v2', // dead ADK backend
+  // Cached drive times between rounded coordinate pairs. Shared across
+  // companies on purpose — a distance belongs to nobody — so there is nothing
+  // here to archive with a tenant, and nothing lost when one closes.
+  'travel_estimates',
 ])
 
 beforeAll(async () => {

@@ -239,6 +239,22 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
       'Returns nothing for a used, expired or unknown token, and only ever the row that token names',
   },
 
+  // --- not tenant data at all -------------------------------------------------
+  {
+    file: 'src/lib/scheduling/travel.ts',
+    match: 'from travel_estimates',
+    reason:
+      'cached drive time between two rounded coordinate pairs. Holds no company data — a ' +
+      'distance between two points belongs to nobody — and being shared across companies is ' +
+      'what makes the cache worth having: the alternative is paying Google once per tenant ' +
+      'for the same answer',
+  },
+  {
+    file: 'src/lib/scheduling/travel.ts',
+    match: 'insert into travel_estimates',
+    reason: 'same cache, same reason; the row records coordinates and seconds, nothing tenant-owned',
+  },
+
   // --- deliberately cross-tenant ---------------------------------------------
   {
     file: 'src/features/quotes/followups.ts',

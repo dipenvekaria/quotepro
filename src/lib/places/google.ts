@@ -39,6 +39,13 @@ export type StructuredAddress = {
   city: string
   state: string
   zip: string
+  /**
+   * Present when Google returned coordinates. Optional because the mock and
+   * keyword paths have none, and because a missing geocode must degrade to "no
+   * travel estimate" rather than to a crash.
+   */
+  lat?: number
+  lng?: number
 }
 
 export function placesAvailable(): boolean {
@@ -115,7 +122,11 @@ export async function addressDetails(
       headers: {
         ...auth,
         // Billed by field set, so ask only for what lands in the columns.
-        'X-Goog-FieldMask': 'addressComponents,formattedAddress',
+        // `location` is in the same Basic Data tier as the other two, so the
+        // coordinates arrive at no extra cost — and geocoding the address again
+        // later would be a second billable call for something this response
+        // already contained.
+        'X-Goog-FieldMask': 'addressComponents,formattedAddress,location',
       },
     })
 
@@ -127,9 +138,15 @@ export async function addressDetails(
     const data = (await res.json()) as {
       formattedAddress?: string
       addressComponents?: { longText?: string; shortText?: string; types?: string[] }[]
+      location?: { latitude?: number; longitude?: number }
     }
 
-    return toStructured(data.addressComponents ?? [], data.formattedAddress ?? '')
+    const structured = toStructured(data.addressComponents ?? [], data.formattedAddress ?? '')
+    const lat = data.location?.latitude
+    const lng = data.location?.longitude
+    return typeof lat === 'number' && typeof lng === 'number'
+      ? { ...structured, lat, lng }
+      : structured
   } catch (e) {
     console.error('places details threw', e)
     return null
