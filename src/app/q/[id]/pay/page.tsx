@@ -135,7 +135,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
             <CardTitle className="flex items-center justify-between">
               <span>Invoice Details</span>
               {isPaid && (
-                <span className="flex items-center gap-2 text-green-600">
+                <span className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                   <CheckCircle className="h-5 w-5" />
                   PAID
                 </span>
@@ -176,7 +176,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
               {isPaid && quote.paid_at && (
                 <div>
                   <p className="text-muted-foreground">Paid Date</p>
-                  <p className="font-bold text-green-600">
+                  <p className="font-bold text-emerald-600 dark:text-emerald-400">
                     {format(new Date(quote.paid_at), 'MMM d, yyyy')}
                   </p>
                 </div>
@@ -260,7 +260,7 @@ export default function PayInvoicePage({ params }: { params: Promise<{ id: strin
             )}
 
             {isPaid && (
-              <div className="text-sm bg-green-50 text-green-700 p-4 rounded-lg text-center">
+              <div className="text-sm bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 p-4 rounded-lg text-center">
                 <CheckCircle className="h-8 w-8 mx-auto mb-2" />
                 <p className="font-bold">Thank you for your payment!</p>
                 <p className="text-xs mt-1">

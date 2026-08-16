@@ -74,7 +74,7 @@ export default function SignPage({ params }: SignPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="min-h-dvh bg-background flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
@@ -97,19 +97,17 @@ export default function SignPage({ params }: SignPageProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="min-h-dvh bg-background flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
-              <AlertCircle className="h-12 w-12 mx-auto text-red-500" />
+              <AlertCircle className="h-12 w-12 mx-auto text-destructive" />
               <h2 className="text-sm font-bold">Unable to Start Signing</h2>
               <p className="text-sm text-muted-foreground">{error}</p>
               <div className="space-y-2 pt-4">
-                <Link href={`/q/${quoteId}`}>
-                  <Button className="w-full" variant="default">
-                    Back to Quote
-                  </Button>
-                </Link>
+                <Button asChild className="w-full" variant="default">
+                  <Link href={`/q/${quoteId}`}>Back to Quote</Link>
+                </Button>
                 <Button
                   className="w-full"
                   variant="outline"

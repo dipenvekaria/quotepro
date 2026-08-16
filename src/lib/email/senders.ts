@@ -191,7 +191,7 @@ export async function sendInvoiceEmail(input: SendInvoiceEmailInput): Promise<Se
     <div style="margin-top:24px;">
       <a href="${input.publicUrl}" style="display:inline-block;background:#4F46E5;color:#fff;font-weight:500;text-decoration:none;padding:12px 20px;border-radius:8px;">View invoice</a>
     </div>
-    <p style="margin-top:32px;font-size:12px;color:#9CA3AF;">Sent by QuotePro on behalf of your provider.</p>
+    <p style="margin-top:32px;font-size:12px;color:#9CA3AF;">Sent by Rivet on behalf of your provider.</p>
   </div>
 </body></html>`
 
