@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { after } from 'next/server'
 
 import { indexCatalog, indexCatalogItem, unindexCatalogItem } from '@/lib/ai/catalog-index'
+import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
@@ -411,6 +412,21 @@ export type ExtractResult = {
 export async function extractCatalogFromUpload(formData: FormData): Promise<Result<ExtractResult>> {
   const auth = await requireCatalogEditor()
   if (!auth.ok) return auth
+
+  // Reading a price book out of a document is the dearest AI call in the
+  // product — a scanned PDF is many pages of vision tokens. Fifteen an hour is
+  // far more than importing a price book legitimately needs.
+  const rl = await checkRateLimit(
+    `ai:extract:${auth.session.companyId}`,
+    LIMITS.aiExtract.limit,
+    LIMITS.aiExtract.windowSeconds,
+  )
+  if (!rl.allowed) {
+    return {
+      ok: false,
+      error: `That is a lot of document reading in one hour. Try again in ${Math.ceil(rl.resetIn / 60)} minutes.`,
+    }
+  }
 
   const file = formData.get('file')
   if (!(file instanceof File) || file.size === 0) {
