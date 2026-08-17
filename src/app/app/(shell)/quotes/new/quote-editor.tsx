@@ -195,16 +195,57 @@ export function QuoteEditor({
       /*
         Two different operations, and the distinction is the whole point.
 
-        A quote that does not exist yet has nothing to edit, so the first draft
-        is a *generation* — one model call, a whole list, nothing to lose.
+        A quote with no lines yet has nothing to edit, so the first draft is a
+        *generation* — one model call, a whole list, nothing to lose.
 
-        A quote that does exist is *edited*. The agent calls tools that mutate
+        Everything after that is an *edit*. The agent calls tools that mutate
         quote_items, so "add 10% off" changes one thing and leaves the rest
-        alone. The old flow answered that by regenerating, which threw away
-        every price the contractor had adjusted by hand.
+        alone, instead of regenerating and discarding every price the
+        contractor adjusted by hand.
+
+        The condition is "are there lines", not "have we saved". Gating on the
+        saved id looked equivalent and was not: on this screen nothing is saved
+        until the contractor presses Save, which is *after* all the iterating,
+        so every follow-up instruction still regenerated. If there are lines and
+        no row yet, the row is created here — a draft quote is a real thing, and
+        it stays private until sent either way.
       */
-      if (workItemId) {
-        const res = await editQuoteWithAi({ work_item_id: workItemId, message: prompt })
+      let editableId = workItemId
+      if (!editableId && items.length > 0 && customerName.trim()) {
+        const created = await createDraftQuote({
+          customer_id: customerId ?? undefined,
+          customer_name: customerName,
+          customer_email: customerEmail,
+          customer_phone: customerPhone,
+          address,
+          city: addressParts.city,
+          state: addressParts.state,
+          zip: addressParts.zip,
+          description: description || 'Quote',
+        })
+        if (created.ok) {
+          editableId = created.data.id
+          setWorkItemId(editableId)
+          // The lines only exist in React state until now; the agent reads them
+          // from the database, so they have to be there before it runs.
+          await saveLineItems({
+            work_item_id: editableId,
+            items: items.map((i, idx) => ({
+              name: i.name,
+              description: i.description || null,
+              quantity: i.quantity,
+              unit_price: i.unit_price,
+              is_upsell: i.is_upsell,
+              is_discount: i.is_discount,
+              sort_order: idx,
+            })),
+            tax_rate: taxRate,
+          })
+        }
+      }
+
+      if (editableId) {
+        const res = await editQuoteWithAi({ work_item_id: editableId, message: prompt })
         if (!res.ok) {
           toast.error(res.error)
           return
@@ -634,7 +675,7 @@ export function QuoteEditor({
           mode={aiMode}
           setMode={setAiMode}
           onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
-          isEditing={Boolean(workItemId)}
+          isEditing={items.length > 0}
           onClose={() => setAiOpen(false)}
         />
       )}
