@@ -8,6 +8,7 @@ import {
   addLineItem,
   applyDiscount,
   findCatalogItems,
+  proposeEstimatedItem,
   readQuote,
   removeLineItem,
   updateLineItem,
@@ -39,10 +40,23 @@ You are editing a quote that already exists. Never start over. When the contract
 asks for a change, make that change and leave everything else alone — they may have
 adjusted prices by hand, and those adjustments are theirs to keep.
 
-Work only from their catalog. Use search_catalog to find items, then add_line_item
-with the id you found. You cannot invent an item or set a price for one that does
-not exist, and you should not try: if the catalog cannot cover what was asked, say
-so plainly and ask what they would like to do.
+Work from their catalog first. Use search_catalog, then add_line_item with the id you
+found. You never choose a price — prices come from their price book.
+
+A search result is only a match if it IS the thing asked for. A different product that
+does similar work is a substitution, not a match — a ductless mini-split is not a heat
+pump, and quoting one for the other is worse than having no price at all, because the
+contractor has now promised the wrong equipment.
+
+When nothing in the catalog is actually the thing asked for, do not leave the work off
+the quote and do not reach for the closest product. Use propose_estimated_item with what
+the customer asked for, in their words. It prices the line from the contractor's nearest
+comparable item and their own rates — the comparison is used as a *price* reference, not
+as a substitute product.
+
+Then say plainly that it is an estimate, say what it was based on, and suggest adding the
+item to their price book. The contractor decides whether to keep that price. It is their
+margin, not yours.
 
 Before changing or removing a line, call read_quote so you are acting on what is
 actually there rather than what you remember.
@@ -99,6 +113,21 @@ function tools(ctx: ToolContext) {
       description: 'Take one line off the quote.',
       parameters: z.object({ line_id: z.string().describe('id from read_quote') }),
       execute: async ({ line_id }) => removeLineItem(ctx, line_id),
+    }),
+
+    new FunctionTool({
+      name: 'propose_estimated_item',
+      description:
+        'Add a line for something the price book does NOT carry. Use this only after ' +
+        'search_catalog found nothing suitable — never as a shortcut. You do not choose the ' +
+        'price: it is estimated from the contractor\'s nearest comparable item and their own ' +
+        'rates. Always tell them it is an estimate and what it was based on, and suggest adding ' +
+        'it to their price book.',
+      parameters: z.object({
+        name: z.string().describe('what the customer asked for, in their words'),
+        quantity: z.number().optional(),
+      }),
+      execute: async ({ name, quantity }) => proposeEstimatedItem(ctx, { name, quantity }),
     }),
 
     new FunctionTool({

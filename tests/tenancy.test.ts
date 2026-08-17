@@ -59,6 +59,14 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: '$1 is session.companyId; companies.id is itself the tenant key',
   },
   {
+    file: 'src/lib/ai/estimate.ts',
+    match: 'select settings from companies where id = $1',
+    reason:
+      '$1 is the companyId the estimator was called with, which comes from the session; ' +
+      'companies.id is itself the tenant key. Reads labor_rate and materials_markup to price ' +
+      'an item the catalog does not carry',
+  },
+  {
     file: 'src/app/app/(shell)/pipeline/[id]/actions.ts',
     match: 'select settings from companies where id = $1',
     reason:
