@@ -9,6 +9,12 @@ export type SessionContext = {
   companyId: string
   role: string
   profile: Record<string, unknown> | null
+  /**
+   * Owner-granted permission to edit the price book. Always false for roles
+   * that were never granted it; irrelevant for owners, who can regardless.
+   * Read here so no caller has to remember a second query to find out.
+   */
+  canEditCatalog: boolean
 }
 
 // Auth stays on Supabase (getUser); the user/company row is read via raw pg.
@@ -25,7 +31,8 @@ export async function getSession(): Promise<SessionContext | null> {
     company_id: string | null
     role: string | null
     profile: Record<string, unknown> | null
-  }>(`select company_id, role, profile from users where id = $1 limit 1`, [user.id])
+    can_edit_catalog: boolean | null
+  }>(`select company_id, role, profile, can_edit_catalog from users where id = $1 limit 1`, [user.id])
 
   const row = rows[0]
   if (!row?.company_id) return null
@@ -39,6 +46,7 @@ export async function getSession(): Promise<SessionContext | null> {
     // member of the user_role enum at all.
     role: row.role ?? 'technician',
     profile: row.profile,
+    canEditCatalog: row.can_edit_catalog === true,
   }
 }
 
@@ -55,7 +63,8 @@ export async function requireSession(): Promise<SessionContext> {
     company_id: string | null
     role: string | null
     profile: Record<string, unknown> | null
-  }>(`select company_id, role, profile from users where id = $1 limit 1`, [user.id])
+    can_edit_catalog: boolean | null
+  }>(`select company_id, role, profile, can_edit_catalog from users where id = $1 limit 1`, [user.id])
 
   const row = rows[0]
   if (!row?.company_id) redirect('/app/onboarding')
@@ -69,5 +78,6 @@ export async function requireSession(): Promise<SessionContext> {
     // member of the user_role enum at all.
     role: row.role ?? 'technician',
     profile: row.profile,
+    canEditCatalog: row.can_edit_catalog === true,
   }
 }

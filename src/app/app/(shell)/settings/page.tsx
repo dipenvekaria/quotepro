@@ -15,6 +15,7 @@ import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
 import { AppearanceSettings } from './appearance'
+import { CatalogAccessToggle } from './catalog-access'
 
 // ---------------------------------------------------------------------------
 
@@ -50,8 +51,9 @@ export default async function SettingsPage() {
     profile: Record<string, unknown> | null
     is_active: boolean
     last_login_at: string | null
+    can_edit_catalog: boolean | null
   }>(
-    `select u.id, au.email, u.role, u.profile, u.is_active, u.last_login_at
+    `select u.id, au.email, u.role, u.profile, u.is_active, u.last_login_at, u.can_edit_catalog
        from users u
        left join auth.users au on au.id = u.id
       where u.company_id = $1
@@ -168,6 +170,16 @@ export default async function SettingsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
+                  {/* Owners are omitted rather than shown switched on: they can
+                      always edit, and a control that cannot be turned off reads
+                      as broken. */}
+                  {role === 'owner' && t.role !== 'owner' && (
+                    <CatalogAccessToggle
+                      userId={t.id}
+                      name={name}
+                      initial={t.can_edit_catalog === true}
+                    />
+                  )}
                   <RoleBadge role={t.role as string} />
                   <div className="text-xs text-muted-foreground">
                     {t.is_active ? 'Active' : 'Disabled'}

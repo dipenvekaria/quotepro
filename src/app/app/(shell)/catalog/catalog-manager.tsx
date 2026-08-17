@@ -40,6 +40,8 @@ export type CatalogItem = {
   image_path?: string | null
   unit: string | null
   labor_hours?: number | null
+  /** Who put it in the price book. Null for anything predating attribution. */
+  added_by?: string | null
   is_active: boolean
   labels?: string[]
 }
@@ -158,10 +160,19 @@ export function CatalogManager({
   const [term, setTerm] = useState('')
   const searching = term.trim().length > 0
 
-  const filtered = useMemo(
-    () => (searching ? items.filter((i) => matchesCatalogSearch(i, term)) : items),
-    [items, term, searching],
+  // Who added what. Only offered once more than one person has, because a
+  // filter with a single option is a control that cannot do anything.
+  const [editor, setEditor] = useState('')
+  const editors = useMemo(
+    () => [...new Set(items.map((i) => i.added_by).filter((n): n is string => Boolean(n)))].sort(),
+    [items],
   )
+
+  const filtered = useMemo(() => {
+    let out = searching ? items.filter((i) => matchesCatalogSearch(i, term)) : items
+    if (editor) out = out.filter((i) => i.added_by === editor)
+    return out
+  }, [items, term, searching, editor])
 
   const grouped = useMemo(() => {
     const out: Record<string, CatalogItem[]> = {}
@@ -367,6 +378,24 @@ export function CatalogManager({
                 </button>
               )}
             </div>
+            {!searching && editors.length > 1 && (
+              <select
+                value={editor}
+                onChange={(e) => setEditor(e.target.value)}
+                aria-label="Filter by who added the item"
+                className={cn(
+                  'h-11 shrink-0 rounded-lg border bg-background px-3 text-sm shadow-sm lg:h-9',
+                  editor ? 'border-primary text-foreground' : 'border-border text-muted-foreground',
+                )}
+              >
+                <option value="">Anyone</option>
+                {editors.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            )}
             {!searching && categoryNames.length > 1 && (
               <button
                 type="button"
@@ -458,6 +487,11 @@ export function CatalogManager({
                       {it.description && (
                         <div className="mt-0.5 truncate text-xs text-muted-foreground">
                           {it.description}
+                        </div>
+                      )}
+                      {it.added_by && (
+                        <div className="mt-0.5 truncate text-[10px] text-muted-foreground">
+                          Added by {it.added_by}
                         </div>
                       )}
                     </div>

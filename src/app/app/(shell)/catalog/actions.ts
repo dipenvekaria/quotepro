@@ -5,6 +5,7 @@ import { after } from 'next/server'
 
 import { indexCatalog, indexCatalogItem, unindexCatalogItem } from '@/lib/ai/catalog-index'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
+import { canEditCatalog } from '@/lib/auth/scope'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
@@ -70,8 +71,13 @@ type Result<T> = { ok: true; data: T } | { ok: false; error: string }
 async function requireCatalogEditor() {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (!hasPermission(session.role as UserRole, 'canEditCatalog')) {
-    return { ok: false as const, error: 'Only an owner can change pricing.' }
+  // Owner, or somebody the owner granted it to. See canEditCatalog for why this
+  // is a per-person grant rather than a wider role.
+  if (!canEditCatalog(session.role as UserRole, session.canEditCatalog)) {
+    return {
+      ok: false as const,
+      error: 'You do not have access to change pricing. An owner can grant it in Settings → Team.',
+    }
   }
   return { ok: true as const, session }
 }
@@ -128,8 +134,9 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
   try {
     const rows = await query<{ id: string }>(
       `insert into catalog_items
-         (company_id, name, description, category, base_price, unit, is_active, labor_hours)
-       values ($1, $2, $3, $4, $5, $6, $7, $8)
+         (company_id, name, description, category, base_price, unit, is_active, labor_hours,
+          created_by, updated_by)
+       values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $9)
        returning id`,
       [
         auth.session.companyId,
@@ -140,6 +147,7 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
         d.unit,
         d.is_active,
         d.labor_hours,
+        auth.session.userId,
       ],
     )
     const id = rows[0]?.id
@@ -169,7 +177,8 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
     const rows = await query<{ id: string }>(
       `update catalog_items
           set name = $1, description = $2, category = $3,
-              base_price = $4, unit = $5, is_active = $6, labor_hours = $9
+              base_price = $4, unit = $5, is_active = $6, labor_hours = $9,
+              updated_by = $10
         where id = $7 and company_id = $8
         returning id`,
       [
@@ -182,6 +191,7 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
         d.id,
         auth.session.companyId,
         d.labor_hours,
+        auth.session.userId,
       ],
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }

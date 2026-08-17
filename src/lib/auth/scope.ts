@@ -124,3 +124,22 @@ export function canSeeAnalytics(role: UserRole): boolean {
 export function canAssignWork(role: UserRole): boolean {
   return role === 'owner' || role === 'office'
 }
+
+/**
+ * Whether this person may change the price book.
+ *
+ * Owners always can — it is their margin, and a revocable owner would be a way
+ * to lock a company out of its own pricing.
+ *
+ * Everybody else needs an explicit grant from the owner. The default is closed
+ * because the price book *is* the business, but a salesperson who just quoted
+ * something the catalog does not carry is the person who knows it belongs
+ * there, and making them ask every time is how a price book stays wrong.
+ *
+ * Deliberately not a role change: widening `sales` would hand the price book to
+ * every salesperson at every company, including the ones their owner has not
+ * decided to trust.
+ */
+export function canEditCatalog(role: UserRole, granted: boolean): boolean {
+  return role === 'owner' || granted === true
+}
