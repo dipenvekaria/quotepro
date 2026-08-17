@@ -24,6 +24,7 @@ import { requireSession } from '@/lib/auth/session'
 import { canSeeAnalytics, workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
+import { fmtMoney as fmtSharedMoney, fmtRate } from '@/lib/metrics/company'
 import { cn } from '@/lib/utils'
 
 import { SendRemindersButton } from './send-reminders-button'
@@ -151,10 +152,14 @@ export default async function DashboardPage() {
       }>(
         `select id, status, total, sent_at, accepted_at, created_at, updated_at
            from work_items
-          where company_id = $1 and created_at >= $2 and $3`,
+          where company_id = $1 and sent_at is not null and sent_at >= $2 and $3`,
         // Revenue, close rate and pipeline value are derived from these rows,
         // so the rows themselves are withheld — not just the tiles that render
         // from them.
+        //
+        // Loaded by sent_at, not created_at. Analytics always did, and the
+        // mismatch meant a quote drafted two months ago and sent last week was
+        // in one screen's number and missing from the other's.
         [companyId, sixtyDaysAgo, seesMoney],
       ),
       query<{ stripe_charges_enabled: boolean | null }>(
@@ -219,7 +224,7 @@ export default async function DashboardPage() {
 
   const quotesSent = sentCur
   const quotesAccepted = accCur
-  const acceptanceRate = sentCur > 0 ? Math.round((accCur / sentCur) * 100) : 0
+  const acceptanceRate = sentCur > 0 ? (accCur / sentCur) * 100 : 0
   const acceptanceRatePrior = sentPrior > 0 ? (accPrior / sentPrior) * 100 : 0
   const revenue = revCur
   const pipelineValue = metrics.filter((m) => isOpen(m.status)).reduce((s, m) => s + Number(m.total || 0), 0)
@@ -567,7 +572,7 @@ export default async function DashboardPage() {
           <Kpi
             icon={TrendingUp}
             label="Acceptance rate"
-            value={`${acceptanceRate}%`}
+            value={fmtRate(acceptanceRate)}
             hint="Sent → accepted"
             accent={acceptanceRate >= 40 ? 'good' : undefined}
             delta={closeRateDelta}
@@ -576,7 +581,7 @@ export default async function DashboardPage() {
           <Kpi
             icon={CreditCard}
             label="Revenue"
-            value={fmtCompact(revenue)}
+            value={fmtSharedMoney(revenue)}
             hint="Paid + jobs done"
             delta={revenueDelta}
             series={revSeries}
@@ -584,7 +589,7 @@ export default async function DashboardPage() {
           <Kpi
             icon={Zap}
             label="Open pipeline"
-            value={fmtCompact(pipelineValue)}
+            value={fmtSharedMoney(pipelineValue)}
             hint="Sent + won + in progress"
             series={pipeSeries}
           />

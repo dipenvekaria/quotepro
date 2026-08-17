@@ -118,7 +118,12 @@ export function aiEnabled(): boolean {
   return Boolean(envServer().GEMINI_API_KEY)
 }
 
-export type GeminiJsonResult = { data: unknown; model: string }
+export type GeminiJsonResult = {
+  data: unknown
+  model: string
+  /** Token counts, when the response carried them. Recorded per run so a quote's AI cost is answerable. */
+  usage?: { input: number; output: number }
+}
 
 /**
  * How long the whole chain may take before the caller gives up and degrades.
@@ -240,7 +245,17 @@ export async function generateJson(opts: {
         })
         const raw = resp.text
         if (!raw) break
-        return { data: JSON.parse(raw), model }
+        const usage = resp.usageMetadata
+        return {
+          data: JSON.parse(raw),
+          model,
+          usage: usage
+            ? {
+                input: usage.promptTokenCount ?? 0,
+                output: usage.candidatesTokenCount ?? 0,
+              }
+            : undefined,
+        }
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e)
 

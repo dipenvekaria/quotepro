@@ -7,6 +7,7 @@ import { requireSession } from '@/lib/auth/session'
 import { canSeeAnalytics } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
+import { fmtRate, summarise } from '@/lib/metrics/company'
 
 // ---------------------------------------------------------------------------
 
@@ -84,13 +85,24 @@ export default async function AnalyticsPage() {
   }))
   const inLast30 = (iso: string | null) => !!iso && new Date(iso).getTime() >= now - 30 * 86_400_000
 
+  // One definition, shared with the dashboard. These two screens previously
+  // computed the same three numbers from different populations and rendered
+  // them with different rounding — see src/lib/metrics/company.ts.
   const sent30 = sent.filter((w) => inLast30(w.sent_at))
-  const quotesSent30 = sent30.length
-  const quotesAccepted30 = sent.filter((w) => inLast30(w.accepted_at)).length
-  const acceptanceRate = quotesSent30 > 0 ? (quotesAccepted30 / quotesSent30) * 100 : 0
-  const revenue30 = sent
-    .filter((w) => w.status === 'job_completed' && inLast30(w.updated_at))
-    .reduce((s, w) => s + Number(w.total || 0), 0)
+  const summary = summarise(
+    sent.map((w) => ({
+      id: w.id,
+      status: w.status,
+      total: w.total,
+      sent_at: w.sent_at,
+      accepted_at: w.accepted_at,
+      updated_at: w.updated_at ?? null,
+    })),
+  )
+  const quotesSent30 = summary.quotesSent
+  const quotesAccepted30 = summary.quotesAccepted
+  const acceptanceRate = summary.acceptanceRate
+  const revenue30 = summary.revenue
   const pipelineValue = (openItems ?? []).reduce((s, w) => s + Number(w.total || 0), 0)
 
   // Weekly quote volume by sent date, last 12 weeks (Mon-anchored).
@@ -149,7 +161,7 @@ export default async function AnalyticsPage() {
         <Kpi
           icon={TrendingUp}
           label="Acceptance rate"
-          value={`${acceptanceRate.toFixed(1)}%`}
+          value={fmtRate(acceptanceRate)}
           hint="Sent → accepted"
           accent={acceptanceRate >= 40 ? 'good' : 'neutral'}
         />
