@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowRight, Building2, CreditCard, Download, Mail, Users } from 'lucide-react'
+import { ArrowRight, Building2, CreditCard, Download, Mail, Palette, Users } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
@@ -14,6 +14,7 @@ import { SettingsForm } from './settings-form'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
+import { AppearanceSettings } from './appearance'
 
 // ---------------------------------------------------------------------------
 
@@ -88,6 +89,18 @@ export default async function SettingsPage() {
           Manage {company.name} — company details, tax rate, and team access.
         </p>
       </header>
+
+      {/* Appearance — first, because it is the one setting that applies to the
+          person rather than the company, and every role can change it. */}
+      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
+        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
+          <Palette className="h-4 w-4 text-muted-foreground" />
+          <h2 className="text-sm font-semibold">Appearance</h2>
+        </header>
+        <div className="p-5">
+          <AppearanceSettings />
+        </div>
+      </section>
 
       {/* Company */}
       <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">

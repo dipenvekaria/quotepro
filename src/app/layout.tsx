@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { NetworkStatus } from "@/components/network-status";
 import { HideDevTools } from "@/components/hide-devtools";
+import { ThemeProvider } from '@/components/shared/theme-provider'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,12 +74,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ErrorBoundary>
-          <HideDevTools />
-          <NetworkStatus />
-          {children}
-          <Toaster />
-        </ErrorBoundary>
+        <ThemeProvider>
+          <ErrorBoundary>
+            <HideDevTools />
+            <NetworkStatus />
+            {children}
+            <Toaster />
+          </ErrorBoundary>
+        </ThemeProvider>
       </body>
     </html>
   );
