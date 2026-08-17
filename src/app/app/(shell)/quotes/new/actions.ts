@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
+import { recordAiRun } from '@/lib/ai/run-log'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
@@ -45,6 +46,14 @@ const generateSchema = z.object({
   description: z.string().min(3).max(4000),
   customer_name: z.string().max(200).nullish(),
   customer_address: z.string().max(500).nullish(),
+  /**
+   * The quote this draft is for, when it already exists.
+   *
+   * Without it there was nothing to key an AI record to, which is why no quote
+   * had a traceable history. Drafting from the pipeline has the id; a brand-new
+   * quote does not yet, and that run is recorded against the company instead.
+   */
+  work_item_id: z.string().uuid().nullish(),
 })
 
 export type GenerateQuoteInput = z.infer<typeof generateSchema>
@@ -59,12 +68,31 @@ export async function generateQuoteItems(input: unknown) {
   if (!session) return { ok: false as const, error: 'Not authenticated' }
 
   try {
+    const startedAt = Date.now()
     const data = await generateQuote({
       companyId: session.companyId,
       description: parsed.data.description,
       customerName: parsed.data.customer_name || 'Prospect',
       customerAddress: parsed.data.customer_address,
     })
+    // Recorded after the result is in hand, so a logging problem cannot cost
+    // the contractor their draft.
+    await recordAiRun({
+      companyId: session.companyId,
+      userId: session.userId,
+      workItemId: parsed.data.work_item_id,
+      mode: data.mode,
+      purpose: 'quote_generation',
+      prompt: parsed.data.description,
+      result: {
+        line_items: data.line_items.length,
+        names: data.line_items.slice(0, 12).map((li) => li.name),
+        unmet: data.unmet ?? [],
+      },
+      usage: data.usage,
+      latencyMs: Date.now() - startedAt,
+    })
+
     return { ok: true as const, data }
   } catch (e) {
     if (e instanceof NoCatalogError) {

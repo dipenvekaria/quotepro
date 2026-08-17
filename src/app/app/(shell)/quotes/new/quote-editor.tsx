@@ -314,8 +314,15 @@ export function QuoteEditor({
           toast.error(res.error)
           return
         }
+        // Land on the quote, not the list.
+        //
+        // Saving used to drop the contractor on /app/pipeline, so the quote they
+        // had just built was somewhere among the others and sending it meant
+        // finding it again. Timing signup to first sent quote put 139 of 265
+        // seconds in that gap — longer than drafting the quote took. The detail
+        // page is where "Send quote" lives.
         toast.success(`Quote saved with ${keptTiers.length} options`)
-        router.push('/app/pipeline')
+        router.push(`/app/pipeline/${currentId}`)
         return
       }
 
@@ -330,7 +337,7 @@ export function QuoteEditor({
       }
 
       toast.success(singleFromTier ? `Quote saved — ${singleFromTier.name}` : 'Quote saved')
-      router.push('/app/pipeline')
+      router.push(`/app/pipeline/${currentId}`)
     })
   }
 

@@ -252,6 +252,10 @@ export function WorkItemDetail({
         description,
         customer_name: '',
         customer_address: null,
+        // The quote already exists here, so the run is recorded against it.
+        // Without this there was no way to answer what the AI did on a given
+        // quote — the run happened and left no trace anywhere.
+        work_item_id: workItem.id,
       })
       if (!res.ok) {
         toast.error(res.error)
