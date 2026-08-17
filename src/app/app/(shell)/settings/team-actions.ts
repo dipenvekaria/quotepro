@@ -112,3 +112,45 @@ export async function acceptInvite(token: string) {
   revalidatePath('/app')
   return { ok: true as const }
 }
+
+/**
+ * Grant or withdraw a teammate's access to the price book.
+ *
+ * Owner-only, and deliberately narrower than `canManageTeam`. Office managers
+ * can invite people and change roles; the price book is the margin, so opening
+ * it stays with the person whose margin it is.
+ *
+ * Withdrawing is as important as granting. A salesperson who left, or one whose
+ * judgement on pricing turned out to be optimistic, has to be closable without
+ * changing their role and taking away everything else they do.
+ */
+export async function setCatalogEditor(input: { user_id: string; can_edit: boolean }) {
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  if (session.role !== 'owner') {
+    return { ok: false as const, error: 'Only an owner can change price book access.' }
+  }
+
+  const parsed = z
+    .object({ user_id: z.string().uuid(), can_edit: z.boolean() })
+    .safeParse(input)
+  if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
+
+  // Owners are excluded rather than merely unaffected: writing the flag for an
+  // owner would leave a false record implying it means something for them, and
+  // an owner who could be revoked is a way to lock a company out of its own
+  // pricing.
+  const rows = await query<{ id: string }>(
+    `update users set can_edit_catalog = $1
+      where id = $2 and company_id = $3 and role <> 'owner'
+      returning id`,
+    [parsed.data.can_edit, parsed.data.user_id, session.companyId],
+  )
+  if (rows.length === 0) {
+    return { ok: false as const, error: 'That teammate is not in your workspace, or is an owner.' }
+  }
+
+  revalidatePath('/app/settings')
+  revalidatePath('/app/catalog')
+  return { ok: true as const, data: { id: rows[0].id } }
+}

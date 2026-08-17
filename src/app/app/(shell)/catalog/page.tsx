@@ -24,7 +24,11 @@ export default async function CatalogPage() {
 
   const items = await query<CatalogItem>(
     `select ci.id, ci.name, ci.description, ci.category, ci.unit, ci.is_active, ci.labor_hours,
-            ci.image_path,
+            ci.image_path, ci.created_by,
+            coalesce(
+              nullif(trim(concat_ws(' ', cu.profile->>'first_name', cu.profile->>'last_name')), ''),
+              cau.email
+            ) as added_by,
             ${showPrices ? 'ci.base_price' : 'null::numeric as base_price'},
             coalesce(
               (select array_agg(l.name order by l.name)
@@ -34,6 +38,8 @@ export default async function CatalogPage() {
               '{}'
             ) as labels
        from catalog_items ci
+       left join users cu on cu.id = ci.created_by
+       left join auth.users cau on cau.id = ci.created_by
       where ci.company_id = $1
       order by ci.category asc nulls last, ci.name asc
       limit 500`,
