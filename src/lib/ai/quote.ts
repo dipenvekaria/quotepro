@@ -190,7 +190,12 @@ const QUOTE_SCHEMA: Schema = {
           is_upsell: { type: Type.BOOLEAN },
           is_discount: { type: Type.BOOLEAN },
         },
-        required: ['name', 'quantity'],
+        // is_discount is required so the model has to decide rather than omit.
+        // Left optional, it wrote a line named "10% discount" with the flag
+        // unset, which reconcile then dropped for having no catalog row — the
+        // discount vanished and the contractor was told it was missing from
+        // their price book.
+        required: ['name', 'quantity', 'is_discount'],
       },
     },
     // Asked when the description leaves a choice that changes the quote. The
@@ -237,6 +242,11 @@ type RawLineItem = {
   quantity?: unknown
   is_upsell?: unknown
   is_discount?: unknown
+  /**
+   * Read for discount lines only. Every other price comes from the catalog row —
+   * see the note in reconcile() for why a discount is the one safe exception.
+   */
+  unit_price?: unknown
 }
 
 /**
@@ -263,6 +273,41 @@ function reconcile(
   for (const li of raw) {
     const name = typeof li.name === 'string' ? li.name.trim() : ''
     if (!name) continue
+
+    /*
+      A discount is not a catalog item, so it cannot be matched against one.
+
+      Everything below exists to stop the model inventing work the business does
+      not sell. A discount is the opposite: an adjustment to work already on the
+      quote, at a price the contractor is *reducing*. Dropping it for having no
+      catalog row — and then reporting "$19 discount" under "not in your price
+      book", which is what a contractor actually saw — is the rule firing on the
+      one case it was never meant to catch.
+
+      The price is taken from the model here, unlike every other line. That is
+      safe in the one direction that matters: a wrong discount can only ever
+      quote *less* than the catalog says, which is a mistake the contractor can
+      see on their own quote, not one the customer discovers later.
+    */
+    // A negative price is a discount definitionally — `catalog_items.base_price`
+    // carries CHECK (base_price >= 0), so nothing the business sells can come
+    // back below zero. Checking the number as well as the flag means a model
+    // that describes a discount correctly but forgets to label it still lands
+    // in the right place.
+    const priced = Number(li.unit_price)
+    if (li.is_discount || (Number.isFinite(priced) && priced < 0)) {
+      const amount = Math.abs(priced)
+      if (!Number.isFinite(amount) || amount === 0) continue
+      line_items.push({
+        name,
+        description: typeof li.description === 'string' ? li.description : null,
+        quantity: 1,
+        unit_price: -amount,
+        is_upsell: false,
+        is_discount: true,
+      })
+      continue
+    }
 
     const match = byName.get(normalise(name)) ?? byLooseName.get(loosely(name))
     if (!match) {
