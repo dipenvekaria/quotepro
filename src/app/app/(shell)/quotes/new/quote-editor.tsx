@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils'
 
 import {
   createDraftQuote,
+  editQuoteWithAi,
   generateQuoteItems,
   generateQuoteTiers,
   saveLineItems,
@@ -191,6 +192,47 @@ export function QuoteEditor({
     }
     const prompt = aiPrompt.trim() || description
     startAi(async () => {
+      /*
+        Two different operations, and the distinction is the whole point.
+
+        A quote that does not exist yet has nothing to edit, so the first draft
+        is a *generation* — one model call, a whole list, nothing to lose.
+
+        A quote that does exist is *edited*. The agent calls tools that mutate
+        quote_items, so "add 10% off" changes one thing and leaves the rest
+        alone. The old flow answered that by regenerating, which threw away
+        every price the contractor had adjusted by hand.
+      */
+      if (workItemId) {
+        const res = await editQuoteWithAi({ work_item_id: workItemId, message: prompt })
+        if (!res.ok) {
+          toast.error(res.error)
+          return
+        }
+        // The agent wrote to the database behind us, so local state is stale —
+        // take the quote it returns rather than trying to replay its edits.
+        setItems(
+          res.data.quote.items.map((li) => ({
+            key: crypto.randomUUID(),
+            name: li.name,
+            description: li.description ?? '',
+            quantity: Number(li.quantity),
+            unit_price: Number(li.unit_price),
+            is_upsell: false,
+            is_discount: li.is_discount,
+          })),
+        )
+        setDraftMode('agent')
+        toast.success(res.data.reply || 'Quote updated', {
+          description: res.data.toolCalls.length
+            ? res.data.toolCalls.join(' → ')
+            : undefined,
+          duration: 7000,
+        })
+        setAiOpen(false)
+        return
+      }
+
       // company_id is derived from the session inside the action — never sent
       // from here. See actions.ts.
       const res = await generateQuoteItems({
@@ -592,6 +634,7 @@ export function QuoteEditor({
           mode={aiMode}
           setMode={setAiMode}
           onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
+          isEditing={Boolean(workItemId)}
           onClose={() => setAiOpen(false)}
         />
       )}
@@ -685,6 +728,7 @@ function AiPanel({
   setMode,
   onGenerate,
   onClose,
+  isEditing,
 }: {
   prompt: string
   setPrompt: (v: string) => void
@@ -694,6 +738,8 @@ function AiPanel({
   setMode: (m: 'single' | 'options') => void
   onGenerate: () => void
   onClose: () => void
+  /** An existing quote is edited in place; a new one is generated. */
+  isEditing?: boolean
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 p-4 backdrop-blur-sm sm:items-center">
@@ -703,8 +749,14 @@ function AiPanel({
             <Sparkles className="h-3.5 w-3.5" />
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold">Draft this quote</div>
-            <div className="text-[11px] text-muted-foreground">Grounded in your catalog</div>
+            <div className="text-sm font-semibold">
+              {isEditing ? 'Change this quote' : 'Draft this quote'}
+            </div>
+            <div className="text-[11px] text-muted-foreground">
+              {isEditing
+                ? 'Ask for a change — the rest of the quote stays as it is'
+                : 'Grounded in your catalog'}
+            </div>
           </div>
           <button onClick={onClose} className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7">
             <X className="h-3.5 w-3.5" />

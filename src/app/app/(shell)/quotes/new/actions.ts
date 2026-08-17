@@ -6,6 +6,8 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/session'
 import { recordAiRun } from '@/lib/ai/run-log'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
+import { runQuoteTurn } from '@/lib/ai/quote-agent'
+import { readQuote } from '@/lib/ai/quote-tools'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
@@ -627,4 +629,77 @@ export async function searchCustomers(q: unknown): Promise<CustomerMatch[]> {
       limit 6`,
     [session.companyId, term, digits],
   )
+}
+
+// ---------------------------------------------------------------------------
+
+const agentEditSchema = z.object({
+  work_item_id: z.string().uuid(),
+  message: z.string().trim().min(1).max(2000),
+})
+
+/**
+ * Ask the agent to change an existing quote.
+ *
+ * The distinction that matters: `generateQuoteItems` above *generates* — it is
+ * the right operation for a blank quote, where there is nothing to edit and one
+ * model call beats an agent loop. This *edits*, and is the right operation for
+ * every turn after that.
+ *
+ * The old flow only had the first. So "add 10% off" was answered by generating
+ * a whole new quote, and anything the contractor had adjusted by hand went with
+ * it. Here the agent calls tools that mutate `quote_items`, so nothing is
+ * regenerated and nothing is lost.
+ *
+ * Returns the quote as it now stands, because the agent wrote to the database
+ * behind the editor's back and its React state is stale the moment this returns.
+ */
+export async function editQuoteWithAi(input: unknown) {
+  const parsed = agentEditSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const rl = await checkRateLimit(
+    `ai:generate:${session.companyId}`,
+    LIMITS.aiGenerate.limit,
+    LIMITS.aiGenerate.windowSeconds,
+  )
+  if (!rl.allowed) {
+    return {
+      ok: false as const,
+      error: `That is a lot of drafting in one hour. Try again in ${Math.ceil(rl.resetIn / 60)} minutes.`,
+    }
+  }
+
+  const ctx = { companyId: session.companyId, workItemId: parsed.data.work_item_id }
+  const startedAt = Date.now()
+
+  try {
+    const turn = await runQuoteTurn(ctx, session.userId, parsed.data.message)
+    const quote = await readQuote(ctx)
+
+    await recordAiRun({
+      companyId: session.companyId,
+      userId: session.userId,
+      workItemId: parsed.data.work_item_id,
+      mode: 'agent',
+      purpose: 'quote_edit',
+      prompt: parsed.data.message,
+      result: { reply: turn.reply, tools: turn.toolCalls, lines: quote.line_count },
+      latencyMs: Date.now() - startedAt,
+    })
+
+    revalidatePath(`/app/pipeline/${parsed.data.work_item_id}`)
+    return { ok: true as const, data: { ...turn, quote } }
+  } catch (e) {
+    console.error('editQuoteWithAi failed', e)
+    return {
+      ok: false as const,
+      error: e instanceof Error ? e.message : 'The assistant could not make that change.',
+    }
+  }
 }
