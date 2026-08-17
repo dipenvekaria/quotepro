@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sbAdmin } from '@/lib/supabase/untyped'
 import { createSignNowClient } from '@/lib/signnow'
+import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,17 @@ export async function POST(request: NextRequest) {
 
     if (typeof token !== 'string' || token.length < 20 || token.length > 64) {
       return NextResponse.json({ error: 'Missing or invalid token' }, { status: 400 })
+    }
+
+    // Unauthenticated by design — the token is the credential — so without this
+    // anyone holding a quote link could call it as fast as they liked. Bucketed
+    // per token so one customer's retries cannot lock out anybody else's quote.
+    const rl = await checkRateLimit(`sign:${token}`, LIMITS.sign.limit, LIMITS.sign.windowSeconds)
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: 'Too many attempts. Please wait a moment and try again.' },
+        { status: 429, headers: { 'Retry-After': String(rl.resetIn) } },
+      )
     }
 
     // Service role: the caller is an anonymous customer holding a token, and

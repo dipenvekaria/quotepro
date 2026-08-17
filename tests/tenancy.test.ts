@@ -256,6 +256,15 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
 
   // --- not tenant data at all -------------------------------------------------
   {
+    file: 'src/lib/rate-limit.ts',
+    match: 'rate_limits',
+    reason:
+      'counters, not tenant data. The bucket string encodes who is limited — ai:<companyId>, ' +
+      'sign:<token> — so a company only ever increments its own, but the row holds a key and a ' +
+      'number and nothing readable. Keying by company_id column instead would mean the ' +
+      'unauthenticated sign route had no company to scope by',
+  },
+  {
     file: 'src/lib/scheduling/travel.ts',
     match: 'from travel_estimates',
     reason:

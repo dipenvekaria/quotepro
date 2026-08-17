@@ -39,6 +39,9 @@ const NOT_COMPANY_DATA = new Set([
   // companies on purpose — a distance belongs to nobody — so there is nothing
   // here to archive with a tenant, and nothing lost when one closes.
   'travel_estimates',
+  // Rate-limit counters. A bucket string and a number, with nothing to restore
+  // and nothing worth keeping when a company closes.
+  'rate_limits',
 ])
 
 beforeAll(async () => {

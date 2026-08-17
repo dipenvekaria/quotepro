@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
 import { recordAiRun } from '@/lib/ai/run-log'
+import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
@@ -66,6 +67,20 @@ export async function generateQuoteItems(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  // Per company, because AI drafting costs real money per call and a shared
+  // bucket would let one contractor exhaust everybody's.
+  const rl = await checkRateLimit(
+    `ai:generate:${session.companyId}`,
+    LIMITS.aiGenerate.limit,
+    LIMITS.aiGenerate.windowSeconds,
+  )
+  if (!rl.allowed) {
+    return {
+      ok: false as const,
+      error: `That is a lot of drafting in one hour. Try again in ${Math.ceil(rl.resetIn / 60)} minutes.`,
+    }
+  }
 
   try {
     const startedAt = Date.now()
