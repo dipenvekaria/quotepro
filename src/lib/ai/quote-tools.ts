@@ -1,6 +1,7 @@
 import { query } from '@/lib/db'
 
 import { searchCatalog } from './catalog-index'
+import { estimateFromCatalog } from './estimate'
 
 /**
  * What the quoting agent is allowed to do.
@@ -41,6 +42,8 @@ export type QuoteLine = {
   unit_price: number
   line_total: number
   is_discount: boolean
+  is_estimate?: boolean
+  estimate_basis?: string | null
 }
 
 export async function readQuote(ctx: ToolContext) {
@@ -48,7 +51,9 @@ export async function readQuote(ctx: ToolContext) {
   const items = await query<QuoteLine>(
     `select qi.id, qi.name, qi.description, qi.quantity, qi.unit_price,
             qi.total as line_total,
-            coalesce(qi.is_discount, false) as is_discount
+            coalesce(qi.is_discount, false) as is_discount,
+            coalesce(qi.is_estimate, false) as is_estimate,
+            qi.estimate_basis
        from quote_items qi
        join work_items w on w.id = qi.work_item_id
       where qi.work_item_id = $1 and w.company_id = $2
@@ -195,4 +200,59 @@ export async function applyDiscount(
     [ctx.workItemId, label, -Math.abs(value)],
   )
   return { id: row.id, label, amount: -Math.abs(value), was: subtotal, now: subtotal - value }
+}
+
+/**
+ * A line for something the price book does not carry.
+ *
+ * This is the one tool that puts a price on the quote without a catalog row
+ * behind it, and it is fenced accordingly.
+ *
+ * The model does **not** choose the number. It says what was asked for; the
+ * price comes from `estimateFromCatalog`, which reads the contractor's nearest
+ * comparable item and their own rates. So the failure mode is "estimated from
+ * the wrong comparable", which a contractor can see and correct, rather than
+ * "invented a plausible figure", which they cannot distinguish from a real one.
+ *
+ * The line is flagged `is_estimate` and that flag is **internal**. The customer
+ * sees a normal line at whatever price the salesperson settles on — telling a
+ * homeowner part of their quote is guesswork invites them to negotiate it, and
+ * it stops being true the moment someone reviews it.
+ *
+ * Refuses rather than guessing when the catalog has nothing close. A
+ * salesperson can type a price themselves, and is better off knowing the
+ * software declined than trusting a number with no basis.
+ */
+export async function proposeEstimatedItem(
+  ctx: ToolContext,
+  input: { name: string; quantity?: number },
+) {
+  await assertOwned(ctx)
+
+  const est = await estimateFromCatalog(ctx.companyId, input.name)
+  if (!est) {
+    throw new Error(
+      `There is nothing close to "${input.name}" in the price book to estimate from. Add the line by hand, or add the item to the catalog first.`,
+    )
+  }
+
+  const qty = Number.isFinite(input.quantity) && (input.quantity ?? 0) > 0 ? input.quantity! : 1
+  const [row] = await query<{ id: string }>(
+    `insert into quote_items
+       (work_item_id, name, description, quantity, unit_price, is_estimate, estimate_basis)
+     values ($1, $2, $3, $4::numeric, $5::numeric, true, $6)
+     returning id`,
+    [ctx.workItemId, input.name, est.basis, qty, est.price, est.basis],
+  )
+
+  return {
+    id: row.id,
+    name: input.name,
+    quantity: qty,
+    unit_price: est.price,
+    is_estimate: true,
+    basis: est.basis,
+    tell_the_contractor:
+      'This is an estimate, not a catalog price. Say so, and say what it was based on.',
+  }
 }
