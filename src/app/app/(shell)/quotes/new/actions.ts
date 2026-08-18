@@ -15,6 +15,7 @@ import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
 import { loadItemLabels, loadLivePromotions, priceWithPromotions } from '@/lib/promotions'
+import { recommendCompanions } from '@/lib/quotes/recommend'
 
 // -----------------------------------------------------------------------------
 // AI quote generation.
@@ -468,6 +469,34 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 // The good/better/best generators lived here until 2026-08-18. The owner
 // used the feature and dropped it ("It is not useful"); existing quotes with
 // options keep rendering via the legacy vocabulary in src/lib/quotes/items.ts.
+
+const recommendSchema = z.object({
+  names: z.array(z.string().min(1).max(300)).max(30),
+})
+
+/**
+ * "Goes with this job" — items that historically share a quote with the lines
+ * already on this one. The replacement for good/better/best: instead of asking
+ * the customer to pick a bundle, suggest the next line to the contractor and
+ * let one tap add it.
+ */
+export async function recommendLineItems(input: unknown) {
+  const parsed = recommendSchema.safeParse(input)
+  if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  try {
+    const items = await recommendCompanions(session.companyId, parsed.data.names)
+    return { ok: true as const, data: { items } }
+  } catch (e) {
+    // Suggestions are optional garnish — an error here is an empty strip, not
+    // a broken editor. (Not a fallback output: nothing is substituted.)
+    console.error('recommendLineItems failed', e)
+    return { ok: true as const, data: { items: [] } }
+  }
+}
 
 export type CustomerMatch = {
   id: string

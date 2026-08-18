@@ -21,8 +21,10 @@ import {
   editQuoteWithAi,
   generateQuoteItems,
   getQuoteConversation,
+  recommendLineItems,
   saveLineItems,
 } from './actions'
+import type { Recommendation } from '@/lib/quotes/recommend'
 
 // -----------------------------------------------------------------------------
 
@@ -120,6 +122,33 @@ export function QuoteEditor({
   }, [aiOpen, workItemId])
 
   const [aiPrompt, setAiPrompt] = useState('')
+
+  /*
+    "Goes with this job" — the replacement for the dropped three-options
+    feature. As lines land, suggest what this company historically quotes
+    alongside them; one tap adds the line. Debounced off the current names so
+    typing and agent turns both refresh it without hammering the action.
+  */
+  const [recs, setRecs] = useState<Recommendation[]>([])
+  const namesSig = items
+    .filter((i) => !i.is_discount && i.name.trim())
+    .map((i) => i.name.trim().toLowerCase())
+    .sort()
+    .join('|')
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!namesSig) {
+        setRecs([])
+        return
+      }
+      recommendLineItems({ names: namesSig.split('|') }).then((r) => {
+        if (r.ok) setRecs(r.data.items)
+      })
+    }, 400)
+    return () => clearTimeout(t)
+  }, [namesSig])
+  const currentNames = new Set(namesSig.split('|'))
+  const visibleRecs = recs.filter((r) => !currentNames.has(r.name.trim().toLowerCase()))
   const [generating, startAi] = useTransition()
   const [saving, startSave] = useTransition()
 
@@ -540,6 +569,36 @@ export function QuoteEditor({
                 </div>
               )}
 
+              {visibleRecs.length > 0 && (
+                <div className="border-t border-border/70 px-4 py-3 sm:px-5">
+                  <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                    Goes with this job
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {visibleRecs.map((r) => (
+                      <button
+                        key={r.id}
+                        type="button"
+                        title={r.together > 0 ? `Quoted together ${r.together} time${r.together === 1 ? '' : 's'}` : 'Similar to what is on this quote'}
+                        onClick={() =>
+                          addItem({
+                            name: r.name,
+                            description: r.description ?? '',
+                            quantity: 1,
+                            unit_price: r.base_price,
+                            unit: r.unit,
+                          })
+                        }
+                        className="flex h-11 items-center gap-2 rounded-lg border border-border bg-background px-3 text-xs transition-colors hover:border-primary/50 hover:bg-primary/5"
+                      >
+                        <span className="max-w-[180px] truncate font-medium">{r.name}</span>
+                        <span className="tabular text-muted-foreground">{fmtMoney(r.base_price)}</span>
+                        <span className="font-semibold text-primary">+</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="border-t border-border/70">
                 <AddLineItem
                   catalog={catalog}
