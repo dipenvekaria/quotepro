@@ -81,11 +81,12 @@ export async function recordAiRun(run: AiRun): Promise<void> {
         run.usage?.output ?? 0,
         estimateCostUsd(run.usage),
         run.latencyMs ?? null,
-        // Anything that is not a real Gemini run is recorded as degraded so it
-        // can be alerted on. Since the fail-hard change this means
-        // `unavailable` — the contractor saw an error and nothing was drafted;
-        // a spike here is an outage, not a quality problem.
-        run.mode.startsWith('gemini') ? 'success' : 'degraded',
+        // `unavailable` is the outage signal — the contractor saw an error and
+        // nothing was drafted; a spike here is what alerting watches. Everything
+        // else that records a run produced a real result (`gemini:<model>`, the
+        // ADK `agent`), so the old prefix test marked successful agent edits
+        // degraded and would have shown them as failures on the timeline.
+        run.mode === 'unavailable' ? 'degraded' : 'success',
         JSON.stringify({ mode: run.mode }),
       ],
     )

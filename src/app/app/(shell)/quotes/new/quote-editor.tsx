@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useMemo, useState, useTransition } from 'react'
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
 import { ArrowLeft, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -19,6 +19,7 @@ import {
   editQuoteWithAi,
   generateQuoteItems,
   generateQuoteTiers,
+  getQuoteConversation,
   saveLineItems,
   saveQuoteTiers,
 } from './actions'
@@ -34,6 +35,8 @@ export type CatalogItem = {
   base_price: number
   unit: string
 }
+
+type ChatMsg = { role: 'user' | 'assistant'; text: string }
 
 type LineItem = {
   key: string
@@ -97,9 +100,24 @@ export function QuoteEditor({
   const [items, setItems] = useState<LineItem[]>([])
   const [taxRate, setTaxRate] = useState(defaultTaxRate)
   const [workItemId, setWorkItemId] = useState<string | null>(null)
+  // The quoting conversation, shown as a trail in the AI dialog. Hydrated from
+  // the persisted ADK session when the dialog opens on a saved quote, appended
+  // to locally as turns happen — so "add 10% off" sits under "install smart
+  // thermostat" and either can be tapped to run a variant.
+  const [thread, setThread] = useState<ChatMsg[]>([])
+  const hydratedRef = useRef(false)
 
   // Catalog picker + AI panel
   const [aiOpen, setAiOpen] = useState(false)
+  useEffect(() => {
+    if (!aiOpen || !workItemId || hydratedRef.current) return
+    hydratedRef.current = true
+    getQuoteConversation({ work_item_id: workItemId }).then((res) => {
+      if (res.ok && res.data.messages.length) {
+        setThread((t) => (t.length ? t : res.data.messages))
+      }
+    })
+  }, [aiOpen, workItemId])
 
   const [aiPrompt, setAiPrompt] = useState('')
   // Whether this quote goes out as one price or three. The contractor's call,
@@ -185,6 +203,14 @@ export function QuoteEditor({
           })),
         })),
       )
+      setThread((t) => [
+        ...t,
+        { role: 'user', text: prompt },
+        { role: 'assistant', text: `Built ${res.data.tiers.length} options — review them before you send.` },
+      ])
+      setAiPrompt('')
+      // Tiers close the dialog deliberately: the review panel behind it is the
+      // next step, unlike single-quote turns where the conversation continues.
       setAiOpen(false)
       toast.success(`Built ${res.data.tiers.length} options`, {
         description: 'Review them before you send.',
@@ -275,13 +301,14 @@ export function QuoteEditor({
           })),
         )
         setDraftMode('agent')
-        toast.success(res.data.reply || 'Quote updated', {
-          description: res.data.toolCalls.length
-            ? res.data.toolCalls.join(' → ')
-            : undefined,
-          duration: 7000,
-        })
-        setAiOpen(false)
+        // The dialog stays open: this is a conversation, and the reply belongs
+        // in the trail under the ask — not in a toast that vanishes.
+        setThread((t) => [
+          ...t,
+          { role: 'user', text: prompt },
+          { role: 'assistant', text: res.data.reply || 'Done — the quote is updated.' },
+        ])
+        setAiPrompt('')
         return
       }
 
@@ -314,8 +341,22 @@ export function QuoteEditor({
         })),
       )
       if (typeof data.tax_rate === 'number') setTaxRate(data.tax_rate)
-      toast.success(`Generated ${data.line_items.length} items`)
-      setAiOpen(false)
+      setThread((t) => [
+        ...t,
+        { role: 'user', text: prompt },
+        {
+          role: 'assistant',
+          text:
+            data.line_items.length > 0
+              ? `Drafted ${data.line_items.length} line item${data.line_items.length === 1 ? '' : 's'} from your catalog.` +
+                (data.unmet?.length ? ` Not in your price book: ${data.unmet.join(', ')}.` : '')
+              : data.questions?.length
+                ? data.questions[0].question
+                : data.reasoning,
+        },
+      ])
+      setAiPrompt('')
+      if (data.line_items.length > 0) toast.success(`Drafted ${data.line_items.length} items`)
     })
   }
 
@@ -665,6 +706,7 @@ export function QuoteEditor({
           setMode={setAiMode}
           onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
           isEditing={items.length > 0}
+          thread={thread}
           onClose={() => setAiOpen(false)}
         />
       )}
@@ -759,6 +801,7 @@ function AiPanel({
   onGenerate,
   onClose,
   isEditing,
+  thread,
 }: {
   prompt: string
   setPrompt: (v: string) => void
@@ -770,10 +813,18 @@ function AiPanel({
   onClose: () => void
   /** An existing quote is edited in place; a new one is generated. */
   isEditing?: boolean
+  /** The quoting conversation so far — the trail the next ask builds on. */
+  thread: ChatMsg[]
 }) {
+  const hasThread = thread.length > 0
+  const endRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: 'end' })
+  }, [thread.length, generating])
+
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 p-4 backdrop-blur-sm sm:items-center">
-      <div className="w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl">
+      <div className="flex max-h-[85dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl">
         <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3">
           <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Sparkles className="h-3.5 w-3.5" />
@@ -788,47 +839,89 @@ function AiPanel({
                 : 'Grounded in your catalog'}
             </div>
           </div>
-          <button onClick={onClose} className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7">
+          <button onClick={onClose} aria-label="Close" className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7">
             <X className="h-3.5 w-3.5" />
           </button>
         </header>
+
+        {/* The trail. Every ask so far is a chip — tap one to put it back in
+            the box, change it, and send a variant. The conversation persists
+            with the quote, so this survives leaving and coming back. */}
+        {hasThread && (
+          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto border-b border-border/70 px-5 py-4">
+            {thread.map((m, i) =>
+              m.role === 'user' ? (
+                <div key={i} className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setPrompt(m.text)}
+                    title="Tap to edit and resend"
+                    className="max-w-[85%] rounded-2xl rounded-br-sm border border-primary/20 bg-primary/10 px-3 py-2 text-left text-sm text-foreground transition-colors hover:bg-primary/15"
+                  >
+                    {m.text}
+                  </button>
+                </div>
+              ) : (
+                <div key={i} className="flex">
+                  <div className="max-w-[85%] rounded-2xl rounded-bl-sm bg-muted px-3 py-2 text-sm text-foreground">
+                    {m.text}
+                  </div>
+                </div>
+              ),
+            )}
+            {generating && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" /> Working…
+              </div>
+            )}
+            <div ref={endRef} />
+          </div>
+        )}
+
         <div className="space-y-3 p-5">
           {/* One price or three is a judgement about this customer, so the
-              contractor chooses before anything is generated. */}
-          <div className="grid grid-cols-2 gap-2">
-            {(
-              [
-                ['single', 'One quote', 'A single price'],
-                ['options', 'Three options', 'Good / better / best'],
-              ] as const
-            ).map(([value, label, hint]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setMode(value)}
-                aria-pressed={mode === value}
-                className={cn(
-                  'rounded-lg border p-3 text-left transition-colors',
-                  mode === value
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:bg-muted/60',
-                )}
-              >
-                <div className="text-sm font-medium">{label}</div>
-                <div className="text-[11px] text-muted-foreground">{hint}</div>
-              </button>
-            ))}
-          </div>
+              contractor chooses before anything is generated. Once a
+              conversation exists the choice is made — the trail continues. */}
+          {!hasThread && !isEditing && (
+            <div className="grid grid-cols-2 gap-2">
+              {(
+                [
+                  ['single', 'One quote', 'A single price'],
+                  ['options', 'Three options', 'Good / better / best'],
+                ] as const
+              ).map(([value, label, hint]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setMode(value)}
+                  aria-pressed={mode === value}
+                  className={cn(
+                    'rounded-lg border p-3 text-left transition-colors',
+                    mode === value
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:bg-muted/60',
+                  )}
+                >
+                  <div className="text-sm font-medium">{label}</div>
+                  <div className="text-[11px] text-muted-foreground">{hint}</div>
+                </button>
+              ))}
+            </div>
+          )}
 
           <textarea
             autoFocus
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder={suggestedPrompt || "Describe the job in plain English — we'll build the quote."}
-            rows={5}
+            placeholder={
+              hasThread || isEditing
+                ? 'Ask for the next change…'
+                : suggestedPrompt || "Describe the job in plain English — we'll build the quote."
+            }
+            rows={hasThread ? 2 : 5}
             className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           />
-          {!prompt.trim() && suggestedPrompt && (
+          {!hasThread && !prompt.trim() && suggestedPrompt && (
             <button
               onClick={() => setPrompt(suggestedPrompt)}
               className="text-xs text-primary hover:underline"
@@ -838,15 +931,15 @@ function AiPanel({
           )}
           <div className="flex items-center justify-end gap-2">
             <Button variant="outline" onClick={onClose} className="h-11 lg:h-9">
-              Cancel
+              {hasThread ? 'Done' : 'Cancel'}
             </Button>
-            <Button onClick={onGenerate} disabled={generating} className="h-9 gap-1.5 shadow-sm">
+            <Button onClick={onGenerate} disabled={generating || !prompt.trim()} className="h-11 gap-1.5 shadow-sm lg:h-9">
               {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Zap className="h-3.5 w-3.5" />}
-              Generate
+              {hasThread || isEditing ? 'Send' : 'Generate'}
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground">
-            {mode === 'options'
+            {mode === 'options' && !hasThread && !isEditing
               ? 'Three options, each building on the one before. You review them before sending.'
               : 'Priced from your catalog. Nothing is sent until you save.'}
           </p>
