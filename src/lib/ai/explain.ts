@@ -17,7 +17,6 @@ const SUMMARY_SCHEMA: Schema = {
 
 export type ExplainInput = {
   companyName?: string | null
-  jobDescription?: string | null
   lineItems: { name: string; description: string | null; quantity: number }[]
 }
 
@@ -45,8 +44,10 @@ export async function explainQuote(input: ExplainInput): Promise<{ summary: stri
     .join('\n')
 
   const contents =
-    `CONTRACTOR: ${input.companyName || 'The contractor'}\n` +
-    `JOB DESCRIPTION: ${input.jobDescription || '(none given)'}\n\n` +
+    // No job description on purpose: it is internal prompt text and can name
+    // work that never became a line item — scope the model then "summarised"
+    // onto a public quote. The line items are the whole truth here.
+    `CONTRACTOR: ${input.companyName || 'The contractor'}\n\n` +
     `LINE ITEMS:\n${itemsText}\n`
 
   const result = await generateJson({
