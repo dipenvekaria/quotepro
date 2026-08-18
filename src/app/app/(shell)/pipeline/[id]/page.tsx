@@ -142,7 +142,7 @@ export default async function WorkItemDetailPage({
     is_upsell: boolean
     is_discount: boolean
   }>(
-    `select id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount
+    `select id, name, description, quantity, unit_price, unit, sort_order, is_upsell, is_discount
        from quote_items qi
       where work_item_id = $1${liveTierPredicate(1)}
       order by sort_order asc`,

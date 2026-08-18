@@ -40,6 +40,7 @@ export type QuoteLine = {
   description: string | null
   quantity: number
   unit_price: number
+  unit: string | null
   line_total: number
   is_discount: boolean
   is_estimate?: boolean
@@ -49,7 +50,7 @@ export type QuoteLine = {
 export async function readQuote(ctx: ToolContext) {
   await assertOwned(ctx)
   const items = await query<QuoteLine>(
-    `select qi.id, qi.name, qi.description, qi.quantity, qi.unit_price,
+    `select qi.id, qi.name, qi.description, qi.quantity, qi.unit_price, qi.unit,
             qi.total as line_total,
             coalesce(qi.is_discount, false) as is_discount,
             coalesce(qi.is_estimate, false) as is_estimate,
@@ -108,8 +109,8 @@ export async function addLineItem(ctx: ToolContext, catalogItemId: string, quant
   // their price book.
   const [row] = await query<{ id: string }>(
     `insert into quote_items
-       (work_item_id, catalog_item_id, name, description, quantity, unit_price, labor_hours)
-     values ($1, $2, $3, $4, $5::numeric, $6::numeric, $7)
+       (work_item_id, catalog_item_id, name, description, quantity, unit_price, labor_hours, unit)
+     values ($1, $2, $3, $4, $5::numeric, $6::numeric, $7, $8)
      returning id`,
     [
       ctx.workItemId,
@@ -119,6 +120,7 @@ export async function addLineItem(ctx: ToolContext, catalogItemId: string, quant
       qty,
       item.base_price,
       item.labor_hours,
+      item.unit,
     ],
   )
   return { id: row.id, name: item.name, quantity: qty, unit_price: Number(item.base_price) }

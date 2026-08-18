@@ -26,7 +26,7 @@ export default async function PublicInvoicePage({
       customers (name, email, phone),
       work_items (
         id, description, tax_rate,
-        quote_items (id, name, description, quantity, unit_price, is_upsell, is_discount, sort_order)
+        quote_items (id, name, description, quantity, unit_price, unit, is_upsell, is_discount, sort_order)
       )
     `)
     .eq('public_token', token)

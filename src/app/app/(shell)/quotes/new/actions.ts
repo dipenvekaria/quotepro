@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
+import { lineHours } from '@/lib/format'
 import { logActivity } from '@/lib/activity'
 import { recordAiRun } from '@/lib/ai/run-log'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
@@ -291,6 +292,26 @@ export async function createDraftQuote(input: CreateDraftInput) {
 // Save line items on a quote (replace-all).
 // -----------------------------------------------------------------------------
 
+/**
+ * Name → labour hours + unit for snapshotting onto quote lines. Matched by
+ * name because that is the join the lines carry; the migration comment on
+ * quote_items.catalog_item_id records why that is fragile and what replaces it.
+ */
+async function catalogMetaByName(companyId: string) {
+  const rows = await query<{ name: string; labor_hours: number | null; unit: string | null }>(
+    `select name, labor_hours, unit from catalog_items where company_id = $1`,
+    [companyId],
+  )
+  const map = new Map<string, { hours: number | null; unit: string | null }>()
+  for (const r of rows) {
+    map.set(r.name.trim().toLowerCase(), {
+      hours: r.labor_hours === null ? null : Number(r.labor_hours),
+      unit: r.unit,
+    })
+  }
+  return map
+}
+
 const saveLineItemsSchema = z.object({
   work_item_id: z.string().uuid(),
   items: z.array(
@@ -379,22 +400,17 @@ export async function saveLineItems(input: SaveLineItemsInput) {
   // This is what lets the scheduler know a job is 5.5 hours without anyone
   // typing it. Competitors ask a dispatcher, because their price book is a name
   // and a price.
-  const catalogHours = new Map<string, number>()
-  {
-    const rows = await query<{ name: string; labor_hours: number | null }>(
-      `select name, labor_hours from catalog_items
-        where company_id = $1 and labor_hours is not null`,
-      [companyId],
-    )
-    for (const r of rows) {
-      if (r.labor_hours !== null) catalogHours.set(r.name.trim().toLowerCase(), Number(r.labor_hours))
-    }
-  }
-  const hoursFor = (name: string) => catalogHours.get(name.trim().toLowerCase()) ?? null
+  const catalogMeta = await catalogMetaByName(companyId)
+  const metaFor = (name: string) => catalogMeta.get(name.trim().toLowerCase())
+  const hoursFor = (name: string) => metaFor(name)?.hours ?? null
+  const unitFor = (name: string) => metaFor(name)?.unit ?? null
 
+  // Quantity multiplies the labour only when it counts repetitions of the
+  // work. For size units it describes one piece of work — a 3-ton condenser
+  // is one install, and multiplying booked it as three working days.
   const estimatedHours = parsed.data.items.reduce((sum: number, i) => {
-    const h = hoursFor(i.name)
-    return h === null ? sum : sum + h * i.quantity
+    const h = lineHours(hoursFor(i.name), i.quantity, unitFor(i.name))
+    return h === null ? sum : sum + h
   }, 0)
 
   try {
@@ -404,7 +420,7 @@ export async function saveLineItems(input: SaveLineItemsInput) {
       if (parsed.data.items.length) {
         const values: unknown[] = []
         const tuples = pricedItems.map((i, idx) => {
-          const b = idx * 11
+          const b = idx * 12
           values.push(
             parsed.data.work_item_id,
             i.name,
@@ -417,14 +433,17 @@ export async function saveLineItems(input: SaveLineItemsInput) {
             i.is_upsell ?? false,
             i.is_discount ?? false,
             hoursFor(i.name),
+            // Snapshotted like the price and the hours: the quote's meaning
+            // must not change when the price book is edited later.
+            unitFor(i.name),
             i.promotionId,
             i.listPrice,
           )
-          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9}, $${b + 10}, $${b + 11})`
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8}, $${b + 9}, $${b + 10}, $${b + 11}, $${b + 12})`
         })
         await q(
           `insert into quote_items
-             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount, labor_hours, promotion_id, list_price)
+             (work_item_id, name, description, quantity, unit_price, sort_order, is_upsell, is_discount, labor_hours, unit, promotion_id, list_price)
            values ${tuples.join(', ')}`,
           values,
         )
@@ -597,6 +616,8 @@ export async function saveQuoteTiers(input: unknown) {
   if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
 
   const { work_item_id: workItemId, tax_rate: taxRate, tiers } = parsed.data
+  // Snapshot unit + labour hours onto tier lines, same as the single-quote save.
+  const tiersMeta = await catalogMetaByName(companyId)
   // The work item's own totals track the recommended tier, so the pipeline and
   // the calendar show the figure the contractor expects to win.
   const headline = tiers.find((t) => t.is_recommended) ?? tiers[tiers.length - 1]
@@ -631,13 +652,17 @@ export async function saveQuoteTiers(input: unknown) {
         if (tier.items.length === 0) continue
         const values: unknown[] = []
         const tuples = tier.items.map((i, idx) => {
-          const b = idx * 6
-          values.push(workItemId, i.name, i.description ?? null, i.quantity, i.unit_price, dbTier)
-          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6})`
+          const b = idx * 8
+          const meta = tiersMeta.get(i.name.trim().toLowerCase())
+          values.push(
+            workItemId, i.name, i.description ?? null, i.quantity, i.unit_price, dbTier,
+            meta?.unit ?? null, meta?.hours ?? null,
+          )
+          return `($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7}, $${b + 8})`
         })
         await q(
           `insert into quote_items
-             (work_item_id, name, description, quantity, unit_price, option_tier)
+             (work_item_id, name, description, quantity, unit_price, option_tier, unit, labor_hours)
            values ${tuples.join(', ')}`,
           values,
         )

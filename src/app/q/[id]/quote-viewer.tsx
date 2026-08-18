@@ -19,7 +19,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { formatDateLong, formatDateShort, formatPhone } from '@/lib/format'
+import { formatDateLong, formatDateShort, formatPhone, formatQuantity, unitSuffix } from '@/lib/format'
 
 import { acceptQuote, declineQuote } from './actions'
 import { cn } from '@/lib/utils'
@@ -33,6 +33,7 @@ type LineItem = {
   description: string | null
   quantity: number
   unit_price: number
+  unit?: string | null
   is_upsell: boolean
   is_discount: boolean
   sort_order: number
@@ -419,9 +420,10 @@ export function QuoteViewer({
                   {item.description && (
                     <p className="mt-0.5 text-xs text-muted-foreground">{item.description}</p>
                   )}
-                  {item.quantity !== 1 && (
+                  {(item.quantity !== 1 || unitSuffix(item.unit)) && (
                     <p className="mt-0.5 text-[11px] tabular text-muted-foreground">
-                      {item.quantity} × {fmtMoney(item.unit_price)}
+                      {formatQuantity(item.quantity, item.unit)} × {fmtMoney(item.unit_price)}
+                      {unitSuffix(item.unit)}
                     </p>
                   )}
                   {/* A photo of the actual part, beside the line that charges

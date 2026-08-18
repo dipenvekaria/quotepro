@@ -31,3 +31,55 @@ export function formatDateShort(iso: string | null | undefined): string {
   if (Number.isNaN(d.getTime())) return ''
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
+
+/**
+ * Units where the quantity counts repetitions of the work — two visits is the
+ * work done twice, six hours is six hours of labour. Everything else describes
+ * the size of ONE piece of work: a 3-ton condenser is one install, not three,
+ * and 2,400 sq ft of roof is one job whose materials scale, not 2,400 jobs.
+ *
+ * `labor_hours` on a catalog item is the labour for the item as sold, so it
+ * multiplies by quantity only for counting units. This is the rule that
+ * stopped a one-condenser job (3 tons × 8.75h) booking as 26.25 hours.
+ * Null/unknown units are legacy hand-typed lines and keep the old behaviour.
+ */
+const COUNTING_UNITS = new Set(['each', 'hour', 'day', 'visit', 'job'])
+
+export function lineHours(
+  laborHours: number | null | undefined,
+  quantity: number,
+  unit: string | null | undefined,
+): number | null {
+  if (laborHours === null || laborHours === undefined || !Number.isFinite(laborHours)) return null
+  const u = unit?.trim().toLowerCase()
+  if (!u || COUNTING_UNITS.has(u)) return laborHours * quantity
+  return laborHours
+}
+
+const UNIT_PLURAL: Record<string, string> = {
+  ton: 'tons',
+  gallon: 'gallons',
+  hour: 'hours',
+  day: 'days',
+  visit: 'visits',
+  job: 'jobs',
+}
+
+/**
+ * "3" for each/unknown, "3 tons" / "2,400 sq ft" otherwise — the label that
+ * stops a homeowner reading three tons as three air conditioners.
+ */
+export function formatQuantity(quantity: number, unit: string | null | undefined): string {
+  const qty = Number(quantity)
+  const label = Number.isInteger(qty) ? qty.toLocaleString('en-US') : String(qty)
+  const u = unit?.trim().toLowerCase()
+  if (!u || u === 'each') return label
+  const word = qty === 1 ? u : (UNIT_PLURAL[u] ?? u)
+  return `${label} ${word}`
+}
+
+/** "/ton" price suffix for per-measure lines; empty for each/unknown. */
+export function unitSuffix(unit: string | null | undefined): string {
+  const u = unit?.trim().toLowerCase()
+  return !u || u === 'each' ? '' : `/${u}`
+}
