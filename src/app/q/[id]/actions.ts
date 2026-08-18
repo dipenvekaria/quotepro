@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
+import { logActivity } from '@/lib/activity'
 import { sbAdmin } from '@/lib/supabase/untyped'
 
 // ---------------------------------------------------------------------------
@@ -20,7 +21,7 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
 
   const { data: item, error: fetchErr } = await admin
     .from('work_items')
-    .select('id, status, metadata')
+    .select('id, company_id, status, metadata')
     .eq('public_token', parsed.data.token)
     .maybeSingle()
 
@@ -39,6 +40,14 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     .eq('id', item.id)
 
   if (updErr) return { ok: false as const, error: updErr.message }
+
+  await logActivity({
+    companyId: item.company_id as string,
+    entityId: item.id as string,
+    action: 'quote_accepted',
+    description: `Accepted by ${parsed.data.signer_name}`,
+    changes: { signed_by: parsed.data.signer_name },
+  })
 
   revalidatePath(`/q/${parsed.data.token}`)
   return { ok: true as const }
@@ -59,7 +68,7 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
 
   const { data: item } = await admin
     .from('work_items')
-    .select('id, status, metadata')
+    .select('id, company_id, status, metadata')
     .eq('public_token', parsed.data.token)
     .maybeSingle()
 
@@ -81,6 +90,14 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
 
   if (error) return { ok: false as const, error: error.message }
 
+  await logActivity({
+    companyId: item.company_id as string,
+    entityId: item.id as string,
+    action: 'quote_declined',
+    description: parsed.data.reason ? `Declined: ${parsed.data.reason}` : 'Declined',
+    changes: parsed.data.reason ? { reason: parsed.data.reason } : undefined,
+  })
+
   revalidatePath(`/q/${parsed.data.token}`)
   return { ok: true as const }
 }
@@ -92,7 +109,7 @@ export async function markQuoteViewed(token: string) {
 
   const { data: item } = await admin
     .from('work_items')
-    .select('id, status, viewed_at')
+    .select('id, company_id, status, viewed_at')
     .eq('public_token', token)
     .maybeSingle()
 
@@ -105,6 +122,13 @@ export async function markQuoteViewed(token: string) {
       .from('work_items')
       .update({ status: 'quote_viewed', viewed_at: new Date().toISOString() })
       .eq('id', item.id)
+
+    await logActivity({
+      companyId: item.company_id as string,
+      entityId: item.id as string,
+      action: 'quote_viewed',
+      description: 'Customer opened the quote',
+    })
   }
 
   return { ok: true as const }

@@ -5,6 +5,7 @@ import { after } from 'next/server'
 
 import { indexCatalog, indexCatalogItem, unindexCatalogItem } from '@/lib/ai/catalog-index'
 import { AiUnavailableError } from '@/lib/ai/gemini'
+import { logActivity } from '@/lib/activity'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { canEditCatalog } from '@/lib/auth/scope'
 import { z } from 'zod'
@@ -153,6 +154,15 @@ export async function createCatalogItem(input: unknown): Promise<Result<{ id: st
     )
     const id = rows[0]?.id
     if (!id) return { ok: false, error: 'Could not add the item. Please try again.' }
+    await logActivity({
+      companyId: auth.session.companyId,
+      userId: auth.session.userId,
+      entityType: 'catalog_item',
+      entityId: id,
+      action: 'price_book_item_added',
+      description: `${d.name} added at $${d.base_price}`,
+      changes: { name: d.name, base_price: d.base_price, unit: d.unit },
+    })
     revalidate()
     reindex(auth.session.companyId, id)
     return { ok: true, data: { id } }
@@ -196,6 +206,15 @@ export async function updateCatalogItem(input: unknown): Promise<Result<{ id: st
       ],
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
+    await logActivity({
+      companyId: auth.session.companyId,
+      userId: auth.session.userId,
+      entityType: 'catalog_item',
+      entityId: d.id,
+      action: 'price_book_item_updated',
+      description: `${d.name} updated ($${d.base_price})`,
+      changes: { name: d.name, base_price: d.base_price, unit: d.unit },
+    })
     revalidate()
     reindex(auth.session.companyId, rows[0].id)
     return { ok: true, data: { id: rows[0].id } }
@@ -256,6 +275,14 @@ export async function deleteCatalogItem(input: unknown): Promise<Result<{ id: st
       [parsed.data.id, auth.session.companyId],
     )
     if (!rows[0]) return { ok: false, error: 'Item not found' }
+    await logActivity({
+      companyId: auth.session.companyId,
+      userId: auth.session.userId,
+      entityType: 'catalog_item',
+      entityId: parsed.data.id,
+      action: 'price_book_item_archived',
+      description: 'Price book item archived',
+    })
     revalidate()
     after(async () => {
       try { await unindexCatalogItem(auth.session.companyId, rows[0].id) }

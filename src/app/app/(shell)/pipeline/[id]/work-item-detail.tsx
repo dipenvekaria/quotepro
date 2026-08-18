@@ -27,6 +27,9 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import type { TimelineEntry } from '@/lib/activity'
+
+import { ActivityTimeline } from './activity-timeline'
 import {
   Dialog,
   DialogContent,
@@ -165,6 +168,7 @@ export function WorkItemDetail({
   invoice,
   payments,
   photos,
+  timeline,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
@@ -172,6 +176,7 @@ export function WorkItemDetail({
   invoice: Invoice | null
   payments: Payment[]
   photos: QuotePhoto[]
+  timeline: TimelineEntry[]
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
@@ -748,7 +753,14 @@ export function WorkItemDetail({
               .map((i) => ({ id: i.id as string, name: i.name }))}
           />
 
-          <Activity workItem={workItem} />
+          {/* The real audit trail once events exist; quotes from before the
+              log was written fall back to the timestamp-derived summary so
+              their history does not vanish. */}
+          {timeline.length > 0 ? (
+            <ActivityTimeline entries={timeline} />
+          ) : (
+            <Activity workItem={workItem} />
+          )}
         </div>
 
         {/* Scheduling asks when, then does both halves at once — the status and

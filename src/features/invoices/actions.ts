@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { env } from '@/lib/env'
+import { logActivity } from '@/lib/activity'
 import { sendInvoiceEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query, withTransaction } from '@/lib/db'
@@ -75,6 +76,15 @@ export async function convertToInvoice(
   }
   if (!created) return { ok: false, error: 'Insert returned no row' }
 
+  await logActivity({
+    companyId,
+    userId: session.userId,
+    entityId: work.id,
+    action: 'invoice_created',
+    description: `Invoice ${created.invoice_number} created`,
+    changes: { invoice_number: created.invoice_number, total: work.total },
+  })
+
   revalidatePath(`/app/pipeline/${workItemId}`)
   return { ok: true, data: created }
 }
@@ -99,12 +109,14 @@ export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult>
     sent_at: string | null
     due_date: string | null
     public_token: string
+    work_item_id: string | null
     customer_name: string | null
     customer_email: string | null
     company_name: string | null
     company_email: string | null
   }>(
     `select i.id, i.invoice_number, i.total, i.amount_paid, i.status, i.sent_at, i.due_date, i.public_token,
+            i.work_item_id,
             c.name as customer_name, c.email as customer_email,
             co.name as company_name, co.email as company_email
        from invoices i
@@ -143,6 +155,17 @@ export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult>
     } catch {
       emailResult = 'error'
     }
+  }
+
+  if (inv.work_item_id) {
+    await logActivity({
+      companyId,
+      userId: session.userId,
+      entityId: inv.work_item_id,
+      action: 'invoice_sent',
+      description: `Invoice ${inv.invoice_number} sent`,
+      changes: { email: emailResult },
+    })
   }
 
   revalidatePath(`/app/pipeline`)
@@ -215,6 +238,17 @@ export async function recordPayment(input: RecordPaymentInput) {
     })
   } catch (e) {
     return { ok: false as const, error: e instanceof Error ? e.message : 'Failed to record payment' }
+  }
+
+  if (inv.work_item_id) {
+    await logActivity({
+      companyId,
+      userId,
+      entityId: inv.work_item_id,
+      action: 'payment_recorded',
+      description: `Payment of $${parsed.data.amount.toFixed(2)} recorded (${parsed.data.method})`,
+      changes: { amount: parsed.data.amount, method: parsed.data.method, status: newStatus },
+    })
   }
 
   revalidatePath(`/app/pipeline`)

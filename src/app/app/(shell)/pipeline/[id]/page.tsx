@@ -4,6 +4,7 @@ import { requireSession } from '@/lib/auth/session'
 import { workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
+import { timelineForWorkItem } from '@/lib/activity'
 import { liveTierPredicate } from '@/lib/quotes/items'
 
 import { listQuotePhotos } from './photo-actions'
@@ -190,6 +191,8 @@ export default async function WorkItemDetailPage({
       )
     : []
 
+  const timeline = await timelineForWorkItem(companyId, id)
+
   return (
     <WorkItemDetail
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
@@ -203,6 +206,7 @@ export default async function WorkItemDetailPage({
       }
       invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}
       payments={(payments ?? []) as Parameters<typeof WorkItemDetail>[0]['payments']}
+      timeline={timeline}
     />
   )
 }

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { env } from '@/lib/env'
+import { logActivity } from '@/lib/activity'
 import { explainQuote } from '@/lib/ai/explain'
 import { AiUnavailableError } from '@/lib/ai/gemini'
 import { sendQuoteEmail } from '@/lib/email/senders'
@@ -173,6 +174,17 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
     return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
   }
 
+  if (parsed.data.to === 'job_scheduled') {
+    await logActivity({
+      companyId: session.companyId,
+      userId: session.userId,
+      entityId: parsed.data.id,
+      action: 'job_scheduled',
+      description: 'Job scheduled',
+      changes: { scheduled_start: parsed.data.scheduled_start },
+    })
+  }
+
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
   // Scheduling puts the job on the calendar, so that view is now stale too.
@@ -261,6 +273,14 @@ export async function sendQuote(id: string) {
   } catch (e) {
     return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
   }
+
+  await logActivity({
+    companyId: session.companyId,
+    userId: session.userId,
+    entityId: id,
+    action: 'quote_sent',
+    description: 'Quote sent to the customer',
+  })
 
   // Best-effort email (never blocks the send action).
   //

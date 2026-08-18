@@ -94,26 +94,7 @@ export async function recordAiRun(run: AiRun): Promise<void> {
   }
 }
 
-export type QuoteAiRun = {
-  created_at: string
-  mode: string
-  model: string
-  status: string
-  tokens_input: number
-  tokens_output: number
-  cost_usd: number
-  latency_ms: number | null
-  messages: unknown
-}
-
-/** Everything the AI did on one quote, oldest first. The mapping this exists for. */
-export async function aiRunsForQuote(companyId: string, workItemId: string) {
-  return query<QuoteAiRun>(
-    `select created_at, model, status, tokens_input, tokens_output, cost_usd,
-            latency_ms, messages, coalesce(metadata->>'mode', model) as mode
-       from ai_conversations
-      where company_id = $1 and entity_type = 'work_item' and entity_id = $2
-      order by created_at asc`,
-    [companyId, workItemId],
-  )
-}
+// The per-quote read side lives in `timelineForWorkItem` (src/lib/activity.ts),
+// which merges these runs with the product activity trail. The standalone
+// reader that used to sit here had no callers and one latent bug — it did not
+// exclude the ADK session row (purpose 'quoting'), which shares this table.

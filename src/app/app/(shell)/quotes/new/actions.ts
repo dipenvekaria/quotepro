@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
+import { logActivity } from '@/lib/activity'
 import { recordAiRun } from '@/lib/ai/run-log'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { runQuoteTurn } from '@/lib/ai/quote-agent'
@@ -273,6 +274,14 @@ export async function createDraftQuote(input: CreateDraftInput) {
   }
 
   if (!workItemId) return { ok: false as const, error: 'No id returned' }
+
+  await logActivity({
+    companyId,
+    userId,
+    entityId: String(workItemId),
+    action: 'quote_created',
+    description: `Quote created for ${parsed.data.customer_name}`,
+  })
 
   revalidatePath('/app/pipeline')
   return { ok: true as const, data: { id: String(workItemId) } }
