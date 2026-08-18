@@ -147,11 +147,42 @@ export class NoCatalogError extends Error {
   }
 }
 
+export class VagueJobError extends Error {
+  constructor() {
+    super('Job description is too vague to build options from')
+    this.name = 'VagueJobError'
+  }
+}
+
+// Words that name the act of quoting rather than any work. A description made
+// only of these is a placeholder, whatever the trade.
+const NON_JOB_WORDS = new Set([
+  'quote', 'quotes', 'estimate', 'estimates', 'job', 'work', 'service',
+  'repair', 'fix', 'please', 'need', 'needs', 'want', 'wants', 'customer',
+  'new', 'the', 'for', 'and',
+])
+
 export async function generateTieredQuote(input: {
   companyId: string
   description: string
   taxRate: number
 }): Promise<TieredQuote | null> {
+  /*
+    Refuse a non-description before the model sees it.
+
+    The single-quote path can push back — it has a `questions` channel — so the
+    model handles vague input well there. This path's schema is three tiers of
+    line items and nothing else, and given that shape the model fills it: fed
+    the literal placeholder "Quote" it invented a complete, plausible,
+    catalog-priced three-option job (observed on a real production quote). The
+    prompt now forbids that and the model ignores it, so the gate lives here,
+    where it cannot be ignored.
+  */
+  const meaningful = (input.description.toLowerCase().match(/[a-z0-9]{2,}/g) ?? []).filter(
+    (t) => !NON_JOB_WORDS.has(t),
+  )
+  if (meaningful.length < 2) throw new VagueJobError()
+
   const catalog = await fetchCatalog(input.companyId)
   if (catalog.length === 0) throw new NoCatalogError()
   if (!aiEnabled()) return null
