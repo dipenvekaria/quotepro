@@ -11,7 +11,7 @@
  * is contractually bound to once the customer accepts.
  */
 
-import { Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
+import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
 import { fetchCatalog, type AiLineItem, type CatalogItem } from '@/lib/ai/quote'
 import { computeTotals } from '@/lib/money'
@@ -88,8 +88,6 @@ const SCHEMA: Schema = {
   },
   required: ['tiers'],
 }
-
-const FALLBACK = `You are a senior trades estimator building three options for one job: Essential (the smallest honest fix), Recommended (Essential plus what a tradesperson would genuinely advise), and Complete (Recommended plus what makes the whole system right). Each tier must contain everything in the tier below it. Use ONLY items from CATALOG and copy their names exactly. Never invent an item to pad a tier. Return valid JSON only.`
 
 function normalise(s: string) {
   return s.toLowerCase().replace(/\s+/g, ' ').trim()
@@ -185,7 +183,7 @@ export async function generateTieredQuote(input: {
 
   const catalog = await fetchCatalog(input.companyId)
   if (catalog.length === 0) throw new NoCatalogError()
-  if (!aiEnabled()) return null
+  if (!aiEnabled()) throw new AiUnavailableError('no Gemini credentials are configured')
 
   const catalogText = catalog
     .slice(0, 80)
@@ -196,11 +194,13 @@ export async function generateTieredQuote(input: {
     .join('\n')
 
   const result = await generateJson({
-    system: loadPrompt('quote-tiers.md', FALLBACK),
+    system: loadPrompt('quote-tiers.md'),
     contents: `JOB DESCRIPTION:\n${input.description}\n\nCATALOG:\n${catalogText}\n`,
     schema: SCHEMA,
   })
-  if (!result) return null
+  // Infra failure, not a refusal — a refusal comes back as an empty tiers
+  // array and returns null below, which the caller words differently.
+  if (!result) throw new AiUnavailableError('every model failed or returned nothing')
 
   const data = result.data as {
     tiers?: { tier?: unknown; name?: unknown; description?: unknown; line_items?: unknown }[]

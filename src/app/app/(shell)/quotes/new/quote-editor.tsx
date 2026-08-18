@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useMemo, useState, useTransition } from 'react'
-import { AlertTriangle, ArrowLeft, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
+import { ArrowLeft, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -82,8 +82,9 @@ export function QuoteEditor({
     state: initialCustomer?.state ?? '',
     zip: initialCustomer?.zip ?? '',
   })
-  // What actually produced the last draft. `mock` means Gemini never ran and
-  // these are keyword matches — the contractor has to know that before sending.
+  // What produced the last draft — always `gemini:<model>` now. An unavailable
+  // model fails the action with a visible error instead of degrading, so the
+  // old keyword-match warning path no longer exists.
   const [draftMode, setDraftMode] = useState<string | null>(null)
   const [questions, setQuestions] = useState<{ question: string; options: string[] }[]>([])
   const [unmet, setUnmet] = useState<string[]>([])
@@ -301,12 +302,6 @@ export function QuoteEditor({
       setDraftMode(data.mode)
       setQuestions(data.questions ?? [])
       setUnmet(data.unmet ?? [])
-      if (!data.mode.startsWith('gemini')) {
-        toast.warning('AI unavailable — these lines are keyword matches', {
-          description: 'Check every line and price before sending.',
-          duration: 8000,
-        })
-      }
       setItems(
         data.line_items.map((li) => ({
           key: crypto.randomUUID(),
@@ -544,22 +539,6 @@ export function QuoteEditor({
                   })
                 }}
               />
-              {draftMode && !draftMode.startsWith('gemini') && (
-                /*
-                  Degrading silently is the trap: a keyword-matched quote looks
-                  like a badly written one, so the contractor blames the product
-                  and fixes nothing. Say plainly that the AI did not run.
-                */
-                <div className="flex items-start gap-2 border-b border-amber-500/30 bg-amber-500/10 px-5 py-3">
-                  <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-                  <p className="text-xs leading-relaxed text-foreground">
-                    <span className="font-semibold">These lines were matched on keywords, not drafted by AI.</span>{' '}
-                    Rivet couldn’t reach the AI service, so it picked the closest catalog items by
-                    name. Check every line and price before sending — and see Integrations if this
-                    keeps happening.
-                  </p>
-                </div>
-              )}
               {draftMode?.startsWith('gemini') && (
                 /*
                   The successful case needs saying too, and nothing said it.

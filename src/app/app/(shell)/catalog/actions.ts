@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { after } from 'next/server'
 
 import { indexCatalog, indexCatalogItem, unindexCatalogItem } from '@/lib/ai/catalog-index'
+import { AiUnavailableError } from '@/lib/ai/gemini'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { canEditCatalog } from '@/lib/auth/scope'
 import { z } from 'zod'
@@ -462,13 +463,13 @@ export async function extractCatalogFromUpload(formData: FormData): Promise<Resu
       mimeType: file.type,
     })
   } catch (e) {
+    if (e instanceof AiUnavailableError) {
+      return { ok: false, error: 'AI is not available right now. You can still import a CSV.' }
+    }
     console.error('extractCatalogFromUpload failed', e)
     return { ok: false, error: 'Could not read that document. Try again.' }
   }
 
-  if (result.mode === 'mock') {
-    return { ok: false, error: 'AI is not available right now. You can still import a CSV.' }
-  }
   if (result.items.length === 0) {
     return {
       ok: false,

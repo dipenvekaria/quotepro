@@ -143,9 +143,13 @@ route actually needs it.
 - **`.env.local` may point at dead Cloudflare quick tunnels.** For local work set
   `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321`. Tunnels are only for testing on a phone;
   `scripts/sync-tunnels.sh` regenerates them, but it still references the deleted AI service.
-- **AI degrades, it does not fail.** Without `GEMINI_API_KEY` quote generation keyword-matches
-  the catalog and reports `mode: "mock"`; the customer summary renders nothing. Neither throws,
-  so a missing key looks like poor quality rather than an outage. Check `mode`.
+- **AI fails hard, on purpose (changed 2026-08-18).** There is no mock mode and no keyword
+  fallback: when Gemini is unconfigured or every model fails, generation throws
+  `AiUnavailableError` and the contractor sees a clear error — nothing is drafted. The old
+  degrade-to-mock behaviour fabricated plausible quotes (it once produced $786 of labour lines
+  for gibberish) and made a quota outage look like poor quality. Failed runs are recorded in
+  `ai_conversations` with `status='degraded'`; alert on those. **Do not add fallback or mock
+  paths anywhere** — standing owner rule: let it fail so it gets fixed.
 - **Hosted Postgres needs `ssl: { rejectUnauthorized: false }`.** `pg` treats `sslmode=require`
   as `verify-full` and Supabase's pooler chain isn't trusted, so a deploy dies with
   `SELF_SIGNED_CERT_IN_CHAIN` on every query. Handled in `src/lib/db/index.ts`.
@@ -162,7 +166,8 @@ route actually needs it.
   `number`, timestamps as raw ISO strings, not `Date`.
 - **`prompts/`** holds the AI system prompts as markdown. Behaviour changes belong there, not in
   string literals. They reach production via `outputFileTracingIncludes` in `next.config.ts`;
-  remove that and every prompt silently falls back to its inline default.
+  a missing prompt file now **throws** (no inline fallbacks — they masked a packaging mistake by
+  silently running old prompt text), so removing that config fails the affected actions loudly.
 - **The repo contains stale GCP signals — hosting is settled and it is not GCP.** `k8s/deployment.yaml`,
   `docker-compose.yml` and the commit titled "GCP-native" are all from an abandoned direction.
   The decision is Vercel + Supabase Cloud

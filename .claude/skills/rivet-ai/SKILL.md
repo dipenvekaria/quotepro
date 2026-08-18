@@ -43,7 +43,7 @@ no Python — `python-backend/` was deleted on 2026-08-11, see
 | File | Does |
 | --- | --- |
 | `gemini.ts` | Client, model chain, `generateJson()`. Every model call goes through here. |
-| `quote.ts` | `generateQuote()` — catalog fetch, prompt, reconciliation, mock fallback. |
+| `quote.ts` | `generateQuote()` — catalog fetch, prompt, reconciliation. Throws when AI is unavailable. |
 | `explain.ts` | `explainQuote()` — plain-language summary for the homeowner. |
 | `prompts.ts` | Reads `prompts/*.md`. |
 
@@ -77,20 +77,22 @@ An unmatched item is logged as `ai/quote: dropped items with no catalog match`. 
 the signal that the catalog is missing something the contractor sells, which is a product
 problem, not a prompt problem.
 
-`mode` tells the caller what produced the result — `gemini:<model>` or `mock`. Keep it accurate;
-the UI and production alerting both read it.
+`mode` tells the caller what produced the result — always `gemini:<model>` on success. Keep it
+accurate; the run log and production alerting read it.
 
-## Two fallbacks, both intentional
+## One retry chain, no fallbacks — fail hard (standing owner rule, 2026-08-18)
 
-**Model chain.** `GEMINI_MODELS` is tried in order until one succeeds. A quota limit on the
-newest flash model degrades to the next rather than failing the request.
+**Model chain (kept).** `GEMINI_MODELS` is tried in order until one succeeds. A quota limit on
+the newest flash model moves to the next real model — the output is still real.
 
-**Mock generator.** If every model fails, a keyword matcher over the catalog returns plausible
-line items and `mode` becomes `mock`. This keeps the whole UI exercisable offline and means a
-Gemini outage doesn't take quoting down.
-
-Don't remove either. Do make sure production alerts when `mode == "mock"` — silently shipping
-keyword-matched quotes to real customers is worse than an error.
+**No mock paths (removed).** When no credentials are configured or every model fails, throw
+`AiUnavailableError` (from `gemini.ts`); the server action catches it, records a run with
+`mode: 'unavailable'` (status `degraded`, which is what alerting watches), and returns a clear
+error. The keyword-match mock that used to run here fabricated $786 of labour for gibberish and
+made a quota outage look like poor quality. **Never add a mock, keyword fallback, or substitute
+output to any AI path** — a visible failure gets fixed; a plausible substitute gets sent to a
+customer. Prompts are the same: `loadPrompt(name)` throws on a missing file instead of falling
+back to inline text.
 
 ## Changing prompts
 
@@ -99,7 +101,10 @@ keyword-matched quotes to real customers is worse than an error.
    repair, a multi-option roofing quote.
 3. Check it still returns valid JSON under the schema.
 4. Check it still refuses to invent items — give it a description with no catalog match and
-   confirm it degrades gracefully rather than fabricating.
+   confirm it names the gap in `unmet` rather than fabricating. Also feed it a placeholder
+   ("Quote") and gibberish: both must refuse, not draft.
+   The manual eval harness does all of this against the real model:
+   `npx vitest run --config vitest.eval.config.ts`
 5. Note the before/after in the PR. Prompt changes are behaviour changes.
 
 The `ai_prompts` table exists for versioning prompts per company. It's barely used; if you build
@@ -112,24 +117,26 @@ shape:
 
 ```ts
 export async function doThing(input: {...}): Promise<{ ...; mode: string }> {
-  if (!aiEnabled()) return { /* degraded result */, mode: 'mock' }
+  if (!aiEnabled()) throw new AiUnavailableError('no Gemini credentials are configured')
 
-  const result = await generateJson({ system: loadPrompt('thing.md', FALLBACK), contents, schema })
-  if (!result) return { /* degraded result */, mode: 'mock' }
-  // ...
+  const result = await generateJson({ system: loadPrompt('thing.md'), contents, schema })
+  if (!result) throw new AiUnavailableError('every model failed or returned nothing')
+  // ... return { ..., mode: `gemini:${result.model}` }
 }
 ```
+
+The server action catches `AiUnavailableError`, records the failed run, and returns
+`{ ok: false, error }` with a message that names the real problem. No mock results.
 
 Rules that are not optional:
 
 - **Never trust a number the model returns.** Resolve it against the database, as `quote.ts`
   does. This applies to prices, quantities against stock, dates against a calendar.
-- **Every function returns `mode`.** `gemini:<model>` or `mock`. The UI and production alerting
-  both read it.
-- **Decide what a failure means before you write it.** Quoting falls back to keyword matching
-  because a rough quote beats no quote. The customer summary returns an empty string because a
-  fabricated explanation reaches a homeowner as the contractor's own words. Both are deliberate;
-  copy the reasoning, not one of the answers.
+- **Every function returns `mode`.** Always `gemini:<model>` on success; the run log and
+  alerting read it. Failure is a thrown `AiUnavailableError`, never a substitute result.
+- **A failure is an error the user sees.** Nothing here degrades to a rough answer: a rough
+  quote a contractor sends is a price they must honour, and a fabricated explanation reaches a
+  homeowner as the contractor's own words. Fail hard, record the run, name the problem.
 - **The server action owns tenancy.** `companyId` comes from `getSession()` and is passed in.
   Nothing in `src/lib/ai/` should ever read a company id from user input.
 

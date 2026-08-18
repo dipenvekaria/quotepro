@@ -242,9 +242,10 @@ and add the toggle. No schema migration needed if empty-labels means all.
   the app; PostHog is referenced in `env.ts` and not installed. You cannot see where onboarding
   or a quote is abandoned. The AI run log is now complete per quote (#112) but is surfaced nowhere
   — `aiRunsForQuote` has zero callers.
-- **Alert if `ai_mode` is ever `mock` in production** — it means quotes are keyword-matched, not
-  AI, and it fails silently as poor quality. The data is recorded (`status = 'degraded'`); nothing
-  watches it.
+- **Alert on `ai_conversations.status = 'degraded'`** — since the fail-hard change (2026-08-18)
+  there is no mock mode: an unavailable model errors visibly and records a run with
+  `mode: 'unavailable'`. A spike of degraded rows is an outage. The data is recorded; nothing
+  watches it yet.
 - **Uptime monitoring to a phone**, and a **tested backup restore** (not "backups are on" — an
   actual restore into a scratch project, timed). Decide the Supabase PITR tier.
 

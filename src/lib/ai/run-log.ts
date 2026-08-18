@@ -23,7 +23,7 @@ export type AiRun = {
   userId?: string | null
   /** The quote this was for, when it already exists. */
   workItemId?: string | null
-  /** `gemini:<model>` or `mock`. The UI and production alerting both read this. */
+  /** `gemini:<model>`, or `unavailable` when generation failed hard. Alerting reads this. */
   mode: string
   purpose: string
   prompt: string
@@ -81,10 +81,10 @@ export async function recordAiRun(run: AiRun): Promise<void> {
         run.usage?.output ?? 0,
         estimateCostUsd(run.usage),
         run.latencyMs ?? null,
-        // `mock` means the keyword matcher ran, not Gemini. Recorded as a
-        // degraded run rather than a success so it can be alerted on: silently
-        // shipping keyword-matched quotes to real customers is worse than an
-        // error, because it looks like poor quality instead of an outage.
+        // Anything that is not a real Gemini run is recorded as degraded so it
+        // can be alerted on. Since the fail-hard change this means
+        // `unavailable` — the contractor saw an error and nothing was drafted;
+        // a spike here is an outage, not a quality problem.
         run.mode.startsWith('gemini') ? 'success' : 'degraded',
         JSON.stringify({ mode: run.mode }),
       ],
