@@ -148,9 +148,35 @@ export default async function PipelinePage({
           }))}
           assignee={assignee}
           initialTerm={term}
-          count={workItems.length}
         />
       </div>
+
+      {/* One thumb-tap to any stage. On a phone the stages stack vertically,
+          and at real volume (19 quotes and counting) reaching "Scheduled" was
+          a marathon scroll. Sticky, with the true stage counts. */}
+      {total > 0 && (
+        <nav
+          aria-label="Jump to stage"
+          className="sticky top-0 z-30 -mx-4 mt-4 border-b border-border/60 bg-background/95 px-4 py-2 backdrop-blur sm:hidden"
+        >
+          <div className="flex gap-1.5 overflow-x-auto">
+            {COLUMNS.map((col) => {
+              const n = countFor(col.statuses)
+              return (
+                <a
+                  key={col.key}
+                  href={`#stage-${col.key}`}
+                  className="flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-border/70 bg-card px-3 text-xs font-medium"
+                >
+                  <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
+                  {col.label}
+                  <span className="tabular text-muted-foreground">{n}</span>
+                </a>
+              )
+            })}
+          </div>
+        </nav>
+      )}
 
       {/* Board */}
       {total === 0 ? (
@@ -187,7 +213,7 @@ export default async function PipelinePage({
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
             const trueCount = countFor(col.statuses)
             return (
-              <div key={col.key} className="w-full sm:w-auto sm:min-w-0 sm:max-w-none">
+              <div key={col.key} id={`stage-${col.key}`} className="w-full scroll-mt-16 sm:w-auto sm:min-w-0 sm:max-w-none">
                 <div className="mb-2 flex items-center justify-between border-b border-border/60 px-1 pb-1.5 sm:border-0 sm:pb-0">
                   <div className="flex items-center gap-1.5 text-xs font-medium">
                     <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
@@ -212,6 +238,7 @@ export default async function PipelinePage({
                       key={item.id}
                       id={item.id}
                       status={item.status}
+                      showStatus={col.statuses.length > 1}
                       jobName={item.job_name}
                       description={item.description}
                       customer={customerMap.get(item.customer_id ?? '') ?? 'Unknown customer'}
@@ -238,6 +265,7 @@ export default async function PipelinePage({
 // -----------------------------------------------------------------------------
 
 function PipelineCard({
+  showStatus,
   id,
   status,
   jobName,
@@ -253,6 +281,13 @@ function PipelineCard({
   customer: string
   total: number
   updatedAt: string
+  /**
+   * Chips carry state, and inside a single-status section the header already
+   * states it — a column of cards all chipped "New Lead" under "Leads" says
+   * nothing. Quotes keeps its chips because Draft vs Sent vs Viewed is the
+   * distinction the contractor scans for.
+   */
+  showStatus: boolean
 }) {
   const initials = customer
     .split(' ')
@@ -267,7 +302,11 @@ function PipelineCard({
       className="group block rounded-lg border border-border/70 bg-background p-3 shadow-sm transition-all hover:border-border hover:shadow-card"
     >
       <div className="flex items-start justify-between gap-2">
-        <StatusBadge status={status as never} showIcon={false} className="text-[10px]" />
+        {showStatus ? (
+          <StatusBadge status={status as never} showIcon={false} className="text-[10px]" />
+        ) : (
+          <span />
+        )}
         {total > 0 && (
           <span className="text-xs font-semibold tabular">{fmtMoney(total)}</span>
         )}
