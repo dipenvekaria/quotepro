@@ -429,6 +429,9 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 const tierGenerateSchema = z.object({
   description: z.string().min(3).max(4000),
   tax_rate: z.number().min(0).max(30).optional(),
+  // Present when generating against an existing draft, so the run log keys to
+  // the quote; null on a first draft, exactly like generateSchema.
+  work_item_id: z.string().uuid().nullish(),
 })
 
 export async function generateQuoteTiers(input: unknown) {
@@ -450,6 +453,7 @@ export async function generateQuoteTiers(input: unknown) {
   }
 
   try {
+    const startedAt = Date.now()
     const result = await generateTieredQuote({
       companyId: session.companyId,
       description: parsed.data.description,
@@ -467,6 +471,24 @@ export async function generateQuoteTiers(input: unknown) {
         error: 'Your catalog only supports one honest option for this job.',
       }
     }
+    // The tiers path built quotes with no journey record at all — the audit for
+    // "what did the AI do on this quote, and what did it cost" was blind to the
+    // good/better/best generator while it covered the single-line one.
+    await recordAiRun({
+      companyId: session.companyId,
+      userId: session.userId,
+      workItemId: parsed.data.work_item_id,
+      mode: result.mode,
+      purpose: 'quote_tiers',
+      prompt: parsed.data.description,
+      result: {
+        tiers: result.tiers.length,
+        items: result.tiers.reduce((n, t) => n + t.line_items.length, 0),
+        names: result.tiers.map((t) => t.name),
+      },
+      usage: result.usage,
+      latencyMs: Date.now() - startedAt,
+    })
     return { ok: true as const, data: result }
   } catch (e) {
     if (e instanceof NoTierCatalogError) {
