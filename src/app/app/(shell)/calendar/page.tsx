@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
-import { companyTz, startOfDayUtc, zonedDayKey, zonedHour } from '@/lib/time'
+import { startOfDayUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { CalendarBoard, type BoardJob } from './calendar-board'
 import { WeekGrid } from './week-grid'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
@@ -35,7 +35,8 @@ export default async function CalendarPage({
 }: {
   searchParams: Promise<{ view?: string; date?: string; week?: string; assignee?: string; role?: string }>
 }) {
-  const { companyId, userId, role } = await requireSession()
+  const session = await requireSession()
+  const { companyId, userId, role } = session
   // "Only sees their own schedule" is what permissions.ts already promised.
   const scope = workItemScope({ companyId, userId, role: role as UserRole }, 3)
 
@@ -98,11 +99,7 @@ export default async function CalendarPage({
   // Query window: the visible week, or the full 6-week grid for a month —
   // bounded by the COMPANY's midnights, not the UTC server's. With server-local
   // boundaries a Sunday-evening job fell outside the queried week entirely.
-  const [tzRow] = await query<{ settings: unknown }>(
-    'select settings from companies where id = $1 limit 1',
-    [companyId],
-  )
-  const tz = companyTz(tzRow?.settings)
+  const tz = session.timezone
   const rangeStart = zonedWeekStart(tz, view === 'month' ? zonedMonthStart(tz, anchor) : anchor)
   const days = view === 'month' ? 42 : 7
   const rangeEnd = startOfDayUtc(tz, new Date(rangeStart.getTime() + days * 86_400_000 + 12 * 3_600_000))
@@ -352,6 +349,7 @@ export default async function CalendarPage({
         <>
           {view === 'week' ? (
             <WeekGrid
+              tz={tz}
               days={boardDays}
               jobs={boardJobs}
               legs={legs}

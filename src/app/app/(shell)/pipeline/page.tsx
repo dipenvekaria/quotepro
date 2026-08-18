@@ -60,7 +60,10 @@ export default async function PipelinePage({
        from work_items w
        left join customers c on c.id = w.customer_id
       where w.company_id = $1
-        and w.status <> 'archived'${scope.sql}${
+        and (
+          w.status in ('lead','quote_draft','quote_sent','quote_viewed','quote_accepted','job_scheduled','job_in_progress')
+          or (w.status = 'job_completed' and w.updated_at >= now() - interval '21 days')
+        )${scope.sql}${
           assignee ? ` and w.assigned_to = $${2 + scope.params.length}` : ''
         }${
           term
@@ -80,6 +83,22 @@ export default async function PipelinePage({
       ...(term ? [term] : []),
     ],
   )
+
+  /*
+    True stage totals, independent of the row window. A 100-jobs-a-week shop
+    fills any fetch cap; the rows above stay bounded (completed shows 21 days)
+    while these numbers stay honest, so the header never lies about volume.
+  */
+  const statusCounts = await query<{ status: string; n: number }>(
+    `select w.status, count(*)::int as n
+       from work_items w
+      where w.company_id = $1
+        and w.status not in ('archived','quote_rejected','quote_expired')${scope.sql}
+      group by w.status`,
+    [companyId, ...scope.params],
+  )
+  const countFor = (statuses: string[]) =>
+    statusCounts.filter((r) => statuses.includes(r.status)).reduce((s, r) => s + r.n, 0)
 
   // Only owners and office can hand work out, so only they get a person picker.
   const team = canAssignWork(role as UserRole)
@@ -166,6 +185,7 @@ export default async function PipelinePage({
           {COLUMNS.map((col) => {
             const items = grouped[col.key] ?? []
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
+            const trueCount = countFor(col.statuses)
             return (
               <div key={col.key} className="w-full sm:w-auto sm:min-w-0 sm:max-w-none">
                 <div className="mb-2 flex items-center justify-between border-b border-border/60 px-1 pb-1.5 sm:border-0 sm:pb-0">
@@ -173,8 +193,11 @@ export default async function PipelinePage({
                     <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
                     {col.label}
                     <span className="ml-1 rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
-                      {items.length}
+                      {trueCount}
                     </span>
+                    {col.key === 'closed' && trueCount > items.length && (
+                      <span className="text-[10px] text-muted-foreground">· 21d shown</span>
+                    )}
                   </div>
                   {value > 0 && (
                     <span className="text-[11px] font-medium tabular text-muted-foreground">

@@ -10,6 +10,59 @@ than tested, it says so. Findings are ordered by what an attacker or an accident
 > document. Describe a weakness precisely enough to fix and never precisely enough to locate —
 > anything more belongs in a private issue.
 
+---
+
+## 2026-08-18 — follow-up review
+
+Scope: server actions, `/api` routes, public token routes, role gates, tenancy. One finding,
+**confirmed by running it against a production build**, and fixed in the same change. It revises
+the 2026-08-15 summary line below: a cross-tenant read *was* reachable — through a server action,
+not a raw SQL statement, which is why the tenancy scanner never saw it.
+
+### Fixed: any signed-in user could read any company's private home photos — `listQuotePhotos`
+
+`listQuotePhotos(workItemId, companyId)` in `pipeline/[id]/photo-actions.ts` took the tenant as an
+**argument** and trusted it — no `getSession()`, no ownership check. Because it lived in a
+`'use server'` file, Next.js registered it as a callable endpoint (confirmed in the build's
+server-reference manifest): every export in such a file is reachable by a direct POST from any
+signed-in user, regardless of which route imports it. The one legitimate caller, the detail page,
+passed its own session `companyId`; nothing made the caller do so.
+
+Both ids it needs are handed out freely. The public quote viewer at `/q/{token}` serializes
+`quote.id` (the work-item id) and `quote.companies.id` (the company id) straight into the page
+payload — so anyone who opens a quote link, which the codebase everywhere assumes get forwarded,
+has them. Signup is self-serve, so the "signed-in user" bar is: make an account.
+
+**Failure scenario, reproduced.** A homeowner forwards their quote link. The recipient reads the
+two ids out of the page source, signs up for a free Rivet account (becoming owner of their own new
+company), and POSTs those ids to the `listQuotePhotos` action id. It returns the photo rows for
+that other company's quote, each with a freshly minted signed URL — photographs of the inside of a
+stranger's home, which the private-bucket work of 2026-08-15 (finding #3) had just finished
+protecting from exactly this. Proven end to end: a Northside owner calling the action with Acme's
+ids received Acme's photo row (`caption: "INSIDE OF CUSTOMER BASEMENT"`); the same call after the
+fix returns `[]`, while an Acme user still sees the photo.
+
+**Fix.** The action now derives `companyId` from `getSession()` and drops the parameter, and it
+verifies the work item is visible under the caller's role with the same `workItemScope` the detail
+page applies — so a technician cannot read photos on a job they were never assigned to, in their
+own company or anyone else's. The single caller was updated to `listQuotePhotos(id)`.
+
+**Why the scanner missed it, and the guard added.** `tests/tenancy.test.ts` matches
+`await query(...)` and checks each statement carries a `company_id` predicate. This statement did
+carry one — `where work_item_id = $1 and company_id = $2` — but `$2` was attacker-controlled, and
+the scanner cannot see provenance. The leak was in the *signature*, not the SQL. New static guard
+`tests/server-actions-derive-company.test.ts` scans every `'use server'` file and fails if any
+exported action takes a `companyId` parameter — the tenant must come from the session, never the
+caller. It fails on the old signature and passes on the new one.
+
+The rest of the surface reviewed this pass held: the three Stripe routes and the sign/cron routes
+authenticate themselves (signature, token, or bearer secret); the public `/q` `/i` `/join` routes
+are token-scoped; the dashboard now withholds money by role *in the query* (`seesMoney`), closing
+the earlier revenue-to-technician leak; the AI assistant tools gate every read by role. Photos are
+private-bucket + signed URLs as of 2026-08-15, and the sign and AI actions are rate-limited.
+
+---
+
 ## Summary
 
 There is no cross-tenant data leak reachable today, and that is not luck — the hand-written

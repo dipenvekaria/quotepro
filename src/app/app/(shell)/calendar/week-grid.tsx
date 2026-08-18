@@ -13,7 +13,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { StatusBadge } from '@/components/shared/status-badge'
-import { dayKey, toDateTimeLocal } from '@/lib/scheduling/day'
+import { toDateTimeLocal } from '@/lib/scheduling/day'
+import { zonedDayKey, zonedParts } from '@/lib/time'
 import { formatTravel } from '@/lib/scheduling/travel-format'
 import type { JobLeg } from '@/lib/scheduling/legs'
 import { cn } from '@/lib/utils'
@@ -47,6 +48,7 @@ export function WeekGrid({
   canReschedule,
   dayStartHour,
   dayEndHour,
+  tz,
 }: {
   days: { date: string }[]
   jobs: BoardJob[]
@@ -56,6 +58,13 @@ export function WeekGrid({
   /** Business hours, so the grid shows the working day rather than midnight. */
   dayStartHour: number
   dayEndHour: number
+  /**
+   * The company's timezone. Positions and day keys are computed in it on the
+   * server AND the client — browser-local getters here hydrated differently on
+   * the UTC server and threw the whole tree away on every load, and put a
+   * 7:26pm job at 12am for any viewer in another zone.
+   */
+  tz: string
 }) {
   const router = useRouter()
   const [dragging, setDragging] = useState<BoardJob | null>(null)
@@ -66,6 +75,7 @@ export function WeekGrid({
   // A drag must not also register as a click, or every move opens the dialog.
   const draggedRef = useRef(false)
 
+  const [todayKey] = useState(() => zonedDayKey(new Date(), tz))
   const startMin = dayStartHour * 60
   const endMin = dayEndHour * 60
   const slots = Math.max(1, Math.round((endMin - startMin) / SLOT_MINUTES))
@@ -79,12 +89,12 @@ export function WeekGrid({
     () =>
       days.map((d) => {
         const date = new Date(d.date)
-        const key = dayKey(date)
+        const key = zonedDayKey(date, tz)
         return {
           key,
           date,
           jobs: jobs
-            .filter((j) => dayKey(startOf(j)) === key)
+            .filter((j) => zonedDayKey(startOf(j), tz) === key)
             .sort((a, b) => startOf(a).getTime() - startOf(b).getTime()),
         }
       }),
@@ -118,7 +128,7 @@ export function WeekGrid({
           return
         }
         toast.success(
-          `Moved to ${next.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} at ${next.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`,
+          `Moved to ${next.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: tz })} at ${next.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })}`,
         )
         router.refresh()
       })
@@ -132,9 +142,10 @@ export function WeekGrid({
     setHovered(null)
     if (!job || !canReschedule) return
 
-    const next = new Date(day)
+    // `day` is the column's company-midnight instant; the slot offset lands on
+    // the company's wall clock no matter whose browser is doing the dragging.
     const minutes = startMin + slotIndex * SLOT_MINUTES
-    next.setHours(Math.floor(minutes / 60), minutes % 60, 0, 0)
+    const next = new Date(day.getTime() + minutes * 60_000)
     applyReschedule(job, next)
   }
 
@@ -153,11 +164,11 @@ export function WeekGrid({
           >
             <div />
             {columns.map((c) => {
-              const isToday = c.key === dayKey(new Date())
+              const isToday = c.key === todayKey
               return (
                 <div key={c.key} className="border-l border-border/60 px-2 py-2 text-center">
                   <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                    {c.date.toLocaleDateString('en-US', { weekday: 'short' })}
+                    {c.date.toLocaleDateString('en-US', { weekday: 'short', timeZone: tz })}
                   </div>
                   <div
                     className={cn(
@@ -165,7 +176,7 @@ export function WeekGrid({
                       isToday && 'text-primary',
                     )}
                   >
-                    {c.date.getDate()}
+                    {Number(c.key.slice(8))}
                   </div>
                 </div>
               )
@@ -221,7 +232,8 @@ export function WeekGrid({
                 {/* Jobs, positioned against the clock */}
                 {col.jobs.map((job) => {
                   const s = startOf(job)
-                  const offsetMin = s.getHours() * 60 + s.getMinutes() - startMin
+                  const p = zonedParts(s, tz)
+                  const offsetMin = p.h * 60 + p.min - startMin
                   const hours = job.estimated_hours ?? 1
                   const top = (offsetMin / SLOT_MINUTES) * SLOT_PX
                   const height = Math.max(SLOT_PX, (hours * 60 / SLOT_MINUTES) * SLOT_PX)
@@ -281,7 +293,7 @@ export function WeekGrid({
                         {job.customer_name ?? 'Job'}
                       </div>
                       <div className="truncate text-[10px] leading-tight text-muted-foreground">
-                        {s.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        {s.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })}
                         {job.estimated_hours ? ` · ${job.estimated_hours}h` : ''}
                       </div>
                     </button>
@@ -295,6 +307,7 @@ export function WeekGrid({
 
       <JobDialog
         job={open}
+        tz={tz}
         canReschedule={canReschedule}
         onReschedule={applyReschedule}
         onClose={() => setOpen(null)}
@@ -308,11 +321,13 @@ export function WeekGrid({
 /** What you need before deciding whether to move a job or ring the customer. */
 function JobDialog({
   job,
+  tz,
   canReschedule,
   onReschedule,
   onClose,
 }: {
   job: BoardJob | null
+  tz: string
   canReschedule: boolean
   onReschedule: (job: BoardJob, next: Date, onDone?: () => void) => void
   onClose: () => void
@@ -336,8 +351,9 @@ function JobDialog({
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',
+                timeZone: tz,
               })}{' '}
-              at {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+              at {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })}
               {job.estimated_hours ? ` · ${job.estimated_hours}h` : ''}
             </Row>
             {job.place && <Row icon={<MapPin className="h-3.5 w-3.5" />}>{job.place}</Row>}

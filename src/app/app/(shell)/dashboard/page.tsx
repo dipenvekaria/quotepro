@@ -21,7 +21,7 @@ import {
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
-import { companyTz, dayRangeUtc, zonedDayKey, zonedHour } from '@/lib/time'
+import { dayRangeUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { canSeeAnalytics, workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
@@ -33,7 +33,8 @@ import { SendRemindersButton } from './send-reminders-button'
 // ---------------------------------------------------------------------------
 
 export default async function DashboardPage() {
-  const { email, companyId, profile, userId, role } = await requireSession()
+  const session = await requireSession()
+  const { email, companyId, profile, userId, role } = session
 
   /*
     This page read no role at all, and it is where everyone lands after signing
@@ -61,17 +62,9 @@ export default async function DashboardPage() {
   const emailLocal = (email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
   const rawFirst = (fullName || emailLocal || 'there').split(' ')[0]
   const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : 'there'
-  /*
-    Day boundaries in the CONTRACTOR'S timezone, not the server's. Vercel runs
-    UTC, so the naive setHours(0,0,0,0) flipped every US dashboard to tomorrow
-    from mid-afternoon: "Today's schedule" queried tomorrow's jobs and the date
-    header was a day ahead. companies.settings carried the zone all along.
-  */
-  const [tzRow] = await query<{ settings: unknown }>(
-    'select settings from companies where id = $1 limit 1',
-    [companyId],
-  )
-  const tz = companyTz(tzRow?.settings)
+  // Day boundaries in the CONTRACTOR'S timezone, not the UTC server's — the
+  // zone now rides on the session, so it costs no extra round trip here.
+  const tz = session.timezone
   const now = new Date()
   const todayIso = zonedDayKey(now, tz)
   const { start: dayStart, end: dayEnd } = dayRangeUtc(tz, now)
