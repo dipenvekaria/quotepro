@@ -129,13 +129,22 @@ export async function addLineItem(ctx: ToolContext, catalogItemId: string, quant
 export async function updateLineItem(
   ctx: ToolContext,
   lineId: string,
-  changes: { quantity?: number; unit_price?: number },
+  changes: { quantity?: number; unit_price?: number; name?: string; description?: string },
 ) {
   await assertOwned(ctx)
+  // `name` is here because a contractor renames lines — "rename the discount
+  // to Manager Special" — and without it the model called this tool six times
+  // with a name field the schema silently stripped, every call a successful
+  // no-op. A label is the contractor's own words on their own quote; renaming
+  // never touches the price, which still only comes from the catalog or an
+  // explicit price change.
+  const name = changes.name?.trim()
   const [row] = await query<{ id: string; name: string; quantity: number; unit_price: number }>(
     `update quote_items qi
-        set quantity   = coalesce($3::numeric, qi.quantity),
-            unit_price = coalesce($4::numeric, qi.unit_price)
+        set quantity    = coalesce($3::numeric, qi.quantity),
+            unit_price  = coalesce($4::numeric, qi.unit_price),
+            name        = coalesce($6, qi.name),
+            description = coalesce($7, qi.description)
       from work_items w
      where qi.id = $1 and qi.work_item_id = $2
        and w.id = qi.work_item_id and w.company_id = $5
@@ -146,6 +155,8 @@ export async function updateLineItem(
       changes.quantity ?? null,
       changes.unit_price ?? null,
       ctx.companyId,
+      name && name.length > 0 ? name.slice(0, 300) : null,
+      changes.description !== undefined ? changes.description.slice(0, 1000) : null,
     ],
   )
   if (!row) throw new Error('that line is not on this quote')

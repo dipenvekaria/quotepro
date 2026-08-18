@@ -93,6 +93,19 @@ describe('agent edit — surgical across iterations', () => {
     const nest = after3.find((l) => l.name.toLowerCase().includes('nest'))
     expect(Number(nest?.quantity)).toBe(2)
 
+    // Turn 4 — the production repro: rename the discount. Before the fix the
+    // model called update_line_item six times, every one a no-op (the schema
+    // had no name field), and replied nothing.
+    const t4 = await runQuoteTurn(ctx, USER, 'Rename the discount to "Manager Special 10% discount"')
+    log(`\n[turn 4 reply] ${t4.reply}`)
+    log(`[turn 4 tools] ${t4.toolCalls.join(', ')}`)
+    const after4 = await lines()
+    show('AFTER TURN 4', after4)
+    const renamed = after4.find((l) => l.is_discount)
+    expect(renamed?.name).toBe('Manager Special 10% discount')
+    expect(Number(renamed?.unit_price)).toBeCloseTo(-(sub1 * 0.1), 1)
+    expect(t4.reply.length, 'the reply must not be empty').toBeGreaterThan(0)
+
     // Session continuity — one ADK session for the quote, holding all turns.
     const sess = await query<{ n: string; turns: number }>(
       `select count(*)::text as n, max(jsonb_array_length(messages)) as turns

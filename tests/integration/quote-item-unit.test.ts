@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
-import { addLineItem } from '@/lib/ai/quote-tools'
+import { addLineItem, updateLineItem } from '@/lib/ai/quote-tools'
 import { query } from '@/lib/db'
 
 import { createCompany, createCustomer, createWorkItem, type TestCompany } from './fixtures'
@@ -36,6 +36,23 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (co?.id) await query('delete from companies where id = $1', [co.id])
+})
+
+describe('agent update_line_item', () => {
+  it('renames a line — the fix for six no-op updates on a rename ask', async () => {
+    const ctx = { companyId: co.id, workItemId }
+    const added = await addLineItem(ctx, catalogItemId, 1)
+    const renamed = await updateLineItem(ctx, added.id, { name: 'Manager Special 10% discount' })
+    expect(renamed.name).toBe('Manager Special 10% discount')
+
+    const [row] = await query<{ name: string; unit_price: number }>(
+      'select name, unit_price from quote_items where id = $1',
+      [added.id],
+    )
+    expect(row.name).toBe('Manager Special 10% discount')
+    // A rename must never move the price.
+    expect(Number(row.unit_price)).toBe(1650)
+  })
 })
 
 describe('agent add_line_item', () => {
