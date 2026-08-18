@@ -62,13 +62,30 @@ function withoutCertVerification(url: string | undefined) {
 
 const globalForDb = globalThis as unknown as { __pgPool?: Pool }
 
-const pool =
-  globalForDb.__pgPool ??
-  new Pool({
+function makePool() {
+  const p = new Pool({
     connectionString: withoutCertVerification(connectionString),
-    max: 5,
+    // The dashboard alone issues 6 parallel queries per render; one instance
+    // serves many concurrent requests under Fluid Compute. Supavisor multiplexes
+    // client connections, so 10 here is cheap.
+    max: 10,
+    // Without this, pool.connect() waits forever when the pool is saturated or
+    // Postgres is slow — the user sees a hang until the function limit kills
+    // the request. Fail fast instead; the error names the real problem.
+    connectionTimeoutMillis: 5_000,
     ssl: isLocal ? undefined : { rejectUnauthorized: false },
   })
+  // An idle client that loses its connection (pooler restart, failover, admin
+  // kill) emits 'error' on the pool. With no listener, Node treats it as an
+  // uncaught exception and kills the whole process — every in-flight request
+  // on the instance 500s because a connection *nobody was using* dropped.
+  p.on('error', (err) => {
+    console.error('pg pool: idle client error', err instanceof Error ? err.message : err)
+  })
+  return p
+}
+
+const pool = globalForDb.__pgPool ?? makePool()
 
 if (process.env.NODE_ENV !== 'production') globalForDb.__pgPool = pool
 
