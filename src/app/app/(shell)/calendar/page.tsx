@@ -5,6 +5,7 @@ import { requireSession } from '@/lib/auth/session'
 import { startOfDayUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { CalendarBoard, type BoardJob } from './calendar-board'
 import { WeekGrid } from './week-grid'
+import { MobileAgenda } from './mobile-agenda'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 import { computeLegs } from '@/lib/scheduling/legs'
@@ -267,7 +268,7 @@ export default async function CalendarPage({
             <Link
               href={hrefFor(anchor, 'week')}
               className={cn(
-                'rounded px-3 py-1.5 text-xs font-medium transition-colors',
+                'flex h-10 items-center rounded px-3 text-xs font-medium transition-colors sm:h-7',
                 view === 'week' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
               )}
             >
@@ -276,7 +277,7 @@ export default async function CalendarPage({
             <Link
               href={hrefFor(anchor, 'month')}
               className={cn(
-                'rounded px-3 py-1.5 text-xs font-medium transition-colors',
+                'flex h-10 items-center rounded px-3 text-xs font-medium transition-colors sm:h-7',
                 view === 'month' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground',
               )}
             >
@@ -286,20 +287,21 @@ export default async function CalendarPage({
           <div className="flex items-center gap-1 rounded-md border border-border bg-card p-0.5 shadow-sm">
             <Link
               href={hrefFor(prev)}
-              className="grid h-8 w-8 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+              aria-label="Previous"
+              className="grid h-10 w-10 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground sm:h-8 sm:w-8"
             >
               <ChevronLeft className="h-4 w-4" />
             </Link>
             <Link
               href={`/app/calendar?view=${view}`}
-              className="rounded px-3 text-xs font-medium hover:bg-muted"
-              style={{ lineHeight: '32px' }}
+              className="flex h-10 items-center rounded px-3 text-xs font-medium hover:bg-muted sm:h-8"
             >
               Today
             </Link>
             <Link
               href={hrefFor(next)}
-              className="grid h-8 w-8 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+              aria-label="Next"
+              className="grid h-10 w-10 place-items-center rounded text-muted-foreground hover:bg-muted hover:text-foreground sm:h-8 sm:w-8"
             >
               <ChevronRight className="h-4 w-4" />
             </Link>
@@ -347,24 +349,32 @@ export default async function CalendarPage({
         </div>
       ) : (
         <>
-          {view === 'week' ? (
-            <WeekGrid
-              tz={tz}
-              days={boardDays}
-              jobs={boardJobs}
-              legs={legs}
-              canReschedule={canAssignWork(role as UserRole)}
-              dayStartHour={gridStart}
-              dayEndHour={gridEnd}
-            />
-          ) : (
-            <CalendarBoard
-              days={boardDays}
-              jobs={boardJobs}
-              canReschedule={canAssignWork(role as UserRole)}
-              view={view}
-            />
-          )}
+          {/* Phones get an agenda — the grid is desktop furniture at 375px,
+              and drag-to-reschedule was never usable by touch anyway. */}
+          <div className="mt-4 sm:hidden">
+            <MobileAgenda tz={tz} days={boardDays} jobs={boardJobs} legs={legs} />
+          </div>
+          <div className="hidden sm:block">
+            {view === 'week' ? (
+              <WeekGrid
+                tz={tz}
+                days={boardDays}
+                jobs={boardJobs}
+                legs={legs}
+                canReschedule={canAssignWork(role as UserRole)}
+                dayStartHour={gridStart}
+                dayEndHour={gridEnd}
+              />
+            ) : (
+              <CalendarBoard
+                tz={tz}
+                days={boardDays}
+                jobs={boardJobs}
+                canReschedule={canAssignWork(role as UserRole)}
+                view={view}
+              />
+            )}
+          </div>
         </>
       )}
     </div>

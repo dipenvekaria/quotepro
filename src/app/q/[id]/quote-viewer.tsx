@@ -129,10 +129,13 @@ export function QuoteViewer({
     return { tone: 'quiet' as const, label: `Valid until ${formatDateShort(quote.expires_at)}` }
   })()
 
-  // Good/better/best. The middle option is pre-selected — the point of showing
-  // three is that the customer chooses a level of work, not whether to proceed,
-  // and an unselected set of columns puts them back on that yes/no decision.
-  const hasOptions = options.length >= 2
+  // Good/better/best — legacy: new quotes no longer create options, but sent
+  // links must keep rendering. Only trust the options when the live items are
+  // actually tiered: a quote whose lines were later edited flat still has the
+  // option rows, and rendering three columns over untiered items showed the
+  // customer three empty $0.00 choices. The real quote is the items.
+  const anyTieredItems = items.some((i) => i.option_tier)
+  const hasOptions = options.length >= 2 && anyTieredItems
   const [chosenTier, setChosenTier] = useState<string>(() => {
     if (options.length === 0) return ''
     const already = options.find((o) => o.is_selected)
@@ -142,7 +145,7 @@ export function QuoteViewer({
 
   // With options, the quote shows the chosen column; without, everything.
   const visibleItems = hasOptions ? items.filter((i) => i.option_tier === chosenTier) : items
-  const chosenOption = options.find((o) => o.tier === chosenTier)
+  const chosenOption = hasOptions ? options.find((o) => o.tier === chosenTier) : undefined
 
   const photosFor = (itemId: string) => photos.filter((p) => p.quote_item_id === itemId)
   const generalPhotos = photos.filter((p) => !p.quote_item_id)

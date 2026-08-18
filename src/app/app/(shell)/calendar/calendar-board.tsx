@@ -7,7 +7,7 @@ import { Clock, MapPin } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { StatusBadge } from '@/components/shared/status-badge'
-import { dayKey, moveToDay } from '@/lib/scheduling/day'
+import { zonedDayKey } from '@/lib/time'
 import { cn } from '@/lib/utils'
 
 import { rescheduleJob } from './actions'
@@ -36,11 +36,14 @@ export type BoardJob = {
  * feature.
  */
 export function CalendarBoard({
+  tz,
   days,
   jobs: allJobs,
   canReschedule,
   view,
 }: {
+  /** Company timezone — every key and label on the board derives in it. */
+  tz: string
   /** ISO timestamps for each column. Keys are derived here, not sent. */
   days: { date: string }[]
   jobs: BoardJob[]
@@ -54,13 +57,16 @@ export function CalendarBoard({
   // Moved jobs render in their new column immediately; the server confirms after.
   const [moved, setMoved] = useState<Record<string, string>>({})
 
-  // Every key on this board — columns and jobs alike — comes from dayKey, in
-  // the browser. See src/lib/scheduling/day.ts for why that matters.
+  // Every key on this board — columns and jobs alike — is derived in the
+  // company timezone. Browser-local dayKey hydrated differently than the UTC
+  // server render (a 7pm job was the next UTC day), so the whole board
+  // regenerated on load and jobs sat in the wrong column.
   function dayOf(job: BoardJob) {
-    return moved[job.id] ?? dayKey(job.scheduled_start)
+    return moved[job.id] ?? zonedDayKey(new Date(job.scheduled_start), tz)
   }
 
-  const todayKey = dayKey(new Date())
+  // useState initializer: read the clock once, not on every render.
+  const [todayKey] = useState(() => zonedDayKey(new Date(), tz))
 
   function drop(targetDay: string) {
     const job = dragging
@@ -68,8 +74,14 @@ export function CalendarBoard({
     setOver(null)
     if (!job || dayOf(job) === targetDay) return
 
-    const next = moveToDay(job.scheduled_start, targetDay)
+    // Whole days between two company-tz day keys. moveToDay would reinterpret
+    // the target in the browser's timezone, which is not always the company's;
+    // shifting the instant by whole days keeps the wall-clock time except
+    // across a DST switch, where it drifts an hour — visible and correctable,
+    // unlike landing on the wrong day.
     const previousDay = dayOf(job)
+    const deltaDays = Math.round((Date.parse(targetDay) - Date.parse(previousDay)) / 86_400_000)
+    const next = new Date(new Date(job.scheduled_start).getTime() + deltaDays * 86_400_000)
     setMoved((prev) => ({ ...prev, [job.id]: targetDay }))
 
     startMove(async () => {
@@ -80,7 +92,7 @@ export function CalendarBoard({
         toast.error(res.error)
         return
       }
-      toast.success(`Moved to ${next.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}`)
+      toast.success(`Moved to ${next.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: tz })}`)
       router.refresh()
     })
   }
@@ -104,11 +116,11 @@ export function CalendarBoard({
     >
       {days.map((raw) => {
         const d = new Date(raw.date)
-        const key = dayKey(d)
+        const key = zonedDayKey(d, tz)
         const day = {
           key,
-          label: d.toLocaleDateString('en-US', { weekday: 'short' }),
-          dayNumber: d.getDate(),
+          label: d.toLocaleDateString('en-US', { weekday: 'short', timeZone: tz }),
+          dayNumber: Number(key.slice(8)),
           isToday: key === todayKey,
         }
         const jobs = grouped[day.key] ?? []

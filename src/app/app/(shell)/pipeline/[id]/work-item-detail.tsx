@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState, useTransition } from 'react'
+import { useMemo, useState, useSyncExternalStore, useTransition } from 'react'
 import {
   Sparkles,
   ArrowLeft,
@@ -101,6 +101,8 @@ type WorkItem = {
   assignee: { email: string; profile: { full_name?: string } | null } | null
 }
 
+const emptySubscribe = () => () => {}
+
 type Teammate = { id: string; name: string }
 
 export type Invoice = {
@@ -169,6 +171,7 @@ export function WorkItemDetail({
   payments,
   photos,
   timeline,
+  tz,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
@@ -176,13 +179,13 @@ export function WorkItemDetail({
   invoice: Invoice | null
   payments: Payment[]
   photos: QuotePhoto[]
+  tz: string
   timeline: TimelineEntry[]
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
   const [drafting, startDraft] = useTransition()
   const [description, setDescription] = useState(workItem.description ?? '')
-  const [notes, setNotes] = useState(workItem.notes ?? '')
 
   const [savingItems, startItemsSave] = useTransition()
   const [savingMeta, startMetaSave] = useTransition()
@@ -233,9 +236,12 @@ export function WorkItemDetail({
     : computed
 
   const actions = STATUS_ACTIONS[workItem.status] ?? []
-  const publicUrl = typeof window === 'undefined'
-    ? ''
-    : `${window.location.origin}/q/${workItem.public_token}`
+  // Two-pass on purpose: the server (and the hydration pass, via the server
+  // snapshot) render '', then the client fills the real origin. Reading
+  // window.origin directly during render was a hydration mismatch that
+  // regenerated the whole detail tree on every load.
+  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false)
+  const publicUrl = isClient ? `${window.location.origin}/q/${workItem.public_token}` : ''
 
   // -----------------------------------------------------------------------
 
@@ -338,7 +344,6 @@ export function WorkItemDetail({
       const res = await updateWorkItem({
         id: workItem.id,
         description,
-        notes,
       })
       if (!res.ok) {
         toast.error(res.error)
@@ -531,6 +536,21 @@ export function WorkItemDetail({
             </Button>
           ) : (
             <>
+              {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
+                <Button
+                  onClick={doSend}
+                  disabled={transitioning}
+                  variant="outline"
+                  className="gap-1.5"
+                >
+                  {transitioning ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Send className="h-3.5 w-3.5" />
+                  )}
+                  Resend quote
+                </Button>
+              )}
               {actions.map((a) => (
                 <Button
                   key={a.to}
@@ -601,18 +621,21 @@ export function WorkItemDetail({
                   placeholder="What's the job?"
                 />
               </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                  Internal notes
-                </label>
-                <textarea
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  rows={2}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder="Only visible to your team"
-                />
-              </div>
+              {workItem.notes && (
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                    Internal notes
+                  </label>
+                  {/* Read-only survivor of the old freeform field. New notes go
+                      through the Activity thread, which keeps who-said-what. */}
+                  <p className="whitespace-pre-wrap rounded-md bg-muted/60 px-3 py-2 text-sm">
+                    {workItem.notes}
+                  </p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Team-only. Add new notes in Activity below — they keep author and time.
+                  </p>
+                </div>
+              )}
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
                   <CalendarIcon className="mr-1 inline h-3 w-3" />
@@ -655,6 +678,11 @@ export function WorkItemDetail({
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
+                {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
+                  <span className="text-[11px] text-muted-foreground">
+                    Live — saved changes update the customer link instantly
+                  </span>
+                )}
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-1">
                 <button
@@ -757,7 +785,12 @@ export function WorkItemDetail({
               log was written fall back to the timestamp-derived summary so
               their history does not vanish. */}
           {timeline.length > 0 ? (
-            <ActivityTimeline entries={timeline} />
+            <ActivityTimeline
+              entries={timeline}
+              tz={tz}
+              workItemId={workItem.id}
+              people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
+            />
           ) : (
             <Activity workItem={workItem} />
           )}

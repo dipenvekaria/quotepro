@@ -18,7 +18,7 @@ export default async function WorkItemDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const { companyId, userId, role } = await requireSession()
+  const { companyId, userId, role, timezone } = await requireSession()
 
   // Scoping the board is not enough — a URL is guessable enough to try, and a
   // technician opening a job they were not sent to should get a 404, not
@@ -149,7 +149,10 @@ export default async function WorkItemDetailPage({
     [id],
   )
 
-  const teammates = await query<{ id: string; profile: { full_name?: string } | null }>(
+  const teammates = await query<{
+    id: string
+    profile: { full_name?: string; first_name?: string; last_name?: string } | null
+  }>(
     `select id, profile
        from users
       where company_id = $1 and is_active = true
@@ -195,13 +198,18 @@ export default async function WorkItemDetailPage({
 
   return (
     <WorkItemDetail
+      tz={timezone}
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
       lineItems={(quoteItems ?? []) as LineItem[]}
       photos={photos}
       teammates={
         (teammates ?? []).map((t) => {
-          const p = (t.profile as { full_name?: string } | null)
-          return { id: t.id, name: p?.full_name || 'Teammate' }
+          // Profiles carry first/last, not full_name — resolving only the
+          // latter labelled every author and assignee "Teammate".
+          const p = t.profile
+          const name =
+            p?.full_name || [p?.first_name, p?.last_name].filter(Boolean).join(' ') || 'Teammate'
+          return { id: t.id, name }
         })
       }
       invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}
