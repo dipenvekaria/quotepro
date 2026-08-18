@@ -50,6 +50,20 @@ Already merged to `main`; the first is also verified live in production.
   widened.
 - **Error boundaries for the signed-in app (#111).** A database blip rendered Next's raw crash
   screen. Now recovers with product copy and reports to Sentry.
+- **AI drafting is a conversation (#119).** The dialog keeps the trail — asks as tappable
+  chips, replies beneath, session-hydrated on reopen — and the run log now marks agent edits
+  correctly.
+- **The audit trail exists (#118).** activity_log written at every lifecycle turn and shown as
+  one merged timeline on the quote; the ai_conversations status check was silently rejecting
+  the fail-hard failure records (migration 20260831010000, live in prod).
+- **Retrieval-grounded generation (#117).** The generators no longer ground on the first 80
+  catalog items alphabetically — the cause of 'asked smart thermostat, quoted Programmable' on
+  a real 102-item book. Search leads, alphabetical fills, same token budget.
+- **Fail-hard AI (#115).** No mock or keyword fallback anywhere; AiUnavailableError + clear
+  errors + recorded degraded runs. Standing owner rule.
+- **Agent search, honesty, session scoping (#116).** Word-order-proof keyword search; the agent
+  reports only what its tools did; sessions scoped by purpose so they stop writing into run-log
+  rows.
 - **Logged the good/better/best generation (#112).** The tiers generator built quotes and
   recorded nothing, so the per-quote AI audit was blind to the path that most quotes use — found
   on a real production quote. Now logged and costed; a test asserts every generator logs.
@@ -60,16 +74,10 @@ Already merged to `main`; the first is also verified live in production.
 
 ### Engineering
 
-**1. The AI writes customer-facing copy for work that is not on the quote.** — **VERIFIED**,
-~2h
-`pipeline/[id]/actions.ts:363` passes both `jobDescription` and `lineItems` to `explainQuote`,
-and `prompts/quote-explanation.md` contradicts itself. A quote whose lines carried no duct
-sealing got a public summary that told the customer "the work involves sealing your attic
-ductwork" — and the customer accepted. The same page renders the **raw internal job description**
-(including phrases like "customer also wants…") verbatim on `/q` and `/i`. A hallucinated scope
-the customer accepts is a contract the contractor must honour.
-**Fix:** stop passing `jobDescription` to the summariser; stop rendering `work_items.description`
-on `/q` and `/i`.
+**1. ~~The AI writes customer-facing copy for work that is not on the quote.~~ FIXED (#120).**
+The summariser no longer receives the internal job description (prompt rewritten to
+line-items-only), and `/q` no longer selects — and `/i` no longer renders — the raw internal
+description. `tests/public-quote-honesty.test.ts` pins all three paths.
 
 **2. Half the price book carries a unit that never reaches the quote — and it breaks
 scheduling.** — **VERIFIED**, ~1 day
@@ -82,15 +90,10 @@ majority of every seeded catalog (53% of 9,945 starter items use a non-`each` un
 **Fix:** carry `unit` onto `quote_items`, render it beside quantity everywhere (`/q`, PDF,
 editor), and scale hours by quantity only for `each`/`hour` units.
 
-**3. Every date is the server's clock, not the contractor's.** — **VERIFIED** (found
-independently by two reviewers), ~half a day
-`companies.settings.timezone` is stored and read by nothing. All day-boundary logic uses
-server-local time (`dashboard/page.tsx:63-67,281,767`; `calendar/page.tsx:162`), and Vercel runs
-UTC. From mid-afternoon onward every US contractor's dashboard shows tomorrow's date, "Today's
-schedule" queries tomorrow's jobs, and the greeting is hours off. A technician checking their
-route at 5:30pm sees the wrong day.
-**Fix:** capture a timezone at onboarding (derive it from the address already geocoded); do
-day-boundary maths in it.
+**3. ~~Every date is the server's clock, not the contractor's.~~ FIXED (#121).**
+`src/lib/time.ts` (pure Intl, DST-tested), dashboard + calendar day boundaries in the company
+zone, onboarding captures the browser timezone, Settings gains a timezone select with Detect.
+Verified against a TZ=UTC server: Auckland shows Wednesday while Chicago shows Tuesday morning.
 
 **4. There is no password reset, and the sign-in page says there is.** — **VERIFIED**, ~half a
 day
@@ -143,11 +146,10 @@ is #1, the summary describing off-quote work — same class, still to do.
 
 ### The public front door (a stranger's one unguided attempt, on a phone)
 
-- **The quote/invoice hero does not stack at 375px.** `quote-viewer.tsx:224`,
-  `invoice-viewer.tsx:147` use `flex justify-between` with no stack breakpoint, so the most
-  important paragraph renders in a 127px column and the invoice job description becomes a 15-line
-  ribbon before "Work performed". **VERIFIED, measured.** One class:
-  `flex-col gap-4 sm:flex-row`. ~15 min, highest visual leverage on the page that matters most.
+- ~~**The quote/invoice hero does not stack at 375px.**~~ **FIXED (#120)** along with the meta
+  list (address / quote number / validity), the one-chip rule with the amber expiry state,
+  formatted phones, human dates, 44px contact rows, invoice totals outside the items guard, and
+  notes rendering.
 - **The customer's Approve and Decline steps are hand-rolled `fixed inset-0` divs, not
   dialogs** — no focus trap, no Escape, background stays focusable. Six such modals exist across
   the app while Radix `Dialog` is used in seven other files (and `work-item-detail.tsx` uses
