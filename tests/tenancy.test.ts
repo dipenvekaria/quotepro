@@ -228,16 +228,6 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'preceded by an ownership check on work_items',
   },
   {
-    file: 'src/app/app/(shell)/quotes/new/actions.ts',
-    match: 'delete from quote_options',
-    reason: 'preceded by an ownership check on work_items',
-  },
-  {
-    file: 'src/app/app/(shell)/quotes/new/actions.ts',
-    match: 'insert into quote_options',
-    reason: 'preceded by an ownership check on work_items',
-  },
-  {
     file: 'src/features/invoices/actions.ts',
     match: 'update work_items set invoice_number',
     reason: 'work item loaded with id = $1 and company_id = $2',

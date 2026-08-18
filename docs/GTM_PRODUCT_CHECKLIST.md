@@ -129,7 +129,7 @@ weapon.
 | Capability | Rivet | Jobber tier | Priority |
 | --- | --- | --- | --- |
 | **Automated quote follow-up** | ✅ 2026-08-13 | Connect $80+ | — |
-| **Good/better/best options** | ✅ 2026-08-15 — generated in one action | Grow $120+ | — |
+| **Good/better/best options** | **dropped 2026-08-18** — built, used, judged not useful by the owner; replaced by cart-style line-item recommendations. Sent quotes with options still render | Grow $120+ | Never |
 | Overdue invoice reminders | ✅ | ✅ | — |
 | **Consumer financing at quote time** | ❌ | ✅ Wisetack | **P1** |
 | **Missed-call text-back** | ❌ | ❌ | **P1** — read [business checklist §4.1](GTM_BUSINESS_CHECKLIST.md) first; TCPA is the largest legal exposure in the product |
@@ -138,9 +138,10 @@ weapon.
 That's roughly $48,000 you left on the table."* A different conversation from "our software is
 easier to use."
 
-Good/better/best is the worked example of the product philosophy: both incumbents ship it, and
-adoption is low because building three options by hand is three times the work. Removing the
-tedium is the differentiator, not the feature.
+Good/better/best was the worked example of the product philosophy — and then became a sharper
+one: it was built, the owner used it, and it was dropped ("It is not useful"). Even a
+well-argued feature must survive contact with real use. Its replacement is cart-style
+recommendations: suggest the line items that historically go with what is already on the quote.
 
 ---
 

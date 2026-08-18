@@ -40,3 +40,20 @@ export function liveTierPredicate(workItemIdPlaceholder: number, alias = 'qi'): 
       )
     )`
 }
+
+/**
+ * Legacy vocabulary for quotes that carry good/better/best options.
+ *
+ * The three-options feature was dropped on 2026-08-18 ("It is not useful") —
+ * nothing creates these any more. The constants stay because sent quotes with
+ * options still exist and must keep rendering for their customers; these are
+ * the enum keys their rows use.
+ */
+export const TIERS = ['essential', 'recommended', 'complete'] as const
+export type TierKey = (typeof TIERS)[number]
+
+export const TIER_DB_KEY: Record<TierKey, 'good' | 'better' | 'best'> = {
+  essential: 'good',
+  recommended: 'better',
+  complete: 'best',
+}

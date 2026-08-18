@@ -20,12 +20,9 @@ import {
   createDraftQuote,
   editQuoteWithAi,
   generateQuoteItems,
-  generateQuoteTiers,
   getQuoteConversation,
   saveLineItems,
-  saveQuoteTiers,
 } from './actions'
-import { TierReview, type DraftTier } from './tier-review'
 
 // -----------------------------------------------------------------------------
 
@@ -123,11 +120,6 @@ export function QuoteEditor({
   }, [aiOpen, workItemId])
 
   const [aiPrompt, setAiPrompt] = useState('')
-  // Whether this quote goes out as one price or three. The contractor's call,
-  // made before anything is generated — it changes what the customer decides
-  // between, so it is not something to infer.
-  const [aiMode, setAiMode] = useState<'single' | 'options'>('single')
-  const [tiers, setTiers] = useState<DraftTier[] | null>(null)
   const [generating, startAi] = useTransition()
   const [saving, startSave] = useTransition()
 
@@ -136,14 +128,10 @@ export function QuoteEditor({
   // With options in play the summary tracks the recommended tier — the figure
   // the contractor expects to win. Computing from the flat `items` list left it
   // reading $0.00 next to three priced options.
-  const { subtotal, taxAmount, total } = useMemo(() => {
-    const kept = tiers?.filter((t) => t.include) ?? []
-    if (kept.length >= 2) {
-      const headline = kept.find((t) => t.isRecommended) ?? kept[kept.length - 1]
-      return computeTotals(headline.items, taxRate)
-    }
-    return computeTotals(items, taxRate)
-  }, [items, tiers, taxRate])
+  const { subtotal, taxAmount, total } = useMemo(
+    () => computeTotals(items, taxRate),
+    [items, taxRate],
+  )
 
   // ---- item mutations -------------------------------------------------------
 
@@ -171,55 +159,6 @@ export function QuoteEditor({
 
 
   // ---- AI generation --------------------------------------------------------
-
-  async function runAiGenerateTiers() {
-    const prompt = (aiPrompt.trim() || description).trim()
-    if (!prompt) {
-      toast.error('Describe the job first.')
-      return
-    }
-    // Capture the described job as the quote's description (see runAiGenerate).
-    if (!description.trim()) setDescription(prompt)
-    startAi(async () => {
-      const res = await generateQuoteTiers({
-        description: prompt,
-        tax_rate: taxRate,
-        work_item_id: workItemId,
-      })
-      if (!res.ok) {
-        toast.error(res.error)
-        return
-      }
-      setTiers(
-        res.data.tiers.map((t) => ({
-          tier: t.tier,
-          name: t.name,
-          description: t.description,
-          isRecommended: t.isRecommended,
-          include: true,
-          items: t.line_items.map((li) => ({
-            key: crypto.randomUUID(),
-            name: li.name,
-            description: li.description ?? '',
-            quantity: li.quantity,
-            unit_price: li.unit_price,
-          })),
-        })),
-      )
-      setThread((t) => [
-        ...t,
-        { role: 'user', text: prompt },
-        { role: 'assistant', text: `Built ${res.data.tiers.length} options — review them before you send.` },
-      ])
-      setAiPrompt('')
-      // Tiers close the dialog deliberately: the review panel behind it is the
-      // next step, unlike single-quote turns where the conversation continues.
-      setAiOpen(false)
-      toast.success(`Built ${res.data.tiers.length} options`, {
-        description: 'Review them before you send.',
-      })
-    })
-  }
 
   async function runAiGenerate() {
     if (!aiPrompt.trim() && !description.trim()) {
@@ -392,35 +331,16 @@ export function QuoteEditor({
       toast.error('Add a customer name.')
       return
     }
-    const keptTiers = tiers?.filter((t) => t.include) ?? []
-    const savingTiers = keptTiers.length >= 2
-    if (tiers && keptTiers.length === 0) {
-      toast.error('Keep at least one option, or discard them.')
-      return
-    }
-    // Unticking down to one is the contractor saying "just send this one". They
-    // have already made the choice, so it goes out as an ordinary quote rather
-    // than as a set of options with a single column.
-    const singleFromTier = tiers && keptTiers.length === 1 ? keptTiers[0] : null
-    const outgoingItems = singleFromTier
-      ? singleFromTier.items.map((i) => ({
-          name: i.name,
-          description: i.description || null,
-          quantity: i.quantity,
-          unit_price: i.unit_price,
-          is_upsell: false,
-          is_discount: false,
-        }))
-      : items.map((i) => ({
-          name: i.name,
-          description: i.description || null,
-          quantity: i.quantity,
-          unit_price: i.unit_price,
-          is_upsell: i.is_upsell ?? false,
-          is_discount: i.is_discount ?? false,
-        }))
+    const outgoingItems = items.map((i) => ({
+      name: i.name,
+      description: i.description || null,
+      quantity: i.quantity,
+      unit_price: i.unit_price,
+      is_upsell: i.is_upsell ?? false,
+      is_discount: i.is_discount ?? false,
+    }))
 
-    if (!savingTiers && outgoingItems.length === 0) {
+    if (outgoingItems.length === 0) {
       toast.error('Add at least one line item.')
       return
     }
@@ -447,39 +367,6 @@ export function QuoteEditor({
         setWorkItemId(currentId)
       }
 
-      if (savingTiers) {
-        const res = await saveQuoteTiers({
-          work_item_id: currentId,
-          tax_rate: taxRate,
-          tiers: keptTiers.map((t) => ({
-            tier: t.tier,
-            name: t.name,
-            description: t.description,
-            is_recommended: t.isRecommended,
-            items: t.items.map((i) => ({
-              name: i.name,
-              description: i.description || null,
-              quantity: i.quantity,
-              unit_price: i.unit_price,
-            })),
-          })),
-        })
-        if (!res.ok) {
-          toast.error(res.error)
-          return
-        }
-        // Land on the quote, not the list.
-        //
-        // Saving used to drop the contractor on /app/pipeline, so the quote they
-        // had just built was somewhere among the others and sending it meant
-        // finding it again. Timing signup to first sent quote put 139 of 265
-        // seconds in that gap — longer than drafting the quote took. The detail
-        // page is where "Send quote" lives.
-        toast.success(`Quote saved with ${keptTiers.length} options`)
-        router.push(`/app/pipeline/${currentId}`)
-        return
-      }
-
       const saveRes = await saveLineItems({
         work_item_id: currentId,
         items: outgoingItems.map((i, idx) => ({ ...i, sort_order: idx })),
@@ -490,7 +377,7 @@ export function QuoteEditor({
         return
       }
 
-      toast.success(singleFromTier ? `Quote saved — ${singleFromTier.name}` : 'Quote saved')
+      toast.success('Quote saved')
       router.push(`/app/pipeline/${currentId}`)
     })
   }
@@ -580,17 +467,7 @@ export function QuoteEditor({
             </div>
           </section>
 
-          {/* Options replace the flat list while they exist — one quote is
-              either a single price or a set of them, never both. */}
-          {tiers ? (
-            <TierReview
-              tiers={tiers}
-              taxRate={taxRate}
-              onChange={setTiers}
-              onDiscard={() => setTiers(null)}
-            />
-          ) : (
-            <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+          <section className="rounded-xl border border-border/70 bg-card shadow-sm">
               <DraftQuestions
                 questions={questions}
                 unmet={unmet}
@@ -670,7 +547,6 @@ export function QuoteEditor({
                 />
               </div>
             </section>
-          )}
         </div>
 
         {/* Right column — totals */}
@@ -727,9 +603,7 @@ export function QuoteEditor({
           setPrompt={setAiPrompt}
           suggestedPrompt={description}
           generating={generating}
-          mode={aiMode}
-          setMode={setAiMode}
-          onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
+          onGenerate={runAiGenerate}
           isEditing={items.length > 0}
           thread={thread}
           items={items}
@@ -827,8 +701,6 @@ function AiPanel({
   setPrompt,
   suggestedPrompt,
   generating,
-  mode,
-  setMode,
   onGenerate,
   onClose,
   isEditing,
@@ -839,8 +711,6 @@ function AiPanel({
   setPrompt: (v: string) => void
   suggestedPrompt: string
   generating: boolean
-  mode: 'single' | 'options'
-  setMode: (m: 'single' | 'options') => void
   onGenerate: () => void
   onClose: () => void
   /** An existing quote is edited in place; a new one is generated. */
@@ -972,36 +842,6 @@ function AiPanel({
         )}
 
         <div className="space-y-3 p-5">
-          {/* One price or three is a judgement about this customer, so the
-              contractor chooses before anything is generated. Once a
-              conversation exists the choice is made — the trail continues. */}
-          {!hasThread && !isEditing && (
-            <div className="grid grid-cols-2 gap-2">
-              {(
-                [
-                  ['single', 'One quote', 'A single price'],
-                  ['options', 'Three options', 'Good / better / best'],
-                ] as const
-              ).map(([value, label, hint]) => (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => setMode(value)}
-                  aria-pressed={mode === value}
-                  className={cn(
-                    'rounded-lg border p-3 text-left transition-colors',
-                    mode === value
-                      ? 'border-primary bg-primary/5'
-                      : 'border-border hover:bg-muted/60',
-                  )}
-                >
-                  <div className="text-sm font-medium">{label}</div>
-                  <div className="text-[11px] text-muted-foreground">{hint}</div>
-                </button>
-              ))}
-            </div>
-          )}
-
           <textarea
             autoFocus
             value={prompt}
@@ -1032,9 +872,7 @@ function AiPanel({
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground">
-            {mode === 'options' && !hasThread && !isEditing
-              ? 'Three options, each building on the one before. You review them before sending.'
-              : 'Priced from your catalog. Nothing is sent until you save.'}
+            Priced from your catalog. Nothing is sent until you save.
           </p>
         </div>
         </div>
