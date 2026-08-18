@@ -13,7 +13,7 @@
 
 import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
-import { fetchCatalog, type AiLineItem, type CatalogItem } from '@/lib/ai/quote'
+import { fetchCatalog, groundingCatalog, type AiLineItem, type CatalogItem } from '@/lib/ai/quote'
 import { computeTotals } from '@/lib/money'
 
 /**
@@ -185,8 +185,10 @@ export async function generateTieredQuote(input: {
   if (catalog.length === 0) throw new NoCatalogError()
   if (!aiEnabled()) throw new AiUnavailableError('no Gemini credentials are configured')
 
-  const catalogText = catalog
-    .slice(0, 80)
+  // Relevance-first grounding — same reasons as generateQuote: the old
+  // alphabetical slice hid everything past ~S from the model.
+  const grounded = await groundingCatalog(input.companyId, input.description, catalog)
+  const catalogText = grounded
     .map(
       (c) =>
         `- ${c.name} | ${c.category || 'General'} | $${c.base_price}/${c.unit || 'each'} | ${c.description || ''}`,
