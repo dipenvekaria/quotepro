@@ -237,12 +237,17 @@ export async function proposeEstimatedItem(
   }
 
   const qty = Number.isFinite(input.quantity) && (input.quantity ?? 0) > 0 ? input.quantity! : 1
+  // The basis goes in `estimate_basis` and NOWHERE else. It is internal — it
+  // names the comparable and states the markup — and `description` renders on
+  // /q and the PDF. Writing the basis into `description` (as this once did) put
+  // "Estimated from …, 50% markup" straight onto the customer's quote, which is
+  // exactly what the is_estimate flag exists to prevent.
   const [row] = await query<{ id: string }>(
     `insert into quote_items
        (work_item_id, name, description, quantity, unit_price, is_estimate, estimate_basis)
-     values ($1, $2, $3, $4::numeric, $5::numeric, true, $6)
+     values ($1, $2, null, $3::numeric, $4::numeric, true, $5)
      returning id`,
-    [ctx.workItemId, input.name, est.basis, qty, est.price, est.basis],
+    [ctx.workItemId, input.name, qty, est.price, est.basis],
   )
 
   return {
