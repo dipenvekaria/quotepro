@@ -67,20 +67,6 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
       'an item the catalog does not carry',
   },
   {
-    file: 'src/app/app/(shell)/dashboard/page.tsx',
-    match: 'select settings from companies where id = $1',
-    reason:
-      '$1 is session.companyId; companies.id is itself the tenant key. Reads the timezone so ' +
-      'day boundaries are the contractor’s, not the UTC server’s',
-  },
-  {
-    file: 'src/app/app/(shell)/calendar/page.tsx',
-    match: 'select settings from companies where id = $1',
-    reason:
-      '$1 is session.companyId; companies.id is itself the tenant key. Reads the timezone so ' +
-      'the queried week and the grid hours are the contractor’s',
-  },
-  {
     file: 'src/app/app/(shell)/pipeline/[id]/actions.ts',
     match: 'select settings from companies where id = $1',
     reason:

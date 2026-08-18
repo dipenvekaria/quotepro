@@ -6,6 +6,8 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
+import { workItemScope } from '@/lib/auth/scope'
+import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { signPhotoUrl, signPhotoUrls } from '@/lib/storage/signed-url'
@@ -158,8 +160,36 @@ export async function deleteQuotePhoto(input: unknown): Promise<Result<{ id: str
   return { ok: true, data: { id: photo.id } }
 }
 
-/** Photos for a quote, with public URLs resolved. */
-export async function listQuotePhotos(workItemId: string, companyId: string): Promise<QuotePhoto[]> {
+/**
+ * Photos for a quote, with signed URLs resolved.
+ *
+ * The company is taken from the session, never from a caller argument. This is
+ * an exported `'use server'` function, so it is reachable by a direct POST from
+ * any signed-in user regardless of which route imports it — passing the tenant
+ * in was a cross-tenant read: a user in company B, holding company A's work_item
+ * id and company id (both are handed to anyone who opens a /q/{token} link),
+ * could retrieve signed URLs to photographs of the inside of company A's
+ * customers' homes. Scope it exactly as the detail page does — company, then
+ * role — so it can only ever return photos the caller is already allowed to see.
+ */
+export async function listQuotePhotos(workItemId: string): Promise<QuotePhoto[]> {
+  const session = await getSession()
+  if (!session) return []
+  const { companyId, userId, role } = session
+
+  // The work item must be visible to this caller under their role — the same
+  // gate the detail page applies before it renders. A technician cannot read
+  // photos on a job they were never assigned to, in their own company or any
+  // other.
+  const scope = workItemScope({ companyId, userId, role: role as UserRole }, 2)
+  const [owns] = await query<{ id: string }>(
+    `select id from work_items
+      where id = $1 and company_id = $2${scope.sql}
+      limit 1`,
+    [workItemId, companyId, ...scope.params],
+  )
+  if (!owns) return []
+
   const rows = await query<{
     id: string
     storage_path: string

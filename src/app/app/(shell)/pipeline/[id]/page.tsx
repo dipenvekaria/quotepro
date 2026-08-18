@@ -130,7 +130,7 @@ export default async function WorkItemDetailPage({
     assignee: row.assignee_profile ? { profile: row.assignee_profile } : null,
   }
 
-  const photos = await listQuotePhotos(id, companyId)
+  const photos = await listQuotePhotos(id)
 
   const quoteItems = await query<{
     id: string

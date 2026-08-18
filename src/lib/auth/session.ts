@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
 import { query } from '@/lib/db'
+import { companyTz } from '@/lib/time'
 
 export type SessionContext = {
   userId: string
@@ -15,6 +16,8 @@ export type SessionContext = {
    * Read here so no caller has to remember a second query to find out.
    */
   canEditCatalog: boolean
+  /** The company's IANA timezone, validated — every day boundary reads this. */
+  timezone: string
 }
 
 // Auth stays on Supabase (getUser); the user/company row is read via raw pg.
@@ -32,7 +35,17 @@ export async function getSession(): Promise<SessionContext | null> {
     role: string | null
     profile: Record<string, unknown> | null
     can_edit_catalog: boolean | null
-  }>(`select company_id, role, profile, can_edit_catalog from users where id = $1 limit 1`, [user.id])
+    tz: string | null
+  }>(
+    // The timezone rides along with the row every page already reads — the
+    // dashboard and calendar each paid an extra round trip for it before.
+    `select u.company_id, u.role, u.profile, u.can_edit_catalog,
+            c.settings->>'timezone' as tz
+       from users u
+       join companies c on c.id = u.company_id
+      where u.id = $1 limit 1`,
+    [user.id],
+  )
 
   const row = rows[0]
   if (!row?.company_id) return null
@@ -47,6 +60,7 @@ export async function getSession(): Promise<SessionContext | null> {
     role: row.role ?? 'technician',
     profile: row.profile,
     canEditCatalog: row.can_edit_catalog === true,
+    timezone: companyTz({ timezone: row.tz }),
   }
 }
 
@@ -64,7 +78,17 @@ export async function requireSession(): Promise<SessionContext> {
     role: string | null
     profile: Record<string, unknown> | null
     can_edit_catalog: boolean | null
-  }>(`select company_id, role, profile, can_edit_catalog from users where id = $1 limit 1`, [user.id])
+    tz: string | null
+  }>(
+    // The timezone rides along with the row every page already reads — the
+    // dashboard and calendar each paid an extra round trip for it before.
+    `select u.company_id, u.role, u.profile, u.can_edit_catalog,
+            c.settings->>'timezone' as tz
+       from users u
+       join companies c on c.id = u.company_id
+      where u.id = $1 limit 1`,
+    [user.id],
+  )
 
   const row = rows[0]
   if (!row?.company_id) redirect('/app/onboarding')
@@ -79,5 +103,6 @@ export async function requireSession(): Promise<SessionContext> {
     role: row.role ?? 'technician',
     profile: row.profile,
     canEditCatalog: row.can_edit_catalog === true,
+    timezone: companyTz({ timezone: row.tz }),
   }
 }
