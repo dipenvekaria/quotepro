@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
+import { companyTz, startOfDayUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { CalendarBoard, type BoardJob } from './calendar-board'
 import { WeekGrid } from './week-grid'
 import { workItemScope, canAssignWork } from '@/lib/auth/scope'
@@ -89,10 +90,17 @@ export default async function CalendarPage({
   // one question getting more specific.
   const visibleTeam = roleParam ? team.filter((m) => m.role === roleParam) : team
 
-  // Query window: the visible week, or the full 6-week grid for a month.
-  const rangeStart = view === 'month' ? startOfWeek(startOfMonth(anchor)) : startOfWeek(anchor)
-  const rangeEnd = new Date(rangeStart)
-  rangeEnd.setDate(rangeEnd.getDate() + (view === 'month' ? 42 : 7))
+  // Query window: the visible week, or the full 6-week grid for a month —
+  // bounded by the COMPANY's midnights, not the UTC server's. With server-local
+  // boundaries a Sunday-evening job fell outside the queried week entirely.
+  const [tzRow] = await query<{ settings: unknown }>(
+    'select settings from companies where id = $1 limit 1',
+    [companyId],
+  )
+  const tz = companyTz(tzRow?.settings)
+  const rangeStart = zonedWeekStart(tz, view === 'month' ? zonedMonthStart(tz, anchor) : anchor)
+  const days = view === 'month' ? 42 : 7
+  const rangeEnd = startOfDayUtc(tz, new Date(rangeStart.getTime() + days * 86_400_000 + 12 * 3_600_000))
 
   const rows = await query<{
     id: string
@@ -157,17 +165,11 @@ export default async function CalendarPage({
         : null,
   }))
 
-  const jobsByDay: Record<string, ScheduledJob[]> = {}
-  for (const j of list) {
-    const key = new Date(j.scheduled_start).toISOString().slice(0, 10)
-    ;(jobsByDay[key] ??= []).push(j)
-  }
-
   // Only the instants. Day keys are derived in the browser, because the
   // server's timezone is not the contractor's and two sets of keys that must
   // agree will eventually not.
-  const boardDays = Array.from({ length: view === 'month' ? 42 : 7 }, (_, i) => ({
-    date: addDays(rangeStart, i).toISOString(),
+  const boardDays = Array.from({ length: days }, (_, i) => ({
+    date: startOfDayUtc(tz, new Date(rangeStart.getTime() + i * 86_400_000 + 12 * 3_600_000)).toISOString(),
   }))
 
   // The grid shows the working day, not a wall of empty night. Widened by an
@@ -180,7 +182,7 @@ export default async function CalendarPage({
   // It also has to cover the jobs that are actually there. Clipping to business
   // hours alone drew an empty week for a company whose jobs sat at 5:36am —
   // real work, silently invisible, which reads as the calendar being broken.
-  const jobHours = rows.map((r) => new Date(r.scheduled_start).getHours())
+  const jobHours = rows.map((r) => zonedHour(r.scheduled_start, tz))
   const openStart = openTimes.length ? Math.min(...openTimes.map((h) => hourOf(h.start))) : 8
   const openEnd = openTimes.length ? Math.max(...openTimes.map((h) => hourOf(h.end))) : 17
 
@@ -319,18 +321,28 @@ function startOfWeek(d: Date): Date {
   return out
 }
 
+/** The instant the anchor's Monday begins in `tz`. */
+function zonedWeekStart(tz: string, anchor: Date): Date {
+  const dayStart = startOfDayUtc(tz, anchor)
+  const weekday = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short' }).format(dayStart)
+  const back = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }[weekday] ?? 0
+  // The 12h buffer keeps the re-anchor inside the right day across DST jumps.
+  return startOfDayUtc(tz, new Date(dayStart.getTime() - back * 86_400_000 + 12 * 3_600_000))
+}
+
+/** The instant the anchor's month begins in `tz`. */
+function zonedMonthStart(tz: string, anchor: Date): Date {
+  const key = zonedDayKey(anchor, tz) // YYYY-MM-DD in the company's calendar
+  const [y, m] = key.split('-').map(Number)
+  // Local-noon of the 1st is safely inside the right tz-day everywhere on Earth.
+  return startOfDayUtc(tz, new Date(Date.UTC(y, m - 1, 1, 12)))
+}
+
 function fmtRange(start: Date): string {
   const end = new Date(start)
   end.setDate(end.getDate() + 6)
   const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   return `${fmt(start)} – ${fmt(end)}`
-}
-
-function startOfMonth(d: Date): Date {
-  const out = new Date(d)
-  out.setHours(0, 0, 0, 0)
-  out.setDate(1)
-  return out
 }
 
 function addMonths(d: Date, n: number): Date {

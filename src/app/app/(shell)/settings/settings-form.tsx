@@ -65,6 +65,43 @@ export function SettingsForm({
           <Input {...bind('address')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="123 Main St, City, State ZIP" />
         </Field>
       </div>
+      <Field
+        label="Timezone"
+        hint="Sets what 'today' means on your dashboard and calendar"
+      >
+        <div className="flex gap-2">
+          <select
+            value={values.timezone}
+            onChange={(e) => setValues((prev) => ({ ...prev, timezone: e.target.value }))}
+            disabled={!canEdit}
+            className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm lg:h-10"
+          >
+            {TIMEZONES.map((z) => (
+              <option key={z.value} value={z.value}>
+                {z.label}
+              </option>
+            ))}
+            {!TIMEZONES.some((z) => z.value === values.timezone) && (
+              <option value={values.timezone}>{values.timezone}</option>
+            )}
+          </select>
+          {canEdit && (
+            <Button
+              type="button"
+              variant="outline"
+              className="h-11 shrink-0 lg:h-10"
+              onClick={() =>
+                setValues((prev) => ({
+                  ...prev,
+                  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                }))
+              }
+            >
+              Detect
+            </Button>
+          )}
+        </div>
+      </Field>
       <Field label="Default tax rate (%)" hint="Applied to new quotes; per-quote override still allowed">
         <Input
           type="number"
@@ -92,6 +129,21 @@ export function SettingsForm({
 }
 
 // ---------------------------------------------------------------------------
+
+/**
+ * The zones US trades businesses actually sit in, plus the device-detect
+ * button beside the select for everyone else. The stored value is any valid
+ * IANA zone; an off-list one renders as its own option rather than vanishing.
+ */
+const TIMEZONES = [
+  { value: 'America/New_York', label: 'Eastern (New York)' },
+  { value: 'America/Chicago', label: 'Central (Chicago)' },
+  { value: 'America/Denver', label: 'Mountain (Denver)' },
+  { value: 'America/Phoenix', label: 'Arizona (Phoenix)' },
+  { value: 'America/Los_Angeles', label: 'Pacific (Los Angeles)' },
+  { value: 'America/Anchorage', label: 'Alaska (Anchorage)' },
+  { value: 'Pacific/Honolulu', label: 'Hawaii (Honolulu)' },
+]
 
 function Field({
   label,

@@ -15,6 +15,9 @@ const settingsSchema = z.object({
   email: z.string().email().optional().or(z.literal('')),
   address: z.string().max(200).optional().or(z.literal('')),
   tax_rate: z.number().min(0).max(30),
+  // IANA zone; every server-side day boundary reads it. Validated as a real
+  // zone below rather than by pattern — Intl is the authority on what exists.
+  timezone: z.string().max(64),
 })
 
 export type UpdateSettingsInput = z.infer<typeof settingsSchema>
@@ -35,8 +38,18 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
     'select settings from companies where id = $1 limit 1',
     [session.companyId],
   )
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: parsed.data.timezone })
+  } catch {
+    return { ok: false as const, error: 'That timezone is not recognised.' }
+  }
+
   const currentSettings = (current?.settings ?? {}) as Record<string, unknown>
-  const nextSettings = { ...currentSettings, tax_rate: parsed.data.tax_rate }
+  const nextSettings = {
+    ...currentSettings,
+    tax_rate: parsed.data.tax_rate,
+    timezone: parsed.data.timezone,
+  }
 
   try {
     await query(

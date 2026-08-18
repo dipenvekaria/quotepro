@@ -21,6 +21,7 @@ import {
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
+import { companyTz, dayRangeUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { canSeeAnalytics, workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
@@ -60,10 +61,20 @@ export default async function DashboardPage() {
   const emailLocal = (email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
   const rawFirst = (fullName || emailLocal || 'there').split(' ')[0]
   const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : 'there'
+  /*
+    Day boundaries in the CONTRACTOR'S timezone, not the server's. Vercel runs
+    UTC, so the naive setHours(0,0,0,0) flipped every US dashboard to tomorrow
+    from mid-afternoon: "Today's schedule" queried tomorrow's jobs and the date
+    header was a day ahead. companies.settings carried the zone all along.
+  */
+  const [tzRow] = await query<{ settings: unknown }>(
+    'select settings from companies where id = $1 limit 1',
+    [companyId],
+  )
+  const tz = companyTz(tzRow?.settings)
   const now = new Date()
-  const todayIso = now.toISOString().slice(0, 10)
-  const dayStart = new Date(now); dayStart.setHours(0, 0, 0, 0)
-  const dayEnd = new Date(dayStart); dayEnd.setDate(dayEnd.getDate() + 1)
+  const todayIso = zonedDayKey(now, tz)
+  const { start: dayStart, end: dayEnd } = dayRangeUtc(tz, now)
   const twoDaysAgo = new Date(now.getTime() - 48 * 3_600_000).toISOString()
   const sixtyDaysAgo = new Date(now.getTime() - 60 * 86_400_000).toISOString()
 
@@ -235,9 +246,10 @@ export default async function DashboardPage() {
   const closeRateDelta = pctDelta(acceptanceRate, acceptanceRatePrior)
   const revenueDelta = pctDelta(revCur, revPrior)
 
-  // 30-day cumulative series for the KPI sparklines.
+  // 30-day cumulative series for the KPI sparklines — bucketed by the
+  // contractor's calendar days, matching the row keying below.
   const dayStartMs = new Date(dayStart).getTime()
-  const keyOf = (ms: number) => new Date(ms).toISOString().slice(0, 10)
+  const keyOf = (ms: number) => zonedDayKey(new Date(ms), tz)
   const dayIndex = new Map(Array.from({ length: 30 }, (_, i) => [keyOf(dayStartMs - (29 - i) * 86_400_000), i] as const))
   const sentPerDay = new Array(30).fill(0)
   const accPerDay = new Array(30).fill(0)
@@ -245,15 +257,15 @@ export default async function DashboardPage() {
   const pipePerDay = new Array(30).fill(0)
   for (const m of metrics) {
     if (m.sent_at) {
-      const i = dayIndex.get(m.sent_at.slice(0, 10))
+      const i = dayIndex.get(zonedDayKey(m.sent_at, tz))
       if (i !== undefined) { sentPerDay[i] += 1; pipePerDay[i] += Number(m.total || 0) }
     }
     if (m.accepted_at) {
-      const i = dayIndex.get(m.accepted_at.slice(0, 10))
+      const i = dayIndex.get(zonedDayKey(m.accepted_at, tz))
       if (i !== undefined) accPerDay[i] += 1
     }
     if (isCompleted(m.status) && m.updated_at) {
-      const i = dayIndex.get(m.updated_at.slice(0, 10))
+      const i = dayIndex.get(zonedDayKey(m.updated_at, tz))
       if (i !== undefined) revPerDay[i] += Number(m.total || 0)
     }
   }
@@ -278,10 +290,10 @@ export default async function DashboardPage() {
       <header className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <div className="text-xs text-muted-foreground">
-            {now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            {now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz })}
           </div>
           <h1 className="mt-0.5 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Good {greeting()}, {firstName}.
+            Good {greeting(zonedHour(now, tz))}, {firstName}.
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {summaryLine(todaysJobs.length, stalledQuotes.length, overdueInvoices.length)}
@@ -763,8 +775,7 @@ function EmptyRow({
 
 // ---------------------------------------------------------------------------
 
-function greeting(): string {
-  const h = new Date().getHours()
+function greeting(h: number): string {
   if (h < 5) return 'evening'
   if (h < 12) return 'morning'
   if (h < 17) return 'afternoon'
