@@ -49,6 +49,7 @@ const ICON: Record<string, typeof FileText> = {
   payment_recorded: Wallet,
   note: MessageSquare,
   review_request_sent: Star,
+  recurring_job_spawned: CalendarClock,
 }
 
 const LABEL: Record<string, string> = {
@@ -62,6 +63,7 @@ const LABEL: Record<string, string> = {
   invoice_sent: 'Invoice sent',
   payment_recorded: 'Payment recorded',
   review_request_sent: 'Review request sent',
+  recurring_job_spawned: 'Scheduled by the repeat rule',
   quote_generation: 'AI drafted line items',
   quote_tiers: 'AI built good/better/best options',
   quote_edit: 'AI edited the quote',

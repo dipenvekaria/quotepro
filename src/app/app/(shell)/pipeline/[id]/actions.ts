@@ -13,6 +13,8 @@ import { query } from '@/lib/db'
 import { liveTierPredicate } from '@/lib/quotes/items'
 import { canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
+import { nextOccurrence } from '@/lib/recurring'
+import { companyTz } from '@/lib/time'
 import {
   NOMINAL_JOB_HOURS,
   bookedHoursOn,
@@ -31,6 +33,13 @@ const updateSchema = z.object({
   job_name: z.string().max(200).optional(),
   scheduled_start: z.string().datetime().nullable().optional(),
   assigned_to: z.string().uuid().nullable().optional(),
+  recurrence: z
+    .object({
+      cadence: z.enum(['weekly', 'biweekly', 'monthly']),
+      auto_invoice: z.boolean(),
+    })
+    .nullable()
+    .optional(),
 })
 
 export type UpdateWorkItemInput = z.infer<typeof updateSchema>
@@ -61,6 +70,25 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
       return { ok: false as const, error: 'Only an owner or the office can assign work.' }
     }
     add('assigned_to', d.assigned_to)
+  }
+  // The repeat rule stores its own next date: computed here, in the company's
+  // timezone, from the job's scheduled time — the cron only ever reads it.
+  if (d.recurrence !== undefined) {
+    if (d.recurrence === null) {
+      add('recurrence', null)
+    } else {
+      const [row] = await query<{ scheduled_start: string | null; tz: string | null }>(
+        `select w.scheduled_start, co.settings->>'timezone' as tz
+           from work_items w join companies co on co.id = w.company_id
+          where w.id = $1 and w.company_id = $2 limit 1`,
+        [d.id, session.companyId],
+      )
+      if (!row) return { ok: false as const, error: 'Not found' }
+      const anchor = row.scheduled_start ? new Date(row.scheduled_start) : new Date()
+      const nextAt = nextOccurrence(anchor, d.recurrence.cadence, companyTz({ timezone: row.tz }))
+      values.push(JSON.stringify({ ...d.recurrence, next_at: nextAt.toISOString() }))
+      sets.push(`recurrence = $${values.length}::jsonb`)
+    }
   }
   if (!sets.length) return { ok: true as const }
 

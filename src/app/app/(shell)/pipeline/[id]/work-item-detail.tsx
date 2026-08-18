@@ -6,6 +6,7 @@ import { useMemo, useState, useSyncExternalStore, useTransition } from 'react'
 import {
   Sparkles,
   ArrowLeft,
+  RefreshCw,
   Star,
   Calendar as CalendarIcon,
   Check,
@@ -97,6 +98,7 @@ type WorkItem = {
   public_token: string
   created_at: string
   updated_at: string
+  recurrence: { cadence: 'weekly' | 'biweekly' | 'monthly'; auto_invoice: boolean; next_at?: string } | null
   assigned_to: string | null
   customers: { id: string; name: string; email: string | null; phone: string | null } | null
   addresses: { address: string | null; city: string | null; state: string | null; zip: string | null } | null
@@ -191,6 +193,14 @@ export function WorkItemDetail({
   const [items, setItems] = useState<LineItem[]>(initialItems)
   const [drafting, startDraft] = useTransition()
   const [description, setDescription] = useState(workItem.description ?? '')
+  const [recur, setRecur] = useState<{
+    cadence: 'weekly' | 'biweekly' | 'monthly'
+    auto_invoice: boolean
+  } | null>(
+    workItem.recurrence
+      ? { cadence: workItem.recurrence.cadence, auto_invoice: workItem.recurrence.auto_invoice }
+      : null,
+  )
   const [draftQuestions, setDraftQuestions] = useState<{ question: string; options: string[] }[]>([])
   const [draftUnmet, setDraftUnmet] = useState<string[]>([])
 
@@ -377,6 +387,7 @@ export function WorkItemDetail({
       const res = await updateWorkItem({
         id: workItem.id,
         description,
+        recurrence: recur,
       })
       if (!res.ok) {
         toast.error(res.error)
@@ -714,6 +725,60 @@ export function WorkItemDetail({
                     </Button>
                   )}
                 </div>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                  <RefreshCw className="mr-1 inline h-3 w-3" />
+                  Repeats
+                </label>
+                <div className="flex flex-wrap items-center gap-3">
+                  <select
+                    value={recur?.cadence ?? 'none'}
+                    onChange={(e) => {
+                      const v = e.target.value
+                      setRecur(
+                        v === 'none'
+                          ? null
+                          : {
+                              cadence: v as 'weekly' | 'biweekly' | 'monthly',
+                              auto_invoice: recur?.auto_invoice ?? true,
+                            },
+                      )
+                    }}
+                    className="h-11 rounded-md border border-input bg-background px-3 text-sm shadow-sm lg:h-9"
+                  >
+                    <option value="none">Does not repeat</option>
+                    <option value="weekly">Every week</option>
+                    <option value="biweekly">Every 2 weeks</option>
+                    <option value="monthly">Every month</option>
+                  </select>
+                  {recur && (
+                    <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm lg:min-h-0">
+                      <input
+                        type="checkbox"
+                        checked={recur.auto_invoice}
+                        onChange={(e) => setRecur({ ...recur, auto_invoice: e.target.checked })}
+                        className="h-4 w-4 rounded border-input"
+                      />
+                      Email the invoice automatically
+                    </label>
+                  )}
+                </div>
+                {workItem.recurrence?.next_at && (
+                  <p className="mt-1.5 text-[11px] text-muted-foreground">
+                    Next visit:{' '}
+                    {new Date(workItem.recurrence.next_at).toLocaleString('en-US', {
+                      weekday: 'short', month: 'short', day: 'numeric',
+                      hour: 'numeric', minute: '2-digit', timeZone: tz,
+                    })}
+                    {' '}— each visit is created as its own scheduled job.
+                  </p>
+                )}
+                {recur && !workItem.recurrence && (
+                  <p className="mt-1.5 text-[11px] text-muted-foreground">
+                    Save to start the schedule. Each visit becomes its own job with these line items.
+                  </p>
+                )}
               </div>
             </div>
           </section>
