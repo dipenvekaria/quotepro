@@ -79,113 +79,268 @@ fails the build on a statement that lacks one.
 
 ---
 
-## Quoting, before and after
+## The AI, end to end
 
-The change is not that the AI got better. It is that there is no longer a step that throws the
-contractor's work away.
-
-```mermaid
-graph LR
-    subgraph before["Before — one shot"]
-        B1["job description"] --> B2["first 80 of 200<br/>catalog rows"]
-        B2 --> B3["Gemini"]
-        B3 --> B4["a complete list<br/>of line items"]
-        B4 --> B5["editor replaces<br/><b>everything</b>"]
-    end
-
-    style B5 fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
-```
-
-```mermaid
-graph LR
-    subgraph after["After — a conversation that edits"]
-        A1["what the contractor said"] --> A2["agent"]
-        A2 -->|"search_catalog"| A3[("hybrid search<br/>vector + keyword")]
-        A2 -->|"read_quote"| A4[("quote_items")]
-        A2 -->|"add · update · remove<br/>apply_discount"| A4
-        A2 <-->|"every turn"| A5[("session<br/>= work_item id")]
-    end
-
-    style A4 fill:#dcfce7,stroke:#16a34a,color:#14532d
-```
-
-Worked example, run end to end against real rows:
-
-| The contractor says | Tools that ran | Result |
-| --- | --- | --- |
-| "Add the Nest thermostat." | `search_catalog` → `add_line_item` | $249.00 |
-| "Now take 10% off." | `apply_discount` | −$24.90 · **$224.10** |
-| "What is on the quote?" | `read_quote` | reads back both lines |
-
-The second row is the one that was impossible. Nothing regenerated, so the first line — including
-any price the contractor had adjusted by hand — is untouched.
-
----
-
-## Why the agent cannot invent a price
+Everything below runs inside the same Next.js process. ADK is a library here, not a service —
+`@google/adk` is TypeScript, so there is no second runtime and no deploy target beyond the one
+that already exists.
 
 ```mermaid
 graph TB
-    MODEL["Gemini decides<br/><i>what</i> to do"]
-    TOOLS["Tool layer"]
-    CTX["company_id + work_item_id<br/><i>closed over, never a model argument</i>"]
-    OWN["assertOwned()"]
-    CAT[("catalog_items")]
-    QI[("quote_items")]
+    subgraph edge["What the contractor says"]
+        MSG["“Add the Nest thermostat”<br/>“Now take 10% off”"]
+    end
 
-    MODEL -->|"catalog_item_id + quantity"| TOOLS
-    CTX --> TOOLS
-    TOOLS --> OWN
-    OWN -->|"id AND company_id,<br/>throws otherwise"| QI
-    TOOLS -->|"price read from here,<br/>never from the model"| CAT
-    CAT --> QI
+    subgraph agent["Quoting agent — in-process"]
+        RUN["Runner"]
+        LLM["LlmAgent<br/><i>Gemini · temp 0</i>"]
+        SESS_SVC["PostgresSessionService"]
+    end
 
-    NOTE["There is no tool that accepts<br/>a free-text name and a price."]
-    NOTE -.-> TOOLS
+    subgraph tools["Tools — the only things that can change a quote"]
+        T1["search_catalog"]
+        T2["read_quote"]
+        T3["add_line_item"]
+        T4["update_line_item · remove_line_item"]
+        T5["apply_discount"]
+        T6["propose_estimated_item"]
+    end
 
-    style NOTE fill:#fff,stroke:#dc2626,color:#7f1d1d,stroke-dasharray:4 3
-    style CTX fill:#f4f4f5,stroke:#a1a1aa,color:#18181b
+    subgraph store["Postgres"]
+        EMB[("document_embeddings<br/><i>pgvector 768</i>")]
+        CAT[("catalog_items")]
+        QI[("quote_items")]
+        SESS[("ai_conversations<br/><i>session + run log</i>")]
+    end
+
+    VERTEX["Vertex AI<br/><i>Gemini · text-embedding-004</i>"]
+
+    MSG --> RUN
+    RUN --> LLM
+    LLM <-->|"tool calls"| tools
+    RUN <-->|"every turn"| SESS_SVC
+    SESS_SVC <--> SESS
+    LLM --> VERTEX
+
+    T1 --> EMB
+    T1 --> CAT
+    T2 --> QI
+    T3 --> CAT
+    T3 --> QI
+    T4 --> QI
+    T5 --> QI
+    T6 --> CAT
+    T6 --> QI
+
+    CTX["companyId + workItemId<br/><i>closed over — never a model argument</i>"]
+    CTX -.->|"bound at construction"| tools
+
+    classDef proc fill:#0a0a0a,stroke:#0a0a0a,color:#fff
+    classDef db fill:#f4f4f5,stroke:#a1a1aa,color:#18181b
+    classDef tool fill:#fff,stroke:#18181b,color:#18181b
+    classDef guard fill:#fff,stroke:#dc2626,color:#7f1d1d,stroke-dasharray:4 3
+    class RUN,LLM,SESS_SVC proc
+    class EMB,CAT,QI,SESS db
+    class T1,T2,T3,T4,T5,T6 tool
+    class CTX guard
 ```
 
-A hallucinated price the customer accepts is a contract the contractor has to honour. Rather than
-instructing the model not to invent one, the tool that would let it does not exist — every line
-names a `catalog_item_id` that must resolve for that company, and the price is read from that
-row. The model chooses *what*; it never chooses *whose*.
+**The dashed box is the security boundary.** Company and quote are closed over when the agent is
+built. The model decides *what* to do; it has no argument that could change *whose* data it does
+it to.
 
 ---
 
-## How a catalog item becomes searchable
+## One turn, in order
 
 ```mermaid
 sequenceDiagram
     autonumber
     participant C as Contractor
     participant A as Server Action
-    participant P as Postgres
+    participant R as Rate limiter
+    participant G as ADK Runner
     participant V as Vertex
+    participant P as Postgres
 
-    C->>A: save a price
-    A->>P: insert / update catalog_items
-    A-->>C: saved (response sent)
-    Note over A,V: after() — the contractor is not waiting
-    A->>V: embed name + category + description
-    V-->>A: 768-dim vector
-    A->>P: upsert document_embeddings
+    C->>A: "Add the Nest thermostat, then 10% off"
+    A->>R: check ai:generate:{company}
+    R-->>A: allowed
+    A->>P: load or create session (id = work_item id)
+
+    A->>G: run turn
+    G->>V: prompt + tool declarations
+    V-->>G: call search_catalog("nest thermostat")
+    G->>P: embed query → match_documents → catalog rows
+    P-->>G: 2 thermostats, ranked
+    G->>V: results
+    V-->>G: call add_line_item(id, 1)
+    G->>P: assertOwned, read price from catalog, insert quote_item
+    V-->>G: call apply_discount(percent: 10)
+    G->>P: read quote, insert negative line
+    V-->>G: "Added Nest $249. 10% off, −$24.90."
+
+    G->>P: append events to session
+    A->>P: record run — model, tokens, cost, latency
+    A-->>C: reply + the quote as it now stands
 ```
 
-Indexing lives on the write path rather than in a nightly job. An index that drifts answers
-confidently with last week's prices, and nobody notices until a customer accepts one.
-
-Retrieval goes through `match_documents`, which fuses vector and full-text results with
-reciprocal rank fusion and takes `match_company_id` as a **required** argument — tenancy is
-enforced inside the search rather than remembered around it.
-
-One measured detail worth keeping: the RPC's default similarity threshold of `0.6` returned
-**nothing** for "furnace not heating" (the furnaces scored 0.559) and "wifi controls" (0.495).
-The ranking was right every time; the cutoff was discarding it. It runs at 0.3, because this
-feeds a model choosing from a shortlist — recall matters more than precision.
+Step 15 is why the editor takes the returned quote wholesale rather than replaying the agent's
+edits: the tools wrote to Postgres directly, so React state is stale the moment the action
+returns.
 
 ---
+
+## Two paths, and why
+
+```mermaid
+graph LR
+    START{"Does the quote<br/>have lines?"}
+    GEN["One-shot generation<br/><i>one model call, whole list</i>"]
+    AGENT["Agent turn<br/><i>tools edit in place</i>"]
+
+    START -->|"no — nothing to edit"| GEN
+    START -->|"yes"| AGENT
+
+    GEN --> RESULT[("quote_items")]
+    AGENT --> RESULT
+
+    style AGENT fill:#dcfce7,stroke:#16a34a,color:#14532d
+```
+
+A blank quote has nothing to edit, so the first draft is a *generation* — cheaper and simpler
+than an agent loop for "give me a starting point". Everything after is an *edit*, because
+regenerating throws away every price the contractor adjusted by hand.
+
+The condition is **lines**, not whether the quote was saved. Gating on the saved id looked
+equivalent and was not: nothing is saved until Save is pressed, which is *after* all the
+iterating, so every follow-up instruction still regenerated.
+
+---
+
+## Retrieval
+
+```mermaid
+graph LR
+    Q["“furnace not heating”"] --> E["embed<br/><i>text-embedding-004</i>"]
+    E --> M["match_documents"]
+    K["keyword / tsvector"] --> M
+    Q --> K
+    M --> RRF["reciprocal rank fusion"]
+    RRF --> OUT["ranked catalog rows"]
+
+    THRESH["vector_threshold 0.3"]
+    THRESH -.-> M
+
+    style THRESH fill:#fff,stroke:#a1a1aa,color:#18181b,stroke-dasharray:4 3
+```
+
+`match_documents` takes `match_company_id` as a **required** argument, so tenancy is enforced
+inside the search rather than remembered around it.
+
+The threshold is measured, not guessed. At the RPC's default of `0.6` the two queries most like
+how a contractor actually talks returned **nothing**:
+
+| Query | Top matches | At 0.6 |
+| --- | --- | --- |
+| "furnace not heating" | both furnaces at **0.559**, **0.540** | dropped |
+| "wifi controls" | both Wi-Fi thermostats at **0.495**, **0.493** | dropped |
+| "thermostat" | both thermostats at 0.664, 0.624 | kept |
+
+The ranking was right every time; the cutoff was discarding the answer. It runs at 0.3, because
+this feeds a model choosing from a shortlist — recall matters more than precision, and a
+humidifier the model ignores costs a few tokens where a missing furnace costs the job.
+
+---
+
+## What stops a made-up price
+
+```mermaid
+graph TB
+    MODEL["Gemini chooses<br/><i>what</i>"]
+    ADD["add_line_item(catalog_item_id, qty)"]
+    EST["propose_estimated_item(name)"]
+    CAT[("catalog_items")]
+    QI[("quote_items")]
+
+    MODEL -->|"an id, never a price"| ADD
+    MODEL -->|"a name, never a price"| EST
+    ADD -->|"price read from the row"| CAT
+    EST -->|"price from nearest comparable<br/>+ the contractor's own rates"| CAT
+    CAT --> QI
+
+    NONE["There is no tool that takes<br/>a free-text name AND a price."]
+    NONE -.-> MODEL
+
+    style NONE fill:#fff,stroke:#dc2626,color:#7f1d1d,stroke-dasharray:4 3
+```
+
+A hallucinated price the customer accepts is a contract the contractor has to honour. So the
+mechanism is removed rather than instructed against: **no tool accepts both a name and a price.**
+
+`propose_estimated_item` is the one line without a catalog row behind it, and it is fenced. The
+model supplies only the name; the price comes from the contractor's nearest comparable item and
+their own markup — never a web lookup, because a retail listing carries no labour, markup or
+overhead and would under-quote systematically. It refuses rather than guessing when nothing is
+close enough to reason from.
+
+The resulting line is flagged `is_estimate`, and **that flag is internal**. The customer sees a
+firm price at whatever the salesperson settled on. Both public paths select explicit columns, and
+a test fails if anyone adds the column or reaches for `select('*')`.
+
+One thing the tools taught that the prompt could not: asked for "$19 discount", free-text
+generation kept writing "10% discount". `apply_discount` takes `percent` **or** `amount` as
+separate parameters, so the model has to choose — the signature enforcing what prose could not.
+
+---
+
+## Sessions and traceability
+
+```mermaid
+graph LR
+    WI[("work_items.id")]
+    SESSION["ADK session id"]
+    ROW[("ai_conversations")]
+
+    WI ==>|"the same value"| SESSION
+    SESSION --> ROW
+    ROW --> HIST["model · prompt · tools<br/>tokens · cost · latency"]
+
+    style WI fill:#f4f4f5,stroke:#a1a1aa,color:#18181b
+    style ROW fill:#f4f4f5,stroke:#a1a1aa,color:#18181b
+```
+
+**The session id *is* the work item id.** A quote belongs to exactly one customer, so
+"customer + quote" and "quote" name the same conversation — and the work item is the id the URL,
+the pipeline and the invoice already key off. A separate session identifier would mean a mapping
+table and a way for the two to disagree.
+
+Every run is recorded whether it came from the agent or the one-shot path, so a quote can answer
+what the AI did on it:
+
+```
+gemini:gemini-2.5-flash-lite  success
+1577 in / 190 out   $0.000234   1888ms
+prompt: Furnace is short cycling, replace the blower motor
+```
+
+A `mock` run — the keyword fallback, when Vertex is unreachable — records as **degraded** rather
+than success. Silently shipping keyword-matched quotes to real customers looks like poor quality
+instead of an outage, which is the failure nobody reports.
+
+---
+
+## Everything degrades rather than failing
+
+| Missing | What happens |
+| --- | --- |
+| `GEMINI_API_KEY` / Vertex credentials | keyword match over the catalog, `mode: mock`, recorded as degraded |
+| Embeddings unavailable | search falls back to trigram keyword |
+| Index empty | same — keyword still answers |
+| Rate limiter unavailable | fails **open**; quoting keeps working |
+| Nothing comparable to estimate from | refuses, and says so |
+
+The one thing that never happens is a made-up number presented as a real one.
 
 ## What runs where
 
