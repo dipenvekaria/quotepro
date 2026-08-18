@@ -44,6 +44,7 @@ type LineItem = {
   description: string
   quantity: number
   unit_price: number
+  unit?: string | null
   is_upsell?: boolean
   is_discount?: boolean
 }
@@ -296,6 +297,7 @@ export function QuoteEditor({
             description: li.description ?? '',
             quantity: Number(li.quantity),
             unit_price: Number(li.unit_price),
+            unit: li.unit ?? null,
             is_upsell: false,
             is_discount: li.is_discount,
           })),
@@ -336,6 +338,7 @@ export function QuoteEditor({
           description: li.description ?? '',
           quantity: li.quantity,
           unit_price: li.unit_price,
+          unit: li.unit,
           is_upsell: li.is_upsell,
           is_discount: li.is_discount,
         })),
@@ -755,6 +758,11 @@ function LineItemRow({
       </div>
       <div className="flex items-center justify-between gap-2 sm:contents">
       <div className="flex items-center gap-1">
+        {/* The unit the price book sells this in — the difference between
+            "3 condensers" and "3 tons". Read-only: it belongs to the item. */}
+        {item.unit && item.unit !== 'each' && (
+          <span className="text-[11px] text-muted-foreground">{item.unit} ·</span>
+        )}
         <input
           type="number"
           step="0.01"

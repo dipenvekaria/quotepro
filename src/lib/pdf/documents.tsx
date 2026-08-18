@@ -10,6 +10,8 @@
 import { Document, Page, StyleSheet, Text, View, renderToBuffer } from '@react-pdf/renderer'
 import * as React from 'react'
 
+import { formatQuantity, unitSuffix } from '@/lib/format'
+
 // ---------------------------------------------------------------------------
 // Shared design tokens
 // ---------------------------------------------------------------------------
@@ -178,6 +180,7 @@ type LineItem = {
   description?: string | null
   quantity: number
   unit_price: number
+  unit?: string | null
   is_upsell?: boolean
   is_discount?: boolean
 }
@@ -295,8 +298,13 @@ function QuotePdf(props: QuotePdfProps): React.ReactElement {
               {it.description ? <Text style={styles.itemDescription}>{it.description}</Text> : null}
               {it.is_upsell ? <Text style={styles.upsellPill}>Recommended</Text> : null}
             </View>
-            <Text style={{ ...styles.itemsColQty, fontSize: 10 }}>{it.quantity}</Text>
-            <Text style={{ ...styles.itemsColPrice, fontSize: 10 }}>{fmt(it.unit_price)}</Text>
+            <Text style={{ ...styles.itemsColQty, fontSize: 10 }}>
+              {formatQuantity(it.quantity, it.unit)}
+            </Text>
+            <Text style={{ ...styles.itemsColPrice, fontSize: 10 }}>
+              {fmt(it.unit_price)}
+              {unitSuffix(it.unit)}
+            </Text>
             <Text style={{ ...styles.itemsColTotal, fontSize: 10, fontFamily: 'Helvetica-Bold' }}>
               {fmt(it.quantity * it.unit_price)}
             </Text>
@@ -450,8 +458,13 @@ function InvoicePdf(props: InvoicePdfProps): React.ReactElement {
               <Text style={styles.itemName}>{it.name}</Text>
               {it.description ? <Text style={styles.itemDescription}>{it.description}</Text> : null}
             </View>
-            <Text style={{ ...styles.itemsColQty, fontSize: 10 }}>{it.quantity}</Text>
-            <Text style={{ ...styles.itemsColPrice, fontSize: 10 }}>{fmt(it.unit_price)}</Text>
+            <Text style={{ ...styles.itemsColQty, fontSize: 10 }}>
+              {formatQuantity(it.quantity, it.unit)}
+            </Text>
+            <Text style={{ ...styles.itemsColPrice, fontSize: 10 }}>
+              {fmt(it.unit_price)}
+              {unitSuffix(it.unit)}
+            </Text>
             <Text style={{ ...styles.itemsColTotal, fontSize: 10, fontFamily: 'Helvetica-Bold' }}>
               {fmt(it.quantity * it.unit_price)}
             </Text>

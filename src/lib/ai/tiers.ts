@@ -130,6 +130,7 @@ function reconcileTier(
       description: match.description,
       quantity: Number.isFinite(qty) && qty > 0 ? qty : 1,
       unit_price: Number(match.base_price),
+      unit: match.unit,
       is_upsell: false,
       is_discount: false,
     })

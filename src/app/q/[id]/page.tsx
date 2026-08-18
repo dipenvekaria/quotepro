@@ -52,7 +52,7 @@ export default async function PublicQuotePage({
   const { data: items } = await admin
     .from('quote_items')
     .select(
-      'id, name, description, quantity, unit_price, is_upsell, is_discount, sort_order, option_tier',
+      'id, name, description, quantity, unit_price, unit, is_upsell, is_discount, sort_order, option_tier',
     )
     .eq('work_item_id', quote.id)
     .order('sort_order', { ascending: true })

@@ -28,6 +28,8 @@ export type AiLineItem = {
   description: string | null
   quantity: number
   unit_price: number
+  /** The catalog item's unit, carried so 3 tons never renders as 3 condensers. */
+  unit: string | null
   is_upsell: boolean
   is_discount: boolean
 }
@@ -285,6 +287,7 @@ function reconcile(
         description: typeof li.description === 'string' ? li.description : null,
         quantity: 1,
         unit_price: -amount,
+        unit: null,
         is_upsell: false,
         is_discount: true,
       })
@@ -310,6 +313,7 @@ function reconcile(
       description: typeof li.description === 'string' ? li.description : match.description,
       quantity: Number.isFinite(quantity) && quantity > 0 ? quantity : 1,
       unit_price: Number(match.base_price),
+      unit: match.unit,
       is_upsell: Boolean(li.is_upsell),
       is_discount: Boolean(li.is_discount),
     })

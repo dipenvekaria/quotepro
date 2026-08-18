@@ -23,7 +23,7 @@ export async function GET(
       companies (name, phone, email, address, plan),
       customers (name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip),
-      quote_items (name, description, quantity, unit_price, is_upsell, is_discount, sort_order)
+      quote_items (name, description, quantity, unit_price, unit, is_upsell, is_discount, sort_order)
     `)
     .eq('public_token', token)
     .maybeSingle()
