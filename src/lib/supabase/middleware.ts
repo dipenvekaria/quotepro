@@ -31,7 +31,7 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Allow public routes
-  const publicRoutes = ['/login', '/auth', '/q/', '/i/', '/join']
+  const publicRoutes = ['/login', '/auth', '/q/', '/i/', '/join', '/forgot-password', '/reset-password']
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
   // An auth callback lands with ?code= (PKCE) or ?token_hash= (email OTP) and no
