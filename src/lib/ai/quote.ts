@@ -384,11 +384,13 @@ async function realGenerate(
     ? (data.unmet as unknown[]).filter((u): u is string => typeof u === 'string').slice(0, 5)
     : []
 
-  // No items is now a legitimate answer — the catalog genuinely could not cover
-  // the job, and the model said so. Falling through to keyword matching there
-  // would replace an honest "we don't do that" with a confident wrong quote,
-  // which is the failure this whole change exists to stop.
-  if (line_items.length === 0 && questions.length === 0 && unmet.length === 0) return null
+  // An empty draft is an ANSWER, not an outage. "Give 10% discount" with no
+  // work to discount correctly yields zero items, zero questions and zero
+  // unmet — and returning null here made the caller throw AiUnavailableError,
+  // so a contractor was told "AI drafting is unavailable, try again in a
+  // minute" for a request the model had just answered perfectly. The empty
+  // result flows through with its reasoning; only a failed call (result null
+  // above) means unavailable.
 
   const reasoning =
     typeof data.reasoning === 'string' && data.reasoning.trim()
