@@ -297,3 +297,46 @@ export async function sendTeamInviteEmail(input: {
     return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
   }
 }
+
+/**
+ * "@sam is this price ok?" — the note itself, delivered to the person tagged.
+ *
+ * The link goes to the internal detail page, which requires a session, so a
+ * forwarded email leaks nothing a login doesn't already guard.
+ */
+export async function sendMentionEmail(input: {
+  to: string
+  authorName: string
+  quoteLabel: string
+  note: string
+  link: string
+}): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: input.to,
+      subject: `${input.authorName} tagged you on ${input.quoteLabel}`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 16px">
+            <strong>${escapeHtml(input.authorName)}</strong> tagged you in a note on
+            <strong>${escapeHtml(input.quoteLabel)}</strong>:
+          </p>
+          <blockquote style="margin:0 0 20px;padding:12px 16px;background:#f5f5f4;border-radius:8px;font-size:15px;line-height:1.6;color:#111;white-space:pre-wrap">${escapeHtml(input.note)}</blockquote>
+          <p style="margin:0">
+            <a href="${input.link}"
+               style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:15px;font-weight:500">
+              Open the quote
+            </a>
+          </p>
+        </div>`,
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true, id: data?.id ?? '' }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
+  }
+}

@@ -1,26 +1,39 @@
 'use client'
 
+import { useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   CalendarClock,
   CheckCircle2,
   Eye,
   FileText,
+  Loader2,
   Mail,
+  MessageSquare,
   Receipt,
+  Send,
   Sparkles,
   Wallet,
   XCircle,
 } from 'lucide-react'
+import { toast } from 'sonner'
 
 import type { TimelineEntry } from '@/lib/activity'
+import { Button } from '@/components/ui/button'
+import { addWorkItemNote } from './actions'
 
 /**
  * What happened on this quote, oldest first — one story merging the activity
- * trail with the AI runs, so "why is this line here" and "did the customer
- * open it" have the same answer surface.
+ * trail, the AI runs, and the team's own notes, so "why is this line here",
+ * "did the customer open it" and "did Sam approve the price" all have the
+ * same answer surface.
  *
- * Deliberately quiet: a vertical list, one line per event, no chips. The
- * timeline is reference material, not a dashboard.
+ * Notes are the internal channel the owner asked for: when a customer calls
+ * back pushing on price, the note recording it sits in the timeline under the
+ * send it responds to, and `@name` emails that teammate a link. ServiceNow
+ * work notes, minus the ceremony.
+ *
+ * Deliberately quiet otherwise: a vertical list, one line per event, no chips.
  */
 
 const ICON: Record<string, typeof FileText> = {
@@ -33,6 +46,7 @@ const ICON: Record<string, typeof FileText> = {
   invoice_created: Receipt,
   invoice_sent: Mail,
   payment_recorded: Wallet,
+  note: MessageSquare,
 }
 
 const LABEL: Record<string, string> = {
@@ -50,56 +64,149 @@ const LABEL: Record<string, string> = {
   quote_edit: 'AI edited the quote',
 }
 
-function when(iso: string): string {
+// Company timezone, explicitly — the server rendered this in UTC and the
+// browser re-rendered it locally, so every timestamp hydrated differently and
+// React regenerated the whole tree on each load.
+function when(iso: string, tz: string): string {
   const d = new Date(iso)
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: tz }) +
     ', ' +
-    d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+    d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })
 }
 
-export function ActivityTimeline({ entries }: { entries: TimelineEntry[] }) {
-  if (entries.length === 0) return null
+/** Note bodies with `@name` runs set off so a tag reads as a tag. */
+function NoteBody({ text }: { text: string }) {
+  const parts = text.split(/(@[\w.-]+)/g)
+  return (
+    <p className="mt-1 whitespace-pre-wrap rounded-lg bg-muted/60 px-3 py-2 text-sm text-foreground">
+      {parts.map((p, i) =>
+        p.startsWith('@') ? (
+          <span key={i} className="font-medium text-primary">
+            {p}
+          </span>
+        ) : (
+          <span key={i}>{p}</span>
+        ),
+      )}
+    </p>
+  )
+}
+
+export function ActivityTimeline({
+  entries,
+  tz,
+  workItemId,
+  people,
+}: {
+  entries: TimelineEntry[]
+  tz: string
+  workItemId: string
+  /** user id → display name, for note attribution. */
+  people: Record<string, string>
+}) {
+  const router = useRouter()
+  const [draft, setDraft] = useState('')
+  const [posting, startPost] = useTransition()
+
+  function post() {
+    const body = draft.trim()
+    if (!body || posting) return
+    startPost(async () => {
+      const res = await addWorkItemNote({ id: workItemId, body })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setDraft('')
+      if (res.data.mentioned.length > 0) {
+        toast.success(`Note added — emailed ${res.data.mentioned.join(', ')}`)
+      } else {
+        toast.success('Note added')
+      }
+      router.refresh()
+    })
+  }
 
   return (
     <section aria-label="Activity">
       <h2 className="text-sm font-semibold">Activity</h2>
-      <ol className="mt-3 space-y-0">
-        {entries.map((e, i) => {
-          const Icon = e.kind === 'ai' ? Sparkles : (ICON[e.action] ?? FileText)
-          const label = LABEL[e.action] ?? e.action.replaceAll('_', ' ')
-          const degraded = e.kind === 'ai' && e.detail?.status !== 'success'
-          return (
-            <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
-              {/* connecting rail */}
-              {i < entries.length - 1 && (
+      {entries.length > 0 && (
+        <ol className="mt-3 space-y-0">
+          {entries.map((e, i) => {
+            const Icon = e.kind === 'ai' ? Sparkles : (ICON[e.action] ?? FileText)
+            const isNote = e.action === 'note'
+            const label = isNote
+              ? (people[e.actor] ?? 'Teammate')
+              : (LABEL[e.action] ?? e.action.replaceAll('_', ' '))
+            const degraded = e.kind === 'ai' && e.detail?.status !== 'success'
+            return (
+              <li key={i} className="relative flex gap-3 pb-4 last:pb-0">
+                {/* connecting rail */}
+                {i < entries.length - 1 && (
+                  <span
+                    aria-hidden
+                    className="absolute left-[11px] top-6 h-full w-px bg-border"
+                  />
+                )}
                 <span
-                  aria-hidden
-                  className="absolute left-[11px] top-6 h-full w-px bg-border"
-                />
-              )}
-              <span
-                className={`relative mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border ${
-                  degraded
-                    ? 'border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                    : 'border-border bg-muted text-muted-foreground'
-                }`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-              </span>
-              <div className="min-w-0 flex-1 text-sm">
-                <span className="font-medium text-foreground">{label}</span>
-                {e.description && (
-                  <span className="text-muted-foreground"> — {e.description}</span>
-                )}
-                {degraded && (
-                  <span className="text-amber-600 dark:text-amber-400"> — failed, nothing was drafted</span>
-                )}
-                <div className="mt-0.5 text-xs text-muted-foreground">{when(e.at)}</div>
-              </div>
-            </li>
-          )
-        })}
-      </ol>
+                  className={`relative mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border ${
+                    degraded
+                      ? 'border-amber-500/40 bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                      : isNote
+                        ? 'border-primary/30 bg-primary/10 text-primary'
+                        : 'border-border bg-muted text-muted-foreground'
+                  }`}
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                </span>
+                <div className="min-w-0 flex-1 text-sm">
+                  <span className="font-medium text-foreground">{label}</span>
+                  {isNote ? (
+                    e.description && <NoteBody text={e.description} />
+                  ) : (
+                    e.description && (
+                      <span className="text-muted-foreground"> — {e.description}</span>
+                    )
+                  )}
+                  {degraded && (
+                    <span className="text-amber-600 dark:text-amber-400"> — failed, nothing was drafted</span>
+                  )}
+                  <div className="mt-0.5 text-xs text-muted-foreground">{when(e.at, tz)}</div>
+                </div>
+              </li>
+            )
+          })}
+        </ol>
+      )}
+
+      {/* Composer — team-only, like everything above it. */}
+      <div className="mt-4">
+        <textarea
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) post()
+          }}
+          rows={2}
+          placeholder="Add an internal note — @name to email a teammate"
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        />
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <span className="text-[11px] text-muted-foreground">
+            Never shown to the customer
+          </span>
+          <Button
+            onClick={post}
+            disabled={posting || !draft.trim()}
+            size="sm"
+            variant="outline"
+            className="h-11 gap-1.5 lg:h-8"
+          >
+            {posting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+            Add note
+          </Button>
+        </div>
+      </div>
     </section>
   )
 }

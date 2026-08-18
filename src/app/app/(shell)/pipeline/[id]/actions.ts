@@ -507,3 +507,106 @@ export async function getSchedulingContext(workItemId: string): Promise<
 
   return { ok: true, data: { estimatedHours: hours, suggestions, days } }
 }
+
+// ---------------------------------------------------------------------------
+
+const addNoteSchema = z.object({
+  id: z.string().uuid(),
+  body: z.string().trim().min(1, 'Write something first').max(2000),
+})
+
+/**
+ * An internal note on the quote — the review channel the owner asked for.
+ *
+ * Notes are activity_log rows, so they land in the same timeline as sends and
+ * views: "customer pushed back, @sam ok to match $499?" sits right under the
+ * send it responds to, and the reply lands under that. `@name` notifies the
+ * teammate by email with a link back here. Nothing on this path is visible to
+ * the customer — /q and the PDF never read the activity log.
+ *
+ * The insert is direct rather than via logActivity: that helper swallows
+ * failures by design, which is right for audit breadcrumbs and wrong for a
+ * message a teammate is waiting on. If the note cannot be saved, say so.
+ */
+export async function addWorkItemNote(input: { id: string; body: string }) {
+  const parsed = addNoteSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const [item] = await query<{ id: string; quote_number: string | null; job_name: string | null }>(
+    'select id, quote_number, job_name from work_items where id = $1 and company_id = $2 limit 1',
+    [parsed.data.id, session.companyId],
+  )
+  if (!item) return { ok: false as const, error: 'Not found' }
+
+  try {
+    await query(
+      `insert into activity_log (company_id, user_id, entity_type, entity_id, action, description)
+       values ($1, $2, 'work_item', $3, 'note', $4)`,
+      [session.companyId, session.userId, item.id, parsed.data.body],
+    )
+  } catch {
+    return { ok: false as const, error: 'The note could not be saved — try again.' }
+  }
+
+  // @mentions: match against the team's first names, last names, and email
+  // local parts, case-insensitively. Unmatched tags are just text.
+  const mentioned: string[] = []
+  const tags = [...parsed.data.body.matchAll(/@([\w.-]+)/g)].map((m) => m[1].toLowerCase())
+  if (tags.length > 0) {
+    const team = await query<{
+      id: string
+      email: string | null
+      profile: { first_name?: string; last_name?: string } | null
+    }>(
+      `select u.id, au.email, u.profile
+         from users u join auth.users au on au.id = u.id
+        where u.company_id = $1 and u.is_active`,
+      [session.companyId],
+    )
+
+    const [author] = await query<{
+      email: string | null
+      profile: { first_name?: string; last_name?: string } | null
+    }>(
+      `select au.email, u.profile
+         from users u join auth.users au on au.id = u.id
+        where u.id = $1 and u.company_id = $2 limit 1`,
+      [session.userId, session.companyId],
+    )
+    const authorName =
+      [author?.profile?.first_name, author?.profile?.last_name].filter(Boolean).join(' ') ||
+      author?.email ||
+      'A teammate'
+
+    const label = item.quote_number ?? item.job_name ?? 'a quote'
+    const { sendMentionEmail } = await import('@/lib/email/senders')
+
+    for (const u of team) {
+      if (u.id === session.userId || !u.email) continue
+      const first = u.profile?.first_name?.toLowerCase()
+      const last = u.profile?.last_name?.toLowerCase()
+      const local = u.email.split('@')[0]?.toLowerCase()
+      const handles = [first, last, local, first && last ? `${first}${last}` : null, first && last ? `${first}.${last}` : null]
+      if (!tags.some((t) => handles.includes(t))) continue
+
+      const res = await sendMentionEmail({
+        to: u.email,
+        authorName,
+        quoteLabel: label,
+        note: parsed.data.body,
+        link: `${env.NEXT_PUBLIC_APP_URL}/app/pipeline/${item.id}`,
+      }).catch(() => ({ ok: false as const, error: 'send failed' }))
+      // The note is already saved; a failed or unconfigured email downgrades
+      // the feature, not the record. Report only who was actually notified.
+      if (res.ok && !res.skipped) mentioned.push(u.profile?.first_name ?? u.email)
+    }
+  }
+
+  revalidatePath(`/app/pipeline/${parsed.data.id}`)
+  return { ok: true as const, data: { mentioned } }
+}

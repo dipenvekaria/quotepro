@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 
@@ -31,6 +31,24 @@ export function PipelineFilter({
   const pathname = usePathname()
   const params = useSearchParams()
   const [term, setTerm] = useState(initialTerm)
+  // Collapsed to an icon on phones — the always-open bar broke the screen's
+  // flow (owner's words) and truncated its own placeholder at 375px. An
+  // active search stays open so the filter is never invisible while applied.
+  const [searchOpen, setSearchOpen] = useState(Boolean(initialTerm))
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  // The input is always mounted (hidden by CSS below sm), so autoFocus never
+  // re-fires when the icon opens it. An effect runs after the class flip has
+  // painted; focusing from the click handler raced the commit and lost. The
+  // first run is skipped so landing on ?q= doesn't pop the keyboard.
+  const openedOnce = useRef(false)
+  useEffect(() => {
+    if (!openedOnce.current) {
+      openedOnce.current = true
+      return
+    }
+    if (searchOpen) inputRef.current?.focus()
+  }, [searchOpen])
   const [pending, startNav] = useTransition()
 
   useEffect(() => {
@@ -45,14 +63,34 @@ export function PipelineFilter({
   }, [term, initialTerm, params, pathname, router])
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <div className="relative min-w-0 flex-1 sm:max-w-xs">
+    <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+      {!searchOpen && (
+        <button
+          type="button"
+          onClick={() => setSearchOpen(true)}
+          aria-label="Search the pipeline"
+          className="grid h-11 w-11 place-items-center rounded-md border border-border bg-card text-muted-foreground shadow-sm hover:text-foreground sm:hidden"
+        >
+          <Search className="h-4 w-4" />
+        </button>
+      )}
+      <div
+        className={
+          searchOpen
+            ? 'relative order-last w-full min-w-0 sm:order-none sm:w-auto sm:max-w-xs sm:flex-1'
+            : 'relative hidden min-w-0 flex-1 sm:block sm:max-w-xs'
+        }
+      >
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
+          ref={inputRef}
           value={term}
           onChange={(e) => setTerm(e.target.value)}
           placeholder="Search customer or job"
           aria-label="Search the pipeline"
+          onBlur={() => {
+            if (!term.trim()) setSearchOpen(false)
+          }}
           className="h-11 pl-9 pr-9 lg:h-9"
         />
         {term && (
