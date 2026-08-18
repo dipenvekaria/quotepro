@@ -332,9 +332,13 @@ export function QuoteViewer({
               Each option includes everything in the one before it.
             </p>
             <div className="mt-3 grid gap-3 sm:grid-cols-3">
-              {options.map((o) => {
+              {options.map((o, oi) => {
                 const chosen = o.tier === chosenTier
                 const count = items.filter((i) => i.option_tier === o.tier && !i.is_discount).length
+                // The cue a customer actually needs is the step, not three
+                // totals to diff in their head: "+$162 over Recommended".
+                const prev = oi > 0 ? options[oi - 1] : null
+                const delta = prev ? optionTotal(o.tier) - optionTotal(prev.tier) : 0
                 return (
                   <button
                     key={o.id}
@@ -357,6 +361,11 @@ export function QuoteViewer({
                     <span className="mt-1 text-2xl font-semibold tabular">
                       {fmtMoney(optionTotal(o.tier))}
                     </span>
+                    {prev && delta > 0 && (
+                      <span className="mt-0.5 text-[11px] tabular text-muted-foreground">
+                        +{fmtMoney(delta)} over {prev.name}
+                      </span>
+                    )}
                     {o.description && (
                       <span className="mt-2 text-xs leading-relaxed text-muted-foreground">
                         {o.description}
@@ -506,8 +515,28 @@ export function QuoteViewer({
           </section>
         )}
 
+        {/* Thumb-reachable decision. On a phone the approve button otherwise
+            lives below the line items, the photos and the fine print — the
+            sticky bar keeps the total and the action in reach the whole way
+            down, the way a checkout does. Phones only; desktop keeps the
+            in-flow section. */}
+        {canAct && (
+          <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden">
+            <div className="mx-auto flex max-w-3xl items-center gap-3">
+              <div className="min-w-0">
+                <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Total</div>
+                <div className="text-lg font-semibold tabular">{fmtMoney(shown.total)}</div>
+              </div>
+              <Button onClick={() => setSignOpen(true)} className="h-12 flex-1 gap-1.5 text-sm shadow-sm">
+                <Check className="h-4 w-4" />
+                Approve quote
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Trust footer */}
-        <footer className="mt-8 border-t border-border/70 pt-6">
+        <footer className={cn('mt-8 border-t border-border/70 pt-6', canAct && 'pb-24 sm:pb-0')}>
           <div className="grid grid-cols-1 gap-4 text-xs text-muted-foreground sm:grid-cols-3">
             <div className="flex items-start gap-2">
               <Shield className="mt-0.5 h-3.5 w-3.5 shrink-0" />
