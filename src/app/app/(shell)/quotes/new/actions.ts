@@ -709,6 +709,53 @@ export async function searchCustomers(q: unknown): Promise<CustomerMatch[]> {
 
 // ---------------------------------------------------------------------------
 
+const conversationSchema = z.object({ work_item_id: z.string().uuid() })
+
+/**
+ * The quoting conversation for a quote, as chat messages.
+ *
+ * Read from the ADK session (`purpose = 'quoting'`), which already persists
+ * every turn — the dialog shows the trail instead of a blank box, so a
+ * contractor reopening a quote tomorrow continues where they left off. Tool
+ * call/response events are internal and are filtered to text turns.
+ */
+export async function getQuoteConversation(input: unknown) {
+  const parsed = conversationSchema.safeParse(input)
+  if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const [row] = await query<{ messages: unknown }>(
+    `select messages from ai_conversations
+      where company_id = $1 and entity_type = 'work_item' and entity_id = $2
+        and purpose = 'quoting'
+      limit 1`,
+    [session.companyId, parsed.data.work_item_id],
+  )
+
+  type EventPart = { text?: unknown }
+  type SessionEvent = { author?: unknown; content?: { parts?: EventPart[] } }
+  const events = Array.isArray(row?.messages) ? (row.messages as SessionEvent[]) : []
+
+  const messages = events
+    .map((e) => {
+      const text = (e.content?.parts ?? [])
+        .map((p) => (typeof p.text === 'string' ? p.text : ''))
+        .join('')
+        .trim()
+      return {
+        role: e.author === 'user' ? ('user' as const) : ('assistant' as const),
+        text,
+      }
+    })
+    .filter((m) => m.text.length > 0)
+
+  return { ok: true as const, data: { messages } }
+}
+
+// ---------------------------------------------------------------------------
+
 const agentEditSchema = z.object({
   work_item_id: z.string().uuid(),
   message: z.string().trim().min(1).max(2000),
