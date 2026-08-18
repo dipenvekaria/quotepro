@@ -106,21 +106,18 @@ exists.
 no breakdown. Selected `notes` are never rendered either.
 **Fix:** move the totals outside the guard; give the items list a real empty state; render notes.
 
-**6. The AI fabricates a whole quote when no job is described.** — **VERIFIED** on a real
-production quote, ~half a day
-The editor defaults an empty job description to the literal placeholder `"Quote"`
-(`quote-editor.tsx:228,373`), and both generators accept any string of 3+ characters
-(`generateSchema`/`tierGenerateSchema`: `description: z.string().min(3)`). So a contractor who
-generates without describing the job hands the AI the word "Quote", and the model — which must
-return something — invents a plausible, catalog-grounded repair. Dan v's latest quote is this:
-from "Quote" the tiers path produced a $935 good/better/best AC-electrical repair (Hard Start
-Kit, Contactor, Capacitor — all real catalog items at real prices), while the single-line path
-fed the *same* input produced a completely different refrigerant-leak job. Two fabricated jobs
-from one empty prompt, both looking legitimate because the prices are the contractor's own.
-**Fix:** require a substantive job description before generating — block empty/placeholder input
-with a clear message rather than defaulting to "Quote", and add a trade-agnostic prompt rule that
-the model must not invent a scope the description does not contain. This is the same class as #1
-(the AI stating things the job never specified) and the two should be fixed together.
+**6. ~~The AI fabricates a whole quote when no job is described.~~ FIXED — see "Shipped this
+session".** Kept for the record: the editor defaulted an empty description to the literal
+placeholder `"Quote"` and both generators accepted it, so the model invented a plausible,
+catalog-priced job — verified on a real production quote, where the tiers path built a $935
+three-option repair from the word "Quote" and the single path built a completely different
+refrigerant job from the same input. Fixed at every layer: the editor persists the real job text
+and never manufactures a description; the generation prompt refuses non-descriptions and asks;
+the tiers path — whose model ignored the same prompt rule — refuses in code (`VagueJobError`)
+before any model call, with tests; and per-measure items with no stated measurement now ask for
+it instead of defaulting to quantity 1. The mock fallback's own fabrication (it padded unmatched
+descriptions with labour lines — $786 for "asdfghjkl qwerty") is also removed. What remains open
+is #1, the summary describing off-quote work — same class, still to do.
 
 ### Owner (mechanical or a decision — not code)
 
@@ -211,6 +208,19 @@ basis leaking onto `/q`, was fixed this session in #110.)
   badge on estimated lines + an "add to price book" button that honours the grant). Until then
   the three PRs are inventory, not features.
 
+### Promotions cannot run across the whole catalog — **owner-requested**
+
+A promotion is forced to target at least one label: `promotionSchema`
+(`catalog/actions.ts:716`) validates `labels … .min(1, 'Pick at least one label to discount')`,
+and quote-time application is keyed on `promotion_labels`. The picker is already multi-select (up
+to 10), so a contractor can span several labels — but there is no way to run a promotion on
+**everything** (a seasonal store-wide sale) without labelling every item and selecting every
+label. **VERIFIED.**
+**Fix:** allow a promotion with no labels — or an explicit "all items" scope — to apply to the
+whole active catalog, and surface it as an "apply to all items" toggle in the promotions form.
+Small: drop the `min(1)`, treat empty/all-scope as "every active item" in the application query,
+and add the toggle. No schema migration needed if empty-labels means all.
+
 ### Data the product has and contradicts itself about
 
 - **Analytics shows two different acceptance rates on one screen** (71% headline vs 57%
@@ -239,6 +249,33 @@ basis leaking onto `/q`, was fixed this session in #110.)
   actual restore into a scratch project, timed). Decide the Supabase PITR tier.
 
 ---
+
+## Speed opportunities that do not trade outcome quality — **owner-requested**
+
+Search first, because the biggest one is a quality bug wearing a latency costume.
+
+- **The generators never use the vector search that was built for them.** Both `generateQuote`
+  and `generateTieredQuote` ground the model on `fetchCatalog()` — the catalog **ordered by
+  name, first 80 items** (`quote.ts:353`, `tiers.ts:157`, fetch capped at 200). The pgvector +
+  RRF `searchCatalog` (measured 5.8ms at 30k vectors) is used only by the agent's tools.
+  Consequences, in order: any catalog past 80 items has its alphabetically-last items
+  **invisible to the AI** — the 101-item test book quotes blind to 21 items, and a 200-item real
+  book to 120; and every request ships ~80 items of prompt when the job needs perhaps 15
+  relevant ones. **Fix:** select the grounding set with `searchCatalog(description)` (union the
+  top ~40 with the always-relevant labour/fee items), falling back to the current slice when
+  embeddings are empty. Better recall on big catalogs *and* roughly half the input tokens —
+  which is the token budget, the latency, and the cost, all improved by the same change.
+  **VERIFIED** (code read; retrieval numbers measured earlier). ~half a day.
+- **The two pre-queries run serially.** `generateQuote` awaits `fetchCatalog` then
+  `fetchTaxRate` (`quote.ts:432-435`) — independent reads, one `Promise.all`, one round-trip
+  saved. Minutes of work; keep the tenancy scanner's shape rules in mind (it cannot parse
+  `Promise.all` — see the scanner gap in P2).
+- **Draft latency today is ~2s** (measured on a real production run: 2,026ms, 3,094 input
+  tokens) and the agent edit path is 2–3 model calls. Both are fine; do not chase model-side
+  speed before the retrieval change above, which cuts input tokens as a side effect.
+- **What not to do:** cache generated quotes (every job differs), raise temperature-0, or move
+  to a smaller model than flash-lite — each trades the determinism or grounding that makes the
+  quotes trustworthy.
 
 ## P2 — Accept for now (with the trigger that reopens it)
 

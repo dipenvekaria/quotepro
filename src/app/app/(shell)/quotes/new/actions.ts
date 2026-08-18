@@ -16,6 +16,7 @@ import {
   TIERS,
   TIER_DB_KEY,
   NoCatalogError as NoTierCatalogError,
+  VagueJobError,
   generateTieredQuote,
 } from '@/lib/ai/tiers'
 
@@ -141,7 +142,10 @@ const createDraftSchema = z.object({
   city: z.string().max(120).optional(),
   state: z.string().max(40).optional(),
   zip: z.string().max(20).optional(),
-  description: z.string().min(1).max(2000),
+  // Optional so a draft is never forced to carry a manufactured description. The
+  // editor used to default an empty one to the literal "Quote", which then fed
+  // the AI as if it were the job and produced a fabricated quote.
+  description: z.string().max(2000).optional(),
 })
 
 export type CreateDraftInput = z.infer<typeof createDraftSchema>
@@ -216,7 +220,7 @@ export async function createDraftQuote(input: CreateDraftInput) {
              (company_id, customer_id, address_id, description, status, created_by)
            values ($1, $2, $3, $4, 'quote_draft'::work_item_status, $5)
            returning id`,
-          [companyId, pickedCustomerId, addressId, parsed.data.description, userId],
+          [companyId, pickedCustomerId, addressId, parsed.data.description ?? null, userId],
         )
         return made[0]?.id
       }
@@ -237,7 +241,7 @@ export async function createDraftQuote(input: CreateDraftInput) {
           parsed.data.customer_phone || null,
           parsed.data.customer_email || null,
           parsed.data.address || null,
-          parsed.data.description,
+          parsed.data.description ?? null,
           'quote_draft',
         ],
       )
@@ -495,6 +499,13 @@ export async function generateQuoteTiers(input: unknown) {
       return {
         ok: false as const,
         error: 'No pricing items in your catalog yet — add some before generating options.',
+      }
+    }
+    if (e instanceof VagueJobError) {
+      return {
+        ok: false as const,
+        error:
+          'Describe the job first — what is broken, or what is being installed? Options need a real description to be honest.',
       }
     }
     console.error('generateQuoteTiers failed', e)

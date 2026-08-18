@@ -4,7 +4,10 @@ import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
 /** `.env.local` without pulling in a dependency just to read six lines. */
-function loadEnv(): Record<string, string> {
+// Exported for vitest.eval.config.ts, which cannot mergeConfig this file —
+// merge *unions* include/exclude arrays, so the _manual exclusion below would
+// survive into the eval config and defeat it.
+export function loadEnv(): Record<string, string> {
   try {
     const out: Record<string, string> = {}
     for (const line of readFileSync('.env.local', 'utf8').split('\n')) {
@@ -35,6 +38,9 @@ export default defineConfig({
   },
   test: {
     include: ['tests/**/*.test.ts'],
+    // tests/_manual holds evals that call the real model and cost money. Run
+    // them by path, deliberately: npx vitest run tests/_manual/<file>
+    exclude: ['tests/_manual/**', '**/node_modules/**'],
     // Integration tests talk to the local database, so they need the same
     // environment the app runs with.
     env: loadEnv(),

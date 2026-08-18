@@ -156,6 +156,8 @@ export function QuoteEditor({
       toast.error('Describe the job first.')
       return
     }
+    // Capture the described job as the quote's description (see runAiGenerate).
+    if (!description.trim()) setDescription(prompt)
     startAi(async () => {
       const res = await generateQuoteTiers({
         description: prompt,
@@ -195,6 +197,10 @@ export function QuoteEditor({
       return
     }
     const prompt = aiPrompt.trim() || description
+    // Persist what the contractor actually described. The job text lives in the
+    // AI prompt box; without this it never reaches `description`, which then
+    // saved as the literal "Quote" and fed the AI a non-job on the next pass.
+    if (!description.trim()) setDescription(prompt)
     startAi(async () => {
       /*
         Two different operations, and the distinction is the whole point.
@@ -225,7 +231,7 @@ export function QuoteEditor({
           city: addressParts.city,
           state: addressParts.state,
           zip: addressParts.zip,
-          description: description || 'Quote',
+          description: description.trim() || prompt,
         })
         if (created.ok) {
           editableId = created.data.id
@@ -370,7 +376,7 @@ export function QuoteEditor({
           city: addressParts.city,
           state: addressParts.state,
           zip: addressParts.zip,
-          description: description || 'Quote',
+          description: description.trim() || aiPrompt.trim() || undefined,
         })
         if (!res.ok) {
           toast.error(res.error)

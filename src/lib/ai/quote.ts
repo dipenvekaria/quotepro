@@ -137,12 +137,17 @@ function mockGenerate(catalog: CatalogItem[], description: string) {
     if (!bestPerCategory.has(group)) bestPerCategory.set(group, r.item)
   }
 
-  let picks = [...bestPerCategory.values()].slice(0, 4)
-  if (picks.length === 0) {
-    picks = catalog
-      .filter((it) => ['labor', 'trip', 'diagnos'].some((k) => it.name.toLowerCase().includes(k)))
-      .slice(0, 3)
-  }
+  /*
+    Nothing matched: return nothing.
+
+    This used to pad the quote with the first labour/trip/diagnostic items it
+    could find — so "asdfghjkl qwerty" produced $786 of labour, confidently.
+    That is the exact failure the real generator's grounding exists to prevent,
+    reintroduced by its own fallback. An empty draft with the degraded-AI banner
+    tells the contractor the truth: nothing in the description matched their
+    price book, add lines by hand.
+  */
+  const picks = [...bestPerCategory.values()].slice(0, 4)
 
   const line_items: AiLineItem[] = picks.map((it, i) => ({
     name: it.name,

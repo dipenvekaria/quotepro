@@ -46,6 +46,12 @@ Build all three from the CATALOG provided. Nothing else exists.
   Complete is worth more than Recommended, do not pad it — return the two.
 - Use ONLY items from CATALOG. Copy each name EXACTLY as it appears, character
   for character. An item whose name does not match is discarded.
+- **The description must actually describe work.** If it is empty, a placeholder,
+  or a bare generic word — "quote", "job", "service", "repair", "fix",
+  "estimate" or the like — with no specifics, return exactly
+  `{"tiers": [], "reasoning": "why the description is not enough"}`. You cannot
+  build honest options for a job nobody described, and a plausible three-tier
+  quote invented to fill the gap is the worst thing you can produce here.
 - Include labour on every tier that involves work on site.
 - Quantities must respect the item's unit. An item sold per ton, per sq ft or
   per hour takes the job's measurement as its quantity; an item sold `each` is
