@@ -70,6 +70,10 @@ const MISSING: [string, string][] = [
 const ADVERSARIAL: [string, string][] = [
   ['placeholder "Quote"', 'Quote'],
   ['gibberish', 'asdfghjkl qwerty'],
+  // The production repro behind "AI drafting is unavailable": a discount with
+  // no work correctly drafts zero items — an answer, never an outage. The case
+  // passing at all IS the assertion (an AiUnavailableError throw fails it).
+  ['discount only, nothing to discount', 'give 10% discount'],
 ]
 
 describe('quote drafting — real model, real catalog', () => {

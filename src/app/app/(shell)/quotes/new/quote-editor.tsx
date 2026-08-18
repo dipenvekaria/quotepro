@@ -251,6 +251,26 @@ export function QuoteEditor({
         it stays private until sent either way.
       */
       let editableId = workItemId
+      /*
+        A modification must never silently regenerate.
+
+        With lines on the quote but no customer name, the draft row cannot be
+        created, so the agent has nothing to edit — and falling through to
+        generation sent "give 10% discount" to the drafting model as if it
+        were a whole job, which replaced the quote (or, correctly, drafted
+        nothing and read as an outage). Ask for the one missing fact instead.
+      */
+      if (!editableId && items.length > 0 && !customerName.trim()) {
+        setThread((t) => [
+          ...t,
+          { role: 'user', text: prompt },
+          {
+            role: 'assistant',
+            text: 'Add the customer’s name first — I need it to save this quote before I can keep editing it. Your lines are safe.',
+          },
+        ])
+        return
+      }
       if (!editableId && items.length > 0 && customerName.trim()) {
         const created = await createDraftQuote({
           customer_id: customerId ?? undefined,

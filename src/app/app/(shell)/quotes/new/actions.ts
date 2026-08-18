@@ -845,9 +845,28 @@ export async function editQuoteWithAi(input: unknown) {
     return { ok: true as const, data: { ...turn, quote } }
   } catch (e) {
     console.error('editQuoteWithAi failed', e)
+    // Tool errors are written for the contractor ("that line is not on this
+    // quote"); anything else is infrastructure and must not reach the browser
+    // raw — a Vertex auth failure names the project. Recorded so the outage is
+    // visible in the run log either way.
+    const toolMessage =
+      e instanceof Error && !/unavailable|invalid_grant|fetch|ECONN|quota|credential/i.test(e.message)
+        ? e.message
+        : null
+    await recordAiRun({
+      companyId: session.companyId,
+      userId: session.userId,
+      workItemId: parsed.data.work_item_id,
+      mode: 'unavailable',
+      purpose: 'quote_edit',
+      prompt: parsed.data.message,
+      result: { error: e instanceof Error ? e.message : String(e) },
+    })
     return {
       ok: false as const,
-      error: e instanceof Error ? e.message : 'The assistant could not make that change.',
+      error:
+        toolMessage ??
+        'The assistant could not reach the AI service. Nothing was changed — try again in a minute.',
     }
   }
 }
