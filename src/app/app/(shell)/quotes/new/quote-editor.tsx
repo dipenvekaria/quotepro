@@ -157,7 +157,11 @@ export function QuoteEditor({
       return
     }
     startAi(async () => {
-      const res = await generateQuoteTiers({ description: prompt, tax_rate: taxRate })
+      const res = await generateQuoteTiers({
+        description: prompt,
+        tax_rate: taxRate,
+        work_item_id: workItemId,
+      })
       if (!res.ok) {
         toast.error(res.error)
         return

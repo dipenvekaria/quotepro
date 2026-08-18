@@ -51,6 +51,8 @@ export type TieredQuote = {
   tiers: QuoteTier[]
   reasoning: string
   mode: string
+  /** Token usage for the generation, so the run log can cost it. */
+  usage?: { input: number; output: number }
 }
 
 const SCHEMA: Schema = {
@@ -226,5 +228,6 @@ export async function generateTieredQuote(input: {
     tiers: built.map((t, i) => ({ ...t, isRecommended: i === recommendedAt })),
     reasoning: typeof data.reasoning === 'string' ? data.reasoning.trim() : '',
     mode: `gemini:${result.model}`,
+    usage: result.usage,
   }
 }
