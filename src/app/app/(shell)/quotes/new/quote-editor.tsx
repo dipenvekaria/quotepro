@@ -298,7 +298,16 @@ export function QuoteEditor({
         setThread((t) => [
           ...t,
           { role: 'user', text: prompt },
-          { role: 'assistant', text: res.data.reply || 'Done — the quote is updated.' },
+          {
+            role: 'assistant',
+            // An empty reply must not become a claim. Say what ran; zero tool
+            // calls means zero changes, and the contractor should know that.
+            text:
+              res.data.reply ||
+              (res.data.toolCalls.length > 0
+                ? `Done — applied ${res.data.toolCalls.length} change${res.data.toolCalls.length === 1 ? '' : 's'}.`
+                : 'I didn’t make any changes — try telling me the line and the change you want.'),
+          },
         ])
         setAiPrompt('')
         return

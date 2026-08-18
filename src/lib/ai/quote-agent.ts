@@ -103,14 +103,17 @@ function tools(ctx: ToolContext) {
 
     new FunctionTool({
       name: 'update_line_item',
-      description: 'Change the quantity or unit price of one line already on the quote.',
+      description:
+        'Change one line already on the quote: quantity, unit price, or rename it (name/description are what the customer reads).',
       parameters: z.object({
         line_id: z.string().describe('id from read_quote'),
         quantity: z.number().optional(),
         unit_price: z.number().optional(),
+        name: z.string().max(300).optional().describe('new label for the line'),
+        description: z.string().max(1000).optional(),
       }),
-      execute: async ({ line_id, quantity, unit_price }) =>
-        updateLineItem(ctx, line_id, { quantity, unit_price }),
+      execute: async ({ line_id, quantity, unit_price, name, description }) =>
+        updateLineItem(ctx, line_id, { quantity, unit_price, name, description }),
     }),
 
     new FunctionTool({
@@ -211,19 +214,27 @@ export async function runQuoteTurn(
 
   const reply: string[] = []
   const toolCalls: string[] = []
-  let turns = 0
 
   for await (const event of runner.runAsync({
     userId,
     sessionId: ctx.workItemId,
     newMessage: { role: 'user', parts: [{ text: message }] },
   })) {
-    if (++turns > MAX_TURNS) break
-
     for (const part of event.content?.parts ?? []) {
       if (part.functionCall?.name) toolCalls.push(part.functionCall.name)
       if (part.text) reply.push(part.text)
     }
+    /*
+      Cap TOOL CALLS, not stream events. The old `++turns > MAX_TURNS` counted
+      every event — and a tool call is two of them (call + response) — so any
+      turn that used more than a handful of tools was cut off before the
+      model's closing message. Production showed it plainly: three edits in a
+      row, all with `reply: ""`, and the UI filled the silence with "Done —
+      the quote is updated" even when nothing had changed. The cap exists to
+      stop a runaway loop; twelve real tool calls is that, twelve events is a
+      normal afternoon.
+    */
+    if (toolCalls.length > MAX_TURNS) break
   }
 
   return { reply: reply.join('').trim(), toolCalls }
