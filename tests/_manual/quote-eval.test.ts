@@ -3,9 +3,13 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, it } from 'vitest'
 
+import { beforeAll } from 'vitest'
+
 import { generateQuote } from '@/lib/ai/quote'
 import { generateTieredQuote } from '@/lib/ai/tiers'
 import { estimateFromCatalog } from '@/lib/ai/estimate'
+import { indexCatalog } from '@/lib/ai/catalog-index'
+import { query } from '@/lib/db'
 
 // Vitest buffers console output per test; a file keeps the whole run readable.
 const OUT = join(tmpdir(), 'rivet-quote-eval.txt')
@@ -20,6 +24,19 @@ afterAll(() => console.log(`\nquote eval written to ${OUT}`))
  */
 
 const CO = '1b2a2540-03ce-41d9-a612-a15975506217' // Northside HVAC, 101-item HVAC book
+
+beforeAll(async () => {
+  // db reset wipes embeddings and nothing re-indexes them; the eval should
+  // exercise the real vector path, so index once when empty.
+  const [{ n }] = await query<{ n: number }>(
+    'select count(*)::int as n from document_embeddings where company_id = $1',
+    [CO],
+  )
+  if (n === 0) {
+    const res = await indexCatalog(CO)
+    log(`(indexed ${res.indexed} catalog embeddings first)`)
+  }
+}, 120_000)
 
 function show(label: string, q: Awaited<ReturnType<typeof generateQuote>>) {
   const sub = q.line_items.reduce((s, li) => s + li.unit_price * li.quantity, 0)
@@ -91,6 +108,26 @@ describe('quote drafting — real model, real catalog', () => {
       }
     } catch (e) {
       log(`  threw ${e instanceof Error ? e.name : 'unknown'} — refused before the model, good`)
+    }
+  }, 120_000)
+
+  // The regression cases: both items sit past position 80 alphabetically, so
+  // the old first-80 grounding could never quote them. Hard assertions.
+  it('finds the Smart Thermostat (alphabetical position 82)', async () => {
+    const q = await generateQuote({ companyId: CO, description: 'Install a smart thermostat with a remote sensor', customerName: 'Test' })
+    show('smart thermostat (past old cutoff)', q)
+    const names = q.line_items.map((li) => li.name)
+    if (!names.some((n) => n.toLowerCase().includes('smart thermostat'))) {
+      throw new Error(`Smart Thermostat not quoted; got: ${names.join(' | ')}`)
+    }
+  }, 120_000)
+
+  it('finds the Zone Control Board (alphabetical position 100)', async () => {
+    const q = await generateQuote({ companyId: CO, description: 'Replace the failed zone control board', customerName: 'Test' })
+    show('zone control board (past old cutoff)', q)
+    const names = q.line_items.map((li) => li.name)
+    if (!names.some((n) => n.toLowerCase().includes('zone control board'))) {
+      throw new Error(`Zone Control Board not quoted; got: ${names.join(' | ')}`)
     }
   }, 120_000)
 

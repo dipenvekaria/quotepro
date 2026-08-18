@@ -10,6 +10,7 @@
  */
 
 import { query } from '@/lib/db'
+import { searchCatalog } from '@/lib/ai/catalog-index'
 import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
 
@@ -74,6 +75,62 @@ export async function fetchCatalog(companyId: string): Promise<CatalogItem[]> {
       limit 200`,
     [companyId],
   )
+}
+
+/** How many catalog items the model is shown. The same budget the old
+ * alphabetical slice used — the fix is *which* items fill it, not how many. */
+const GROUNDING_CAP = 80
+/** How many search hits lead the set before the alphabetical fill. */
+const GROUNDING_SEARCH = 40
+
+/**
+ * Order the grounding set: search hits first, alphabetical fill after.
+ *
+ * Pure and exported for tests. `hits` may contain ids the catalog fetch did
+ * not return (inactive, off-trade) — those are dropped, never invented.
+ */
+export function mergeGrounding<T extends { id: string }>(
+  hits: { id: string }[],
+  all: T[],
+  cap: number,
+): T[] {
+  const byId = new Map(all.map((it) => [it.id, it]))
+  const out: T[] = []
+  const used = new Set<string>()
+  for (const h of hits) {
+    const item = byId.get(h.id)
+    if (!item || used.has(item.id)) continue
+    used.add(item.id)
+    out.push(item)
+    if (out.length >= cap) return out
+  }
+  for (const item of all) {
+    if (used.has(item.id)) continue
+    out.push(item)
+    if (out.length >= cap) break
+  }
+  return out
+}
+
+/**
+ * The items the model is shown for this request.
+ *
+ * The old behaviour was `catalog.slice(0, 80)` — the first eighty rows
+ * **alphabetically**. Any real price book is bigger, so everything from
+ * roughly S onward was invisible to the model: a 102-item catalog quoted
+ * "smart thermostat" as the Programmable one for days because the Smart
+ * Thermostat sat at position 83 and the model had never seen it. Relevance
+ * picks the leaders now; the alphabetical fill keeps the set no narrower than
+ * it ever was, so a weak search can not make anything worse than before.
+ */
+export async function groundingCatalog(
+  companyId: string,
+  description: string,
+  catalog: CatalogItem[],
+): Promise<CatalogItem[]> {
+  if (catalog.length <= GROUNDING_CAP) return catalog
+  const hits = await searchCatalog(companyId, description, GROUNDING_SEARCH)
+  return mergeGrounding(hits, catalog, GROUNDING_CAP)
 }
 
 async function fetchTaxRate(companyId: string): Promise<number> {
@@ -271,12 +328,12 @@ function reconcile(
 
 async function realGenerate(
   catalog: CatalogItem[],
+  grounded: CatalogItem[],
   description: string,
   customer: string | null,
   address: string | null,
 ) {
-  const catalogText = catalog
-    .slice(0, 80)
+  const catalogText = grounded
     .map(
       (c) =>
         `- ${c.name} | ${c.category || 'General'} | $${c.base_price}/${c.unit || 'each'} | ${c.description || ''}`,
@@ -363,8 +420,10 @@ export async function generateQuote(input: {
     throw new AiUnavailableError('no Gemini credentials are configured')
   }
 
+  const grounded = await groundingCatalog(input.companyId, input.description, catalog)
   const real = await realGenerate(
     catalog,
+    grounded,
     input.description,
     input.customerName ?? null,
     input.customerAddress ?? null,
