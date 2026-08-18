@@ -2,8 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
-import { ArrowLeft, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
+
+import { formatQuantity } from '@/lib/format'
 
 import { Button } from '@/components/ui/button'
 
@@ -710,6 +712,7 @@ export function QuoteEditor({
           onGenerate={aiMode === 'options' ? runAiGenerateTiers : runAiGenerate}
           isEditing={items.length > 0}
           thread={thread}
+          items={items}
           onClose={() => setAiOpen(false)}
         />
       )}
@@ -810,6 +813,7 @@ function AiPanel({
   onClose,
   isEditing,
   thread,
+  items,
 }: {
   prompt: string
   setPrompt: (v: string) => void
@@ -823,6 +827,12 @@ function AiPanel({
   isEditing?: boolean
   /** The quoting conversation so far — the trail the next ask builds on. */
   thread: ChatMsg[]
+  /**
+   * The live line items — the same state each turn updates, shown beside the
+   * conversation so the contractor watches the quote change instead of
+   * closing the dialog to check and reopening to continue.
+   */
+  items: LineItem[]
 }) {
   const hasThread = thread.length > 0
   const endRef = useRef<HTMLDivElement | null>(null)
@@ -830,9 +840,35 @@ function AiPanel({
     endRef.current?.scrollIntoView({ block: 'end' })
   }, [thread.length, generating])
 
+
+  const subtotal = items.reduce((s, i) => s + i.quantity * i.unit_price, 0)
+  const [mobileItemsOpen, setMobileItemsOpen] = useState(false)
+
+  const miniLine = (i: LineItem, idx: number) => (
+    <div
+      key={`${i.name}|${i.quantity}|${i.unit_price}-${idx}`}
+      className="flex items-baseline justify-between gap-3 px-4 py-2 text-xs"
+    >
+      <div className="min-w-0">
+        <div className={cn('truncate font-medium', i.is_discount && 'text-emerald-600')}>
+          {i.name}
+        </div>
+        {(i.quantity !== 1 || (i.unit && i.unit !== 'each')) && (
+          <div className="text-[11px] tabular text-muted-foreground">
+            {formatQuantity(i.quantity, i.unit)} × {fmtMoney(i.unit_price)}
+          </div>
+        )}
+      </div>
+      <div className={cn('shrink-0 tabular', i.is_discount && 'text-emerald-600')}>
+        {fmtMoney(i.quantity * i.unit_price)}
+      </div>
+    </div>
+  )
+
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/70 p-4 backdrop-blur-sm sm:items-center">
-      <div className="flex max-h-[85dvh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl">
+      <div className="flex max-h-[85dvh] w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl lg:max-w-4xl">
+        <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3">
           <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Sparkles className="h-3.5 w-3.5" />
@@ -851,6 +887,35 @@ function AiPanel({
             <X className="h-3.5 w-3.5" />
           </button>
         </header>
+
+        {/* On phones there is no room for a side pane, so the quote rides
+            along as a summary bar: count + running total always visible, tap
+            to unfold the lines. Same state, same freshness accents. */}
+        {items.length > 0 && (
+          <div className="border-b border-border/70 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileItemsOpen((v) => !v)}
+              aria-expanded={mobileItemsOpen}
+              className="flex h-11 w-full items-center justify-between px-4 text-xs"
+            >
+              <span className="text-muted-foreground">
+                {items.length} line item{items.length === 1 ? '' : 's'} on this quote
+              </span>
+              <span className="flex items-center gap-1.5 font-semibold tabular">
+                {fmtMoney(subtotal)}
+                <ChevronDown
+                  className={cn('h-3.5 w-3.5 text-muted-foreground transition-transform', mobileItemsOpen && 'rotate-180')}
+                />
+              </span>
+            </button>
+            {mobileItemsOpen && (
+              <div className="max-h-44 divide-y divide-border/50 overflow-y-auto border-t border-border/50">
+                {items.map(miniLine)}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* The trail. Every ask so far is a chip — tap one to put it back in
             the box, change it, and send a variant. The conversation persists
@@ -952,6 +1017,30 @@ function AiPanel({
               : 'Priced from your catalog. Nothing is sent until you save.'}
           </p>
         </div>
+        </div>
+
+        {/* Desktop: the quote as it stands, beside the conversation. Reads the
+            same state each agent turn rewrites, so a change lands here the
+            moment the reply does — no closing the dialog to check. */}
+        <aside className="hidden w-[300px] shrink-0 flex-col border-l border-border/70 bg-muted/20 lg:flex">
+          <div className="border-b border-border/70 px-4 py-3 text-xs font-semibold">
+            This quote
+          </div>
+          {items.length === 0 ? (
+            <p className="px-4 py-6 text-xs leading-relaxed text-muted-foreground">
+              Nothing drafted yet — describe the job and the lines will appear
+              here as they land.
+            </p>
+          ) : (
+            <div className="min-h-0 flex-1 divide-y divide-border/50 overflow-y-auto">
+              {items.map(miniLine)}
+            </div>
+          )}
+          <div className="flex items-baseline justify-between border-t border-border/70 px-4 py-3 text-sm">
+            <span className="text-xs text-muted-foreground">Subtotal</span>
+            <span className="font-semibold tabular">{fmtMoney(subtotal)}</span>
+          </div>
+        </aside>
       </div>
     </div>
   )
