@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { query } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
-import { TIER_DB_KEY } from '@/lib/ai/tiers'
+import { TIER_DB_KEY } from '@/lib/quotes/items'
 
 import {
   createCatalogItem,

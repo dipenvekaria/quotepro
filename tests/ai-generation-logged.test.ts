@@ -19,7 +19,7 @@ const ACTIONS = 'src/app/app/(shell)/quotes/new/actions.ts'
 
 // The generators that hit a model. Add a row when a new one lands — the point
 // is that adding a generator without logging it is a visible, failing omission.
-const GENERATORS = ['generateQuote(', 'generateTieredQuote(', 'runQuoteTurn(']
+const GENERATORS = ['generateQuote(', 'runQuoteTurn(']
 
 function bodyOf(src: string, exportName: string): string {
   const start = src.indexOf(`export async function ${exportName}`)
@@ -40,8 +40,9 @@ describe('AI generation is always logged', () => {
   })
 
   it('finds the generating actions (not vacuously green)', () => {
-    // generateQuoteItems, generateQuoteTiers, editQuoteWithAi at time of writing.
-    expect(generatingActions.length).toBeGreaterThanOrEqual(3)
+    // generateQuoteItems and editQuoteWithAi at time of writing — the tiers
+    // generator was removed with the three-options feature.
+    expect(generatingActions.length).toBeGreaterThanOrEqual(2)
   })
 
   it.each(GENERATORS)('an action calling %s also records a run', (generator) => {

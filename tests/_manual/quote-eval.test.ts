@@ -6,7 +6,6 @@ import { afterAll, describe, it } from 'vitest'
 import { beforeAll } from 'vitest'
 
 import { generateQuote } from '@/lib/ai/quote'
-import { generateTieredQuote } from '@/lib/ai/tiers'
 import { estimateFromCatalog } from '@/lib/ai/estimate'
 import { indexCatalog } from '@/lib/ai/catalog-index'
 import { query } from '@/lib/db'
@@ -85,35 +84,6 @@ describe('quote drafting — real model, real catalog', () => {
     },
     120_000,
   )
-
-  it('tiers: good/better/best on the AC repair', async () => {
-    const t = await generateTieredQuote({
-      companyId: CO,
-      description: REALISTIC[0][1],
-      taxRate: 8.5,
-    })
-    log(`\n${'='.repeat(72)}\n▶ TIERS (mode ${t?.mode ?? 'null'})`)
-    if (!t) return log('  (null — could not build tiers)')
-    for (const tier of t.tiers) {
-      log(`  [${tier.tier}] ${tier.name} — $${tier.total}${tier.isRecommended ? ' ★' : ''}`)
-      for (const li of tier.line_items) log(`      • ${li.name} ×${li.quantity} @ $${li.unit_price}`)
-    }
-  }, 120_000)
-
-  it('tiers: placeholder "Quote" (should NOT fabricate)', async () => {
-    log(`\n${'='.repeat(72)}\n▶ TIERS on "Quote":`)
-    try {
-      const t = await generateTieredQuote({ companyId: CO, description: 'Quote', taxRate: 8.5 })
-      if (!t) return log('  (null — refused, good)')
-      log('  !! FABRICATED:')
-      for (const tier of t.tiers) {
-        log(`  [${tier.tier}] ${tier.name} — $${tier.total}`)
-        for (const li of tier.line_items) log(`      • ${li.name} ×${li.quantity} @ $${li.unit_price}`)
-      }
-    } catch (e) {
-      log(`  threw ${e instanceof Error ? e.name : 'unknown'} — refused before the model, good`)
-    }
-  }, 120_000)
 
   // The regression cases: both items sit past position 80 alphabetically, so
   // the old first-80 grounding could never quote them. Hard assertions.
