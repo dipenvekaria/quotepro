@@ -8,6 +8,7 @@ import { recordAiRun } from '@/lib/ai/run-log'
 import { checkRateLimit, LIMITS } from '@/lib/rate-limit'
 import { runQuoteTurn } from '@/lib/ai/quote-agent'
 import { readQuote } from '@/lib/ai/quote-tools'
+import { AiUnavailableError } from '@/lib/ai/gemini'
 import { NoCatalogError, generateQuote } from '@/lib/ai/quote'
 import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
@@ -117,6 +118,24 @@ export async function generateQuoteItems(input: unknown) {
       return {
         ok: false as const,
         error: 'No pricing items in your catalog yet — add some before generating a quote.',
+      }
+    }
+    if (e instanceof AiUnavailableError) {
+      // Recorded so the outage is visible in the run log — the old behaviour
+      // silently shipped keyword-matched quotes instead, which looked like poor
+      // AI quality rather than an outage. Fail hard, loudly, on purpose.
+      await recordAiRun({
+        companyId: session.companyId,
+        userId: session.userId,
+        workItemId: parsed.data.work_item_id,
+        mode: 'unavailable',
+        purpose: 'quote_generation',
+        prompt: parsed.data.description,
+        result: { error: e.message },
+      })
+      return {
+        ok: false as const,
+        error: 'AI drafting is unavailable right now. Nothing was drafted — try again in a minute.',
       }
     }
     console.error('generateQuoteItems failed', e)
@@ -506,6 +525,21 @@ export async function generateQuoteTiers(input: unknown) {
         ok: false as const,
         error:
           'Describe the job first — what is broken, or what is being installed? Options need a real description to be honest.',
+      }
+    }
+    if (e instanceof AiUnavailableError) {
+      await recordAiRun({
+        companyId: session.companyId,
+        userId: session.userId,
+        workItemId: parsed.data.work_item_id,
+        mode: 'unavailable',
+        purpose: 'quote_tiers',
+        prompt: parsed.data.description,
+        result: { error: e.message },
+      })
+      return {
+        ok: false as const,
+        error: 'AI drafting is unavailable right now. Nothing was drafted — try again in a minute.',
       }
     }
     console.error('generateQuoteTiers failed', e)

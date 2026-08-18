@@ -6,10 +6,8 @@
  * which matters when the number is the thing being agreed to.
  */
 
-import { Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
+import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
-
-const FALLBACK = `You are explaining a contractor's quote to the homeowner who received it. Write a short plain-language summary of the work based ONLY on the line items provided. Never invent work, parts, prices or timelines. Never restate prices. Two short paragraphs at most.`
 
 const SUMMARY_SCHEMA: Schema = {
   type: Type.OBJECT,
@@ -24,13 +22,17 @@ export type ExplainInput = {
 }
 
 /**
- * Returns an empty summary when AI is off or every model failed. There is no
- * keyword fallback here on purpose: inventing an explanation is worse than
- * showing none, because it reaches the customer as the contractor's own words.
+ * Throws when AI is off or every model failed — the contractor pressed a
+ * button and silence would read as the button being broken. There is no
+ * keyword fallback on purpose: inventing an explanation is worse than an
+ * error, because it reaches the customer as the contractor's own words.
+ *
+ * An empty line-item list is not a failure — there is nothing to explain —
+ * so that one returns an empty summary rather than throwing.
  */
 export async function explainQuote(input: ExplainInput): Promise<{ summary: string; mode: string }> {
-  if (input.lineItems.length === 0) return { summary: '', mode: 'mock' }
-  if (!aiEnabled()) return { summary: '', mode: 'mock' }
+  if (input.lineItems.length === 0) return { summary: '', mode: 'empty' }
+  if (!aiEnabled()) throw new AiUnavailableError('no Gemini credentials are configured')
 
   const itemsText = input.lineItems
     .slice(0, 40)
@@ -48,14 +50,15 @@ export async function explainQuote(input: ExplainInput): Promise<{ summary: stri
     `LINE ITEMS:\n${itemsText}\n`
 
   const result = await generateJson({
-    system: loadPrompt('quote-explanation.md', FALLBACK),
+    system: loadPrompt('quote-explanation.md'),
     contents,
     schema: SUMMARY_SCHEMA,
     temperature: 0.2,
   })
-  if (!result) return { summary: '', mode: 'mock' }
+  if (!result) throw new AiUnavailableError('every model failed or returned nothing')
 
   const data = result.data as { summary?: unknown }
   const summary = typeof data.summary === 'string' ? data.summary.trim() : ''
-  return { summary, mode: summary ? `gemini:${result.model}` : 'mock' }
+  if (!summary) throw new AiUnavailableError('the model returned an empty summary')
+  return { summary, mode: `gemini:${result.model}` }
 }

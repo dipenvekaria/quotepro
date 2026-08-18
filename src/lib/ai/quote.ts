@@ -10,7 +10,7 @@
  */
 
 import { query } from '@/lib/db'
-import { Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
+import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
 
 export type CatalogItem = {
@@ -37,7 +37,7 @@ export type GeneratedQuote = {
   line_items: AiLineItem[]
   tax_rate: number
   reasoning: string
-  /** `gemini:<model>` or `mock` — the UI and production alerting both read it. */
+  /** Always `gemini:<model>` — an unavailable model throws AiUnavailableError instead. */
   mode: string
   /** Token counts when the model reported them, so a quote's cost is answerable. */
   usage?: { input: number; output: number }
@@ -88,94 +88,14 @@ async function fetchTaxRate(companyId: string): Promise<number> {
 }
 
 // ---------------------------------------------------------------------------
-// Mock generator — keyword-ranked catalog match
+// Generator
+//
+// There is deliberately no mock or keyword fallback. The one that lived here
+// fabricated $786 of labour lines for a gibberish description, and a quota
+// exhaustion once shipped keyword-matched quotes for days looking like poor AI
+// quality rather than an outage. A visible failure gets fixed; a plausible
+// substitute gets sent to a customer. Standing rule: fail hard.
 // ---------------------------------------------------------------------------
-
-const STOPWORDS = new Set([
-  'a', 'an', 'and', 'the', 'to', 'of', 'for', 'with', 'on', 'in', 'at', 'is',
-  'are', 'we', 'our', 'please', 'need', 'want', 'would', 'like', 'install',
-  'replace', 'new', 'job', 'customer',
-])
-
-function tokens(text: string): Set<string> {
-  const found = text.toLowerCase().match(/[a-z0-9]+/g) ?? []
-  return new Set(found.filter((t) => t.length > 2 && !STOPWORDS.has(t)))
-}
-
-function scoreItem(item: CatalogItem, q: Set<string>): number {
-  const hay = tokens([item.name, item.description ?? '', item.category ?? ''].join(' '))
-  let score = 0
-  for (const t of q) if (hay.has(t)) score++
-  return score
-}
-
-/**
- * Used when Gemini is unavailable or every model failed. Keeps the whole UI
- * exercisable offline and means a Gemini outage doesn't take quoting down.
- */
-function mockGenerate(catalog: CatalogItem[], description: string) {
-  const q = tokens(description)
-  const ranked = catalog
-    .map((item) => ({ item, score: scoreItem(item, q) }))
-    .sort((a, b) => b.score - a.score)
-
-  // One item per category, best score wins.
-  //
-  // Without this, "install a smart thermostat" returned all four thermostats in
-  // the catalog — Standard, Programmable, Wi-Fi and Smart-with-Sensor — because
-  // every one of them scores on the word "thermostat". They are alternatives,
-  // not a bill of materials, and a contractor reads four of them as duplicates.
-  // reconcile() cannot catch this: they are genuinely different catalog rows.
-  //
-  // Categories are the catalog's own statement about what competes with what,
-  // so they are a better signal than any string-similarity guess. Items with no
-  // category keep their own slot rather than collapsing into one bucket.
-  const bestPerCategory = new Map<string, CatalogItem>()
-  for (const r of ranked) {
-    if (r.score <= 0) continue
-    const group = r.item.category?.trim().toLowerCase() || `__ungrouped:${r.item.id}`
-    if (!bestPerCategory.has(group)) bestPerCategory.set(group, r.item)
-  }
-
-  /*
-    Nothing matched: return nothing.
-
-    This used to pad the quote with the first labour/trip/diagnostic items it
-    could find — so "asdfghjkl qwerty" produced $786 of labour, confidently.
-    That is the exact failure the real generator's grounding exists to prevent,
-    reintroduced by its own fallback. An empty draft with the degraded-AI banner
-    tells the contractor the truth: nothing in the description matched their
-    price book, add lines by hand.
-  */
-  const picks = [...bestPerCategory.values()].slice(0, 4)
-
-  const line_items: AiLineItem[] = picks.map((it, i) => ({
-    name: it.name,
-    description: it.description,
-    quantity: it.name.toLowerCase().includes('labor') ? 2 : 1,
-    unit_price: Number(it.base_price),
-    is_upsell: i === picks.length - 1 && picks.length >= 3,
-    is_discount: false,
-  }))
-
-  const reasoning =
-    `Keyword match, not AI: picked ${line_items.length} catalog items on ` +
-    `${JSON.stringify([...q].sort().slice(0, 5))}. Check every line before sending.`
-
-  return { line_items, reasoning, sources: picks.map((it) => ({ id: it.id, name: it.name })) }
-}
-
-// ---------------------------------------------------------------------------
-// Real generator
-// ---------------------------------------------------------------------------
-
-const SYSTEM_FALLBACK = `You are a senior HVAC / trades estimator. Build a quote grounded ONLY on the catalog provided.
-
-Rules:
-- Use ONLY items from CATALOG. Do not invent items.
-- Copy each item's name EXACTLY as written in the catalog.
-- Include labor (typically 1-3 hrs), the primary equipment, and one upsell if it fits.
-- Return valid JSON only. No markdown, no prose.`
 
 const QUOTE_SCHEMA: Schema = {
   type: Type.OBJECT,
@@ -370,7 +290,7 @@ async function realGenerate(
     `CATALOG:\n${catalogText}\n`
 
   const result = await generateJson({
-    system: loadPrompt('quote-generation.md', SYSTEM_FALLBACK),
+    system: loadPrompt('quote-generation.md'),
     contents,
     schema: QUOTE_SCHEMA,
   })
@@ -439,34 +359,30 @@ export async function generateQuote(input: {
 
   const tax_rate = await fetchTaxRate(input.companyId)
 
-  if (aiEnabled()) {
-    const real = await realGenerate(
-      catalog,
-      input.description,
-      input.customerName ?? null,
-      input.customerAddress ?? null,
-    )
-    if (real) {
-      return {
-        line_items: real.line_items,
-        tax_rate,
-        reasoning: real.reasoning,
-        mode: `gemini:${real.model}`,
-        usage: real.usage,
-        sources: real.sources,
-        questions: real.questions,
-        unmet: real.unmet,
-      }
-    }
+  if (!aiEnabled()) {
+    throw new AiUnavailableError('no Gemini credentials are configured')
   }
 
-  // Mock quotes are keyword-matched, not generated. They look plausible enough
-  // that nobody notices from the UI, so this is the only signal that a customer
-  // is being shown something a model never saw. Alert on it.
-  console.warn(
-    `ai/quote: falling back to mock for company ${input.companyId} (aiEnabled=${aiEnabled()})`,
+  const real = await realGenerate(
+    catalog,
+    input.description,
+    input.customerName ?? null,
+    input.customerAddress ?? null,
   )
+  if (!real) {
+    // Every model in the chain failed, or the response was empty with nothing
+    // to say. No keyword substitute — see the note at the top of this section.
+    throw new AiUnavailableError('every model failed or returned nothing')
+  }
 
-  const mock = mockGenerate(catalog, input.description)
-  return { ...mock, tax_rate, mode: 'mock', questions: [], unmet: [] }
+  return {
+    line_items: real.line_items,
+    tax_rate,
+    reasoning: real.reasoning,
+    mode: `gemini:${real.model}`,
+    usage: real.usage,
+    sources: real.sources,
+    questions: real.questions,
+    unmet: real.unmet,
+  }
 }

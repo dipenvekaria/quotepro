@@ -112,7 +112,20 @@ export function embeddingClient(): GoogleGenAI | null {
   return client()
 }
 
-/** Whether real generation is available, or everything degrades to the mock. */
+/**
+ * Thrown when real generation cannot run — no credentials, or every model in
+ * the chain failed. Callers surface it as a clear error to the user. There is
+ * deliberately no mock or keyword substitute behind it: a fabricated quote that
+ * looks real is worse than a visible failure (standing rule: fail hard).
+ */
+export class AiUnavailableError extends Error {
+  constructor(reason: string) {
+    super(`AI generation unavailable: ${reason}`)
+    this.name = 'AiUnavailableError'
+  }
+}
+
+/** Whether real generation is configured. When false, callers fail hard. */
 export function aiEnabled(): boolean {
   if (vertexEnabled()) return Boolean(envServer().GOOGLE_CLOUD_PROJECT)
   return Boolean(envServer().GEMINI_API_KEY)

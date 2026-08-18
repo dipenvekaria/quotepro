@@ -13,7 +13,7 @@
  * become what a customer is quoted.
  */
 
-import { Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
+import { AiUnavailableError, Type, aiEnabled, generateJson, type Schema } from '@/lib/ai/gemini'
 import { loadPrompt } from '@/lib/ai/prompts'
 
 /** What Gemini accepts inline. PDFs and phone photos cover the real cases. */
@@ -86,8 +86,6 @@ const SCHEMA: Schema = {
   required: ['items'],
 }
 
-const FALLBACK = `You are reading a trades contractor's paperwork and extracting the priced items so they can be loaded into a price book. Transcribe only — every price must appear on the document. If a price is unreadable, omit the item rather than guessing. Use unit prices, not line totals. Ignore totals, tax, discounts and payment terms. Return valid JSON only.`
-
 function cleanUnit(raw: unknown): string {
   const u = typeof raw === 'string' ? raw.trim().toLowerCase() : ''
   return UNITS.includes(u) ? u : 'each'
@@ -109,11 +107,11 @@ export async function extractCatalogFromDocument(input: {
   mimeType: string
 }): Promise<ExtractionResult> {
   if (!aiEnabled()) {
-    return { items: [], documentType: '', notes: '', mode: 'mock' }
+    throw new AiUnavailableError('no Gemini credentials are configured')
   }
 
   const result = await generateJson({
-    system: loadPrompt('catalog-extraction.md', FALLBACK),
+    system: loadPrompt('catalog-extraction.md'),
     contents: [
       { inlineData: { mimeType: input.mimeType, data: input.data.toString('base64') } },
       { text: 'Extract every priced item from this document.' },
@@ -131,7 +129,7 @@ export async function extractCatalogFromDocument(input: {
     budgetMs: 180_000,
   })
 
-  if (!result) return { items: [], documentType: '', notes: '', mode: 'mock' }
+  if (!result) throw new AiUnavailableError('every model failed or returned nothing')
 
   const data = result.data as {
     items?: unknown

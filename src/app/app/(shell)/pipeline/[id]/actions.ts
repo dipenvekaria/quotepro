@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { env } from '@/lib/env'
 import { explainQuote } from '@/lib/ai/explain'
+import { AiUnavailableError } from '@/lib/ai/gemini'
 import { sendQuoteEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
@@ -367,6 +368,12 @@ export async function generateCustomerSummary(input: unknown) {
     })
     summary = result.summary
   } catch (e) {
+    if (e instanceof AiUnavailableError) {
+      return {
+        ok: false as const,
+        error: 'AI is unavailable right now — nothing was written. Try again in a minute.',
+      }
+    }
     console.error('generateCustomerSummary failed', e)
     return { ok: false as const, error: 'Could not write the summary. Try again.' }
   }
