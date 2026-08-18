@@ -10,6 +10,11 @@ import { query, withUser } from '@/lib/db'
 
 const inputSchema = z.object({
   name: z.string().min(1, 'Company name is required').max(200),
+  // The browser's IANA timezone, captured silently at signup — the owner
+  // creating the account is almost always in the company's timezone, and it
+  // costs them nothing. bootstrap_company defaults to a hardcoded zone; every
+  // day boundary in the product reads this.
+  timezone: z.string().max(64).optional(),
   phone: z.string().optional(),
   email: z.string().email().optional().or(z.literal('')),
   address: z.string().optional(),
@@ -37,6 +42,7 @@ export type BootstrapCompanyState = {
 export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: FormData): Promise<BootstrapCompanyState> {
   const parsed = inputSchema.safeParse({
     name: formData.get('name'),
+    timezone: formData.get('timezone') || undefined,
     phone: formData.get('phone') ?? undefined,
     email: formData.get('email') ?? undefined,
     address: formData.get('address') ?? undefined,
@@ -113,6 +119,22 @@ export async function bootstrapCompany(_prev: BootstrapCompanyState, formData: F
   }
 
   if (!companyId) return { ok: false, error: 'Unknown error' }
+
+  // Correct the hardcoded default the SQL bootstrap writes. Best-effort: an
+  // account with the fallback timezone is annoying, not broken.
+  if (parsed.data.timezone) {
+    try {
+      new Intl.DateTimeFormat('en-US', { timeZone: parsed.data.timezone })
+      await query(
+        `update companies
+            set settings = jsonb_set(coalesce(settings, '{}'::jsonb), '{timezone}', to_jsonb($1::text))
+          where id = $2`,
+        [parsed.data.timezone, companyId],
+      )
+    } catch (e) {
+      console.error('timezone not recorded', e)
+    }
+  }
 
   // Its own statement, and its own failure domain. Attribution is the one thing
   // on this form that cannot be reconstructed later — the contractor will not
