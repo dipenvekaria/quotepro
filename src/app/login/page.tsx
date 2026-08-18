@@ -84,8 +84,6 @@ export default function LoginPage() {
   const {
     email,
     setEmail,
-    password,
-    setPassword,
     isLoading,
     isSignUp,
     setIsSignUp,
@@ -147,11 +145,15 @@ export default function LoginPage() {
               </Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="you@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                // Uncontrolled, so typing that beats hydration survives it.
+                // The key remounts the field when an invite resolves its
+                // address; otherwise `email` never changes and this is inert.
+                key={email || 'email'}
+                defaultValue={email}
                 required
                 // Locked to the invited address: the invitation is addressed to
                 // one person and accepting under any other fails. Better to
@@ -184,11 +186,10 @@ export default function LoginPage() {
               </div>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
                 className="h-11"
