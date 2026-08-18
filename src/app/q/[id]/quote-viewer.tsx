@@ -11,7 +11,6 @@ import {
 
   Phone,
   Shield,
-  Sparkles,
   X,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -114,10 +113,13 @@ export function QuoteViewer({
 
   // The deadline is the one visual cue on this page that moves a decision.
   // Quiet while distant, amber inside a week, muted once passed — and absent
-  // entirely once the customer has already decided.
+  // entirely once the customer has already decided. `now` is captured once in
+  // state: the react-compiler lint forbids Date.now() during render, and a
+  // deadline chip has no business re-evaluating on every keystroke anyway.
+  const [now] = useState(() => Date.now())
   const validity = (() => {
     if (!quote.expires_at || isAccepted || isRejected) return null
-    const days = Math.ceil((new Date(quote.expires_at).getTime() - Date.now()) / 86_400_000)
+    const days = Math.ceil((new Date(quote.expires_at).getTime() - now) / 86_400_000)
     if (days < 0) return { tone: 'expired' as const, label: `Expired ${formatDateShort(quote.expires_at)}` }
     if (days <= 7)
       return {
