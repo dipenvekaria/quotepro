@@ -339,7 +339,7 @@ export function CatalogManager({
         <div className="mt-8">
           <EmptyState
             icon={Package}
-            title="Your catalog is empty"
+            title="Your price book is empty"
             description={
               canEdit
                 ? 'Add the items your business sells. Quotes are built from these prices, and the AI only ever uses items you have added.'
@@ -364,7 +364,7 @@ export function CatalogManager({
                 value={term}
                 onChange={(e) => setTerm(e.target.value)}
                 placeholder="Search the price book"
-                aria-label="Search catalog items"
+                aria-label="Search price book items"
                 className="h-11 pl-9 pr-9 lg:h-9"
               />
               {term && (

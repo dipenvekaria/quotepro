@@ -64,9 +64,9 @@ export default async function CatalogPage() {
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>Workspace</span>
             <span>/</span>
-            <span className="text-foreground">Catalog</span>
+            <span className="text-foreground">Price book</span>
           </div>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight">Catalog</h1>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight">Price book</h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {items.length === 0
               ? 'Add the items your business sells so quotes use your real pricing.'

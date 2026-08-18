@@ -22,7 +22,7 @@ const NAV = [
   { href: '/app/pipeline',     label: 'Pipeline',     icon: Inbox },
   { href: '/app/calendar',     label: 'Calendar',     icon: Calendar },
   { href: '/app/customers',    label: 'Customers',    icon: Users },
-  { href: '/app/catalog',      label: 'Catalog',      icon: Package },
+  { href: '/app/catalog',      label: 'Price book',   icon: Package },
   { href: '/app/analytics',    label: 'Analytics',    icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug },
 ]

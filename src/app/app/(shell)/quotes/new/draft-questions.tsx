@@ -68,7 +68,7 @@ export function DraftQuestions({
               ))}
             </ul>
             <p className="mt-1.5 text-muted-foreground">
-              Left off the quote rather than substituted. Add it to your catalog, or price it by
+              Left off the quote rather than substituted. Add it to your price book, or price it by
               hand below.
             </p>
           </div>

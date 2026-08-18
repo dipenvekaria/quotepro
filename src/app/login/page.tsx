@@ -347,7 +347,7 @@ export default function LoginPage() {
               </dl>
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-400">
                 <Zap className="h-3.5 w-3.5 text-white/70" />
-                Generated in 2.4s · grounded in your catalog
+                Generated in 2.4s · grounded in your price book
               </div>
             </div>
           </div>

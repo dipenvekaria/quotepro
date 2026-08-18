@@ -319,7 +319,7 @@ export default async function DashboardPage() {
                   className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8"
                 >
                   <Package className="h-3 w-3" />
-                  Add catalog items
+                  Add price book items
                 </Link>
                 <Link
                   href="/app/settings?invite=1#team"

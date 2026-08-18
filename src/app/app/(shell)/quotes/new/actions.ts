@@ -113,7 +113,7 @@ export async function generateQuoteItems(input: unknown) {
     if (e instanceof NoCatalogError) {
       return {
         ok: false as const,
-        error: 'No pricing items in your catalog yet — add some before generating a quote.',
+        error: 'No items in your price book yet — add some before generating a quote.',
       }
     }
     if (e instanceof AiUnavailableError) {
