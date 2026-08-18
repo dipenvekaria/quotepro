@@ -4,15 +4,30 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
 export function useAuth() {
+  // `email` state exists only for the invite prefill; the form fields are
+  // uncontrolled and read via FormData at submit. Controlled inputs wiped
+  // anything typed before hydration finished — a fast typist on a slow
+  // connection filled the form, React replaced it with empty state, and the
+  // submit died silently on `required`. Reproduced three times; no auth
+  // request ever fired.
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    // The DOM is the source of truth — it survives hydration; state does not.
+    const fd = new FormData(e.currentTarget)
+    const email = String(fd.get('email') ?? '').trim()
+    const password = String(fd.get('password') ?? '')
+    if (!email || !password) {
+      toast.error('Enter your email and password.')
+      return
+    }
+
     setIsLoading(true)
 
     // Honor ?next= (e.g. team invite links) so we return there after auth.
@@ -87,12 +102,10 @@ export function useAuth() {
   return {
     email,
     setEmail,
-    password,
-    setPassword,
     isLoading,
     isSignUp,
     setIsSignUp,
     handleAuth,
-    handleGoogleLogin
+    handleGoogleLogin,
   }
 }
