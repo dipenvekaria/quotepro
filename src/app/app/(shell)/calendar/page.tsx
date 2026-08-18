@@ -9,6 +9,7 @@ import { workItemScope, canAssignWork } from '@/lib/auth/scope'
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 import { computeLegs } from '@/lib/scheduling/legs'
 import { AssigneeFilter } from '@/components/shared/assignee-filter'
+import { WorkloadStrip } from './workload-strip'
 import { RoleFilter } from '@/components/shared/role-filter'
 import { ASSIGNABLE_ROLES } from '@/lib/team-personas'
 import type { UserRole } from '@/lib/permissions'
@@ -59,9 +60,13 @@ export default async function CalendarPage({
 
   // Two predicates, numbered after the scope params. Role filters on the
   // assignee's role rather than the job, so it joins through assigned_to.
+  // 'none' is the allocation queue: scheduled work that belongs to nobody yet.
+  const wantsUnassigned = assignee === 'none'
+  const assigneeId = wantsUnassigned ? '' : assignee
   const filterSql = [
-    assignee ? ` and w.assigned_to = $${4 + scope.params.length}` : '',
-    roleParam ? ` and asg.role = $${4 + scope.params.length + (assignee ? 1 : 0)}::user_role` : '',
+    wantsUnassigned ? ' and w.assigned_to is null' : '',
+    assigneeId ? ` and w.assigned_to = $${4 + scope.params.length}` : '',
+    roleParam ? ` and asg.role = $${4 + scope.params.length + (assigneeId ? 1 : 0)}::user_role` : '',
   ].join('')
 
   const team = canAssignWork(role as UserRole)
@@ -134,7 +139,7 @@ export default async function CalendarPage({
       rangeStart.toISOString(),
       rangeEnd.toISOString(),
       ...scope.params,
-      ...(assignee ? [assignee] : []),
+      ...(assigneeId ? [assigneeId] : []),
       ...(roleParam ? [roleParam] : []),
     ],
   )
@@ -176,6 +181,34 @@ export default async function CalendarPage({
   // hour either side so a job booked slightly outside hours is still visible
   // rather than silently clipped.
   const hours = await loadBusinessHours(companyId)
+
+  /*
+    Who is carrying this range. Aggregated separately from `rows` because rows
+    honour the active filter — the strip must always show the whole team, or
+    the owner cannot see who is idle while looking at who is busy. Same range,
+    same company; visible only to people who can assign work.
+  */
+  const workload = canAssignWork(role as UserRole)
+    ? await query<{ assigned_to: string | null; jobs: number; booked: number }>(
+        `select w.assigned_to, count(*)::int as jobs,
+                coalesce(sum(w.estimated_hours), 0)::float as booked
+           from work_items w
+          where w.company_id = $1
+            and w.scheduled_start >= $2 and w.scheduled_start < $3
+            and w.status in ('job_scheduled', 'job_in_progress', 'job_completed')
+          group by w.assigned_to`,
+        [companyId, rangeStart.toISOString(), rangeEnd.toISOString()],
+      )
+    : []
+  const workloadByUser = new Map(workload.map((w) => [w.assigned_to, w]))
+  // The 100% line: the company's open hours across the visible range.
+  const weeklyOpenHours = Object.values(hours).reduce((sum, h) => {
+    if (!h) return sum
+    const [sh, sm] = h.start.split(':').map(Number)
+    const [eh, em] = h.end.split(':').map(Number)
+    return sum + Math.max(0, eh + em / 60 - (sh + sm / 60))
+  }, 0)
+  const capacityHours = weeklyOpenHours * (days / 7)
   const openTimes = Object.values(hours).filter(Boolean) as { start: string; end: string }[]
   const hourOf = (s: string) => Number(s.split(':')[0] ?? 0)
   //
@@ -276,6 +309,36 @@ export default async function CalendarPage({
           </div>
         </div>
       </header>
+
+      {canAssignWork(role as UserRole) && (
+        <div className="mt-4">
+          <WorkloadStrip
+            capacityHours={capacityHours}
+            clearHref={`/app/calendar?view=${view}&date=${anchor.toISOString().slice(0, 10)}`}
+            unassigned={{
+              jobs: workloadByUser.get(null)?.jobs ?? 0,
+              hours: workloadByUser.get(null)?.booked ?? 0,
+              href: `/app/calendar?view=${view}&date=${anchor.toISOString().slice(0, 10)}&assignee=none`,
+              active: wantsUnassigned,
+            }}
+            people={team.map((m) => {
+              const w = workloadByUser.get(m.id)
+              const name =
+                [m.profile?.first_name, m.profile?.last_name].filter(Boolean).join(' ') ||
+                (m.email ?? 'Teammate')
+              return {
+                id: m.id,
+                name: String(name),
+                role: m.role,
+                jobs: w?.jobs ?? 0,
+                hours: w?.booked ?? 0,
+                href: `/app/calendar?view=${view}&date=${anchor.toISOString().slice(0, 10)}&assignee=${m.id}`,
+                active: assigneeId === m.id,
+              }
+            })}
+          />
+        </div>
+      )}
 
       {list.length === 0 ? (
         <div className="mt-6 rounded-xl border border-border/70 bg-card">
