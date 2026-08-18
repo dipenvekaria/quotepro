@@ -103,6 +103,10 @@ export async function generateQuoteItems(input: unknown) {
         line_items: data.line_items.length,
         names: data.line_items.slice(0, 12).map((li) => li.name),
         unmet: data.unmet ?? [],
+        // Kept because diagnosing "why did it draft nothing" from the run log
+        // required reproducing the run — the model had said why all along.
+        questions: (data.questions ?? []).map((q) => q.question),
+        reasoning: data.reasoning,
       },
       usage: data.usage,
       latencyMs: Date.now() - startedAt,

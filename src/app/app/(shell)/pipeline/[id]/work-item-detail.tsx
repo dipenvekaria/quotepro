@@ -55,6 +55,7 @@ import {
   type SchedulingContext,
 } from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
+import { DraftQuestions } from '../../quotes/new/draft-questions'
 import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
 
 // ---------------------------------------------------------------------------
@@ -186,6 +187,8 @@ export function WorkItemDetail({
   const [items, setItems] = useState<LineItem[]>(initialItems)
   const [drafting, startDraft] = useTransition()
   const [description, setDescription] = useState(workItem.description ?? '')
+  const [draftQuestions, setDraftQuestions] = useState<{ question: string; options: string[] }[]>([])
+  const [draftUnmet, setDraftUnmet] = useState<string[]>([])
 
   const [savingItems, startItemsSave] = useTransition()
   const [savingMeta, startMetaSave] = useTransition()
@@ -253,14 +256,14 @@ export function WorkItemDetail({
    * throwing that away to make room for a suggestion is not a trade anyone
    * would accept.
    */
-  function draftWithAi() {
-    if (!description.trim()) {
+  function draftWithAi(desc = description) {
+    if (!desc.trim()) {
       toast.error('Add a job description first — that is what the draft is built from.')
       return
     }
     startDraft(async () => {
       const res = await generateQuoteItems({
-        description,
+        description: desc,
         customer_name: '',
         customer_address: null,
         // The quote already exists here, so the run is recorded against it.
@@ -273,13 +276,23 @@ export function WorkItemDetail({
         return
       }
       const drafted = res.data.line_items
+      // The model's questions and gaps render below the header — this page
+      // used to swallow both, so "Deep cleaning" against a size-tiered price
+      // book looked like a matching bug instead of a question.
+      setDraftQuestions(res.data.questions ?? [])
+      setDraftUnmet(res.data.unmet ?? [])
       if (drafted.length === 0) {
-        // The model says why — an empty draft with the reason hidden reads as
-        // a bug ("nothing matches") when it is usually a price book gap.
-        toast.error('Nothing in your price book matched that description.', {
-          description: res.data.reasoning || undefined,
-          duration: 10000,
-        })
+        if ((res.data.questions ?? []).length > 0) {
+          toast.info('The draft needs an answer first — pick below.', {
+            description: res.data.reasoning || undefined,
+            duration: 8000,
+          })
+        } else {
+          toast.error('Nothing in your price book matched that description.', {
+            description: res.data.reasoning || undefined,
+            duration: 10000,
+          })
+        }
         return
       }
       setItems((prev) => [
@@ -687,7 +700,7 @@ export function WorkItemDetail({
               </div>
               <div className="flex flex-wrap items-center gap-2 sm:gap-1">
                 <button
-                  onClick={draftWithAi}
+                  onClick={() => draftWithAi()}
                   disabled={drafting}
                   className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted disabled:opacity-50 lg:min-h-0 lg:py-1"
                 >
@@ -716,6 +729,20 @@ export function WorkItemDetail({
                 </Button>
               </div>
             </header>
+            <DraftQuestions
+              questions={draftQuestions}
+              unmet={draftUnmet}
+              disabled={drafting}
+              onAnswer={(question, option) => {
+                // Folded into the description (same as the quote editor) and
+                // redrafted immediately — the contractor already asked for a
+                // draft; the answer was the only thing missing.
+                const next = `${description.trim()}\n${question} ${option}`.trim()
+                setDescription(next)
+                setDraftQuestions((qs) => qs.filter((q) => q.question !== question))
+                draftWithAi(next)
+              }}
+            />
             {items.length === 0 ? (
               <div className="px-5 py-10 text-center">
                 <p className="text-sm font-medium">No line items yet</p>
