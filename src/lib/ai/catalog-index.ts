@@ -199,15 +199,37 @@ export async function searchCatalog(
 async function keywordOnly(companyId: string, q: string, limit: number): Promise<CatalogMatch[]> {
   const term = q.trim()
   if (!term) return []
+
+  /*
+    Match per word, not per phrase.
+
+    The whole-phrase version required the query to appear verbatim inside a
+    field, so "Nest thermostat" could never find "Thermostat — Nest" — word
+    order inverted, zero rows — and the agent, told the catalog had nothing,
+    went on to estimate an item the contractor actually sells. Every token must
+    appear somewhere in the item's text (AND, for precision); similarity on the
+    name ranks the survivors. Single-word queries behave exactly as before.
+  */
+  const tokens = (term.toLowerCase().match(/[a-z0-9]{2,}/g) ?? []).slice(0, 8)
+  if (tokens.length === 0) return []
+
+  // $1 company, $2 full term for ranking, $3 limit, then one param per token.
+  const tokenClause = tokens
+    .map((_, i) => `haystack ilike '%' || $${i + 4} || '%'`)
+    .join(' and ')
+
   return query<CatalogMatch>(
-    `select id, name, description, category, unit, base_price, labor_hours,
-            similarity(name, $2) as score
-       from catalog_items
-      where company_id = $1 and is_active
-        and (name ilike '%' || $2 || '%' or description ilike '%' || $2 || '%'
-             or category ilike '%' || $2 || '%')
+    `select id, name, description, category, unit, base_price, labor_hours, score
+       from (
+         select id, name, description, category, unit, base_price, labor_hours,
+                similarity(name, $2) as score,
+                name || ' ' || coalesce(description, '') || ' ' || coalesce(category, '') as haystack
+           from catalog_items
+          where company_id = $1 and is_active
+       ) items
+      where ${tokenClause}
       order by score desc nulls last, name asc
       limit $3`,
-    [companyId, term, limit],
+    [companyId, term, limit, ...tokens],
   )
 }

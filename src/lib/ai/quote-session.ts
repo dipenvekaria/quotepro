@@ -114,10 +114,15 @@ export class PostgresSessionService extends BaseSessionService {
   }
 
   async getSession(request: GetSessionRequest): Promise<Session | undefined> {
+    // `purpose = 'quoting'` on every statement in this class: the run log
+    // shares this table keyed on the same (company, entity, id), and an
+    // unscoped lookup once picked up a generation's log row as "the session"
+    // and appended conversation turns into it.
     const [row] = await query<Row>(
       `select entity_id, user_id, messages, metadata, created_at, updated_at
          from ai_conversations
         where company_id = $1 and entity_type = $2 and entity_id = $3
+          and purpose = 'quoting'
         limit 1`,
       [this.companyId, this.entityType, request.sessionId],
     )
@@ -129,6 +134,7 @@ export class PostgresSessionService extends BaseSessionService {
       `select entity_id, user_id, messages, metadata, created_at, updated_at
          from ai_conversations
         where company_id = $1 and entity_type = $2 and ($3::uuid is null or user_id = $3)
+          and purpose = 'quoting'
         order by created_at desc
         limit ${LIST_LIMIT}`,
       [this.companyId, this.entityType, request.userId || null],
@@ -151,7 +157,8 @@ export class PostgresSessionService extends BaseSessionService {
     // product treats destructive operations.
     await query(
       `update ai_conversations set status = 'closed'
-        where company_id = $1 and entity_type = $2 and entity_id = $3`,
+        where company_id = $1 and entity_type = $2 and entity_id = $3
+          and purpose = 'quoting'`,
       [this.companyId, this.entityType, request.sessionId],
     )
   }
@@ -170,7 +177,8 @@ export class PostgresSessionService extends BaseSessionService {
       `update ai_conversations
           set messages = coalesce(messages, '[]'::jsonb) || $4::jsonb,
               updated_at = now()
-        where company_id = $1 and entity_type = $2 and entity_id = $3`,
+        where company_id = $1 and entity_type = $2 and entity_id = $3
+          and purpose = 'quoting'`,
       [
         this.companyId,
         this.entityType,
