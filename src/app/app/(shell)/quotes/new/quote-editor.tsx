@@ -350,7 +350,7 @@ export function QuoteEditor({
           role: 'assistant',
           text:
             data.line_items.length > 0
-              ? `Drafted ${data.line_items.length} line item${data.line_items.length === 1 ? '' : 's'} from your catalog.` +
+              ? `Drafted ${data.line_items.length} line item${data.line_items.length === 1 ? '' : 's'} from your price book.` +
                 (data.unmet?.length ? ` Not in your price book: ${data.unmet.join(', ')}.` : '')
               : data.questions?.length
                 ? data.questions[0].question
@@ -533,7 +533,7 @@ export function QuoteEditor({
                 <div className="flex items-start gap-2 border-b border-border/70 bg-muted/30 px-5 py-2.5">
                   <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                   <p className="text-xs leading-relaxed text-muted-foreground">
-                    AI drafted these lines from your catalog. Check the quantities and prices —
+                    AI drafted these lines from your price book. Check the quantities and prices —
                     once your customer approves, this is the price you’ve agreed to.
                   </p>
                 </div>
@@ -658,7 +658,7 @@ export function QuoteEditor({
               <div className="text-sm font-semibold">One-click drafting</div>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Drafts a quote from your {catalog.length} catalog items with real prices — in seconds.
+              Drafts a quote from your {catalog.length} price book items with real prices — in seconds.
             </p>
           </div>
         </aside>
@@ -839,7 +839,7 @@ function AiPanel({
             <div className="text-[11px] text-muted-foreground">
               {isEditing
                 ? 'Ask for a change — the rest of the quote stays as it is'
-                : 'Grounded in your catalog'}
+                : 'Grounded in your price book'}
             </div>
           </div>
           <button onClick={onClose} aria-label="Close" className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted lg:h-7 lg:w-7">
@@ -941,7 +941,7 @@ function AiPanel({
             </Button>
           </div>
           <p className="text-[11px] text-muted-foreground">
-            Priced from your catalog. Nothing is sent until you save.
+            Priced from your price book. Nothing is sent until you save.
           </p>
         </div>
         </div>

@@ -68,7 +68,7 @@ export async function readQuote(ctx: ToolContext) {
 /** Search the contractor's own price book. Hybrid vector + keyword. */
 export async function findCatalogItems(ctx: ToolContext, q: string, limit = 8) {
   const hits = await searchCatalog(ctx.companyId, q, limit)
-  return hits.map((h) => ({
+  const matches = hits.map((h) => ({
     catalog_item_id: h.id,
     name: h.name,
     description: h.description,
@@ -77,6 +77,15 @@ export async function findCatalogItems(ctx: ToolContext, q: string, limit = 8) {
     price: Number(h.base_price),
     labor_hours: h.labor_hours,
   }))
+  if (matches.length > 0) return { matches, price_book_size: undefined }
+  // "No match" and "no price book" need different replies — one is a gap for
+  // this job, the other means nothing can be quoted or estimated at all. Only
+  // counted on a miss, so the common path pays nothing.
+  const [row] = await query<{ n: number }>(
+    'select count(*)::int as n from catalog_items where company_id = $1 and is_active',
+    [ctx.companyId],
+  )
+  return { matches, price_book_size: row?.n ?? 0 }
 }
 
 /**
@@ -100,7 +109,7 @@ export async function addLineItem(ctx: ToolContext, catalogItemId: string, quant
        from catalog_items where id = $1 and company_id = $2 and is_active`,
     [catalogItemId, ctx.companyId],
   )
-  if (!item) throw new Error('that item is not in your catalog')
+  if (!item) throw new Error('that item is not in your price book')
 
   const qty = Number.isFinite(quantity) && quantity > 0 ? quantity : 1
   // labor_hours is copied across because it is what lets an accepted quote know
@@ -245,7 +254,7 @@ export async function proposeEstimatedItem(
   const est = await estimateFromCatalog(ctx.companyId, input.name)
   if (!est) {
     throw new Error(
-      `There is nothing close to "${input.name}" in the price book to estimate from. Add the line by hand, or add the item to the catalog first.`,
+      `There is nothing close to "${input.name}" in the price book to estimate from. Add the line by hand, or add the item to the price book first.`,
     )
   }
 
@@ -271,6 +280,6 @@ export async function proposeEstimatedItem(
     is_estimate: true,
     basis: est.basis,
     tell_the_contractor:
-      'This is an estimate, not a catalog price. Say so, and say what it was based on.',
+      'This is an estimate, not a price book price. Say so, and say what it was based on.',
   }
 }

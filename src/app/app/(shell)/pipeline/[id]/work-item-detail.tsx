@@ -274,7 +274,12 @@ export function WorkItemDetail({
       }
       const drafted = res.data.line_items
       if (drafted.length === 0) {
-        toast.error('Nothing in your catalog matched that description.')
+        // The model says why — an empty draft with the reason hidden reads as
+        // a bug ("nothing matches") when it is usually a price book gap.
+        toast.error('Nothing in your price book matched that description.', {
+          description: res.data.reasoning || undefined,
+          duration: 10000,
+        })
         return
       }
       setItems((prev) => [
@@ -287,16 +292,12 @@ export function WorkItemDetail({
           sort_order: prev.length + i,
         })),
       ])
-      if (!res.data.mode.startsWith('gemini')) {
-        toast.warning(`Added ${drafted.length} keyword matches — AI was unavailable`, {
-          description: 'Check every line and price before sending.',
-          duration: 8000,
-        })
-      } else {
-        toast.success(`Added ${drafted.length} ${drafted.length === 1 ? 'line' : 'lines'}`, {
-          description: 'Review them, then Save items.',
-        })
-      }
+      // No fallback modes exist any more — generation either ran on Gemini or
+      // threw. The old keyword-mode warning branch was dead and would have
+      // mislabelled a real draft.
+      toast.success(`Added ${drafted.length} ${drafted.length === 1 ? 'line' : 'lines'}`, {
+        description: 'Review them, then Save items.',
+      })
     })
   }
 
