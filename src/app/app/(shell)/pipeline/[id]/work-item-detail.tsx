@@ -6,6 +6,7 @@ import { useMemo, useState, useSyncExternalStore, useTransition } from 'react'
 import {
   Sparkles,
   ArrowLeft,
+  Star,
   Calendar as CalendarIcon,
   Check,
   CheckCircle2,
@@ -50,6 +51,7 @@ import {
   changeStatus,
   generateCustomerSummary,
   getSchedulingContext,
+  requestReview,
   sendQuote,
   updateWorkItem,
   type SchedulingContext,
@@ -173,6 +175,7 @@ export function WorkItemDetail({
   photos,
   timeline,
   tz,
+  reviewRequested,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
@@ -182,6 +185,7 @@ export function WorkItemDetail({
   photos: QuotePhoto[]
   tz: string
   timeline: TimelineEntry[]
+  reviewRequested: boolean
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
@@ -218,6 +222,21 @@ export function WorkItemDetail({
 
   const [sendOpen, setSendOpen] = useState(false)
   const [sentToken, setSentToken] = useState<string | null>(null)
+  const [reviewAsked, setReviewAsked] = useState(reviewRequested)
+  const [askingReview, startAskReview] = useTransition()
+
+  function doRequestReview() {
+    startAskReview(async () => {
+      const res = await requestReview(workItem.id)
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setReviewAsked(true)
+      toast.success(`Review request sent — ${res.data.channels.join(' and ')} link${res.data.channels.length === 1 ? '' : 's'} included.`)
+      router.refresh()
+    })
+  }
 
   const taxRate = workItem.tax_rate
   const computed = useMemo(() => computeTotals(items, taxRate), [items, taxRate])
@@ -550,6 +569,21 @@ export function WorkItemDetail({
             </Button>
           ) : (
             <>
+              {workItem.status === 'job_completed' && (
+                <Button
+                  onClick={doRequestReview}
+                  disabled={askingReview || reviewAsked}
+                  variant="outline"
+                  className="gap-1.5"
+                >
+                  {askingReview ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Star className="h-3.5 w-3.5" />
+                  )}
+                  {reviewAsked ? 'Review requested' : 'Request review'}
+                </Button>
+              )}
               {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
                 <Button
                   onClick={doSend}
@@ -692,7 +726,22 @@ export function WorkItemDetail({
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
-                {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
+                {workItem.status === 'job_completed' && (
+                <Button
+                  onClick={doRequestReview}
+                  disabled={askingReview || reviewAsked}
+                  variant="outline"
+                  className="gap-1.5"
+                >
+                  {askingReview ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Star className="h-3.5 w-3.5" />
+                  )}
+                  {reviewAsked ? 'Review requested' : 'Request review'}
+                </Button>
+              )}
+              {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
                   <span className="text-[11px] text-muted-foreground">
                     Live — saved changes update the customer link instantly
                   </span>

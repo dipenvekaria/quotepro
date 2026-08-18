@@ -112,6 +112,12 @@ export function SettingsForm({
           className="h-11 tabular lg:h-10"
         />
       </Field>
+      <Field label="Google review link" hint="Business Profile → Ask for reviews — customers land straight on the rating box">
+        <Input {...bind('review_link_google')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="https://g.page/r/…/review" />
+      </Field>
+      <Field label="Facebook reviews link" hint="Your page's Reviews tab">
+        <Input {...bind('review_link_facebook')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="https://facebook.com/…/reviews" />
+      </Field>
       <div className="flex items-end justify-end">
         {canEdit ? (
           <Button onClick={submit} disabled={saving} className="h-11 gap-1.5 lg:h-10">

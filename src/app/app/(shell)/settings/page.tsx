@@ -80,7 +80,12 @@ export default async function SettingsPage() {
 
   const canEdit = role === 'owner' || role === 'admin'
   const canManageTeam = role === 'owner' || role === 'office'
-  const settings = (company.settings ?? {}) as { tax_rate?: number; timezone?: string }
+  const settings = (company.settings ?? {}) as {
+    tax_rate?: number
+    timezone?: string
+    review_link_google?: string | null
+    review_link_facebook?: string | null
+  }
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
@@ -120,6 +125,8 @@ export default async function SettingsPage() {
               email: company.email ?? '',
               address: company.address ?? '',
               tax_rate: settings.tax_rate ?? 8.5,
+              review_link_google: settings.review_link_google ?? '',
+              review_link_facebook: settings.review_link_facebook ?? '',
               timezone: typeof settings.timezone === 'string' ? settings.timezone : 'America/Chicago',
             }}
           />

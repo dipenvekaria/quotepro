@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   CalendarClock,
+  Star,
   CheckCircle2,
   Eye,
   FileText,
@@ -47,6 +48,7 @@ const ICON: Record<string, typeof FileText> = {
   invoice_sent: Mail,
   payment_recorded: Wallet,
   note: MessageSquare,
+  review_request_sent: Star,
 }
 
 const LABEL: Record<string, string> = {
@@ -59,6 +61,7 @@ const LABEL: Record<string, string> = {
   invoice_created: 'Invoice created',
   invoice_sent: 'Invoice sent',
   payment_recorded: 'Payment recorded',
+  review_request_sent: 'Review request sent',
   quote_generation: 'AI drafted line items',
   quote_tiers: 'AI built good/better/best options',
   quote_edit: 'AI edited the quote',

@@ -199,6 +199,7 @@ export default async function WorkItemDetailPage({
   return (
     <WorkItemDetail
       tz={timezone}
+      reviewRequested={timeline.some((t) => t.action === 'review_request_sent')}
       workItem={workItem as unknown as Parameters<typeof WorkItemDetail>[0]['workItem']}
       lineItems={(quoteItems ?? []) as LineItem[]}
       photos={photos}
