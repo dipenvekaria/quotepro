@@ -22,12 +22,10 @@ export function PipelineFilter({
   members,
   assignee,
   initialTerm,
-  count,
 }: {
   members: TeamMember[]
   assignee: string
   initialTerm: string
-  count: number
 }) {
   const router = useRouter()
   const pathname = usePathname()
@@ -71,9 +69,12 @@ export function PipelineFilter({
 
       <AssigneeFilter members={members} active={assignee} />
 
-      <span className="shrink-0 text-xs tabular text-muted-foreground">
-        {pending ? 'Filtering…' : `${count} ${count === 1 ? 'item' : 'items'}`}
-      </span>
+      {/* Only speak when there is something to say: the header sentence
+          already states the total, and the duplicate chip was squeezing the
+          search box into truncating its own placeholder at 375px. */}
+      {pending && (
+        <span className="shrink-0 text-xs tabular text-muted-foreground">Filtering…</span>
+      )}
     </div>
   )
 }

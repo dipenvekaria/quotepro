@@ -11,6 +11,8 @@ import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
 import { signOut } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 
+import { MobileTabBar } from './mobile-tab-bar'
+
 // ---------------------------------------------------------------------------
 
 type Company = { id: string; name: string; logo_url: string | null } | null
@@ -109,8 +111,9 @@ export function AppShell({
           setMenuOpen={setMenuOpen}
           onOpenMobileNav={() => setMobileNavOpen(true)}
         />
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto pb-20 sm:pb-0">{children}</main>
       </div>
+      <MobileTabBar />
     </div>
   )
 }

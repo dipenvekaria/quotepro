@@ -681,7 +681,8 @@ export function QuoteEditor({
 
       {/* Thumb-reachable primary action. Phones only — from sm the button is in
           the header, where there is room for it. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden">
+      {/* bottom-16: clears the mobile tab bar, which owns the true bottom. */}
+      <div className="fixed inset-x-0 bottom-16 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:hidden">
         <Button onClick={save} disabled={saving} className="w-full gap-1.5 shadow-sm">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Save quote
