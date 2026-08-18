@@ -61,7 +61,6 @@ export default async function PublicInvoicePage({
       invoice={invoice as unknown as Parameters<typeof InvoiceViewer>[0]['invoice']}
       items={items}
       payments={(payments ?? []) as Parameters<typeof InvoiceViewer>[0]['payments']}
-      workItemDescription={wi?.description ?? null}
       showBadge={showsRivetBadge(
         (invoice as unknown as { companies?: { plan?: string | null } }).companies?.plan,
       )}

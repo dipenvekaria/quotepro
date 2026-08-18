@@ -381,9 +381,14 @@ export async function generateCustomerSummary(input: unknown) {
 
   let summary: string
   try {
+    // Deliberately no jobDescription: it is the contractor's internal prompt
+    // and can name work that never made it onto the quote. Fed to the
+    // summariser, the model wrote "the work involves sealing your attic
+    // ductwork" on a public quote whose lines carried no duct sealing — scope
+    // the customer then accepted. The summary describes the line items, which
+    // are the only thing being agreed to.
     const result = await explainQuote({
       companyName: work.company_name,
-      jobDescription: work.description,
       lineItems: items,
     })
     summary = result.summary

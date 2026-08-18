@@ -12,6 +12,8 @@ import {
   Shield,
 } from 'lucide-react'
 
+import { formatDateLong, formatPhone } from '@/lib/format'
+
 // ---------------------------------------------------------------------------
 
 type LineItem = {
@@ -64,13 +66,11 @@ export function InvoiceViewer({
   invoice,
   items,
   payments,
-  workItemDescription,
   showBadge = true,
 }: {
   invoice: Invoice
   items: LineItem[]
   payments: Payment[]
-  workItemDescription: string | null
   /** False on a paid plan — see src/lib/branding.ts. */
   showBadge?: boolean
 }) {
@@ -101,7 +101,7 @@ export function InvoiceViewer({
             <div className="min-w-0">
               <div className="truncate text-sm font-semibold">{invoice.companies?.name ?? 'Your provider'}</div>
               <div className="truncate text-[11px] text-muted-foreground">
-                {invoice.companies?.phone ?? invoice.companies?.email ?? ''}
+                {formatPhone(invoice.companies?.phone) || invoice.companies?.email || ''}
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ export function InvoiceViewer({
         <div className="border-b border-emerald-500/20 bg-emerald-500/10">
           <div className="mx-auto max-w-3xl px-6 py-2.5 text-sm text-emerald-800 dark:text-emerald-300">
             <CheckCircle2 className="mr-1.5 inline h-4 w-4" />
-            Paid in full on {invoice.paid_at ? new Date(invoice.paid_at).toLocaleDateString() : ''}
+            Paid in full on {formatDateLong(invoice.paid_at)}
           </div>
         </div>
       )}
@@ -142,23 +142,22 @@ export function InvoiceViewer({
       )}
 
       <main className="mx-auto max-w-3xl px-6 py-8 sm:py-12">
-        {/* Hero */}
+        {/* Hero. Stacks on phones; `justify-between` alone squeezed the
+            heading into a ragged sliver at 375px. The internal job description
+            is deliberately not rendered — it is the contractor's own prompt
+            text, not customer copy; invoice.notes below is the field written
+            for the customer. */}
         <div className="rounded-2xl border border-border/70 bg-card p-6 shadow-sm sm:p-8">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <div className="text-[11px] font-medium uppercase tracking-wider text-primary">
-                Invoice · {invoice.invoice_number}
+                Invoice · <span className="whitespace-nowrap">{invoice.invoice_number}</span>
               </div>
               <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
                 {invoice.customers?.name ?? 'Customer'}
               </h1>
-              {workItemDescription && (
-                <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-                  {workItemDescription}
-                </p>
-              )}
             </div>
-            <div className="text-right">
+            <div className="sm:text-right">
               <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 {isPaid ? 'Paid' : 'Amount due'}
               </div>
@@ -174,12 +173,19 @@ export function InvoiceViewer({
           </div>
         </div>
 
-        {/* Items */}
-        {nonDiscountItems.length > 0 && (
-          <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
-            <header className="border-b border-border/70 px-6 py-4">
-              <h2 className="text-sm font-semibold">Work performed</h2>
-            </header>
+        {/* Items. The totals block sits OUTSIDE the items condition: an
+            invoice without line items still owes its customer the arithmetic —
+            a bare "amount due" with no subtotal, tax or breakdown reads as a
+            demand, not a bill. */}
+        <section className="mt-6 overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
+          <header className="border-b border-border/70 px-6 py-4">
+            <h2 className="text-sm font-semibold">Work performed</h2>
+          </header>
+          {nonDiscountItems.length === 0 ? (
+            <p className="px-6 py-4 text-sm text-muted-foreground">
+              Itemised work is on the accepted quote — the totals below are what remains to pay.
+            </p>
+          ) : (
             <ul className="divide-y divide-border/70">
               {nonDiscountItems.map((item) => (
                 <li key={item.id} className="flex items-start gap-4 px-6 py-4">
@@ -203,6 +209,7 @@ export function InvoiceViewer({
                 </li>
               ))}
             </ul>
+          )}
             <div className="border-t border-border/70 bg-muted/30 px-6 py-4">
               <dl className="space-y-1.5 text-sm">
                 <div className="flex justify-between text-muted-foreground">
@@ -225,6 +232,15 @@ export function InvoiceViewer({
                 </div>
               </dl>
             </div>
+        </section>
+
+        {/* A note the contractor wrote for the customer. */}
+        {invoice.notes && (
+          <section className="mt-6 rounded-2xl border border-border/70 bg-card p-6 shadow-sm">
+            <h2 className="text-sm font-semibold">A note from {invoice.companies?.name ?? 'your provider'}</h2>
+            <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+              {invoice.notes}
+            </p>
           </section>
         )}
 
@@ -258,7 +274,9 @@ export function InvoiceViewer({
           <section className="mt-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent p-6 shadow-sm">
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />
-              <h2 className="text-sm font-semibold">Pay online</h2>
+              <h2 className="text-sm font-semibold">
+                {invoice.companies?.stripe_charges_enabled ? 'Pay online' : 'How to pay'}
+              </h2>
             </div>
             {invoice.companies?.stripe_charges_enabled ? (
               <>
@@ -283,7 +301,6 @@ export function InvoiceViewer({
                   {invoice.companies?.name ?? 'Your provider'} accepts payment by check, bank transfer,
                   cash, or card. Contact them directly to arrange payment — details below.
                 </p>
-                <p className="mt-3 text-xs text-muted-foreground">Online payments coming soon.</p>
               </>
             )}
           </section>
@@ -308,24 +325,25 @@ export function InvoiceViewer({
             </div>
             <div className="flex items-start gap-2">
               <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-              <div>
+              <div className="min-w-0">
                 <div className="font-medium text-foreground">Questions?</div>
-                <div>
-                  {invoice.companies?.phone && (
-                    <a href={`tel:${invoice.companies.phone}`} className="hover:text-foreground">
-                      Call {invoice.companies.phone}
-                    </a>
-                  )}
-                  {invoice.companies?.email && (
-                    <>
-                      {invoice.companies.phone && <br />}
-                      <a href={`mailto:${invoice.companies.email}`} className="hover:text-foreground">
-                        <Mail className="mr-1 inline h-3 w-3" />
-                        {invoice.companies.email}
-                      </a>
-                    </>
-                  )}
-                </div>
+                {invoice.companies?.phone && (
+                  <a
+                    href={`tel:${invoice.companies.phone}`}
+                    className="flex min-h-11 items-center gap-1.5 hover:text-foreground"
+                  >
+                    Call or text {formatPhone(invoice.companies.phone)}
+                  </a>
+                )}
+                {invoice.companies?.email && (
+                  <a
+                    href={`mailto:${invoice.companies.email}`}
+                    className="flex min-h-11 items-center gap-1.5 truncate hover:text-foreground"
+                  >
+                    <Mail className="h-3 w-3 shrink-0" />
+                    {invoice.companies.email}
+                  </a>
+                )}
               </div>
             </div>
           </div>
