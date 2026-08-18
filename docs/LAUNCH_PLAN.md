@@ -72,42 +72,30 @@ Already merged to `main`; the first is also verified live in production.
 
 ## P0 — Launch blockers
 
-### Engineering
+### Engineering — **all six shipped** (#114, #120–#123); what remains below is the owner's list
 
 **1. ~~The AI writes customer-facing copy for work that is not on the quote.~~ FIXED (#120).**
 The summariser no longer receives the internal job description (prompt rewritten to
 line-items-only), and `/q` no longer selects — and `/i` no longer renders — the raw internal
 description. `tests/public-quote-honesty.test.ts` pins all three paths.
 
-**2. Half the price book carries a unit that never reaches the quote — and it breaks
-scheduling.** — **VERIFIED**, ~1 day
-`quote_items` has no `unit` column. The catalog shows "$1,650 per ton"; the line renders
-"3 × $1,650.00", which a homeowner reads as three air conditioners when it was three tons. Worse,
-`quotes/new/actions.ts:363` computes `estimated_hours` as `hours × quantity`, so a one-condenser
-job booked **26.25 hours** and a per-sq-ft roof books 120. Capacity-honest scheduling from
-`labor_hours` is the product's stated structural advantage, and it is currently wrong for the
-majority of every seeded catalog (53% of 9,945 starter items use a non-`each` unit).
-**Fix:** carry `unit` onto `quote_items`, render it beside quantity everywhere (`/q`, PDF,
-editor), and scale hours by quantity only for `each`/`hour` units.
+**2. ~~Half the price book carries a unit that never reaches the quote.~~ FIXED (#123, migration
+live).** `quote_items.unit` snapshotted like price and hours; rendered on /q, /i, both PDFs and
+the editor ("3 tons × \$1,650.00/ton"); `lineHours` multiplies labour by quantity only for
+counting units, so a 3-ton condenser books 8.75h, not 26.25.
 
 **3. ~~Every date is the server's clock, not the contractor's.~~ FIXED (#121).**
 `src/lib/time.ts` (pure Intl, DST-tested), dashboard + calendar day boundaries in the company
 zone, onboarding captures the browser timezone, Settings gains a timezone select with Detect.
 Verified against a TZ=UTC server: Auckland shows Wednesday while Chicago shows Tuesday morning.
 
-**4. There is no password reset, and the sign-in page says there is.** — **VERIFIED**, ~half a
-day
-`login/page.tsx:178` links to `/forgot-password`; the route does not exist and
-`resetPasswordForEmail` appears nowhere. A contractor who forgets their password is locked out
-permanently.
-**Fix:** build the Supabase reset flow, or replace the link with a support address until it
-exists.
+**4. ~~There is no password reset.~~ FIXED (#122).** /forgot-password (enumeration-safe) and
+/reset-password (PKCE code or recovery token exchange, strict-mode race guarded) — the whole
+backend flow proven end to end against local GoTrue + Mailpit, including the code+verifier
+exchange and an authenticated password update.
 
-**5. An invoice with no line items shows a total and nothing else.** — **VERIFIED**, ~1h
-`invoice-viewer.tsx:178` wraps the itemisation **and** the Subtotal/Tax/Total block in
-`nonDiscountItems.length > 0`, so an invoice without line items renders a bare "amount due" with
-no breakdown. Selected `notes` are never rendered either.
-**Fix:** move the totals outside the guard; give the items list a real empty state; render notes.
+**5. ~~An invoice with no line items shows a total and nothing else.~~ FIXED (#120).** Totals
+always render; a line-less invoice gets an honest empty state; `notes` finally renders.
 
 **6. ~~The AI fabricates a whole quote when no job is described.~~ FIXED — see "Shipped this
 session".** Kept for the record: the editor defaulted an empty description to the literal
