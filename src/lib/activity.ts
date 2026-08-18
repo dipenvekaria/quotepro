@@ -27,6 +27,7 @@ export type ActivityAction =
   | 'price_book_item_updated'
   | 'price_book_item_archived'
   | 'note'
+  | 'review_request_sent'
 
 /**
  * Never throws and never blocks — identical contract to `recordAiRun`, for the

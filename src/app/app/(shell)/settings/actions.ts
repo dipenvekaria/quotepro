@@ -18,6 +18,11 @@ const settingsSchema = z.object({
   // IANA zone; every server-side day boundary reads it. Validated as a real
   // zone below rather than by pattern — Intl is the authority on what exists.
   timezone: z.string().max(64),
+  // Where "Request review" points the customer. Links, not OAuth: no API
+  // exists for soliciting Google or Facebook reviews — every competitor's
+  // review feature is these same links in an email.
+  review_link_google: z.string().url().startsWith('https://').optional().or(z.literal('')),
+  review_link_facebook: z.string().url().startsWith('https://').optional().or(z.literal('')),
 })
 
 export type UpdateSettingsInput = z.infer<typeof settingsSchema>
@@ -49,6 +54,8 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
     ...currentSettings,
     tax_rate: parsed.data.tax_rate,
     timezone: parsed.data.timezone,
+    review_link_google: parsed.data.review_link_google || null,
+    review_link_facebook: parsed.data.review_link_facebook || null,
   }
 
   try {

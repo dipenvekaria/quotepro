@@ -610,3 +610,85 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
   return { ok: true as const, data: { mentioned } }
 }
+
+// ---------------------------------------------------------------------------
+
+/**
+ * Email the customer a review request from a completed job.
+ *
+ * Owner-triggered, not automatic: the contractor knows which jobs went well
+ * enough to ask, and an unhappy customer asked automatically becomes a public
+ * one-star. Sent once per job — the timeline records it, and asking twice
+ * reads as spam from a company the customer just paid.
+ */
+export async function requestReview(id: string) {
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const [item] = await query<{
+    id: string
+    status: string
+    customer_name: string | null
+    customer_email: string | null
+    company_name: string
+    settings: { review_link_google?: string | null; review_link_facebook?: string | null } | null
+  }>(
+    `select w.id, w.status, c.name as customer_name, c.email as customer_email,
+            co.name as company_name, co.settings
+       from work_items w
+       left join customers c on c.id = w.customer_id
+       join companies co on co.id = w.company_id
+      where w.id = $1 and w.company_id = $2
+      limit 1`,
+    [id, session.companyId],
+  )
+  if (!item) return { ok: false as const, error: 'Not found' }
+  if (item.status !== 'job_completed') {
+    return { ok: false as const, error: 'Finish the job first — reviews are asked for after completion.' }
+  }
+
+  const google = item.settings?.review_link_google || null
+  const facebook = item.settings?.review_link_facebook || null
+  if (!google && !facebook) {
+    return {
+      ok: false as const,
+      error: 'Add your Google or Facebook review link in Settings first.',
+    }
+  }
+  if (!item.customer_email) {
+    return { ok: false as const, error: 'This customer has no email address on file.' }
+  }
+
+  const [already] = await query<{ id: string }>(
+    `select id from activity_log
+      where company_id = $1 and entity_type = 'work_item' and entity_id = $2
+        and action = 'review_request_sent'
+      limit 1`,
+    [session.companyId, id],
+  )
+  if (already) return { ok: false as const, error: 'A review request was already sent for this job.' }
+
+  const { sendReviewRequestEmail } = await import('@/lib/email/senders')
+  const res = await sendReviewRequestEmail({
+    to: item.customer_email,
+    customerName: item.customer_name,
+    companyName: item.company_name,
+    googleUrl: google,
+    facebookUrl: facebook,
+  })
+  if (!res.ok) return { ok: false as const, error: `Email failed: ${res.error}` }
+  if (res.skipped) {
+    return { ok: false as const, error: 'Email is not set up — RESEND_API_KEY is missing.' }
+  }
+
+  await logActivity({
+    companyId: session.companyId,
+    userId: session.userId,
+    entityId: id,
+    action: 'review_request_sent',
+    description: `Review request emailed to ${item.customer_email}`,
+  })
+
+  revalidatePath(`/app/pipeline/${id}`)
+  return { ok: true as const, data: { channels: [google && 'Google', facebook && 'Facebook'].filter(Boolean) } }
+}

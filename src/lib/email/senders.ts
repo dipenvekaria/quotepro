@@ -340,3 +340,61 @@ export async function sendMentionEmail(input: {
     return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
   }
 }
+
+/**
+ * "How did we do?" — sent by the contractor from a completed job.
+ *
+ * Solicitation is links, not APIs: neither Google nor Meta lets software file
+ * a review for someone, so the whole feature is putting the right link in
+ * front of a customer while the finished job is still fresh.
+ */
+export async function sendReviewRequestEmail(input: {
+  to: string
+  customerName: string | null
+  companyName: string
+  googleUrl: string | null
+  facebookUrl: string | null
+}): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
+
+  const links = [
+    input.googleUrl && { label: 'Review us on Google', url: input.googleUrl },
+    input.facebookUrl && { label: 'Review us on Facebook', url: input.facebookUrl },
+  ].filter((l): l is { label: string; url: string } => Boolean(l))
+  if (links.length === 0) return { ok: false, error: 'No review links configured' }
+
+  const buttons = links
+    .map(
+      (l, i) => `
+          <a href="${l.url}"
+             style="display:inline-block;background:${i === 0 ? '#111' : '#fff'};color:${i === 0 ? '#fff' : '#111'};border:1px solid #111;text-decoration:none;padding:12px 20px;border-radius:8px;font-size:15px;font-weight:500;margin:0 8px 8px 0">
+            ${escapeHtml(l.label)}
+          </a>`,
+    )
+    .join('')
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: input.to,
+      subject: `How did we do${input.customerName ? `, ${input.customerName}` : ''}?`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          <h1 style="font-size:20px;margin:0 0 12px">Thanks for choosing ${escapeHtml(input.companyName)}</h1>
+          <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 20px">
+            Your job is complete. If you have a minute, a quick review helps our
+            small business more than you'd think — and helps neighbours find us.
+          </p>
+          <p style="margin:0 0 8px">${buttons}</p>
+          <p style="font-size:13px;color:#666;line-height:1.6;margin:16px 0 0">
+            Had a problem instead? Reply to this email and we'll make it right.
+          </p>
+        </div>`,
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true, id: data?.id ?? '' }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
+  }
+}
