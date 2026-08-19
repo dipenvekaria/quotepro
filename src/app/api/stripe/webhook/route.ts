@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 
+import { syncSubscription } from '@/lib/stripe/billing'
 import { getStripe, getWebhookSecret } from '@/lib/stripe/client'
 import { sbAdmin } from '@/lib/supabase/untyped'
 
@@ -43,6 +44,15 @@ export async function POST(req: NextRequest) {
       const session = event.data.object as Stripe.Checkout.Session
       if (session.mode !== 'payment' || session.payment_status !== 'paid') break
       await handleInvoicePaid(admin, session)
+      break
+    }
+    // Rivet's own subscriptions. One handler for the whole lifecycle:
+    // created (trialing), trial→active, plan switches, cancel-at-period-end
+    // (status stays active until the period closes), and final cancellation.
+    case 'customer.subscription.created':
+    case 'customer.subscription.updated':
+    case 'customer.subscription.deleted': {
+      await syncSubscription(event.data.object as Stripe.Subscription)
       break
     }
     case 'payment_intent.succeeded': {

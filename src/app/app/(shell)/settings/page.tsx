@@ -11,6 +11,7 @@ import type { UserRole } from '@/lib/permissions'
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 
 import { SettingsForm } from './settings-form'
+import { BillingCard } from './billing-card'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
@@ -37,6 +38,7 @@ export default async function SettingsPage() {
     pass_card_fees: boolean | null
   }>(
     `select id, name, logo_url, phone, email, address, settings, plan,
+            stripe_subscription_id, subscription_status, trial_ends_at,
             stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees
        from companies
       where id = $1
@@ -108,6 +110,22 @@ export default async function SettingsPage() {
         </header>
         <div className="p-5">
           <AppearanceSettings />
+        </div>
+      </section>
+
+      {/* Billing */}
+      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
+        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
+          <CreditCard className="h-4 w-4 text-muted-foreground" />
+          <h2 className="text-sm font-semibold">Billing</h2>
+        </header>
+        <div className="p-5">
+          <BillingCard
+            plan={company.plan ?? null}
+            status={(company as { subscription_status?: string | null }).subscription_status ?? null}
+            trialEndsAt={(company as { trial_ends_at?: string | null }).trial_ends_at ?? null}
+            canEdit={canEdit}
+          />
         </div>
       </section>
 
