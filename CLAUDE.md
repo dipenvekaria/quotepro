@@ -257,6 +257,8 @@ numbers.
 | Doc | For |
 | --- | --- |
 | [`docs/ENGINEER_RUNBOOK.md`](docs/ENGINEER_RUNBOOK.md) | **Hand this to a new engineer.** Fresh machine → merged PR, step by step. |
+| [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) | The product manual — what Bolt's how-to answers are grounded in. |
+| [`docs/OWNER_SETUP.md`](docs/OWNER_SETUP.md) | Production setup: what's done, what's pending, in order. |
 | [`docs/ONBOARDING.md`](docs/ONBOARDING.md) | Longer-form onboarding with product context |
 | [`docs/CLAUDE_CODE_SETUP.md`](docs/CLAUDE_CODE_SETUP.md) | Getting a new machine's Claude Code to match everyone else's |
 | [`docs/CODEBASE_MAP.md`](docs/CODEBASE_MAP.md) | What is live, what is dead, and why |
