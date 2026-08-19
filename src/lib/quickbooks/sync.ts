@@ -2,6 +2,7 @@ import { query } from '@/lib/db'
 import {
   createQboInvoice,
   createQboPayment,
+  ensureQboItem,
   ensureServiceItem,
   findOrCreateCustomer,
   qboConnection,
@@ -63,10 +64,15 @@ export async function syncInvoiceToQbo(companyId: string, invoiceId: string): Pr
       quantity: number
       unit_price: number
       total: number
+      catalog_item_id: string | null
+      catalog_name: string | null
+      catalog_qbo_item_id: string | null
     }>(
-      `select qi.name, qi.description, qi.quantity, qi.unit_price, qi.total
+      `select qi.name, qi.description, qi.quantity, qi.unit_price, qi.total,
+              qi.catalog_item_id, ci.name as catalog_name, ci.qbo_item_id as catalog_qbo_item_id
          from quote_items qi
          join work_items w on w.id = qi.work_item_id
+         left join catalog_items ci on ci.id = qi.catalog_item_id and ci.company_id = $2
         where qi.work_item_id = $1 and w.company_id = $2
         order by qi.sort_order asc, qi.created_at asc`,
       [inv.work_item_id, companyId],
@@ -79,15 +85,37 @@ export async function syncInvoiceToQbo(companyId: string, invoiceId: string): Pr
       email: inv.customer_email,
       qbo_customer_id: inv.customer_qbo_id,
     })
-    const itemId = await ensureServiceItem(companyId)
+
+    // Price book lines post under their real QBO item (find-or-create by the
+    // catalog name, cached on the catalog row); one-offs, estimates and
+    // discounts share the generic item so ad-hoc lines never litter their
+    // item list. The bookkeeper's sales-by-item report reads like the truth.
+    const itemIdByCatalog = new Map<string, string>()
+    for (const l of lines) {
+      if (!l.catalog_item_id || itemIdByCatalog.has(l.catalog_item_id)) continue
+      let qboItemId = l.catalog_qbo_item_id
+      if (!qboItemId) {
+        qboItemId = await ensureQboItem(companyId, l.catalog_name ?? l.name)
+        await query(
+          `update catalog_items set qbo_item_id = $2 where id = $1 and company_id = $3`,
+          [l.catalog_item_id, qboItemId, companyId],
+        )
+      }
+      itemIdByCatalog.set(l.catalog_item_id, qboItemId)
+    }
+    const fallbackItemId = lines.some((l) => !l.catalog_item_id)
+      ? await ensureServiceItem(companyId)
+      : null
 
     const qboId = await createQboInvoice(companyId, {
       qboCustomerId,
-      itemId,
       docNumber: inv.invoice_number,
       dueDate: inv.due_date,
       taxAmount: Number(inv.tax_amount ?? 0),
       lines: lines.map((l) => ({
+        itemId:
+          (l.catalog_item_id ? itemIdByCatalog.get(l.catalog_item_id) : null) ??
+          (fallbackItemId as string),
         description: l.description ? `${l.name} — ${l.description}` : l.name,
         quantity: Number(l.quantity),
         unitPrice: Number(l.unit_price),

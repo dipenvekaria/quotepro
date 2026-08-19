@@ -137,40 +137,50 @@ export async function qboQuery<T>(companyId: string, q: string): Promise<T> {
   return qboFetch<T>(companyId, `/query?query=${encodeURIComponent(q)}`)
 }
 
+async function incomeAccountId(companyId: string): Promise<string> {
+  const accounts = await qboQuery<{ QueryResponse: { Account?: { Id: string }[] } }>(
+    companyId,
+    "select Id from Account where AccountType = 'Income' maxresults 1",
+  )
+  const id = accounts.QueryResponse.Account?.[0]?.Id
+  if (!id) throw new Error('No income account found in QuickBooks')
+  return id
+}
+
 /**
- * The Service item every synced line bills under. QBO requires an item on
- * sales lines; inventing one per catalog row would fill their item list with
- * duplicates of a price book Rivet already owns, so everything posts to one
- * "Rivet Services" item and the line description carries the detail.
+ * Find-or-create a QBO Service item by name. QBO item names are unique per
+ * company, so an item the bookkeeper already made is reused, never duplicated.
+ */
+export async function ensureQboItem(companyId: string, name: string): Promise<string> {
+  const clean = name.trim().slice(0, 100)
+  const found = await qboQuery<{ QueryResponse: { Item?: { Id: string }[] } }>(
+    companyId,
+    `select Id from Item where Name = '${esc(clean)}'`,
+  )
+  const existing = found.QueryResponse.Item?.[0]?.Id
+  if (existing) return existing
+
+  const created = await qboFetch<{ Item: { Id: string } }>(companyId, '/item', {
+    method: 'POST',
+    body: {
+      Name: clean,
+      Type: 'Service',
+      IncomeAccountRef: { value: await incomeAccountId(companyId) },
+    },
+  })
+  return created.Item.Id
+}
+
+/**
+ * The catch-all Service item for lines with no price book identity — custom
+ * one-offs, estimates, discounts. Creating a QBO item per ad-hoc line would
+ * fill their item list with junk; the line description carries the detail.
  */
 export async function ensureServiceItem(companyId: string): Promise<string> {
   const conn = await qboConnection(companyId)
   if (conn?.qbo_item_id) return conn.qbo_item_id
 
-  const found = await qboQuery<{ QueryResponse: { Item?: { Id: string }[] } }>(
-    companyId,
-    "select Id from Item where Name = 'Rivet Services'",
-  )
-  let itemId = found.QueryResponse.Item?.[0]?.Id
-
-  if (!itemId) {
-    const accounts = await qboQuery<{ QueryResponse: { Account?: { Id: string }[] } }>(
-      companyId,
-      "select Id from Account where AccountType = 'Income' maxresults 1",
-    )
-    const incomeAccount = accounts.QueryResponse.Account?.[0]?.Id
-    if (!incomeAccount) throw new Error('No income account found in QuickBooks')
-    const created = await qboFetch<{ Item: { Id: string } }>(companyId, '/item', {
-      method: 'POST',
-      body: {
-        Name: 'Rivet Services',
-        Type: 'Service',
-        IncomeAccountRef: { value: incomeAccount },
-      },
-    })
-    itemId = created.Item.Id
-  }
-
+  const itemId = await ensureQboItem(companyId, 'Rivet Services')
   await query(`update quickbooks_connections set qbo_item_id = $2 where company_id = $1`, [
     companyId,
     itemId,
@@ -213,9 +223,8 @@ export async function createQboInvoice(
   companyId: string,
   input: {
     qboCustomerId: string
-    itemId: string
     docNumber: string
-    lines: { description: string; quantity: number; unitPrice: number; amount: number }[]
+    lines: { itemId: string; description: string; quantity: number; unitPrice: number; amount: number }[]
     taxAmount: number
     dueDate: string | null
   },
@@ -229,7 +238,7 @@ export async function createQboInvoice(
       DetailType: 'SalesItemLineDetail',
       Description: l.description.slice(0, 4000),
       SalesItemLineDetail: {
-        ItemRef: { value: input.itemId },
+        ItemRef: { value: l.itemId },
         Qty: l.quantity,
         UnitPrice: l.unitPrice,
       },
