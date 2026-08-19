@@ -416,3 +416,44 @@ export async function sendReviewRequestEmail(input: {
     return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
   }
 }
+
+/**
+ * In-app support message → the team inbox, reply-to the user. The whole
+ * support loop is email on purpose: a two-person team lives in an inbox,
+ * not a ticket queue, and the user gets the reply where they already are.
+ */
+export async function sendSupportMessage(input: {
+  inbox: string
+  fromUserEmail: string
+  fromUserName: string
+  companyName: string
+  plan: string | null
+  role: string
+  message: string
+}): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: input.inbox,
+      replyTo: input.fromUserEmail,
+      subject: `Support: ${input.companyName} — ${input.fromUserName}`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          <p style="font-size:13px;color:#666;margin:0 0 12px">
+            ${escapeHtml(input.fromUserName)} (${escapeHtml(input.role)}) at
+            <strong>${escapeHtml(input.companyName)}</strong>${input.plan ? ` · ${escapeHtml(input.plan)}` : ''}
+            · ${escapeHtml(input.fromUserEmail)}
+          </p>
+          <blockquote style="margin:0;padding:12px 16px;background:#f5f5f4;border-radius:8px;font-size:15px;line-height:1.6;color:#111;white-space:pre-wrap">${escapeHtml(input.message)}</blockquote>
+          <p style="font-size:13px;color:#666;margin:12px 0 0">Reply goes straight to them.</p>
+        </div>`,
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true, id: data?.id ?? '' }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
+  }
+}

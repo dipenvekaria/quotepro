@@ -19,6 +19,8 @@ import {
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
+import { gettingStartedSteps } from '@/lib/getting-started'
+import { DismissGettingStarted } from './getting-started'
 import { dayRangeUtc, zonedDayKey, zonedHour } from '@/lib/time'
 import { canSeeAnalytics, workItemScope } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
@@ -208,22 +210,8 @@ export default async function DashboardPage() {
     customers: r.customer_name ? { name: r.customer_name } : null,
   }))
   const stripeConnected = Boolean(companyRows[0]?.stripe_charges_enabled)
-  const co = companyRows[0]
-  const [sentEver] = await query<{ n: number }>(
-    `select count(*)::int as n from work_items where company_id = $1 and sent_at is not null limit 1`,
-    [companyId],
-  )
-  const steps = [
-    { done: true, label: 'Price book ready', href: '/app/catalog' },
-    { done: (sentEver?.n ?? 0) > 0, label: 'Send your first quote', href: '/app/quotes/new' },
-    { done: stripeConnected, label: 'Connect Stripe to get paid online', href: '/app/integrations' },
-    { done: Boolean(co?.logo_url), label: 'Upload your logo — it fronts every email', href: '/app/settings' },
-    {
-      done: Boolean(co?.settings?.review_link_google || co?.settings?.review_link_facebook),
-      label: 'Add your review links', href: '/app/settings',
-    },
-  ]
-  const remaining = steps.filter((s) => !s.done)
+  const gs = await gettingStartedSteps(companyId)
+  const steps = gs.steps
 
   // KPI metrics: current 30d vs prior 30d (for trend), plus 30-day cumulative sparklines.
   const T = now.getTime()
@@ -293,7 +281,7 @@ export default async function DashboardPage() {
     pipeSeries.push(cPipe)
   }
 
-  const showSetupChecklist = remaining.length > 0
+  const showSetupChecklist = gs.remaining > 0 && !gs.dismissed
 
   return (
     <div className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
@@ -317,9 +305,12 @@ export default async function DashboardPage() {
         <section className="mt-6 rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-primary/3 to-transparent p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm font-semibold">Getting started</div>
-            <span className="text-xs tabular text-muted-foreground">
-              {steps.length - remaining.length} of {steps.length} done
-            </span>
+            <div className="flex items-center gap-1">
+              <span className="text-xs tabular text-muted-foreground">
+                {steps.length - gs.remaining} of {steps.length} done
+              </span>
+              <DismissGettingStarted />
+            </div>
           </div>
           <ul className="mt-3 space-y-1">
             {steps.map((step) => (

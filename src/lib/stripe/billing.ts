@@ -92,7 +92,6 @@ export async function createSubscriptionCheckout(input: {
       metadata: { rivet_company_id: input.companyId, rivet_plan: input.plan },
     },
     metadata: { rivet_company_id: input.companyId, rivet_plan: input.plan },
-    allow_promotion_codes: true,
     success_url: `${base}/app/settings?billing=started`,
     cancel_url: `${base}/app/settings?billing=cancelled`,
   })
