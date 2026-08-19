@@ -3,6 +3,7 @@ import { logActivity } from '@/lib/activity'
 import { companyTz, zonedParts, zonedToUtc } from '@/lib/time'
 import { env } from '@/lib/env'
 import { sendInvoiceEmail } from '@/lib/email/senders'
+import { syncInvoiceToQbo } from '@/lib/quickbooks/sync'
 
 /**
  * Recurring service visits — weekly cleans, monthly maintenance.
@@ -236,6 +237,9 @@ async function autoInvoice(t: TemplateRow, visitId: string): Promise<SpawnResult
     action: 'invoice_created',
     description: `Invoice ${invoiceNumber} created for the repeating service`,
   })
+
+  // Books mirror; sync swallows its own failures onto the integrations card.
+  await syncInvoiceToQbo(t.company_id, created.id)
 
   if (!t.customer_email) return 'created'
 
