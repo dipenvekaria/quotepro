@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { ChevronDown, Loader2, Package, Pencil, Plus, Search, Trash2, Upload, X } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -25,6 +26,7 @@ import {
   createCatalogItem,
   setCatalogItemLabels,
   deleteCatalogItem,
+  archiveStarterLeftovers,
   importCatalogCsv,
   updateCatalogItem,
 } from './actions'
@@ -111,6 +113,7 @@ export function CatalogManager({
   /** Signed URLs by storage path — they expire, so they are not stored. */
   imageUrls?: Record<string, string>
 }) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState<Draft>(EMPTY)
   const [saving, startSave] = useTransition()
@@ -140,9 +143,12 @@ export function CatalogManager({
         toast.error(res.error)
         return
       }
-      const { imported, skipped, errors } = res.data
+      const { imported, updated = 0, skipped, errors, starter_leftovers = 0 } = res.data
       if (skipped === 0) {
-        toast.success(`Imported ${imported} ${imported === 1 ? 'item' : 'items'}`)
+        toast.success(
+          `Imported ${imported} ${imported === 1 ? 'item' : 'items'}` +
+            (updated > 0 ? `, updated ${updated}` : ''),
+        )
       } else {
         toast.warning(`Imported ${imported}, skipped ${skipped}`, {
           description: errors
@@ -150,6 +156,22 @@ export function CatalogManager({
             .map((x) => `Row ${x.row}: ${x.reason}`)
             .join(' · '),
           duration: 8000,
+        })
+      }
+      // Their real book just landed next to our starter placeholders — offer
+      // the cleanup, one tap, archive-not-delete. Edited starter items stay.
+      if (starter_leftovers > 0) {
+        toast.info(`${starter_leftovers} starter ${starter_leftovers === 1 ? 'item' : 'items'} you haven't edited are still active.`, {
+          duration: 15000,
+          action: {
+            label: 'Archive them',
+            onClick: () => {
+              void archiveStarterLeftovers().then((r) => {
+                if (r.ok) toast.success(`Archived ${r.data.archived} starter items — restorable any time.`)
+                router.refresh()
+              })
+            },
+          },
         })
       }
     })

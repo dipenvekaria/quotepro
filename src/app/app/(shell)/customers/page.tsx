@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
+import { FileUp, Mail, MapPin, Phone, Plus, Users } from 'lucide-react'
 
 import { EmptyState } from '@/components/shared/empty-state'
 import { requireSession } from '@/lib/auth/session'
@@ -85,7 +85,16 @@ export default async function CustomersPage({
           <h1 className="mt-1 text-3xl font-semibold tracking-tight">Customers</h1>
           <p className="mt-1 text-sm text-muted-foreground">Everyone you have quoted or added.</p>
         </div>
-        <NewCustomer />
+        <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href="/app/import"
+            className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3.5 text-sm font-medium hover:bg-muted lg:h-10"
+          >
+            <FileUp className="h-4 w-4" />
+            Import
+          </Link>
+          <NewCustomer />
+        </div>
       </div>
 
       {list.length === 0 && term ? (

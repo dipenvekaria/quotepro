@@ -211,8 +211,8 @@ async function seedCatalog(
   // has items is never right, whatever got us here.
   await query(
     `insert into catalog_items
-       (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade)
-     select v.* from (values ${tuples.join(', ')}) as v
+       (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade, source)
+     select v.*, 'starter' from (values ${tuples.join(', ')}) as v
        (company_id, name, description, category, base_price, unit, labor_hours, material_cost, trade)
      where not exists (select 1 from catalog_items c where c.company_id = $1)`,
     values,
