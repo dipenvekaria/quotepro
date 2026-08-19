@@ -32,7 +32,11 @@ export async function updateSession(request: NextRequest) {
 
   // Allow public routes
   const publicRoutes = ['/login', '/auth', '/q/', '/i/', '/join', '/forgot-password', '/reset-password']
-  const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+  const isPublicRoute =
+    // The homepage is the marketing page for signed-out visitors; the page
+    // itself sends signed-in users on to /app.
+    request.nextUrl.pathname === '/' ||
+    publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
   // An auth callback lands with ?code= (PKCE) or ?token_hash= (email OTP) and no
   // session yet — establishing the session is precisely what the code is for.
