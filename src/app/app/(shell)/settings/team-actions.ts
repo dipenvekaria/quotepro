@@ -35,6 +35,20 @@ export async function inviteTeammate(input: { email: string; role: string }) {
 
   const email = parsed.data.email.trim().toLowerCase()
 
+  // Solo is one seat — that is the product wedge, enforced where seats are
+  // actually granted. Trials and Team are uncapped.
+  const [co] = await query<{ plan: string | null; subscription_status: string | null }>(
+    `select plan, subscription_status from companies where id = $1 limit 1`,
+    [session.companyId],
+  )
+  if (co?.plan === 'solo' && co.subscription_status === 'active') {
+    return {
+      ok: false as const,
+      error:
+        'Solo is a one-person plan. Switch to Team in Settings → Billing to invite your crew — everything else stays the same.',
+    }
+  }
+
   let token: string
   try {
     const rows = await query<{ token: string }>(

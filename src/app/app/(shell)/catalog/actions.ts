@@ -401,7 +401,9 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
       unit || 'each',
       laborHours,
     )
-    tuples.push(`($${b + 1}, $${b + 2}, $${b + 3}, $${b + 4}, $${b + 5}, $${b + 6}, $${b + 7})`)
+    tuples.push(
+      `($${b + 1}::uuid, $${b + 2}::text, $${b + 3}::text, $${b + 4}::text, $${b + 5}::numeric, $${b + 6}::text, $${b + 7}::numeric)`,
+    )
   })
 
   if (tuples.length === 0) {

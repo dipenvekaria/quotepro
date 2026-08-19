@@ -33,6 +33,18 @@ const SRC = join(ROOT, 'src')
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   {
+    file: 'src/lib/stripe/billing.ts',
+    match: 'from companies where id = $1',
+    reason: 'companyId comes from getSession() in the calling action; companies.id is the tenant key itself.',
+  },
+  {
+    file: 'src/lib/stripe/billing.ts',
+    match: 'update companies',
+    reason:
+      'Writes key off companies.id — the tenant key — supplied by the session (checkout/portal) ' +
+      'or by Stripe subscription metadata we wrote at creation (webhook sync).',
+  },
+  {
     file: 'src/app/app/(shell)/import/actions.ts',
     match: 'insert into customer_addresses',
     reason:
