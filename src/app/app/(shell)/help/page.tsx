@@ -12,6 +12,8 @@ import {
 import { requireSession } from '@/lib/auth/session'
 import { PageContainer, PageHeader } from '@/components/shared/page'
 
+import { BoltChat } from './bolt-chat'
+
 export const metadata = { title: 'Help' }
 
 /**
@@ -75,6 +77,9 @@ export default async function HelpPage() {
         title="Help"
         description="Six answers that cover most days. Anything else — reply to any email from Rivet and a human reads it."
       />
+      <div className="mt-6 max-w-4xl">
+        <BoltChat />
+      </div>
       <div className="mt-6 grid max-w-4xl gap-4 sm:grid-cols-2">
         {TOPICS.map((t) => (
           <section

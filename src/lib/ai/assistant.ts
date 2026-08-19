@@ -4,16 +4,14 @@ import { z } from 'zod'
 import { ensureAdc } from './adc'
 import {
   businessSummary,
-  createLead,
   findCustomers,
   findWork,
   lookupCatalog,
   overdueInvoices,
-  proposeSendQuote,
-  rescheduleWork,
   todaysSchedule,
   type AssistantContext,
 } from './assistant-tools'
+import { envServer } from '@/lib/env'
 import { geminiModels } from './gemini'
 import { PostgresSessionService } from './quote-session'
 
@@ -36,8 +34,36 @@ import { PostgresSessionService } from './quote-session'
 const APP_NAME = 'rivet-assistant'
 const MAX_TURNS = 12
 
-const INSTRUCTION = `You are the assistant inside Rivet, a job-management product for trades
-contractors. You are talking to one person at one company.
+const INSTRUCTION = `You are Bolt, the assistant inside Rivet, a job-management product for
+trades contractors. You are talking to one person at one company. You answer two kinds of
+questions: what is happening in their business (use the tools), and how to do things in
+Rivet (use the guide below).
+
+HOW RIVET WORKS — answer how-to questions from this, with the path to tap:
+- Draft a quote: New quote → describe the job in plain words. Line items come from the
+  company's own price book at their prices. A vague description gets a clarifying
+  question with tappable answers, never a guess.
+- Send and sign: Send emails the customer a link — no login on their side. They review
+  the lines and the company's terms and type their name to approve. The acceptance
+  record (signer, time, IP, the exact terms as accepted) lives on the job's page, and
+  the signed PDF is one tap away.
+- Schedule: a won quote becomes a job from its page. The calendar knows job length from
+  the price book's labour hours. Repeating work: open the job → Details → Repeats →
+  choose weekly, every 2 weeks, or monthly — each visit becomes its own scheduled job,
+  and "Email the invoice automatically" makes it bill itself.
+- Invoice and get paid: from a completed job → Convert to invoice → Send. Customers pay
+  online through the company's Stripe; cash and checks are recorded by hand on the
+  invoice.
+- Reviews: on a completed job, Request review emails the customer the company's Google
+  and Facebook review links. Links are set in Settings.
+- Books: Integrations → QuickBooks Online → Connect. Every invoice and payment posts
+  itself afterwards.
+- Bring data over: Customers → Import walks through leaving Jobber, Housecall Pro, or
+  Joist. The price book imports from a CSV or a photo of an old rate sheet (Price book →
+  Import).
+- Team: Settings → Invite team. Roles are owner, office, technician; technicians see
+  their own work and no money.
+- Terms, logo, tax #, review links, billing: all in Settings.
 
 Answer from the tools, never from memory or assumption. If a tool refuses because of
 the person's role, say so plainly and move on — do not try another route to the same
@@ -48,9 +74,9 @@ hidden, or marked unavailable, say that you cannot see it. An invented price bec
 promise to a customer that the contractor has to honour, so a wrong number is far worse
 than no number.
 
-You cannot send anything to a customer. Tools whose names begin with "propose" prepare
-an action and return it for the person to confirm; say clearly that nothing has been
-sent yet.
+You are read-only, by design. You can look anything up, but you never create, change,
+send, or schedule anything — the person does that themselves, and your job is to tell
+them exactly where to tap. Never imply you did something.
 
 Be brief and concrete. This is read on a phone, often between jobs. Lead with the
 answer. Give amounts and dates plainly. Skip preamble and do not restate the question.
@@ -100,41 +126,12 @@ function tools(ctx: AssistantContext) {
       parameters: z.object({}),
       execute: async () => overdueInvoices(ctx),
     }),
-    new FunctionTool({
-      name: 'create_lead',
-      description: 'Start a new lead with a customer and a description of the work.',
-      parameters: z.object({
-        customer_name: z.string(),
-        description: z.string(),
-        phone: z.string().optional(),
-      }),
-      execute: async (input) => createLead(ctx, input),
-    }),
-    new FunctionTool({
-      name: 'reschedule_work',
-      description: 'Move a scheduled job. The job keeps its length — the end time shifts with the start.',
-      parameters: z.object({
-        work_item_id: z.string(),
-        starts_at: z.string().describe('ISO timestamp'),
-      }),
-      execute: async ({ work_item_id, starts_at }) => rescheduleWork(ctx, work_item_id, starts_at),
-    }),
-    new FunctionTool({
-      name: 'propose_send_quote',
-      description:
-        'Prepare to email a quote to the customer. This does NOT send it — it returns a ' +
-        'proposal for the person to confirm. Always tell them nothing has been sent.',
-      parameters: z.object({ work_item_id: z.string() }),
-      execute: async ({ work_item_id }) => proposeSendQuote(ctx, work_item_id),
-    }),
   ]
 }
 
 export type AssistantTurn = {
   reply: string
   toolCalls: string[]
-  /** Set when the assistant prepared an outward-facing action awaiting confirmation. */
-  proposal?: { action: string; work_item_id: string; summary: string }
 }
 
 export async function runAssistantTurn(
@@ -143,9 +140,17 @@ export async function runAssistantTurn(
 ): Promise<AssistantTurn> {
   ensureAdc()
 
+  // Support quality is worth the bigger model: Bolt defaults to the strongest
+  // model in the chain (full flash over lite — the owner's call: a few cents
+  // per conversation against a support ticket). ASSISTANT_MODELS overrides,
+  // so a newer model is an env change, not a deploy.
+  const chain = geminiModels()
+  const model =
+    envServer().ASSISTANT_MODELS?.split(',')[0]?.trim() || chain[chain.length - 1] || chain[0]
+
   const agent = new LlmAgent({
     name: 'rivet_assistant',
-    model: geminiModels()[0],
+    model,
     instruction: INSTRUCTION,
     tools: tools(ctx),
     generateContentConfig: { temperature: 0, maxOutputTokens: 1024 },
@@ -166,32 +171,22 @@ export async function runAssistantTurn(
 
   const reply: string[] = []
   const toolCalls: string[] = []
-  let proposal: AssistantTurn['proposal']
-  let turns = 0
 
   for await (const event of runner.runAsync({
     userId: ctx.userId,
     sessionId: ctx.userId,
     newMessage: { role: 'user', parts: [{ text: message }] },
   })) {
-    if (++turns > MAX_TURNS) break
+    // Cap TOOL CALLS, not stream events — a tool call is two events, so the
+    // old counter cut the model off mid-thought after a few lookups. Same
+    // fix the quoting agent needed.
+    if (toolCalls.length > MAX_TURNS) break
 
     for (const part of event.content?.parts ?? []) {
       if (part.functionCall?.name) toolCalls.push(part.functionCall.name)
       if (part.text) reply.push(part.text)
-
-      // Surface a proposal structurally, so the interface can render a confirm
-      // button rather than the person having to trust prose.
-      const res = part.functionResponse?.response as Record<string, unknown> | undefined
-      if (res?.proposed) {
-        proposal = {
-          action: String(res.action),
-          work_item_id: String(res.work_item_id),
-          summary: String(res.summary),
-        }
-      }
     }
   }
 
-  return { reply: reply.join('').trim(), toolCalls, proposal }
+  return { reply: reply.join('').trim(), toolCalls }
 }

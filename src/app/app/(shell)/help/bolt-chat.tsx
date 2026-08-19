@@ -1,0 +1,126 @@
+'use client'
+
+import { useRef, useState, useTransition } from 'react'
+import { ArrowUp, Loader2, Zap } from 'lucide-react'
+
+import { cn } from '@/lib/utils'
+
+import { askBolt } from './actions'
+
+/**
+ * Bolt — ask about your business or how to do anything. Read-only by design:
+ * it looks things up and points at the right screen; it never acts. Job-first
+ * voice throughout, no AI branding beyond the name.
+ */
+
+type Msg = { role: 'user' | 'bolt'; text: string }
+
+const SUGGESTIONS = [
+  'What does my day look like?',
+  'How many quotes are waiting on customers?',
+  'How do I set up repeating visits?',
+  'Any overdue invoices?',
+]
+
+export function BoltChat() {
+  const [thread, setThread] = useState<Msg[]>([])
+  const [input, setInput] = useState('')
+  const [busy, start] = useTransition()
+  const endRef = useRef<HTMLDivElement>(null)
+
+  function send(text: string) {
+    const message = text.trim()
+    if (!message || busy) return
+    setThread((t) => [...t, { role: 'user', text: message }])
+    setInput('')
+    start(async () => {
+      const res = await askBolt({ message })
+      setThread((t) => [
+        ...t,
+        {
+          role: 'bolt',
+          text: res.ok ? res.data.reply : res.error,
+        },
+      ])
+      requestAnimationFrame(() => endRef.current?.scrollIntoView({ block: 'nearest' }))
+    })
+  }
+
+  return (
+    <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+      <header className="flex items-center gap-2.5 border-b border-border/70 px-5 py-3.5">
+        <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+          <Zap className="h-4 w-4" />
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold">Ask Bolt</h2>
+          <p className="text-xs text-muted-foreground">
+            Your business and how-to questions. Bolt looks things up — it never changes anything.
+          </p>
+        </div>
+      </header>
+
+      <div className="max-h-96 space-y-3 overflow-y-auto p-4 sm:p-5">
+        {thread.length === 0 && (
+          <div className="flex flex-wrap gap-2">
+            {SUGGESTIONS.map((sug) => (
+              <button
+                key={sug}
+                onClick={() => send(sug)}
+                className="h-11 rounded-lg border border-border bg-background px-3 text-xs font-medium hover:border-primary/50 hover:bg-primary/5 lg:h-8"
+              >
+                {sug}
+              </button>
+            ))}
+          </div>
+        )}
+        {thread.map((m, i) => (
+          <div key={i} className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}>
+            <div
+              className={cn(
+                'max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm leading-relaxed',
+                m.role === 'user'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted/60 text-foreground',
+              )}
+            >
+              {m.text}
+            </div>
+          </div>
+        ))}
+        {busy && (
+          <div className="flex justify-start">
+            <div className="rounded-2xl bg-muted/60 px-3.5 py-2">
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+            </div>
+          </div>
+        )}
+        <div ref={endRef} />
+      </div>
+
+      <form
+        className="flex items-center gap-2 border-t border-border/70 p-3"
+        onSubmit={(e) => {
+          e.preventDefault()
+          send(input)
+        }}
+      >
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Ask anything…"
+          aria-label="Ask Bolt"
+          className="h-11 min-w-0 flex-1 rounded-lg border border-input bg-background px-3 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-sm"
+        />
+        <button
+          type="submit"
+          disabled={busy || !input.trim()}
+          aria-label="Send"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground disabled:opacity-40"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </button>
+      </form>
+    </section>
+  )
+}

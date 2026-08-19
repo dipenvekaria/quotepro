@@ -133,6 +133,9 @@ const serverEnvSchema = z.object({
   QBO_CLIENT_ID: optionalSecret(8),
   QBO_CLIENT_SECRET: optionalSecret(8),
   QBO_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
+  // Bolt's model override — lets the assistant adopt a newer/stronger model
+  // by env change alone. Unset = the strongest entry of the default chain.
+  ASSISTANT_MODELS: z.string().optional(),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 
