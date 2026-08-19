@@ -21,10 +21,14 @@ import { syncInvoiceToQbo } from '@/lib/quickbooks/sync'
  * did both or neither — never a double visit.
  */
 
-export type Cadence = 'weekly' | 'biweekly' | 'monthly'
+export type Cadence = 'weekly' | 'biweekly' | 'monthly' | 'custom'
+export type CustomUnit = 'day' | 'week' | 'month'
 
 export type Recurrence = {
   cadence: Cadence
+  /** Custom only: repeat every `every` `unit`s ("every 6 weeks"). */
+  every?: number
+  unit?: CustomUnit
   /** ISO instant of the next visit. */
   next_at: string
   /** Create and email the visit's invoice when it spawns. */
@@ -35,24 +39,42 @@ export const CADENCES: { value: Cadence; label: string }[] = [
   { value: 'weekly', label: 'Every week' },
   { value: 'biweekly', label: 'Every 2 weeks' },
   { value: 'monthly', label: 'Every month' },
+  { value: 'custom', label: 'Custom…' },
 ]
+
+type Rule = Pick<Recurrence, 'cadence' | 'every' | 'unit'>
+
+/** "every week", "every 2 weeks", "every 6 weeks", "every 3 months". */
+export function describeCadence(rule: Rule): string {
+  const { n, unit } = normalize(rule)
+  return n === 1 ? `every ${unit}` : `every ${n} ${unit}s`
+}
+
+function normalize(rule: Rule): { n: number; unit: CustomUnit } {
+  if (rule.cadence === 'weekly') return { n: 1, unit: 'week' }
+  if (rule.cadence === 'biweekly') return { n: 2, unit: 'week' }
+  if (rule.cadence === 'monthly') return { n: 1, unit: 'month' }
+  return { n: Math.max(1, Math.floor(rule.every ?? 1)), unit: rule.unit ?? 'week' }
+}
 
 /**
  * The instant of the following visit.
  *
- * Week-based cadences add exact days to the instant — the wall clock only
- * moves across a DST switch, by an hour, which is visible and correctable.
- * Monthly keeps the wall clock: "the 3rd at 9am" stays the 3rd at 9am in the
- * company's zone, and a day-31 anniversary clamps to the last day of shorter
- * months rather than sliding into the next one.
+ * Day- and week-based rules add exact days to the instant — the wall clock
+ * only moves across a DST switch, by an hour, which is visible and
+ * correctable. Month-based rules keep the wall clock: "the 3rd at 9am" stays
+ * the 3rd at 9am in the company's zone, and a day-31 anniversary clamps to
+ * the last day of shorter months rather than sliding into the next one.
  */
-export function nextOccurrence(from: Date, cadence: Cadence, tz: string): Date {
-  if (cadence === 'weekly') return new Date(from.getTime() + 7 * 86_400_000)
-  if (cadence === 'biweekly') return new Date(from.getTime() + 14 * 86_400_000)
+export function nextOccurrence(from: Date, rule: Rule, tz: string): Date {
+  const { n, unit } = normalize(rule)
+  if (unit === 'day') return new Date(from.getTime() + n * 86_400_000)
+  if (unit === 'week') return new Date(from.getTime() + n * 7 * 86_400_000)
 
   const p = zonedParts(from, tz)
-  const nextM = p.m === 12 ? 1 : p.m + 1
-  const nextY = p.m === 12 ? p.y + 1 : p.y
+  const total = p.m - 1 + n
+  const nextY = p.y + Math.floor(total / 12)
+  const nextM = (total % 12) + 1
   const lastDay = new Date(Date.UTC(nextY, nextM, 0)).getUTCDate()
   return zonedToUtc(tz, { y: nextY, m: nextM, d: Math.min(p.d, lastDay), h: p.h, min: p.min })
 }
@@ -129,7 +151,7 @@ export async function runRecurringSpawns(now: Date = new Date()): Promise<SpawnR
 async function spawnVisit(t: TemplateRow): Promise<SpawnResult> {
   const tz = companyTz({ timezone: t.tz })
   const scheduledFor = t.recurrence.next_at
-  const followingAt = nextOccurrence(new Date(scheduledFor), t.recurrence.cadence, tz)
+  const followingAt = nextOccurrence(new Date(scheduledFor), t.recurrence, tz)
 
   const visitId = await withTransaction(async (q) => {
     const [visit] = await q<{ id: string }>(
@@ -191,7 +213,7 @@ async function spawnVisit(t: TemplateRow): Promise<SpawnResult> {
     companyId: t.company_id,
     entityId: visitId,
     action: 'recurring_job_spawned',
-    description: `Scheduled from the repeating ${t.recurrence.cadence} service`,
+    description: `Scheduled from the service repeating ${describeCadence(t.recurrence)}`,
     changes: { template: t.id },
   })
 

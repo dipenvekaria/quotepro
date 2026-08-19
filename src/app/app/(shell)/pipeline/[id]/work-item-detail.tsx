@@ -98,7 +98,13 @@ type WorkItem = {
   public_token: string
   created_at: string
   updated_at: string
-  recurrence: { cadence: 'weekly' | 'biweekly' | 'monthly'; auto_invoice: boolean; next_at?: string } | null
+  recurrence: {
+    cadence: 'weekly' | 'biweekly' | 'monthly' | 'custom'
+    every?: number
+    unit?: 'day' | 'week' | 'month'
+    auto_invoice: boolean
+    next_at?: string
+  } | null
   metadata: {
     signed_by?: string
     signed_ip?: string | null
@@ -200,11 +206,18 @@ export function WorkItemDetail({
   const [drafting, startDraft] = useTransition()
   const [description, setDescription] = useState(workItem.description ?? '')
   const [recur, setRecur] = useState<{
-    cadence: 'weekly' | 'biweekly' | 'monthly'
+    cadence: 'weekly' | 'biweekly' | 'monthly' | 'custom'
+    every?: number
+    unit?: 'day' | 'week' | 'month'
     auto_invoice: boolean
   } | null>(
     workItem.recurrence
-      ? { cadence: workItem.recurrence.cadence, auto_invoice: workItem.recurrence.auto_invoice }
+      ? {
+          cadence: workItem.recurrence.cadence,
+          every: workItem.recurrence.every,
+          unit: workItem.recurrence.unit,
+          auto_invoice: workItem.recurrence.auto_invoice,
+        }
       : null,
   )
   const [draftQuestions, setDraftQuestions] = useState<{ question: string; options: string[] }[]>([])
@@ -716,7 +729,7 @@ export function WorkItemDetail({
                     {workItem.scheduled_start
                       ? new Date(workItem.scheduled_start).toLocaleString('en-US', {
                           weekday: 'short', month: 'short', day: 'numeric',
-                          hour: 'numeric', minute: '2-digit',
+                          hour: 'numeric', minute: '2-digit', timeZone: tz,
                         })
                       : 'Not scheduled'}
                   </span>
@@ -745,10 +758,17 @@ export function WorkItemDetail({
                       setRecur(
                         v === 'none'
                           ? null
-                          : {
-                              cadence: v as 'weekly' | 'biweekly' | 'monthly',
-                              auto_invoice: recur?.auto_invoice ?? true,
-                            },
+                          : v === 'custom'
+                            ? {
+                                cadence: 'custom',
+                                every: recur?.every ?? 4,
+                                unit: recur?.unit ?? 'week',
+                                auto_invoice: recur?.auto_invoice ?? true,
+                              }
+                            : {
+                                cadence: v as 'weekly' | 'biweekly' | 'monthly',
+                                auto_invoice: recur?.auto_invoice ?? true,
+                              },
                       )
                     }}
                     className="h-11 rounded-md border border-input bg-background px-3 text-sm shadow-sm lg:h-9"
@@ -757,7 +777,39 @@ export function WorkItemDetail({
                     <option value="weekly">Every week</option>
                     <option value="biweekly">Every 2 weeks</option>
                     <option value="monthly">Every month</option>
+                    <option value="custom">Custom…</option>
                   </select>
+                  {recur?.cadence === 'custom' && (
+                    <div className="flex items-center gap-2 text-sm">
+                      every
+                      <input
+                        type="number"
+                        min={1}
+                        max={52}
+                        value={recur.every ?? 4}
+                        onChange={(e) =>
+                          setRecur({
+                            ...recur,
+                            every: Math.max(1, Math.min(52, Math.floor(Number(e.target.value) || 1))),
+                          })
+                        }
+                        aria-label="Repeat interval"
+                        className="h-11 w-16 rounded-md border border-input bg-background px-2 text-center tabular shadow-sm lg:h-9"
+                      />
+                      <select
+                        value={recur.unit ?? 'week'}
+                        onChange={(e) =>
+                          setRecur({ ...recur, unit: e.target.value as 'day' | 'week' | 'month' })
+                        }
+                        aria-label="Repeat unit"
+                        className="h-11 rounded-md border border-input bg-background px-2 text-sm shadow-sm lg:h-9"
+                      >
+                        <option value="day">{(recur.every ?? 4) === 1 ? 'day' : 'days'}</option>
+                        <option value="week">{(recur.every ?? 4) === 1 ? 'week' : 'weeks'}</option>
+                        <option value="month">{(recur.every ?? 4) === 1 ? 'month' : 'months'}</option>
+                      </select>
+                    </div>
+                  )}
                   {recur && (
                     <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm lg:min-h-0">
                       <input

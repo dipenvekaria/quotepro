@@ -62,19 +62,47 @@ describe('nextOccurrence', () => {
 
   it('weekly adds exactly seven days', () => {
     const from = new Date('2026-06-01T14:00:00Z')
-    expect(nextOccurrence(from, 'weekly', tz).toISOString()).toBe('2026-06-08T14:00:00.000Z')
+    expect(nextOccurrence(from, { cadence: 'weekly' }, tz).toISOString()).toBe('2026-06-08T14:00:00.000Z')
   })
 
   it('monthly keeps the wall clock across a DST switch', () => {
     // Oct 15 9:00 Chicago (CDT, UTC-5) → Nov 15 9:00 Chicago (CST, UTC-6)
     const from = new Date('2026-10-15T14:00:00Z')
-    const next = nextOccurrence(from, 'monthly', tz)
+    const next = nextOccurrence(from, { cadence: 'monthly' }, tz)
     expect(next.toISOString()).toBe('2026-11-15T15:00:00.000Z')
+  })
+
+  it('custom weeks add exact days', () => {
+    const from = new Date('2026-06-01T14:00:00.000Z')
+    expect(nextOccurrence(from, { cadence: 'custom', every: 6, unit: 'week' }, tz).toISOString()).toBe(
+      '2026-07-13T14:00:00.000Z',
+    )
+  })
+
+  it('custom days add exact days', () => {
+    const from = new Date('2026-06-01T14:00:00.000Z')
+    expect(nextOccurrence(from, { cadence: 'custom', every: 10, unit: 'day' }, tz).toISOString()).toBe(
+      '2026-06-11T14:00:00.000Z',
+    )
+  })
+
+  it('custom months carry across a year boundary with the wall clock', () => {
+    // Nov 15, 9:00 in Chicago + 3 months = Feb 15, 9:00 — CST both sides.
+    const from = new Date('2026-11-15T15:00:00.000Z')
+    const next = nextOccurrence(from, { cadence: 'custom', every: 3, unit: 'month' }, tz)
+    expect(next.toISOString()).toBe('2027-02-15T15:00:00.000Z')
+  })
+
+  it('custom months clamp a day-31 anniversary', () => {
+    // Dec 31 + 2 months lands on Feb 28, not Mar 3.
+    const from = new Date('2026-12-31T15:00:00.000Z')
+    const next = nextOccurrence(from, { cadence: 'custom', every: 2, unit: 'month' }, tz)
+    expect(next.toISOString()).toBe('2027-02-28T15:00:00.000Z')
   })
 
   it('monthly clamps a day-31 anniversary to shorter months', () => {
     const from = new Date('2027-01-31T15:00:00Z') // Jan 31, 9:00 Chicago
-    const next = nextOccurrence(from, 'monthly', tz)
+    const next = nextOccurrence(from, { cadence: 'monthly' }, tz)
     expect(next.toISOString().slice(0, 10)).toBe('2027-02-28')
   })
 })
