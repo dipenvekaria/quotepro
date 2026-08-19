@@ -2,7 +2,6 @@ import { redirect } from 'next/navigation'
 import {
   CalendarDays,
   CreditCard,
-  Download,
   FileText,
   MessageSquare,
   PhoneCall,
@@ -117,7 +116,6 @@ export default async function IntegrationsPage() {
                 Server not configured yet — set QBO_CLIENT_ID and QBO_CLIENT_SECRET.
               </p>
             )}
-            <BookkeepingExports />
           </div>
         </IntegrationShell>
       </IntegrationCategory>
@@ -271,37 +269,3 @@ function IntegrationShell({
 
 /**
  * The bookkeeping exports, which already worked and which nothing linked to.
- *
- * `/api/export/[kind]` has been live, authenticated and permission-gated for a
- * while, and the only mention of QuickBooks on this page said "Coming soon" —
- * so a contractor had no way to reach a finished feature, and was told it did
- * not exist. Month-end re-keying is the actual QuickBooks complaint; this
- * answers it today, and a live sync can replace it later.
- */
-function BookkeepingExports() {
-  const kinds = [
-    { kind: 'invoices', label: 'Invoices' },
-    { kind: 'payments', label: 'Payments' },
-    { kind: 'customers', label: 'Customers' },
-  ]
-  return (
-    <div className="rounded-md border border-border bg-muted/20 p-3">
-      <p className="text-xs text-muted-foreground">
-        CSV, ready to import. Owners and office staff only — this is your revenue by customer.
-      </p>
-      <div className="mt-2.5 grid grid-cols-1 gap-2 sm:grid-cols-3">
-        {kinds.map((k) => (
-          <a
-            key={k.kind}
-            href={`/api/export/${k.kind}`}
-            download
-            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:min-h-9"
-          >
-            <Download className="h-3.5 w-3.5" />
-            {k.label}
-          </a>
-        ))}
-      </div>
-    </div>
-  )
-}
