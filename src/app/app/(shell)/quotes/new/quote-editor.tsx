@@ -470,8 +470,8 @@ export function QuoteEditor({
                 priced and ready to send.
               </p>
               <Button onClick={() => setAiOpen(true)} className="mt-4 h-12 w-full gap-2 text-base sm:h-11 sm:w-auto sm:px-6">
+                <Sparkles className="h-4 w-4" />
                 Build the quote
-                <ArrowRight className="h-4 w-4" />
               </Button>
             </section>
           )}
@@ -591,7 +591,8 @@ export function QuoteEditor({
                 {/* Drafting lives with the lines it drafts. This used to sit in
                     the page header, two cards away from the thing it changes. */}
                 <Button onClick={() => setAiOpen(true)} size="sm" variant="outline" className="h-11 gap-1.5 lg:h-8">
-                  Suggest lines
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Smart draft
                 </Button>
               </header>
 
