@@ -15,6 +15,59 @@ import { askBolt } from './actions'
 
 type Msg = { role: 'user' | 'bolt'; text: string }
 
+/** Just enough markdown for an assistant: bullets, bold, paragraphs. */
+function BoltText({ text }: { text: string }) {
+  const blocks = text.split(/\n{2,}/)
+  return (
+    <div className="space-y-2">
+      {blocks.map((block, bi) => {
+        const lines = block.split('\n')
+        const isList = lines.every((l) => /^\s*[*•-]\s+/.test(l) || l.trim() === '')
+        if (isList) {
+          return (
+            <ul key={bi} className="space-y-1 pl-4">
+              {lines
+                .filter((l) => l.trim())
+                .map((l, li) => (
+                  <li key={li} className="list-disc">
+                    <Bold text={l.replace(/^\s*[*•-]\s+/, '')} />
+                  </li>
+                ))}
+            </ul>
+          )
+        }
+        return (
+          <p key={bi}>
+            {lines.map((l, li) => (
+              <span key={li}>
+                {li > 0 && <br />}
+                <Bold text={l.replace(/^\s*[*•-]\s+/, '• ')} />
+              </span>
+            ))}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
+function Bold({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return (
+    <>
+      {parts.map((p, i) =>
+        p.startsWith('**') && p.endsWith('**') ? (
+          <strong key={i} className="font-semibold">
+            {p.slice(2, -2)}
+          </strong>
+        ) : (
+          <span key={i}>{p}</span>
+        ),
+      )}
+    </>
+  )
+}
+
 const SUGGESTIONS = [
   'What does my day look like?',
   'How many quotes are waiting on customers?',
@@ -78,13 +131,13 @@ export function BoltChat() {
           <div key={i} className={cn('flex', m.role === 'user' ? 'justify-end' : 'justify-start')}>
             <div
               className={cn(
-                'max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2 text-sm leading-relaxed',
+                'max-w-[85%] rounded-2xl px-3.5 py-2 text-sm leading-relaxed',
                 m.role === 'user'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted/60 text-foreground',
+                  ? 'rounded-br-md bg-primary text-primary-foreground'
+                  : 'rounded-bl-md bg-muted/60 text-foreground',
               )}
             >
-              {m.text}
+              {m.role === 'bolt' ? <BoltText text={m.text} /> : m.text}
             </div>
           </div>
         ))}
@@ -99,27 +152,34 @@ export function BoltChat() {
       </div>
 
       <form
-        className="flex items-center gap-2 border-t border-border/70 p-3"
+        className="border-t border-border/70 p-3"
         onSubmit={(e) => {
           e.preventDefault()
           send(input)
         }}
       >
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask anything…"
-          aria-label="Ask Bolt"
-          className="h-11 min-w-0 flex-1 rounded-lg border border-input bg-background px-3 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-sm"
-        />
-        <button
-          type="submit"
-          disabled={busy || !input.trim()}
-          aria-label="Send"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground disabled:opacity-40"
-        >
-          <ArrowUp className="h-4 w-4" />
-        </button>
+        <div className="relative">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask anything…"
+            aria-label="Ask Bolt"
+            className="h-12 w-full rounded-full border border-input bg-background pl-4 pr-12 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-sm"
+          />
+          <button
+            type="submit"
+            disabled={busy || !input.trim()}
+            aria-label="Send"
+            className={cn(
+              'absolute right-1.5 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full transition-all',
+              input.trim() && !busy
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted text-muted-foreground/50',
+            )}
+          >
+            <ArrowUp className="h-4 w-4" />
+          </button>
+        </div>
       </form>
     </section>
   )
