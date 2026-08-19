@@ -8,16 +8,73 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { updateCompanySettings, type UpdateSettingsInput } from './actions'
+import { updateCompanySettings, uploadCompanyLogo, type UpdateSettingsInput } from './actions'
+
+function LogoUpload({ canEdit, currentUrl }: { canEdit: boolean; currentUrl: string | null }) {
+  const [preview, setPreview] = useState(currentUrl)
+  const [uploading, startUpload] = useTransition()
+
+  return (
+    <div className="flex items-center gap-3">
+      {preview ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={preview}
+          alt="Company logo"
+          className="h-11 w-11 rounded-lg border border-border object-contain bg-background"
+        />
+      ) : (
+        <div className="grid h-11 w-11 place-items-center rounded-lg border border-dashed border-border text-[10px] text-muted-foreground">
+          none
+        </div>
+      )}
+      <label
+        className={
+          canEdit
+            ? 'inline-flex h-11 cursor-pointer items-center rounded-md border border-border bg-background px-3 text-sm font-medium hover:bg-muted lg:h-10'
+            : 'inline-flex h-11 items-center rounded-md border border-border bg-background px-3 text-sm text-muted-foreground lg:h-10'
+        }
+      >
+        {uploading ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : null}
+        {preview ? 'Replace logo' : 'Upload logo'}
+        <input
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          className="sr-only"
+          disabled={!canEdit || uploading}
+          onChange={(e) => {
+            const file = e.target.files?.[0]
+            if (!file) return
+            const fd = new FormData()
+            fd.set('logo', file)
+            startUpload(async () => {
+              const res = await uploadCompanyLogo(fd)
+              if (!res.ok) {
+                toast.error(res.error)
+                return
+              }
+              setPreview(res.data.url)
+              toast.success('Logo updated — it now shows on quotes, invoices, and emails.')
+            })
+            e.target.value = ''
+          }}
+        />
+      </label>
+      <span className="text-[11px] text-muted-foreground">PNG, JPG or WebP, under 2MB</span>
+    </div>
+  )
+}
 
 // ---------------------------------------------------------------------------
 
 export function SettingsForm({
   canEdit,
   initial,
+  logoUrl,
 }: {
   canEdit: boolean
   initial: UpdateSettingsInput
+  logoUrl: string | null
 }) {
   const [values, setValues] = useState<UpdateSettingsInput>(initial)
   const [saving, startSave] = useTransition()
@@ -51,8 +108,8 @@ export function SettingsForm({
       <Field label="Company name" required>
         <Input {...bind('name')} disabled={!canEdit} className="h-11 lg:h-10" />
       </Field>
-      <Field label="Logo URL" hint="Public HTTPS URL for your logo">
-        <Input {...bind('logo_url')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="https://…" />
+      <Field label="Logo" hint="Shows on quotes, invoices, and emails to your customers">
+        <LogoUpload canEdit={canEdit} currentUrl={logoUrl} />
       </Field>
       <Field label="Phone">
         <Input {...bind('phone')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="+1 (555) 000-0000" />
@@ -118,6 +175,24 @@ export function SettingsForm({
       <Field label="Facebook reviews link" hint="Your page's Reviews tab">
         <Input {...bind('review_link_facebook')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="https://facebook.com/…/reviews" />
       </Field>
+      <Field label="Business / tax #" hint="Shown on quotes and invoices">
+        <Input {...bind('business_tax_id')} disabled={!canEdit} className="h-11 lg:h-10" placeholder="e.g. 11247038" />
+      </Field>
+      <div className="sm:col-span-2">
+        <Field
+          label="Quote terms &amp; conditions"
+          hint="Warranty, deposits, cancellation policy — shown on every quote, and customers accept against them"
+        >
+          <textarea
+            value={values.quote_terms ?? ''}
+            onChange={(e) => setValues((prev) => ({ ...prev, quote_terms: e.target.value }))}
+            disabled={!canEdit}
+            rows={8}
+            placeholder={'WARRANTY:\nOne year against defects in workmanship…\n\nPAYMENTS:\nDeposits are non-refundable…'}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        </Field>
+      </div>
       <div className="flex items-end justify-end">
         {canEdit ? (
           <Button onClick={submit} disabled={saving} className="h-11 gap-1.5 lg:h-10">

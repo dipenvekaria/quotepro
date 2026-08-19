@@ -28,7 +28,7 @@ export default async function PublicQuotePage({
       subtotal, discount_amount, tax_rate, tax_amount, total,
       sent_at, viewed_at, accepted_at, rejected_at, expires_at,
       public_token, metadata,
-      companies (id, name, logo_url, phone, email, address, plan),
+      companies (id, name, logo_url, phone, email, address, plan, settings),
       customers (name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip)
     `)

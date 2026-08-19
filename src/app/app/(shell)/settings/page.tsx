@@ -85,6 +85,8 @@ export default async function SettingsPage() {
     timezone?: string
     review_link_google?: string | null
     review_link_facebook?: string | null
+    quote_terms?: string | null
+    business_tax_id?: string | null
   }
 
   return (
@@ -117,16 +119,18 @@ export default async function SettingsPage() {
         </header>
         <div className="p-5">
           <SettingsForm
+            logoUrl={company.logo_url ?? null}
             canEdit={canEdit}
             initial={{
               name: company.name,
-              logo_url: company.logo_url ?? '',
               phone: company.phone ?? '',
               email: company.email ?? '',
               address: company.address ?? '',
               tax_rate: settings.tax_rate ?? 8.5,
               review_link_google: settings.review_link_google ?? '',
               review_link_facebook: settings.review_link_facebook ?? '',
+              quote_terms: settings.quote_terms ?? '',
+              business_tax_id: settings.business_tax_id ?? '',
               timezone: typeof settings.timezone === 'string' ? settings.timezone : 'America/Chicago',
             }}
           />

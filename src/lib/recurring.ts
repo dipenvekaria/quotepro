@@ -79,6 +79,7 @@ type TemplateRow = {
   customer_email: string | null
   company_name: string | null
   company_email: string | null
+  company_logo: string | null
 }
 
 export type SpawnResult = {
@@ -101,7 +102,7 @@ export async function runRecurringSpawns(now: Date = new Date()): Promise<SpawnR
             w.recurrence,
             co.settings->>'timezone' as tz,
             c.name as customer_name, c.email as customer_email,
-            co.name as company_name, co.email as company_email
+            co.name as company_name, co.email as company_email, co.logo_url as company_logo
        from work_items w
        join companies co on co.id = w.company_id
        left join customers c on c.id = w.customer_id
@@ -253,6 +254,7 @@ async function autoInvoice(t: TemplateRow, visitId: string): Promise<SpawnResult
     dueDate: new Date(due),
     fromLabel: t.company_name ?? undefined,
     replyTo: t.company_email ?? undefined,
+    logoUrl: t.company_logo,
   }).catch(() => ({ ok: false as const, error: 'send threw' }))
 
   const sent = res.ok && !('skipped' in res && res.skipped)

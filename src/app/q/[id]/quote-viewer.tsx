@@ -75,6 +75,7 @@ type Quote = {
     id: string
     name: string
     logo_url: string | null
+    settings?: { quote_terms?: string | null; business_tax_id?: string | null } | null
     phone: string | null
     email: string | null
     address: string | null
@@ -305,6 +306,12 @@ export function QuoteViewer({
                 {quote.quote_number ?? `#${quote.public_token.slice(0, 6).toUpperCase()}`}
               </dd>
             </div>
+            {quote.companies?.settings?.business_tax_id && (
+              <div className="flex items-baseline justify-between gap-4 sm:block">
+                <dt className="text-xs text-muted-foreground">Business / tax #</dt>
+                <dd className="tabular sm:mt-0.5">{quote.companies.settings.business_tax_id}</dd>
+              </div>
+            )}
             {validity && (
               <div className="flex items-baseline justify-between gap-4 sm:block">
                 <dt className="text-xs text-muted-foreground">Validity</dt>
@@ -540,6 +547,18 @@ export function QuoteViewer({
           </div>
         )}
 
+        {/* The company's own terms — the fine print the customer signs
+            against. Rendered verbatim, pre-wrapped: their words, their
+            formatting, no interpretation by us. */}
+        {quote.companies?.settings?.quote_terms && (
+          <section className="mt-8 rounded-xl border border-border/70 bg-card p-5 sm:p-6">
+            <h2 className="text-sm font-semibold">Terms &amp; conditions</h2>
+            <p className="mt-3 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
+              {quote.companies.settings.quote_terms}
+            </p>
+          </section>
+        )}
+
         {/* Trust footer */}
         <footer className={cn('mt-8 border-t border-border/70 pt-6', canAct && 'pb-24 sm:pb-0')}>
           <div className="grid grid-cols-1 gap-4 text-xs text-muted-foreground sm:grid-cols-3">
@@ -596,6 +615,7 @@ export function QuoteViewer({
         <SignModal
           token={quote.public_token}
           total={shown.total}
+          hasTerms={Boolean(quote.companies?.settings?.quote_terms)}
           onClose={() => setSignOpen(false)}
         />
       )}
@@ -614,10 +634,12 @@ export function QuoteViewer({
 function SignModal({
   token,
   total,
+  hasTerms,
   onClose,
 }: {
   token: string
   total: number
+  hasTerms: boolean
   onClose: () => void
 }) {
   const [name, setName] = useState('')
@@ -651,6 +673,7 @@ function SignModal({
         <p className="mt-1 text-sm text-muted-foreground">
           Type your full name below to approve. This locks in the price of{' '}
           <span className="font-semibold text-foreground">{fmtMoney(total)}</span>.
+          {hasTerms && ' Approving signs your agreement to the terms and conditions on this quote.'}
         </p>
         <div className="mt-4 space-y-1.5">
           <Label htmlFor="signer_name" className="text-sm font-medium">

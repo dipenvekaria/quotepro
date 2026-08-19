@@ -238,6 +238,7 @@ export async function sendQuote(id: string) {
     customer_email: string | null
     company_name: string | null
     company_email: string | null
+    company_logo: string | null
   }>(
     `select w.id, w.status, w.public_token, w.sent_at, w.total, w.quote_number,
             c.name as customer_name, c.email as customer_email,
@@ -333,6 +334,7 @@ export async function sendQuote(id: string) {
         items,
         fromLabel: item.company_name ?? undefined,
         replyTo: item.company_email ?? undefined,
+        logoUrl: item.company_logo,
       })
       if (!res.ok) {
         console.error(`sendQuote: email failed for ${id}: ${res.error}`)
