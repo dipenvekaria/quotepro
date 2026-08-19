@@ -227,7 +227,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {SIGNUPS_OPEN && (
             <Button
               type="button"
               variant="outline"
@@ -254,7 +253,6 @@ export default function LoginPage() {
               </svg>
               Continue with Google
             </Button>
-          )}
           </form>
 
           {/* Enforcement lives in Supabase ("allow new users to sign up") —
