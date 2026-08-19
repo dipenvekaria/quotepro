@@ -32,6 +32,13 @@ const SRC = join(ROOT, 'src')
  * bails when that lookup returns nothing.
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
+  {
+    file: 'src/lib/recurring.ts',
+    match: "where w.recurrence is not null",
+    reason:
+      'The cron scan is cross-tenant by design (like reindex/followups); every ' +
+      'write it makes derives company_id from the template row it selected.',
+  },
   // --- reads scoped by a session-derived company id -------------------------
   {
     file: 'src/app/app/(shell)/layout.tsx',

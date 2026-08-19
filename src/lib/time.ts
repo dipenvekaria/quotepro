@@ -93,3 +93,26 @@ export function dayRangeUtc(tz: string, ref: Date = new Date()): { start: Date; 
   const end = startOfDayUtc(tz, new Date(start.getTime() + 30 * 3_600_000))
   return { start, end }
 }
+
+/**
+ * The instant at which a wall-clock date/time occurs in a timezone.
+ *
+ * Inverse of `zonedParts`, needed by anything that says "same time next
+ * month" — month arithmetic must happen on the wall clock, in the company's
+ * zone, and only then become a UTC instant. Two-pass offset correction: guess
+ * the offset from the target read back in the zone, adjust once. Around a DST
+ * switch the second read is authoritative; a nonexistent wall time (spring
+ * forward) resolves an hour late rather than not at all.
+ */
+export function zonedToUtc(
+  tz: string,
+  p: { y: number; m: number; d: number; h: number; min: number },
+): Date {
+  const asUtc = Date.UTC(p.y, p.m - 1, p.d, p.h, p.min)
+  const first = zonedParts(new Date(asUtc), tz)
+  const firstAsUtc = Date.UTC(first.y, first.m - 1, first.d, first.h, first.min)
+  const guess = asUtc - (firstAsUtc - asUtc)
+  const second = zonedParts(new Date(guess), tz)
+  const secondAsUtc = Date.UTC(second.y, second.m - 1, second.d, second.h, second.min)
+  return new Date(guess - (secondAsUtc - asUtc))
+}

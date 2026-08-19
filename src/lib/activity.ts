@@ -28,6 +28,7 @@ export type ActivityAction =
   | 'price_book_item_archived'
   | 'note'
   | 'review_request_sent'
+  | 'recurring_job_spawned'
 
 /**
  * Never throws and never blocks — identical contract to `recordAiRun`, for the
