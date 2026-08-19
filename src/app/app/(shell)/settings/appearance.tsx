@@ -12,8 +12,8 @@ import { cn } from '@/lib/utils'
  * Three options rather than a two-state switch. A switch forces a choice and
  * then keeps it forever, so a contractor whose phone turns dark at sunset gets
  * a white screen in a customer's unlit basement because of something they
- * clicked in March. "System" is the honest default and has to stay reachable
- * after someone has overridden it.
+ * clicked in March. The app defaults to light (owner decision 2026-08-19);
+ * "System" and "Dark" stay one tap away for those who want them.
  *
  * No option is marked selected until the client has hydrated. `next-themes`
  * cannot know the resolved theme during SSR — the answer lives in localStorage
@@ -25,8 +25,8 @@ import { cn } from '@/lib/utils'
  * "am I hydrated yet" question, without an effect and without a second render
  * scheduled to answer something React already knows.
  *
- * Reading `theme === undefined` instead looks cleaner and is wrong: with
- * `defaultTheme="system"` the hook answers on the server too, so the branch
+ * Reading `theme === undefined` instead looks cleaner and is wrong: the hook
+ * answers with the default theme on the server too, so the branch
  * flips during hydration and produces the mismatch this exists to avoid. That
  * was the first attempt and the browser caught it.
  */
