@@ -21,21 +21,21 @@ import { cn } from '@/lib/utils'
 /**
  * Bottom tabs on phones — the trading-app pattern the owner asked for.
  *
- * A tradesman's daily loop is dashboard → pipeline → calendar; those are one
- * thumb-tap each instead of hamburger → menu → item. Everything visited weekly
- * rather than hourly lives behind More, which keeps four targets fat enough
- * for a gloved thumb at 375px. Desktop keeps the sidebar; this renders under
- * sm only.
+ * A tradesman's daily loop is dashboard → pipeline → calendar → a customer;
+ * those are one thumb-tap each instead of hamburger → menu → item. Everything
+ * visited weekly rather than hourly lives behind More. Five targets — the
+ * trading-app density the owner asked for — still clear 44px at 375px.
+ * Desktop keeps the sidebar; this renders under sm only.
  */
 
 const TABS = [
   { href: '/app/dashboard', label: 'Home', icon: Home },
   { href: '/app/pipeline', label: 'Pipeline', icon: ClipboardList },
   { href: '/app/calendar', label: 'Calendar', icon: CalendarDays },
+  { href: '/app/customers', label: 'Customers', icon: Users },
 ] as const
 
 const MORE = [
-  { href: '/app/customers', label: 'Customers', icon: Users },
   { href: '/app/catalog', label: 'Price book', icon: BookText },
   { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug2 },
@@ -97,7 +97,7 @@ export function MobileTabBar() {
 
       <nav
         aria-label="Primary"
-        className="fixed inset-x-0 bottom-0 z-40 grid h-16 grid-cols-4 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 grid h-16 grid-cols-5 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden"
       >
         {TABS.map((t) => {
           const active = isActive(t.href)

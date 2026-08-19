@@ -1,6 +1,7 @@
 'use client'
 
-import { ThemeProvider as NextThemeProvider } from 'next-themes'
+import { useEffect } from 'react'
+import { ThemeProvider as NextThemeProvider, useTheme } from 'next-themes'
 
 /**
  * Theme, defaulting to light.
@@ -24,7 +25,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       // which reads as a glitch rather than a change.
       disableTransitionOnChange
     >
+      <ThemeColorSync />
       {children}
     </NextThemeProvider>
   )
+}
+
+/**
+ * Keeps <meta name="theme-color"> on the theme the app actually renders.
+ * Safari paints its collapsed toolbars with this value; left on a
+ * prefers-color-scheme pair, a dark phone gets black bars around a light app
+ * and the page looks like it stops above the home indicator.
+ */
+function ThemeColorSync() {
+  const { resolvedTheme } = useTheme()
+  useEffect(() => {
+    if (!resolvedTheme) return
+    // --background from globals.css, as hex for the meta tag.
+    const color = resolvedTheme === 'dark' ? '#0E0E11' : '#FFFFFF'
+    for (const el of document.querySelectorAll('meta[name="theme-color"]')) {
+      el.setAttribute('content', color)
+    }
+  }, [resolvedTheme])
+  return null
 }

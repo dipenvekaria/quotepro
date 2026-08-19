@@ -57,10 +57,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
-    { media: "(prefers-color-scheme: dark)", color: "#0F172A" },
-  ],
+  // Light to match the app default; ThemeProvider re-syncs it to the resolved
+  // theme so Safari's bars always blend with the rendered page, not the device.
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
