@@ -133,6 +133,11 @@ const serverEnvSchema = z.object({
   // Vercel sends this as `Authorization: Bearer <secret>` on scheduled runs.
   // Unset means the cron endpoint refuses to run rather than running open.
   CRON_SECRET: optionalSecret(16),
+  // QuickBooks Online, bookkeeping sync. Optional — the integrations card
+  // offers Connect only when both are present.
+  QBO_CLIENT_ID: optionalSecret(8),
+  QBO_CLIENT_SECRET: optionalSecret(8),
+  QBO_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 

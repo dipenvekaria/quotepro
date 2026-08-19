@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { after } from 'next/server'
 import { z } from 'zod'
 
 import { env } from '@/lib/env'
@@ -8,6 +9,7 @@ import { logActivity } from '@/lib/activity'
 import { sendInvoiceEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query, withTransaction } from '@/lib/db'
+import { syncInvoiceToQbo, syncPaymentToQbo } from '@/lib/quickbooks/sync'
 
 // ---------------------------------------------------------------------------
 
@@ -84,6 +86,11 @@ export async function convertToInvoice(
     description: `Invoice ${created.invoice_number} created`,
     changes: { invoice_number: created.invoice_number, total: work.total },
   })
+
+  // Books mirror after the response is sent; a QBO outage never blocks
+  // invoicing, and failures land on the integrations card, not here.
+  const createdId = created.id
+  after(() => syncInvoiceToQbo(companyId, createdId))
 
   revalidatePath(`/app/pipeline/${workItemId}`)
   return { ok: true, data: created }
@@ -210,11 +217,13 @@ export async function recordPayment(input: RecordPaymentInput) {
   const total = Number(inv.total ?? 0)
   const newStatus: 'paid' | 'partial' = newPaid >= total ? 'paid' : 'partial'
 
+  let paymentId: string | undefined
   try {
     await withTransaction(async (q) => {
-      await q(
+      const inserted = await q<{ id: string }>(
         `insert into payments (invoice_id, amount, method, reference_number, notes, recorded_by)
-         values ($1, $2, $3::payment_method, $4, $5, $6)`,
+         values ($1, $2, $3::payment_method, $4, $5, $6)
+         returning id`,
         [
           parsed.data.invoice_id,
           parsed.data.amount,
@@ -224,6 +233,7 @@ export async function recordPayment(input: RecordPaymentInput) {
           userId,
         ],
       )
+      paymentId = inserted[0]?.id
       if (newStatus === 'paid') {
         await q(
           `update invoices set amount_paid = $1, status = 'paid'::invoice_status, paid_at = $2 where id = $3`,
@@ -249,6 +259,11 @@ export async function recordPayment(input: RecordPaymentInput) {
       description: `Payment of $${parsed.data.amount.toFixed(2)} recorded (${parsed.data.method})`,
       changes: { amount: parsed.data.amount, method: parsed.data.method, status: newStatus },
     })
+  }
+
+  if (paymentId) {
+    const pid = paymentId
+    after(() => syncPaymentToQbo(companyId, pid))
   }
 
   revalidatePath(`/app/pipeline`)

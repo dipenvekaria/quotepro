@@ -15,6 +15,7 @@ import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 
 import { StripeConnect } from '../settings/stripe-connect'
+import { QuickbooksActions } from './quickbooks-card'
 
 // ---------------------------------------------------------------------------
 
@@ -34,6 +35,18 @@ export default async function IntegrationsPage() {
   const company = companyRows[0]
   if (!company) redirect('/app/onboarding')
   const canEdit = role === 'owner' || role === 'admin'
+
+  const [qbo] = await query<{
+    realm_id: string
+    connected_at: string
+    last_synced_at: string | null
+    last_error: string | null
+  }>(
+    `select realm_id, connected_at, last_synced_at, last_error
+       from quickbooks_connections where company_id = $1 limit 1`,
+    [companyId],
+  )
+  const qboConfigured = Boolean(process.env.QBO_CLIENT_ID && process.env.QBO_CLIENT_SECRET)
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
@@ -75,10 +88,37 @@ export default async function IntegrationsPage() {
         <IntegrationShell
           logo={<FileText className="h-5 w-5" />}
           name="QuickBooks Online"
-          badge={{ label: 'Exports ready', tone: 'good' }}
-          tagline="Download invoices, payments and customers in the format QuickBooks imports. Live sync is still to come."
+          badge={
+            qbo
+              ? qbo.last_error
+                ? { label: 'Needs attention', tone: 'warn' }
+                : { label: 'Connected', tone: 'good' }
+              : { label: 'Not connected', tone: 'neutral' }
+          }
+          tagline="Bookkeeping only: invoices and recorded payments post to your books automatically. No money moves through this connection."
         >
-          <BookkeepingExports />
+          <div className="space-y-3">
+            {qbo?.last_error && (
+              <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-700 dark:text-amber-300">
+                Last sync failed: {qbo.last_error}
+              </p>
+            )}
+            {qbo && !qbo.last_error && (
+              <p className="text-xs text-muted-foreground">
+                {qbo.last_synced_at
+                  ? `Last synced ${new Date(qbo.last_synced_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}.`
+                  : 'Connected — the next invoice or payment will sync.'}
+              </p>
+            )}
+            {qboConfigured ? (
+              <QuickbooksActions connected={Boolean(qbo)} canEdit={canEdit} />
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Server not configured yet — set QBO_CLIENT_ID and QBO_CLIENT_SECRET.
+              </p>
+            )}
+            <BookkeepingExports />
+          </div>
         </IntegrationShell>
         <IntegrationShell
           logo={<FileText className="h-5 w-5" />}
