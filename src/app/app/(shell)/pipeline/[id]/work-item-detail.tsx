@@ -495,7 +495,7 @@ export function WorkItemDetail({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pb-6 lg:px-10 lg:py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
         <Link href="/app/pipeline" className="inline-flex items-center gap-1 hover:text-foreground">
@@ -1212,6 +1212,30 @@ export function WorkItemDetail({
           }}
         />
       )}
+
+      {/* The status's primary action, always under the thumb. On a phone the
+          header buttons scroll away with the first flick; this page is long. */}
+      <div className="fixed inset-x-0 bottom-16 z-30 border-t border-border bg-background/95 p-3 backdrop-blur sm:hidden">
+        {workItem.status === 'quote_draft' ? (
+          <Button onClick={doSend} disabled={transitioning} className="h-12 w-full gap-1.5 text-base">
+            {transitioning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            Send quote
+          </Button>
+        ) : workItem.status === 'job_completed' && !reviewAsked ? (
+          <Button onClick={doRequestReview} disabled={askingReview} className="h-12 w-full gap-1.5 text-base">
+            {askingReview ? <Loader2 className="h-4 w-4 animate-spin" /> : <Star className="h-4 w-4" />}
+            Request review
+          </Button>
+        ) : actions.find((a) => a.primary) ? (
+          <Button
+            onClick={() => onNextStep(actions.find((a) => a.primary)!.to)}
+            disabled={transitioning}
+            className="h-12 w-full text-base"
+          >
+            {actions.find((a) => a.primary)!.label}
+          </Button>
+        ) : null}
+      </div>
     </div>
   )
 }
