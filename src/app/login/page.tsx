@@ -13,9 +13,14 @@ import { inviteContext, type InviteContext } from '@/app/join/[token]/actions'
 import { ROLE_LABEL } from '@/lib/team-personas'
 import type { UserRole } from '@/lib/permissions'
 import { cn } from '@/lib/utils'
+import { env } from '@/lib/env'
 import { useAuth } from './use-auth'
 
 /** `/join/<token>` and nothing else — this decides what gets sent to a server action. */
+
+// Flip with NEXT_PUBLIC_SIGNUPS_OPEN=true; unset means invite-only.
+const SIGNUPS_OPEN = env.NEXT_PUBLIC_SIGNUPS_OPEN === 'true'
+
 const JOIN_NEXT = /^\/join\/([A-Za-z0-9_-]{16,128})$/
 
 /**
@@ -250,16 +255,26 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            {isSignUp ? 'Already have an account?' : "New here?"}{' '}
-            <button
-              type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="font-medium text-foreground underline-offset-4 hover:text-primary hover:underline"
-            >
-              {isSignUp ? 'Sign in' : 'Create an account'}
-            </button>
-          </p>
+          {/* Enforcement lives in Supabase ("allow new users to sign up") —
+              anyone can call the auth API with the public anon key, so hiding
+              this button is honesty about what will work, not the lock. Invite
+              links land in signup mode regardless: invited users are expected. */}
+          {(SIGNUPS_OPEN || isSignUp) ? (
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+              {isSignUp ? 'Already have an account?' : "New here?"}{' '}
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="font-medium text-foreground underline-offset-4 hover:text-primary hover:underline"
+              >
+                {isSignUp ? 'Sign in' : 'Create an account'}
+              </button>
+            </p>
+          ) : (
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+              Invite-only while we get ready. Ask your company owner for an invite.
+            </p>
+          )}
         </main>
 
         {/*
