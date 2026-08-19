@@ -266,6 +266,3 @@ function IntegrationShell({
     </div>
   )
 }
-
-/**
- * The bookkeeping exports, which already worked and which nothing linked to.
