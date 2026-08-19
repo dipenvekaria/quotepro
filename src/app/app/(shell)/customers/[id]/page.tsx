@@ -202,7 +202,7 @@ export default async function CustomerDetailPage({
                           </span>
                         </div>
                         <div className="mt-1 truncate text-sm">
-                          {w.description || 'Untitled work item'}
+                          {w.description || 'Untitled job'}
                         </div>
                         <div className="mt-0.5 text-xs text-muted-foreground">
                           Updated {timeAgo(w.updated_at)}
