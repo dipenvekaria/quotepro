@@ -37,6 +37,6 @@ export const config = {
      */
     // manifest.json and .ico are excluded by extension: the PWA manifest was
     // being 307'd to /login, which broke install prompts on the custom domains.
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|webmanifest)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|webmanifest|txt|xml)$).*)',
   ],
 }
