@@ -33,6 +33,11 @@ const SRC = join(ROOT, 'src')
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   {
+    file: 'src/app/waitlist-actions.ts',
+    match: 'insert into waitlist',
+    reason: 'Global pre-launch interest table; the signer is a stranger, not a tenant.',
+  },
+  {
     file: 'src/lib/recurring.ts',
     match: "where w.recurrence is not null",
     reason:

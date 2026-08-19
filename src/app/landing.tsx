@@ -15,6 +15,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { RivetMark } from '@/components/brand/logo'
+import { WaitlistForm } from './waitlist-form'
 
 /**
  * The public homepage — the one page a stranger ever reads.
@@ -111,7 +112,7 @@ function PriceCard({
       </ul>
       <div className="flex-1" />
       <Button asChild className="mt-6 h-11 w-full">
-        <Link href="/login">Start your 14-day free trial</Link>
+        <Link href="#early-access">Get early access</Link>
       </Button>
     </div>
   )
@@ -133,8 +134,8 @@ export function Landing() {
             <Link href="/login">Sign in</Link>
           </Button>
           <Button asChild className="h-11">
-            <Link href="/login">
-              Free trial
+            <Link href="#early-access">
+              Get early access
               <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
@@ -155,12 +156,11 @@ export function Landing() {
           their phone, the job lands on the calendar, the invoice sends itself, and the
           books stay current. One record, first call to cash.
         </p>
-        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-          <Button asChild size="lg" className="h-12 px-6 text-base">
-            <Link href="/login">Start your 14-day free trial</Link>
-          </Button>
+        <div id="early-access" className="mt-8 flex w-full flex-col items-center gap-3">
+          <WaitlistForm source="hero" />
           <span className="text-sm text-muted-foreground">
-            Everything included. No add-ons. Ever.
+            Invite-only while we finish. 14-day free trial at launch — everything included,
+            no add-ons, ever.
           </span>
         </div>
       </section>
@@ -295,9 +295,7 @@ export function Landing() {
           <h2 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
             The next call that comes in, quote it in a minute.
           </h2>
-          <Button asChild size="lg" className="h-12 px-6 text-base">
-            <Link href="/login">Start your 14-day free trial</Link>
-          </Button>
+          <WaitlistForm source="footer" />
         </div>
       </section>
 
