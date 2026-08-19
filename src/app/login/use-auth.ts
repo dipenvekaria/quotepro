@@ -49,12 +49,12 @@ export function useAuth() {
         // With email confirmation disabled (see supabase/config.toml), signUp
         // returns a session immediately. Redirect straight into onboarding.
         if (data.session) {
-          toast.success('Welcome to Rivet!')
+          toast.success('Welcome to Rivet.')
           router.push(dest)
           router.refresh()
         } else {
           // Confirmation-required project — nudge to check email.
-          toast.success('Check your email to confirm your account!')
+          toast.success('Check your email to confirm your account.')
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -63,7 +63,7 @@ export function useAuth() {
         })
 
         if (error) throw error
-        toast.success('Welcome back!')
+        toast.success('Welcome back.')
         router.push(dest)
         router.refresh()
       }

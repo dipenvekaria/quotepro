@@ -20,7 +20,7 @@ export function JoinAccept({ token }: { token: string }) {
       toast.error(res.error)
       return
     }
-    toast.success('Welcome to the team!')
+    toast.success("You're in — welcome to the team.")
     router.push('/app/dashboard')
     router.refresh()
   }
