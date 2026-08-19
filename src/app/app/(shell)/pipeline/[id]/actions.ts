@@ -627,6 +627,7 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
       const res = await sendMentionEmail({
         to: u.email,
         authorName,
+        authorEmail: author?.email ?? null,
         quoteLabel: label,
         note: parsed.data.body,
         link: `${env.NEXT_PUBLIC_APP_URL}/app/pipeline/${item.id}`,
@@ -661,10 +662,11 @@ export async function requestReview(id: string) {
     customer_name: string | null
     customer_email: string | null
     company_name: string
+    company_email: string | null
     settings: { review_link_google?: string | null; review_link_facebook?: string | null } | null
   }>(
     `select w.id, w.status, c.name as customer_name, c.email as customer_email,
-            co.name as company_name, co.settings
+            co.name as company_name, co.email as company_email, co.settings
        from work_items w
        left join customers c on c.id = w.customer_id
        join companies co on co.id = w.company_id
@@ -705,6 +707,7 @@ export async function requestReview(id: string) {
     companyName: item.company_name,
     googleUrl: google,
     facebookUrl: facebook,
+    replyTo: item.company_email,
   })
   if (!res.ok) return { ok: false as const, error: `Email failed: ${res.error}` }
   if (res.skipped) {

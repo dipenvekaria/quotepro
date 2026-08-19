@@ -318,6 +318,7 @@ export async function sendTeamInviteEmail(input: {
 export async function sendMentionEmail(input: {
   to: string
   authorName: string
+  authorEmail?: string | null
   quoteLabel: string
   note: string
   link: string
@@ -328,6 +329,7 @@ export async function sendMentionEmail(input: {
   try {
     const { data, error } = await resend.emails.send({
       from: getFromAddress(),
+      replyTo: input.authorEmail ?? undefined,
       to: input.to,
       subject: `${input.authorName} tagged you on ${input.quoteLabel}`,
       html: `
@@ -366,6 +368,8 @@ export async function sendReviewRequestEmail(input: {
   companyName: string
   googleUrl: string | null
   facebookUrl: string | null
+  /** The business's inbox — the email promises replies reach a human. */
+  replyTo?: string | null
 }): Promise<SendResult> {
   const resend = getResend()
   if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
@@ -389,6 +393,7 @@ export async function sendReviewRequestEmail(input: {
   try {
     const { data, error } = await resend.emails.send({
       from: getFromAddress(),
+      replyTo: input.replyTo ?? undefined,
       to: input.to,
       subject: `How did we do${input.customerName ? `, ${input.customerName}` : ''}?`,
       html: `
