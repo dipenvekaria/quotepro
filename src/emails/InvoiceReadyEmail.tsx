@@ -2,6 +2,8 @@ import * as React from 'react'
 import { Html, Head, Body, Container, Section, Text, Button, Hr } from '@react-email/components'
 
 interface InvoiceReadyEmailProps {
+  companyName?: string
+  logoUrl?: string | null
   customerName: string
   invoiceNumber: string
   total: string
@@ -15,6 +17,8 @@ interface InvoiceReadyEmailProps {
 }
 
 export const InvoiceReadyEmail = ({
+  companyName,
+  logoUrl,
   customerName = 'John Doe',
   invoiceNumber = 'INV-001',
   total = '$850.00',
@@ -29,17 +33,22 @@ export const InvoiceReadyEmail = ({
     <Head />
     <Body style={main}>
       <Container style={container}>
-        {/* Header */}
+        {/* The contractor's brand, never the platform's. */}
         <Section style={header}>
-          <Text style={headerTitle}>Field Genie</Text>
-          <Text style={headerSubtitle}>Professional Service Invoice</Text>
+          {logoUrl ? (
+            // eslint-disable-next-line jsx-a11y/alt-text
+            <img src={logoUrl} alt={companyName ?? 'Logo'} height={44} style={{ height: 44, maxWidth: 200, objectFit: 'contain' }} />
+          ) : (
+            <Text style={headerTitle}>{companyName ?? ''}</Text>
+          )}
         </Section>
 
         {/* Greeting */}
         <Section style={content}>
-          <Text style={greeting}>Hi {customerName},</Text>
+          <Text style={greeting}>Hi {customerName.trim()},</Text>
           <Text style={paragraph}>
-            Thank you for choosing Field Genie! Your work has been completed and your invoice is ready.
+            {companyName ? `Thank you for choosing ${companyName}!` : 'Thank you!'} Your work has
+            been completed and your invoice is ready.
           </Text>
 
           {/* Invoice Details */}
@@ -97,10 +106,7 @@ export const InvoiceReadyEmail = ({
         {/* Footer */}
         <Section style={footer}>
           <Text style={footerText}>
-            Field Genie © {new Date().getFullYear()}
-          </Text>
-          <Text style={footerText}>
-            Professional Field Service Management
+            © {new Date().getFullYear()} {companyName ?? ''} · Sent with Rivet
           </Text>
         </Section>
       </Container>
@@ -121,18 +127,14 @@ const container = {
 }
 
 const header = {
-  backgroundColor: '#1e40af',
-  backgroundImage: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
-  padding: '32px 24px',
-  borderRadius: '12px 12px 0 0',
-  textAlign: 'center' as const,
+  padding: '28px 24px 8px',
 }
 
 const headerTitle = {
-  color: '#ffffff',
-  fontSize: '28px',
-  fontWeight: 'bold',
-  margin: '0 0 8px 0',
+  color: '#111111',
+  fontSize: '22px',
+  fontWeight: 600,
+  margin: 0,
 }
 
 const headerSubtitle = {

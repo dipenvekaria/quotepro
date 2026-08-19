@@ -38,6 +38,8 @@ export async function sendQuoteEmail(input: SendQuoteEmailInput): Promise<SendRe
 
   const html = await render(
     QuoteSentEmail({
+      companyName: input.fromLabel,
+      logoUrl: input.logoUrl,
       customerName: input.customerName,
       quoteNumber: input.quoteNumber,
       total: fmtMoney(input.total),
@@ -182,7 +184,8 @@ export async function sendInvoiceEmail(input: SendInvoiceEmailInput): Promise<Se
   const html = `<!doctype html>
 <html><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,sans-serif;background:#F9FAFB;margin:0;padding:32px;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #E5E7EB;border-radius:16px;padding:32px;">
-    <div style="font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#4F46E5;">Invoice</div>
+    ${logoImg(input.logoUrl, input.fromLabel ?? 'Logo')}
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#111827;">Invoice</div>
     <h1 style="margin:6px 0 12px;font-size:24px;color:#111827;">Hi ${escapeHtml(input.customerName)},</h1>
     <p style="margin:0 0 16px;color:#4B5563;">Your invoice <strong>${escapeHtml(input.invoiceNumber)}</strong> is ready.</p>
     <div style="margin:24px 0;padding:20px;border:1px solid #E5E7EB;border-radius:12px;background:#F9FAFB;">

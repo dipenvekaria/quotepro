@@ -1,57 +1,42 @@
 import * as React from 'react'
-import { Section, Text, Link, Hr } from '@react-email/components'
+import { Section, Text, Hr } from '@react-email/components'
 
-export function EmailFooter() {
+/** Quiet close: the business's name, a reply nudge, and a small Rivet credit. */
+export function EmailFooter({ companyName }: { companyName?: string }) {
   const currentYear = new Date().getFullYear()
-  
+
   return (
     <Section style={footer}>
       <Hr style={divider} />
       <Text style={footerText}>
-        <strong>Field Genie</strong>
-        <br />
-        Professional Field Service Management
-        <br />
-        <Link href="mailto:hello@fieldgenie.app" style={link}>
-          hello@fieldgenie.app
-        </Link>
+        Questions? Just reply to this email.
       </Text>
       <Text style={footerSmall}>
-        © {currentYear} Field Genie. All rights reserved.
-      </Text>
-      <Text style={footerSmall}>
-        Sent with ❤️ by Field Genie
+        © {currentYear} {companyName ?? ''} · Sent with Rivet
       </Text>
     </Section>
   )
 }
 
 const footer = {
-  marginTop: '32px',
-  padding: '20px',
-  textAlign: 'center' as const,
+  marginTop: '28px',
+  padding: '0 24px 24px',
 }
 
 const divider = {
   borderColor: '#e5e7eb',
-  margin: '20px 0',
+  margin: '0 0 16px',
 }
 
 const footerText = {
-  color: '#6b7280',
-  fontSize: '14px',
-  lineHeight: '24px',
-  margin: '0',
+  color: '#555555',
+  fontSize: '13px',
+  lineHeight: '20px',
+  margin: '0 0 6px',
 }
 
 const footerSmall = {
-  color: '#9ca3af',
+  color: '#999999',
   fontSize: '12px',
-  lineHeight: '20px',
-  margin: '8px 0 0 0',
-}
-
-const link = {
-  color: '#3b82f6',
-  textDecoration: 'none',
+  margin: 0,
 }
