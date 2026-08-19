@@ -98,18 +98,30 @@ For a two-person part-time team that difference is not an optimisation — it de
 business is operable at all. Small vertical SaaS is typically valued at 3–6x ARR, so the same
 revenue also builds the same asset either way.
 
-### So: charge more, serve fewer
+### Pricing — decided 2026-08-18: two complete products, no add-ons, 14-day trial
 
-Price at **$199–299/month, flat, whole team, unlimited AI** — not $99.
+> This supersedes the earlier "$199–299, serve fewer" position in this section. The owner
+> chose breadth-with-simplicity over premium-only after the AI answering economics landed.
 
-The justification is easy: an HVAC contractor's average job is several thousand dollars. If the
-software wins them one extra job a year it has paid for itself many times over. Contractors do
-not buy on price; they buy on whether it makes or saves them money, and cheap software reads as
-unserious to someone running a $2M business.
+- **Rivet Solo — ~$39/mo, 1 user.** Everything a one-person shop can use: AI quoting from
+  their own price book, AI call answering, quotes → invoices → payments, review requests,
+  recurring visits, QuickBooks sync.
+- **Rivet Team — ~$99/mo.** All of Solo plus the crew features: calendar dispatch, workload,
+  roles, team notes/@mentions.
+- **14-day free trial**, both products. No add-ons, no plan-gated features, no usage SKUs —
+  ever. The wedge between the two products is company shape, not withheld capability: a solo
+  cannot use dispatch, so Solo is complete for a solo.
 
-Racing QuoteIQ to $29.99 is unwinnable — low price demands volume, and volume demands
-distribution we do not have. Competing at $299 against Jobber's $199-for-5-users, with flat
-pricing and no per-seat maths, is a fight we can win.
+The positioning sentence: *"Everything included. No add-ons. Ever."* This is aimed squarely
+at the incumbents' pricing shape — Jobber sells its AI receptionist at ~$99/mo behind a $349
+plan; Housecall Pro quotes $200–500/mo for CSR AI on top of any plan. A Rivet Team customer
+pays $99 total for more than that bundle.
+
+Cost containment is actuarial, not pricing surface: AI-calling COGS is budgeted **blended**
+(~$20/customer/mo across the fleet; light solos ~$6, heavy teams ~$43) with fair-use terms
+for pathological outliers — never an overage bill.
+
+Open detail, parked: whether Team stays flat per company or becomes flat-up-to-N-users.
 
 ### Who buys you
 
