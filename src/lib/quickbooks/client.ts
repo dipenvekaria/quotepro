@@ -129,7 +129,14 @@ async function qboFetch<T>(
     },
     body: init?.body ? JSON.stringify(init.body) : undefined,
   })
-  if (!res.ok) throw new Error(`QBO ${init?.method ?? 'GET'} ${path} ${res.status}: ${await res.text()}`)
+  if (!res.ok) {
+    // intuit_tid is Intuit support's trace id; carrying it into the error means
+    // it lands in last_error and the logs, where troubleshooting needs it.
+    const tid = res.headers.get('intuit_tid')
+    throw new Error(
+      `QBO ${init?.method ?? 'GET'} ${path} ${res.status}${tid ? ` (intuit_tid ${tid})` : ''}: ${await res.text()}`,
+    )
+  }
   return (await res.json()) as T
 }
 
