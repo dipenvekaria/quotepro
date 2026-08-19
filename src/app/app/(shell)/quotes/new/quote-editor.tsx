@@ -456,6 +456,29 @@ export function QuoteEditor({
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
         {/* Left column */}
         <div className="space-y-6">
+          {/* The product's whole promise, first. The AI entry point was a
+              text-xs chip inside the third card — invisible on a phone until
+              you scrolled past two forms. */}
+          {items.length === 0 && (
+            <section className="rounded-xl border border-primary/30 bg-card p-5 shadow-sm sm:p-6">
+              <div className="flex items-start gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+                  <Sparkles className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base font-semibold">Draft this quote with AI</h2>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
+                    Describe the job in plain words — real line items at your real prices, in seconds.
+                  </p>
+                </div>
+              </div>
+              <Button onClick={() => setAiOpen(true)} className="mt-4 h-12 w-full gap-2 text-base sm:h-11 sm:w-auto sm:px-6">
+                <Sparkles className="h-4 w-4" />
+                Draft with AI
+              </Button>
+            </section>
+          )}
+
           {/* Customer card */}
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
             <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
@@ -547,21 +570,17 @@ export function QuoteEditor({
                 </div>
                 {/* Drafting lives with the lines it drafts. This used to sit in
                     the page header, two cards away from the thing it changes. */}
-                <button
-                  onClick={() => setAiOpen(true)}
-                  className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-primary/40 px-2.5 py-1 text-xs font-medium text-primary hover:bg-primary/5 lg:min-h-0"
-                >
-                  <Sparkles className="h-3 w-3" />
+                <Button onClick={() => setAiOpen(true)} size="sm" className="h-11 gap-1.5 lg:h-8">
+                  <Sparkles className="h-3.5 w-3.5" />
                   Draft with AI
-                </button>
+                </Button>
               </header>
 
               {items.length === 0 ? (
-                <div className="px-5 py-12 text-center">
-                  <Sparkles className="mx-auto mb-3 h-6 w-6 text-muted-foreground" />
+                <div className="px-5 py-10 text-center">
                   <p className="text-sm font-medium">No line items yet</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Start typing below to pull from your price book, or draft the whole quote with AI.
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Type below to pull from your price book, or let the AI draft the whole thing.
                   </p>
                 </div>
               ) : (
@@ -713,7 +732,7 @@ function LineItemRow({
           value={item.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="Line item name"
-          className="w-full bg-transparent text-sm font-medium focus:outline-none"
+          className="w-full bg-transparent text-base font-medium focus:outline-none sm:text-sm"
         />
         <input
           value={item.description}
@@ -734,7 +753,7 @@ function LineItemRow({
           step="0.01"
           value={item.quantity}
           onChange={(e) => onChange({ quantity: Number(e.target.value) })}
-          className="h-8 w-14 rounded border border-input bg-background px-2 text-right text-sm tabular sm:w-16"
+          className="h-11 w-16 rounded border border-input bg-background px-2 text-right text-base tabular sm:text-sm lg:h-8"
         />
         <span className="text-xs text-muted-foreground">×</span>
       </div>
@@ -745,10 +764,10 @@ function LineItemRow({
           step="0.01"
           value={item.unit_price}
           onChange={(e) => onChange({ unit_price: Number(e.target.value) })}
-          className="h-8 w-20 rounded border border-input bg-background px-2 text-right text-sm tabular sm:w-24"
+          className="h-11 w-24 rounded border border-input bg-background px-2 text-right text-base tabular sm:text-sm lg:h-8"
         />
       </div>
-      <div className="w-20 text-right text-sm font-semibold tabular sm:w-24">
+      <div className="w-24 text-right text-base font-semibold tabular sm:text-sm">
         {fmtMoney(rowTotal)}
       </div>
       <button

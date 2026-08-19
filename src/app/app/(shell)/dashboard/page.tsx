@@ -307,9 +307,10 @@ export default async function DashboardPage() {
                 A few one-time steps to start collecting online payments.
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
+                {/* One unmistakable next step; the rest are options. */}
                 <Link
                   href="/app/integrations"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-primary/40 bg-background px-3 text-xs font-medium text-primary hover:bg-primary/5 lg:h-8"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-md bg-primary px-3.5 text-xs font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 lg:h-8"
                 >
                   <Plug className="h-3 w-3" />
                   Connect Stripe
