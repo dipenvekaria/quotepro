@@ -80,11 +80,13 @@ export type QboConnection = {
   refresh_token: string
   access_expires_at: string
   qbo_item_id: string | null
+  qbo_tax_item_id: string | null
 }
 
 export async function qboConnection(companyId: string): Promise<QboConnection | null> {
   const [row] = await query<QboConnection>(
-    `select company_id, realm_id, access_token, refresh_token, access_expires_at, qbo_item_id
+    `select company_id, realm_id, access_token, refresh_token, access_expires_at,
+            qbo_item_id, qbo_tax_item_id
        from quickbooks_connections where company_id = $1 limit 1`,
     [companyId],
   )
@@ -188,6 +190,60 @@ export async function ensureServiceItem(companyId: string): Promise<string> {
   return itemId
 }
 
+/**
+ * Sales tax as a line, booked to a liability account — never income.
+ *
+ * QuickBooks' automated sales tax ignores a TotalTax override: the first
+ * synced invoice posted $540 instead of $585.90 and the customer's payment
+ * threw a $45.90 credit. Rivet is the authority on what was actually charged,
+ * so lines go over non-taxable and the collected tax rides as its own line
+ * under an item pointing at Sales Tax Payable. Revenue stays revenue, the
+ * liability is visible, and the invoice total always equals Rivet's.
+ */
+export async function ensureTaxItem(companyId: string): Promise<string> {
+  const conn = await qboConnection(companyId)
+  if (conn?.qbo_tax_item_id) return conn.qbo_tax_item_id
+
+  const foundItem = await qboQuery<{ QueryResponse: { Item?: { Id: string }[] } }>(
+    companyId,
+    "select Id from Item where Name = 'Sales Tax (Rivet)'",
+  )
+  let itemId = foundItem.QueryResponse.Item?.[0]?.Id
+
+  if (!itemId) {
+    const accounts = await qboQuery<{ QueryResponse: { Account?: { Id: string }[] } }>(
+      companyId,
+      "select Id from Account where AccountType = 'Other Current Liability' maxresults 5",
+    )
+    let liabilityId = accounts.QueryResponse.Account?.[0]?.Id
+    if (!liabilityId) {
+      const createdAcc = await qboFetch<{ Account: { Id: string } }>(companyId, '/account', {
+        method: 'POST',
+        body: {
+          Name: 'Sales Tax Payable (Rivet)',
+          AccountType: 'Other Current Liability',
+        },
+      })
+      liabilityId = createdAcc.Account.Id
+    }
+    const created = await qboFetch<{ Item: { Id: string } }>(companyId, '/item', {
+      method: 'POST',
+      body: {
+        Name: 'Sales Tax (Rivet)',
+        Type: 'Service',
+        IncomeAccountRef: { value: liabilityId },
+      },
+    })
+    itemId = created.Item.Id
+  }
+
+  await query(`update quickbooks_connections set qbo_tax_item_id = $2 where company_id = $1`, [
+    companyId,
+    itemId,
+  ])
+  return itemId
+}
+
 export async function findOrCreateCustomer(
   companyId: string,
   customer: { id: string; name: string; email: string | null; qbo_customer_id: string | null },
@@ -225,7 +281,6 @@ export async function createQboInvoice(
     qboCustomerId: string
     docNumber: string
     lines: { itemId: string; description: string; quantity: number; unitPrice: number; amount: number }[]
-    taxAmount: number
     dueDate: string | null
   },
 ): Promise<string> {
@@ -233,6 +288,8 @@ export async function createQboInvoice(
     CustomerRef: { value: input.qboCustomerId },
     DocNumber: input.docNumber.slice(0, 21),
     ...(input.dueDate ? { DueDate: input.dueDate } : {}),
+    // Every line explicitly non-taxable: automated sales tax must not add its
+    // own computation on top of the explicit tax line.
     Line: input.lines.map((l) => ({
       Amount: l.amount,
       DetailType: 'SalesItemLineDetail',
@@ -241,11 +298,9 @@ export async function createQboInvoice(
         ItemRef: { value: l.itemId },
         Qty: l.quantity,
         UnitPrice: l.unitPrice,
+        TaxCodeRef: { value: 'NON' },
       },
     })),
-    // Companies on QuickBooks automated sales tax may recalculate this; the
-    // line amounts are authoritative either way.
-    ...(input.taxAmount > 0 ? { TxnTaxDetail: { TotalTax: input.taxAmount } } : {}),
     PrivateNote: 'Synced from Rivet',
   }
   const res = await qboFetch<{ Invoice: { Id: string } }>(companyId, '/invoice', {

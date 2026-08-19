@@ -4,6 +4,7 @@ import {
   createQboPayment,
   ensureQboItem,
   ensureServiceItem,
+  ensureTaxItem,
   findOrCreateCustomer,
   qboConnection,
 } from './client'
@@ -107,20 +108,31 @@ export async function syncInvoiceToQbo(companyId: string, invoiceId: string): Pr
       ? await ensureServiceItem(companyId)
       : null
 
+    const taxAmount = Number(inv.tax_amount ?? 0)
+    const qboLines = lines.map((l) => ({
+      itemId:
+        (l.catalog_item_id ? itemIdByCatalog.get(l.catalog_item_id) : null) ??
+        (fallbackItemId as string),
+      description: l.description ? `${l.name} — ${l.description}` : l.name,
+      quantity: Number(l.quantity),
+      unitPrice: Number(l.unit_price),
+      amount: Number(l.total),
+    }))
+    if (taxAmount > 0) {
+      qboLines.push({
+        itemId: await ensureTaxItem(companyId),
+        description: 'Sales tax collected',
+        quantity: 1,
+        unitPrice: taxAmount,
+        amount: taxAmount,
+      })
+    }
+
     const qboId = await createQboInvoice(companyId, {
       qboCustomerId,
       docNumber: inv.invoice_number,
       dueDate: inv.due_date,
-      taxAmount: Number(inv.tax_amount ?? 0),
-      lines: lines.map((l) => ({
-        itemId:
-          (l.catalog_item_id ? itemIdByCatalog.get(l.catalog_item_id) : null) ??
-          (fallbackItemId as string),
-        description: l.description ? `${l.name} — ${l.description}` : l.name,
-        quantity: Number(l.quantity),
-        unitPrice: Number(l.unit_price),
-        amount: Number(l.total),
-      })),
+      lines: qboLines,
     })
 
     await query(
