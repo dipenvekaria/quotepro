@@ -46,6 +46,23 @@ integration tests now pin the fragile ones permanently (380 pass in CI).
 5. **Email rendering across clients** (Gmail/Outlook/Apple Mail) for the rebranded
    templates — send one quote to each and eyeball.
 
+## Coverage classes added after the first pass
+
+The first pass tested flows that exist end to end. Two failure classes it could
+not catch were found the hard way (the dead SignNow page; the signature record
+that was captured but not shown anywhere) and are now standing audits:
+
+1. **Route inventory** — enumerate every page and API route; each must be
+   linked from somewhere, deliberately deep-linked (documented), or deleted.
+   Findings this pass: `/q/[id]/sign` + `/api/quotes/sign` + `signnow.ts`
+   (removed in #162), `/q/[id]/accepted` and `/api/vitals` (orphans, removed
+   here). `/brand` is kept deliberately: auth-gated design kit, referenced by
+   the rivet-ui skill.
+2. **Capture → retrieval** — anything the system records must be visible
+   somewhere a user can reach: signature record (now the Acceptance record
+   card), AI runs (timeline), activity (timeline), payments (invoice card),
+   QBO sync state (integrations card), archived items (inactive view).
+
 ## Known environmental caveats
 
 - Local browser automation degrades over long sessions (input events stop landing);

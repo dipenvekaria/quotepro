@@ -197,6 +197,24 @@ export function Landing() {
         </div>
       </section>
 
+      {/* The promises, plainly. His words: no gimmicks — we value your time. */}
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="grid gap-6 text-center sm:grid-cols-3">
+          <div>
+            <p className="text-base font-semibold">No add-ons. Ever.</p>
+            <p className="mt-1 text-sm text-muted-foreground">One price per size — nothing gated, nothing upsold.</p>
+          </div>
+          <div>
+            <p className="text-base font-semibold">No spam.</p>
+            <p className="mt-1 text-sm text-muted-foreground">A few emails that matter. Your customers&rsquo; inboxes are treated the same.</p>
+          </div>
+          <div>
+            <p className="text-base font-semibold">No lock-in.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Your data exports any time. We keep it clean because we value your time.</p>
+          </div>
+        </div>
+      </section>
+
       {/* Answering — sold honestly */}
       <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="flex flex-col gap-6 rounded-2xl border border-border/70 bg-card p-7 shadow-sm sm:flex-row sm:items-center sm:justify-between">
