@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
-import { ArrowRight, ArrowLeft, ChevronDown, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { formatQuantity } from '@/lib/format'
@@ -426,7 +426,7 @@ export function QuoteEditor({
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pb-6 lg:px-10 lg:py-8">
+    <div className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pb-24 lg:px-10 lg:py-8">
       {/* Header. Actions drop to their own row on a phone — side by side with the
           title there is not room for a breadcrumb and two labelled buttons, and
           the breadcrumb wraps into the title. */}
@@ -443,15 +443,6 @@ export function QuoteEditor({
             <div className="truncate text-xs text-muted-foreground">Workspace / New quote</div>
             <h1 className="truncate text-2xl font-semibold tracking-tight">Quote draft</h1>
           </div>
-        </div>
-        {/* On a phone the primary action lives in the bar at the bottom, within
-            thumb reach; up here it sat above the fold and scrolled away as soon
-            as you started filling the form. */}
-        <div className="hidden shrink-0 items-center gap-2 sm:flex">
-          <Button onClick={save} disabled={saving} className="gap-1.5 shadow-sm">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            Save quote
-          </Button>
         </div>
       </div>
 
@@ -684,7 +675,17 @@ export function QuoteEditor({
                 <dd className="text-lg font-semibold tabular">{fmtMoney(total)}</dd>
               </div>
             </dl>
-            <p className="mt-4 text-center text-[11px] text-muted-foreground">
+            {/* Desktop save lives with the total in the sticky rail, so the CTA
+                never scrolls away. Below lg the fixed bottom bar owns it. */}
+            <Button
+              onClick={save}
+              disabled={saving}
+              className="mt-4 hidden w-full gap-1.5 shadow-sm lg:flex"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              Save quote
+            </Button>
+            <p className="mt-4 text-center text-[11px] text-muted-foreground lg:mt-3">
               Drafts stay private until you send.
             </p>
           </div>
@@ -707,10 +708,10 @@ export function QuoteEditor({
         />
       )}
 
-      {/* Thumb-reachable primary action. Phones only — from sm the button is in
-          the header, where there is room for it. */}
-      {/* bottom-16: clears the mobile tab bar, which owns the true bottom. */}
-      <div className="fixed inset-x-0 bottom-16 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:hidden">
+      {/* Thumb-reachable primary action, up to lg — the header button scrolled
+          away with the page. bottom-16 clears the mobile tab bar; from sm there
+          is no tab bar, so the bar sits on the true bottom. */}
+      <div className="fixed inset-x-0 bottom-16 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:bottom-0 lg:hidden">
         <Button onClick={save} disabled={saving} className="w-full gap-1.5 shadow-sm">
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Save quote

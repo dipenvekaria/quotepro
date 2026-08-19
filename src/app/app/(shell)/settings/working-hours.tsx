@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Clock } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -62,12 +61,8 @@ export function WorkingHours({ initial }: { initial: BusinessHours }) {
   }, 0)
 
   return (
-    <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
-      <div className="flex items-center gap-2">
-        <Clock className="h-4 w-4 text-muted-foreground" />
-        <h2 className="text-sm font-semibold">Working hours</h2>
-      </div>
-      <p className="mt-1 text-sm text-muted-foreground">
+    <div className="p-5 sm:p-6">
+      <p className="text-sm text-muted-foreground">
         When you take jobs. Rivet only suggests times inside these hours.
       </p>
 

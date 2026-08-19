@@ -1,17 +1,15 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowRight, Building2, CreditCard, Download, Mail, Palette, Users } from 'lucide-react'
+import { ArrowRight, Building2, Check, ChevronDown, Clock, CreditCard, ListChecks, Mail, Palette, Users, Wallet, type LucideIcon } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { ROLE_LABEL } from '@/lib/team-personas'
-import { canSeeCatalogPrices } from '@/lib/auth/scope'
-import type { UserRole } from '@/lib/permissions'
-
 import { loadBusinessHours } from '@/lib/scheduling/availability'
 
 import { SettingsForm } from './settings-form'
 import { BillingCard } from './billing-card'
+import { gettingStartedSteps } from '@/lib/getting-started'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
@@ -20,8 +18,13 @@ import { CatalogAccessToggle } from './catalog-access'
 
 // ---------------------------------------------------------------------------
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   const { companyId, role } = await requireSession()
+  const sp = await searchParams
 
   const [company] = await query<{
     id: string
@@ -82,6 +85,7 @@ export default async function SettingsPage() {
 
   const canEdit = role === 'owner' || role === 'admin'
   const canManageTeam = role === 'owner' || role === 'office'
+  const gs = await gettingStartedSteps(companyId)
   const settings = (company.settings ?? {}) as {
     tax_rate?: number
     timezone?: string
@@ -101,24 +105,52 @@ export default async function SettingsPage() {
         </p>
       </header>
 
-      {/* Appearance — first, because it is the one setting that applies to the
-          person rather than the company, and every role can change it. */}
-      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
-        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-          <Palette className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Appearance</h2>
-        </header>
+      {/* Collapsed <details> cards: the page reads as a scannable index instead
+          of one long scroll. Native element — no JS, keyboard for free. */}
+      <SettingsGroup icon={Palette} title="Appearance">
         <div className="p-5">
           <AppearanceSettings />
         </div>
-      </section>
+      </SettingsGroup>
 
-      {/* Billing */}
-      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
-        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-          <CreditCard className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Billing</h2>
-        </header>
+      {/* Getting started — permanent home; the dashboard card is dismissible */}
+      <SettingsGroup
+        icon={ListChecks}
+        title="Getting started"
+        hint={`${gs.steps.length - gs.remaining} of ${gs.steps.length} done`}
+        defaultOpen={gs.remaining > 0}
+      >
+        <ul className="space-y-1 p-5 pt-3">
+          {gs.steps.map((step) => (
+            <li key={step.label}>
+              {step.done ? (
+                <div className="flex min-h-9 items-center gap-2.5 text-sm text-muted-foreground">
+                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+                    <Check className="h-3 w-3" />
+                  </span>
+                  <span className="line-through decoration-muted-foreground/40">{step.label}</span>
+                </div>
+              ) : (
+                <Link
+                  href={step.href}
+                  className="flex min-h-11 items-center gap-2.5 rounded-md text-sm font-medium hover:bg-muted/50 lg:min-h-9"
+                >
+                  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-primary/40" />
+                  {step.label}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ul>
+      </SettingsGroup>
+
+      <SettingsGroup
+        icon={CreditCard}
+        title="Billing"
+        hint={(company as { subscription_status?: string | null }).subscription_status === 'trialing'
+          ? 'Trial'
+          : `${(company.plan ?? 'trial').charAt(0).toUpperCase()}${(company.plan ?? 'trial').slice(1)}`}
+      >
         <div className="p-5">
           <BillingCard
             plan={company.plan ?? null}
@@ -127,14 +159,9 @@ export default async function SettingsPage() {
             canEdit={canEdit}
           />
         </div>
-      </section>
+      </SettingsGroup>
 
-      {/* Company */}
-      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
-        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-          <Building2 className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Company</h2>
-        </header>
+      <SettingsGroup icon={Building2} title="Company" hint={company.name}>
         <div className="p-5">
           <SettingsForm
             logoUrl={company.logo_url ?? null}
@@ -153,26 +180,26 @@ export default async function SettingsPage() {
             }}
           />
         </div>
-      </section>
+      </SettingsGroup>
 
       {canEdit && (
-        <div className="mt-6">
+        <SettingsGroup icon={Clock} title="Working hours">
           <WorkingHours initial={businessHours} />
-        </div>
+        </SettingsGroup>
       )}
 
-      {/* Team */}
-      <section id="team" className="mt-6 scroll-mt-24 rounded-xl border border-border/70 bg-card shadow-sm">
-        <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
-          <div className="flex items-center gap-2">
-            <Users className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold">Team</h2>
-            <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
-              {teammates?.length ?? 0}
-            </span>
+      <SettingsGroup
+        id="team"
+        icon={Users}
+        title="Team"
+        hint={`${teammates?.length ?? 0} ${(teammates?.length ?? 0) === 1 ? 'person' : 'people'}`}
+        defaultOpen={Boolean(sp.invite)}
+      >
+        {canManageTeam && (
+          <div className="flex justify-end border-b border-border/70 px-5 py-3">
+            <InviteTeammateDialog />
           </div>
-          {canManageTeam && <InviteTeammateDialog />}
-        </header>
+        )}
         <ul className="divide-y divide-border/70">
           {(teammates ?? []).map((t) => {
             const p = t.profile as { full_name?: string } | null
@@ -240,14 +267,17 @@ export default async function SettingsPage() {
             </ul>
           </div>
         )}
-      </section>
+      </SettingsGroup>
 
-      {/* Billing (mock) */}
-      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
-        <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-          <CreditCard className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Payments</h2>
-        </header>
+      <SettingsGroup
+        icon={Wallet}
+        title="Payments"
+        hint={company.stripe_charges_enabled
+          ? 'Ready'
+          : company.stripe_account_id
+            ? 'Onboarding'
+            : 'Not connected'}
+      >
         <div className="p-5">
           <p className="text-sm text-muted-foreground">
             Payment processing lives on the{' '}
@@ -288,45 +318,50 @@ export default async function SettingsPage() {
             Manage integrations <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
-      </section>
+      </SettingsGroup>
 
-      {canSeeCatalogPrices(role as UserRole) && (
-        <section className="rounded-xl border border-border/70 bg-card shadow-sm">
-          <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-            <Download className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-sm font-semibold">Bookkeeping exports</h2>
-          </header>
-          <div className="space-y-3 px-5 py-4">
-            <p className="max-w-prose text-sm text-muted-foreground">
-              CSV in the shape QuickBooks imports, so invoices and payments do not get re-keyed
-              by hand at month end. Works with QuickBooks Online and Desktop.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { kind: 'invoices', label: 'Invoices' },
-                { kind: 'payments', label: 'Payments' },
-                { kind: 'customers', label: 'Customers' },
-              ].map((x) => (
-                <a
-                  key={x.kind}
-                  href={`/api/export/${x.kind}`}
-                  className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm font-medium hover:bg-muted lg:min-h-0 lg:py-1.5"
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  {x.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <DangerZone isOwner={role === 'owner'} />
+      <div className="mt-4">
+        <DangerZone isOwner={role === 'owner'} />
+      </div>
     </div>
   )
 }
 
 // ---------------------------------------------------------------------------
+
+function SettingsGroup({
+  icon: Icon,
+  title,
+  hint,
+  defaultOpen = false,
+  id,
+  children,
+}: {
+  icon: LucideIcon
+  title: string
+  hint?: string
+  defaultOpen?: boolean
+  id?: string
+  children: React.ReactNode
+}) {
+  return (
+    <details
+      id={id}
+      open={defaultOpen || undefined}
+      className="group mt-4 scroll-mt-24 overflow-hidden rounded-xl border border-border/70 bg-card shadow-sm"
+    >
+      <summary className="flex min-h-12 cursor-pointer select-none list-none items-center gap-2.5 px-5 py-3.5 transition-colors hover:bg-muted/40 [&::-webkit-details-marker]:hidden">
+        <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+        <h2 className="text-sm font-semibold">{title}</h2>
+        <span className="ml-auto flex min-w-0 items-center gap-2.5 pl-3">
+          {hint ? <span className="truncate text-xs text-muted-foreground">{hint}</span> : null}
+          <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+        </span>
+      </summary>
+      <div className="border-t border-border/70">{children}</div>
+    </details>
+  )
+}
 
 function RoleBadge({ role }: { role: string }) {
   const styles: Record<string, string> = {

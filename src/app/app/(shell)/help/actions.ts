@@ -61,3 +61,51 @@ export async function askBolt(input: { message: string }) {
     return { ok: false as const, error: 'Bolt is unavailable right now — nothing was changed.' }
   }
 }
+
+const supportSchema = z.object({ message: z.string().trim().min(3).max(4000) })
+
+/** "Message us" — lands in the team inbox with context, reply-to the sender. */
+export async function contactSupport(input: { message: string }) {
+  const parsed = supportSchema.safeParse(input)
+  if (!parsed.success) return { ok: false as const, error: 'Say a bit more than that.' }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  const { envServer } = await import('@/lib/env')
+  const inbox = envServer().SUPPORT_INBOX
+  if (!inbox) return { ok: false as const, error: 'Messaging is not set up — email us instead.' }
+
+  const { query } = await import('@/lib/db')
+  const [me] = await query<{
+    email: string | null
+    first: string | null
+    last: string | null
+    company: string
+    plan: string | null
+  }>(
+    `select au.email, u.profile->>'first_name' as first, u.profile->>'last_name' as last,
+            co.name as company, co.plan
+       from users u
+       join auth.users au on au.id = u.id
+       join companies co on co.id = u.company_id
+      where u.id = $1 and u.company_id = $2
+      limit 1`,
+    [session.userId, session.companyId],
+  )
+  if (!me?.email) return { ok: false as const, error: 'Your account has no email to reply to.' }
+
+  const { sendSupportMessage } = await import('@/lib/email/senders')
+  const res = await sendSupportMessage({
+    inbox,
+    fromUserEmail: me.email,
+    fromUserName: [me.first, me.last].filter(Boolean).join(' ') || me.email,
+    companyName: me.company,
+    plan: me.plan,
+    role: session.role,
+    message: parsed.data.message,
+  })
+  if (!res.ok) return { ok: false as const, error: 'Could not send — try again.' }
+  if (res.skipped) return { ok: false as const, error: 'Messaging is not set up — email us instead.' }
+  return { ok: true as const }
+}
