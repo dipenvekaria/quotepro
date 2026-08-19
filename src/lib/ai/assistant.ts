@@ -49,7 +49,8 @@ HOW RIVET WORKS — answer how-to questions from this, with the path to tap:
   the signed PDF is one tap away.
 - Schedule: a won quote becomes a job from its page. The calendar knows job length from
   the price book's labour hours. Repeating work: open the job → Details → Repeats →
-  choose weekly, every 2 weeks, or monthly — each visit becomes its own scheduled job,
+  choose weekly, every 2 weeks, monthly, or Custom (every N days, weeks, or months) —
+  each visit becomes its own scheduled job,
   and "Email the invoice automatically" makes it bill itself.
 - Invoice and get paid: from a completed job → Convert to invoice → Send. Customers pay
   online through the company's Stripe; cash and checks are recorded by hand on the

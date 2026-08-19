@@ -35,8 +35,13 @@ const updateSchema = z.object({
   assigned_to: z.string().uuid().nullable().optional(),
   recurrence: z
     .object({
-      cadence: z.enum(['weekly', 'biweekly', 'monthly']),
+      cadence: z.enum(['weekly', 'biweekly', 'monthly', 'custom']),
+      every: z.number().int().min(1).max(52).optional(),
+      unit: z.enum(['day', 'week', 'month']).optional(),
       auto_invoice: z.boolean(),
+    })
+    .refine((r) => r.cadence !== 'custom' || (r.every !== undefined && r.unit !== undefined), {
+      message: 'Custom repeat needs an interval',
     })
     .nullable()
     .optional(),
@@ -85,7 +90,7 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
       )
       if (!row) return { ok: false as const, error: 'Not found' }
       const anchor = row.scheduled_start ? new Date(row.scheduled_start) : new Date()
-      const nextAt = nextOccurrence(anchor, d.recurrence.cadence, companyTz({ timezone: row.tz }))
+      const nextAt = nextOccurrence(anchor, d.recurrence, companyTz({ timezone: row.tz }))
       values.push(JSON.stringify({ ...d.recurrence, next_at: nextAt.toISOString() }))
       sets.push(`recurrence = $${values.length}::jsonb`)
     }
