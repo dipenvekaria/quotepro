@@ -69,5 +69,5 @@ export default async function PublicInvoicePage({
 }
 
 export function generateMetadata() {
-  return { title: 'Invoice — Rivet' }
+  return { robots: { index: false, follow: false }, title: 'Invoice — Rivet' }
 }

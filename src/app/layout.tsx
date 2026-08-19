@@ -18,12 +18,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Absolute URLs for OG/canonical resolve against the real domain, not the
+  // deploy host — three hostnames serve this app and search must see one.
+  metadataBase: new URL("https://getrivet.ai"),
+  alternates: { canonical: "/" },
   title: {
     default: "Rivet — Quote to cash for field service",
     template: "%s · Rivet",
   },
   description:
-    "Quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades.",
+    "Quotes, jobs, invoices, and payments for HVAC, plumbing, electrical, and other trades. AI drafts the quote from your own price book in seconds.",
+  openGraph: {
+    type: "website",
+    siteName: "Rivet",
+    title: "Rivet — Quote to cash for field service",
+    description:
+      "AI drafts the quote from your own price book in seconds. Send it, win the job, schedule it, get paid — one record the whole way.",
+    url: "https://getrivet.ai",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Rivet" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rivet — Quote to cash for field service",
+    description:
+      "AI drafts the quote from your own price book in seconds. Send, win, schedule, get paid.",
+    images: ["/og.png"],
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
