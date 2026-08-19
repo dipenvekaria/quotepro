@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { X } from 'lucide-react'
 
 import { BoltChat } from '@/app/app/(shell)/help/bolt-chat'
@@ -12,6 +13,8 @@ import { MessageUs } from '@/app/app/(shell)/help/message-us'
  * bottom-left, by its trigger.
  */
 export function HelpPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // Chat-first: the human channel folds to one line until asked for.
+  const [humanOpen, setHumanOpen] = useState(false)
   if (!open) return null
 
   return (
@@ -33,11 +36,33 @@ export function HelpPanel({ open, onClose }: { open: boolean; onClose: () => voi
         </div>
         <div className="overflow-y-auto sm:max-h-[65vh]">
           <BoltChat />
-          <div className="border-t border-border/70 p-4">
-            <p className="mb-2 text-xs font-medium text-muted-foreground">
-              Rather talk to a human?
-            </p>
-            <MessageUs compact />
+          <div className="border-t border-border/70">
+            {humanOpen ? (
+              <div className="p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Emails the team — the reply lands in your inbox.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setHumanOpen(false)}
+                    className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+                  >
+                    Back
+                  </button>
+                </div>
+                <MessageUs compact />
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setHumanOpen(true)}
+                className="flex min-h-11 w-full items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Rather talk to a human?
+                <span className="font-medium underline underline-offset-2">Email us</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -49,7 +49,7 @@ export function MessageUs({ compact = false }: { compact?: boolean }) {
       />
       <Button type="submit" disabled={busy || message.trim().length < 3} className="h-11 lg:h-9">
         {busy ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : null}
-        Message us
+        Send email
       </Button>
     </form>
   )
