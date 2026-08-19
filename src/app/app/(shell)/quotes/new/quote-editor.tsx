@@ -77,6 +77,9 @@ export function QuoteEditor({
 
   // Customer + description state
   const [customerName, setCustomerName] = useState(initialCustomer?.name ?? '')
+  // Filled customers fold to one line — the card was half the page standing
+  // between the contractor and the line items.
+  const [customerOpen, setCustomerOpen] = useState(!initialCustomer?.name)
   const [customerEmail, setCustomerEmail] = useState(initialCustomer?.email ?? '')
   const [customerPhone, setCustomerPhone] = useState(initialCustomer?.phone ?? '')
   const [address, setAddress] = useState(initialCustomer?.address ?? '')
@@ -475,10 +478,32 @@ export function QuoteEditor({
 
           {/* Customer card */}
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
-            <header className="flex items-center gap-2 border-b border-border/70 px-5 py-3.5">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <h2 className="text-sm font-semibold">Customer</h2>
+            <header
+              className={
+                customerOpen
+                  ? 'flex items-center justify-between gap-2 border-b border-border/70 px-5 py-3.5'
+                  : 'flex items-center justify-between gap-2 px-5 py-3.5'
+              }
+            >
+              <div className="flex min-w-0 items-center gap-2">
+                <User className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <h2 className="text-sm font-semibold">Customer</h2>
+                {!customerOpen && customerName && (
+                  <span className="min-w-0 truncate text-sm text-muted-foreground">
+                    — {customerName}
+                    {customerPhone ? ` · ${customerPhone}` : ''}
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setCustomerOpen((v) => !v)}
+                className="shrink-0 rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+              >
+                {customerOpen ? 'Collapse' : 'Edit'}
+              </button>
             </header>
+            {customerOpen && (
             <div className="space-y-4 p-5">
               <CustomerLookup
                 value={{
@@ -520,6 +545,7 @@ export function QuoteEditor({
                 </p>
               </FieldRow>
             </div>
+            )}
           </section>
 
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
@@ -662,17 +688,6 @@ export function QuoteEditor({
             </p>
           </div>
 
-          <div className="mt-4 rounded-xl border border-border/70 bg-muted/40 p-4">
-            <div className="flex items-center gap-2">
-              <div className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
-                <Sparkles className="h-3.5 w-3.5" />
-              </div>
-              <div className="text-sm font-semibold">One-click drafting</div>
-            </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Drafts a quote from your {catalog.length} price book items with real prices — in seconds.
-            </p>
-          </div>
         </aside>
       </div>
 
