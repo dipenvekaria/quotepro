@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
+  LifeBuoy,
   BarChart3,
   BookText,
   CalendarDays,
@@ -40,6 +41,7 @@ const MORE = [
   { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug2 },
   { href: '/app/settings', label: 'Settings', icon: Settings },
+  { href: '/app/help', label: 'Help', icon: LifeBuoy },
 ] as const
 
 export function MobileTabBar() {

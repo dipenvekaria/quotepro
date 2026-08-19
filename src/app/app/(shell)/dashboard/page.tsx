@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import {
+  Check,
   AlertCircle,
   ArrowDownRight,
   ArrowRight,
@@ -11,11 +12,8 @@ import {
   CreditCard,
   Eye,
   FileText,
-  Package,
-  Plug,
   Sparkles,
   TrendingUp,
-  Users,
   Zap,
 } from 'lucide-react'
 
@@ -166,8 +164,12 @@ export default async function DashboardPage() {
         // in one screen's number and missing from the other's.
         [companyId, sixtyDaysAgo, seesMoney],
       ),
-      query<{ stripe_charges_enabled: boolean | null }>(
-        `select stripe_charges_enabled from companies where id = $1 limit 1`,
+      query<{
+        stripe_charges_enabled: boolean | null
+        logo_url: string | null
+        settings: { review_link_google?: string | null; review_link_facebook?: string | null } | null
+      }>(
+        `select stripe_charges_enabled, logo_url, settings from companies where id = $1 limit 1`,
         [companyId],
       ),
     ])
@@ -206,6 +208,22 @@ export default async function DashboardPage() {
     customers: r.customer_name ? { name: r.customer_name } : null,
   }))
   const stripeConnected = Boolean(companyRows[0]?.stripe_charges_enabled)
+  const co = companyRows[0]
+  const [sentEver] = await query<{ n: number }>(
+    `select count(*)::int as n from work_items where company_id = $1 and sent_at is not null limit 1`,
+    [companyId],
+  )
+  const steps = [
+    { done: true, label: 'Price book ready', href: '/app/catalog' },
+    { done: (sentEver?.n ?? 0) > 0, label: 'Send your first quote', href: '/app/quotes/new' },
+    { done: stripeConnected, label: 'Connect Stripe to get paid online', href: '/app/integrations' },
+    { done: Boolean(co?.logo_url), label: 'Upload your logo — it fronts every email', href: '/app/settings' },
+    {
+      done: Boolean(co?.settings?.review_link_google || co?.settings?.review_link_facebook),
+      label: 'Add your review links', href: '/app/settings',
+    },
+  ]
+  const remaining = steps.filter((s) => !s.done)
 
   // KPI metrics: current 30d vs prior 30d (for trend), plus 30-day cumulative sparklines.
   const T = now.getTime()
@@ -275,7 +293,7 @@ export default async function DashboardPage() {
     pipeSeries.push(cPipe)
   }
 
-  const showSetupChecklist = !stripeConnected
+  const showSetupChecklist = remaining.length > 0
 
   return (
     <div className="mx-auto max-w-[1500px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
@@ -296,42 +314,36 @@ export default async function DashboardPage() {
 
       {/* Setup checklist (only when stripe not connected) */}
       {showSetupChecklist && (
-        <section className="mt-6 overflow-hidden rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-primary/3 to-transparent">
-          <div className="flex items-start gap-3 p-4 sm:p-5">
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold">Finish setting up</div>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                A few one-time steps to start collecting online payments.
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {/* One unmistakable next step; the rest are options. */}
-                <Link
-                  href="/app/integrations"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-md bg-primary px-3.5 text-xs font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 lg:h-8"
-                >
-                  <Plug className="h-3 w-3" />
-                  Connect Stripe
-                </Link>
-                <Link
-                  href="/app/catalog"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8"
-                >
-                  <Package className="h-3 w-3" />
-                  Add price book items
-                </Link>
-                <Link
-                  href="/app/settings?invite=1#team"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-md border border-border bg-background px-3 text-xs font-medium hover:bg-muted lg:h-8"
-                >
-                  <Users className="h-3 w-3" />
-                  Invite team
-                </Link>
-              </div>
-            </div>
+        <section className="mt-6 rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-primary/3 to-transparent p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="text-sm font-semibold">Getting started</div>
+            <span className="text-xs tabular text-muted-foreground">
+              {steps.length - remaining.length} of {steps.length} done
+            </span>
           </div>
+          <ul className="mt-3 space-y-1">
+            {steps.map((step) => (
+              <li key={step.label}>
+                {step.done ? (
+                  <div className="flex min-h-9 items-center gap-2.5 text-sm text-muted-foreground">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
+                      <Check className="h-3 w-3" />
+                    </span>
+                    <span className="line-through decoration-muted-foreground/40">{step.label}</span>
+                  </div>
+                ) : (
+                  <Link
+                    href={step.href}
+                    className="group flex min-h-11 items-center gap-2.5 rounded-md text-sm font-medium hover:bg-primary/5 lg:min-h-9"
+                  >
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-primary/40 group-hover:border-primary" />
+                    {step.label}
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 

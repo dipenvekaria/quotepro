@@ -4,7 +4,7 @@ import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
-import { BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, type LucideIcon } from 'lucide-react'
+import { LifeBuoy, BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
@@ -185,6 +185,17 @@ function Sidebar({
       </nav>
 
       <div className="mt-auto space-y-0.5 pt-4">
+        <Link
+          href="/app/help"
+          aria-current={pathname.startsWith('/app/help') ? 'page' : undefined}
+          className={cn(
+            NAV_ITEM,
+            pathname.startsWith('/app/help') ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE,
+          )}
+        >
+          <NavIcon icon={LifeBuoy} />
+          <span className="flex-1 truncate">Help</span>
+        </Link>
         <Link
           href="/app/settings"
           aria-current={pathname.startsWith('/app/settings') ? 'page' : undefined}
