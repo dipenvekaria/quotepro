@@ -1,194 +1,173 @@
 # Architecture
 
-_Current as of 2026-08-07, branch `main`. Supersedes the pre-rebuild version of this
-file and everything under `docs/rebuild/`._
+_Current as of 2026-08-19, branch `main`._
 
 ## Shape
 
 ```
-                    ┌──────────────────────────────┐
-   Contractor ─────▶│  Next.js 16 App Router       │
-   (authenticated)  │  React 19 · Tailwind 4       │
-                    │                              │
-                    │  RSC ──── query() ───────────┼──▶ ┌──────────────┐
-                    │  Server Actions ─────────────┼──▶ │  Postgres    │
-                    │                              │    │  (Supabase)  │
-   Customer ───────▶│  /q/{token}  /i/{token}      │    └──────┬───────┘
-   (no account)     │  service-role read           │           │
-                    └───────┬──────────────────────┘           │
-                            │                                  │
-                     JWT verify │                       auth.users
-                            ▼                                  │
-                    ┌──────────────────┐            ┌──────────▼─────────┐
-                    │  Supabase Auth   │            │  Postgres          │
-                    │  cookies, OAuth  │            │  work_items, …     │
-                    └──────────────────┘            └────────────────────┘
-
-   Gemini is called in-process from the server actions — no separate service.
-
-   Resend (email) · Stripe Connect (payments) · SignNow (e-signature)
+                    ┌──────────────────────────────────┐
+   Contractor ─────▶│  Next.js 16 App Router (Vercel)  │
+   (authenticated)  │  React 19 · Tailwind 4           │
+                    │                                  │
+                    │  RSC ──── query() ───────────────┼──▶ ┌──────────────┐
+                    │  Server Actions ─────────────────┼──▶ │  Postgres    │
+                    │                                  │    │  (Supabase)  │
+   Customer ───────▶│  /q/{token}  /i/{token}          │    └──────┬───────┘
+   (no account)     │  service-role read               │           │
+                    │                                  │      auth.users
+   Vercel crons ───▶│  /api/cron/* (CRON_SECRET)       │           │
+                    └───────┬──────────────────────────┘    ┌──────▼───────┐
+                            │ JWT verify                    │ Supabase     │
+                            ▼                               │ Auth+Storage │
+   In-process, no second service:                           └──────────────┘
+     Gemini (@google/genai + @google/adk) — quote drafting, Bolt assistant
+   External:
+     Resend (email, verified getrivet.ai) · Stripe Connect (customer payments)
+     Stripe Billing (Rivet subscriptions)  · QuickBooks Online (bookkeeping sync)
 ```
 
-Three deliberate choices explain most of the code you'll read.
+Three deliberate choices explain most of the code.
 
 ## 1. Postgres directly, not through Supabase's client
 
-Every read and write in the live app goes through `src/lib/db/index.ts` — a `pg` connection
-pool, parameterized SQL, no ORM.
+Every read and write in the signed-in app goes through `src/lib/db/index.ts` — a `pg`
+pool, parameterized SQL, no ORM. Supabase hosts the database and owns authentication;
+it is not the data layer.
 
-Supabase is still the database host and still owns authentication. It is not the data layer.
-The reasons: PostgREST forced awkward shapes on multi-table reads (embeds that silently break
-when a column is renamed — that caused two production 404s, see
-`docs/GO_TO_MARKET_CHECKLIST.md`), server-side joins were being emulated in TypeScript, and
-staying on plain SQL keeps the door open to move off Supabase without rewriting the app.
-
-The consequence you must internalise: **the pool connects as superuser and bypasses RLS.**
-
-RLS policies exist on every table and are correct. They protect the anon and authenticated
-Postgres roles — which is what the public token routes and any future direct client access use.
-They do not protect `query()`. Tenant scoping in application code is the primary control:
+The consequence to internalise: **the pool connects as superuser and bypasses RLS.**
+RLS exists and is correct, but it protects the anon/authenticated roles, not
+`query()`. Tenant scoping in application code is the primary control, and
+`tests/tenancy.test.ts` scans every statement for it — unscoped SQL fails CI and the
+commit hook:
 
 ```ts
 const { companyId } = await requireSession()
-await query('select ... from work_items where id = $1 and company_id = $2', [id, companyId])
+await query('select … from work_items where id = $1 and company_id = $2', [id, companyId])
 ```
 
-Two more things live in that file and surprise people:
-
-- **Type parsers are overridden.** `numeric` comes back as a JS `number`, not a string, so money
-  arithmetic works. `date`/`timestamp`/`timestamptz` come back as raw ISO strings, not `Date`
-  objects, matching the `string` types the app declares.
-- **`withUser(userId, fn)`** opens a transaction and sets `request.jwt.claims` inside it, so SQL
-  functions that call `auth.uid()` internally resolve correctly. Required for
-  `create_work_item_with_customer` and `bootstrap_company`. A plain `query()` leaves
-  `auth.uid()` NULL and those functions fail.
+Also in that file: `numeric` parses to `number`, timestamps stay ISO strings, and
+`withUser(userId, fn)` sets `request.jwt.claims` in a transaction for the SQL
+functions that read `auth.uid()` (`create_work_item_with_customer`,
+`bootstrap_company`).
 
 ## 2. Server Actions for writes, RSC for reads
 
-There is no REST API for the product. `src/app/api/**` is dead except the vitals beacon.
+There is no REST API for the product. A route directory owns its data access:
+`page.tsx` (RSC, `query()`), `actions.ts` (`'use server'`, Zod in,
+`{ ok, data } | { ok, error }` out — never throws to the client), client components
+for interaction only.
 
-A route directory owns its own data access:
-
-```
-src/app/app/(shell)/pipeline/[id]/
-  page.tsx              Server Component — query(), renders
-  actions.ts            'use server' — Zod in, { ok, data } | { ok, error } out
-  work-item-detail.tsx  'use client' — interaction only
-```
-
-Actions never throw to the client. They validate with Zod, verify ownership, mutate, call
-`revalidatePath()`, and return a discriminated result the client narrows on. Errors surface as
-toasts, not error boundaries.
-
-This keeps the request waterfall short — a page render is one round trip to Postgres from the
-server, with no client-side fetch layer, no React Query cache to invalidate, and no API schema
-to keep in sync.
+`src/app/api/**` exists only where a browser redirect or third party needs a URL:
+Stripe checkout/webhook, QuickBooks OAuth callback, cron endpoints, file streams.
 
 ## 3. One table for the whole lifecycle
 
-`work_items` is a lead, a quote, a job, and an archived record — the same row throughout.
-`status` moves through the lifecycle; `kind` is derived from it for board filters and indexes.
+`work_items` is a lead, a quote, a job, and an archived record — one row, `status`
+moves, `kind` is derived. Converting never copies a row, so the id and the customer's
+link stay stable. Adjacent state rides in jsonb where it is genuinely optional:
+`recurrence` (repeat rule), `metadata` (acceptance record, spawn provenance).
+Reasoning: [ADR 0002](adr/0002-unified-work-items.md).
 
-Converting a lead to a quote is `UPDATE work_items SET status = 'quote_draft'`. No row copy.
-The id is stable, so the customer's link keeps working, the activity log stays continuous, and
-analytics is one `GROUP BY` instead of a three-way union.
+## Authentication and roles
 
-The cost is a wide table — 40-odd columns, many only meaningful at one stage (`scheduled_start`
-on jobs, `sent_at` on quotes). That's an accepted trade. Full reasoning in
-[`adr/0002-unified-work-items.md`](adr/0002-unified-work-items.md).
+Supabase Auth issues the JWT (`@supabase/ssr` cookies, refreshed in middleware);
+application code verifies it and then reads the `users` row through `pg`.
+`requireSession()` for pages (redirects), `getSession()` for actions (returns null).
+Both return `{ userId, email, companyId, role, profile }`.
 
-## Authentication
-
-Supabase Auth issues the JWT and manages the session cookies via `@supabase/ssr`.
-`src/middleware.ts` refreshes the cookie on every request.
-
-Application code never reads user data from Supabase. It calls `supabase.auth.getUser()` to
-verify the JWT, then reads the `users` row through `pg`:
-
-```ts
-requireSession()   // pages    → redirects to /login or /app/onboarding
-getSession()       // actions  → returns null, caller returns { ok: false }
-```
-
-Both return `{ userId, email, companyId, role, profile }`. `companyId` is the tenant key for
-every subsequent query.
+Roles: owner, admin, office, technician. Withholding happens in the **query**, not
+the markup — technicians never receive revenue figures in a payload. Signups are
+gated behind an allow-list until `NEXT_PUBLIC_SIGNUPS_OPEN=true`; the public site
+collects waitlist emails.
 
 ## The public surface
 
-`/q/{token}` and `/i/{token}` are the only unauthenticated routes that read data. `token` is
-`work_items.public_token` — 128 random bits, `encode(gen_random_bytes(16),'hex')`, never the
-row's UUID, so links can't be enumerated.
-
-These routes use the service-role Supabase client (`src/lib/supabase/untyped.ts`) because there
-is no session to scope by. The token *is* the authorisation. That is a deliberate exception to
-the "everything goes through `pg`" rule, not an oversight.
-
-This is also the surface customers judge the product on. It should feel like Stripe Checkout.
+`/q/{token}` and `/i/{token}` — `public_token` is 128 random bits, never the UUID.
+Service-role reads; the token is the authorisation. The quote viewer carries the
+company's branding (logo from the public `branding` storage bucket), its terms, and
+typed-name acceptance: signer, time, IP, user agent, and **the exact terms text**
+snapshot into `work_items.metadata`. Job photos live in a separate private bucket
+served via signed URLs.
 
 ## AI
 
-`src/lib/ai/` runs inside the server actions. There is no AI service and no second runtime —
-that was a FastAPI app on Railway until 2026-08-11, and removing it is
-[ADR 0009](adr/0009-ai-in-process.md).
+In-process (`src/lib/ai/`), Gemini only, temperature ≤ 0.2, JSON schema whenever
+output is parsed. Prompts are markdown in `prompts/`, shipped via
+`outputFileTracingIncludes`; a missing prompt file throws.
 
-`generateQuote()` fetches the company's `catalog_items`, builds a grounded prompt, calls Gemini
-through `@google/genai`, then reconciles the result against the catalog.
+Two agents, both on `@google/adk`:
 
-Four properties are load-bearing:
+- **Quote drafting** — grounded in the company's catalog; the model never sets a
+  price (every line reconciles to a catalog row; a company-priced fallback path
+  covers work the catalog doesn't carry, without substituting items). Too-vague
+  input returns clarifying questions with tappable answers, not a guess.
+- **Bolt** — the in-app assistant. **Read-only by owner decree**: query tools scoped
+  to the caller's session plus a how-to corpus; every mutation stays a human tap.
+  Entry point is the nav (sidebar footer / More sheet), not a floating bubble.
 
-- **Grounded, not generative.** The system prompt forbids inventing line items.
-- **The model does not set prices.** Every returned item is matched back to a catalog row and
-  priced from the database; anything matching nothing is dropped and logged. A hallucinated
-  price is a quote the contractor has to honour, so the model is never the source of one.
-- **Model fallback chain.** `GEMINI_MODELS` is tried in order until one succeeds, so a retired
-  model or a quota limit degrades instead of failing.
-- **Mock fallback.** If Gemini fails entirely, a keyword matcher over the catalog returns
-  plausible line items and `mode` says `mock`. The UI stays exercisable offline and a Gemini
-  outage doesn't take quoting down.
+**There is no mock mode and no fallback content.** When Gemini is unconfigured or
+every model fails, generation throws `AiUnavailableError`, the user sees a clear
+error, and the run is recorded in `ai_conversations` with `status='degraded'` —
+alert on those. The old degrade-to-mock path fabricated plausible quotes and is
+deliberately gone. Do not add fallbacks (standing owner rule).
 
-Model policy is fixed: **Google models only**, temperature ≤ 0.2, JSON response mime type and a
-response schema whenever output is parsed. Money and structured output must be deterministic.
+## Money
 
-Prompts live in `prompts/` as markdown, not inline, so they can be edited and diffed without
-touching code.
+Two Stripe surfaces, one direction each:
 
-Retrieval-augmented grounding over `document_embeddings` — retrieving similar past quotes rather
-than dumping the raw catalog — remains the highest-value improvement available. The schema and
-`match_documents()` RPC exist; the Python implementation was deleted unused.
+- **Stripe Connect** — customers paying contractors. Express onboarding from
+  Integrations; pay-online on `/i/{token}`; card-fee pass-through optional. Without
+  Stripe, invoices show the contractor's payment instructions and payments are
+  recorded manually — same books either way.
+- **Stripe Billing** — contractors paying Rivet. Solo $39 / Team $99, everything
+  included, no add-ons (owner pricing decree). 14-day trial, card up front,
+  cancel-at-period-end. Webhook `customer.subscription.*` syncs state onto
+  `companies`; prices self-provision by lookup key.
 
-## Integrations
+**QuickBooks Online** mirrors the books: invoices post as real items (find-or-create
+by name, partial unique index on `(company_id, lower(name))`), tax as a Service item
+against a liability account (their AST ignores `TotalTax`), payments follow, all
+non-blocking via `after()` with `last_error` surfaced on the Integrations card.
+One-way: Rivet → QBO.
 
-| Service | State |
-| --- | --- |
-| Resend | Wired. Quote sent, invoice sent, overdue reminders. Templates in `src/emails/`. |
-| Stripe Connect | Wired, **test mode**. Express onboarding, checkout, card-fee pass-through. |
-| SignNow / Dropbox Sign | Wired with an instant-acceptance fallback if signing fails. |
-| Twilio | In dependencies, not wired. |
-| LemonSqueezy | In dependencies, not wired. This is how Rivet itself would be billed. |
-| Sentry | Config files exist, DSN not confirmed for production. |
-| PostHog | Referenced in `env.ts`, not installed. |
+## Time-based machinery
 
-## Rendering and performance
+Three Vercel crons (`vercel.json`, `CRON_SECRET`-guarded): quote follow-up nudges,
+catalog reindex, and **recurring visits** — a `work_items.recurrence` template spawns
+each visit as its own scheduled job (same lines, same tech), advancing `next_at` in
+the same transaction so a crashed run can't double-book. Cadences: weekly, biweekly,
+monthly, or custom every-N days/weeks/months; day/week rules add exact days, month
+rules keep the wall clock in the company timezone and clamp day-31. Optional
+auto-invoice per rule.
 
-Server Components by default; `'use client'` only where there's interaction. The React Compiler
-is enabled (`reactCompiler: true`), so manual `useMemo`/`useCallback` is usually unnecessary —
-write straightforward code and let it optimise.
+## UI system
 
-Security headers (HSTS, `X-Frame-Options`, `X-Content-Type-Options`, Referrer-Policy,
-Permissions-Policy) are set in `next.config.ts`. There is no CSP yet — that's a launch task.
+Monochrome, tokens-only (`globals.css`, oklch), shadcn/ui primitives, mobile-first at
+375px with 44px targets. **Light is the default theme** (owner decision); dark and
+system are opt-in, and browser chrome color syncs to the resolved theme. The React
+Compiler is on — no hand-rolled memoization. Help is the Bolt panel on every page;
+support is email (`SUPPORT_INBOX`) with reply-to the sender.
 
-PDFs render through `@react-pdf/renderer` in `src/lib/pdf/documents.tsx`, server-side, for both
-quotes and invoices.
+## Verification
 
-## Known architectural debt
+`npm run typecheck · lint · test · build` (`just check` runs all four). 380+ vitest
+tests including integration suites against local Postgres (tenancy scan, recurring
+engine, catalog upsert, billing). Git hooks: commits are gated on `tsc` + the tenancy
+scan; pushes are blocked if the diff looks like it carries a secret (public repo).
+Screens get verified in a real browser at 375px before "done" (`rivet-test-ui`), and
+flows against the database (`rivet-test-functional`).
 
-1. **`typescript: { ignoreBuildErrors: true }`** in `next.config.ts`. The live app and the
-   `pg`-migrated code are type-clean; the dead `(dashboard)` tree is not. Deleting that tree is
-   what lets this flag come off. Until then `tsc --noEmit` in CI is the real gate.
-2. **Two data-access styles in the tree.** Live code uses `pg`; dead code uses the Supabase
-   client. New code that copies a dead file inherits the wrong one.
-3. **Scratch routes are publicly routable** — `/theme-test`, `/logo-test`, `/premium-logos`,
-   `/preview`, `/pricing`, `/brand`. They ship to production today.
-4. **No tests.** No vitest, no playwright, no pytest run. `tsc` is the only automated check.
-5. **Tax is effectively a company-level default**, not per-jurisdiction. Fine for a single-state
-   contractor, wrong the moment one crosses a state line.
+## Known debt
+
+1. **Tax is a company-level default**, not per-jurisdiction — wrong once a contractor
+   crosses a state line.
+2. **No CSP header yet** (other security headers are set in `next.config.ts`).
+3. **Trial-expiry enforcement** in-app hasn't shipped; Stripe charges at day 14 but
+   product behaviour for lapsed/cancelled accounts is undecided.
+4. **QBO sync is one-way** — payments taken inside QuickBooks must be recorded in
+   Rivet by hand.
+5. **`DATABASE_URL` is not Zod-validated** — read raw, falls back to `POSTGRES_URL`
+   on Vercel, fails at first query rather than boot.
+6. Stale GCP artifacts (`k8s/`, `docker-compose.yml`) await Cleanup Phase 5 — hosting
+   is settled on Vercel + Supabase ([ADR 0005](adr/0005-hosting-vercel-railway-supabase.md),
+   amended by [0009](adr/0009-ai-in-process.md)).

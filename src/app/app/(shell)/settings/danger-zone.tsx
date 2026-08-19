@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import { AlertTriangle, ChevronDown, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
@@ -67,13 +67,16 @@ export function DangerZone({ isOwner }: { isOwner: boolean }) {
     impact !== null && typed.trim().toLowerCase() === impact.companyName.trim().toLowerCase()
 
   return (
-    <section className="rounded-xl border border-destructive/30 bg-card shadow-sm">
-      <header className="flex items-center gap-2 border-b border-destructive/20 px-5 py-3.5">
-        <AlertTriangle className="h-4 w-4 text-destructive" />
+    // Collapsed like every other settings group. Expanded, the page's only
+    // visible button was the red one — the CTA read as "close account".
+    <details className="group overflow-hidden rounded-xl border border-destructive/30 bg-card shadow-sm">
+      <summary className="flex min-h-12 cursor-pointer select-none list-none items-center gap-2.5 px-5 py-3.5 transition-colors hover:bg-destructive/5 [&::-webkit-details-marker]:hidden">
+        <AlertTriangle className="h-4 w-4 shrink-0 text-destructive" />
         <h2 className="text-sm font-semibold">Close account</h2>
-      </header>
+        <ChevronDown className="ml-auto h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+      </summary>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-destructive/20 px-5 py-4">
         <p className="max-w-prose text-sm text-muted-foreground">
           {isOwner
             ? 'Closes this company and removes everything from Rivet — customers, quotes, jobs, invoices, your price book, and every login on the team. An archived copy is kept on record, so nothing is lost if you need it back.'
@@ -166,7 +169,7 @@ export function DangerZone({ isOwner }: { isOwner: boolean }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </section>
+    </details>
   )
 }
 
