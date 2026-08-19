@@ -591,7 +591,8 @@ export function QuoteEditor({
                 {/* Drafting lives with the lines it drafts. This used to sit in
                     the page header, two cards away from the thing it changes. */}
                 <Button onClick={() => setAiOpen(true)} size="sm" variant="outline" className="h-11 gap-1.5 lg:h-8">
-                  Suggest lines
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Smart draft
                 </Button>
               </header>
 

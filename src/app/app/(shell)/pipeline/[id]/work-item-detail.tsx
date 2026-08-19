@@ -829,7 +829,7 @@ export function WorkItemDetail({
                   ) : (
                     <Sparkles className="h-3 w-3 text-primary" />
                   )}
-                  Suggest line items
+                  Smart draft
                 </button>
                 <button
                   onClick={addItem}
