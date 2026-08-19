@@ -26,7 +26,7 @@ needs a human. Engineer machine setup is a different doc:
    defaults to `sandbox` — a real contractor connecting today would sync to an
    Intuit sandbox, not their books. In the [Intuit developer portal](https://developer.intuit.com):
    get production keys for the app (Intuit runs a short questionnaire), add redirect
-   `https://getrivet.ai/api/quickbooks/callback`, then set `QBO_CLIENT_ID`,
+   `https://getrivet.ai/api/integrations/quickbooks/callback`, then set `QBO_CLIENT_ID`,
    `QBO_CLIENT_SECRET` (production values) and `QBO_ENVIRONMENT=production` in Vercel.
 2. **Stripe live mode.** Everything currently runs on sandbox keys. At launch:
    swap `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` to live, re-create the webhook
