@@ -79,10 +79,21 @@ export function QuotePhotos({
 
   return (
     <section className="rounded-xl border border-border/70 bg-card shadow-sm">
-      <header className="flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-5 py-3.5">
+      <header
+        className={
+          photos.length === 0
+            ? 'flex flex-wrap items-center justify-between gap-2 px-5 py-3.5'
+            : 'flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-5 py-3.5'
+        }
+      >
         <div className="flex items-center gap-2">
           <Camera className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-sm font-semibold">Photos</h2>
+          {photos.length === 0 && (
+            <span className="hidden text-xs text-muted-foreground sm:inline">
+              — the customer sees these on the quote
+            </span>
+          )}
           {photos.length > 0 && (
             <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
               {photos.length}
@@ -132,12 +143,10 @@ export function QuotePhotos({
         </div>
       </header>
 
-      {photos.length === 0 ? (
-        <p className="px-5 py-8 text-center text-sm text-muted-foreground">
-          A photo of the actual problem does more than any description. The customer sees these on
-          their quote.
-        </p>
-      ) : (
+      {/* Empty means one slim row, not a card of empty space — this section
+          sat between the contractor and the Send button. The pitch line
+          rides the header as a title attribute-sized hint instead. */}
+      {photos.length === 0 ? null : (
         <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4">
           {photos.map((photo) => {
             const line = labelFor(photo)

@@ -823,7 +823,7 @@ export function WorkItemDetail({
                   ) : (
                     <Sparkles className="h-3 w-3 text-primary" />
                   )}
-                  Draft with AI
+                  Suggest line items
                 </button>
                 <button
                   onClick={addItem}

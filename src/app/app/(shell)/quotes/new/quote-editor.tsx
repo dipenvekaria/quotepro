@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react'
-import { ArrowLeft, ChevronDown, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
+import { ArrowRight, ArrowLeft, ChevronDown, Info, Loader2, Save, Sparkles, Trash2, User, X, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { formatQuantity } from '@/lib/format'
@@ -460,21 +460,15 @@ export function QuoteEditor({
               text-xs chip inside the third card — invisible on a phone until
               you scrolled past two forms. */}
           {items.length === 0 && (
-            <section className="rounded-xl border border-primary/30 bg-card p-5 shadow-sm sm:p-6">
-              <div className="flex items-start gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
-                  <Sparkles className="h-5 w-5" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-semibold">Draft this quote with AI</h2>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
-                    Describe the job in plain words — real line items at your real prices, in seconds.
-                  </p>
-                </div>
-              </div>
+            <section className="rounded-xl border border-border/70 bg-card p-5 shadow-sm sm:p-6">
+              <h2 className="text-base font-semibold">Start with the job</h2>
+              <p className="mt-0.5 text-sm text-muted-foreground">
+                Describe it in plain words — the line items come from your price book,
+                priced and ready to send.
+              </p>
               <Button onClick={() => setAiOpen(true)} className="mt-4 h-12 w-full gap-2 text-base sm:h-11 sm:w-auto sm:px-6">
-                <Sparkles className="h-4 w-4" />
-                Draft with AI
+                Build the quote
+                <ArrowRight className="h-4 w-4" />
               </Button>
             </section>
           )}
@@ -556,7 +550,7 @@ export function QuoteEditor({
                 <div className="flex items-start gap-2 border-b border-border/70 bg-muted/30 px-5 py-2.5">
                   <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                   <p className="text-xs leading-relaxed text-muted-foreground">
-                    AI drafted these lines from your price book. Check the quantities and prices —
+                    Drafted from your price book. Check the quantities and prices —
                     once your customer approves, this is the price you’ve agreed to.
                   </p>
                 </div>
@@ -570,9 +564,8 @@ export function QuoteEditor({
                 </div>
                 {/* Drafting lives with the lines it drafts. This used to sit in
                     the page header, two cards away from the thing it changes. */}
-                <Button onClick={() => setAiOpen(true)} size="sm" className="h-11 gap-1.5 lg:h-8">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Draft with AI
+                <Button onClick={() => setAiOpen(true)} size="sm" variant="outline" className="h-11 gap-1.5 lg:h-8">
+                  Suggest lines
                 </Button>
               </header>
 
