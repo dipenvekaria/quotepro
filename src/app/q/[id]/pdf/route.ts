@@ -19,8 +19,8 @@ export async function GET(
     .from('work_items')
     .select(`
       id, quote_number, description, subtotal, tax_rate, tax_amount, total,
-      created_at, expires_at, public_token,
-      companies (name, phone, email, address, plan),
+      created_at, expires_at, public_token, accepted_at, metadata,
+      companies (name, phone, email, address, plan, settings),
       customers (name, email, phone),
       addresses:customer_addresses!work_items_address_id_fkey (address, city, state, zip),
       quote_items (name, description, quantity, unit_price, unit, is_upsell, is_discount, sort_order)
@@ -52,6 +52,10 @@ export async function GET(
       address: addressLine,
     },
     publicUrl: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/q/${token}`,
+    terms: (quote.companies as unknown as { settings?: { quote_terms?: string | null } }).settings?.quote_terms ?? null,
+    businessTaxId: (quote.companies as unknown as { settings?: { business_tax_id?: string | null } }).settings?.business_tax_id ?? null,
+    signedBy: (quote.metadata as { signed_by?: string } | null)?.signed_by ?? null,
+    signedAt: quote.accepted_at ? new Date(quote.accepted_at) : null,
     showBadge: showsRivetBadge(
       (quote as unknown as { companies?: { plan?: string | null } }).companies?.plan,
     ),

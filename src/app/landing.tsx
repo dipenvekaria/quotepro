@@ -142,70 +142,26 @@ export function Landing() {
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-[1.1fr_0.9fr]">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-            For HVAC, plumbing, electrical, cleaning &amp; every trade with a price book
-          </p>
-          <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
-            Quote the job before the other guy calls back.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Describe the job. Rivet drafts the quote from <em>your own price book</em> in
-            seconds — your items, your prices, never invented ones. The customer accepts on
-            their phone, the job lands on the calendar, the invoice sends itself, and the
-            books stay current. One record, first call to cash.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button asChild size="lg" className="h-12 px-6 text-base">
-              <Link href="/login">Start your 14-day free trial</Link>
-            </Button>
-            <span className="text-sm text-muted-foreground">
-              Everything included. No add-ons. Ever.
-            </span>
-          </div>
-        </div>
-
-        {/* The product, as the customer sees it. Hand-built rather than a
-            screenshot so it stays crisp at every density and never goes
-            stale — same trick as the login page's demo card. */}
-        <div aria-hidden className="relative mx-auto hidden w-full max-w-sm lg:block">
-          <div className="absolute -inset-6 rounded-3xl bg-muted/50" />
-          <div className="relative rounded-2xl border border-border/70 bg-card p-6 shadow-card">
-            <div className="flex items-center justify-between border-b border-border/70 pb-4">
-              <div>
-                <p className="text-xs text-muted-foreground">Quote Q-1042 · Summit Air &amp; Heat</p>
-                <p className="mt-1 text-sm font-semibold">Prepared for Dana K.</p>
-              </div>
-              <span className="rounded-full bg-muted px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-                Drafted in 2.4s
-              </span>
-            </div>
-            <ul className="divide-y divide-border/60 text-sm">
-              <li className="flex items-center justify-between py-3">
-                <span>3-Ton AC System — Install</span>
-                <span className="tabular font-medium">$5,890.00</span>
-              </li>
-              <li className="flex items-center justify-between py-3">
-                <span>Refrigerant Line Set Replacement</span>
-                <span className="tabular font-medium">$485.00</span>
-              </li>
-              <li className="flex items-center justify-between py-3">
-                <span>Smart Thermostat — Installed</span>
-                <span className="tabular font-medium">$329.00</span>
-              </li>
-            </ul>
-            <div className="flex items-center justify-between border-t border-border/70 pt-4">
-              <span className="text-sm text-muted-foreground">Total</span>
-              <span className="text-xl font-semibold tabular">$6,704.00</span>
-            </div>
-            <div className="mt-5 grid h-11 place-items-center rounded-lg bg-primary text-sm font-medium text-primary-foreground">
-              Approve quote
-            </div>
-            <p className="mt-3 text-center text-[11px] text-muted-foreground">
-              Every price from the company&rsquo;s own price book
-            </p>
-          </div>
+      <section className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-16 pt-12 text-center sm:px-6 sm:pt-20">
+        <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          For every trade that quotes from a price book
+        </p>
+        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-6xl">
+          Quote the job before the other guy calls back.
+        </h1>
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          Describe the job. Rivet drafts the quote from <em>your own price book</em> in
+          seconds — your items, your prices, never invented ones. The customer accepts on
+          their phone, the job lands on the calendar, the invoice sends itself, and the
+          books stay current. One record, first call to cash.
+        </p>
+        <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+          <Button asChild size="lg" className="h-12 px-6 text-base">
+            <Link href="/login">Start your 14-day free trial</Link>
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            Everything included. No add-ons. Ever.
+          </span>
         </div>
       </section>
 
@@ -213,9 +169,9 @@ export function Landing() {
       <section className="border-y border-border/70 bg-muted/40">
         <div className="mx-auto grid max-w-6xl gap-4 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-3">
           <Feature icon={Sparkles} title="Quotes that write themselves">
-            Type &ldquo;3-ton AC swap, second floor&rdquo; and get real line items at your
-            real prices. Vague job? It asks the right question instead of guessing. Nothing
-            in your price book is ever substituted or made up.
+            Describe the job in plain words and get real line items at your real prices.
+            Vague job? It asks the right question instead of guessing. Nothing in your
+            price book is ever substituted or made up.
           </Feature>
           <Feature icon={FileText} title="A quote link customers trust">
             No login, no app. Your customer opens a clean page with your name on it,
@@ -279,7 +235,7 @@ export function Landing() {
             <PriceCard
               name="Solo"
               price="$39"
-              blurb="For owner-operators. Everything one person can use."
+              blurb="For owner-operators. Everything for one person."
               features={SOLO_FEATURES}
             />
             <PriceCard

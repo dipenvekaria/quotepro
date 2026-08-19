@@ -121,11 +121,12 @@ export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult>
     customer_email: string | null
     company_name: string | null
     company_email: string | null
+    company_logo: string | null
   }>(
     `select i.id, i.invoice_number, i.total, i.amount_paid, i.status, i.sent_at, i.due_date, i.public_token,
             i.work_item_id,
             c.name as customer_name, c.email as customer_email,
-            co.name as company_name, co.email as company_email
+            co.name as company_name, co.email as company_email, co.logo_url as company_logo
        from invoices i
        left join customers c on c.id = i.customer_id
        left join companies co on co.id = i.company_id
@@ -157,6 +158,7 @@ export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult>
         dueDate: inv.due_date ? new Date(inv.due_date) : null,
         fromLabel: inv.company_name ?? undefined,
         replyTo: inv.company_email ?? undefined,
+        logoUrl: inv.company_logo,
       })
       emailResult = res.ok && !('skipped' in res && res.skipped) ? 'sent' : res.ok ? 'skipped' : 'error'
     } catch {

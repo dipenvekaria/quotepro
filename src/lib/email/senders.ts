@@ -18,6 +18,7 @@ type SendQuoteEmailInput = {
   validUntil?: Date | null
   items: { name: string; quantity: number; unit_price: number }[]
   fromLabel?: string
+  logoUrl?: string | null
   replyTo?: string
   pdfProps?: QuotePdfProps
 }
@@ -160,6 +161,7 @@ type SendInvoiceEmailInput = {
   publicUrl: string
   dueDate?: Date | null
   fromLabel?: string
+  logoUrl?: string | null
   replyTo?: string
   pdfProps?: InvoicePdfProps
 }
@@ -238,6 +240,11 @@ function extractAddress(from: string): string {
   return match?.[1] ?? from
 }
 
+function logoImg(url: string | null | undefined, alt: string): string {
+  if (!url) return ''
+  return `<img src="${url}" alt="${escapeHtml(alt)}" height="44" style="height:44px;max-width:200px;object-fit:contain;display:block;margin:0 0 16px" />`
+}
+
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string),
@@ -275,6 +282,7 @@ export async function sendTeamInviteEmail(input: {
       subject: `Join ${input.companyName} on Rivet`,
       html: `
         <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          ${logoImg((input as {logoUrl?: string|null}).logoUrl, 'Logo')}
           <h1 style="font-size:20px;margin:0 0 12px">Join ${escapeHtml(input.companyName)} on Rivet</h1>
           <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 20px">
             ${escapeHtml(who)} to join <strong>${escapeHtml(input.companyName)}</strong>.
@@ -321,6 +329,7 @@ export async function sendMentionEmail(input: {
       subject: `${input.authorName} tagged you on ${input.quoteLabel}`,
       html: `
         <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          ${logoImg((input as {logoUrl?: string|null}).logoUrl, 'Logo')}
           <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 16px">
             <strong>${escapeHtml(input.authorName)}</strong> tagged you in a note on
             <strong>${escapeHtml(input.quoteLabel)}</strong>:
@@ -381,6 +390,7 @@ export async function sendReviewRequestEmail(input: {
       subject: `How did we do${input.customerName ? `, ${input.customerName}` : ''}?`,
       html: `
         <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          ${logoImg((input as {logoUrl?: string|null}).logoUrl, 'Logo')}
           <h1 style="font-size:20px;margin:0 0 12px">Thanks for choosing ${escapeHtml(input.companyName)}</h1>
           <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 20px">
             Your job is complete. If you have a minute, a quick review helps our

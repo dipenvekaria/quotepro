@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { z } from 'zod'
 
 import { logActivity } from '@/lib/activity'
@@ -31,7 +32,26 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     return { ok: false as const, error: 'This quote can no longer be accepted.' }
   }
 
-  const metadata = { ...(item.metadata as object ?? {}), signed_by: parsed.data.signer_name }
+  // The audit trail behind the signature: who typed it, from where, when,
+  // and whether company terms were on the quote they signed. This is what
+  // makes a typed name hold up as an electronic signature — intent plus
+  // association plus a retained record.
+  const h = await headers()
+  const { data: co } = await admin
+    .from('companies')
+    .select('settings')
+    .eq('id', item.company_id as string)
+    .maybeSingle()
+  const hadTerms = Boolean(
+    (co?.settings as { quote_terms?: string | null } | null)?.quote_terms,
+  )
+  const metadata = {
+    ...(item.metadata as object ?? {}),
+    signed_by: parsed.data.signer_name,
+    signed_ip: (h.get('x-forwarded-for') ?? '').split(',')[0].trim() || null,
+    signed_user_agent: (h.get('user-agent') ?? '').slice(0, 300) || null,
+    terms_agreed: hadTerms,
+  }
   const now = new Date().toISOString()
 
   const { error: updErr } = await admin

@@ -10,7 +10,6 @@ import { query } from '@/lib/db'
 
 const settingsSchema = z.object({
   name: z.string().min(2).max(120),
-  logo_url: z.string().url().optional().or(z.literal('')),
   phone: z.string().max(40).optional().or(z.literal('')),
   email: z.string().email().optional().or(z.literal('')),
   address: z.string().max(200).optional().or(z.literal('')),
@@ -23,6 +22,10 @@ const settingsSchema = z.object({
   // review feature is these same links in an email.
   review_link_google: z.string().url().startsWith('https://').optional().or(z.literal('')),
   review_link_facebook: z.string().url().startsWith('https://').optional().or(z.literal('')),
+  // The company's own fine print — warranty, deposits, cancellation. Renders
+  // on the public quote, in the PDF, and the customer signs against it.
+  quote_terms: z.string().max(20000).optional().or(z.literal('')),
+  business_tax_id: z.string().max(60).optional().or(z.literal('')),
 })
 
 export type UpdateSettingsInput = z.infer<typeof settingsSchema>
@@ -56,16 +59,17 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
     timezone: parsed.data.timezone,
     review_link_google: parsed.data.review_link_google || null,
     review_link_facebook: parsed.data.review_link_facebook || null,
+    quote_terms: parsed.data.quote_terms || null,
+    business_tax_id: parsed.data.business_tax_id || null,
   }
 
   try {
     await query(
       `update companies
-          set name = $1, logo_url = $2, phone = $3, email = $4, address = $5, settings = $6::jsonb
-        where id = $7`,
+          set name = $1, phone = $2, email = $3, address = $4, settings = $5::jsonb
+        where id = $6`,
       [
         parsed.data.name,
-        parsed.data.logo_url || null,
         parsed.data.phone || null,
         parsed.data.email || null,
         parsed.data.address || null,
@@ -140,4 +144,58 @@ export async function updateBusinessHours(input: unknown) {
   revalidatePath('/app/calendar')
   revalidatePath('/app/pipeline')
   return { ok: true as const }
+}
+
+// ---------------------------------------------------------------------------
+
+/**
+ * Logo upload — a file, not a URL. Contractors do not have hosted logo URLs;
+ * they have a PNG from whoever made their business cards. Public bucket on
+ * purpose: the logo renders inside customers' email clients, which cannot
+ * follow signed URLs. Path is companyId-keyed so re-upload replaces.
+ */
+export async function uploadCompanyLogo(formData: FormData) {
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  if (session.role !== 'owner' && session.role !== 'admin') {
+    return { ok: false as const, error: 'Only owners and admins can update branding' }
+  }
+
+  const file = formData.get('logo')
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false as const, error: 'Choose an image file.' }
+  }
+  if (file.size > 2 * 1024 * 1024) {
+    return { ok: false as const, error: 'Logo must be under 2MB.' }
+  }
+  const ext = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' }[file.type]
+  if (!ext) return { ok: false as const, error: 'PNG, JPG or WebP only.' }
+
+  const { createAdminClient } = await import('@/lib/supabase/admin')
+  const admin = createAdminClient()
+  const path = `${session.companyId}/logo.${ext}`
+
+  const { error: upErr } = await admin.storage
+    .from('branding')
+    .upload(path, Buffer.from(await file.arrayBuffer()), {
+      contentType: file.type,
+      upsert: true,
+    })
+  if (upErr) {
+    console.error('logo upload failed', upErr)
+    return { ok: false as const, error: 'Upload failed — try again.' }
+  }
+
+  const { data: pub } = admin.storage.from('branding').getPublicUrl(path)
+  // Cache-bust: same path on re-upload, and email clients cache hard.
+  const url = `${pub.publicUrl}?v=${Date.now()}`
+
+  try {
+    await query(`update companies set logo_url = $1 where id = $2`, [url, session.companyId])
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Save failed' }
+  }
+
+  revalidatePath('/app/settings')
+  return { ok: true as const, data: { url } }
 }

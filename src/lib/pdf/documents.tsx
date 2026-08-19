@@ -222,6 +222,12 @@ export type QuotePdfProps = {
   company: Company
   customer: Customer
   publicUrl?: string
+  /** The company's own fine print; rendered verbatim after the totals. */
+  terms?: string | null
+  businessTaxId?: string | null
+  /** Present once accepted — the signature block the customer signed. */
+  signedBy?: string | null
+  signedAt?: Date | null
 }
 
 function QuotePdf(props: QuotePdfProps): React.ReactElement {
@@ -333,6 +339,40 @@ function QuotePdf(props: QuotePdfProps): React.ReactElement {
             <Text style={styles.grandTotalValue}>{fmt(props.total)}</Text>
           </View>
         </View>
+
+        {props.businessTaxId ? (
+          <Text style={{ marginTop: 10, fontSize: 8, color: colors.sub }}>
+            Business / Tax # {props.businessTaxId}
+          </Text>
+        ) : null}
+
+        {props.terms ? (
+          <View style={{ marginTop: 18 }} break={props.terms.length > 1200}>
+            <Text style={{ fontSize: 10, fontWeight: 700, color: colors.ink, marginBottom: 6 }}>
+              Terms &amp; Conditions
+            </Text>
+            <Text style={{ fontSize: 8.5, lineHeight: 1.5, color: colors.sub }}>
+              {props.terms}
+            </Text>
+          </View>
+        ) : null}
+
+        {props.signedBy ? (
+          <View style={{ marginTop: 22 }} wrap={false}>
+            <Text style={{ fontSize: 8.5, color: colors.sub, marginBottom: 14 }}>
+              By signing this document, the customer agrees to the services and
+              conditions outlined in this document.
+            </Text>
+            <View style={{ width: 220, borderTopWidth: 1, borderTopColor: colors.divider, paddingTop: 5 }}>
+              <Text style={{ fontSize: 10, color: colors.ink }}>{props.signedBy}</Text>
+              {props.signedAt ? (
+                <Text style={{ fontSize: 8, color: colors.sub, marginTop: 2 }}>
+                  Accepted {props.signedAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </Text>
+              ) : null}
+            </View>
+          </View>
+        ) : null}
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>
