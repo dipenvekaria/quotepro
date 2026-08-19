@@ -31,13 +31,13 @@ const baseButton = {
 
 const primaryButton = {
   ...baseButton,
-  backgroundColor: '#3b82f6',
+  backgroundColor: '#111111',
   color: '#ffffff',
 }
 
 const secondaryButton = {
   ...baseButton,
   backgroundColor: '#ffffff',
-  color: '#3b82f6',
-  border: '2px solid #3b82f6',
+  color: '#111111',
+  border: '1px solid #111111',
 }

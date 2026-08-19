@@ -1,33 +1,44 @@
 import * as React from 'react'
 import { Section, Img, Heading } from '@react-email/components'
 
-export function EmailHeader() {
+/**
+ * The contractor's brand, never the platform's. Trust on a quote email comes
+ * from the business the customer met — a platform banner reads as spam. The
+ * old version shipped a blue "Field Genie" gradient (a brand that predates
+ * Rivet) on every customer email.
+ */
+export function EmailHeader({
+  companyName,
+  logoUrl,
+}: {
+  companyName?: string
+  logoUrl?: string | null
+}) {
   return (
     <Section style={header}>
-      <Heading style={headerText}>Field Genie</Heading>
-      <p style={tagline}>Professional Field Service Management</p>
+      {logoUrl ? (
+        <Img src={logoUrl} alt={companyName ?? 'Logo'} height="44" style={logo} />
+      ) : (
+        <Heading style={headerText}>{companyName ?? ''}</Heading>
+      )}
     </Section>
   )
 }
 
 const header = {
-  background: 'linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)',
-  padding: '40px 20px',
-  textAlign: 'center' as const,
-  borderRadius: '8px 8px 0 0',
+  padding: '28px 24px 8px',
+}
+
+const logo = {
+  height: '44px',
+  maxWidth: '200px',
+  objectFit: 'contain' as const,
 }
 
 const headerText = {
-  color: '#ffffff',
-  fontSize: '32px',
-  fontWeight: 'bold',
-  margin: '0',
-  padding: '0',
-}
-
-const tagline = {
-  color: '#ffffff',
-  fontSize: '14px',
-  margin: '8px 0 0 0',
-  opacity: 0.9,
+  color: '#111111',
+  fontSize: '22px',
+  fontWeight: 600,
+  margin: 0,
+  padding: 0,
 }

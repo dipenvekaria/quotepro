@@ -114,7 +114,7 @@ export const JobAssignedEmail = ({
         {/* Footer */}
         <Section style={footer}>
           <Text style={footerText}>
-            Field Genie © {new Date().getFullYear()}
+            Rivet © {new Date().getFullYear()}
           </Text>
         </Section>
       </Container>

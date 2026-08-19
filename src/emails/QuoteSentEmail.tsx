@@ -12,6 +12,8 @@ interface QuoteItem {
 }
 
 interface QuoteSentEmailProps {
+  companyName?: string
+  logoUrl?: string | null
   customerName: string
   quoteNumber: string
   total: string
@@ -22,6 +24,8 @@ interface QuoteSentEmailProps {
 }
 
 export function QuoteSentEmail({
+  companyName,
+  logoUrl,
   customerName,
   quoteNumber,
   total,
@@ -32,16 +36,18 @@ export function QuoteSentEmail({
 }: QuoteSentEmailProps) {
   return (
     <EmailLayout>
-      <EmailHeader />
+      <EmailHeader companyName={companyName} logoUrl={logoUrl} />
       
       <Section style={content}>
-        <Heading style={h1}>Your Quote is Ready!</Heading>
-        
-        <Text style={greeting}>Hi {customerName},</Text>
-        
+        <Heading style={h1}>
+          {companyName ? `Your quote from ${companyName}` : 'Your quote'}
+        </Heading>
+
+        <Text style={greeting}>Hi {customerName.trim()},</Text>
+
         <Text style={paragraph}>
-          Thank you for your interest! We’ve prepared a detailed quote for you.
-          Please review the items below and let us know if you have any questions.
+          Here&rsquo;s the quote you asked for. Everything is itemised below, and you can
+          review and approve it online — no account needed.
         </Text>
 
         <Section style={quoteBox}>
@@ -90,7 +96,7 @@ export function QuoteSentEmail({
         </Text>
       </Section>
 
-      <EmailFooter />
+      <EmailFooter companyName={companyName} />
     </EmailLayout>
   )
 }
