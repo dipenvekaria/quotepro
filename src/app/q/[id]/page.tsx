@@ -101,7 +101,9 @@ export default async function PublicQuotePage({
 // ---------------------------------------------------------------------------
 
 export function generateMetadata() {
-  return { title: 'Quote — Rivet' }
+  // Unlisted token pages: a forwarded or pasted link must never end up in a
+  // search index — this is a customer's priced quote.
+  return { title: 'Quote — Rivet', robots: { index: false, follow: false } }
 }
 
 // Custom 404 lives in app/not-found.tsx; we still export a small fallback link.
