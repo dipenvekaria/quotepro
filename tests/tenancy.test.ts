@@ -33,6 +33,13 @@ const SRC = join(ROOT, 'src')
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   {
+    file: 'src/app/app/(shell)/import/actions.ts',
+    match: 'insert into customer_addresses',
+    reason:
+      'customer_id comes from the customer row inserted one statement earlier ' +
+      'in the same transaction, itself created with the session companyId.',
+  },
+  {
     file: 'src/app/waitlist-actions.ts',
     match: 'insert into waitlist',
     reason: 'Global pre-launch interest table; the signer is a stranger, not a tenant.',

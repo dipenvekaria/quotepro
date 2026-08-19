@@ -307,6 +307,10 @@ const importSchema = z.object({
 
 export type ImportResult = {
   imported: number
+  /** Existing items whose price/details the file overwrote (their book wins). */
+  updated?: number
+  /** Untouched starter-seed items still active — offer the one-tap archive. */
+  starter_leftovers?: number
   skipped: number
   /** Row-level problems, capped so a badly-formed file cannot flood the UI. */
   errors: Array<{ row: number; reason: string }>
@@ -407,24 +411,52 @@ export async function importCatalogCsv(input: unknown): Promise<Result<ImportRes
     }
   }
 
+  let updated = 0
   try {
-    await query(
+    // A name match means the same service: the incoming row wins, because a
+    // business importing its own book is correcting ours — the starter items
+    // are placeholders, theirs are real. Case-insensitive, per company. This
+    // also makes re-importing the same file idempotent instead of doubling.
+    const res = await query<{ inserted: boolean }>(
       `insert into catalog_items
+         (company_id, name, description, category, base_price, unit, labor_hours, source)
+       select v.*, 'import' from (values ${tuples.join(', ')}) as v
          (company_id, name, description, category, base_price, unit, labor_hours)
-       values ${tuples.join(', ')}`,
+       on conflict (company_id, lower(name)) where is_active do update
+         set description = excluded.description,
+             category = coalesce(excluded.category, catalog_items.category),
+             base_price = excluded.base_price,
+             unit = coalesce(excluded.unit, catalog_items.unit),
+             labor_hours = coalesce(excluded.labor_hours, catalog_items.labor_hours),
+             source = 'import',
+             is_active = true,
+             updated_at = now()
+       returning (xmax = 0) as inserted`,
       values,
     )
+    updated = res.filter((r) => !r.inserted).length
   } catch (e) {
     console.error('importCatalogCsv failed', e)
     return { ok: false, error: 'Could not import the file. Please try again.' }
   }
+
+  // Untouched starter items left standing next to a real book — the UI offers
+  // to archive them in one tap. Edited ones are theirs and never counted.
+  const [leftovers] = await query<{ n: number }>(
+    `select count(*)::int as n from catalog_items
+      where company_id = $1 and source = 'starter' and is_active
+        and updated_at = created_at`,
+    [auth.session.companyId],
+  )
 
   revalidate()
   reindexAll(auth.session.companyId)
   return {
     ok: true,
     data: {
-      imported: tuples.length,
+      imported: tuples.length - updated,
+      updated,
+      starter_leftovers: leftovers?.n ?? 0,
       skipped: errors.length,
       errors: errors.slice(0, 20),
     },
@@ -906,4 +938,25 @@ export async function setCatalogItemImage(formData: FormData): Promise<Result<{ 
 
   revalidatePath('/app/catalog')
   return { ok: true, data: { path } }
+}
+
+/**
+ * One-tap cleanup after a business imports its own book: archive the starter
+ * items they never edited. Edited starter rows are theirs and stay; archived
+ * rows are restorable from the archived view — nothing is deleted.
+ */
+export async function archiveStarterLeftovers(): Promise<Result<{ archived: number }>> {
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+  const rows = await query<{ id: string }>(
+    `update catalog_items
+        set is_active = false
+      where company_id = $1 and source = 'starter' and is_active
+        and updated_at = created_at
+      returning id`,
+    [auth.session.companyId],
+  )
+  revalidate()
+  reindexAll(auth.session.companyId)
+  return { ok: true, data: { archived: rows.length } }
 }
