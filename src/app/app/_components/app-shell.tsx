@@ -4,14 +4,14 @@ import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
-import { BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, type LucideIcon } from 'lucide-react'
+import { BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, Zap, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
 import { signOut } from '@/app/auth/actions'
 import { cn } from '@/lib/utils'
 
-import { HelpLauncher } from './help-launcher'
+import { HelpPanel } from './help-panel'
 import { MobileTabBar } from './mobile-tab-bar'
 
 // ---------------------------------------------------------------------------
@@ -56,18 +56,17 @@ function NavIcon({ icon: Icon }: { icon: LucideIcon }) {
 export function AppShell({
   user,
   profile,
-  role,
   company,
   children,
 }: {
   user: { id: string; email: string }
   profile: Record<string, unknown>
-  role: string
   company: Company
   children: ReactNode
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [boltOpen, setBoltOpen] = useState(false)
   const pathname = usePathname()
   const initials = getInitials(profile, user.email)
 
@@ -81,7 +80,12 @@ export function AppShell({
   return (
     <div className="flex h-dvh w-full overflow-hidden bg-background text-foreground">
       {/* Desktop sidebar */}
-      <Sidebar company={company} role={role} initials={initials} pathname={pathname} className="hidden lg:flex" />
+      <Sidebar
+        company={company}
+        pathname={pathname}
+        className="hidden lg:flex"
+        onAskBolt={() => setBoltOpen((v) => !v)}
+      />
 
       {/* Mobile drawer */}
       {mobileNavOpen && (
@@ -93,11 +97,13 @@ export function AppShell({
           <div className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] shadow-2xl lg:hidden">
             <Sidebar
               company={company}
-              role={role}
-              initials={initials}
               pathname={pathname}
               className="flex h-full"
               onClose={() => setMobileNavOpen(false)}
+              onAskBolt={() => {
+                setMobileNavOpen(false)
+                setBoltOpen(true)
+              }}
             />
           </div>
         </>
@@ -114,8 +120,8 @@ export function AppShell({
         />
         <main className="flex-1 overflow-y-auto pb-20 sm:pb-0">{children}</main>
       </div>
-      <MobileTabBar />
-      <HelpLauncher />
+      <MobileTabBar onAskBolt={() => setBoltOpen(true)} />
+      <HelpPanel open={boltOpen} onClose={() => setBoltOpen(false)} />
     </div>
   )
 }
@@ -124,18 +130,16 @@ export function AppShell({
 
 function Sidebar({
   company,
-  role,
-  initials,
   pathname,
   className,
   onClose,
+  onAskBolt,
 }: {
   company: Company
-  role: string
-  initials: string
   pathname: string
   className?: string
   onClose?: () => void
+  onAskBolt: () => void
 }) {
   return (
     <aside
@@ -186,29 +190,13 @@ function Sidebar({
         })}
       </nav>
 
-      <div className="mt-auto space-y-0.5 pt-4">
-        <Link
-          href="/app/settings"
-          aria-current={pathname.startsWith('/app/settings') ? 'page' : undefined}
-          className={cn(
-            NAV_ITEM,
-            pathname.startsWith('/app/settings') ? NAV_ITEM_ACTIVE : NAV_ITEM_IDLE,
-          )}
-        >
-          <NavIcon icon={Settings} />
-          <span className="flex-1 truncate">Settings</span>
-        </Link>
-        <div className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm">
-          <div className="grid h-7 w-7 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="text-xs font-semibold">{initials}</span>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-medium capitalize">{role}</div>
-            <div className="truncate text-[11px] text-muted-foreground">
-              {company?.name ?? 'Personal'}
-            </div>
-          </div>
-        </div>
+      {/* Settings and identity live in the top-bar avatar menu; repeating them
+          here bought nothing. The slot goes to Bolt instead. */}
+      <div className="mt-auto pt-4">
+        <button type="button" onClick={onAskBolt} className={cn(NAV_ITEM, NAV_ITEM_IDLE, 'w-full')}>
+          <Zap className="h-4 w-4 shrink-0" aria-hidden />
+          <span className="flex-1 truncate text-left">Ask Bolt</span>
+        </button>
       </div>
     </aside>
   )

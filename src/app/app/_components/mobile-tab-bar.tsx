@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import {
   BarChart3,
   BookText,
+  Zap,
   CalendarDays,
   ClipboardList,
   Home,
@@ -42,7 +43,7 @@ const MORE = [
   { href: '/app/settings', label: 'Settings', icon: Settings },
 ] as const
 
-export function MobileTabBar() {
+export function MobileTabBar({ onAskBolt }: { onAskBolt: () => void }) {
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
 
@@ -76,6 +77,17 @@ export function MobileTabBar() {
               <X className="h-4 w-4" />
             </button>
           </div>
+          <button
+            type="button"
+            onClick={() => {
+              setMoreOpen(false)
+              onAskBolt()
+            }}
+            className="flex min-h-12 w-full items-center gap-2.5 border-b border-border/70 px-4 text-sm font-medium hover:bg-muted/60"
+          >
+            <Zap className="h-4 w-4 text-muted-foreground" />
+            Ask Bolt
+          </button>
           <div className="grid grid-cols-2">
             {MORE.map((m) => (
               <Link
