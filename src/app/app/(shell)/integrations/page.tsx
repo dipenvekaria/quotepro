@@ -1,8 +1,13 @@
 import { redirect } from 'next/navigation'
 import {
+  CalendarDays,
   CreditCard,
   Download,
   FileText,
+  MessageSquare,
+  PhoneCall,
+  Wallet,
+  Zap,
   Sparkles,
 } from 'lucide-react'
 
@@ -117,6 +122,53 @@ export default async function IntegrationsPage() {
         </IntegrationShell>
       </IntegrationCategory>
 
+      {/* The roadmap, honestly labelled. Each of these earned its place —
+          answering is the decided next feature, SMS is how homeowners actually
+          read quotes, calendar sync is where techs live, financing closes
+          five-figure jobs, Zapier is the long tail. Nothing else. */}
+      <IntegrationCategory title="On the roadmap" description="Coming — in the same price, like everything else.">
+        <IntegrationShell
+          logo={<PhoneCall className="h-5 w-5" />}
+          name="AI call answering"
+          badge={{ label: 'Coming soon', tone: 'neutral' }}
+          tagline="Missed and after-hours calls answered, qualified, and dropped into your pipeline as ready-to-quote leads."
+        >
+          <RoadmapNote />
+        </IntegrationShell>
+        <IntegrationShell
+          logo={<MessageSquare className="h-5 w-5" />}
+          name="Text messaging"
+          badge={{ label: 'Coming soon', tone: 'neutral' }}
+          tagline="Quotes and reminders by SMS — where homeowners actually read them."
+        >
+          <RoadmapNote />
+        </IntegrationShell>
+        <IntegrationShell
+          logo={<CalendarDays className="h-5 w-5" />}
+          name="Google Calendar"
+          badge={{ label: 'Coming soon', tone: 'neutral' }}
+          tagline="Two-way sync so the crew's phones and the dispatch board agree."
+        >
+          <RoadmapNote />
+        </IntegrationShell>
+        <IntegrationShell
+          logo={<Wallet className="h-5 w-5" />}
+          name="Customer financing"
+          badge={{ label: 'Coming soon', tone: 'neutral' }}
+          tagline="Monthly-payment offers on big quotes — the difference between $8,900 and $89/mo."
+        >
+          <RoadmapNote />
+        </IntegrationShell>
+        <IntegrationShell
+          logo={<Zap className="h-5 w-5" />}
+          name="Zapier"
+          badge={{ label: 'Coming soon', tone: 'neutral' }}
+          tagline="Pipe leads in and events out to the rest of your stack."
+        >
+          <RoadmapNote />
+        </IntegrationShell>
+      </IntegrationCategory>
+
 
 
       {/* AI ping */}
@@ -147,6 +199,14 @@ export default async function IntegrationsPage() {
 }
 
 // ---------------------------------------------------------------------------
+
+function RoadmapNote() {
+  return (
+    <p className="text-xs text-muted-foreground">
+      Not built yet — listed so you know where this is going. No add-on pricing when it lands.
+    </p>
+  )
+}
 
 function IntegrationCategory({
   title,
