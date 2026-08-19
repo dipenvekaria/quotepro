@@ -42,15 +42,17 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     .select('settings')
     .eq('id', item.company_id as string)
     .maybeSingle()
-  const hadTerms = Boolean(
-    (co?.settings as { quote_terms?: string | null } | null)?.quote_terms,
-  )
+  const termsText =
+    (co?.settings as { quote_terms?: string | null } | null)?.quote_terms ?? null
   const metadata = {
     ...(item.metadata as object ?? {}),
     signed_by: parsed.data.signer_name,
     signed_ip: (h.get('x-forwarded-for') ?? '').split(',')[0].trim() || null,
     signed_user_agent: (h.get('user-agent') ?? '').slice(0, 300) || null,
-    terms_agreed: hadTerms,
+    terms_agreed: Boolean(termsText),
+    // The exact terms as of this acceptance. The contractor can edit their
+    // terms tomorrow; this record still proves what was agreed today.
+    terms_text: termsText ? termsText.slice(0, 20000) : null,
   }
   const now = new Date().toISOString()
 

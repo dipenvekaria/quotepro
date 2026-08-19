@@ -98,11 +98,6 @@ const serverEnvSchema = z.object({
   POSTGRES_URL: z.string().optional(),
   // E-signature. A live integration reached from /api/quotes/sign, and every
   // one of these was read straight from process.env with no validation.
-  SIGNNOW_API_BASE_URL: z.string().url().optional(),
-  SIGNNOW_CLIENT_ID: optionalSecret(8),
-  SIGNNOW_CLIENT_SECRET: optionalSecret(8),
-  SIGNNOW_USERNAME: z.string().optional(),
-  SIGNNOW_PASSWORD: optionalSecret(6),
   // Overrides the AI chain's time budget. Used to exercise the degrade path.
   GEMINI_TIMEOUT_MS: z.string().optional(),
   DROPBOX_SIGN_API_KEY: z.string().optional(),

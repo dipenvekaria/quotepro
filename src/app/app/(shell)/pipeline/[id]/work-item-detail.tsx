@@ -99,6 +99,12 @@ type WorkItem = {
   created_at: string
   updated_at: string
   recurrence: { cadence: 'weekly' | 'biweekly' | 'monthly'; auto_invoice: boolean; next_at?: string } | null
+  metadata: {
+    signed_by?: string
+    signed_ip?: string | null
+    terms_agreed?: boolean
+    terms_text?: string | null
+  } | null
   assigned_to: string | null
   customers: { id: string; name: string; email: string | null; phone: string | null } | null
   addresses: { address: string | null; city: string | null; state: string | null; zip: string | null } | null
@@ -1158,6 +1164,58 @@ export function WorkItemDetail({
                   <ExternalLink className="h-3.5 w-3.5" />
                 </a>
               </div>
+            </div>
+          )}
+
+          {/* The acceptance record — what "can I pull up the signature?"
+              means in practice. Everything the audit trail captured, plus the
+              exact terms as of that moment, which later edits never touch. */}
+          {workItem.accepted_at && workItem.metadata?.signed_by && (
+            <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
+              <h2 className="text-sm font-semibold">Acceptance record</h2>
+              <dl className="mt-3 space-y-2 text-sm">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted-foreground">Signed by</dt>
+                  <dd className="font-medium">{workItem.metadata.signed_by}</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted-foreground">When</dt>
+                  <dd className="tabular">
+                    {new Date(workItem.accepted_at).toLocaleString('en-US', {
+                      month: 'short', day: 'numeric', year: 'numeric',
+                      hour: 'numeric', minute: '2-digit', timeZone: tz,
+                    })}
+                  </dd>
+                </div>
+                {workItem.metadata.signed_ip && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-muted-foreground">From IP</dt>
+                    <dd className="tabular">{workItem.metadata.signed_ip}</dd>
+                  </div>
+                )}
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted-foreground">Terms</dt>
+                  <dd>{workItem.metadata.terms_agreed ? 'Agreed' : 'None on quote'}</dd>
+                </div>
+              </dl>
+              {workItem.metadata.terms_text && (
+                <details className="mt-3">
+                  <summary className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-foreground">
+                    Terms as accepted
+                  </summary>
+                  <p className="mt-2 max-h-48 overflow-y-auto whitespace-pre-wrap rounded-md bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
+                    {workItem.metadata.terms_text}
+                  </p>
+                </details>
+              )}
+              <a
+                href={`/q/${workItem.public_token}/pdf`}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex h-11 items-center gap-1.5 rounded-md border border-border px-3 text-xs font-medium hover:bg-muted lg:h-8"
+              >
+                Signed PDF
+              </a>
             </div>
           )}
 
