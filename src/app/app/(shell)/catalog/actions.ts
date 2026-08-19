@@ -960,3 +960,26 @@ export async function archiveStarterLeftovers(): Promise<Result<{ archived: numb
   reindexAll(auth.session.companyId)
   return { ok: true, data: { archived: rows.length } }
 }
+
+/**
+ * Bulk archive — the "I don't want these 100 starter rows" action. Archive,
+ * never delete (standing owner rule): items leave quoting and the book
+ * immediately but stay restorable from the inactive state. Capped and
+ * company-scoped; ids that aren't yours simply don't match.
+ */
+export async function archiveCatalogItems(input: unknown): Promise<Result<{ archived: number }>> {
+  const parsed = z.object({ ids: z.array(z.string().uuid()).min(1).max(500) }).safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid selection' }
+  const auth = await requireCatalogEditor()
+  if (!auth.ok) return auth
+
+  const rows = await query<{ id: string }>(
+    `update catalog_items set is_active = false
+      where company_id = $1 and id = any($2::uuid[]) and is_active
+      returning id`,
+    [auth.session.companyId, parsed.data.ids],
+  )
+  revalidate()
+  reindexAll(auth.session.companyId)
+  return { ok: true, data: { archived: rows.length } }
+}

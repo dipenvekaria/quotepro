@@ -26,6 +26,7 @@ import {
   createCatalogItem,
   setCatalogItemLabels,
   deleteCatalogItem,
+  archiveCatalogItems,
   archiveStarterLeftovers,
   importCatalogCsv,
   updateCatalogItem,
@@ -114,6 +115,34 @@ export function CatalogManager({
   imageUrls?: Record<string, string>
 }) {
   const router = useRouter()
+  // Bulk selection — the escape hatch for "I don't want these 100 rows".
+  const [selected, setSelected] = useState<Set<string>>(new Set())
+  const [confirmArchive, setConfirmArchive] = useState(false)
+  const [archiving, startArchive] = useTransition()
+
+  function toggleSelected(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  function runBulkArchive() {
+    const ids = [...selected]
+    startArchive(async () => {
+      const res = await archiveCatalogItems({ ids })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      toast.success(`Archived ${res.data.archived} items — restorable any time.`)
+      setSelected(new Set())
+      setConfirmArchive(false)
+      router.refresh()
+    })
+  }
   const [open, setOpen] = useState(false)
   const [draft, setDraft] = useState<Draft>(EMPTY)
   const [saving, startSave] = useTransition()
@@ -427,6 +456,20 @@ export function CatalogManager({
                 {allOpen ? 'Collapse all' : 'Expand all'}
               </button>
             )}
+            {canEdit && (
+              <button
+                type="button"
+                onClick={() => {
+                  const visible = filtered.filter((i) => i.is_active).map((i) => i.id)
+                  setSelected((prev) =>
+                    prev.size >= visible.length ? new Set() : new Set(visible),
+                  )
+                }}
+                className="min-h-11 shrink-0 rounded-md px-2 text-xs text-muted-foreground hover:text-foreground lg:min-h-9"
+              >
+                {selected.size > 0 ? 'Clear selection' : 'Select all'}
+              </button>
+            )}
             {searching && (
               <span className="shrink-0 text-xs tabular text-muted-foreground">
                 {filtered.length} {filtered.length === 1 ? 'match' : 'matches'}
@@ -485,8 +528,18 @@ export function CatalogManager({
                     className={cn(
                       'flex items-center gap-4 px-5 py-3',
                       !it.is_active && 'opacity-50',
+                      selected.has(it.id) && 'bg-primary/5',
                     )}
                   >
+                    {canEdit && it.is_active && (
+                      <input
+                        type="checkbox"
+                        checked={selected.has(it.id)}
+                        onChange={() => toggleSelected(it.id)}
+                        aria-label={`Select ${it.name}`}
+                        className="h-5 w-5 shrink-0 rounded border-input accent-primary"
+                      />
+                    )}
                     {/* The picture a technician points at while explaining the
                         part. Shown to every role; the price beside it is not. */}
                     {it.image_path && imageUrls[it.image_path] ? (
@@ -667,6 +720,43 @@ export function CatalogManager({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* Bulk action bar — appears with a selection, within thumb reach. */}
+      {selected.size > 0 && (
+        <div className="fixed inset-x-0 bottom-16 z-30 border-t border-border bg-background/95 p-3 backdrop-blur sm:bottom-0">
+          <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
+            <span className="text-sm font-medium tabular">{selected.size} selected</span>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" className="h-11" onClick={() => setSelected(new Set())}>
+                Cancel
+              </Button>
+              <Button variant="destructive" className="h-11" onClick={() => setConfirmArchive(true)}>
+                Archive {selected.size}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmArchive && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-2xl border border-border bg-popover p-6 shadow-2xl">
+            <h2 className="text-lg font-semibold">Archive {selected.size} items?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              They leave your price book and quoting immediately. Nothing is deleted —
+              archived items stay restorable, and quotes that already used them are
+              untouched.
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-2">
+              <Button variant="outline" className="h-11" onClick={() => setConfirmArchive(false)}>
+                Keep them
+              </Button>
+              <Button variant="destructive" className="h-11" disabled={archiving} onClick={runBulkArchive}>
+                {archiving ? 'Archiving…' : `Archive ${selected.size}`}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
