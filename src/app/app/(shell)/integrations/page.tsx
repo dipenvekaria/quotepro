@@ -1,14 +1,9 @@
 import { redirect } from 'next/navigation'
 import {
-  Calendar,
   CreditCard,
   Download,
   FileText,
-  MessageSquare,
-  Package,
-  Slack,
   Sparkles,
-  Zap,
 } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
@@ -120,63 +115,9 @@ export default async function IntegrationsPage() {
             <BookkeepingExports />
           </div>
         </IntegrationShell>
-        <IntegrationShell
-          logo={<FileText className="h-5 w-5" />}
-          name="Xero"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Same as QuickBooks — one-click sync of invoices, payments, and payouts."
-        >
-          <ComingSoon />
-        </IntegrationShell>
       </IntegrationCategory>
 
-      {/* Calendar & Comms */}
-      <IntegrationCategory title="Calendar & communication" description="Two-way sync + SMS.">
-        <IntegrationShell
-          logo={<Calendar className="h-5 w-5" />}
-          name="Google Calendar"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Scheduled jobs appear on your Google Calendar. Two-way sync so reschedules land in Rivet."
-        >
-          <ComingSoon />
-        </IntegrationShell>
-        <IntegrationShell
-          logo={<MessageSquare className="h-5 w-5" />}
-          name="Twilio SMS"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Text quote and appointment reminders from your own Twilio number."
-        >
-          <ComingSoon />
-        </IntegrationShell>
-      </IntegrationCategory>
 
-      {/* Ops */}
-      <IntegrationCategory title="Automation & alerts" description="Pipe events to your stack.">
-        <IntegrationShell
-          logo={<Zap className="h-5 w-5" />}
-          name="Zapier"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Trigger flows on new lead, quote sent, quote accepted, or invoice paid."
-        >
-          <ComingSoon />
-        </IntegrationShell>
-        <IntegrationShell
-          logo={<Slack className="h-5 w-5" />}
-          name="Slack"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Post to a channel when a big quote is accepted or an invoice hits paid."
-        >
-          <ComingSoon />
-        </IntegrationShell>
-        <IntegrationShell
-          logo={<Package className="h-5 w-5" />}
-          name="Webhooks"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Raw HTTP POST for every workflow event. Bring your own endpoint."
-        >
-          <ComingSoon />
-        </IntegrationShell>
-      </IntegrationCategory>
 
       {/* AI ping */}
       <section className="my-10 rounded-2xl border border-primary/25 bg-gradient-to-br from-primary/8 via-primary/3 to-transparent p-6">
@@ -301,20 +242,6 @@ function BookkeepingExports() {
           </a>
         ))}
       </div>
-    </div>
-  )
-}
-
-function ComingSoon() {
-  return (
-    <div className="rounded-md border border-dashed border-border bg-muted/30 p-3 text-center">
-      {/*
-        Was a "notify me" mailto to hello@quotepro.demo — a domain that does not
-        exist, so the one interactive thing on this card opened a mail client
-        addressed to nobody. No real support address is configured yet; saying
-        less is better than offering a link that goes nowhere.
-      */}
-      <p className="text-xs text-muted-foreground">In development.</p>
     </div>
   )
 }
