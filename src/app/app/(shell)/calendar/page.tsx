@@ -344,7 +344,7 @@ export default async function CalendarPage({
           <EmptyState
             icon={Calendar}
             title={view === 'month' ? 'No jobs scheduled this month' : 'No jobs scheduled this week'}
-            description="Won quotes with a scheduled date will appear here. Set a schedule on a work item from its detail page."
+            description="Won quotes with a scheduled date will appear here. Schedule a job from its page in the pipeline."
           />
         </div>
       ) : (

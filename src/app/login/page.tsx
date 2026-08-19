@@ -261,6 +261,14 @@ export default function LoginPage() {
               anyone can call the auth API with the public anon key, so hiding
               this button is honesty about what will work, not the lock. Invite
               links land in signup mode regardless: invited users are expected. */}
+          {isSignUp && (
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              By creating an account you agree to the{' '}
+              <a href="/terms" className="underline underline-offset-4 hover:text-foreground">Terms of Service</a>
+              {' '}and{' '}
+              <a href="/privacy" className="underline underline-offset-4 hover:text-foreground">Privacy Policy</a>.
+            </p>
+          )}
           {(SIGNUPS_OPEN || isSignUp) ? (
             <p className="mt-8 text-center text-sm text-muted-foreground">
               {isSignUp ? 'Already have an account?' : "New here?"}{' '}

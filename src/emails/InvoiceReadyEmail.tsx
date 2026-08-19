@@ -47,7 +47,7 @@ export const InvoiceReadyEmail = ({
         <Section style={content}>
           <Text style={greeting}>Hi {customerName.trim()},</Text>
           <Text style={paragraph}>
-            {companyName ? `Thank you for choosing ${companyName}!` : 'Thank you!'} Your work has
+            {companyName ? `Thank you for choosing ${companyName}.` : 'Thank you.'} Your work has
             been completed and your invoice is ready.
           </Text>
 

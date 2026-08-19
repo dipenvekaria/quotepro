@@ -31,7 +31,7 @@ export async function updateSession(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
 
   // Allow public routes
-  const publicRoutes = ['/login', '/auth', '/q/', '/i/', '/join', '/forgot-password', '/reset-password']
+  const publicRoutes = ['/login', '/auth', '/q/', '/i/', '/join', '/forgot-password', '/reset-password', '/privacy', '/terms']
   const isPublicRoute =
     // The homepage is the marketing page for signed-out visitors; the page
     // itself sends signed-in users on to /app.

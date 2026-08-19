@@ -299,16 +299,42 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer — a real one. Only links that resolve; no socials until they
+          exist, no mailto until the domain sends mail. */}
       <footer className="border-t border-border/70">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <div className="flex items-center gap-2">
-            <RivetMark className="h-4 w-4" />
-            <span>Rivet — quote to cash for field service</span>
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+          <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr_1fr]">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+                  <RivetMark className="h-4 w-4" />
+                </div>
+                <span className="text-base font-semibold">Rivet</span>
+              </div>
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                Quote to cash for field service. Everything included, no add-ons — for
+                every trade that quotes from a price book.
+              </p>
+            </div>
+            <nav aria-label="Product">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Product</h3>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li><Link href="#pricing" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">Pricing</Link></li>
+                <li><Link href="#early-access" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">Get early access</Link></li>
+                <li><Link href="/login" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">Sign in</Link></li>
+              </ul>
+            </nav>
+            <nav aria-label="Legal">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Legal</h3>
+              <ul className="mt-3 space-y-2 text-sm">
+                <li><Link href="/privacy" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">Privacy</Link></li>
+                <li><Link href="/terms" className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">Terms</Link></li>
+              </ul>
+            </nav>
           </div>
-          <Link href="/login" className="underline-offset-4 hover:text-foreground hover:underline">
-            Sign in
-          </Link>
+          <div className="mt-10 border-t border-border/60 pt-6 text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Rivet. All rights reserved.
+          </div>
         </div>
       </footer>
 
