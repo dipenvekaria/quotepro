@@ -13,12 +13,13 @@ import { inviteContext, type InviteContext } from '@/app/join/[token]/actions'
 import { ROLE_LABEL } from '@/lib/team-personas'
 import type { UserRole } from '@/lib/permissions'
 import { cn } from '@/lib/utils'
+import { env } from '@/lib/env'
 import { useAuth } from './use-auth'
 
 /** `/join/<token>` and nothing else — this decides what gets sent to a server action. */
 
 // Flip with NEXT_PUBLIC_SIGNUPS_OPEN=true; unset means invite-only.
-const SIGNUPS_OPEN = process.env.NEXT_PUBLIC_SIGNUPS_OPEN === 'true'
+const SIGNUPS_OPEN = env.NEXT_PUBLIC_SIGNUPS_OPEN === 'true'
 
 const JOIN_NEXT = /^\/join\/([A-Za-z0-9_-]{16,128})$/
 
