@@ -42,6 +42,8 @@ const NOT_COMPANY_DATA = new Set([
   // Rate-limit counters. A bucket string and a number, with nothing to restore
   // and nothing worth keeping when a company closes.
   'rate_limits',
+  // Pre-customer interest capture from the homepage — no tenant owns it.
+  'waitlist',
 ])
 
 beforeAll(async () => {
