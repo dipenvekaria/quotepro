@@ -6,6 +6,8 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 
+import { setPassCardFees } from '../integrations/actions'
+
 // ---------------------------------------------------------------------------
 
 export function StripeConnect({
@@ -112,16 +114,13 @@ export function StripeConnect({
               type="checkbox"
               defaultChecked={passCardFees}
               onChange={async (e) => {
-                const res = await fetch('/api/settings/pass-card-fees', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ pass_card_fees: e.target.checked }),
-                })
+                const checked = e.target.checked
+                const res = await setPassCardFees({ pass_card_fees: checked })
                 if (!res.ok) {
-                  toast.error('Could not save preference.')
-                  e.target.checked = !e.target.checked
+                  toast.error(res.error)
+                  e.target.checked = !checked
                 } else {
-                  toast.success(e.target.checked ? 'Card fees now passed to customer.' : 'Card fees now absorbed.')
+                  toast.success(checked ? 'Card fees now passed to customer.' : 'Card fees now absorbed.')
                 }
               }}
               className="mt-0.5 h-4 w-4 rounded border-input"

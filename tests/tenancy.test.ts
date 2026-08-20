@@ -33,6 +33,11 @@ const SRC = join(ROOT, 'src')
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   {
+    file: 'src/app/app/(shell)/integrations/actions.ts',
+    match: 'update companies',
+    reason: 'Keys off companies.id — the tenant key — from getSession().',
+  },
+  {
     file: 'src/app/api/stripe/connect/route.ts',
     match: 'from companies',
     reason: 'Keys off companies.id — the tenant key — from getSession().',
