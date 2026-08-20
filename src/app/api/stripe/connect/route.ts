@@ -1,61 +1,50 @@
 import { NextResponse } from 'next/server'
 
-import { createClient } from '@/lib/supabase/server'
+import { getSession } from '@/lib/auth/session'
+import { query } from '@/lib/db'
 import {
   getConnectRefreshUrl,
   getConnectReturnUrl,
   getStripe,
 } from '@/lib/stripe/client'
-import { sbServer } from '@/lib/supabase/untyped'
 
 export const dynamic = 'force-dynamic'
 
 /**
  * Starts (or resumes) Stripe Connect Express onboarding.
- * - Creates a Stripe Account for the caller's company if none exists.
- * - Creates an Account Link and redirects the browser to Stripe.
+ *
+ * Reads through pg like the rest of the app. The previous version read
+ * `users` through PostgREST and discarded the error, so any API-layer
+ * failure surfaced as "No company on this user" — with the row sitting
+ * right there in the database.
  */
 export async function POST() {
   const stripe = getStripe()
   if (!stripe) {
-    return NextResponse.json(
-      { error: 'Stripe not configured on this server.' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Stripe not configured on this server.' }, { status: 500 })
   }
 
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  const session = await getSession()
+  if (!session) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  const { companyId, role, email } = session
 
-  const admin = await sbServer()
-  const { data: profile } = await admin
-    .from('users')
-    .select('company_id, role, email')
-    .eq('id', user.id)
-    .maybeSingle()
-  if (!profile?.company_id) {
-    return NextResponse.json({ error: 'No company on this user' }, { status: 400 })
-  }
-  if (profile.role !== 'owner' && profile.role !== 'admin') {
-    return NextResponse.json(
-      { error: 'Only owners and admins can connect Stripe.' },
-      { status: 403 },
-    )
+  if (role !== 'owner' && role !== 'admin') {
+    return NextResponse.json({ error: 'Only owners and admins can connect Stripe.' }, { status: 403 })
   }
 
-  const { data: company } = await admin
-    .from('companies')
-    .select('id, name, email, stripe_account_id')
-    .eq('id', profile.company_id)
-    .maybeSingle()
+  const [company] = await query<{
+    id: string
+    name: string
+    email: string | null
+    stripe_account_id: string | null
+  }>('select id, name, email, stripe_account_id from companies where id = $1 limit 1', [companyId])
   if (!company) return NextResponse.json({ error: 'Company missing' }, { status: 404 })
 
-  let accountId: string = company.stripe_account_id
+  let accountId = company.stripe_account_id
   if (!accountId) {
     const account = await stripe.accounts.create({
       type: 'express',
-      email: company.email ?? profile.email,
+      email: company.email ?? email,
       business_type: 'company',
       capabilities: {
         card_payments: { requested: true },
@@ -68,10 +57,7 @@ export async function POST() {
     })
     accountId = account.id
 
-    await admin
-      .from('companies')
-      .update({ stripe_account_id: accountId })
-      .eq('id', company.id)
+    await query('update companies set stripe_account_id = $1 where id = $2', [accountId, companyId])
   }
 
   const link = await stripe.accountLinks.create({
