@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
         amount: (pi.amount_received ?? pi.amount) / 100,
         method: methodFromPaymentMethod(pi.payment_method_types),
         reference: pi.id,
+        aliases: [pi.id],
       })
       break
     }
@@ -98,11 +99,15 @@ async function handleInvoicePaid(admin: any, session: Stripe.Checkout.Session) {
   const amount = (session.amount_total ?? 0) / 100
   const method = methodFromPaymentMethod(session.payment_method_types ?? undefined)
 
+  // The PaymentIntent id is what Stripe's Payments page lists — store that as
+  // the reference; the session id rides along so either event dedupes.
+  const pi = typeof session.payment_intent === 'string' ? session.payment_intent : null
   await creditPaymentByInvoiceId(admin, {
     invoiceId,
     amount,
     method,
-    reference: session.id,
+    reference: pi ?? session.id,
+    aliases: [session.id, ...(pi ? [pi] : [])],
   })
 }
 
@@ -114,13 +119,16 @@ async function creditPaymentByInvoiceId(
     amount: number
     method: 'card' | 'bank_transfer' | 'stripe'
     reference: string
+    /** Every id this charge might already be recorded under. The session and
+     *  PI events both fire for one checkout; matching either prevents a
+     *  double credit no matter which arrived first. */
+    aliases: string[]
   },
 ) {
-  // Idempotency: if we already recorded a payment for this session id, skip.
   const { data: existing } = await admin
     .from('payments')
     .select('id')
-    .eq('reference_number', input.reference)
+    .in('reference_number', input.aliases)
     .maybeSingle()
   if (existing) return
 

@@ -1593,11 +1593,18 @@ function InvoiceCard({
           </div>
           <ul className="mt-1.5 space-y-1 text-xs">
             {payments.slice(0, 3).map((p) => (
-              <li key={p.id} className="flex justify-between">
-                <span className="capitalize text-muted-foreground">
-                  {p.method.replace('_', ' ')} · {new Date(p.paid_at).toLocaleDateString()}
-                </span>
-                <span className="tabular font-medium">+{fmtMoney(Number(p.amount))}</span>
+              <li key={p.id}>
+                <div className="flex justify-between">
+                  <span className="capitalize text-muted-foreground">
+                    {p.method.replace('_', ' ')} · {new Date(p.paid_at).toLocaleDateString()}
+                  </span>
+                  <span className="tabular font-medium">+{fmtMoney(Number(p.amount))}</span>
+                </div>
+                {p.reference_number && (
+                  <div className="truncate font-mono text-[10px] text-muted-foreground/80">
+                    ref {p.reference_number}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
