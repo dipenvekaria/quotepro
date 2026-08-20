@@ -99,6 +99,9 @@ export async function createInvoiceCheckoutSession(
     return { ok: true, url: session.url ?? '', sessionId: session.id }
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
+    // The whole raw error: request_log_url names the exact Stripe platform
+    // and request, which the message alone hides.
+    console.error('stripe checkout session failed', e)
     return { ok: false, error: msg }
   }
 }
