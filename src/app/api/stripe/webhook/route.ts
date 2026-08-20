@@ -34,10 +34,15 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(rawBody, sig, secret)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
+    // Loud on purpose: a wrong STRIPE_WEBHOOK_SECRET otherwise looks like
+    // payments silently not recording.
+    console.error('stripe webhook signature verification failed', msg)
     return NextResponse.json({ error: `Signature verification failed: ${msg}` }, { status: 400 })
   }
 
   const admin = sbAdmin()
+
+  console.log('stripe webhook event', event.type)
 
   switch (event.type) {
     case 'checkout.session.completed': {
