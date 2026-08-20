@@ -26,7 +26,13 @@ export async function GET() {
   ])
   if (!company?.stripe_account_id) return NextResponse.json({ ok: false })
 
-  const account = await stripe.accounts.retrieve(company.stripe_account_id)
+  let account
+  try {
+    account = await stripe.accounts.retrieve(company.stripe_account_id)
+  } catch (e) {
+    console.error('stripe account refresh failed', e)
+    return NextResponse.json({ ok: false, error: e instanceof Error ? e.message : 'Stripe error' })
+  }
 
   await query(
     `update companies
