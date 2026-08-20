@@ -10,6 +10,7 @@ import { loadBusinessHours } from '@/lib/scheduling/availability'
 import { SettingsForm } from './settings-form'
 import { BillingCard } from './billing-card'
 import { gettingStartedSteps } from '@/lib/getting-started'
+import { refreshStripeAccountFlags } from '@/lib/stripe/connect-status'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
@@ -25,6 +26,7 @@ export default async function SettingsPage({
 }) {
   const { companyId, role } = await requireSession()
   const sp = await searchParams
+  if (sp.stripe) await refreshStripeAccountFlags(companyId)
 
   const [company] = await query<{
     id: string
