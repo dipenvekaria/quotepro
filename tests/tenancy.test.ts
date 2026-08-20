@@ -48,9 +48,14 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'Keys off companies.id — the tenant key — from getSession().',
   },
   {
-    file: 'src/app/api/stripe/connect/refresh/route.ts',
+    file: 'src/lib/stripe/connect-status.ts',
+    match: 'from companies',
+    reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
+  },
+  {
+    file: 'src/lib/stripe/connect-status.ts',
     match: 'update companies',
-    reason: 'Keys off companies.id — the tenant key — from getSession().',
+    reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
   },
   {
     file: 'src/app/app/(shell)/dashboard/actions.ts',

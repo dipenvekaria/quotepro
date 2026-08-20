@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 
 import { requireSession } from '@/lib/auth/session'
+import { refreshStripeAccountFlags } from '@/lib/stripe/connect-status'
 import { query } from '@/lib/db'
 
 import { StripeConnect } from '../settings/stripe-connect'
@@ -18,8 +19,16 @@ import { QuickbooksActions } from './quickbooks-card'
 
 // ---------------------------------------------------------------------------
 
-export default async function IntegrationsPage() {
+export default async function IntegrationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   const { companyId, role } = await requireSession()
+  // Back from Stripe onboarding: sync the cached flags before rendering, or
+  // the button reads "Continue onboarding" forever.
+  const sp = await searchParams
+  if (sp.stripe) await refreshStripeAccountFlags(companyId)
 
   const companyRows = await query<{
     stripe_account_id: string | null

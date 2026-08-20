@@ -25,10 +25,10 @@ export function getWebhookSecret(): string | null {
 
 export function getConnectRefreshUrl(): string {
   const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  return `${base.replace(/\/$/, '')}/app/settings?stripe=refresh`
+  return `${base.replace(/\/$/, '')}/app/integrations?stripe=refresh`
 }
 
 export function getConnectReturnUrl(): string {
   const base = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  return `${base.replace(/\/$/, '')}/app/settings?stripe=connected`
+  return `${base.replace(/\/$/, '')}/app/integrations?stripe=connected`
 }
