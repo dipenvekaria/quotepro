@@ -79,10 +79,14 @@ export function StripeConnect({
       {/* CTA */}
       {canEdit && (
         <div className="flex flex-wrap items-center gap-2">
-          <Button onClick={connect} disabled={busy} className="h-9 gap-1.5">
-            {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ExternalLink className="h-3.5 w-3.5" />}
-            {connected ? 'Continue onboarding' : 'Connect Stripe'}
-          </Button>
+          {/* Once charges are enabled there is nothing left to onboard —
+              account changes happen in Stripe's own dashboard. */}
+          {!ready && (
+            <Button onClick={connect} disabled={busy} className="h-9 gap-1.5">
+              {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ExternalLink className="h-3.5 w-3.5" />}
+              {connected ? 'Continue onboarding' : 'Connect Stripe'}
+            </Button>
+          )}
           {ready && (
             <a
               href="https://dashboard.stripe.com/"
