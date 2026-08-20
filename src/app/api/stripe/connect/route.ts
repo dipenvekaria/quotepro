@@ -41,31 +41,39 @@ export async function POST() {
   if (!company) return NextResponse.json({ error: 'Company missing' }, { status: 404 })
 
   let accountId = company.stripe_account_id
-  if (!accountId) {
-    const account = await stripe.accounts.create({
-      type: 'express',
-      email: company.email ?? email,
-      business_type: 'company',
-      capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
-        us_bank_account_ach_payments: { requested: true },
-      },
-      metadata: {
-        quotepro_company_id: company.id,
-      },
+  try {
+    if (!accountId) {
+      const account = await stripe.accounts.create({
+        type: 'express',
+        email: company.email ?? email,
+        business_type: 'company',
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+          us_bank_account_ach_payments: { requested: true },
+        },
+        metadata: {
+          quotepro_company_id: company.id,
+        },
+      })
+      accountId = account.id
+
+      await query('update companies set stripe_account_id = $1 where id = $2', [accountId, companyId])
+    }
+
+    const link = await stripe.accountLinks.create({
+      account: accountId,
+      refresh_url: getConnectRefreshUrl(),
+      return_url: getConnectReturnUrl(),
+      type: 'account_onboarding',
     })
-    accountId = account.id
 
-    await query('update companies set stripe_account_id = $1 where id = $2', [accountId, companyId])
+    return NextResponse.json({ url: link.url })
+  } catch (e) {
+    // A Stripe rejection must come back as JSON, not an HTML 500 the client
+    // can't parse. Their messages are operator-actionable — pass them through.
+    const message = e instanceof Error ? e.message : 'Stripe rejected the request.'
+    console.error('stripe connect failed', e)
+    return NextResponse.json({ error: message }, { status: 502 })
   }
-
-  const link = await stripe.accountLinks.create({
-    account: accountId,
-    refresh_url: getConnectRefreshUrl(),
-    return_url: getConnectReturnUrl(),
-    type: 'account_onboarding',
-  })
-
-  return NextResponse.json({ url: link.url })
 }
