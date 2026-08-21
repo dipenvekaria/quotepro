@@ -25,6 +25,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { PHOTO_BUCKET } from '@/lib/storage/signed-url'
 import { hasPermission, type UserRole } from '@/lib/permissions'
 import { isLive, type DiscountType } from '@/lib/promotions'
+import { readOnlyGuard } from '@/lib/billing/access'
 
 /**
  * Catalog CRUD.
@@ -81,6 +82,9 @@ async function requireCatalogEditor() {
       error: 'You do not have access to change pricing. An owner can grant it in Settings → Team.',
     }
   }
+  // Every catalog mutation flows through here — one read-only gate covers all.
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   return { ok: true as const, session }
 }
 
@@ -883,6 +887,8 @@ export async function deletePromotion(input: unknown): Promise<Result<{ id: stri
 export async function setCatalogItemImage(formData: FormData): Promise<Result<{ path: string }>> {
   const session = await getSession()
   if (!session) return { ok: false, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   if (!hasPermission(session.role as UserRole, 'canEditCatalog')) {
     return { ok: false, error: 'Only an owner can change the price book.' }
   }

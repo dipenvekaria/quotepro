@@ -58,11 +58,13 @@ export function AppShell({
   user,
   profile,
   company,
+  readOnly = false,
   children,
 }: {
   user: { id: string; email: string }
   profile: Record<string, unknown>
   company: Company
+  readOnly?: boolean
   children: ReactNode
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -119,6 +121,14 @@ export function AppShell({
           setMenuOpen={setMenuOpen}
           onOpenMobileNav={() => setMobileNavOpen(true)}
         />
+        {readOnly && (
+          <div className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-sm text-amber-800 dark:text-amber-300">
+            Your subscription has ended — the account is read-only.{' '}
+            <Link href="/app/settings" className="font-semibold underline underline-offset-2">
+              Renew in Billing
+            </Link>
+          </div>
+        )}
         <main className="flex-1 overflow-y-auto pb-20 sm:pb-0">{children}</main>
       </div>
       <MobileTabBar onAskBolt={() => setBoltOpen(true)} />

@@ -16,6 +16,7 @@ import type { UserRole } from '@/lib/permissions'
 import { nextOccurrence } from '@/lib/recurring'
 import { companyTz } from '@/lib/time'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
+import { readOnlyGuard } from '@/lib/billing/access'
 import {
   NOMINAL_JOB_HOURS,
   bookedHoursOn,
@@ -56,6 +57,8 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   const d = parsed.data
   const values: unknown[] = []
@@ -217,6 +220,8 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   // A job is not scheduled until it has a date. "Schedule job" used to change
   // only the status, leaving scheduled_start null — so the work item said
@@ -300,6 +305,8 @@ export async function changeStatus(input: z.infer<typeof statusSchema>) {
 export async function sendQuote(id: string) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   const [item] = await query<{
     id: string
@@ -461,6 +468,8 @@ export async function generateCustomerSummary(input: unknown) {
   if (!session) return { ok: false as const, error: 'Not authenticated' }
   const rl = await checkRateLimit(`aiGenerate:${session.companyId}`, LIMITS.aiGenerate.limit, LIMITS.aiGenerate.windowSeconds)
   if (!rl.allowed) return rateLimited()
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { companyId } = session
 
   const [work] = await query<{ id: string; description: string | null; company_name: string | null }>(
@@ -642,6 +651,8 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   const [item] = await query<{ id: string; quote_number: string | null; job_name: string | null }>(
     'select id, quote_number, job_name from work_items where id = $1 and company_id = $2 limit 1',
@@ -731,6 +742,8 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
 export async function requestReview(id: string) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   const [item] = await query<{
     id: string

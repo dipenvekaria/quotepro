@@ -16,6 +16,7 @@ import { query, withTransaction, withUser } from '@/lib/db'
 import { computeTotals } from '@/lib/money'
 import { loadItemLabels, loadLivePromotions, priceWithPromotions } from '@/lib/promotions'
 import { recommendCompanions } from '@/lib/quotes/recommend'
+import { readOnlyGuard } from '@/lib/billing/access'
 
 // -----------------------------------------------------------------------------
 // AI quote generation.
@@ -67,6 +68,8 @@ export async function generateQuoteItems(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   // Per company, because AI drafting costs real money per call and a shared
   // bucket would let one contractor exhaust everybody's.
@@ -177,6 +180,8 @@ export async function createDraftQuote(input: CreateDraftInput) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { companyId, userId } = session
 
   // A picked customer must belong to this company; an id from anywhere else is
@@ -336,6 +341,8 @@ export async function saveLineItems(input: SaveLineItemsInput) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { companyId } = session
 
   // Ownership check — pg bypasses RLS, so scope the work item to the company.
@@ -490,6 +497,8 @@ export async function recommendLineItems(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   try {
     const items = await recommendCompanions(session.companyId, parsed.data.names)
@@ -618,6 +627,8 @@ export async function editQuoteWithAi(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
 
   const rl = await checkRateLimit(
     `ai:generate:${session.companyId}`,
