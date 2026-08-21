@@ -15,7 +15,7 @@ needs a human. Engineer machine setup is a different doc:
 | AI | `GEMINI_API_KEY` funded; no fallbacks — failures surface as errors and log `status='degraded'` in `ai_conversations` |
 | Email | Resend with **verified** getrivet.ai domain; sends as "Rivet <quotes@getrivet.ai>"; replies go to the business, not Rivet |
 | Payments (customers → contractor) | Stripe Connect wired; contractors onboard from Integrations |
-| Billing (contractor → Rivet) | Stripe Billing: founding $49 Solo / $99 Team (first 100 companies, then $79/$139 — automatic), 14-day trial, card up front; prices self-provision by lookup key |
+| Billing (contractor → Rivet) | Stripe Billing: Solo $49 / Team $99, 14-day trial, card up front; prices self-provision by lookup key |
 | QuickBooks | **Production keys live**; OAuth + sync verified |
 | Crons | `vercel.json`: quote follow-ups, catalog reindex, recurring visits — daily, guarded by `CRON_SECRET` |
 | Support | `SUPPORT_INBOX` set — in-app "Email us" delivers there, reply-to the sender |

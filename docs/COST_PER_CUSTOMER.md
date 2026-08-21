@@ -75,9 +75,9 @@ all-in, including photo tagging.
 
 ## What this means for pricing
 
-Plans (decided 2026-08-21): **founding price $49 Solo / $99 Team for the first
-100 companies**, locked in for as long as they stay subscribed; **$79 / $139**
-after that. One price, no add-ons.
+Plans (decided 2026-08-21): **$49 Solo / $99 Team**, with a planned quiet raise
+to **$79 / $139** for new signups once voice ships (see `PRICING_STRATEGY.md` —
+no promotional framing anywhere). One price, no add-ons.
 
 - **Everything except voice is cheap enough to include everywhere** — photo
   tagging, unlimited quoting, Bolt, and normal SMS come to ~$4/customer. On a
@@ -120,31 +120,31 @@ bundled into the flat price rather than sold as an add-on.
 Worst case — every subscriber burns the whole allowance — at the realistic
 $0.15/min all-in voice rate (~2.5-min average call):
 
-| Plan | Included | ≈ calls | Voice @ $0.15 | + other | Cost | Founding margin | Full-price margin |
+| Plan | Included | ≈ calls | Voice @ $0.15 | + other | Cost | Margin today | After planned raise |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Solo | 100 min | ~40 | $15.00 | $4 | **$19** | $49 → **61%** | $79 → **76%** |
 | Team | 300 min | ~120 | $45.00 | $5 | **$50** | $99 → **49%** | $139 → **64%** |
 
 At a premium $0.31/min voice model the ceilings tighten: Solo costs $35
-(founding **29%**, full **56%**); Team costs $98 — **breakeven at the founding
-$99**, 29% at $139. That is the one thin edge in the plan: a founding-price
-Team that maxes 300 minutes on a premium voice stack makes nothing. It is
+(**29%** at $49, **56%** at $79); Team costs $98 — **breakeven at $99**, 29%
+at $139. That is the one thin edge in the plan: a $99 Team that maxes 300
+minutes on a premium voice stack makes nothing. It is
 acceptable because (a) the chosen stack (Retell on Gemini) prices at
 ~$0.13–0.15, not $0.31, and (b) blended reality sits far below full
 utilisation — most subscribers won't enable voice or won't max it. But it makes
 the voice-vendor rate a pricing decision, not just an engineering one.
 
-Break-even talk time at $0.15/min: founding Solo ~300 min, founding Team
-~627 min, full-price Solo ~500 min, full-price Team ~893 min — all multiples of
-the allowance, which is what makes the caps safe rather than tight.
+Break-even talk time at $0.15/min: Solo ~300 min ($49) / ~500 min ($79), Team
+~627 min ($99) / ~893 min ($139) — all multiples of the allowance, which is
+what makes the caps safe rather than tight.
 
 ## The one number that must hold: the cap behaviour
 
 The allowance is safe **only if the cap actually caps.** The math breaks in one
 place — a **Solo** user who runs far past 100 minutes:
 
-- Founding Solo at 300 min ≈ $49 cost against a $49 price — **breakeven**, and
-  a loss beyond it.
+- Solo at 300 min ≈ $49 cost against the $49 price — **breakeven**, and a loss
+  beyond it.
 - Team at 300 min ≈ $50 cost against $99 — still 49% margin.
 
 So the design, consistent with "no add-on fees, no gimmicks":
@@ -153,9 +153,9 @@ So the design, consistent with "no add-on fees, no gimmicks":
   brand promises never to charge.
 - **Solo caps near its allowance** and nudges the heavy caller to upgrade to
   Team, where the minutes (and the margin) are there.
-- **Team can be soft** — it stays profitable out to ~600 minutes even at the
-  founding price, so it can run past 300 quietly for all but pathological users
-  rather than cutting a customer off mid-season.
+- **Team can be soft** — it stays profitable out to ~600 minutes at $99, so it
+  can run past 300 quietly for all but pathological users rather than cutting a
+  customer off mid-season.
 
 Frame it as "**100 minutes of call answering included**," not a "100-minute limit."
 
@@ -175,8 +175,7 @@ So a contractor who wants software **and** AI answering pays twice today:
 field-service software ($49–$299) **plus** an AI receptionist ($109–$299) =
 roughly **$158–$598 / month**.
 
-Rivet folds voice into **$49 / $99 all-in** (founding; $79 / $139 after the
-first 100). That is the differentiator — you deliver, for the price of the
+Rivet folds voice into **$49 / $99 all-in**. That is the differentiator — you deliver, for the price of the
 software alone, what the market sells as a separate $109–$299 product. Team's
 300 included minutes now exceed Rosie's $49-a-month standalone tier (250 min)
 — the plan carries a whole receptionist product inside it, plus the software.
