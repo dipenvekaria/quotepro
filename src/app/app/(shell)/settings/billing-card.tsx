@@ -18,11 +18,15 @@ export function BillingCard({
   status,
   trialEndsAt,
   canEdit,
+  founding,
+  prices,
 }: {
   plan: string | null
   status: string | null
   trialEndsAt: string | null
   canEdit: boolean
+  founding: boolean
+  prices: { solo: string; team: string }
 }) {
   const [busy, start] = useTransition()
 
@@ -46,6 +50,11 @@ export function BillingCard({
           14-day free trial on either size. Card up front, nothing charged until day 14,
           cancel anytime from this page.
         </p>
+        {founding && (
+          <p className="text-sm font-medium">
+            Founding price — you keep it for as long as you stay subscribed.
+          </p>
+        )}
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button
             variant="outline"
@@ -53,14 +62,14 @@ export function BillingCard({
             disabled={!canEdit || busy}
             onClick={() => go(() => startSubscription('solo'))}
           >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Start Solo — $39/mo'}
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : `Start Solo — ${prices.solo}/mo`}
           </Button>
           <Button
             className="h-11 flex-1"
             disabled={!canEdit || busy}
             onClick={() => go(() => startSubscription('team'))}
           >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Start Team — $99/mo'}
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : `Start Team — ${prices.team}/mo`}
           </Button>
         </div>
       </div>

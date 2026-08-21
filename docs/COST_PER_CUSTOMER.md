@@ -75,11 +75,13 @@ all-in, including photo tagging.
 
 ## What this means for pricing
 
-Plans are Solo **$39** and Team **$99**, one price, no add-ons.
+Plans (decided 2026-08-21): **founding price $49 Solo / $99 Team for the first
+100 companies**, locked in for as long as they stay subscribed; **$79 / $139**
+after that. One price, no add-ons.
 
 - **Everything except voice is cheap enough to include everywhere** — photo
   tagging, unlimited quoting, Bolt, and normal SMS come to ~$4/customer. On a
-  $39 plan that is ~90% gross margin.
+  $49 plan that is ~92% gross margin.
 - **Voice is the piece that can break "one price."** A typical voice user costs
   ~$23 (41% margin on Solo); a heavy one costs ~$49 — more than the Solo price.
   Voice needs a boundary to stay in a flat plan. Options:
@@ -108,35 +110,41 @@ phone call.
 
 ---
 
-# Voice allowance model: 60 min (Solo) / 120 min (Team)
+# Voice allowance model: 100 min (Solo) / 300 min (Team)
 
-Proposed: include **60 voice minutes** on Solo ($39) and **120** on Team ($99),
+Decided 2026-08-21: include **100 voice minutes** on Solo and **300** on Team,
 bundled into the flat price rather than sold as an add-on.
 
 ## Margin at full utilisation
 
-Even if every subscriber burns their whole allowance, both plans stay
-comfortably profitable — at the realistic mid voice rate and at the premium
-rate.
+Worst case — every subscriber burns the whole allowance — at the realistic
+$0.15/min all-in voice rate (~2.5-min average call):
 
-| Plan | Included | ≈ calls* | Voice @ $0.15 | + other | Cost | Margin |
-| --- | --- | --- | --- | --- | --- | --- |
-| Solo $39 | 60 min | ~24 | $9.00 | $4 | **$13** | **67%** |
-| Team $99 | 120 min | ~48 | $18.00 | $5 | **$23** | **77%** |
+| Plan | Included | ≈ calls | Voice @ $0.15 | + other | Cost | Founding margin | Full-price margin |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Solo | 100 min | ~40 | $15.00 | $4 | **$19** | $49 → **61%** | $79 → **76%** |
+| Team | 300 min | ~120 | $45.00 | $5 | **$50** | $99 → **49%** | $139 → **64%** |
 
-At a premium $0.31/min voice model: Solo still **42%** ($22.60 cost), Team
-**57%** ($42.20). *≈ calls assumes 2.5-min average.
+At a premium $0.31/min voice model the ceilings tighten: Solo costs $35
+(founding **29%**, full **56%**); Team costs $98 — **breakeven at the founding
+$99**, 29% at $139. That is the one thin edge in the plan: a founding-price
+Team that maxes 300 minutes on a premium voice stack makes nothing. It is
+acceptable because (a) the chosen stack (Retell on Gemini) prices at
+~$0.13–0.15, not $0.31, and (b) blended reality sits far below full
+utilisation — most subscribers won't enable voice or won't max it. But it makes
+the voice-vendor rate a pricing decision, not just an engineering one.
 
-Because most subscribers either won't enable voice or won't max the allowance,
-the **blended** cost sits far below these ceilings — the full-use figures are
-the worst case, and the worst case is still healthy.
+Break-even talk time at $0.15/min: founding Solo ~300 min, founding Team
+~627 min, full-price Solo ~500 min, full-price Team ~893 min — all multiples of
+the allowance, which is what makes the caps safe rather than tight.
 
 ## The one number that must hold: the cap behaviour
 
 The allowance is safe **only if the cap actually caps.** The math breaks in one
-place — a **Solo** user who runs well past 60 minutes:
+place — a **Solo** user who runs far past 100 minutes:
 
-- Solo at 300 min ≈ $49 cost against a $39 price — **a loss.**
+- Founding Solo at 300 min ≈ $49 cost against a $49 price — **breakeven**, and
+  a loss beyond it.
 - Team at 300 min ≈ $50 cost against $99 — still 49% margin.
 
 So the design, consistent with "no add-on fees, no gimmicks":
@@ -145,11 +153,11 @@ So the design, consistent with "no add-on fees, no gimmicks":
   brand promises never to charge.
 - **Solo caps near its allowance** and nudges the heavy caller to upgrade to
   Team, where the minutes (and the margin) are there.
-- **Team can be soft** — it stays profitable out to ~400 minutes, so it can run
-  past 120 quietly for all but pathological users rather than cutting a customer
-  off mid-season.
+- **Team can be soft** — it stays profitable out to ~600 minutes even at the
+  founding price, so it can run past 300 quietly for all but pathological users
+  rather than cutting a customer off mid-season.
 
-Frame it as "**60 minutes of call answering included**," not "60-minute limit."
+Frame it as "**100 minutes of call answering included**," not a "100-minute limit."
 
 ## How voice compares with competitors
 
@@ -167,20 +175,22 @@ So a contractor who wants software **and** AI answering pays twice today:
 field-service software ($49–$299) **plus** an AI receptionist ($109–$299) =
 roughly **$158–$598 / month**.
 
-Rivet folds voice into **$39 / $99 all-in.** That is the differentiator — you
-deliver, for the price of the software alone, what the market sells as a
-separate $109–$299 product.
+Rivet folds voice into **$49 / $99 all-in** (founding; $79 / $139 after the
+first 100). That is the differentiator — you deliver, for the price of the
+software alone, what the market sells as a separate $109–$299 product. Team's
+300 included minutes now exceed Rosie's $49-a-month standalone tier (250 min)
+— the plan carries a whole receptionist product inside it, plus the software.
 
 Two honest caveats on the comparison:
 
-- **The included minutes are modest.** 60 min is small next to Rosie's 250. So
-  Rivet's voice is positioned as *bundled overflow / after-hours answering*,
-  not a full-time replacement for a dedicated 250-minute receptionist. For a
-  solo just starting out, 60 minutes free-with-your-software beats paying $49
-  extra for Rosie; for a high-volume shop, Team's 120 min (or a future
-  voice-heavy tier) is the answer.
+- **Solo's minutes are modest by design.** 100 min is small next to Rosie's
+  250, so Solo's voice is positioned as *bundled overflow / after-hours
+  answering*, not a full-time receptionist. For a solo just starting out, 100
+  minutes free-with-your-software beats paying $49 extra for Rosie; a
+  high-volume shop moves to Team, whose 300 minutes exceed Rosie's entry tier
+  outright.
 - **Your cost floor is far below the market's price floor.** Standalone
-  receptionists *charge* $109–$299; your *cost* for 60–120 bundled minutes is
-  $9–$18. That headroom means a future "voice-forward" plan could undercut every
-  standalone receptionist and still print margin — without ever charging an
-  add-on fee.
+  receptionists *charge* $109–$299; your *cost* for 100–300 bundled minutes is
+  $15–$45. That headroom means a future "voice-forward" plan could undercut
+  every standalone receptionist and still print margin — without ever charging
+  an add-on fee.

@@ -136,6 +136,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/lib/stripe/billing.ts',
+    match: 'select count(*)::int as n',
+    reason: 'Founding-price counter: platform-wide by design, returns a bare count and no tenant data.',
+  },
+  {
+    file: 'src/lib/stripe/billing.ts',
     match: 'update companies',
     reason:
       'Writes key off companies.id — the tenant key — supplied by the session (checkout/portal) ' +

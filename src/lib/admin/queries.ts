@@ -145,7 +145,9 @@ type BizRow = Record<string, string>
 export async function platformBusiness(): Promise<PlatformBusiness> {
   const [row] = await query<BizRow>(
     `select
-       (select coalesce(sum(case plan when 'solo' then 3900 when 'team' then 9900 else 0 end), 0)
+       -- Founding prices; once the 100 founding spots fill, MRR needs the real
+       -- per-subscription amount from Stripe rather than a flat per-plan figure.
+       (select coalesce(sum(case plan when 'solo' then 4900 when 'team' then 9900 else 0 end), 0)
           from companies where subscription_status = 'active') as mrr_cents,
        (select count(*) from companies where plan = 'solo' and subscription_status = 'active') as solo_active,
        (select count(*) from companies where plan = 'team' and subscription_status = 'active') as team_active,
