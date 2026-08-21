@@ -16,27 +16,25 @@ needs a human. Engineer machine setup is a different doc:
 | Email | Resend with **verified** getrivet.ai domain; sends as "Rivet <quotes@getrivet.ai>"; replies go to the business, not Rivet |
 | Payments (customers → contractor) | Stripe Connect wired; contractors onboard from Integrations |
 | Billing (contractor → Rivet) | Stripe Billing: Solo $39 / Team $99, 14-day trial, card up front; prices self-provision by lookup key |
-| QuickBooks | OAuth + sync wired — **sandbox keys** (see below) |
+| QuickBooks | **Production keys live**; OAuth + sync verified |
 | Crons | `vercel.json`: quote follow-ups, catalog reindex, recurring visits — daily, guarded by `CRON_SECRET` |
 | Support | `SUPPORT_INBOX` set — in-app "Email us" delivers there, reply-to the sender |
+| Payments (sandbox) | Full chain verified on prod: checkout → webhook → invoice paid, pi reference stored |
+| Sentry | Live — DSN set, client+server capture verified with a test error |
+| PostHog | Live — pageviews capturing, autocapture off |
+| Ops portal | **Field Genie** at thefieldgenie.com/admin — allow-listed Google accounts only; business metrics + Vercel/Sentry/PostHog snapshots; getrivet.ai/admin 404s |
 
 ## To do — in order
 
-1. **QuickBooks production keys.** `QBO_ENVIRONMENT` is unset in prod, and it
-   defaults to `sandbox` — a real contractor connecting today would sync to an
-   Intuit sandbox, not their books. In the [Intuit developer portal](https://developer.intuit.com):
-   get production keys for the app (Intuit runs a short questionnaire), add redirect
-   `https://getrivet.ai/api/integrations/quickbooks/callback`, then set `QBO_CLIENT_ID`,
-   `QBO_CLIENT_SECRET` (production values) and `QBO_ENVIRONMENT=production` in Vercel.
+1. **Supabase Auth config (5 minutes).** Dashboard → Auth → URL Configuration:
+   add `https://thefieldgenie.com/**` to Redirect URLs (portal sign-in), set Site
+   URL to `https://getrivet.ai`, and turn **Confirm email** on at launch.
 2. **Stripe live mode.** Everything currently runs on sandbox keys. At launch:
    swap `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` to live, re-create the webhook
    endpoint on live mode pointing at `https://getrivet.ai/api/stripe/webhook`, and
    enable `customer.subscription.created / updated / deleted` events on it (billing
    state stays stale without them).
-3. **Supabase Auth config.** Dashboard → Auth: set Site URL to
-   `https://getrivet.ai`, keep it in Redirect URLs, and turn **Confirm email** on at
-   launch (off during testing).
-4. **Google OAuth branding.** Cloud console → OAuth consent screen: app name, logo,
+3. **Google OAuth branding.** Cloud console → OAuth consent screen: app name, logo,
    getrivet.ai domain — this is what replaces the raw `supabase.co` text users see on
    the Google login screen. `/privacy` and `/terms` URLs exist and are live.
 5. **Open the doors.** Set `NEXT_PUBLIC_SIGNUPS_OPEN=true` (unset = false =
