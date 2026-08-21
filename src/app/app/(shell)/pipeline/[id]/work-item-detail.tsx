@@ -537,6 +537,15 @@ export function WorkItemDetail({
     toast.success('Link copied')
   }
 
+  const invoiceUrl = isClient && invoice ? `${window.location.origin}/i/${invoice.public_token}` : ''
+  const invoiceAmountDue = invoice
+    ? Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
+    : 0
+  function copyPayLink() {
+    navigator.clipboard.writeText(invoiceUrl)
+    toast.success('Payment link copied — send it to your customer')
+  }
+
   const customerInitials = (workItem.customers?.name ?? '?')
     .split(' ')
     .slice(0, 2)
@@ -679,8 +688,7 @@ export function WorkItemDetail({
                   customer an invoice for $0.00. */}
               {(workItem.status === 'quote_accepted' ||
                 workItem.status === 'job_scheduled' ||
-                workItem.status === 'job_in_progress' ||
-                workItem.status === 'job_completed') &&
+                workItem.status === 'job_in_progress') &&
                 total > 0 &&
                 !invoice && (
                   <Button
@@ -706,6 +714,58 @@ export function WorkItemDetail({
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
         {/* Left column */}
         <div className="space-y-6">
+          {/* The invoice is the natural next step once a job is done, made the
+              loud one on the page. Copy stays neutral — a contractor may be
+              standing next to the customer looking at this screen. No invoice
+              yet → send it; sent but unpaid → the payment link is front and
+              centre. */}
+          {workItem.status === 'job_completed' &&
+            total > 0 &&
+            (!invoice || invoice.status !== 'paid') && (
+              <section className="rounded-xl border border-primary/40 bg-primary/5 shadow-sm">
+                <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="min-w-0">
+                    <h2 className="text-base font-semibold">
+                      {invoice
+                        ? `${fmtMoney(invoiceAmountDue)} outstanding`
+                        : 'Job complete — send the invoice'}
+                    </h2>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      {invoice
+                        ? `Invoice ${invoice.invoice_number} is with ${workItem.customers?.name ?? 'your customer'}. Share the payment link, or record a payment taken another way.`
+                        : 'The customer can pay online from the invoice in a tap.'}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 flex-wrap gap-2">
+                    {!invoice ? (
+                      <Button onClick={doSendInvoice} disabled={invoiceSending} className="h-11 gap-1.5">
+                        {invoiceSending ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Send className="h-4 w-4" />
+                        )}
+                        Send invoice
+                      </Button>
+                    ) : (
+                      <>
+                        <Button onClick={copyPayLink} className="h-11 gap-1.5">
+                          <Copy className="h-4 w-4" />
+                          Copy payment link
+                        </Button>
+                        <Button
+                          onClick={() => setPayOpen(true)}
+                          variant="outline"
+                          className="h-11 gap-1.5"
+                        >
+                          Record payment
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </section>
+            )}
+
           {/* Description + notes */}
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
             <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
@@ -1435,6 +1495,16 @@ export function WorkItemDetail({
           <Button onClick={doSend} disabled={transitioning} className="h-12 w-full gap-1.5 text-base">
             {transitioning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             Send quote
+          </Button>
+        ) : workItem.status === 'job_completed' && total > 0 && !invoice ? (
+          <Button onClick={doSendInvoice} disabled={invoiceSending} className="h-12 w-full gap-1.5 text-base">
+            {invoiceSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            Send invoice
+          </Button>
+        ) : workItem.status === 'job_completed' && invoice && invoice.status !== 'paid' ? (
+          <Button onClick={copyPayLink} className="h-12 w-full gap-1.5 text-base">
+            <Copy className="h-4 w-4" />
+            Copy payment link
           </Button>
         ) : workItem.status === 'job_completed' && !reviewAsked ? (
           <Button onClick={doRequestReview} disabled={askingReview} className="h-12 w-full gap-1.5 text-base">
