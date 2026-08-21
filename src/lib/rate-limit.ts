@@ -3,10 +3,10 @@ import { query } from '@/lib/db'
 /**
  * A fixed-window rate limiter, in Postgres.
  *
- * Two surfaces need one and neither had any. `/api/quotes/sign` is
- * unauthenticated by design — the 128-bit token is the credential — so anyone
- * holding a quote link could call it as fast as they liked. And the AI actions
- * cost real money per call, which makes them the obvious way to run up a bill.
+ * The public token routes are unauthenticated by design — the 128-bit token is
+ * the credential — so anyone holding a quote or invoice link could call them as
+ * fast as they liked. And the AI actions cost real money per call, which makes
+ * them the obvious way to run up a bill. Both are metered here.
  *
  * The whole check is one statement. `on conflict` makes it atomic, so two
  * concurrent requests cannot both read a stale count and both decide they are
@@ -77,15 +77,33 @@ export async function checkRateLimit(
  * catch a real user is a limit that will be removed.
  */
 export const LIMITS = {
-  /** Signing a quote. A customer signs once; ten attempts covers every retry. */
-  sign: { limit: 10, windowSeconds: 600 },
   /** Accepting or declining from the public viewer. */
   quoteAction: { limit: 20, windowSeconds: 600 },
   /** AI drafting, per company. Costs money per call. */
   aiGenerate: { limit: 60, windowSeconds: 3600 },
   /** Reading a price book out of a document — far dearer per call. */
   aiExtract: { limit: 15, windowSeconds: 3600 },
+  /** Public checkout-session creation, per invoice token. */
+  checkout: { limit: 30, windowSeconds: 600 },
+  /** Public waitlist signups, per IP. */
+  waitlist: { limit: 5, windowSeconds: 3600 },
+  /** Bolt assistant turns, per company. Gemini plus a tool loop. */
+  bolt: { limit: 60, windowSeconds: 3600 },
+  /** Support messages, per company. */
+  support: { limit: 10, windowSeconds: 3600 },
 } as const
+
+/** Best-effort client IP for unauthenticated buckets. */
+export function clientIp(h: Headers): string {
+  const fwd = h.get('x-forwarded-for')
+  if (fwd) return fwd.split(',')[0].trim()
+  return h.get('x-real-ip') ?? 'unknown'
+}
+
+/** Convenience for actions: the standard refusal payload. */
+export function rateLimited() {
+  return { ok: false as const, error: 'Too many attempts. Please wait a minute and try again.' }
+}
 
 /** Prunes closed windows. Safe to call from anything; nothing reads them. */
 export async function pruneRateLimits(): Promise<void> {

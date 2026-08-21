@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/lib/env'
 import { createInvoiceCheckoutSession } from '@/lib/stripe/checkout'
 import { sbAdmin } from '@/lib/supabase/untyped'
+import { LIMITS, checkRateLimit } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,6 +13,13 @@ export const dynamic = 'force-dynamic'
  */
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params
+
+  // Each GET mints a Stripe Checkout Session — cap it per invoice token.
+  const rl = await checkRateLimit(`checkout:${token}`, LIMITS.checkout.limit, LIMITS.checkout.windowSeconds)
+  if (!rl.allowed) {
+    return NextResponse.json({ error: 'Too many attempts. Please wait a minute.' }, { status: 429 })
+  }
+
   const admin = sbAdmin()
 
   const { data: inv } = await admin
