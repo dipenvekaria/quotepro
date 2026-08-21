@@ -48,14 +48,24 @@ needs a human. Engineer machine setup is a different doc:
    14. In-app enforcement for people who cancel-then-linger, and grandfathering for
    pre-launch accounts, is a product decision that has not shipped.
 
+8. **Sentry.** Config files exist; the DSN does not. Create the Sentry project,
+   set `NEXT_PUBLIC_SENTRY_DSN` in Vercel, and the wiring gets verified with a
+   thrown test error.
+9. **PostHog.** Declared in `env.ts`, not yet installed. Create the project, set
+   `NEXT_PUBLIC_POSTHOG_KEY` / `NEXT_PUBLIC_POSTHOG_HOST`, and the client gets
+   instrumented (pageviews + the handful of product events worth counting).
+10. **Repo rename `quotepro` → `rivet`.** One `gh repo rename`; Vercel and GitHub
+    redirects follow automatically, local remotes get updated after.
+11. **Retell (call answering).** The larger one: needs a Retell account, a phone
+    number, an agent configured to Rivet's script, and a webhook that turns a
+    finished call into a lead. Priced earlier at roughly $20/customer/month of
+    usage headroom — see `docs/PRICING_STRATEGY.md`.
+
 ## Optional / later
 
 - `ASSISTANT_MODELS` — pin Bolt to a specific Gemini model; unset it uses the chain's
   default. `GEMINI_MODELS` likewise for quoting.
-- Sentry / PostHog — declared in `env.ts`, deliberately not wired.
-- Twilio (SMS) and Retell (call answering) — planned, need accounts; phone
-  verification is deferred until SMS exists.
-- GitHub repo rename `quotepro` → `rivet` — cosmetic, breaks nothing either way.
+- Twilio (SMS) — needed before phone verification ships.
 
 ## Operating notes
 
