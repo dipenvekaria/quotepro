@@ -2,16 +2,48 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
-  // One canonical host. Three hostnames serve this deployment; search engines
-  // treat that as three duplicate sites, so the secondaries 308 to the brand
-  // domain. Exact-match only — localhost and *.vercel.app previews unaffected.
+  // Two hosts, two jobs. getrivet.ai is the product; thefieldgenie.com is the
+  // operations portal and serves only /admin — so an error on the product
+  // domain can never expose platform data, and vice versa. localhost and
+  // *.vercel.app previews are exempt so development and preview testing work.
   const host = request.headers.get('host') ?? ''
-  if (host === 'thefieldgenie.com' || host === 'www.thefieldgenie.com' || host === 'www.getrivet.ai') {
+  const path = request.nextUrl.pathname
+  const isAdminPath = path === '/admin' || path.startsWith('/admin/')
+
+  if (host === 'www.thefieldgenie.com' || host === 'thefieldgenie.com') {
+    const url = new URL(request.url)
+    url.protocol = 'https:'
+    url.port = ''
+    if (isAdminPath || path === '/login' || path.startsWith('/auth')) {
+      // The portal needs its own sign-in round trip; everything else leaves.
+      if (host === 'www.thefieldgenie.com') {
+        url.host = 'thefieldgenie.com'
+        return NextResponse.redirect(url, 308)
+      }
+      return await updateSession(request)
+    }
+    if (path === '/') {
+      url.host = 'thefieldgenie.com'
+      url.pathname = '/admin'
+      return NextResponse.redirect(url, 308)
+    }
+    url.host = 'getrivet.ai'
+    return NextResponse.redirect(url, 308)
+  }
+
+  if (host === 'www.getrivet.ai') {
     const url = new URL(request.url)
     url.protocol = 'https:'
     url.host = 'getrivet.ai'
     url.port = ''
     return NextResponse.redirect(url, 308)
+  }
+
+  if (host === 'getrivet.ai' && isAdminPath) {
+    // The product domain does not acknowledge the portal.
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin-does-not-live-here'
+    return NextResponse.rewrite(url, { status: 404 })
   }
 
   return await updateSession(request)

@@ -138,6 +138,11 @@ const serverEnvSchema = z.object({
   ASSISTANT_MODELS: z.string().optional(),
   // Where in-app "Message us" lands. Unset = the affordance hides itself.
   SUPPORT_INBOX: z.string().email().optional(),
+  // /admin provider snapshots — read-only API tokens, all optional.
+  VERCEL_API_TOKEN: z.string().optional(),
+  SENTRY_API_TOKEN: z.string().optional(),
+  POSTHOG_PERSONAL_API_KEY: z.string().optional(),
+  POSTHOG_PROJECT_ID: z.string().optional(),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 })
 

@@ -4,16 +4,17 @@ import { Activity, AlertTriangle, BookText, CreditCard, ExternalLink, Users } fr
 import { requirePlatformAdmin } from '@/lib/admin/guard'
 import {
   platformAdmins,
+  platformBusiness,
   platformCompanies,
   platformHealth,
   qboIssues,
   recentDegradedAi,
   recentPayments,
 } from '@/lib/admin/queries'
+import { posthogSnapshot, sentrySnapshot, vercelSnapshot, type ProviderCard } from '@/lib/admin/providers'
 
 import { AdminsCard } from './admins-card'
 
-export const metadata = { title: 'Platform · Rivet' }
 export const dynamic = 'force-dynamic'
 
 const fmtWhen = (iso: string | null) =>
@@ -28,14 +29,19 @@ const money = (n: number) =>
 
 export default async function PlatformAdminPage() {
   const session = await requirePlatformAdmin()
-  const [health, companies, degraded, qbo, payments, admins] = await Promise.all([
-    platformHealth(),
-    platformCompanies(),
-    recentDegradedAi(),
-    qboIssues(),
-    recentPayments(),
-    platformAdmins(),
-  ])
+  const [health, companies, degraded, qbo, payments, admins, vercel, sentry, posthog] =
+    await Promise.all([
+      platformHealth(),
+      platformCompanies(),
+      recentDegradedAi(),
+      qboIssues(),
+      recentPayments(),
+      platformAdmins(),
+      vercelSnapshot(),
+      sentrySnapshot(),
+      posthogSnapshot(),
+    ])
+  const biz = await platformBusiness()
 
   const alerts =
     health.degradedAi24h + health.qboErrorCount + health.recurringOverdue
@@ -43,10 +49,7 @@ export default async function PlatformAdminPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:py-8">
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <div className="text-xs text-muted-foreground">Rivet platform</div>
-          <h1 className="text-2xl font-semibold tracking-tight">Operations</h1>
-        </div>
+        <h1 className="text-2xl font-semibold tracking-tight">Operations</h1>
         <div className="flex gap-2">
           <a
             href="https://rivet-technologies.sentry.io/issues/"
@@ -83,6 +86,37 @@ export default async function PlatformAdminPage() {
           tone={health.recurringOverdue ? 'bad' : 'good'}
           hint={health.recurringOverdue ? `${health.recurringOverdue} overdue` : undefined}
         />
+      </section>
+
+      {/* Business */}
+      <section className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <Stat label="MRR" value={money(biz.mrrCents / 100)} tone="good" />
+        <Stat
+          label="Subscriptions"
+          value={`${biz.soloActive + biz.teamActive}`}
+          tone="good"
+          hint={`${biz.soloActive} solo · ${biz.teamActive} team · ${biz.trialing} trialing`}
+        />
+        <Stat
+          label="Companies"
+          value={String(biz.companiesTotal)}
+          tone="good"
+          hint={`+${biz.companiesNew30d} in 30d`}
+        />
+        <Stat label="Active · 30d" value={String(biz.activeCompanies30d)} tone="good" />
+        <Stat
+          label="Churned"
+          value={String(biz.canceled)}
+          tone={biz.canceled30d ? 'bad' : 'good'}
+          hint={biz.canceled30d ? `${biz.canceled30d} in 30d` : undefined}
+        />
+      </section>
+
+      {/* Outside services — five-minute snapshots, fetched on page load only */}
+      <section className="mt-4 grid gap-4 lg:grid-cols-3">
+        <Provider title="Vercel" card={vercel} href="https://vercel.com/getrivet/rivet" />
+        <Provider title="Sentry" card={sentry} href="https://rivet-technologies.sentry.io/issues/" />
+        <Provider title="PostHog" card={posthog} href="https://us.posthog.com" />
       </section>
 
       {/* Alert detail */}
@@ -186,12 +220,42 @@ export default async function PlatformAdminPage() {
   )
 }
 
+function Provider({ title, card, href }: { title: string; card: ProviderCard; href: string }) {
+  return (
+    <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+      <header className="flex items-center justify-between border-b border-border/70 px-4 py-2.5">
+        <h2 className="text-sm font-semibold">{title}</h2>
+        <a href={href} target="_blank" rel="noreferrer" className="text-xs text-muted-foreground hover:underline">
+          open <ExternalLink className="ml-0.5 inline h-3 w-3" />
+        </a>
+      </header>
+      <div className="space-y-1.5 p-4 text-sm">
+        {card.state === 'unconfigured' && (
+          <p className="text-xs text-muted-foreground">{card.hint} in Vercel to activate.</p>
+        )}
+        {card.state === 'error' && (
+          <p className="font-mono text-xs text-destructive">{card.error}</p>
+        )}
+        {card.state === 'ok' &&
+          card.lines.map((l, i) => (
+            <div key={i} className="flex items-baseline justify-between gap-3">
+              <span className="shrink-0 text-xs text-muted-foreground">{l.label}</span>
+              <span className="truncate text-right tabular">{l.value}</span>
+            </div>
+          ))}
+      </div>
+    </section>
+  )
+}
+
 function Stat({ label, value, tone, hint }: { label: string; value: string; tone: 'good' | 'bad'; hint?: string }) {
   return (
     <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
       <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</div>
       <div className={`mt-1 text-xl font-semibold tabular ${tone === 'bad' ? 'text-destructive' : ''}`}>{value}</div>
-      {hint && <div className="text-xs text-destructive">{hint}</div>}
+      {hint && (
+        <div className={`text-xs ${tone === 'bad' ? 'text-destructive' : 'text-muted-foreground'}`}>{hint}</div>
+      )}
     </div>
   )
 }
