@@ -70,15 +70,12 @@ function Feature({
 function PriceCard({
   name,
   price,
-  anchor,
   blurb,
   features,
   highlight,
 }: {
   name: string
   price: string
-  /** The full price this founding price replaces, struck through beside it. */
-  anchor?: string
   blurb: string
   features: string[]
   highlight?: boolean
@@ -99,12 +96,7 @@ function PriceCard({
           </span>
         )}
       </div>
-      <div className="mt-3 flex items-baseline gap-2">
-        {anchor && (
-          <span className="text-2xl font-medium tabular text-muted-foreground line-through decoration-1">
-            {anchor}
-          </span>
-        )}
+      <div className="mt-3 flex items-baseline gap-1">
         <span className="text-4xl font-semibold tabular tracking-tight">{price}</span>
         <span className="text-sm text-muted-foreground">/month</span>
       </div>
@@ -258,22 +250,16 @@ export function Landing() {
             No add-ons, no plan gates, no per-feature upsells. The tools the big platforms
             sell as $99&ndash;$500 monthly extras are simply included.
           </p>
-          <p className="mt-3 max-w-2xl text-sm font-medium">
-            Founding price for the first 100 companies — locked in for as long as you stay
-            subscribed.
-          </p>
           <div className="mt-8 grid max-w-3xl gap-5 sm:grid-cols-2">
             <PriceCard
               name="Solo"
               price="$49"
-              anchor="$79"
               blurb="For owner-operators. Everything for one person."
               features={SOLO_FEATURES}
             />
             <PriceCard
               name="Team"
               price="$99"
-              anchor="$139"
               blurb="For shops with a crew. Everything, for everyone."
               features={TEAM_FEATURES}
               highlight
@@ -281,7 +267,7 @@ export function Landing() {
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             14-day free trial on both. Your price book imports from a CSV or a photo of an
-            old quote. After the first 100 companies, new signups pay $79 and $139.
+            old quote.
           </p>
         </div>
       </section>
