@@ -53,6 +53,7 @@ import {
   generateCustomerSummary,
   getSchedulingContext,
   requestReview,
+  scheduleEstimate,
   sendQuote,
   updateWorkItem,
   type SchedulingContext,
@@ -90,6 +91,9 @@ type WorkItem = {
   customer_summary: string | null
   scheduled_start: string | null
   scheduled_end: string | null
+  estimate_scheduled_start: string | null
+  estimate_assigned_to: string | null
+  estimate_rep_name: string | null
   sent_at: string | null
   viewed_at: string | null
   accepted_at: string | null
@@ -145,7 +149,11 @@ export type Payment = {
 // ---------------------------------------------------------------------------
 
 const STATUS_ACTIONS: Record<string, { label: string; to: string; primary?: boolean }[]> = {
-  lead: [{ label: 'Convert to quote', to: 'quote_draft', primary: true }],
+  lead: [
+    { label: 'Schedule estimate visit', to: 'estimate_scheduled', primary: true },
+    { label: 'Convert to quote', to: 'quote_draft' },
+  ],
+  estimate_scheduled: [{ label: 'Create quote', to: 'quote_draft', primary: true }],
   quote_draft: [{ label: 'Send quote', to: 'quote_sent', primary: true }],
   quote_sent: [
     { label: 'Mark accepted', to: 'quote_accepted', primary: true },
@@ -232,8 +240,29 @@ export function WorkItemDetail({
   const [explaining, startExplain] = useTransition()
   const [scheduleOpen, setScheduleOpen] = useState(false)
   const [scheduleAt, setScheduleAt] = useState('')
+  const [estimateOpen, setEstimateOpen] = useState(false)
+  const [estimateAt, setEstimateAt] = useState('')
+  const [estimateRep, setEstimateRep] = useState('')
+  const [bookingEstimate, startBookEstimate] = useTransition()
   const [schedCtx, setSchedCtx] = useState<SchedulingContext | null>(null)
   const [loadingCtx, startLoadCtx] = useTransition()
+
+  function bookEstimate() {
+    startBookEstimate(async () => {
+      const res = await scheduleEstimate({
+        id: workItem.id,
+        estimate_scheduled_start: new Date(estimateAt).toISOString(),
+        sales_rep_id: estimateRep || null,
+      })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setEstimateOpen(false)
+      toast.success('Estimate visit booked')
+      router.refresh()
+    })
+  }
 
   function writeCustomerSummary() {
     startExplain(async () => {
@@ -443,6 +472,12 @@ export function WorkItemDetail({
 
   /** Scheduling needs a date, so it opens a picker instead of firing straight away. */
   function onNextStep(to: string) {
+    if (to === 'estimate_scheduled') {
+      setEstimateAt(defaultScheduleSlot(workItem.estimate_scheduled_start))
+      setEstimateRep(workItem.estimate_assigned_to ?? '')
+      setEstimateOpen(true)
+      return
+    }
     if (to === 'job_scheduled') {
       setScheduleAt(defaultScheduleSlot(workItem.scheduled_start))
       setSchedCtx(null)
@@ -712,6 +747,32 @@ export function WorkItemDetail({
                   <p className="mt-1 text-[11px] text-muted-foreground">
                     Team-only. Add new notes in Activity below — they keep author and time.
                   </p>
+                </div>
+              )}
+              {(workItem.estimate_scheduled_start || workItem.status === 'estimate_scheduled') && (
+                <div>
+                  <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                    <CalendarIcon className="mr-1 inline h-3 w-3" />
+                    Estimate visit
+                  </label>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm tabular">
+                      {workItem.estimate_scheduled_start
+                        ? new Date(workItem.estimate_scheduled_start).toLocaleString('en-US', {
+                            weekday: 'short', month: 'short', day: 'numeric',
+                            hour: 'numeric', minute: '2-digit', timeZone: tz,
+                          })
+                        : 'Not scheduled'}
+                    </span>
+                    {workItem.estimate_rep_name && (
+                      <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[11px] text-sky-700 dark:bg-sky-500/15 dark:text-sky-300">
+                        {workItem.estimate_rep_name}
+                      </span>
+                    )}
+                    <Button variant="outline" size="sm" onClick={() => onNextStep('estimate_scheduled')} disabled={bookingEstimate}>
+                      {workItem.estimate_scheduled_start ? 'Reschedule' : 'Book'}
+                    </Button>
+                  </div>
                 </div>
               )}
               <div>
@@ -1310,6 +1371,50 @@ export function WorkItemDetail({
           onClose={() => setSendOpen(false)}
         />
       )}
+
+      {/* Estimate visit dialog */}
+      <Dialog open={estimateOpen} onOpenChange={setEstimateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Schedule estimate visit</DialogTitle>
+            <DialogDescription>
+              Book a sales visit to quote the job on site. It lands on the calendar as an
+              estimate, separate from the work itself.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label className="mb-1 block text-xs">When</Label>
+              <Input
+                type="datetime-local"
+                value={estimateAt}
+                onChange={(e) => setEstimateAt(e.target.value)}
+                className="h-11"
+              />
+            </div>
+            <div>
+              <Label className="mb-1 block text-xs">Who visits (optional)</Label>
+              <select
+                value={estimateRep}
+                onChange={(e) => setEstimateRep(e.target.value)}
+                className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm"
+              >
+                <option value="">Unassigned</option>
+                {teammates.map((t) => (
+                  <option key={t.id} value={t.id}>{t.name}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEstimateOpen(false)}>Cancel</Button>
+            <Button onClick={bookEstimate} disabled={!estimateAt || bookingEstimate} className="gap-1.5">
+              {bookingEstimate ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarIcon className="h-4 w-4" />}
+              Book visit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Record payment modal */}
       {payOpen && invoice && (

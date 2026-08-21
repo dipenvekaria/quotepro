@@ -43,6 +43,9 @@ export default async function WorkItemDetailPage({
     total: number | null
     scheduled_start: string | null
     scheduled_end: string | null
+    estimate_scheduled_start: string | null
+    estimate_assigned_to: string | null
+    estimate_rep_name: string | null
     sent_at: string | null
     viewed_at: string | null
     accepted_at: string | null
@@ -70,6 +73,8 @@ export default async function WorkItemDetailPage({
             w.quote_number, w.invoice_number, w.job_number,
             w.subtotal, w.discount_amount, w.tax_rate, w.tax_amount, w.total,
             w.scheduled_start, w.scheduled_end,
+            w.estimate_scheduled_start, w.estimate_assigned_to,
+            erep.profile->>'full_name' as estimate_rep_name,
             w.sent_at, w.viewed_at, w.accepted_at, w.rejected_at, w.completed_at,
             w.public_token, w.customer_summary, w.created_at, w.updated_at, w.recurrence, w.metadata,
             w.customer_id, w.address_id, w.created_by, w.assigned_to,
@@ -82,6 +87,7 @@ export default async function WorkItemDetailPage({
        left join customer_addresses a on a.id = w.address_id
        left join users cr on cr.id = w.created_by
        left join users asg on asg.id = w.assigned_to
+       left join users erep on erep.id = w.estimate_assigned_to
       where w.company_id = $1 and w.id = $2${scope.sql}
       limit 1`,
     [companyId, id, ...scope.params],
@@ -107,6 +113,9 @@ export default async function WorkItemDetailPage({
     total: row.total,
     scheduled_start: row.scheduled_start,
     scheduled_end: row.scheduled_end,
+    estimate_scheduled_start: row.estimate_scheduled_start,
+    estimate_assigned_to: row.estimate_assigned_to,
+    estimate_rep_name: row.estimate_rep_name,
     sent_at: row.sent_at,
     viewed_at: row.viewed_at,
     accepted_at: row.accepted_at,
