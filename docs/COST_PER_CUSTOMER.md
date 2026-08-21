@@ -105,3 +105,82 @@ phone call.
   this repo, not metered production numbers. Voice minutes and call volume are
   the figures to validate against real usage first — they dominate everything
   else combined.
+
+---
+
+# Voice allowance model: 60 min (Solo) / 120 min (Team)
+
+Proposed: include **60 voice minutes** on Solo ($39) and **120** on Team ($99),
+bundled into the flat price rather than sold as an add-on.
+
+## Margin at full utilisation
+
+Even if every subscriber burns their whole allowance, both plans stay
+comfortably profitable — at the realistic mid voice rate and at the premium
+rate.
+
+| Plan | Included | ≈ calls* | Voice @ $0.15 | + other | Cost | Margin |
+| --- | --- | --- | --- | --- | --- | --- |
+| Solo $39 | 60 min | ~24 | $9.00 | $4 | **$13** | **67%** |
+| Team $99 | 120 min | ~48 | $18.00 | $5 | **$23** | **77%** |
+
+At a premium $0.31/min voice model: Solo still **42%** ($22.60 cost), Team
+**57%** ($42.20). *≈ calls assumes 2.5-min average.
+
+Because most subscribers either won't enable voice or won't max the allowance,
+the **blended** cost sits far below these ceilings — the full-use figures are
+the worst case, and the worst case is still healthy.
+
+## The one number that must hold: the cap behaviour
+
+The allowance is safe **only if the cap actually caps.** The math breaks in one
+place — a **Solo** user who runs well past 60 minutes:
+
+- Solo at 300 min ≈ $49 cost against a $39 price — **a loss.**
+- Team at 300 min ≈ $50 cost against $99 — still 49% margin.
+
+So the design, consistent with "no add-on fees, no gimmicks":
+
+- **Do not meter overage.** Per-minute overage billing is exactly the add-on the
+  brand promises never to charge.
+- **Solo caps near its allowance** and nudges the heavy caller to upgrade to
+  Team, where the minutes (and the margin) are there.
+- **Team can be soft** — it stays profitable out to ~400 minutes, so it can run
+  past 120 quietly for all but pathological users rather than cutting a customer
+  off mid-season.
+
+Frame it as "**60 minutes of call answering included**," not "60-minute limit."
+
+## How voice compares with competitors
+
+The decisive fact: **no field-service platform bundles AI voice into its base
+price.** It is always a separate purchase.
+
+| Where a contractor gets AI voice today | Price | Model |
+| --- | --- | --- |
+| Housecall Pro — HCP Assist | Add-on to HCP's $49–$299 plan | Human agents, priced separately |
+| Rosie (standalone, trades-focused) | $49 / 250 min · $149 / 1,000 · $299 / 2,000 | Included minutes |
+| Goodcall (standalone) | $79–$249 | Unlimited min, capped by unique callers |
+| Typical standalone AI receptionist | **$109–$299 / month** | Flat / per-min / per-call |
+
+So a contractor who wants software **and** AI answering pays twice today:
+field-service software ($49–$299) **plus** an AI receptionist ($109–$299) =
+roughly **$158–$598 / month**.
+
+Rivet folds voice into **$39 / $99 all-in.** That is the differentiator — you
+deliver, for the price of the software alone, what the market sells as a
+separate $109–$299 product.
+
+Two honest caveats on the comparison:
+
+- **The included minutes are modest.** 60 min is small next to Rosie's 250. So
+  Rivet's voice is positioned as *bundled overflow / after-hours answering*,
+  not a full-time replacement for a dedicated 250-minute receptionist. For a
+  solo just starting out, 60 minutes free-with-your-software beats paying $49
+  extra for Rosie; for a high-volume shop, Team's 120 min (or a future
+  voice-heavy tier) is the answer.
+- **Your cost floor is far below the market's price floor.** Standalone
+  receptionists *charge* $109–$299; your *cost* for 60–120 bundled minutes is
+  $9–$18. That headroom means a future "voice-forward" plan could undercut every
+  standalone receptionist and still print margin — without ever charging an
+  add-on fee.
