@@ -41,8 +41,38 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/lib/admin/queries.ts',
-    match: 'select',
-    reason: 'Platform-wide reads for /admin; every caller passes requirePlatformAdmin().',
+    match: 'as degraded_ai',
+    reason: 'Platform health read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from companies co',
+    reason: 'Platform roster read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from ai_conversations a',
+    reason: 'Degraded-AI read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from quickbooks_connections q',
+    reason: 'QBO-errors read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from payments p',
+    reason: 'Payments read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from platform_admins',
+    reason: 'Allow-list read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'admin_audit',
+    reason: 'Platform audit ledger writes, behind requirePlatformAdmin().',
   },
   {
     file: 'src/app/admin/actions.ts',

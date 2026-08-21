@@ -56,7 +56,7 @@ export type CompanyRow = {
 }
 
 export async function platformCompanies(): Promise<CompanyRow[]> {
-  return query<CompanyRow>(
+  return await query<CompanyRow>(
     `select co.id, co.name, co.created_at, co.plan, co.subscription_status,
             co.stripe_charges_enabled,
             (select au.email from users u join auth.users au on au.id = u.id
@@ -78,7 +78,7 @@ export type DegradedRun = {
 }
 
 export async function recentDegradedAi(): Promise<DegradedRun[]> {
-  return query<DegradedRun>(
+  return await query<DegradedRun>(
     `select a.created_at, co.name as company_name, a.purpose,
             left(coalesce(a.error_message, ''), 200) as error
        from ai_conversations a
@@ -96,7 +96,7 @@ export type QboIssue = {
 }
 
 export async function qboIssues(): Promise<QboIssue[]> {
-  return query<QboIssue>(
+  return await query<QboIssue>(
     `select co.name as company_name, q.last_error, q.last_synced_at
        from quickbooks_connections q
        join companies co on co.id = q.company_id
@@ -116,7 +116,7 @@ export type PaymentRow = {
 }
 
 export async function recentPayments(): Promise<PaymentRow[]> {
-  return query<PaymentRow>(
+  return await query<PaymentRow>(
     `select p.paid_at, p.amount, p.method, p.reference_number,
             co.name as company_name, i.invoice_number
        from payments p
@@ -130,7 +130,7 @@ export async function recentPayments(): Promise<PaymentRow[]> {
 export type AdminRow = { email: string; added_by: string | null; created_at: string }
 
 export async function platformAdmins(): Promise<AdminRow[]> {
-  return query<AdminRow>(
+  return await query<AdminRow>(
     'select email, added_by, created_at from platform_admins order by created_at asc',
   )
 }
