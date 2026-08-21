@@ -3,6 +3,7 @@
 import { randomUUID } from 'node:crypto'
 
 import { revalidatePath } from 'next/cache'
+import { after } from 'next/server'
 import { z } from 'zod'
 
 import { getSession } from '@/lib/auth/session'
@@ -11,6 +12,7 @@ import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { signPhotoUrl, signPhotoUrls } from '@/lib/storage/signed-url'
+import { tagJobPhoto } from '@/lib/ai/photo-tags'
 
 /**
  * Photos on quotes.
@@ -32,6 +34,8 @@ export type QuotePhoto = {
   caption: string | null
   quote_item_id: string | null
   sort_order: number
+  tags: string[]
+  in_showcase: boolean
 }
 
 type Result<T> = { ok: true; data: T } | { ok: false; error: string }
@@ -120,6 +124,24 @@ export async function uploadQuotePhoto(formData: FormData): Promise<Result<Quote
   }
   if (!row) return { ok: false, error: 'Could not save that photo.' }
 
+  // Describe the photo after the response — a vision call per upload should not
+  // make the contractor wait. Tags populate on the next render; a failure just
+  // leaves the photo untagged, never blocks the upload.
+  const photoId = row.id
+  const bytes = Buffer.from(await file.arrayBuffer())
+  const mime = file.type
+  after(async () => {
+    try {
+      const tags = await tagJobPhoto({ data: bytes, mimeType: mime })
+      await query(
+        `update quote_photos set tags = $1, tagged_at = now() where id = $2 and company_id = $3`,
+        [tags, photoId, companyId],
+      )
+    } catch (e) {
+      console.error('photo tagging failed', e)
+    }
+  })
+
   revalidatePath(`/app/pipeline/${workItemId}`)
 
   const signed = await signPhotoUrl(path)
@@ -131,8 +153,29 @@ export async function uploadQuotePhoto(formData: FormData): Promise<Result<Quote
       caption: null,
       quote_item_id: quoteItemId,
       sort_order: row.sort_order,
+      tags: [],
+      in_showcase: false,
     },
   }
+}
+
+/** Add or remove a photo from the company's showcase portfolio. */
+export async function togglePhotoShowcase(input: unknown): Promise<Result<{ in_showcase: boolean }>> {
+  const parsed = z.object({ id: z.string().uuid(), in_showcase: z.boolean() }).safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid input' }
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+
+  const rows = await query<{ work_item_id: string }>(
+    `update quote_photos set in_showcase = $1
+      where id = $2 and company_id = $3
+      returning work_item_id`,
+    [parsed.data.in_showcase, parsed.data.id, session.companyId],
+  )
+  if (!rows[0]) return { ok: false, error: 'Photo not found' }
+  revalidatePath(`/app/pipeline/${rows[0].work_item_id}`)
+  revalidatePath('/app/portfolio')
+  return { ok: true, data: { in_showcase: parsed.data.in_showcase } }
 }
 
 export async function deleteQuotePhoto(input: unknown): Promise<Result<{ id: string }>> {
@@ -196,8 +239,10 @@ export async function listQuotePhotos(workItemId: string): Promise<QuotePhoto[]>
     caption: string | null
     quote_item_id: string | null
     sort_order: number
+    tags: string[]
+    in_showcase: boolean
   }>(
-    `select id, storage_path, caption, quote_item_id, sort_order
+    `select id, storage_path, caption, quote_item_id, sort_order, tags, in_showcase
        from quote_photos
       where work_item_id = $1 and company_id = $2
       order by sort_order, created_at`,
@@ -214,5 +259,34 @@ export async function listQuotePhotos(workItemId: string): Promise<QuotePhoto[]>
     caption: r.caption,
     quote_item_id: r.quote_item_id,
     sort_order: r.sort_order,
+    tags: r.tags ?? [],
+    in_showcase: r.in_showcase ?? false,
+  }))
+}
+
+export type ShowcasePhoto = { id: string; url: string; tags: string[]; created_at: string }
+
+/**
+ * Every photo the company has opted into its showcase, newest first. Session-
+ * scoped to the caller's company; shown on the internal portfolio the
+ * contractor pulls up in front of a prospect.
+ */
+export async function listShowcasePhotos(): Promise<ShowcasePhoto[]> {
+  const session = await getSession()
+  if (!session) return []
+  const rows = await query<{ id: string; storage_path: string; tags: string[]; created_at: string }>(
+    `select id, storage_path, tags, created_at
+       from quote_photos
+      where company_id = $1 and in_showcase
+      order by created_at desc
+      limit 300`,
+    [session.companyId],
+  )
+  const signed = await signPhotoUrls(rows.map((r) => r.storage_path))
+  return rows.map((r) => ({
+    id: r.id,
+    url: signed.get(r.storage_path) ?? '',
+    tags: r.tags ?? [],
+    created_at: r.created_at,
   }))
 }

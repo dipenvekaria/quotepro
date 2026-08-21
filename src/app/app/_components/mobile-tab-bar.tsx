@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import {
   BarChart3,
   BookText,
+  Image as ImageIcon,
   Zap,
   CalendarDays,
   ClipboardList,
@@ -38,6 +39,7 @@ const TABS = [
 
 const MORE = [
   { href: '/app/catalog', label: 'Price book', icon: BookText },
+  { href: '/app/portfolio', label: 'Portfolio', icon: ImageIcon },
   { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug2 },
   { href: '/app/settings', label: 'Settings', icon: Settings },
