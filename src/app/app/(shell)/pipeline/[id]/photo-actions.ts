@@ -35,6 +35,7 @@ export type QuotePhoto = {
   quote_item_id: string | null
   sort_order: number
   tags: string[]
+  user_tags: string[]
   in_showcase: boolean
 }
 
@@ -154,6 +155,7 @@ export async function uploadQuotePhoto(formData: FormData): Promise<Result<Quote
       quote_item_id: quoteItemId,
       sort_order: row.sort_order,
       tags: [],
+      user_tags: [],
       in_showcase: false,
     },
   }
@@ -176,6 +178,35 @@ export async function togglePhotoShowcase(input: unknown): Promise<Result<{ in_s
   revalidatePath(`/app/pipeline/${rows[0].work_item_id}`)
   revalidatePath('/app/portfolio')
   return { ok: true, data: { in_showcase: parsed.data.in_showcase } }
+}
+
+/** Replace the contractor's own tags on a photo. Cleaned and capped. */
+export async function setPhotoUserTags(input: unknown): Promise<Result<{ tags: string[] }>> {
+  const parsed = z
+    .object({ id: z.string().uuid(), tags: z.array(z.string()).max(12) })
+    .safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid input' }
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+
+  const tags = [
+    ...new Set(
+      parsed.data.tags
+        .map((t) => t.trim().toLowerCase())
+        .filter((t) => t.length > 0 && t.length <= 40),
+    ),
+  ].slice(0, 8)
+
+  const rows = await query<{ work_item_id: string }>(
+    `update quote_photos set user_tags = $1
+      where id = $2 and company_id = $3
+      returning work_item_id`,
+    [tags, parsed.data.id, session.companyId],
+  )
+  if (!rows[0]) return { ok: false, error: 'Photo not found' }
+  revalidatePath(`/app/pipeline/${rows[0].work_item_id}`)
+  revalidatePath('/app/portfolio')
+  return { ok: true, data: { tags } }
 }
 
 export async function deleteQuotePhoto(input: unknown): Promise<Result<{ id: string }>> {
@@ -240,9 +271,10 @@ export async function listQuotePhotos(workItemId: string): Promise<QuotePhoto[]>
     quote_item_id: string | null
     sort_order: number
     tags: string[]
+    user_tags: string[]
     in_showcase: boolean
   }>(
-    `select id, storage_path, caption, quote_item_id, sort_order, tags, in_showcase
+    `select id, storage_path, caption, quote_item_id, sort_order, tags, user_tags, in_showcase
        from quote_photos
       where work_item_id = $1 and company_id = $2
       order by sort_order, created_at`,
@@ -260,11 +292,18 @@ export async function listQuotePhotos(workItemId: string): Promise<QuotePhoto[]>
     quote_item_id: r.quote_item_id,
     sort_order: r.sort_order,
     tags: r.tags ?? [],
+    user_tags: r.user_tags ?? [],
     in_showcase: r.in_showcase ?? false,
   }))
 }
 
-export type ShowcasePhoto = { id: string; url: string; tags: string[]; created_at: string }
+export type ShowcasePhoto = {
+  id: string
+  url: string
+  tags: string[]
+  user_tags: string[]
+  created_at: string
+}
 
 /**
  * Every photo the company has opted into its showcase, newest first. Session-
@@ -274,8 +313,14 @@ export type ShowcasePhoto = { id: string; url: string; tags: string[]; created_a
 export async function listShowcasePhotos(): Promise<ShowcasePhoto[]> {
   const session = await getSession()
   if (!session) return []
-  const rows = await query<{ id: string; storage_path: string; tags: string[]; created_at: string }>(
-    `select id, storage_path, tags, created_at
+  const rows = await query<{
+    id: string
+    storage_path: string
+    tags: string[]
+    user_tags: string[]
+    created_at: string
+  }>(
+    `select id, storage_path, tags, user_tags, created_at
        from quote_photos
       where company_id = $1 and in_showcase
       order by created_at desc
@@ -287,6 +332,7 @@ export async function listShowcasePhotos(): Promise<ShowcasePhoto[]> {
     id: r.id,
     url: signed.get(r.storage_path) ?? '',
     tags: r.tags ?? [],
+    user_tags: r.user_tags ?? [],
     created_at: r.created_at,
   }))
 }

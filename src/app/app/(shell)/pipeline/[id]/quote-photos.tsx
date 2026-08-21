@@ -2,12 +2,12 @@
 
 import { useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Camera, Loader2, Star, Trash2 } from 'lucide-react'
+import { Camera, Loader2, Plus, Star, Trash2, X } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 
-import { deleteQuotePhoto, togglePhotoShowcase, uploadQuotePhoto, type QuotePhoto } from './photo-actions'
+import { deleteQuotePhoto, setPhotoUserTags, togglePhotoShowcase, uploadQuotePhoto, type QuotePhoto } from './photo-actions'
 
 /**
  * Photos on a quote.
@@ -66,6 +66,17 @@ export function QuotePhotos({
   function remove(id: string) {
     startUpload(async () => {
       const res = await deleteQuotePhoto({ id })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      router.refresh()
+    })
+  }
+
+  function saveUserTags(id: string, tags: string[]) {
+    startUpload(async () => {
+      const res = await setPhotoUserTags({ id, tags })
       if (!res.ok) {
         toast.error(res.error)
         return
@@ -195,25 +206,86 @@ export function QuotePhotos({
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 </div>
-                {(line || photo.tags.length > 0) && (
-                  <figcaption className="space-y-1 border-t border-border/70 bg-muted/40 px-2 py-1">
-                    {line && <div className="truncate text-[11px] text-muted-foreground">{line}</div>}
-                    {photo.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {photo.tags.slice(0, 4).map((t) => (
-                          <span key={t} className="rounded bg-background px-1 py-px text-[10px] capitalize text-muted-foreground">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </figcaption>
-                )}
+                <figcaption className="space-y-1.5 border-t border-border/70 bg-muted/40 px-2 py-1.5">
+                  {line && <div className="truncate text-[11px] text-muted-foreground">{line}</div>}
+                  <PhotoTags photo={photo} disabled={uploading} onSave={saveUserTags} />
+                </figcaption>
               </figure>
             )
           })}
         </div>
       )}
     </section>
+  )
+}
+
+/** User tags (editable, prominent) + AI tags (muted) for one photo. */
+function PhotoTags({
+  photo,
+  disabled,
+  onSave,
+}: {
+  photo: QuotePhoto
+  disabled: boolean
+  onSave: (id: string, tags: string[]) => void
+}) {
+  const [adding, setAdding] = useState(false)
+  const [value, setValue] = useState('')
+  const aiOnly = photo.tags.filter((t) => !photo.user_tags.includes(t))
+
+  function commit() {
+    const t = value.trim().toLowerCase()
+    setValue('')
+    setAdding(false)
+    if (!t || photo.user_tags.includes(t)) return
+    onSave(photo.id, [...photo.user_tags, t])
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-1">
+      {photo.user_tags.map((t) => (
+        <span
+          key={t}
+          className="inline-flex items-center gap-0.5 rounded bg-primary/10 px-1 py-px text-[10px] capitalize text-primary"
+        >
+          {t}
+          <button
+            onClick={() => onSave(photo.id, photo.user_tags.filter((x) => x !== t))}
+            disabled={disabled}
+            aria-label={`Remove tag ${t}`}
+            className="hover:text-destructive"
+          >
+            <X className="h-2.5 w-2.5" />
+          </button>
+        </span>
+      ))}
+      {aiOnly.slice(0, 4).map((t) => (
+        <span key={t} className="rounded bg-background px-1 py-px text-[10px] capitalize text-muted-foreground">
+          {t}
+        </span>
+      ))}
+      {adding ? (
+        <input
+          autoFocus
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') commit()
+            if (e.key === 'Escape') { setValue(''); setAdding(false) }
+          }}
+          placeholder="tag"
+          className="h-5 w-16 rounded border border-input bg-background px-1 text-[10px]"
+        />
+      ) : (
+        <button
+          onClick={() => setAdding(true)}
+          disabled={disabled}
+          className="inline-flex items-center gap-0.5 rounded border border-dashed border-border px-1 py-px text-[10px] text-muted-foreground hover:text-foreground"
+        >
+          <Plus className="h-2.5 w-2.5" /> tag
+        </button>
+      )}
+    </div>
   )
 }
