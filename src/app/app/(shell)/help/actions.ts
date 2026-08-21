@@ -6,6 +6,7 @@ import { getSession } from '@/lib/auth/session'
 import { recordAiRun } from '@/lib/ai/run-log'
 import { runAssistantTurn } from '@/lib/ai/assistant'
 import type { UserRole } from '@/lib/permissions'
+import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 
 const schema = z.object({ message: z.string().trim().min(1).max(2000) })
 
@@ -21,6 +22,8 @@ export async function askBolt(input: { message: string }) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const rl = await checkRateLimit(`bolt:${session.companyId}`, LIMITS.bolt.limit, LIMITS.bolt.windowSeconds)
+  if (!rl.allowed) return rateLimited()
 
   const startedAt = Date.now()
   try {
@@ -71,6 +74,8 @@ export async function contactSupport(input: { message: string }) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const rl = await checkRateLimit(`support:${session.companyId}`, LIMITS.support.limit, LIMITS.support.windowSeconds)
+  if (!rl.allowed) return rateLimited()
 
   const { envServer } = await import('@/lib/env')
   const inbox = envServer().SUPPORT_INBOX

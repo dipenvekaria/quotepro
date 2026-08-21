@@ -13,8 +13,9 @@ describe('rate limits', () => {
   it('are set above what a real person reaches', () => {
     // A limit tight enough to catch a legitimate user is a limit that gets
     // removed the first time it fires on a customer.
-    expect(LIMITS.sign.limit).toBeGreaterThanOrEqual(5)
     expect(LIMITS.quoteAction.limit).toBeGreaterThanOrEqual(10)
+    expect(LIMITS.checkout.limit).toBeGreaterThanOrEqual(10)
+    expect(LIMITS.waitlist.limit).toBeLessThanOrEqual(10)
     expect(LIMITS.aiGenerate.limit).toBeGreaterThanOrEqual(30)
   })
 

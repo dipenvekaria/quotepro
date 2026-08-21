@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { logActivity } from '@/lib/activity'
 import { sbAdmin } from '@/lib/supabase/untyped'
+import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 
 // ---------------------------------------------------------------------------
 
@@ -17,6 +18,8 @@ const acceptSchema = z.object({
 export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
   const parsed = acceptSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
+  const rl = await checkRateLimit(`quoteAction:${parsed.data.token}`, LIMITS.quoteAction.limit, LIMITS.quoteAction.windowSeconds)
+  if (!rl.allowed) return rateLimited()
 
   const admin = sbAdmin()
 
@@ -85,6 +88,8 @@ const declineSchema = z.object({
 export async function declineQuote(input: z.infer<typeof declineSchema>) {
   const parsed = declineSchema.safeParse(input)
   if (!parsed.success) return { ok: false as const, error: 'Invalid input' }
+  const rl = await checkRateLimit(`quoteAction:${parsed.data.token}`, LIMITS.quoteAction.limit, LIMITS.quoteAction.windowSeconds)
+  if (!rl.allowed) return rateLimited()
 
   const admin = sbAdmin()
 
@@ -127,6 +132,8 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
 // ---------------------------------------------------------------------------
 
 export async function markQuoteViewed(token: string) {
+  const rl = await checkRateLimit(`quoteView:${token}`, LIMITS.quoteAction.limit, LIMITS.quoteAction.windowSeconds)
+  if (!rl.allowed) return { ok: false as const }
   const admin = sbAdmin()
 
   const { data: item } = await admin

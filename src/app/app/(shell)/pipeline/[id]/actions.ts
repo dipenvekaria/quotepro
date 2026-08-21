@@ -15,6 +15,7 @@ import { canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { nextOccurrence } from '@/lib/recurring'
 import { companyTz } from '@/lib/time'
+import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 import {
   NOMINAL_JOB_HOURS,
   bookedHoursOn,
@@ -390,6 +391,8 @@ export async function generateCustomerSummary(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const rl = await checkRateLimit(`aiGenerate:${session.companyId}`, LIMITS.aiGenerate.limit, LIMITS.aiGenerate.windowSeconds)
+  if (!rl.allowed) return rateLimited()
   const { companyId } = session
 
   const [work] = await query<{ id: string; description: string | null; company_name: string | null }>(
