@@ -31,6 +31,8 @@ let bystander: TestCompany
  * new table has to be considered rather than forgotten.
  */
 const NOT_COMPANY_DATA = new Set([
+  'platform_admins', // platform-level allow-list, no tenant rows
+  'admin_audit', // platform-level audit ledger, no tenant rows
   'companies', // the snapshot's own root, stored as `company`
   'archived_accounts', // archives of other tenants
   'webhooks_inbound', // raw provider payloads, not tenant-owned

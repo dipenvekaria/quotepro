@@ -32,6 +32,53 @@ const SRC = join(ROOT, 'src')
  * bails when that lookup returns nothing.
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
+  // Platform-admin surface: cross-tenant by design, gated by the
+  // platform_admins allow-list (requirePlatformAdmin) rather than company_id.
+  {
+    file: 'src/lib/admin/guard.ts',
+    match: 'from platform_admins',
+    reason: 'Allow-list lookup — the gate itself.',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'as degraded_ai',
+    reason: 'Platform health read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from companies co',
+    reason: 'Platform roster read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from ai_conversations a',
+    reason: 'Degraded-AI read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from quickbooks_connections q',
+    reason: 'QBO-errors read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from payments p',
+    reason: 'Payments read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from platform_admins',
+    reason: 'Allow-list read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'admin_audit',
+    reason: 'Platform audit ledger writes, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'platform_admins',
+    reason: 'Allow-list management; guarded by requirePlatformAdmin().',
+  },
   {
     file: 'src/app/app/(shell)/integrations/actions.ts',
     match: 'update companies',
