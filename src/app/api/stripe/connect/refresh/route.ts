@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 /** Syncs the cached Stripe flags for the caller's company, then reports them. */
 export async function GET() {
   const session = await getSession()
-  if (!session) return NextResponse.json({ ok: false, error: 'Not authenticated' })
+  if (!session) return NextResponse.json({ ok: false, error: 'Not authenticated' }, { status: 401 })
 
   await refreshStripeAccountFlags(session.companyId)
 

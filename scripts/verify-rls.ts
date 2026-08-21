@@ -18,6 +18,7 @@
  * Exit code: 0 on pass, 1 on any failure.
  */
 import { createClient } from '@supabase/supabase-js'
+import { Pool } from 'pg'
 
 type Row = Record<string, unknown>
 
@@ -42,28 +43,31 @@ const anon = createClient(url, anonKey, { auth: { persistSession: false } })
 const failures: string[] = []
 
 async function fetchUserTables(): Promise<string[]> {
-  const { data, error } = await service.rpc('__verify_rls_list_tables').select()
-  if (!error && data) return (data as Row[]).map((r) => r.table_name as string)
-
-  // Fallback: query pg_tables via a generated RPC — user must have added it OR we introspect via information_schema.
-  const { data: viaInfo, error: infoErr } = await (service.schema('information_schema') as unknown as {
-      from: (t: string) => {
-        select: (c: string) => {
-          eq: (k: string, v: string) => { eq: (k: string, v: string) => Promise<{ data: Row[] | null; error: unknown }> }
-        }
-      }
-    })
-    .from('tables')
-    .select('table_name, table_schema')
-    .eq('table_schema', 'public')
-    .eq('table_type', 'BASE TABLE')
-
-  if (infoErr) {
-    const msg = infoErr instanceof Error ? infoErr.message : String(infoErr)
-    console.error('Could not introspect tables via information_schema:', msg)
-    return []
+  // information_schema is no longer readable through PostgREST (its view surface
+  // was revoked), so introspect straight from pg_catalog with the pg pool. Also
+  // reports whether RLS is enabled per table, which the old path could not.
+  const conn =
+    process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
+  const pool = new Pool({
+    connectionString: conn,
+    ssl: conn.includes('127.0.0.1') || conn.includes('localhost') ? undefined : { rejectUnauthorized: false },
+  })
+  try {
+    const { rows } = await pool.query<{ tablename: string; rls: boolean }>(
+      `select c.relname as tablename, c.relrowsecurity as rls
+         from pg_class c join pg_namespace n on n.oid = c.relnamespace
+        where n.nspname = 'public' and c.relkind = 'r'
+        order by c.relname`,
+    )
+    for (const r of rows) {
+      if (!r.rls) failures.push(`❌ ${r.tablename}: RLS is not enabled`)
+    }
+    return rows.map((r) => r.tablename)
+  } finally {
+    await pool.end()
   }
-  return ((viaInfo ?? []) as Row[]).map((r) => r.table_name as string)
 }
 
 async function checkTableRlsEnabled(table: string): Promise<boolean> {

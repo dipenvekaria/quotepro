@@ -18,7 +18,7 @@ export async function setPassCardFees(input: z.infer<typeof passCardFeesSchema>)
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins can change payment settings.' }
   }
 
