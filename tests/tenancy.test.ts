@@ -32,6 +32,16 @@ const SRC = join(ROOT, 'src')
  * bails when that lookup returns nothing.
  */
 const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
+  {
+    file: 'src/app/api/stripe/webhook/route.ts',
+    match: 'insert into payments',
+    reason: 'Signed Stripe webhook; keyed to the invoice id from the verified event, and the reference-number unique index enforces idempotency.',
+  },
+  {
+    file: 'src/app/api/stripe/webhook/route.ts',
+    match: 'update invoices',
+    reason: 'Signed Stripe webhook; keyed to the invoice id from the verified event.',
+  },
   // Platform-admin surface: cross-tenant by design, gated by the
   // platform_admins allow-list (requirePlatformAdmin) rather than company_id.
   {

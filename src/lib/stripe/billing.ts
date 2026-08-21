@@ -122,6 +122,11 @@ export async function syncSubscription(sub: Stripe.Subscription): Promise<void> 
   if (!companyId) return
   const plan = sub.metadata?.rivet_plan === 'solo' ? 'solo' : 'team'
   const trialEnd = sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null
+  // A terminated subscription leaves the status behind (which drives the
+  // read-only lock) but drops the id, so the company can start a fresh
+  // checkout instead of hitting "already has a subscription".
+  const terminal = sub.status === 'canceled' || sub.status === 'incomplete_expired'
+  const subId = terminal ? null : sub.id
 
   await query(
     `update companies
@@ -130,6 +135,6 @@ export async function syncSubscription(sub: Stripe.Subscription): Promise<void> 
             plan = $4,
             trial_ends_at = $5
       where id = $1`,
-    [companyId, sub.id, sub.status, plan, trialEnd],
+    [companyId, subId, sub.status, plan, trialEnd],
   )
 }
