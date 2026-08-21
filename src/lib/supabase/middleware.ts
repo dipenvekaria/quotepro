@@ -2,10 +2,14 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { safeForwardedHost } from './forwarded-host'
 
-export async function updateSession(request: NextRequest) {
+export async function updateSession(request: NextRequest, nonce?: string, csp?: string) {
+  // Carry the nonce to Server Components (they read it from headers()).
+  if (nonce) request.headers.set('x-nonce', nonce)
+
   let supabaseResponse = NextResponse.next({
     request,
   })
+  if (csp) supabaseResponse.headers.set('Content-Security-Policy', csp)
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,6 +24,7 @@ export async function updateSession(request: NextRequest) {
           supabaseResponse = NextResponse.next({
             request,
           })
+          if (csp) supabaseResponse.headers.set('Content-Security-Policy', csp)
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
           )

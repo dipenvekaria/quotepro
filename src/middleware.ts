@@ -1,7 +1,13 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
+import { buildCsp } from '@/lib/security/csp'
 
 export async function middleware(request: NextRequest) {
+  // Per-request nonce for the CSP. Framework and our inline scripts carry it;
+  // everything else inline is refused. Threaded to Server Components via the
+  // x-nonce request header, and set as the CSP header on the page response.
+  const nonce = btoa(crypto.randomUUID())
+  const csp = buildCsp(nonce, process.env.NODE_ENV !== 'production')
   // Two hosts, two jobs. getrivet.ai is the product; thefieldgenie.com is the
   // operations portal and serves only /admin — so an error on the product
   // domain can never expose platform data, and vice versa. localhost and
@@ -20,7 +26,7 @@ export async function middleware(request: NextRequest) {
         url.host = 'thefieldgenie.com'
         return NextResponse.redirect(url, 308)
       }
-      return await updateSession(request)
+      return await updateSession(request, nonce, csp)
     }
     if (path === '/') {
       url.host = 'thefieldgenie.com'
@@ -46,7 +52,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(url, { status: 404 })
   }
 
-  return await updateSession(request)
+  return await updateSession(request, nonce, csp)
 }
 
 export const config = {
