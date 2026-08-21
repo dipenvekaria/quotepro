@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { safeForwardedHost } from './forwarded-host'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -53,14 +54,16 @@ export async function updateSession(request: NextRequest) {
     const forwardedProto = request.headers.get('x-forwarded-proto')
     
     const url = request.nextUrl.clone()
-    
-    // If forwarded headers exist (ngrok/tunnel), use those
-    if (forwardedHost) {
+
+    // Trust the forwarded host only if we recognise it — otherwise an
+    // attacker's header would steer the redirect off-site.
+    const safeHost = safeForwardedHost(forwardedHost)
+    if (safeHost) {
       url.protocol = forwardedProto || 'https'
-      url.host = forwardedHost
-      if (!forwardedHost.includes(':')) url.port = ''
+      url.host = safeHost
+      if (!safeHost.includes(':')) url.port = ''
     }
-    
+
     url.pathname = '/login'
     console.log('🔒 Middleware: No user, redirecting to login:', url.toString())
     return NextResponse.redirect(url)
@@ -73,14 +76,14 @@ export async function updateSession(request: NextRequest) {
     const forwardedProto = request.headers.get('x-forwarded-proto')
     
     const url = request.nextUrl.clone()
-    
-    // If forwarded headers exist (ngrok/tunnel), use those
-    if (forwardedHost) {
+
+    const safeHost = safeForwardedHost(forwardedHost)
+    if (safeHost) {
       url.protocol = forwardedProto || 'https'
-      url.host = forwardedHost
-      if (!forwardedHost.includes(':')) url.port = ''
+      url.host = safeHost
+      if (!safeHost.includes(':')) url.port = ''
     }
-    
+
     url.pathname = '/app'
     console.log('✅ Middleware: User logged in, redirecting from /login to:', url.toString())
     return NextResponse.redirect(url)

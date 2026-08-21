@@ -140,7 +140,11 @@ async function qboFetch<T>(
   return (await res.json()) as T
 }
 
-const esc = (s: string) => s.replaceAll("'", "\\'")
+// QBO query grammar: backslash is the escape char, so it must be escaped first,
+// then the single quote. Escaping only the quote left a trailing backslash able
+// to swallow the closing quote (breaking the query) or, read the other way,
+// close the literal and inject raw query text.
+const esc = (s: string) => s.replaceAll('\\', '\\\\').replaceAll("'", "\\'")
 
 export async function qboQuery<T>(companyId: string, q: string): Promise<T> {
   return qboFetch<T>(companyId, `/query?query=${encodeURIComponent(q)}`)

@@ -12,7 +12,7 @@ diff=$([ -n "$base" ] && git diff "$base"...HEAD 2>/dev/null || git diff origin/
 [ -z "$diff" ] && exit 0
 added=$(grep '^+' <<<"$diff" | grep -v '^+++')
 
-hits=$(grep -inE 'sbp_[a-z0-9]{20,}|GOCSPX-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9]{20,}|BEGIN [A-Z ]*PRIVATE KEY|eyJ[A-Za-z0-9_-]{30,}\.[A-Za-z0-9_-]{30,}|(api[_-]?key|secret|password)["'"'"']?\s*[:=]\s*["'"'"'][A-Za-z0-9_\-]{16,}' <<<"$added" \
+hits=$(grep -inE 'sbp_[a-z0-9]{20,}|sb_secret_[A-Za-z0-9]{20,}|GOCSPX-[A-Za-z0-9_-]{10,}|sk-[A-Za-z0-9]{20,}|sk_(live|test)_[A-Za-z0-9]{20,}|rk_(live|test)_[A-Za-z0-9]{20,}|whsec_[A-Za-z0-9]{20,}|re_[A-Za-z0-9]{10,}_[A-Za-z0-9]{20,}|AIza[A-Za-z0-9_-]{30,}|xox[baprs]-[A-Za-z0-9-]{10,}|BEGIN [A-Z ]*PRIVATE KEY|eyJ[A-Za-z0-9_-]{30,}\.[A-Za-z0-9_-]{30,}|(api[_-]?key|secret|token|password)["'"'"']?\s*[:=]\s*["'"'"']?[A-Za-z0-9_\-]{16,}' <<<"$added" \
   | grep -viE 'process\.env|example|placeholder|your[_-]|<[a-z]|\$\{|xxx|demo1234|postgres:postgres' | head -5)
 
 if [ -n "$hits" ]; then

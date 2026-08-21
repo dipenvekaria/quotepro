@@ -32,7 +32,15 @@ export function useAuth() {
 
     // Honor ?next= (e.g. team invite links) so we return there after auth.
     const nextParam = new URLSearchParams(window.location.search).get('next')
-    const dest = nextParam && nextParam.startsWith('/') ? nextParam : '/app'
+    // Same-origin path only — reject '//evil.com' and '/\evil.com', which the
+    // browser resolves as protocol-relative to another host.
+    const dest =
+      nextParam &&
+      nextParam.startsWith('/') &&
+      !nextParam.startsWith('//') &&
+      !nextParam.startsWith('/\\')
+        ? nextParam
+        : '/app'
 
     try {
       if (isSignUp) {
