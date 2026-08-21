@@ -14,17 +14,54 @@ import { getStripe } from './client'
  * the trial-ending reminder itself.
  */
 
+/**
+ * Founding pricing: the first FOUNDING_CAP companies subscribe at the founding
+ * price and keep it for as long as they stay subscribed — a Stripe
+ * subscription is pinned to the price it started on, so grandfathering needs
+ * no code. Everyone after pays full price. Lookup keys carry the amount so a
+ * stale key can never resolve to a price with a different amount.
+ */
+export const FOUNDING_CAP = 100
+
 export const PLANS = {
-  solo: { lookup: 'rivet_solo_monthly', amount: 3900, name: 'Rivet Solo' },
-  team: { lookup: 'rivet_team_monthly', amount: 9900, name: 'Rivet Team' },
+  solo: {
+    name: 'Rivet Solo',
+    founding: { lookup: 'rivet_solo_4900', amount: 4900 },
+    full: { lookup: 'rivet_solo_7900', amount: 7900 },
+  },
+  team: {
+    name: 'Rivet Team',
+    founding: { lookup: 'rivet_team_9900', amount: 9900 },
+    full: { lookup: 'rivet_team_13900', amount: 13900 },
+  },
 } as const
 
 export type PlanId = keyof typeof PLANS
+export type PriceTier = 'founding' | 'full'
 
 const TRIAL_DAYS = 14
 
-async function ensurePrice(stripe: Stripe, plan: PlanId): Promise<string> {
-  const { lookup, amount, name } = PLANS[plan]
+/**
+ * Platform-wide, deliberately unscoped: how many of the 100 founding spots
+ * remain. A cancelled subscription frees its spot.
+ */
+export async function foundingSpotsLeft(): Promise<number> {
+  const [row] = await query<{ n: number }>(
+    `select count(*)::int as n
+       from companies
+      where stripe_subscription_id is not null
+        and coalesce(subscription_status, '') <> 'canceled'`,
+  )
+  return Math.max(0, FOUNDING_CAP - (row?.n ?? 0))
+}
+
+export async function currentTier(): Promise<PriceTier> {
+  return (await foundingSpotsLeft()) > 0 ? 'founding' : 'full'
+}
+
+async function ensurePrice(stripe: Stripe, plan: PlanId, tier: PriceTier): Promise<string> {
+  const { name } = PLANS[plan]
+  const { lookup, amount } = PLANS[plan][tier]
   const found = await stripe.prices.list({ lookup_keys: [lookup], limit: 1 })
   if (found.data[0]) return found.data[0].id
 
@@ -77,7 +114,8 @@ export async function createSubscriptionCheckout(input: {
   if (company.stripe_subscription_id) throw new Error('This company already has a subscription')
 
   const customerId = await ensureCustomer(stripe, company)
-  const priceId = await ensurePrice(stripe, input.plan)
+  const tier = await currentTier()
+  const priceId = await ensurePrice(stripe, input.plan, tier)
   const base = env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')
 
   const session = await stripe.checkout.sessions.create({

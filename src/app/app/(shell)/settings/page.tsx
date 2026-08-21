@@ -11,6 +11,7 @@ import { SettingsForm } from './settings-form'
 import { BillingCard } from './billing-card'
 import { gettingStartedSteps } from '@/lib/getting-started'
 import { refreshStripeAccountFlags } from '@/lib/stripe/connect-status'
+import { PLANS, currentTier } from '@/lib/stripe/billing'
 import { WorkingHours } from './working-hours'
 import { InviteTeammateDialog, RevokeInviteButton } from './invite-dialog'
 import { DangerZone } from './danger-zone'
@@ -105,6 +106,8 @@ export default async function SettingsPage({
     business_tax_id?: string | null
   }
 
+  const tier = canEdit ? await currentTier() : 'founding'
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       <header>
@@ -168,6 +171,11 @@ export default async function SettingsPage({
             status={(company as { subscription_status?: string | null }).subscription_status ?? null}
             trialEndsAt={(company as { trial_ends_at?: string | null }).trial_ends_at ?? null}
             canEdit={canEdit}
+            founding={tier === 'founding'}
+            prices={{
+              solo: `$${PLANS.solo[tier].amount / 100}`,
+              team: `$${PLANS.team[tier].amount / 100}`,
+            }}
           />
         </div>
       </SettingsGroup>
