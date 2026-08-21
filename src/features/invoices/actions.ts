@@ -10,6 +10,7 @@ import { sendInvoiceEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query, withTransaction } from '@/lib/db'
 import { syncInvoiceToQbo, syncPaymentToQbo } from '@/lib/quickbooks/sync'
+import { readOnlyGuard } from '@/lib/billing/access'
 
 // ---------------------------------------------------------------------------
 
@@ -20,6 +21,8 @@ export async function convertToInvoice(
 ): Promise<{ ok: true; data: InvoiceStub } | { ok: false; error: string }> {
   const session = await getSession()
   if (!session) return { ok: false, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { companyId } = session
 
   const [existing] = await query<InvoiceStub>(
@@ -105,6 +108,8 @@ type SendInvoiceResult =
 export async function sendInvoice(invoiceId: string): Promise<SendInvoiceResult> {
   const session = await getSession()
   if (!session) return { ok: false, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { companyId } = session
 
   const [inv] = await query<{
@@ -201,6 +206,8 @@ export async function recordPayment(input: RecordPaymentInput) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
   const { userId, companyId } = session
 
   const [inv] = await query<{

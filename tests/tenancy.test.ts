@@ -42,6 +42,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     match: 'update invoices',
     reason: 'Signed Stripe webhook; keyed to the invoice id from the verified event.',
   },
+  {
+    file: 'src/lib/billing/access.ts',
+    match: 'from companies',
+    reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
+  },
   // Platform-admin surface: cross-tenant by design, gated by the
   // platform_admins allow-list (requirePlatformAdmin) rather than company_id.
   {

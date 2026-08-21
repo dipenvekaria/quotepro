@@ -131,6 +131,8 @@ export async function runRecurringSpawns(now: Date = new Date()): Promise<SpawnR
       where w.recurrence is not null
         and (w.recurrence->>'next_at')::timestamptz <= $1
         and w.status <> 'archived'
+        and coalesce(co.subscription_status, '') not in
+            ('canceled', 'past_due', 'unpaid', 'incomplete_expired')
       order by w.company_id
       limit 200`,
     [now.toISOString()],
