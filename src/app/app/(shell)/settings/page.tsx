@@ -28,6 +28,12 @@ export default async function SettingsPage({
   const sp = await searchParams
   if (sp.stripe) await refreshStripeAccountFlags(companyId)
 
+  // Withhold in the query, not the markup: a value behind a JSX conditional
+  // still ships in the RSC payload. Technicians and sales get neither the team
+  // roster nor the company's financial settings.
+  const canEdit = role === 'owner' || role === 'admin'
+  const canManageTeam = role === 'owner' || role === 'office'
+
   const [company] = await query<{
     id: string
     name: string
@@ -51,42 +57,44 @@ export default async function SettingsPage({
     [companyId],
   )
 
-  const teammates = await query<{
-    id: string
-    email: string | null
-    role: string
-    profile: Record<string, unknown> | null
-    is_active: boolean
-    last_login_at: string | null
-    can_edit_catalog: boolean | null
-  }>(
-    `select u.id, au.email, u.role, u.profile, u.is_active, u.last_login_at, u.can_edit_catalog
-       from users u
-       left join auth.users au on au.id = u.id
-      where u.company_id = $1
-      order by u.role asc`,
-    [companyId],
-  )
+  const teammates = canManageTeam
+    ? await query<{
+        id: string
+        email: string | null
+        role: string
+        profile: Record<string, unknown> | null
+        is_active: boolean
+        last_login_at: string | null
+        can_edit_catalog: boolean | null
+      }>(
+        `select u.id, au.email, u.role, u.profile, u.is_active, u.last_login_at, u.can_edit_catalog
+           from users u
+           left join auth.users au on au.id = u.id
+          where u.company_id = $1
+          order by u.role asc`,
+        [companyId],
+      )
+    : []
 
-  const pendingInvites = await query<{
-    id: string
-    email: string
-    role: string
-    created_at: string
-  }>(
-    `select id, email, role, created_at
-       from invitations
-      where company_id = $1 and status = 'pending' and expires_at > now()
-      order by created_at desc`,
-    [companyId],
-  )
+  const pendingInvites = canManageTeam
+    ? await query<{
+        id: string
+        email: string
+        role: string
+        created_at: string
+      }>(
+        `select id, email, role, created_at
+           from invitations
+          where company_id = $1 and status = 'pending' and expires_at > now()
+          order by created_at desc`,
+        [companyId],
+      )
+    : []
 
   if (!company) redirect('/app/onboarding')
 
   const businessHours = await loadBusinessHours(companyId)
 
-  const canEdit = role === 'owner' || role === 'admin'
-  const canManageTeam = role === 'owner' || role === 'office'
   const gs = await gettingStartedSteps(companyId)
   const settings = (company.settings ?? {}) as {
     tax_rate?: number
@@ -146,6 +154,7 @@ export default async function SettingsPage({
         </ul>
       </SettingsGroup>
 
+      {canEdit && (
       <SettingsGroup
         icon={CreditCard}
         title="Billing"
@@ -162,7 +171,9 @@ export default async function SettingsPage({
           />
         </div>
       </SettingsGroup>
+      )}
 
+      {canEdit && (
       <SettingsGroup icon={Building2} title="Company" hint={company.name}>
         <div className="p-5">
           <SettingsForm
@@ -183,6 +194,7 @@ export default async function SettingsPage({
           />
         </div>
       </SettingsGroup>
+      )}
 
       {canEdit && (
         <SettingsGroup icon={Clock} title="Working hours">
@@ -190,6 +202,7 @@ export default async function SettingsPage({
         </SettingsGroup>
       )}
 
+      {canManageTeam && (
       <SettingsGroup
         id="team"
         icon={Users}
@@ -270,7 +283,9 @@ export default async function SettingsPage({
           </div>
         )}
       </SettingsGroup>
+      )}
 
+      {canEdit && (
       <SettingsGroup
         icon={Wallet}
         title="Payments"
@@ -321,6 +336,7 @@ export default async function SettingsPage({
           </Link>
         </div>
       </SettingsGroup>
+      )}
 
       <div className="mt-4">
         <DangerZone isOwner={role === 'owner'} />
