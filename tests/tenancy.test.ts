@@ -41,6 +41,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
   },
   {
     file: 'src/lib/admin/queries.ts',
+    match: 'as mrr_cents',
+    reason: 'Business metrics read for /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
     match: 'as degraded_ai',
     reason: 'Platform health read for /admin, behind requirePlatformAdmin().',
   },

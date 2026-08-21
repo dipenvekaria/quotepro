@@ -127,6 +127,52 @@ export async function recentPayments(): Promise<PaymentRow[]> {
   )
 }
 
+export type PlatformBusiness = {
+  mrrCents: number
+  soloActive: number
+  teamActive: number
+  trialing: number
+  canceled: number
+  canceled30d: number
+  companiesTotal: number
+  companiesNew30d: number
+  activeCompanies30d: number
+  endCustomers: number
+}
+
+type BizRow = Record<string, string>
+
+export async function platformBusiness(): Promise<PlatformBusiness> {
+  const [row] = await query<BizRow>(
+    `select
+       (select coalesce(sum(case plan when 'solo' then 3900 when 'team' then 9900 else 0 end), 0)
+          from companies where subscription_status = 'active') as mrr_cents,
+       (select count(*) from companies where plan = 'solo' and subscription_status = 'active') as solo_active,
+       (select count(*) from companies where plan = 'team' and subscription_status = 'active') as team_active,
+       (select count(*) from companies where subscription_status = 'trialing') as trialing,
+       (select count(*) from companies where subscription_status = 'canceled') as canceled,
+       (select count(*) from companies
+         where subscription_status = 'canceled' and updated_at > now() - interval '30 days') as canceled_30d,
+       (select count(*) from companies) as companies_total,
+       (select count(*) from companies where created_at > now() - interval '30 days') as companies_new_30d,
+       (select count(distinct company_id) from activity_log
+         where created_at > now() - interval '30 days') as active_companies_30d,
+       (select count(*) from customers) as end_customers`,
+  )
+  return {
+    mrrCents: Number(row.mrr_cents),
+    soloActive: Number(row.solo_active),
+    teamActive: Number(row.team_active),
+    trialing: Number(row.trialing),
+    canceled: Number(row.canceled),
+    canceled30d: Number(row.canceled_30d),
+    companiesTotal: Number(row.companies_total),
+    companiesNew30d: Number(row.companies_new_30d),
+    activeCompanies30d: Number(row.active_companies_30d),
+    endCustomers: Number(row.end_customers),
+  }
+}
+
 export type AdminRow = { email: string; added_by: string | null; created_at: string }
 
 export async function platformAdmins(): Promise<AdminRow[]> {
