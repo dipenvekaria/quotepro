@@ -38,7 +38,7 @@ export async function updateCompanySettings(input: UpdateSettingsInput) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins can update settings' }
   }
 
@@ -120,7 +120,7 @@ export async function updateBusinessHours(input: unknown) {
 
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins can change working hours' }
   }
 
@@ -157,7 +157,7 @@ export async function updateBusinessHours(input: unknown) {
 export async function uploadCompanyLogo(formData: FormData) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins can update branding' }
   }
 

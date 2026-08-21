@@ -42,10 +42,14 @@ export async function updateSession(request: NextRequest) {
   // An auth callback lands with ?code= (PKCE) or ?token_hash= (email OTP) and no
   // session yet — establishing the session is precisely what the code is for.
   // Redirecting to /login clones the URL, so the code survives on a page that
-  // never exchanges it and the email link silently fails. Let these through to
-  // whatever calls exchangeCodeForSession.
+  // never exchanges it and the email link silently fails. Let these through —
+  // but only on the auth routes that actually exchange the code, so appending
+  // ?code= to an arbitrary protected path is not a way to skip the gate.
+  const p = request.nextUrl.pathname
+  const isAuthExchangePath = p.startsWith('/auth') || p === '/login' || p === '/'
   const hasAuthCode =
-    request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('token_hash')
+    isAuthExchangePath &&
+    (request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('token_hash'))
 
   // Protected routes
   if (!user && !isPublicRoute && !hasAuthCode) {

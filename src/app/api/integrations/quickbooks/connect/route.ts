@@ -13,7 +13,7 @@ import { qboAuthorizeUrl, qboConfigured } from '@/lib/quickbooks/client'
 export async function GET() {
   const session = await getSession()
   if (!session) return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_APP_URL))
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return NextResponse.json({ error: 'Only owners and admins connect integrations' }, { status: 403 })
   }
   if (!qboConfigured()) {

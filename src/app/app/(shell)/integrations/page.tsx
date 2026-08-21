@@ -42,7 +42,7 @@ export default async function IntegrationsPage({
   )
   const company = companyRows[0]
   if (!company) redirect('/app/onboarding')
-  const canEdit = role === 'owner' || role === 'admin'
+  const canEdit = role === 'owner'
 
   const [qbo] = await query<{
     realm_id: string
@@ -106,7 +106,7 @@ export default async function IntegrationsPage({
           tagline="Bookkeeping only: invoices and recorded payments post to your books automatically. No money moves through this connection."
         >
           <div className="space-y-3">
-            {qbo?.last_error && (
+            {qbo?.last_error && canEdit && (
               <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5 text-xs text-amber-700 dark:text-amber-300">
                 Last sync failed: {qbo.last_error}
               </p>

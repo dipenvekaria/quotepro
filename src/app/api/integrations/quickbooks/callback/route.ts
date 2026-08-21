@@ -9,7 +9,7 @@ import { exchangeCode } from '@/lib/quickbooks/client'
 export async function GET(request: Request) {
   const session = await getSession()
   if (!session) return NextResponse.redirect(new URL('/login', env.NEXT_PUBLIC_APP_URL))
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return NextResponse.redirect(new URL('/app/integrations?qbo=denied', env.NEXT_PUBLIC_APP_URL))
   }
 

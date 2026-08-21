@@ -28,7 +28,7 @@ export async function POST() {
   if (!session) return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   const { companyId, role, email } = session
 
-  if (role !== 'owner' && role !== 'admin') {
+  if (role !== 'owner') {
     return NextResponse.json({ error: 'Only owners and admins can connect Stripe.' }, { status: 403 })
   }
 

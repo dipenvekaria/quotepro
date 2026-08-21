@@ -31,7 +31,7 @@ export default async function SettingsPage({
   // Withhold in the query, not the markup: a value behind a JSX conditional
   // still ships in the RSC payload. Technicians and sales get neither the team
   // roster nor the company's financial settings.
-  const canEdit = role === 'owner' || role === 'admin'
+  const canEdit = role === 'owner'
   const canManageTeam = role === 'owner' || role === 'office'
 
   const [company] = await query<{

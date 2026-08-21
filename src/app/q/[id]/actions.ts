@@ -29,7 +29,10 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     .eq('public_token', parsed.data.token)
     .maybeSingle()
 
-  if (fetchErr) return { ok: false as const, error: fetchErr.message }
+  if (fetchErr) {
+    console.error('public quote fetch failed', fetchErr)
+    return { ok: false as const, error: 'Something went wrong. Please try again.' }
+  }
   if (!item) return { ok: false as const, error: 'Quote not found' }
   if (!['quote_sent', 'quote_viewed'].includes(item.status as string)) {
     return { ok: false as const, error: 'This quote can no longer be accepted.' }
@@ -64,7 +67,10 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     .update({ status: 'quote_accepted', accepted_at: now, metadata })
     .eq('id', item.id)
 
-  if (updErr) return { ok: false as const, error: updErr.message }
+  if (updErr) {
+    console.error('public quote update failed', updErr)
+    return { ok: false as const, error: 'Something went wrong. Please try again.' }
+  }
 
   await logActivity({
     companyId: item.company_id as string,
@@ -115,7 +121,10 @@ export async function declineQuote(input: z.infer<typeof declineSchema>) {
     .update({ status: 'quote_rejected', rejected_at: now, metadata })
     .eq('id', item.id)
 
-  if (error) return { ok: false as const, error: error.message }
+  if (error) {
+    console.error('public quote action failed', error)
+    return { ok: false as const, error: 'Something went wrong. Please try again.' }
+  }
 
   await logActivity({
     companyId: item.company_id as string,

@@ -6,7 +6,7 @@ import { createPortalSession, createSubscriptionCheckout, type PlanId } from '@/
 export async function startSubscription(plan: PlanId) {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins manage billing' }
   }
   try {
@@ -24,7 +24,7 @@ export async function startSubscription(plan: PlanId) {
 export async function openBillingPortal() {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins manage billing' }
   }
   try {

@@ -8,7 +8,7 @@ import { query } from '@/lib/db'
 export async function disconnectQuickbooks() {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
-  if (session.role !== 'owner' && session.role !== 'admin') {
+  if (session.role !== 'owner') {
     return { ok: false as const, error: 'Only owners and admins manage integrations' }
   }
   // The synced ids stay on invoices/customers — history in QBO is theirs to
