@@ -15,9 +15,10 @@ import { ThemeProvider as NextThemeProvider, useTheme } from 'next-themes'
  * `@custom-variant dark (&:is(.dark *))` — Tailwind is looking for a class, not
  * a media query, which is also what makes an explicit override possible at all.
  */
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children, nonce }: { children: React.ReactNode; nonce?: string }) {
   return (
     <NextThemeProvider
+      nonce={nonce}
       attribute="class"
       defaultTheme="light"
       enableSystem
