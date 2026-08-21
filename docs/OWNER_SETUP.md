@@ -15,7 +15,7 @@ needs a human. Engineer machine setup is a different doc:
 | AI | `GEMINI_API_KEY` funded; no fallbacks — failures surface as errors and log `status='degraded'` in `ai_conversations` |
 | Email | Resend with **verified** getrivet.ai domain; sends as "Rivet <quotes@getrivet.ai>"; replies go to the business, not Rivet |
 | Payments (customers → contractor) | Stripe Connect wired; contractors onboard from Integrations |
-| Billing (contractor → Rivet) | Stripe Billing: Solo $39 / Team $99, 14-day trial, card up front; prices self-provision by lookup key |
+| Billing (contractor → Rivet) | Stripe Billing: founding $49 Solo / $99 Team (first 100 companies, then $79/$139 — automatic), 14-day trial, card up front; prices self-provision by lookup key |
 | QuickBooks | **Production keys live**; OAuth + sync verified |
 | Crons | `vercel.json`: quote follow-ups, catalog reindex, recurring visits — daily, guarded by `CRON_SECRET` |
 | Support | `SUPPORT_INBOX` set — in-app "Email us" delivers there, reply-to the sender |
@@ -56,8 +56,9 @@ needs a human. Engineer machine setup is a different doc:
     redirects follow automatically, local remotes get updated after.
 11. **Retell (call answering).** The larger one: needs a Retell account, a phone
     number, an agent configured to Rivet's script, and a webhook that turns a
-    finished call into a lead. Priced earlier at roughly $20/customer/month of
-    usage headroom — see `docs/PRICING_STRATEGY.md`.
+    finished call into a lead. Bundled as 100 min (Solo) / 300 min (Team);
+    costs and margins in `docs/COST_PER_CUSTOMER.md`, decision in
+    `docs/PRICING_STRATEGY.md`.
 
 ## Optional / later
 
