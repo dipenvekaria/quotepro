@@ -4,7 +4,7 @@ import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
-import { BarChart3, Calendar, ChevronDown, Home, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, Zap, type LucideIcon } from 'lucide-react'
+import { BarChart3, Calendar, ChevronDown, Home, Image as ImageIcon, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, Zap, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
@@ -24,6 +24,7 @@ const NAV = [
   { href: '/app/calendar',     label: 'Calendar',     icon: Calendar },
   { href: '/app/customers',    label: 'Customers',    icon: Users },
   { href: '/app/catalog',      label: 'Price book',   icon: Package },
+  { href: '/app/portfolio',    label: 'Portfolio',    icon: ImageIcon },
   { href: '/app/analytics',    label: 'Analytics',    icon: BarChart3 },
   { href: '/app/integrations', label: 'Integrations', icon: Plug },
 ]

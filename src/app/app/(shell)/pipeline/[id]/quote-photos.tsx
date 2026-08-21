@@ -2,12 +2,12 @@
 
 import { useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Camera, Loader2, Trash2 } from 'lucide-react'
+import { Camera, Loader2, Star, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 
-import { deleteQuotePhoto, uploadQuotePhoto, type QuotePhoto } from './photo-actions'
+import { deleteQuotePhoto, togglePhotoShowcase, uploadQuotePhoto, type QuotePhoto } from './photo-actions'
 
 /**
  * Photos on a quote.
@@ -70,6 +70,18 @@ export function QuotePhotos({
         toast.error(res.error)
         return
       }
+      router.refresh()
+    })
+  }
+
+  function toggleShowcase(photo: QuotePhoto) {
+    startUpload(async () => {
+      const res = await togglePhotoShowcase({ id: photo.id, in_showcase: !photo.in_showcase })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      toast.success(photo.in_showcase ? 'Removed from portfolio' : 'Added to portfolio')
       router.refresh()
     })
   }
@@ -161,20 +173,40 @@ export function QuotePhotos({
                   className="aspect-square w-full object-cover"
                   loading="lazy"
                 />
-                <button
-                  onClick={() => remove(photo.id)}
-                  disabled={uploading}
-                  aria-label="Remove photo"
-                  className={cn(
-                    'absolute right-1.5 top-1.5 grid h-8 w-8 place-items-center rounded-md bg-background/90 text-muted-foreground shadow-sm',
-                    'hover:text-destructive',
-                  )}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-                {line && (
-                  <figcaption className="truncate border-t border-border/70 bg-muted/40 px-2 py-1 text-[11px] text-muted-foreground">
-                    {line}
+                <div className="absolute right-1.5 top-1.5 flex gap-1">
+                  <button
+                    onClick={() => toggleShowcase(photo)}
+                    disabled={uploading}
+                    aria-label={photo.in_showcase ? 'Remove from portfolio' : 'Add to portfolio'}
+                    title={photo.in_showcase ? 'In your portfolio' : 'Add to portfolio'}
+                    className={cn(
+                      'grid h-8 w-8 place-items-center rounded-md bg-background/90 shadow-sm',
+                      photo.in_showcase ? 'text-amber-500' : 'text-muted-foreground hover:text-amber-500',
+                    )}
+                  >
+                    <Star className={cn('h-3.5 w-3.5', photo.in_showcase && 'fill-current')} />
+                  </button>
+                  <button
+                    onClick={() => remove(photo.id)}
+                    disabled={uploading}
+                    aria-label="Remove photo"
+                    className="grid h-8 w-8 place-items-center rounded-md bg-background/90 text-muted-foreground shadow-sm hover:text-destructive"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+                {(line || photo.tags.length > 0) && (
+                  <figcaption className="space-y-1 border-t border-border/70 bg-muted/40 px-2 py-1">
+                    {line && <div className="truncate text-[11px] text-muted-foreground">{line}</div>}
+                    {photo.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {photo.tags.slice(0, 4).map((t) => (
+                          <span key={t} className="rounded bg-background px-1 py-px text-[10px] capitalize text-muted-foreground">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </figcaption>
                 )}
               </figure>
