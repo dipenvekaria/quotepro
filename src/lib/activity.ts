@@ -29,6 +29,7 @@ export type ActivityAction =
   | 'note'
   | 'review_request_sent'
   | 'recurring_job_spawned'
+  | 'estimate_scheduled'
 
 /**
  * Never throws and never blocks — identical contract to `recordAiRun`, for the

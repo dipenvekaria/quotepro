@@ -127,6 +127,7 @@ const statusSchema = z.object({
   id: z.string().uuid(),
   to: z.enum([
     'lead',
+    'estimate_scheduled',
     'quote_draft',
     'quote_sent',
     'quote_viewed',
@@ -142,6 +143,73 @@ const statusSchema = z.object({
   /** Required when moving to job_scheduled. Ignored otherwise. */
   scheduled_start: z.string().datetime().nullable().optional(),
 })
+
+const estimateSchema = z.object({
+  id: z.string().uuid(),
+  estimate_scheduled_start: z.string().datetime(),
+  estimate_scheduled_end: z.string().datetime().nullable().optional(),
+  sales_rep_id: z.string().uuid().nullable().optional(),
+})
+
+/**
+ * Books a sales/estimate visit on a lead. The visit produces the quote; a
+ * salesperson (or office/owner) is assigned, and it lands on the calendar as
+ * an Estimate event distinct from a job. Moves the item to estimate_scheduled.
+ */
+export async function scheduleEstimate(input: z.infer<typeof estimateSchema>) {
+  const parsed = estimateSchema.safeParse(input)
+  if (!parsed.success) return { ok: false as const, error: 'Pick a date and time for the visit.' }
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+
+  // Scheduling and dispatch is an office/sales decision, not a technician's.
+  if (!['owner', 'office', 'sales', 'admin'].includes(session.role)) {
+    return { ok: false as const, error: 'You do not have access to schedule visits.' }
+  }
+
+  // A sales rep, if named, must be a real teammate in this company.
+  if (parsed.data.sales_rep_id) {
+    const [rep] = await query<{ id: string }>(
+      `select id from users where id = $1 and company_id = $2`,
+      [parsed.data.sales_rep_id, session.companyId],
+    )
+    if (!rep) return { ok: false as const, error: 'That teammate was not found.' }
+  }
+
+  try {
+    const rows = await query<{ id: string }>(
+      `update work_items
+          set status = 'estimate_scheduled'::work_item_status,
+              estimate_scheduled_start = $1,
+              estimate_scheduled_end = $2,
+              estimate_assigned_to = $3
+        where id = $4 and company_id = $5
+          and status in ('lead','estimate_scheduled','quote_draft','quote_rejected','quote_expired')
+        returning id`,
+      [
+        parsed.data.estimate_scheduled_start,
+        parsed.data.estimate_scheduled_end ?? null,
+        parsed.data.sales_rep_id ?? null,
+        parsed.data.id,
+        session.companyId,
+      ],
+    )
+    if (!rows[0]) return { ok: false as const, error: 'Not found, or this item cannot take an estimate visit.' }
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : 'Update failed' }
+  }
+
+  await logActivity({
+    companyId: session.companyId,
+    userId: session.userId,
+    entityId: parsed.data.id,
+    action: 'estimate_scheduled',
+    description: 'Sales/estimate visit booked',
+  })
+  revalidatePath(`/app/pipeline/${parsed.data.id}`)
+  revalidatePath('/app/calendar')
+  return { ok: true as const }
+}
 
 export async function changeStatus(input: z.infer<typeof statusSchema>) {
   const parsed = statusSchema.safeParse(input)

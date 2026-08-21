@@ -168,6 +168,52 @@ export default async function CalendarPage({
         : null,
   }))
 
+  // Estimate/sales visits share the calendar with jobs. They live in their own
+  // date column (estimate_scheduled_start) and carry the estimate_scheduled
+  // status, which the StatusBadge renders distinctly. Owner/office see all;
+  // sales see their own; technicians do not deal with estimates.
+  const estRoleSql =
+    role === 'sales' ? ' and (w.estimate_assigned_to = $4 or w.created_by = $4)' : ''
+  const estRoleParams = role === 'sales' ? [userId] : []
+  const estimateRows =
+    role === 'technician'
+      ? []
+      : await query<{
+          id: string
+          status: string
+          estimate_scheduled_start: string
+          customer_name: string | null
+          address: string | null
+          city: string | null
+          state: string | null
+        }>(
+          `select w.id, w.status, w.estimate_scheduled_start,
+                  c.name as customer_name, a.address, a.city, a.state
+             from work_items w
+             left join customers c on c.id = w.customer_id
+             left join customer_addresses a on a.id = w.address_id
+            where w.company_id = $1
+              and w.status = 'estimate_scheduled'
+              and w.estimate_scheduled_start is not null
+              and w.estimate_scheduled_start >= $2
+              and w.estimate_scheduled_start < $3${estRoleSql}
+            order by w.estimate_scheduled_start asc`,
+          [companyId, rangeStart.toISOString(), rangeEnd.toISOString(), ...estRoleParams],
+        )
+  for (const r of estimateRows) {
+    list.push({
+      id: r.id,
+      status: r.status,
+      scheduled_start: r.estimate_scheduled_start,
+      total: 0,
+      customers: r.customer_name ? { name: r.customer_name } : null,
+      addresses:
+        r.address || r.city || r.state
+          ? { address: r.address, city: r.city, state: r.state }
+          : null,
+    })
+  }
+
   // Only the instants. Day keys are derived in the browser, because the
   // server's timezone is not the contractor's and two sets of keys that must
   // agree will eventually not.
@@ -232,6 +278,19 @@ export default async function CalendarPage({
     place: [r.city, r.state].filter(Boolean).join(', ') || r.address,
     estimated_hours: r.estimated_hours === null ? null : Number(r.estimated_hours),
   }))
+  // Estimate/sales visits render alongside jobs — the StatusBadge marks them
+  // distinctly. They carry no line items, so no hours/total.
+  for (const r of estimateRows) {
+    boardJobs.push({
+      id: r.id,
+      status: r.status,
+      scheduled_start: r.estimate_scheduled_start,
+      total: 0,
+      customer_name: r.customer_name,
+      place: [r.city, r.state].filter(Boolean).join(', ') || r.address,
+      estimated_hours: null,
+    })
+  }
 
   // Prev/next anchors depend on the active view.
   const prev = view === 'month' ? addMonths(anchor, -1) : addDays(startOfWeek(anchor), -7)

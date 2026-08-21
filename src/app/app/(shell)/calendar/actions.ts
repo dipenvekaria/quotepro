@@ -47,25 +47,37 @@ export async function rescheduleJob(input: unknown) {
     return { ok: false as const, error: 'That job is finished — its date is history now.' }
   }
 
+  // An estimate visit lives in its own date columns; dragging one moves those,
+  // not the job's.
+  const isEstimate = item.status === 'estimate_scheduled'
   try {
-    // Shift the end by the same interval rather than only moving the start.
-    // A four-hour job dragged to Thursday is still four hours, and moving the
-    // start alone pushes it past scheduled_end — which trips the
-    // work_items_schedule_order check and fails the whole drag.
-    //
-    // Done in one statement so the two timestamps cannot disagree, and because
-    // the right-hand side sees the old scheduled_start, which is what makes the
-    // interval come out right.
-    await query(
-      `update work_items
-          set scheduled_start = $1,
-              scheduled_end = case
-                when scheduled_end is null then null
-                else scheduled_end + ($1::timestamptz - scheduled_start)
-              end
-        where id = $2 and company_id = $3`,
-      [parsed.data.scheduled_start, parsed.data.id, session.companyId],
-    )
+    if (isEstimate) {
+      await query(
+        `update work_items
+            set estimate_scheduled_start = $1,
+                estimate_scheduled_end = case
+                  when estimate_scheduled_end is null then null
+                  else estimate_scheduled_end + ($1::timestamptz - estimate_scheduled_start)
+                end
+          where id = $2 and company_id = $3`,
+        [parsed.data.scheduled_start, parsed.data.id, session.companyId],
+      )
+    } else {
+      // Shift the end by the same interval rather than only moving the start.
+      // A four-hour job dragged to Thursday is still four hours, and moving the
+      // start alone pushes it past scheduled_end — which trips the
+      // work_items_schedule_order check and fails the whole drag.
+      await query(
+        `update work_items
+            set scheduled_start = $1,
+                scheduled_end = case
+                  when scheduled_end is null then null
+                  else scheduled_end + ($1::timestamptz - scheduled_start)
+                end
+          where id = $2 and company_id = $3`,
+        [parsed.data.scheduled_start, parsed.data.id, session.companyId],
+      )
+    }
   } catch (e) {
     console.error('rescheduleJob failed', e)
     return { ok: false as const, error: 'Could not move that job. Please try again.' }
