@@ -52,7 +52,7 @@ HOW RIVET WORKS — answer how-to questions from this, with the path to tap:
   choose weekly, every 2 weeks, monthly, or Custom (every N days, weeks, or months) —
   each visit becomes its own scheduled job,
   and "Email the invoice automatically" makes it bill itself.
-- Invoice and get paid: from a completed job → Convert to invoice → Send. Customers pay
+- Invoice and take payment: from a completed job → Convert to invoice → Send. Customers pay
   online through the company's Stripe; cash and checks are recorded by hand on the
   invoice.
 - Reviews: on a completed job, Request review emails the customer the company's Google

@@ -35,7 +35,7 @@ export async function gettingStartedSteps(companyId: string): Promise<{
   const steps: GettingStartedStep[] = [
     { done: true, label: 'Price book ready', href: '/app/catalog' },
     { done: (sent?.n ?? 0) > 0, label: 'Send your first quote', href: '/app/quotes/new' },
-    { done: Boolean(co?.stripe_charges_enabled), label: 'Connect Stripe to get paid online', href: '/app/integrations' },
+    { done: Boolean(co?.stripe_charges_enabled), label: 'Connect Stripe to take card payments', href: '/app/integrations' },
     { done: Boolean(co?.logo_url), label: 'Upload your logo — it fronts every email', href: '/app/settings' },
     {
       done: Boolean(co?.settings?.review_link_google || co?.settings?.review_link_facebook),
