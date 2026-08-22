@@ -15,6 +15,7 @@ import {
   Plug2,
   Settings,
   Users,
+  PhoneIncoming,
   X,
 } from 'lucide-react'
 
@@ -38,6 +39,7 @@ const TABS = [
 ] as const
 
 const MORE = [
+  { href: '/app/calls', label: 'Calls', icon: PhoneIncoming },
   { href: '/app/catalog', label: 'Price book', icon: BookText },
   { href: '/app/portfolio', label: 'Portfolio', icon: ImageIcon },
   { href: '/app/analytics', label: 'Analytics', icon: BarChart3 },

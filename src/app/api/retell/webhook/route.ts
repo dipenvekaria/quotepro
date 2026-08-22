@@ -84,10 +84,16 @@ export async function POST(req: NextRequest) {
 
     // The caller, by phone number — the one identity a phone call guarantees.
     let customerId: string | null = null
-    if (from) {
+    const fromDigits = from?.replace(/\D/g, '').slice(-10) ?? ''
+    if (fromDigits.length === 10) {
+      // Digits, not strings: the caller arrives as +15125550198 and the book
+      // may say (512) 555-0198 — the same phone either way.
       const [existing] = await q<{ id: string }>(
-        `select id from customers where company_id = $1 and phone = $2 limit 1`,
-        [company.id, from],
+        `select id from customers
+          where company_id = $1
+            and right(regexp_replace(coalesce(phone, ''), '\D', '', 'g'), 10) = $2
+          order by created_at asc limit 1`,
+        [company.id, fromDigits],
       )
       customerId = existing?.id ?? null
     }
