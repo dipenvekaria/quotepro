@@ -236,6 +236,7 @@ export default async function WorkItemDetailPage({
       }
       invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}
       payments={(payments ?? []) as Parameters<typeof WorkItemDetail>[0]['payments']}
+      canRefund={role === 'owner' || role === 'office'}
       timeline={timeline}
     />
   )

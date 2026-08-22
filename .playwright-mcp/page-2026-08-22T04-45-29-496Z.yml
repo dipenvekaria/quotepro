@@ -1,0 +1,37 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - complementary [ref=f15e3]:
+      - link "Rivet Acme HVAC & Plumbing" [ref=f15e5] [cursor=pointer]:
+        - /url: /app/dashboard
+        - generic [ref=f15e11]:
+          - generic [ref=f15e12]: Rivet
+          - generic [ref=f15e13]: Acme HVAC & Plumbing
+      - navigation [ref=f15e14]:
+        - link "Home" [ref=f15e15] [cursor=pointer]:
+          - /url: /app/dashboard
+        - link "Pipeline" [ref=f15e20] [cursor=pointer]:
+          - /url: /app/pipeline
+        - link "Calendar" [ref=f15e25] [cursor=pointer]:
+          - /url: /app/calendar
+        - link "Customers" [ref=f15e29] [cursor=pointer]:
+          - /url: /app/customers
+        - link "Price book" [ref=f15e36] [cursor=pointer]:
+          - /url: /app/catalog
+        - link "Portfolio" [ref=f15e42] [cursor=pointer]:
+          - /url: /app/portfolio
+        - link "Analytics" [ref=f15e48] [cursor=pointer]:
+          - /url: /app/analytics
+        - link "Integrations" [ref=f15e52] [cursor=pointer]:
+          - /url: /app/integrations
+      - button "Ask Bolt" [ref=f15e57]
+    - generic [ref=f15e61]:
+      - banner [ref=f15e62]:
+        - generic [ref=f15e63]:
+          - button "Notifications — 9 unread" [ref=f15e65]:
+            - generic [ref=f15e69]: "9"
+          - link "New quote" [ref=f15e70] [cursor=pointer]:
+            - /url: /app/quotes/new
+          - button "AO" [ref=f15e74]
+      - main [ref=f15e79]:
+        - status [ref=f15e91]: Loading…
+  - region "Notifications alt+T"

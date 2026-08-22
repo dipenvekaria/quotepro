@@ -9,6 +9,7 @@ import { logActivity } from '@/lib/activity'
 import { sendInvoiceEmail } from '@/lib/email/senders'
 import { getSession } from '@/lib/auth/session'
 import { query, withTransaction } from '@/lib/db'
+import { getStripe } from '@/lib/stripe/client'
 import { syncInvoiceToQbo, syncPaymentToQbo } from '@/lib/quickbooks/sync'
 import { readOnlyGuard } from '@/lib/billing/access'
 
@@ -278,4 +279,141 @@ export async function recordPayment(input: RecordPaymentInput) {
   revalidatePath(`/app/pipeline`)
   if (inv.work_item_id) revalidatePath(`/app/pipeline/${inv.work_item_id}`)
   return { ok: true as const, data: { newPaid, newStatus } }
+}
+
+
+const refundSchema = z.object({
+  payment_id: z.guid(),
+  amount: z.number().positive(),
+  note: z.string().max(500).optional(),
+})
+
+/**
+ * Money going back the other way.
+ *
+ * Stripe-collected payments refund through Stripe with reverse_transfer, so
+ * the funds come out of the contractor's connected balance, the platform fee
+ * is returned proportionally, and the homeowner sees their card credited.
+ * Cash and check payments record the refund only — the money moved by hand.
+ *
+ * Deliberately NOT behind readOnlyGuard: a lapsed subscription must never
+ * stop a homeowner getting their money back.
+ */
+export async function refundPayment(input: z.infer<typeof refundSchema>) {
+  const parsed = refundSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  if (!['owner', 'office'].includes(session.role)) {
+    return { ok: false as const, error: 'Only the owner or office can refund payments.' }
+  }
+  const { userId, companyId } = session
+
+  const [p] = await query<{
+    id: string
+    amount: number
+    method: string
+    reference_number: string | null
+    invoice_id: string
+    work_item_id: string | null
+    amount_paid: number | null
+    total: number | null
+    refunded: number
+  }>(
+    `select p.id, p.amount, p.method, p.reference_number, p.invoice_id,
+            i.work_item_id, i.amount_paid, i.total,
+            coalesce((select sum(-r.amount) from payments r where r.refund_of = p.id), 0) as refunded
+       from payments p
+       join invoices i on i.id = p.invoice_id and i.company_id = $2
+      where p.id = $1 and p.refund_of is null and p.amount > 0
+      limit 1`,
+    [parsed.data.payment_id, companyId],
+  )
+  if (!p) return { ok: false as const, error: 'Payment not found' }
+
+  const refundable = Number(p.amount) - Number(p.refunded)
+  if (parsed.data.amount > refundable + 0.005) {
+    return {
+      ok: false as const,
+      error: `Up to $${refundable.toFixed(2)} can be refunded on this payment.`,
+    }
+  }
+
+  const throughStripe =
+    ['card', 'bank_transfer', 'stripe'].includes(p.method) &&
+    Boolean(p.reference_number?.startsWith('pi_'))
+
+  let refundRef: string | null = null
+  if (throughStripe) {
+    const stripe = getStripe()
+    if (!stripe) return { ok: false as const, error: 'Stripe is not configured.' }
+    try {
+      const refund = await stripe.refunds.create({
+        payment_intent: p.reference_number as string,
+        amount: Math.round(parsed.data.amount * 100),
+        // The money comes back out of the contractor's connected balance —
+        // it was theirs — and the platform fee returns proportionally.
+        reverse_transfer: true,
+        refund_application_fee: true,
+      })
+      refundRef = refund.id
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Stripe rejected the refund.'
+      console.error('refund failed', e)
+      return { ok: false as const, error: `Stripe rejected the refund: ${msg.slice(0, 200)}` }
+    }
+  }
+
+  const newPaid = Number(p.amount_paid ?? 0) - parsed.data.amount
+  const total = Number(p.total ?? 0)
+  const newStatus = newPaid <= 0.005 ? 'refunded' : newPaid >= total ? 'paid' : 'partial'
+
+  try {
+    await withTransaction(async (q) => {
+      await q(
+        `insert into payments
+           (invoice_id, amount, method, reference_number, notes, recorded_by, refund_of)
+         values ($1, $2, $3::payment_method, $4, $5, $6, $7)`,
+        [
+          p.invoice_id,
+          -parsed.data.amount,
+          p.method,
+          refundRef,
+          parsed.data.note ?? (throughStripe ? 'Refund via Stripe' : 'Refund recorded'),
+          userId,
+          p.id,
+        ],
+      )
+      await q(
+        `update invoices set amount_paid = $1, status = $2::invoice_status where id = $3`,
+        [newPaid, newStatus, p.invoice_id],
+      )
+    })
+  } catch (e) {
+    // If Stripe already moved the money, the record MUST NOT be lost silently.
+    console.error('refund recorded FAILED after Stripe succeeded', refundRef, e)
+    return {
+      ok: false as const,
+      error: throughStripe
+        ? `The refund went through (${refundRef}) but recording it failed — refresh and check the payments list.`
+        : 'Could not record the refund.',
+    }
+  }
+
+  if (p.work_item_id) {
+    await logActivity({
+      companyId,
+      userId,
+      entityId: p.work_item_id,
+      action: 'refund_recorded',
+      description: `Refund of $${parsed.data.amount.toFixed(2)} (${p.method})${refundRef ? ` — ${refundRef}` : ''}`,
+      changes: { amount: parsed.data.amount, method: p.method, status: newStatus },
+    })
+    revalidatePath(`/app/pipeline/${p.work_item_id}`)
+  }
+
+  return { ok: true as const, data: { refunded: parsed.data.amount, reference: refundRef } }
 }

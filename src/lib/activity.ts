@@ -24,6 +24,7 @@ export type ActivityAction =
   | 'invoice_created'
   | 'invoice_sent'
   | 'payment_recorded'
+  | 'refund_recorded'
   | 'price_book_item_added'
   | 'price_book_item_updated'
   | 'price_book_item_archived'

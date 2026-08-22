@@ -176,6 +176,10 @@ export async function syncPaymentToQbo(companyId: string, paymentId: string): Pr
       [paymentId, companyId],
     )
     if (!p || p.qbo_payment_id) return
+    // Refund rows are negative and QBO Payment objects reject them; refund
+    // receipts in QBO are their own object and a follow-up. Skipping keeps the
+    // books additive-only rather than silently wrong.
+    if (Number(p.amount) <= 0) return
 
     // The invoice may not have synced (connected after invoicing, or a prior
     // failure). Book it first so the payment has something to land on.

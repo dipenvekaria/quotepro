@@ -43,7 +43,7 @@ type Invoice = {
   tax_amount: number
   total: number
   amount_paid: number
-  status: 'draft' | 'sent' | 'partial' | 'paid' | 'overdue' | 'cancelled'
+  status: 'draft' | 'sent' | 'partial' | 'paid' | 'overdue' | 'cancelled' | 'refunded'
   due_date: string | null
   sent_at: string | null
   paid_at: string | null
@@ -77,6 +77,7 @@ export function InvoiceViewer({
 }) {
   const amountDue = Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
   const isPaid = invoice.status === 'paid'
+  const isRefunded = invoice.status === 'refunded'
   const isPartial = invoice.status === 'partial'
   const nonDiscountItems = items.filter((i) => !i.is_discount)
   const discounts = items.filter((i) => i.is_discount)
@@ -124,6 +125,13 @@ export function InvoiceViewer({
       </header>
 
       {/* Status ribbon */}
+      {isRefunded && (
+        <div className="mx-auto mt-6 max-w-3xl px-4 sm:px-6">
+          <div className="rounded-xl border border-border/70 bg-muted/50 p-4 text-sm">
+            This invoice was refunded — nothing is owed.
+          </div>
+        </div>
+      )}
       {isPaid && (
         <div className="border-b border-emerald-500/20 bg-emerald-500/10">
           <div className="mx-auto max-w-3xl px-6 py-2.5 text-sm text-emerald-800 dark:text-emerald-300">
@@ -160,10 +168,10 @@ export function InvoiceViewer({
             </div>
             <div className="sm:text-right">
               <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                {isPaid ? 'Paid' : 'Amount due'}
+                {isPaid ? 'Paid' : isRefunded ? 'Refunded' : 'Amount due'}
               </div>
               <div className={`mt-0.5 text-3xl font-semibold tabular sm:text-4xl ${isPaid ? 'text-emerald-600' : ''}`}>
-                {fmtMoney(isPaid ? Number(invoice.total) : amountDue)}
+                {fmtMoney(isPaid ? Number(invoice.total) : isRefunded ? 0 : amountDue)}
               </div>
               {invoice.due_date && !isPaid && (
                 <div className="mt-1 text-[11px] text-muted-foreground">
@@ -272,7 +280,7 @@ export function InvoiceViewer({
         )}
 
         {/* Payment methods (informational) */}
-        {!isPaid && (
+        {!isPaid && !isRefunded && (
           <section className="mt-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent p-6 shadow-sm">
             <div className="flex items-center gap-2">
               <CreditCard className="h-4 w-4 text-primary" />

@@ -1,0 +1,158 @@
+- generic [active] [ref=f14e1]:
+  - generic [ref=f14e2]:
+    - generic [ref=f14e3]:
+      - banner [ref=f14e4]:
+        - button "Open menu" [ref=f14e5]
+        - link "Acme" [ref=f14e7] [cursor=pointer]:
+          - /url: /app/dashboard
+        - generic [ref=f14e14]:
+          - button "Notifications — 9 unread" [ref=f14e16]:
+            - generic [ref=f14e20]: "9"
+          - link "New quote" [ref=f14e21] [cursor=pointer]:
+            - /url: /app/quotes/new
+          - button "AO" [ref=f14e25]
+      - main [ref=f14e28]:
+        - generic [ref=f14e29]:
+          - generic [ref=f14e30]:
+            - link "Pipeline" [ref=f14e31] [cursor=pointer]:
+              - /url: /app/pipeline
+            - generic [ref=f14e36]: Q-1009
+          - generic [ref=f14e37]:
+            - generic [ref=f14e38]:
+              - generic [ref=f14e39]: PT
+              - generic [ref=f14e40]:
+                - generic [ref=f14e41]:
+                  - heading "Patricia Thomas" [level=1] [ref=f14e42]
+                  - generic [ref=f14e43]: Completed
+                - generic [ref=f14e47]:
+                  - generic [ref=f14e48]: pthomas@example.com
+                  - generic [ref=f14e52]: +1-555-1012
+                  - generic [ref=f14e55]: 101012 Market St, San Francisco
+            - generic [ref=f14e59]:
+              - button "Copy payment link" [ref=f14e60]
+              - button "Add photos" [ref=f14e61]
+              - button "Request review" [ref=f14e62]
+          - generic [ref=f14e63]:
+            - generic [ref=f14e64]:
+              - generic [ref=f14e66]:
+                - generic [ref=f14e67]:
+                  - heading "$2,009.56 outstanding" [level=2] [ref=f14e68]
+                  - paragraph [ref=f14e69]: Invoice INV-1009 is with Patricia Thomas. Share the payment link, or record a payment taken another way.
+                - generic [ref=f14e70]:
+                  - button "Copy payment link" [ref=f14e71]
+                  - button "Record payment" [ref=f14e72]
+              - generic [ref=f14e73]:
+                - generic [ref=f14e74]:
+                  - heading "Details" [level=2] [ref=f14e75]
+                  - button "Edit details" [ref=f14e76]
+                - generic [ref=f14e80]:
+                  - generic [ref=f14e81]:
+                    - generic [ref=f14e82]: Job description
+                    - paragraph [ref=f14e83]: Aeroseal complete
+                  - generic [ref=f14e84]:
+                    - generic [ref=f14e85]: Scheduled start
+                    - generic [ref=f14e88]:
+                      - generic [ref=f14e89]: Thu, Jul 30, 10:42 AM
+                      - button "Reschedule" [ref=f14e90]
+                  - generic [ref=f14e91]:
+                    - generic [ref=f14e92]: Repeats
+                    - paragraph [ref=f14e98]: Does not repeat
+              - generic [ref=f14e99]:
+                - generic [ref=f14e100]:
+                  - generic [ref=f14e101]:
+                    - heading "Line items" [level=2] [ref=f14e102]
+                    - generic [ref=f14e103]: "0"
+                  - button "Edit line items" [ref=f14e104]
+                - generic [ref=f14e108]:
+                  - paragraph [ref=f14e109]: No line items yet
+                  - paragraph [ref=f14e110]: Add rows to build up this quote.
+              - generic [ref=f14e112]:
+                - heading "Photos" [level=2] [ref=f14e117]
+                - generic [ref=f14e118]:
+                  - button "Add photos" [ref=f14e119]
+                  - button "Add photos to this quote" [ref=f14e123]
+              - region "Activity" [ref=f14e124]:
+                - heading "Activity" [level=2] [ref=f14e125]
+                - list [ref=f14e126]:
+                  - listitem [ref=f14e127]:
+                    - generic [ref=f14e132]:
+                      - text: completed
+                      - generic [ref=f14e133]: — Seeded activity for Duct sealing
+                      - generic [ref=f14e134]: Aug 19, 10:42 AM
+                - generic [ref=f14e135]:
+                  - textbox "Add an internal note — @ to notify a teammate" [ref=f14e137]
+                  - generic [ref=f14e138]:
+                    - generic [ref=f14e139]: Never shown to the customer
+                    - button "Add note" [disabled]
+            - complementary [ref=f14e140]:
+              - generic [ref=f14e141]:
+                - heading "Summary" [level=2] [ref=f14e142]
+                - generic [ref=f14e143]:
+                  - generic [ref=f14e144]:
+                    - term [ref=f14e145]: Subtotal
+                    - definition [ref=f14e146]: $1,850.00
+                  - generic [ref=f14e147]:
+                    - term [ref=f14e148]: Tax (8.63%)
+                    - definition [ref=f14e149]: $159.56
+                  - generic [ref=f14e150]:
+                    - term [ref=f14e151]: Total
+                    - definition [ref=f14e152]: $2,009.56
+                - paragraph [ref=f14e153]: This total has no line items behind it. The customer will see an empty quote — add the rows before sending.
+              - generic [ref=f14e154]:
+                - generic [ref=f14e155]:
+                  - heading "Customer explanation" [level=2] [ref=f14e159]
+                  - button "Edit the customer explanation" [ref=f14e160]
+                - paragraph [ref=f14e164]: Shown to the customer above the prices.
+                - paragraph [ref=f14e165]: We will replace the kitchen faucet cartridge and check the shutoff valves for slow leaks. Parts are covered under warranty.
+              - generic [ref=f14e166]:
+                - heading "Customer link" [level=2] [ref=f14e167]
+                - paragraph [ref=f14e168]: Shareable, no login required.
+                - generic [ref=f14e169]:
+                  - button "Copy link" [ref=f14e170]
+                  - link "Open" [ref=f14e174] [cursor=pointer]:
+                    - /url: ""
+              - generic [ref=f14e179]:
+                - heading "Team" [level=2] [ref=f14e180]
+                - generic [ref=f14e181]:
+                  - generic [ref=f14e182]:
+                    - term [ref=f14e183]: Created by
+                    - definition [ref=f14e184]: Unknown
+                  - generic [ref=f14e185]:
+                    - term [ref=f14e186]: Assigned to
+                    - combobox [ref=f14e187]:
+                      - option "Unassigned"
+                      - option "Alex Owner"
+                      - option "Sam Office"
+                      - option "Tam Tech" [selected]
+              - generic [ref=f14e188]:
+                - generic [ref=f14e189]:
+                  - heading "Invoice" [level=2] [ref=f14e190]
+                  - generic [ref=f14e191]: Sent
+                - generic [ref=f14e192]: INV-1009
+                - generic [ref=f14e193]:
+                  - generic [ref=f14e194]:
+                    - term [ref=f14e195]: Total
+                    - definition [ref=f14e196]: $2,009.56
+                  - generic [ref=f14e197]:
+                    - term [ref=f14e198]: Paid
+                    - definition [ref=f14e199]: $0.00
+                  - generic [ref=f14e200]:
+                    - term [ref=f14e201]: Due
+                    - definition [ref=f14e202]: $2,009.56
+                - generic [ref=f14e203]:
+                  - button "Copy link" [ref=f14e204]
+                  - link "Open" [ref=f14e208] [cursor=pointer]:
+                    - /url: ""
+                - button "Record payment" [ref=f14e213]
+          - button "Copy payment link" [ref=f14e215]
+    - navigation "Primary" [ref=f14e216]:
+      - link "Home" [ref=f14e217] [cursor=pointer]:
+        - /url: /app/dashboard
+      - link "Pipeline" [ref=f14e222] [cursor=pointer]:
+        - /url: /app/pipeline
+      - link "Calendar" [ref=f14e227] [cursor=pointer]:
+        - /url: /app/calendar
+      - link "Customers" [ref=f14e231] [cursor=pointer]:
+        - /url: /app/customers
+      - button "More" [ref=f14e238]
+  - region "Notifications alt+T"

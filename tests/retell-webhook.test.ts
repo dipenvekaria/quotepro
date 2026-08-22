@@ -40,21 +40,22 @@ const event = (callId: string) => ({
 
 beforeAll(async () => {
   process.env.RETELL_SECRET_WEBHOOK_KEY = SIGNING_KEY
-  const [co] = await query<{ id: string }>('select id from companies limit 1')
-  companyId = co.id
-  await query(
-    `update companies set voice_enabled = true, voice_number = $2 where id = $1`,
-    [companyId, NUMBER],
+  // A company of our own: the shared demo row races other test files that
+  // mutate companies in parallel, which made this suite flake.
+  const [co] = await query<{ id: string }>(
+    `insert into companies (name, voice_enabled, voice_number)
+     values ('Webhook Test Co', true, $1)
+     returning id`,
+    [NUMBER],
   )
+  companyId = co.id
 })
 
 afterAll(async () => {
-  await query(`delete from work_items where id in (select work_item_id from voice_calls where retell_call_id like 'test_call_%')`)
-  await query(`delete from voice_calls where retell_call_id like 'test_call_%'`)
-  await query(`delete from customers where company_id = $1 and phone = $2`, [companyId, CALLER])
-  await query(`update companies set voice_enabled = false, voice_number = null where id = $1`, [
-    companyId,
-  ])
+  await query(`delete from work_items where company_id = $1`, [companyId])
+  await query(`delete from voice_calls where company_id = $1`, [companyId])
+  await query(`delete from customers where company_id = $1`, [companyId])
+  await query(`delete from companies where id = $1`, [companyId])
 })
 
 describe('retell webhook', () => {
