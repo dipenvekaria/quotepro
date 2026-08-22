@@ -1,5 +1,6 @@
 'use client'
 
+import { BoltMark } from '@/components/shared/bolt-mark'
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -7,7 +8,6 @@ import {
   BarChart3,
   BookText,
   Image as ImageIcon,
-  Zap,
   CalendarDays,
   ClipboardList,
   Home,
@@ -87,7 +87,7 @@ export function MobileTabBar({ onAskBolt }: { onAskBolt: () => void }) {
             }}
             className="flex min-h-12 w-full items-center gap-2.5 border-b border-border/70 px-4 text-sm font-medium hover:bg-muted/60"
           >
-            <Zap className="h-4 w-4 text-muted-foreground" />
+            <BoltMark />
             Ask Bolt
           </button>
           <div className="grid grid-cols-2">
