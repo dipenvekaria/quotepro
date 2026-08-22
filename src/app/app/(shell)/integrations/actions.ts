@@ -31,13 +31,7 @@ export async function setPassCardFees(input: z.infer<typeof passCardFeesSchema>)
 }
 
 
-const enableVoiceSchema = z.object({
-  area_code: z
-    .string()
-    .trim()
-    .regex(/^\d{3}$/, 'Area code is three digits, like 512.')
-    .optional(),
-})
+
 
 /**
  * Turns on call answering for this company: creates their Retell agent
@@ -45,12 +39,7 @@ const enableVoiceSchema = z.object({
  * calls at it. The number must already be imported into Retell — the card
  * explains that; binding an unknown number fails loudly here.
  */
-export async function enableVoice(input: z.infer<typeof enableVoiceSchema>) {
-  const parsed = enableVoiceSchema.safeParse(input)
-  if (!parsed.success) {
-    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
-  }
-
+export async function enableVoice() {
   const session = await getSession()
   if (!session) return { ok: false as const, error: 'Not authenticated' }
   if (session.role !== 'owner') {
@@ -81,11 +70,10 @@ export async function enableVoice(input: z.infer<typeof enableVoiceSchema>) {
       ])
     }
 
-    // Their local presence: the requested area code, else the one their own
-    // business number carries.
-    const derived = parsed.data.area_code ?? company.phone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3)
-    const areaCode = derived && /^\d{3}$/.test(derived) ? Number(derived) : null
-    number = await purchaseNumber(areaCode, agentId, `${company.name} — Rivet answering`)
+    // First number in stock. Callers never see it — they dial the company's
+    // own published number, which forwards here — so area-code vanity only
+    // ever dead-ended signups when a code was sold out (it did).
+    number = await purchaseNumber(agentId, `${company.name} — Rivet answering`)
 
     await query(
       `update companies set voice_enabled = true, voice_number = $2 where id = $1`,

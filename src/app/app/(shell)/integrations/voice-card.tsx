@@ -1,13 +1,11 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Loader2, PhoneIncoming } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 
 import { enableVoice } from './actions'
 
@@ -21,18 +19,14 @@ export function VoiceCard({
   configured,
   enabled,
   number,
-  companyPhone,
   canEdit,
 }: {
   configured: boolean
   enabled: boolean
   number: string | null
-  companyPhone: string | null
   canEdit: boolean
 }) {
   const router = useRouter()
-  const derivedArea = companyPhone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3) ?? ''
-  const [areaCode, setAreaCode] = useState(derivedArea.length === 3 ? derivedArea : '')
   const [busy, start] = useTransition()
 
   if (!configured) {
@@ -83,7 +77,7 @@ export function VoiceCard({
 
   function submit() {
     start(async () => {
-      const res = await enableVoice({ area_code: areaCode || undefined })
+      const res = await enableVoice()
       if (!res.ok) {
         toast.error(res.error)
         return
@@ -100,26 +94,14 @@ export function VoiceCard({
       <p className="text-sm text-muted-foreground">
         An assistant answers when you can&apos;t — after hours or mid-job — collects the
         caller&apos;s name, address and what they need, and files it as a lead with the
-        transcript. It never quotes prices. Turning it on assigns your company a local number.
+        transcript. It never quotes prices. Turning it on assigns your company a number;
+        callers never see it — they dial your own number, which forwards when you don&apos;t
+        pick up.
       </p>
-      <div className="flex flex-wrap items-end gap-2">
-        <div className="space-y-1.5">
-          <Label htmlFor="voice-area">Area code</Label>
-          <Input
-            id="voice-area"
-            inputMode="numeric"
-            maxLength={3}
-            value={areaCode}
-            onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, ''))}
-            placeholder="512"
-            className="h-11 w-24 tabular"
-          />
-        </div>
-        <Button onClick={submit} disabled={busy} className="h-11 gap-1.5">
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneIncoming className="h-4 w-4" />}
-          Turn on call answering
-        </Button>
-      </div>
+      <Button onClick={submit} disabled={busy} className="h-11 gap-1.5">
+        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneIncoming className="h-4 w-4" />}
+        Turn on call answering
+      </Button>
     </div>
   )
 }

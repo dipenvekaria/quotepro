@@ -100,15 +100,10 @@ export async function createCompanyAgent(companyName: string): Promise<RetellAge
  * service on and never learns what telephony is. ~$2/mo, billed to the
  * platform's Retell account.
  */
-export async function purchaseNumber(
-  areaCode: number | null,
-  agentId: string,
-  nickname: string,
-): Promise<string> {
+export async function purchaseNumber(agentId: string, nickname: string): Promise<string> {
   const created = await retell<{ phone_number: string }>('/create-phone-number', {
     method: 'POST',
     body: JSON.stringify({
-      ...(areaCode ? { area_code: areaCode } : {}),
       inbound_agents: [{ agent_id: agentId, weight: 1 }],
       nickname,
     }),
