@@ -1122,48 +1122,7 @@ export function WorkItemDetail({
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
-                {workItem.status === 'job_completed' && !invoice && total > 0 && (
-                <Button onClick={doSendInvoice} disabled={invoiceSending} className="gap-1.5 shadow-sm">
-                  {invoiceSending ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Send className="h-3.5 w-3.5" />
-                  )}
-                  Send invoice
-                </Button>
-              )}
-              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
-                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
-                  <Copy className="h-3.5 w-3.5" />
-                  Copy payment link
-                </Button>
-              )}
-              {(workItem.status === 'job_in_progress' || workItem.status === 'job_completed') && (
-                <Button onClick={openJobPhotos} disabled={jobPhotosBusy} variant="outline" className="gap-1.5">
-                  {jobPhotosBusy ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Camera className="h-3.5 w-3.5" />
-                  )}
-                  Add photos
-                </Button>
-              )}
-              {workItem.status === 'job_completed' && (
-                <Button
-                  onClick={doRequestReview}
-                  disabled={askingReview || reviewAsked}
-                  variant={invoice && invoiceAmountDue === 0 ? 'default' : 'outline'}
-                  className="gap-1.5"
-                >
-                  {askingReview ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Star className="h-3.5 w-3.5" />
-                  )}
-                  {reviewAsked ? 'Review requested' : 'Request review'}
-                </Button>
-              )}
-              {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
+                {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
                   <span className="text-[11px] text-muted-foreground">
                     Live — saved changes update the customer link instantly
                   </span>
@@ -1246,7 +1205,7 @@ export function WorkItemDetail({
                         {it.name || 'Untitled item'}
                       </div>
                       {(it.description || it.quantity !== 1) && (
-                        <div className="truncate text-xs text-muted-foreground">
+                        <div className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
                           {it.quantity !== 1 && (
                             <span className="tabular">{it.quantity} × {fmtMoney(it.unit_price)}</span>
                           )}
