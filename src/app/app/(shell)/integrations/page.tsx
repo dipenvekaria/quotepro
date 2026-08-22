@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import {
   CalendarDays,
   CreditCard,
+  PhoneIncoming,
   FileText,
   MessageSquare,
   PhoneCall,
@@ -13,8 +14,10 @@ import {
 import { requireSession } from '@/lib/auth/session'
 import { refreshStripeAccountFlags } from '@/lib/stripe/connect-status'
 import { query } from '@/lib/db'
+import { envServer } from '@/lib/env'
 
 import { StripeConnect } from '../settings/stripe-connect'
+import { VoiceCard } from './voice-card'
 import { QuickbooksActions } from './quickbooks-card'
 
 // ---------------------------------------------------------------------------
@@ -34,9 +37,12 @@ export default async function IntegrationsPage({
     stripe_account_id: string | null
     stripe_charges_enabled: boolean | null
     stripe_details_submitted: boolean | null
+    voice_enabled: boolean
+    voice_number: string | null
     pass_card_fees: boolean | null
   }>(
-    `select stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees
+    `select stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees,
+            voice_enabled, voice_number
        from companies where id = $1 limit 1`,
     [companyId],
   )
@@ -126,6 +132,30 @@ export default async function IntegrationsPage({
               </p>
             )}
           </div>
+        </IntegrationShell>
+      </IntegrationCategory>
+
+      {/* Phone */}
+      <IntegrationCategory
+        title="Phone"
+        description="An assistant answers missed calls and files each one as a lead."
+      >
+        <IntegrationShell
+          logo={<PhoneIncoming className="h-5 w-5" />}
+          name="AI call answering"
+          badge={
+            company.voice_enabled
+              ? { label: 'On', tone: 'good' }
+              : { label: 'Off', tone: 'neutral' }
+          }
+          tagline="Minutes are included in your plan — 100 a month on Solo, 300 on Team. No per-call fees."
+        >
+          <VoiceCard
+            configured={Boolean(envServer().RETELL_API_KEY)}
+            enabled={company.voice_enabled}
+            number={company.voice_number}
+            canEdit={canEdit}
+          />
         </IntegrationShell>
       </IntegrationCategory>
 

@@ -1,0 +1,119 @@
+/**
+ * Retell — the AI that answers the phone.
+ *
+ * Retell is transport and voice; the brain it runs is Gemini, per the house
+ * model rule. Each company gets its own agent (so the greeting carries their
+ * name, not ours) bound to their own number. Everything here fails loud and
+ * null-free: voice being unconfigured must read as "not set up", never as a
+ * silent no-op behind a working-looking switch.
+ */
+
+import { env, envServer } from '@/lib/env'
+
+const BASE = 'https://api.retellai.com'
+
+/**
+ * Gemini, as Retell names it. Their catalog moves; if creation ever rejects
+ * this id, the fix is this constant — never a swap to a non-Google model.
+ */
+const RETELL_GEMINI_MODEL = 'gemini-2.0-flash'
+
+export function voiceConfigured(): boolean {
+  return Boolean(envServer().RETELL_API_KEY)
+}
+
+async function retell<T>(path: string, init?: RequestInit): Promise<T> {
+  const key = envServer().RETELL_API_KEY
+  if (!key) throw new Error('RETELL_API_KEY is not set')
+  const res = await fetch(`${BASE}${path}`, {
+    ...init,
+    headers: {
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      ...init?.headers,
+    },
+  })
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    throw new Error(`Retell ${path} failed: ${res.status} ${body.slice(0, 300)}`)
+  }
+  return (await res.json()) as T
+}
+
+/**
+ * The agent's instructions. Deliberately trade-agnostic: it answers for a
+ * hundred different trades, so it grounds itself in the company's own name
+ * and words and never assumes the work. It books the callback; it does not
+ * quote, promise times, or invent prices.
+ */
+function agentPrompt(companyName: string): string {
+  return `You answer the phone for ${companyName}. You are their scheduling assistant — warm, brief, and professional.
+
+Your one job: capture the caller's request so the team can call back with next steps.
+
+Collect, conversationally:
+1. Their name.
+2. The service address (street, city).
+3. What they need, in their own words — let them describe it; ask one clarifying question if it is vague.
+4. How urgent it is, and any preferred days or times.
+
+Rules:
+- Never quote prices, give estimates, or promise a specific appointment time. Say the team will confirm details when they call back.
+- Never claim a person is available right now.
+- If it is an emergency involving immediate danger (gas smell, major flooding, sparks), tell them to hang up and call emergency services or their utility first.
+- Keep replies to one or two sentences. No filler.
+- Close by confirming their name and address back to them and saying ${companyName} will follow up shortly.`
+}
+
+export type RetellAgent = { agent_id: string; llm_id: string }
+
+/**
+ * One company's agent: a Retell LLM (the Gemini brain + prompt) and the agent
+ * shell around it. Returns ids to store on the company row.
+ */
+export async function createCompanyAgent(companyName: string): Promise<RetellAgent> {
+  const llm = await retell<{ llm_id: string }>('/create-retell-llm', {
+    method: 'POST',
+    body: JSON.stringify({
+      model: RETELL_GEMINI_MODEL,
+      general_prompt: agentPrompt(companyName),
+    }),
+  })
+
+  const agent = await retell<{ agent_id: string }>('/create-agent', {
+    method: 'POST',
+    body: JSON.stringify({
+      agent_name: `${companyName} — Rivet answering`,
+      response_engine: { type: 'retell-llm', llm_id: llm.llm_id },
+      voice_id: '11labs-Adrian',
+      language: 'en-US',
+      enable_backchannel: true,
+      webhook_url: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/api/retell/webhook`,
+    }),
+  })
+
+  return { agent_id: agent.agent_id, llm_id: llm.llm_id }
+}
+
+/** Point an imported number's inbound calls at a company's agent. */
+export async function bindNumber(phoneNumber: string, agentId: string): Promise<void> {
+  await retell(`/update-phone-number/${encodeURIComponent(phoneNumber)}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ inbound_agent_id: agentId }),
+  })
+}
+
+export type RetellCallEvent = {
+  event: string
+  call: {
+    call_id: string
+    agent_id?: string
+    from_number?: string
+    to_number?: string
+    start_timestamp?: number
+    duration_ms?: number
+    transcript?: string
+    recording_url?: string
+    call_analysis?: { call_summary?: string }
+  }
+}

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Bell, CalendarClock, CheckCircle2, DollarSign, Eye, Loader2, MessageSquare } from 'lucide-react'
+import { Bell, CalendarClock, CheckCircle2, DollarSign, Eye, Loader2, MessageSquare, PhoneIncoming } from 'lucide-react'
 
 import { listNotifications, markAllNotificationsRead, type NotificationRow } from './notifications-actions'
 
@@ -12,6 +12,7 @@ const KIND_ICON: Record<string, typeof Bell> = {
   quote_accepted: CheckCircle2,
   quote_viewed: Eye,
   payment: DollarSign,
+  voice_lead: PhoneIncoming,
 }
 
 function ago(iso: string): string {
