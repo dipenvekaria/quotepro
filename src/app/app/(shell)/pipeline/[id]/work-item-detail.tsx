@@ -17,6 +17,7 @@ import {
   Loader2,
   Mail,
   Camera,
+  ChevronDown,
   MapPin,
   Pencil,
   Phone,
@@ -240,6 +241,9 @@ export function WorkItemDetail({
       : null,
   )
   const [draftQuestions, setDraftQuestions] = useState<{ question: string; options: string[] }[]>([])
+  // Clarifying answers feed the redraft without turning the description into
+  // a Q&A log — the description stays the contractor's words.
+  const [draftContext, setDraftContext] = useState('')
   const [draftUnmet, setDraftUnmet] = useState<string[]>([])
 
   const [savingItems, startItemsSave] = useTransition()
@@ -287,6 +291,7 @@ export function WorkItemDetail({
   const [explaining, startExplain] = useTransition()
   const [editingSummary, setEditingSummary] = useState(false)
   const [editingItems, setEditingItems] = useState(false)
+  const [notesOpen, setNotesOpen] = useState(false)
   const jobPhotoRef = useRef<HTMLInputElement | null>(null)
   const [jobPhotosBusy, startJobPhotos] = useTransition()
   const [completePhotosAdded, setCompletePhotosAdded] = useState(0)
@@ -471,6 +476,10 @@ export function WorkItemDetail({
       // book looked like a matching bug instead of a question.
       setDraftQuestions(res.data.questions ?? [])
       setDraftUnmet(res.data.unmet ?? [])
+      if (res.data.job_name && !workItem.job_name) {
+        // Fills a blank title only; a person's own name for the job stays.
+        void updateWorkItem({ id: workItem.id, job_name: res.data.job_name })
+      }
       if (drafted.length === 0) {
         if ((res.data.questions ?? []).length > 0) {
           toast.info('The draft needs an answer first — pick below.', {
@@ -726,17 +735,17 @@ export function WorkItemDetail({
 
         {/* Action rail */}
         <div className="flex items-center gap-1.5">
-          {items.length > 0 && (
+          {/* Drafting-phase only: the explanation is written BEFORE the
+              customer sees the quote. Once sent, the explanation card below
+              keeps its pen for edits — but the rail stops prompting, and a
+              bare sparkle was a mystery button on phones anyway. */}
+          {items.length > 0 &&
+            ['lead', 'estimate_scheduled', 'quote_draft'].includes(workItem.status) && (
             <Button
               variant="outline"
               onClick={writeCustomerSummary}
               disabled={explaining}
-              className="h-9 gap-1.5"
-              aria-label={
-                workItem.customer_summary
-                  ? 'Rewrite the plain-language explanation for the customer'
-                  : 'Write a plain-language explanation for the customer'
-              }
+              className="h-11 gap-1.5 lg:h-9"
               title="Write a plain-language explanation the customer sees on the quote"
             >
               {explaining ? (
@@ -744,9 +753,7 @@ export function WorkItemDetail({
               ) : (
                 <Sparkles className="h-3.5 w-3.5" />
               )}
-              <span className="hidden sm:inline">
-                {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
-              </span>
+              {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
             </Button>
           )}
           {isDraft && workItem.status === 'quote_draft' ? (
@@ -1029,6 +1036,30 @@ export function WorkItemDetail({
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                  Assigned to
+                </label>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <AssignSelect
+                    workItemId={workItem.id}
+                    current={workItem.assigned_to}
+                    teammates={teammates}
+                  />
+                  <span className="text-[11px] text-muted-foreground">
+                    Created by {workItem.creator?.profile?.full_name ?? workItem.creator?.email ?? 'unknown'}
+                  </span>
+                </div>
+              </div>
+              {/* Attachments live with the rest of the record's facts. */}
+              <QuotePhotos
+                embedded
+                workItemId={workItem.id}
+                photos={photos}
+                lineItems={items
+                  .filter((i) => i.id && i.name)
+                  .map((i) => ({ id: i.id as string, name: i.name }))}
+              />
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
                   <RefreshCw className="mr-1 inline h-3 w-3" />
                   Repeats
                 </label>
@@ -1202,13 +1233,12 @@ export function WorkItemDetail({
               unmet={draftUnmet}
               disabled={drafting}
               onAnswer={(question, option) => {
-                // Folded into the description (same as the quote editor) and
-                // redrafted immediately — the contractor already asked for a
-                // draft; the answer was the only thing missing.
-                const next = `${description.trim()}\n${question} ${option}`.trim()
-                setDescription(next)
+                // The answer rides the redraft as context; the description
+                // stays the contractor's own words.
+                const ctx = `${draftContext}\n${question} ${option}`.trim()
+                setDraftContext(ctx)
                 setDraftQuestions((qs) => qs.filter((q) => q.question !== question))
-                draftWithAi(next)
+                draftWithAi(`${description.trim()}\n${ctx}`.trim())
               }}
             />
             {items.length === 0 ? (
@@ -1297,29 +1327,7 @@ export function WorkItemDetail({
             )}
           </section>
 
-          {/* Activity */}
-          <QuotePhotos
-            workItemId={workItem.id}
-            photos={photos}
-            lineItems={items
-              .filter((i) => i.id && i.name)
-              .map((i) => ({ id: i.id as string, name: i.name }))}
-          />
 
-          {/* The real audit trail once events exist; quotes from before the
-              log was written fall back to the timestamp-derived summary so
-              their history does not vanish. */}
-          {timeline.length > 0 ? (
-            <ActivityTimeline
-              entries={timeline}
-              tz={tz}
-              workItemId={workItem.id}
-              people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
-              roster={teammates}
-            />
-          ) : (
-            <Activity workItem={workItem} />
-          )}
         </div>
 
         {/* Scheduling asks when, then does both halves at once — the status and
@@ -1660,27 +1668,6 @@ export function WorkItemDetail({
             </div>
           )}
 
-          {/* Assignment */}
-          <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
-            <h2 className="text-sm font-semibold">Team</h2>
-            <div className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between text-muted-foreground">
-                <dt>Created by</dt>
-                <dd className="text-foreground">
-                  {workItem.creator?.profile?.full_name ?? workItem.creator?.email ?? 'Unknown'}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between text-muted-foreground">
-                <dt>Assigned to</dt>
-                <AssignSelect
-                  workItemId={workItem.id}
-                  current={workItem.assigned_to}
-                  teammates={teammates}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Invoice card */}
           {invoice && (
             <InvoiceCard
@@ -1696,6 +1683,52 @@ export function WorkItemDetail({
           )}
         </aside>
       </div>
+
+      {/* Notes come last, full width, and closed until wanted — the record
+          reads Details → Line items → Summary → Notes without a scroll tax.
+          Collapsible over a step wizard on purpose: this page is revisited,
+          and steppers punish revisits. */}
+      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
+        <button
+          type="button"
+          onClick={() => setNotesOpen((v) => !v)}
+          aria-expanded={notesOpen}
+          className="flex min-h-11 w-full items-center justify-between gap-3 px-5 py-3.5 text-left"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="text-sm font-semibold">Notes</span>
+            <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
+              {timeline.length}
+            </span>
+          </span>
+          <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+            {!notesOpen && timeline.length > 0 && (
+              <span className="hidden max-w-[18rem] truncate sm:inline">
+                {timeline[timeline.length - 1]?.description ?? ''}
+              </span>
+            )}
+            <ChevronDown
+              className={cn('h-4 w-4 shrink-0 transition-transform', notesOpen && 'rotate-180')}
+            />
+          </span>
+        </button>
+        {notesOpen && (
+          <div className="border-t border-border/70 p-5">
+            {timeline.length > 0 ? (
+              <ActivityTimeline
+                embedded
+                entries={timeline}
+                tz={tz}
+                workItemId={workItem.id}
+                people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
+                roster={teammates}
+              />
+            ) : (
+              <Activity workItem={workItem} />
+            )}
+          </div>
+        )}
+      </section>
 
       {/* Sent modal */}
       {sendOpen && sentToken && (

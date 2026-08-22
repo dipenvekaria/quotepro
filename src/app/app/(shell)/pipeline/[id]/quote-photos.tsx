@@ -25,10 +25,13 @@ export function QuotePhotos({
   workItemId,
   photos,
   lineItems,
+  embedded = false,
 }: {
   workItemId: string
   photos: QuotePhoto[]
   lineItems: { id: string; name: string }[]
+  /** Renders as a field inside the Details card instead of its own card. */
+  embedded?: boolean
 }) {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>(null)
@@ -101,17 +104,21 @@ export function QuotePhotos({
     photo.quote_item_id ? lineItems.find((l) => l.id === photo.quote_item_id)?.name : null
 
   return (
-    <section className="rounded-xl border border-border/70 bg-card shadow-sm">
+    <section className={embedded ? '' : 'rounded-xl border border-border/70 bg-card shadow-sm'}>
       <header
         className={
-          photos.length === 0
-            ? 'flex flex-wrap items-center justify-between gap-2 px-5 py-3.5'
-            : 'flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-5 py-3.5'
+          embedded
+            ? 'flex flex-wrap items-center justify-between gap-2'
+            : photos.length === 0
+              ? 'flex flex-wrap items-center justify-between gap-2 px-5 py-3.5'
+              : 'flex flex-wrap items-center justify-between gap-2 border-b border-border/70 px-5 py-3.5'
         }
       >
         <div className="flex items-center gap-2">
-          <Camera className="h-4 w-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Photos</h2>
+          {!embedded && <Camera className="h-4 w-4 text-muted-foreground" />}
+          <h2 className={embedded ? 'text-xs font-medium text-muted-foreground' : 'text-sm font-semibold'}>
+            Photos
+          </h2>
           {photos.length === 0 && (
             <span className="hidden text-xs text-muted-foreground sm:inline">
               — the customer sees these on the quote
@@ -170,7 +177,13 @@ export function QuotePhotos({
           sat between the contractor and the Send button. The pitch line
           rides the header as a title attribute-sized hint instead. */}
       {photos.length === 0 ? null : (
-        <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4">
+        <div
+          className={
+            embedded
+              ? 'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-4'
+              : 'grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4'
+          }
+        >
           {photos.map((photo) => {
             const line = labelFor(photo)
             return (

@@ -103,6 +103,7 @@ export function ActivityTimeline({
   workItemId,
   people,
   roster = [],
+  embedded = false,
 }: {
   entries: TimelineEntry[]
   tz: string
@@ -111,6 +112,8 @@ export function ActivityTimeline({
   people: Record<string, string>
   /** Teammates for the @ picker; handle is the token addNote will match. */
   roster?: { id: string; name: string; handle?: string }[]
+  /** Rendered inside a collapsible card that owns the heading. */
+  embedded?: boolean
 }) {
   const router = useRouter()
   const [draft, setDraft] = useState('')
@@ -179,8 +182,8 @@ export function ActivityTimeline({
   }
 
   return (
-    <section aria-label="Activity">
-      <h2 className="text-sm font-semibold">Activity</h2>
+    <section aria-label="Notes and activity">
+      {!embedded && <h2 className="text-sm font-semibold">Notes</h2>}
       {entries.length > 0 && (
         <ol className="mt-3 space-y-0">
           {entries.map((e, i) => {

@@ -45,6 +45,7 @@ Rules:
 - **If the catalog cannot cover what was asked, do not substitute.** Leave it out of `line_items` and name the missing work in `unmet`. A plausible quote for work the business does not do is worse than no quote. `unmet` is for *work*: things the business would have to do and this catalog cannot price.
 - **If the description is too vague to choose between materially different answers, ask.** Put the question in `questions` with **no more than four** concrete options taken from the catalog — a choice, not a list to read, and return only the line items you are already confident about. Ask only when the answer changes the quote — never to confirm something the description already settled.
 - Return valid JSON only. No markdown, no prose.
+- **`job_name`: the job in 2–5 plain words**, drawn from the customer's own request — a card title, not a sentence. Name the work itself ("Install 3 thermostats", "Annual mowing contract", "Panel upgrade"), never the trade, never filler like "Service" or "Job", no punctuation. If the request is too vague to name, omit it.
 
 Schema:
 
@@ -75,6 +76,7 @@ Schema:
     }
   ],
   "unmet": ["work the catalog cannot cover"],
+  "job_name": "Install 3 thermostats",
   "reasoning": "One short paragraph explaining why these items."
 }
 ```
