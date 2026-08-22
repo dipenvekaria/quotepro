@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState, useTransition } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Camera, Loader2, Plus, Star, Trash2, X } from 'lucide-react'
 import { toast } from 'sonner'
@@ -52,11 +53,17 @@ export function QuotePhotos({
     startUpload(async () => {
       const results = await Promise.all(
         files.map(async (file) => {
-          const fd = new FormData()
-          fd.append('work_item_id', workItemId)
-          fd.append('file', await compressPhoto(file))
-          if (attachTo) fd.append('quote_item_id', attachTo)
-          return uploadQuotePhoto(fd)
+          try {
+            const fd = new FormData()
+            fd.append('work_item_id', workItemId)
+            fd.append('file', await compressPhoto(file))
+            if (attachTo) fd.append('quote_item_id', attachTo)
+            return await uploadQuotePhoto(fd)
+          } catch {
+            // A dead spot in the driveway must say so — a rejected request
+            // used to vanish without a row or a toast.
+            return { ok: false as const, error: 'Upload didn\u2019t reach the server \u2014 check your signal and try again.' }
+          }
         }),
       )
       setPending((prev) => {
@@ -106,7 +113,13 @@ export function QuotePhotos({
         toast.error(res.error)
         return
       }
-      toast.success(photo.in_showcase ? 'Removed from portfolio' : 'Added to portfolio')
+      if (photo.in_showcase) {
+        toast.success('Removed from portfolio')
+      } else {
+        toast.success('Added to portfolio', {
+          action: { label: 'View', onClick: () => router.push('/app/portfolio') },
+        })
+      }
       router.refresh()
     })
   }
@@ -158,6 +171,15 @@ export function QuotePhotos({
                 </option>
               ))}
             </select>
+          )}
+          {photos.some((p) => p.in_showcase) && (
+            <Link
+              href="/app/portfolio"
+              className="inline-flex min-h-11 items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground lg:min-h-0"
+            >
+              <Star className="h-3 w-3 fill-current text-amber-500" />
+              In portfolio
+            </Link>
           )}
           <button
             onClick={() => fileRef.current?.click()}
