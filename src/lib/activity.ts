@@ -14,6 +14,7 @@ import { query } from '@/lib/db'
  */
 
 export type ActivityAction =
+  | 'lead_created'
   | 'quote_created'
   | 'quote_sent'
   | 'quote_viewed'
