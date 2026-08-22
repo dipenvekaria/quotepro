@@ -53,6 +53,8 @@ import { generateQuoteItems } from '@/app/app/(shell)/quotes/new/actions'
 
 import type { QuotePhoto } from './photo-actions'
 import { QuotePhotos } from './quote-photos'
+import { compressPhoto } from '@/lib/photos/compress'
+
 import { uploadQuotePhoto } from './photo-actions'
 import {
   changeStatus,
@@ -318,18 +320,19 @@ export function WorkItemDetail({
     e.target.value = ''
     if (files.length === 0) return
     startJobPhotos(async () => {
-      let added = 0
-      for (const file of files) {
-        const fd = new FormData()
-        fd.append('work_item_id', workItem.id)
-        fd.append('file', file)
-        const res = await uploadQuotePhoto(fd)
-        if (res.ok) added++
-        else {
-          toast.error(res.error)
-          break
-        }
-      }
+      // Shrink on the phone, then send everything at once — the truck should
+      // not have to wait on one bar of LTE.
+      const results = await Promise.all(
+        files.map(async (file) => {
+          const fd = new FormData()
+          fd.append('work_item_id', workItem.id)
+          fd.append('file', await compressPhoto(file))
+          return uploadQuotePhoto(fd)
+        }),
+      )
+      const added = results.filter((r) => r.ok).length
+      const firstError = results.find((r) => !r.ok)
+      if (firstError && !firstError.ok) toast.error(firstError.error)
       if (added > 0) {
         setCompletePhotosAdded((n) => n + added)
         toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
@@ -686,11 +689,6 @@ export function WorkItemDetail({
   const invoiceAmountDue = invoice
     ? Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
     : 0
-  function copyPayLink() {
-    navigator.clipboard.writeText(invoiceUrl)
-    toast.success('Payment link copied — send it to your customer')
-  }
-
   const customerInitials = (workItem.customers?.name ?? '?')
     .split(' ')
     .slice(0, 2)
@@ -796,12 +794,6 @@ export function WorkItemDetail({
                   Send invoice
                 </Button>
               )}
-              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
-                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
-                  <Copy className="h-3.5 w-3.5" />
-                  Copy payment link
-                </Button>
-              )}
               {(workItem.status === 'job_in_progress' || workItem.status === 'job_completed') && (
                 <Button onClick={openJobPhotos} disabled={jobPhotosBusy} variant="outline" className="gap-1.5">
                   {jobPhotosBusy ? (
@@ -903,14 +895,16 @@ export function WorkItemDetail({
                     </h2>
                     <p className="mt-0.5 text-sm text-muted-foreground">
                       Invoice {invoice.invoice_number} is with{' '}
-                      {workItem.customers?.name ?? 'your customer'}. Share the payment link, or
-                      record a payment taken another way.
+                      {workItem.customers?.name ?? 'your customer'}. Open the payment page to
+                      share it, or record a payment taken another way.
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
-                    <Button onClick={copyPayLink} className="h-11 gap-1.5">
-                      <Copy className="h-4 w-4" />
-                      Copy payment link
+                    <Button asChild className="h-11 gap-1.5">
+                      <a href={invoiceUrl} target="_blank" rel="noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                        Open payment link
+                      </a>
                     </Button>
                     <Button
                       onClick={() => setPayOpen(true)}
@@ -1954,11 +1948,6 @@ export function WorkItemDetail({
           <Button onClick={doSendInvoice} disabled={invoiceSending} className="h-12 w-full gap-1.5 text-base">
             {invoiceSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             Send invoice
-          </Button>
-        ) : workItem.status === 'job_completed' && invoice && invoice.status !== 'paid' ? (
-          <Button onClick={copyPayLink} className="h-12 w-full gap-1.5 text-base">
-            <Copy className="h-4 w-4" />
-            Copy payment link
           </Button>
         ) : workItem.status === 'job_completed' && !reviewAsked ? (
           <Button onClick={doRequestReview} disabled={askingReview} className="h-12 w-full gap-1.5 text-base">

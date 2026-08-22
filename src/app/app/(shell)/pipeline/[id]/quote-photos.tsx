@@ -7,6 +7,8 @@ import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 
+import { compressPhoto } from '@/lib/photos/compress'
+
 import { deleteQuotePhoto, setPhotoUserTags, togglePhotoShowcase, uploadQuotePhoto, type QuotePhoto } from './photo-actions'
 
 /**
@@ -37,28 +39,35 @@ export function QuotePhotos({
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, startUpload] = useTransition()
   const [attachTo, setAttachTo] = useState<string>('')
+  const [pending, setPending] = useState<string[]>([])
 
   function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = [...(e.target.files ?? [])]
     e.target.value = ''
     if (files.length === 0) return
 
+    // Local previews appear instantly; the shrunken files upload together in
+    // the background. On a jobsite connection this is the whole feature.
+    setPending((prev) => [...prev, ...files.map((f) => URL.createObjectURL(f))])
     startUpload(async () => {
-      let added = 0
-      for (const file of files) {
-        const fd = new FormData()
-        fd.append('work_item_id', workItemId)
-        fd.append('file', file)
-        if (attachTo) fd.append('quote_item_id', attachTo)
-        const res = await uploadQuotePhoto(fd)
-        if (res.ok) added++
-        // Report the first failure and stop — a wall of identical toasts for a
-        // whole selection tells the contractor nothing extra.
-        else {
-          toast.error(res.error)
-          break
-        }
-      }
+      const results = await Promise.all(
+        files.map(async (file) => {
+          const fd = new FormData()
+          fd.append('work_item_id', workItemId)
+          fd.append('file', await compressPhoto(file))
+          if (attachTo) fd.append('quote_item_id', attachTo)
+          return uploadQuotePhoto(fd)
+        }),
+      )
+      setPending((prev) => {
+        prev.slice(-files.length).forEach((u) => URL.revokeObjectURL(u))
+        return prev.slice(0, prev.length - files.length)
+      })
+      const added = results.filter((r) => r.ok).length
+      const firstError = results.find((r) => !r.ok)
+      // One toast for the first failure — a wall of identical toasts for a
+      // whole selection tells the contractor nothing extra.
+      if (firstError && !firstError.ok) toast.error(firstError.error)
       if (added > 0) {
         toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
         router.refresh()
@@ -176,7 +185,7 @@ export function QuotePhotos({
       {/* Empty means one slim row, not a card of empty space — this section
           sat between the contractor and the Send button. The pitch line
           rides the header as a title attribute-sized hint instead. */}
-      {photos.length === 0 ? null : (
+      {photos.length === 0 && pending.length === 0 ? null : (
         <div
           className={
             embedded
@@ -184,6 +193,15 @@ export function QuotePhotos({
               : 'grid grid-cols-2 gap-3 p-5 sm:grid-cols-3 lg:grid-cols-4'
           }
         >
+          {pending.map((url) => (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              key={url}
+              src={url}
+              alt="Uploading…"
+              className="aspect-square w-full animate-pulse rounded-lg border border-border/70 object-cover opacity-60"
+            />
+          ))}
           {photos.map((photo) => {
             const line = labelFor(photo)
             return (
