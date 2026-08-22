@@ -2,6 +2,8 @@
 
 import Link, { useLinkStatus } from 'next/link'
 import { usePathname } from 'next/navigation'
+
+import { NotificationsBell } from './notifications-bell'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
 import { BarChart3, Calendar, ChevronDown, Home, Image as ImageIcon, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, Zap, type LucideIcon } from 'lucide-react'
@@ -59,12 +61,14 @@ export function AppShell({
   profile,
   company,
   readOnly = false,
+  unreadNotifications = 0,
   children,
 }: {
   user: { id: string; email: string }
   profile: Record<string, unknown>
   company: Company
   readOnly?: boolean
+  unreadNotifications?: number
   children: ReactNode
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -120,6 +124,7 @@ export function AppShell({
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
           onOpenMobileNav={() => setMobileNavOpen(true)}
+          unreadNotifications={unreadNotifications}
         />
         {readOnly && (
           <div className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-sm text-amber-800 dark:text-amber-300">
@@ -222,6 +227,7 @@ function TopBar({
   menuOpen,
   setMenuOpen,
   onOpenMobileNav,
+  unreadNotifications,
 }: {
   company: Company
   email: string
@@ -229,6 +235,7 @@ function TopBar({
   menuOpen: boolean
   setMenuOpen: (v: boolean) => void
   onOpenMobileNav: () => void
+  unreadNotifications: number
 }) {
   return (
     <header className="relative flex h-14 shrink-0 items-center gap-2 border-b border-border/70 bg-background px-3 sm:px-4 lg:px-10">
@@ -260,7 +267,7 @@ function TopBar({
       */}
 
       <div className="ml-auto flex items-center gap-1">
-        {/* The bell had no handler either, and no notifications exist to show. */}
+        <NotificationsBell initialUnread={unreadNotifications} />
 
         <Link
           href="/app/quotes/new"

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   CalendarClock,
@@ -102,16 +102,62 @@ export function ActivityTimeline({
   tz,
   workItemId,
   people,
+  roster = [],
 }: {
   entries: TimelineEntry[]
   tz: string
   workItemId: string
   /** user id → display name, for note attribution. */
   people: Record<string, string>
+  /** Teammates for the @ picker; handle is the token addNote will match. */
+  roster?: { id: string; name: string; handle?: string }[]
 }) {
   const router = useRouter()
   const [draft, setDraft] = useState('')
   const [posting, startPost] = useTransition()
+  const boxRef = useRef<HTMLTextAreaElement | null>(null)
+  const [mentionAt, setMentionAt] = useState<number | null>(null)
+  const [mentionQuery, setMentionQuery] = useState('')
+  const [mentionIndex, setMentionIndex] = useState(0)
+
+  const candidates =
+    mentionAt === null
+      ? []
+      : roster
+          .filter((t) => t.handle)
+          .filter(
+            (t) =>
+              mentionQuery === '' ||
+              t.name.toLowerCase().includes(mentionQuery) ||
+              t.handle!.includes(mentionQuery),
+          )
+          .slice(0, 6)
+
+  /** Track a live "@word" immediately before the caret. */
+  function syncMention(value: string, caret: number) {
+    const upto = value.slice(0, caret)
+    const m = /(^|\s)@([\w.-]*)$/.exec(upto)
+    if (m) {
+      setMentionAt(caret - m[2].length - 1)
+      setMentionQuery(m[2].toLowerCase())
+      setMentionIndex(0)
+    } else {
+      setMentionAt(null)
+    }
+  }
+
+  function pickMention(t: { name: string; handle?: string }) {
+    if (mentionAt === null || !t.handle || !boxRef.current) return
+    const caret = boxRef.current.selectionStart ?? draft.length
+    const next = `${draft.slice(0, mentionAt)}@${t.handle} ${draft.slice(caret)}`
+    setDraft(next)
+    setMentionAt(null)
+    const pos = mentionAt + t.handle.length + 2
+    requestAnimationFrame(() => {
+      boxRef.current?.focus()
+      boxRef.current?.setSelectionRange(pos, pos)
+    })
+  }
 
   function post() {
     const body = draft.trim()
@@ -186,16 +232,72 @@ export function ActivityTimeline({
 
       {/* Composer — team-only, like everything above it. */}
       <div className="mt-4">
-        <textarea
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) post()
-          }}
-          rows={2}
-          placeholder="Add an internal note — @name to email a teammate"
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        />
+        <div className="relative">
+          {mentionAt !== null && candidates.length > 0 && (
+            <ul
+              role="listbox"
+              aria-label="Mention a teammate"
+              className="absolute bottom-full left-0 z-30 mb-1 w-full max-w-72 overflow-hidden rounded-lg border border-border bg-popover shadow-xl"
+            >
+              {candidates.map((t, i) => (
+                <li key={t.id}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={i === mentionIndex}
+                    // mousedown so the textarea keeps focus and the caret math holds
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      pickMention(t)
+                    }}
+                    className={`flex min-h-11 w-full items-center justify-between gap-3 px-3 text-left text-sm lg:min-h-9 ${
+                      i === mentionIndex ? 'bg-muted' : 'hover:bg-muted/60'
+                    }`}
+                  >
+                    <span className="truncate font-medium">{t.name}</span>
+                    <span className="shrink-0 text-xs text-muted-foreground">@{t.handle}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <textarea
+            ref={boxRef}
+            value={draft}
+            onChange={(e) => {
+              setDraft(e.target.value)
+              syncMention(e.target.value, e.target.selectionStart ?? e.target.value.length)
+            }}
+            onKeyDown={(e) => {
+              if (mentionAt !== null && candidates.length > 0) {
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault()
+                  setMentionIndex((i) => (i + 1) % candidates.length)
+                  return
+                }
+                if (e.key === 'ArrowUp') {
+                  e.preventDefault()
+                  setMentionIndex((i) => (i - 1 + candidates.length) % candidates.length)
+                  return
+                }
+                if (e.key === 'Enter' || e.key === 'Tab') {
+                  e.preventDefault()
+                  pickMention(candidates[mentionIndex])
+                  return
+                }
+                if (e.key === 'Escape') {
+                  setMentionAt(null)
+                  return
+                }
+              }
+              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) post()
+            }}
+            onBlur={() => setMentionAt(null)}
+            rows={2}
+            placeholder="Add an internal note — @ to notify a teammate"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        </div>
         <div className="mt-2 flex items-center justify-between gap-2">
           <span className="text-[11px] text-muted-foreground">
             Never shown to the customer

@@ -160,12 +160,14 @@ export default async function WorkItemDetailPage({
 
   const teammates = await query<{
     id: string
+    email: string | null
     profile: { full_name?: string; first_name?: string; last_name?: string } | null
   }>(
-    `select id, profile
-       from users
-      where company_id = $1 and is_active = true
-      order by created_at asc`,
+    `select u.id, au.email, u.profile
+       from users u
+       join auth.users au on au.id = u.id
+      where u.company_id = $1 and u.is_active = true
+      order by u.created_at asc`,
     [companyId],
   )
 
@@ -219,7 +221,13 @@ export default async function WorkItemDetailPage({
           const p = t.profile
           const name =
             p?.full_name || [p?.first_name, p?.last_name].filter(Boolean).join(' ') || 'Teammate'
-          return { id: t.id, name }
+          // The @mention token addNote's matcher will recognise for this
+          // person — same priority as the matcher itself.
+          const first = p?.first_name?.toLowerCase()
+          const last = p?.last_name?.toLowerCase()
+          const local = t.email?.split('@')[0]?.toLowerCase()
+          const handle = (first && last ? `${first}.${last}` : first ?? local ?? '').replace(/[^\w.-]/g, '')
+          return { id: t.id, name, handle }
         })
       }
       invoice={invoice as Parameters<typeof WorkItemDetail>[0]['invoice']}
