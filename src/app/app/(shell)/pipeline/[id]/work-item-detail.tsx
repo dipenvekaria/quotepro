@@ -69,7 +69,7 @@ import type { SlotAssessment } from '@/lib/scheduling/assess'
 import { zonedParts, zonedToUtc } from '@/lib/time'
 import { saveLineItems } from '../../quotes/new/actions'
 import { DraftQuestions } from '../../quotes/new/draft-questions'
-import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
+import { convertToInvoice, recordPayment, refundPayment, sendInvoice } from '@/features/invoices/actions'
 
 // ---------------------------------------------------------------------------
 
@@ -153,6 +153,7 @@ export type Payment = {
   method: string
   reference_number: string | null
   paid_at: string
+  refund_of: string | null
 }
 
 // ---------------------------------------------------------------------------
@@ -206,6 +207,7 @@ export function WorkItemDetail({
   timeline,
   tz,
   reviewRequested,
+  canRefund = false,
 }: {
   workItem: WorkItem
   lineItems: LineItem[]
@@ -216,6 +218,7 @@ export function WorkItemDetail({
   tz: string
   timeline: TimelineEntry[]
   reviewRequested: boolean
+  canRefund?: boolean
 }) {
   const router = useRouter()
   const [items, setItems] = useState<LineItem[]>(initialItems)
@@ -242,6 +245,40 @@ export function WorkItemDetail({
   const [savingItems, startItemsSave] = useTransition()
   const [savingMeta, startMetaSave] = useTransition()
   const [payOpen, setPayOpen] = useState(false)
+  const [refundTarget, setRefundTarget] = useState<Payment | null>(null)
+  const [refundAmount, setRefundAmount] = useState('')
+  const [refundNote, setRefundNote] = useState('')
+  const [refunding, startRefund] = useTransition()
+  const refundedByPayment = useMemo(() => {
+    const m = new Map<string, number>()
+    for (const p of payments) {
+      if (p.refund_of) m.set(p.refund_of, (m.get(p.refund_of) ?? 0) - Number(p.amount))
+    }
+    return m
+  }, [payments])
+  function openRefund(p: Payment) {
+    const remaining = Number(p.amount) - (refundedByPayment.get(p.id) ?? 0)
+    setRefundTarget(p)
+    setRefundAmount(remaining.toFixed(2))
+    setRefundNote('')
+  }
+  function doRefund() {
+    if (!refundTarget) return
+    startRefund(async () => {
+      const res = await refundPayment({
+        payment_id: refundTarget.id,
+        amount: Number(refundAmount),
+        note: refundNote.trim() || undefined,
+      })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setRefundTarget(null)
+      toast.success(`Refunded ${fmtMoney(res.data.refunded)}`)
+      router.refresh()
+    })
+  }
   const [invoiceSending, startInvoiceSend] = useTransition()
   const [completeOpen, setCompleteOpen] = useState(false)
   const [editingDetails, setEditingDetails] = useState(false)
@@ -1648,6 +1685,10 @@ export function WorkItemDetail({
           {invoice && (
             <InvoiceCard
               publicUrl={invoiceUrl}
+              tz={tz}
+              onRefund={openRefund}
+              canRefund={canRefund}
+              refundedFor={refundedByPayment}
               invoice={invoice}
               payments={payments}
               onRecordPayment={() => setPayOpen(true)}
@@ -1736,6 +1777,62 @@ export function WorkItemDetail({
         className="hidden"
         onChange={onJobPhotoFiles}
       />
+
+      {/* Refund — irreversible for card money, so it confirms with the
+          amount and says where the money comes from and how long it takes. */}
+      <Dialog open={Boolean(refundTarget)} onOpenChange={(o) => !o && setRefundTarget(null)}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Refund payment</DialogTitle>
+            <DialogDescription>
+              {refundTarget?.reference_number?.startsWith('pi_')
+                ? 'Returns to the customer\u2019s card in 5\u201310 days and comes out of your Stripe balance. Stripe keeps its original processing fee.'
+                : 'Records the refund on this invoice \u2014 move the money back the way it was paid.'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="refund-amount">Amount</Label>
+              <div className="flex items-center gap-1.5">
+                <span className="text-sm text-muted-foreground">$</span>
+                <Input
+                  id="refund-amount"
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  value={refundAmount}
+                  onChange={(e) => setRefundAmount(e.target.value)}
+                  className="h-11 max-w-[10rem] tabular"
+                />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="refund-note">Note (optional)</Label>
+              <Input
+                id="refund-note"
+                value={refundNote}
+                onChange={(e) => setRefundNote(e.target.value)}
+                placeholder="Why, for the record"
+                className="h-11"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRefundTarget(null)} className="h-11 lg:h-9">
+              Cancel
+            </Button>
+            <Button
+              onClick={doRefund}
+              disabled={refunding || !(Number(refundAmount) > 0)}
+              variant="destructive"
+              className="h-11 gap-1.5 lg:h-9"
+            >
+              {refunding && <Loader2 className="h-4 w-4 animate-spin" />}
+              Refund {Number(refundAmount) > 0 ? fmtMoney(Number(refundAmount)) : ''}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Job complete → the money step, offered right there. */}
       <Dialog open={completeOpen} onOpenChange={setCompleteOpen}>
@@ -1986,10 +2083,18 @@ function InvoiceCard({
   payments,
   onRecordPayment,
   publicUrl,
+  onRefund,
+  canRefund,
+  refundedFor,
+  tz,
 }: {
   invoice: Invoice
   payments: Payment[]
   onRecordPayment: () => void
+  onRefund?: (p: Payment) => void
+  canRefund?: boolean
+  refundedFor?: Map<string, number>
+  tz: string
   /** Computed by the parent behind the isClient snapshot — reading
       window.origin during render here was a hydration mismatch that
       regenerated the whole detail tree and ate the first click. */
@@ -2005,6 +2110,7 @@ function InvoiceCard({
     paid: { label: 'Paid', cls: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' },
     overdue: { label: 'Overdue', cls: 'bg-destructive/10 text-destructive' },
     cancelled: { label: 'Cancelled', cls: 'bg-muted text-muted-foreground' },
+    refunded: { label: 'Refunded', cls: 'bg-muted text-muted-foreground' },
   }[invoice.status]
 
   return (
@@ -2077,21 +2183,41 @@ function InvoiceCard({
             Recent payments
           </div>
           <ul className="mt-1.5 space-y-1 text-xs">
-            {payments.slice(0, 3).map((p) => (
-              <li key={p.id}>
-                <div className="flex justify-between">
-                  <span className="capitalize text-muted-foreground">
-                    {p.method.replace('_', ' ')} · {new Date(p.paid_at).toLocaleDateString()}
-                  </span>
-                  <span className="tabular font-medium">+{fmtMoney(Number(p.amount))}</span>
-                </div>
-                {p.reference_number && (
-                  <div className="truncate font-mono text-[10px] text-muted-foreground/80">
-                    ref {p.reference_number}
+            {payments.slice(0, 5).map((p) => {
+              const isRefund = Number(p.amount) < 0
+              const refunded = refundedFor?.get(p.id) ?? 0
+              const remaining = Number(p.amount) - refunded
+              return (
+                <li key={p.id}>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="capitalize text-muted-foreground">
+                      {isRefund ? 'refund' : p.method.replace('_', ' ')} ·{' '}
+                      {new Date(p.paid_at).toLocaleDateString('en-US', { timeZone: tz })}
+                    </span>
+                    <span className="flex items-baseline gap-2">
+                      {!isRefund && canRefund && remaining > 0.005 && onRefund && (
+                        <button
+                          type="button"
+                          onClick={() => onRefund(p)}
+                          className="text-[11px] font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                        >
+                          Refund
+                        </button>
+                      )}
+                      <span className="tabular font-medium">
+                        {isRefund ? '−' : '+'}
+                        {fmtMoney(Math.abs(Number(p.amount)))}
+                      </span>
+                    </span>
                   </div>
-                )}
-              </li>
-            ))}
+                  {p.reference_number && (
+                    <div className="truncate font-mono text-[10px] text-muted-foreground/80">
+                      ref {p.reference_number}
+                    </div>
+                  )}
+                </li>
+              )
+            })}
           </ul>
         </div>
       )}

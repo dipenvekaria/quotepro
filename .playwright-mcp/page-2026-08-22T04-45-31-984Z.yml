@@ -1,0 +1,218 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - link:
+          - /url: /app/dashboard
+          - generic:
+            - generic: Rivet
+            - generic: Acme HVAC & Plumbing
+      - navigation:
+        - link:
+          - /url: /app/dashboard
+          - generic: Home
+        - link:
+          - /url: /app/pipeline
+          - generic: Pipeline
+        - link:
+          - /url: /app/calendar
+          - generic: Calendar
+        - link:
+          - /url: /app/customers
+          - generic: Customers
+        - link:
+          - /url: /app/catalog
+          - generic: Price book
+        - link:
+          - /url: /app/portfolio
+          - generic: Portfolio
+        - link:
+          - /url: /app/analytics
+          - generic: Analytics
+        - link:
+          - /url: /app/integrations
+          - generic: Integrations
+      - generic:
+        - button:
+          - generic: Ask Bolt
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - button:
+              - generic: "9"
+          - link:
+            - /url: /app/quotes/new
+            - generic: New quote
+          - generic:
+            - button:
+              - generic: AO
+      - main:
+        - generic:
+          - generic:
+            - link:
+              - /url: /app/pipeline
+              - text: Pipeline
+            - generic: Q-1009
+          - generic:
+            - generic:
+              - generic: PT
+              - generic:
+                - generic:
+                  - heading [level=1]: Patricia Thomas
+                  - generic: Completed
+                - generic:
+                  - generic: pthomas@example.com
+                  - generic: +1-555-1012
+                  - generic: 101012 Market St, San Francisco
+            - generic:
+              - button: Add photos
+              - button: Request review
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=2]: Details
+                  - button
+                - generic:
+                  - generic:
+                    - generic: Job description
+                    - paragraph: Aeroseal complete
+                  - generic:
+                    - generic: Scheduled start
+                    - generic:
+                      - generic: Thu, Jul 30, 10:42 AM
+                      - button: Reschedule
+                  - generic:
+                    - generic: Repeats
+                    - paragraph: Does not repeat
+              - generic:
+                - generic:
+                  - generic:
+                    - heading [level=2]: Line items
+                    - generic: "0"
+                  - button
+                - generic:
+                  - paragraph: No line items yet
+                  - paragraph: Add rows to build up this quote.
+              - generic:
+                - generic:
+                  - generic:
+                    - heading [level=2]: Photos
+                    - generic: — the customer sees these on the quote
+                  - generic:
+                    - button: Add photos
+                    - button
+              - region:
+                - heading [level=2]: Activity
+                - list:
+                  - listitem:
+                    - generic:
+                      - text: completed
+                      - generic: — Seeded activity for Duct sealing
+                      - generic: Aug 19, 10:42 AM
+                  - listitem:
+                    - generic:
+                      - text: Payment recorded
+                      - generic: — Payment of $2009.56 recorded (check)
+                      - generic: Aug 21, 9:45 PM
+                - generic:
+                  - generic:
+                    - textbox:
+                      - /placeholder: Add an internal note — @ to notify a teammate
+                  - generic:
+                    - generic: Never shown to the customer
+                    - button [disabled]: Add note
+            - complementary:
+              - generic:
+                - heading [level=2]: Summary
+                - generic:
+                  - generic:
+                    - term: Subtotal
+                    - definition: $1,850.00
+                  - generic:
+                    - term: Tax (8.63%)
+                    - definition: $159.56
+                  - generic:
+                    - term: Total
+                    - definition: $2,009.56
+                - paragraph: This total has no line items behind it. The customer will see an empty quote — add the rows before sending.
+              - generic:
+                - generic:
+                  - heading [level=2]: Customer explanation
+                  - button
+                - paragraph: Shown to the customer above the prices.
+                - paragraph: We will replace the kitchen faucet cartridge and check the shutoff valves for slow leaks. Parts are covered under warranty.
+              - generic:
+                - heading [level=2]: Customer link
+                - paragraph: Shareable, no login required.
+                - generic:
+                  - generic: http://localhost:3000/q/70a05eda98e277ad2c9624240eed73ca
+                  - button
+                  - link:
+                    - /url: http://localhost:3000/q/70a05eda98e277ad2c9624240eed73ca
+              - generic:
+                - heading [level=2]: Team
+                - generic:
+                  - generic:
+                    - term: Created by
+                    - definition: Unknown
+                  - generic:
+                    - term: Assigned to
+                    - combobox
+              - generic:
+                - generic:
+                  - heading [level=2]: Invoice
+                  - generic: Paid
+                - generic: INV-1009
+                - generic:
+                  - generic:
+                    - term: Total
+                    - definition: $2,009.56
+                  - generic:
+                    - term: Paid
+                    - definition: $2,009.56
+                  - generic:
+                    - term: Fully paid
+                    - definition: $2,009.56
+                - generic:
+                  - generic: http://localhost:3000/i/b7b297197fc54bd255d31915f14a96be
+                  - button
+                  - link:
+                    - /url: http://localhost:3000/i/b7b297197fc54bd255d31915f14a96be
+                - generic:
+                  - generic: Recent payments
+                  - list:
+                    - listitem:
+                      - generic:
+                        - generic: check · 8/21/2026
+                        - generic:
+                          - button: Refund
+                          - generic: +$2,009.56
+  - region "Notifications alt+T"
+  - generic [ref=f15e97] [cursor=pointer]:
+    - button "Open issues overlay" [ref=f15e98]:
+      - generic [ref=f15e102]:
+        - generic [ref=f15e103]: "0"
+        - generic [ref=f15e104]: "1"
+      - generic [ref=f15e105]: Issue
+    - button "Collapse issues badge" [ref=f15e106]
+  - alert
+  - dialog [ref=f15e110]:
+    - generic [ref=f15e111]:
+      - heading "Refund payment" [level=2] [ref=f15e112]
+      - paragraph [ref=f15e113]: Records the refund on this invoice — move the money back the way it was paid.
+    - generic [ref=f15e114]:
+      - generic [ref=f15e115]:
+        - generic [ref=f15e116]: Amount
+        - generic [ref=f15e117]:
+          - generic [ref=f15e118]: $
+          - spinbutton "Amount" [active] [ref=f15e119]: "2009.56"
+      - generic [ref=f15e120]:
+        - generic [ref=f15e121]: Note (optional)
+        - textbox "Note (optional)" [ref=f15e122]:
+          - /placeholder: Why, for the record
+    - generic [ref=f15e123]:
+      - button "Cancel" [ref=f15e124]
+      - button "Refund $2,009.56" [ref=f15e125]
+    - button "Close" [ref=f15e126]
