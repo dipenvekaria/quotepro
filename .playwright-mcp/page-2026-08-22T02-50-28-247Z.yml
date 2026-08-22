@@ -1,0 +1,6 @@
+- generic [active]:
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f2e77]:
+        - generic [ref=f2e82]: Welcome back.
+  - alert [ref=f2e84]

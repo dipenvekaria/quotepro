@@ -8,6 +8,18 @@
  * (logos, quote photos). Styles keep 'unsafe-inline' — style nonces are
  * disproportionate and styles are not a script-execution sink.
  */
+// The Supabase origin comes from config, not a hardcoded wildcard: the
+// wildcard list covers hosted projects, but local dev talks to
+// http://127.0.0.1:54321 and a hardcoded https-only list silently blocked
+// every local sign-in after CSP enforcement landed.
+const SUPABASE_ORIGIN = (() => {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').origin
+  } catch {
+    return null
+  }
+})()
+
 export function buildCsp(nonce: string, isDev: boolean): string {
   const scriptSrc = [
     "'self'",
@@ -24,6 +36,7 @@ export function buildCsp(nonce: string, isDev: boolean): string {
     'font-src': ["'self'", 'data:'],
     'connect-src': [
       "'self'",
+      ...(SUPABASE_ORIGIN ? [SUPABASE_ORIGIN] : []),
       'https://*.supabase.co',
       'https://*.supabase.in',
       'https://api.stripe.com',

@@ -58,10 +58,11 @@ export default async function DashboardPage() {
   const stalledScope = workItemScope(who, 2)
   const activityScope = workItemScope(who, 1)
 
+  // A name or nothing: capitalising the email's local part greeted the demo
+  // owner as "Owner" and would greet a real signup as "Dipenvekaria".
   const fullName = (profile as { full_name?: string } | null)?.full_name?.trim()
-  const emailLocal = (email ?? '').split('@')[0].replace(/[._-]+/g, ' ').trim()
-  const rawFirst = (fullName || emailLocal || 'there').split(' ')[0]
-  const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : 'there'
+  const rawFirst = fullName?.split(' ')[0]
+  const firstName = rawFirst ? rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1) : null
   // Day boundaries in the CONTRACTOR'S timezone, not the UTC server's — the
   // zone now rides on the session, so it costs no extra round trip here.
   const tz = session.timezone
@@ -292,7 +293,7 @@ export default async function DashboardPage() {
             {now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: tz })}
           </div>
           <h1 className="mt-0.5 text-2xl font-semibold tracking-tight sm:text-3xl">
-            Good {greeting(zonedHour(now, tz))}, {firstName}.
+            Good {greeting(zonedHour(now, tz))}{firstName ? `, ${firstName}` : ''}.
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             {summaryLine(todaysJobs.length, stalledQuotes.length, overdueInvoices.length)}
@@ -359,12 +360,13 @@ export default async function DashboardPage() {
               {todaysJobs.map((j) => (
                 <li key={j.id}>
                   <Link href={`/app/pipeline/${j.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-muted/30">
-                    <div className="min-w-[42px] rounded-md bg-primary/10 px-2 py-1 text-center">
-                      <div className="text-[9px] font-medium uppercase text-primary">
-                        {new Date(j.scheduled_start).toLocaleTimeString('en-US', { hour: 'numeric' })}
-                      </div>
+                    <div className="min-w-[64px] rounded-md bg-primary/10 px-2 py-2 text-center">
                       <div className="text-xs font-semibold tabular text-primary">
-                        {new Date(j.scheduled_start).getMinutes().toString().padStart(2, '0')}
+                        {new Date(j.scheduled_start).toLocaleTimeString('en-US', {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          timeZone: tz,
+                        })}
                       </div>
                     </div>
                     <div className="min-w-0 flex-1">
@@ -528,11 +530,13 @@ export default async function DashboardPage() {
                       <StatusBadge status={a.status as Parameters<typeof StatusBadge>[0]['status']} />
                     </div>
                     <div className="truncate text-xs text-muted-foreground">
-                      {a.description ?? 'Work item'}
+                      {a.description ?? (a.status === 'lead' ? 'New lead' : '—')}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold tabular">{fmtMoney(a.total)}</div>
+                    <div className="text-sm font-semibold tabular">
+                      {Number(a.total) > 0 ? fmtMoney(a.total) : '—'}
+                    </div>
                     <div className="text-[10px] text-muted-foreground">{daysAgo(a.updated_at)} ago</div>
                   </div>
                   <ArrowRight className="h-4 w-4 text-muted-foreground" />

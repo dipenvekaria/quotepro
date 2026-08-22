@@ -1,0 +1,183 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - complementary [ref=f3e3]:
+      - link "Rivet Acme HVAC & Plumbing" [ref=f3e5] [cursor=pointer]:
+        - /url: /app/dashboard
+        - generic [ref=f3e11]:
+          - generic [ref=f3e12]: Rivet
+          - generic [ref=f3e13]: Acme HVAC & Plumbing
+      - navigation [ref=f3e14]:
+        - link "Home" [ref=f3e15] [cursor=pointer]:
+          - /url: /app/dashboard
+        - link "Pipeline" [ref=f3e20] [cursor=pointer]:
+          - /url: /app/pipeline
+        - link "Calendar" [ref=f3e25] [cursor=pointer]:
+          - /url: /app/calendar
+        - link "Customers" [ref=f3e29] [cursor=pointer]:
+          - /url: /app/customers
+        - link "Price book" [ref=f3e36] [cursor=pointer]:
+          - /url: /app/catalog
+        - link "Portfolio" [ref=f3e42] [cursor=pointer]:
+          - /url: /app/portfolio
+        - link "Analytics" [ref=f3e48] [cursor=pointer]:
+          - /url: /app/analytics
+        - link "Integrations" [ref=f3e52] [cursor=pointer]:
+          - /url: /app/integrations
+      - button "Ask Bolt" [ref=f3e57]
+    - generic [ref=f3e61]:
+      - banner [ref=f3e62]:
+        - generic [ref=f3e63]:
+          - button "Notifications" [ref=f3e65]
+          - link "New quote" [ref=f3e69] [cursor=pointer]:
+            - /url: /app/quotes/new
+          - button "AO" [ref=f3e73]
+      - main [ref=f3e78]:
+        - generic [ref=f3e79]:
+          - generic [ref=f3e81]:
+            - generic [ref=f3e82]: Friday, August 21
+            - heading "Good evening, Owner." [level=1] [ref=f3e83]
+            - paragraph [ref=f3e84]: 1 job scheduled
+          - generic [ref=f3e85]:
+            - generic [ref=f3e86]:
+              - generic [ref=f3e87]:
+                - generic [ref=f3e88]:
+                  - heading "Today's schedule" [level=2] [ref=f3e92]
+                  - generic [ref=f3e93]: "1"
+                - link "Calendar" [ref=f3e94] [cursor=pointer]:
+                  - /url: /app/calendar
+              - list [ref=f3e95]:
+                - listitem [ref=f3e96]:
+                  - link "5 PM 42 James Martinez Scheduled Thu 9am Scheduled" [ref=f3e97] [cursor=pointer]:
+                    - /url: /app/pipeline/6b23b065-24dc-40b7-9b52-ba4511cfc314
+                    - generic [ref=f3e98]:
+                      - generic [ref=f3e99]: 5 PM
+                      - generic [ref=f3e100]: "42"
+                    - generic [ref=f3e101]:
+                      - generic [ref=f3e102]: James Martinez
+                      - generic [ref=f3e103]: Scheduled Thu 9am
+                    - generic [ref=f3e104]: Scheduled
+            - generic [ref=f3e108]:
+              - generic [ref=f3e109]:
+                - generic [ref=f3e110]:
+                  - heading "Worth a follow-up" [level=2] [ref=f3e115]
+                  - generic [ref=f3e116]: "0"
+                - link "Pipeline" [ref=f3e117] [cursor=pointer]:
+                  - /url: /app/pipeline
+              - generic [ref=f3e118]:
+                - generic [ref=f3e122]: You're all caught up
+                - generic [ref=f3e123]: Quotes you sent over 48h ago that are still waiting will show up here.
+            - generic [ref=f3e124]:
+              - generic [ref=f3e125]:
+                - generic [ref=f3e126]:
+                  - heading "Overdue invoices" [level=2] [ref=f3e130]
+                  - generic [ref=f3e131]: "0"
+                - link "Pipeline" [ref=f3e132] [cursor=pointer]:
+                  - /url: /app/pipeline
+              - generic [ref=f3e133]:
+                - generic [ref=f3e137]: No overdue invoices
+                - generic [ref=f3e138]: Nice — customers are paying on time.
+          - generic [ref=f3e139]:
+            - generic [ref=f3e140]:
+              - heading "Recent activity" [level=2] [ref=f3e145]
+              - link "Pipeline" [ref=f3e146] [cursor=pointer]:
+                - /url: /app/pipeline
+            - list [ref=f3e150]:
+              - listitem [ref=f3e151]:
+                - link "J James Martinez Scheduled Scheduled Thu 9am $1,575 29m ago" [ref=f3e152] [cursor=pointer]:
+                  - /url: /app/pipeline/6b23b065-24dc-40b7-9b52-ba4511cfc314
+                  - generic [ref=f3e153]: J
+                  - generic [ref=f3e154]:
+                    - generic [ref=f3e155]:
+                      - generic [ref=f3e156]: James Martinez
+                      - generic [ref=f3e157]: Scheduled
+                    - generic [ref=f3e161]: Scheduled Thu 9am
+                  - generic [ref=f3e162]:
+                    - generic [ref=f3e163]: $1,575
+                    - generic [ref=f3e164]: 29m ago
+              - listitem [ref=f3e167]:
+                - link "R Rita Waters New Lead Work item $0 33m ago" [ref=f3e168] [cursor=pointer]:
+                  - /url: /app/pipeline/8e1ce4fb-76ba-4acf-8970-025ed174d3d9
+                  - generic [ref=f3e169]: R
+                  - generic [ref=f3e170]:
+                    - generic [ref=f3e171]:
+                      - generic [ref=f3e172]: Rita Waters
+                      - generic [ref=f3e173]: New Lead
+                    - generic [ref=f3e176]: Work item
+                  - generic [ref=f3e177]:
+                    - generic [ref=f3e178]: $0
+                    - generic [ref=f3e179]: 33m ago
+              - listitem [ref=f3e182]:
+                - link "P Patricia Thomas Completed Aeroseal complete $2,010 1h ago" [ref=f3e183] [cursor=pointer]:
+                  - /url: /app/pipeline/17a53936-df17-45f3-923b-b96a97ee5388
+                  - generic [ref=f3e184]: P
+                  - generic [ref=f3e185]:
+                    - generic [ref=f3e186]:
+                      - generic [ref=f3e187]: Patricia Thomas
+                      - generic [ref=f3e188]: Completed
+                    - generic [ref=f3e192]: Aeroseal complete
+                  - generic [ref=f3e193]:
+                    - generic [ref=f3e194]: $2,010
+                    - generic [ref=f3e195]: 1h ago
+              - listitem [ref=f3e198]:
+                - link "J John Smith New Lead Says it drips overnight, needs urgent look $0 13h ago" [ref=f3e199] [cursor=pointer]:
+                  - /url: /app/pipeline/8d8613b4-4630-464e-9d85-4202e9ed08ef
+                  - generic [ref=f3e200]: J
+                  - generic [ref=f3e201]:
+                    - generic [ref=f3e202]:
+                      - generic [ref=f3e203]: John Smith
+                      - generic [ref=f3e204]: New Lead
+                    - generic [ref=f3e207]: Says it drips overnight, needs urgent look
+                  - generic [ref=f3e208]:
+                    - generic [ref=f3e209]: $0
+                    - generic [ref=f3e210]: 13h ago
+              - listitem [ref=f3e213]:
+                - link "L Linda Anderson In Progress On-site today $3,259 16h ago" [ref=f3e214] [cursor=pointer]:
+                  - /url: /app/pipeline/590dbe47-9f14-4733-bc13-6f3688e14e80
+                  - generic [ref=f3e215]: L
+                  - generic [ref=f3e216]:
+                    - generic [ref=f3e217]:
+                      - generic [ref=f3e218]: Linda Anderson
+                      - generic [ref=f3e219]: In Progress
+                    - generic [ref=f3e222]: On-site today
+                  - generic [ref=f3e223]:
+                    - generic [ref=f3e224]: $3,259
+                    - generic [ref=f3e225]: 16h ago
+              - listitem [ref=f3e228]:
+                - link "J Jennifer Wilson Accepted Whole home cleaning w/ UV $1,575 2d ago" [ref=f3e229] [cursor=pointer]:
+                  - /url: /app/pipeline/1fd693fb-8278-4d89-a02f-0c8d762b9c99
+                  - generic [ref=f3e230]: J
+                  - generic [ref=f3e231]:
+                    - generic [ref=f3e232]:
+                      - generic [ref=f3e233]: Jennifer Wilson
+                      - generic [ref=f3e234]: Accepted
+                    - generic [ref=f3e238]: Whole home cleaning w/ UV
+                  - generic [ref=f3e239]:
+                    - generic [ref=f3e240]: $1,575
+                    - generic [ref=f3e241]: 2d ago
+          - generic [ref=f3e244]:
+            - generic [ref=f3e245]:
+              - heading "Last 30 days" [level=2] [ref=f3e246]
+              - link "Full analytics" [ref=f3e247] [cursor=pointer]:
+                - /url: /app/analytics
+            - generic [ref=f3e251]:
+              - generic [ref=f3e252]:
+                - generic [ref=f3e253]: Quotes sent
+                - generic [ref=f3e259]:
+                  - generic [ref=f3e260]: "7"
+                  - generic "vs. prior 30 days" [ref=f3e261]: +133%
+                - generic [ref=f3e268]: 7 accepted
+              - generic [ref=f3e269]:
+                - generic [ref=f3e270]: Acceptance rate
+                - generic [ref=f3e276]:
+                  - generic [ref=f3e277]: 100%
+                  - generic "vs. prior 30 days" [ref=f3e278]: +200%
+                - generic [ref=f3e285]: Sent → accepted
+              - generic [ref=f3e286]:
+                - generic [ref=f3e287]: Revenue
+                - generic [ref=f3e292]: $2,471
+                - generic [ref=f3e297]: Paid + jobs done
+              - generic [ref=f3e298]:
+                - generic [ref=f3e299]: Open pipeline
+                - generic [ref=f3e304]: $19,916
+                - generic [ref=f3e309]: Sent + won + in progress
+  - region "Notifications alt+T"
