@@ -32,7 +32,10 @@ export function buildCsp(nonce: string, isDev: boolean): string {
     'default-src': ["'self'"],
     'script-src': scriptSrc,
     'style-src': ["'self'", "'unsafe-inline'"],
-    'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+    // Signed storage URLs render as <img>: https: covers hosted projects, but
+    // local storage serves over http://127.0.0.1:54321 — same lesson as
+    // connect-src, which silently blocked local sign-in.
+    'img-src': ["'self'", 'data:', 'blob:', 'https:', ...(SUPABASE_ORIGIN ? [SUPABASE_ORIGIN] : [])],
     'font-src': ["'self'", 'data:'],
     'connect-src': [
       "'self'",
