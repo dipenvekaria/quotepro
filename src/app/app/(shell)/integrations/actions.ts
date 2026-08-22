@@ -32,10 +32,18 @@ export async function setPassCardFees(input: z.infer<typeof passCardFeesSchema>)
 
 
 const enableVoiceSchema = z.object({
+  // No number given → we buy a local one; a number means it already lives in
+  // the platform's Retell workspace (admin/manual path).
   phone_number: z
     .string()
     .trim()
-    .regex(/^\+1\d{10}$/, 'Use the full number with country code, like +14155550123.'),
+    .regex(/^\+1\d{10}$/, 'Use the full number with country code, like +14155550123.')
+    .optional(),
+  area_code: z
+    .string()
+    .trim()
+    .regex(/^\d{3}$/, 'Area code is three digits, like 512.')
+    .optional(),
 })
 
 /**
@@ -56,34 +64,66 @@ export async function enableVoice(input: z.infer<typeof enableVoiceSchema>) {
     return { ok: false as const, error: 'Only the owner can set up call answering.' }
   }
 
-  const { voiceConfigured, createCompanyAgent, bindNumber } = await import('@/lib/voice/retell')
+  const { voiceConfigured, createCompanyAgent, bindNumber, purchaseNumber } = await import('@/lib/voice/retell')
   if (!voiceConfigured()) {
     return { ok: false as const, error: 'Call answering is not configured on the platform yet.' }
   }
 
-  const [company] = await query<{ name: string; retell_agent_id: string | null }>(
-    `select name, retell_agent_id from companies where id = $1 limit 1`,
+  const [company] = await query<{ name: string; phone: string | null; email: string | null; retell_agent_id: string | null }>(
+    `select name, phone, email, retell_agent_id from companies where id = $1 limit 1`,
     [session.companyId],
   )
   if (!company) return { ok: false as const, error: 'Company not found' }
 
+  let number: string
   try {
-    const agentId = company.retell_agent_id ?? (await createCompanyAgent(company.name)).agent_id
-    await bindNumber(parsed.data.phone_number, agentId)
+    let agentId = company.retell_agent_id
+    if (!agentId) {
+      agentId = (await createCompanyAgent(company.name)).agent_id
+      // Persisted before the number step: a failure there must not strand the
+      // agent in Retell and mint a duplicate on every retry (it did).
+      await query(`update companies set retell_agent_id = $2 where id = $1`, [
+        session.companyId,
+        agentId,
+      ])
+    }
+
+    if (parsed.data.phone_number) {
+      await bindNumber(parsed.data.phone_number, agentId)
+      number = parsed.data.phone_number
+    } else {
+      // Their local presence: the requested area code, else the one their own
+      // business number carries.
+      const derived = parsed.data.area_code ?? company.phone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3)
+      const areaCode = derived && /^\d{3}$/.test(derived) ? Number(derived) : null
+      number = await purchaseNumber(areaCode, agentId, `${company.name} — Rivet answering`)
+    }
+
     await query(
-      `update companies
-          set voice_enabled = true, retell_agent_id = $2, voice_number = $3
-        where id = $1`,
-      [session.companyId, agentId, parsed.data.phone_number],
+      `update companies set voice_enabled = true, voice_number = $2 where id = $1`,
+      [session.companyId, number],
     )
   } catch (e) {
     console.error('enableVoice failed', e)
+    const detail = e instanceof Error ? e.message.slice(0, 200) : ''
     return {
       ok: false as const,
-      error: 'Retell rejected the setup — check the number is imported there, then try again.',
+      // The real rejection, not a guess — the fixed message sent the owner
+      // hunting an import problem that did not exist.
+      error: detail ? `Setup failed: ${detail}` : 'Setup failed — try again.',
     }
   }
 
+  // Best-effort: the number and how to connect it, in their inbox for the
+  // office and the truck. Failure here never rolls back a working setup.
+  try {
+    const { sendVoiceLiveEmail } = await import('@/lib/email/senders')
+    const to = session.email || company.email
+    if (to) await sendVoiceLiveEmail({ to, companyName: company.name, number })
+  } catch (e) {
+    console.error('voice live email failed', e)
+  }
+
   revalidatePath('/app/integrations')
-  return { ok: true as const }
+  return { ok: true as const, data: { number } }
 }

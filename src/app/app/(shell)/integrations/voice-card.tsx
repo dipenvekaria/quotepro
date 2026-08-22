@@ -2,31 +2,39 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, PhoneIncoming } from 'lucide-react'
+import { ChevronDown, Loader2, PhoneIncoming } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
 
 import { enableVoice } from './actions'
 
 /**
- * The call-answering card. Enabled state shows the live number; setup asks for
- * the one thing code cannot decide — which number — and does the rest.
+ * The call-answering card. One toggle-shaped action: turn it on and a local
+ * number is bought and bound behind the scenes — the contractor never learns
+ * what telephony is. The manual path (a number already in the platform's
+ * Retell workspace) folds away for admin use.
  */
 export function VoiceCard({
   configured,
   enabled,
   number,
+  companyPhone,
   canEdit,
 }: {
   configured: boolean
   enabled: boolean
   number: string | null
+  companyPhone: string | null
   canEdit: boolean
 }) {
   const router = useRouter()
+  const derivedArea = companyPhone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3) ?? ''
+  const [areaCode, setAreaCode] = useState(derivedArea.length === 3 ? derivedArea : '')
+  const [manualOpen, setManualOpen] = useState(false)
   const [phone, setPhone] = useState('')
   const [busy, start] = useTransition()
 
@@ -39,12 +47,32 @@ export function VoiceCard({
   }
 
   if (enabled && number) {
+    const pretty = number.replace(/^\+1(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3')
     return (
-      <div className="space-y-1 text-sm">
+      <div className="space-y-3 text-sm">
         <p>
-          Answering <span className="font-medium tabular">{number}</span>. Every finished call
+          Answering <span className="font-medium tabular">{pretty}</span>. Every finished call
           lands in the pipeline as a lead with the transcript attached.
         </p>
+        <div className="rounded-lg bg-muted/50 p-3">
+          <p className="font-medium">Connect your existing number</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Set your business phone to forward unanswered calls here, and the assistant picks up
+            whenever you can&apos;t.
+          </p>
+          <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
+            <li>
+              Verizon: dial <span className="font-medium tabular text-foreground">*71{number.replace('+1', '')}</span>
+            </li>
+            <li>
+              AT&amp;T / T-Mobile: dial <span className="font-medium tabular text-foreground">**004*{number}#</span>
+            </li>
+            <li>Landline or VoIP: turn on &ldquo;forward when unanswered&rdquo; in your phone system.</li>
+          </ul>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Or publish it directly as your business line — it answers every call either way.
+          </p>
+        </div>
         <p className="text-xs text-muted-foreground">
           Included minutes: 100 a month on Solo, 300 on Team.
         </p>
@@ -58,12 +86,16 @@ export function VoiceCard({
 
   function submit() {
     start(async () => {
-      const res = await enableVoice({ phone_number: phone.trim() })
+      const res = await enableVoice(
+        manualOpen && phone.trim() ? { phone_number: phone.trim() } : { area_code: areaCode || undefined },
+      )
       if (!res.ok) {
         toast.error(res.error)
         return
       }
-      toast.success('Call answering is on')
+      toast.success('Call answering is on', {
+        description: `Your number: ${res.data.number}. Setup instructions are in your inbox.`,
+      })
       router.refresh()
     })
   }
@@ -71,27 +103,54 @@ export function VoiceCard({
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
-        An assistant answers when you can&apos;t, collects the caller&apos;s name, address and
-        what they need, and files it as a lead — transcript included. It never quotes prices.
+        An assistant answers when you can&apos;t — after hours or mid-job — collects the
+        caller&apos;s name, address and what they need, and files it as a lead with the
+        transcript. It never quotes prices. Turning it on assigns your company a local number.
       </p>
-      <div className="space-y-1.5">
-        <Label htmlFor="voice-number">Phone number</Label>
-        <Input
-          id="voice-number"
-          type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          placeholder="+14155550123"
-          className="h-11 max-w-xs tabular"
-        />
-        <p className="text-xs text-muted-foreground">
-          The number must already be imported into Retell. Setup connects it to your company.
-        </p>
+      <div className="flex flex-wrap items-end gap-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="voice-area">Area code</Label>
+          <Input
+            id="voice-area"
+            inputMode="numeric"
+            maxLength={3}
+            value={areaCode}
+            onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, ''))}
+            placeholder="512"
+            className="h-11 w-24 tabular"
+          />
+        </div>
+        <Button onClick={submit} disabled={busy} className="h-11 gap-1.5">
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneIncoming className="h-4 w-4" />}
+          Turn on call answering
+        </Button>
       </div>
-      <Button onClick={submit} disabled={busy || !phone.trim()} className="h-11 gap-1.5 lg:h-9">
-        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <PhoneIncoming className="h-4 w-4" />}
-        Turn on call answering
-      </Button>
+      <button
+        type="button"
+        onClick={() => setManualOpen((v) => !v)}
+        aria-expanded={manualOpen}
+        className="flex min-h-11 items-center gap-1 text-xs text-muted-foreground hover:text-foreground lg:min-h-0"
+      >
+        <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', manualOpen && 'rotate-180')} />
+        Already have a number in Retell?
+      </button>
+      {manualOpen && (
+        <div className="space-y-1.5">
+          <Label htmlFor="voice-number">Number to use</Label>
+          <Input
+            id="voice-number"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+14155550123"
+            className="h-11 max-w-xs tabular"
+          />
+          <p className="text-xs text-muted-foreground">
+            Must already exist in the platform&apos;s Retell workspace. Leaving this blank buys a
+            fresh local number instead.
+          </p>
+        </div>
+      )}
     </div>
   )
 }

@@ -457,3 +457,50 @@ export async function sendSupportMessage(input: {
     return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
   }
 }
+
+/**
+ * The call-answering confirmation: the assigned number and how to point the
+ * business line at it. Sent once, when the owner turns the service on — the
+ * setup instructions live in the inbox where the office can find them.
+ */
+export async function sendVoiceLiveEmail(input: {
+  to: string
+  companyName: string
+  number: string
+}): Promise<SendResult> {
+  const resend = getResend()
+  if (!resend) return { ok: true, skipped: true, reason: 'RESEND_API_KEY not set' }
+
+  const pretty = input.number.replace(/^\+1(\d{3})(\d{3})(\d{4})$/, '($1) $2-$3')
+  try {
+    const { data, error } = await resend.emails.send({
+      from: getFromAddress(),
+      to: input.to,
+      subject: `Your call answering number: ${pretty}`,
+      html: `
+        <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:0 auto;padding:24px">
+          <h1 style="font-size:20px;margin:0 0 12px">Call answering is on</h1>
+          <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 16px">
+            ${escapeHtml(input.companyName)} now has a dedicated answering line:
+          </p>
+          <p style="font-size:24px;font-weight:600;margin:0 0 20px">${escapeHtml(pretty)}</p>
+          <p style="font-size:15px;line-height:1.6;color:#444;margin:0 0 8px">
+            <strong>Connect your existing number</strong> so missed calls roll to it:
+          </p>
+          <ul style="font-size:14px;line-height:1.8;color:#444;margin:0 0 16px;padding-left:20px">
+            <li>Verizon: dial <strong>*71${escapeHtml(input.number.replace('+1', ''))}</strong> from your business phone</li>
+            <li>AT&amp;T / T-Mobile: dial <strong>**004*${escapeHtml(input.number)}#</strong></li>
+            <li>Landline or VoIP: turn on &ldquo;forward when unanswered&rdquo; in your phone system, pointed at the number above</li>
+          </ul>
+          <p style="font-size:14px;line-height:1.6;color:#666;margin:0">
+            Or publish it directly as your business line. Either way, every answered
+            call lands in your pipeline as a lead with the full transcript.
+          </p>
+        </div>`,
+    })
+    if (error) return { ok: false, error: error.message }
+    return { ok: true, id: data?.id ?? '' }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : 'Send failed' }
+  }
+}
