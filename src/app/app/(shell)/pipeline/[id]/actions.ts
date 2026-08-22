@@ -538,6 +538,41 @@ export async function generateCustomerSummary(input: unknown) {
   return { ok: true as const, data: { summary } }
 }
 
+const summaryEditSchema = z.object({
+  work_item_id: z.string().uuid(),
+  summary: z.string().trim().max(2000, 'Keep it under 2,000 characters.'),
+})
+
+/**
+ * Manual edit of the customer explanation — the pen next to the AI's text.
+ * The model writes the first draft; the contractor gets the final word.
+ */
+export async function setCustomerSummary(input: unknown) {
+  const parsed = summaryEditSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: parsed.error.issues[0]?.message ?? 'Invalid input' }
+  }
+
+  const session = await getSession()
+  if (!session) return { ok: false as const, error: 'Not authenticated' }
+  const readOnly = await readOnlyGuard(session.companyId)
+  if (readOnly) return readOnly
+  const { companyId } = session
+
+  // Empty after trim clears the explanation rather than storing "".
+  const summary = parsed.data.summary || null
+  const rows = await query<{ id: string }>(
+    `update work_items set customer_summary = $1
+      where id = $2 and company_id = $3
+      returning id`,
+    [summary, parsed.data.work_item_id, companyId],
+  )
+  if (rows.length === 0) return { ok: false as const, error: 'Quote not found' }
+
+  revalidatePath(`/app/pipeline/${parsed.data.work_item_id}`)
+  return { ok: true as const, data: { summary } }
+}
+
 // ---------------------------------------------------------------------------
 // Scheduling context
 //

@@ -202,6 +202,12 @@ export function QuoteEditor({
     // AI prompt box; without this it never reaches `description`, which then
     // saved as the literal "Quote" and fed the AI a non-job on the next pass.
     if (!description.trim()) setDescription(prompt)
+    // Chat behaviour: the ask goes up into the trail the moment Send is hit
+    // and the box clears. Leaving the text sitting editable while the model
+    // worked read as "did that even send?" — the bubble is the receipt. On a
+    // failure the bubble stays and tapping it puts the text back in the box.
+    setThread((t) => [...t, { role: 'user', text: prompt }])
+    setAiPrompt('')
     startAi(async () => {
       /*
         Two different operations, and the distinction is the whole point.
@@ -234,7 +240,6 @@ export function QuoteEditor({
       if (!editableId && items.length > 0 && !customerName.trim()) {
         setThread((t) => [
           ...t,
-          { role: 'user', text: prompt },
           {
             role: 'assistant',
             text: 'Add the customer’s name first — I need it to save this quote before I can keep editing it. Your lines are safe.',
@@ -300,7 +305,6 @@ export function QuoteEditor({
         // in the trail under the ask — not in a toast that vanishes.
         setThread((t) => [
           ...t,
-          { role: 'user', text: prompt },
           {
             role: 'assistant',
             // An empty reply must not become a claim. Say what ran; zero tool
@@ -312,7 +316,6 @@ export function QuoteEditor({
                 : 'I didn’t make any changes — try telling me the line and the change you want.'),
           },
         ])
-        setAiPrompt('')
         return
       }
 
@@ -348,7 +351,6 @@ export function QuoteEditor({
       if (typeof data.tax_rate === 'number') setTaxRate(data.tax_rate)
       setThread((t) => [
         ...t,
-        { role: 'user', text: prompt },
         {
           role: 'assistant',
           text:
@@ -360,7 +362,6 @@ export function QuoteEditor({
                 : data.reasoning,
         },
       ])
-      setAiPrompt('')
       if (data.line_items.length > 0) toast.success(`Drafted ${data.line_items.length} items`)
     })
   }
@@ -944,13 +945,14 @@ function AiPanel({
             autoFocus
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
+            disabled={generating}
             placeholder={
               hasThread || isEditing
                 ? 'Ask for the next change…'
                 : suggestedPrompt || "Describe the job in plain English — we'll build the quote."
             }
             rows={hasThread ? 2 : 5}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
           />
           {!hasThread && !prompt.trim() && suggestedPrompt && (
             <button
