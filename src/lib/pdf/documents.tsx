@@ -224,6 +224,8 @@ export type QuotePdfProps = {
   publicUrl?: string
   /** The company's own fine print; rendered verbatim after the totals. */
   terms?: string | null
+  /** The platform's who-is-party line; rendered apart from the terms. */
+  platformNotice?: string | null
   businessTaxId?: string | null
   /** Present once accepted — the signature block the customer signed. */
   signedBy?: string | null
@@ -355,6 +357,12 @@ function QuotePdf(props: QuotePdfProps): React.ReactElement {
               {props.terms}
             </Text>
           </View>
+        ) : null}
+
+        {props.platformNotice ? (
+          <Text style={{ fontSize: 7.5, lineHeight: 1.5, color: colors.sub, marginTop: 10 }}>
+            {props.platformNotice}
+          </Text>
         ) : null}
 
         {props.signedBy ? (

@@ -1,3 +1,4 @@
+import { platformNotice } from '@/lib/platform-notice'
 import { notFound } from 'next/navigation'
 
 import { renderQuotePdf } from '@/lib/pdf/documents'
@@ -53,6 +54,7 @@ export async function GET(
     },
     publicUrl: `${env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')}/q/${token}`,
     terms: (quote.companies as unknown as { settings?: { quote_terms?: string | null } }).settings?.quote_terms ?? null,
+    platformNotice: platformNotice((quote.companies as unknown as { name?: string })?.name ?? 'This business'),
     businessTaxId: (quote.companies as unknown as { settings?: { business_tax_id?: string | null } }).settings?.business_tax_id ?? null,
     signedBy: (quote.metadata as { signed_by?: string } | null)?.signed_by ?? null,
     signedAt: quote.accepted_at ? new Date(quote.accepted_at) : null,

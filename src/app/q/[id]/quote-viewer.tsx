@@ -1,5 +1,6 @@
 'use client'
 
+import { platformNotice } from '@/lib/platform-notice'
 import { useState, useTransition } from 'react'
 import {
   Building2,
@@ -558,6 +559,12 @@ export function QuoteViewer({
             </p>
           </section>
         )}
+
+        {/* The platform's line — separate from the contractor's terms on
+            purpose: their words above stay theirs; this one is ours. */}
+        <p className="mt-4 px-1 text-[11px] leading-relaxed text-muted-foreground">
+          {platformNotice(quote.companies?.name ?? 'This business')}
+        </p>
 
         {/* Trust footer */}
         <footer className={cn('mt-8 border-t border-border/70 pt-6', canAct && 'pb-24 sm:pb-0')}>

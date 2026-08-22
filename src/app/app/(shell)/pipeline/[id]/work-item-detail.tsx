@@ -16,6 +16,7 @@ import {
   ExternalLink,
   Loader2,
   Mail,
+  Camera,
   MapPin,
   Pencil,
   Phone,
@@ -51,6 +52,7 @@ import { generateQuoteItems } from '@/app/app/(shell)/quotes/new/actions'
 
 import type { QuotePhoto } from './photo-actions'
 import { QuotePhotos } from './quote-photos'
+import { uploadQuotePhoto } from './photo-actions'
 import {
   changeStatus,
   generateCustomerSummary,
@@ -247,6 +249,37 @@ export function WorkItemDetail({
 
   const [explaining, startExplain] = useTransition()
   const [editingSummary, setEditingSummary] = useState(false)
+  const [editingItems, setEditingItems] = useState(false)
+  const jobPhotoRef = useRef<HTMLInputElement | null>(null)
+  const [jobPhotosBusy, startJobPhotos] = useTransition()
+  const [completePhotosAdded, setCompletePhotosAdded] = useState(0)
+  function openJobPhotos() {
+    jobPhotoRef.current?.click()
+  }
+  function onJobPhotoFiles(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = [...(e.target.files ?? [])]
+    e.target.value = ''
+    if (files.length === 0) return
+    startJobPhotos(async () => {
+      let added = 0
+      for (const file of files) {
+        const fd = new FormData()
+        fd.append('work_item_id', workItem.id)
+        fd.append('file', file)
+        const res = await uploadQuotePhoto(fd)
+        if (res.ok) added++
+        else {
+          toast.error(res.error)
+          break
+        }
+      }
+      if (added > 0) {
+        setCompletePhotosAdded((n) => n + added)
+        toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
+        router.refresh()
+      }
+    })
+  }
   const [summaryDraft, setSummaryDraft] = useState('')
   const [savingSummary, startSummarySave] = useTransition()
   function saveSummaryEdit() {
@@ -469,6 +502,7 @@ export function WorkItemDetail({
         return
       }
       toast.success('Line items saved')
+      setEditingItems(false)
       router.refresh()
     })
   }
@@ -613,7 +647,7 @@ export function WorkItemDetail({
         <BackLink href="/app/pipeline">Pipeline</BackLink>
         <ChevronRight className="h-3 w-3" />
         <span className="text-foreground">
-          {workItem.quote_number ?? workItem.job_name ?? shortId(workItem.id)}
+          {workItem.quote_number ?? workItem.job_name ?? workItem.customers?.name ?? shortId(workItem.id)}
         </span>
       </div>
 
@@ -705,6 +739,16 @@ export function WorkItemDetail({
                   Copy payment link
                 </Button>
               )}
+              {(workItem.status === 'job_in_progress' || workItem.status === 'job_completed') && (
+                <Button onClick={openJobPhotos} disabled={jobPhotosBusy} variant="outline" className="gap-1.5">
+                  {jobPhotosBusy ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Camera className="h-3.5 w-3.5" />
+                  )}
+                  Add photos
+                </Button>
+              )}
               {workItem.status === 'job_completed' && (
                 <Button
                   onClick={doRequestReview}
@@ -781,48 +825,37 @@ export function WorkItemDetail({
               standing next to the customer looking at this screen. No invoice
               yet → send it; sent but unpaid → the payment link is front and
               centre. */}
+          {/* Once an invoice exists this card carries real state — amount
+              outstanding, the invoice number, the payment actions. Before one
+              exists it was a third Send-invoice button on one screen. */}
           {workItem.status === 'job_completed' &&
             total > 0 &&
-            (!invoice || invoice.status !== 'paid') && (
+            invoice &&
+            invoice.status !== 'paid' && (
               <section className="rounded-xl border border-primary/40 bg-primary/5 shadow-sm">
                 <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <h2 className="text-base font-semibold">
-                      {invoice
-                        ? `${fmtMoney(invoiceAmountDue)} outstanding`
-                        : 'Job complete — send the invoice'}
+                      {fmtMoney(invoiceAmountDue)} outstanding
                     </h2>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      {invoice
-                        ? `Invoice ${invoice.invoice_number} is with ${workItem.customers?.name ?? 'your customer'}. Share the payment link, or record a payment taken another way.`
-                        : 'The customer can pay online from the invoice in a tap.'}
+                      Invoice {invoice.invoice_number} is with{' '}
+                      {workItem.customers?.name ?? 'your customer'}. Share the payment link, or
+                      record a payment taken another way.
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
-                    {!invoice ? (
-                      <Button onClick={doSendInvoice} disabled={invoiceSending} className="h-11 gap-1.5">
-                        {invoiceSending ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Send className="h-4 w-4" />
-                        )}
-                        Send invoice
-                      </Button>
-                    ) : (
-                      <>
-                        <Button onClick={copyPayLink} className="h-11 gap-1.5">
-                          <Copy className="h-4 w-4" />
-                          Copy payment link
-                        </Button>
-                        <Button
-                          onClick={() => setPayOpen(true)}
-                          variant="outline"
-                          className="h-11 gap-1.5"
-                        >
-                          Record payment
-                        </Button>
-                      </>
-                    )}
+                    <Button onClick={copyPayLink} className="h-11 gap-1.5">
+                      <Copy className="h-4 w-4" />
+                      Copy payment link
+                    </Button>
+                    <Button
+                      onClick={() => setPayOpen(true)}
+                      variant="outline"
+                      className="h-11 gap-1.5"
+                    >
+                      Record payment
+                    </Button>
                   </div>
                 </div>
               </section>
@@ -1078,73 +1111,54 @@ export function WorkItemDetail({
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
-                {workItem.status === 'job_completed' && !invoice && total > 0 && (
-                <Button onClick={doSendInvoice} disabled={invoiceSending} className="gap-1.5 shadow-sm">
-                  {invoiceSending ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Send className="h-3.5 w-3.5" />
-                  )}
-                  Send invoice
-                </Button>
-              )}
-              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
-                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
-                  <Copy className="h-3.5 w-3.5" />
-                  Copy payment link
-                </Button>
-              )}
-              {workItem.status === 'job_completed' && (
-                <Button
-                  onClick={doRequestReview}
-                  disabled={askingReview || reviewAsked}
-                  variant={invoice && invoiceAmountDue === 0 ? 'default' : 'outline'}
-                  className="gap-1.5"
-                >
-                  {askingReview ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Star className="h-3.5 w-3.5" />
-                  )}
-                  {reviewAsked ? 'Review requested' : 'Request review'}
-                </Button>
-              )}
-              {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
+                {(workItem.status === 'quote_sent' || workItem.status === 'quote_viewed') && (
                   <span className="text-[11px] text-muted-foreground">
                     Live — saved changes update the customer link instantly
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-1">
+              {editingItems ? (
+                <div className="flex flex-wrap items-center gap-2 sm:gap-1">
+                  <button
+                    onClick={() => draftWithAi()}
+                    disabled={drafting}
+                    className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted disabled:opacity-50 lg:min-h-0 lg:py-1"
+                  >
+                    {drafting ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3 w-3 text-primary" />
+                    )}
+                    Smart draft
+                  </button>
+                  <button
+                    onClick={addItem}
+                    className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted lg:min-h-0 lg:py-1"
+                  >
+                    <Plus className="h-3 w-3" />
+                    Add row
+                  </button>
+                  <Button
+                    onClick={saveItems}
+                    disabled={savingItems}
+                    size="sm"
+                    className="h-11 gap-1 lg:h-7"
+                  >
+                    {savingItems ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
+                    Save items
+                  </Button>
+                </div>
+              ) : (
                 <button
-                  onClick={() => draftWithAi()}
-                  disabled={drafting}
-                  className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted disabled:opacity-50 lg:min-h-0 lg:py-1"
+                  type="button"
+                  aria-label="Edit line items"
+                  title="Edit line items"
+                  onClick={() => setEditingItems(true)}
+                  className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
                 >
-                  {drafting ? (
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                  ) : (
-                    <Sparkles className="h-3 w-3 text-primary" />
-                  )}
-                  Smart draft
+                  <Pencil className="h-3.5 w-3.5" />
                 </button>
-                <button
-                  onClick={addItem}
-                  className="inline-flex min-h-11 items-center gap-1 rounded-md border border-border bg-background px-2.5 text-xs font-medium hover:bg-muted lg:min-h-0 lg:py-1"
-                >
-                  <Plus className="h-3 w-3" />
-                  Add row
-                </button>
-                <Button
-                  onClick={saveItems}
-                  disabled={savingItems}
-                  size="sm"
-                  className="h-11 gap-1 lg:h-7"
-                >
-                  {savingItems ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
-                  Save items
-                </Button>
-              </div>
+              )}
             </header>
             <DraftQuestions
               questions={draftQuestions}
@@ -1168,6 +1182,34 @@ export function WorkItemDetail({
                 </p>
               </div>
             ) : (
+              !editingItems ? (
+              <div className="divide-y divide-border/70">
+                {/* Saved rows read as a receipt — quiet, dense, no chrome.
+                    The pen opens the working surface; this is what saves the
+                    screen on a phone. */}
+                {items.map((it, idx) => (
+                  <div key={idx} className="flex items-baseline justify-between gap-3 px-5 py-2.5">
+                    <div className="min-w-0">
+                      <div className={cn('truncate text-sm font-medium', it.is_discount && 'text-emerald-600')}>
+                        {it.name || 'Untitled item'}
+                      </div>
+                      {(it.description || it.quantity !== 1) && (
+                        <div className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                          {it.quantity !== 1 && (
+                            <span className="tabular">{it.quantity} × {fmtMoney(it.unit_price)}</span>
+                          )}
+                          {it.quantity !== 1 && it.description ? ' · ' : ''}
+                          {it.description}
+                        </div>
+                      )}
+                    </div>
+                    <div className={cn('shrink-0 text-sm font-semibold tabular', it.is_discount && 'text-emerald-600')}>
+                      {fmtMoney(it.quantity * it.unit_price)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              ) : (
               <div className="divide-y divide-border/70">
                 {items.map((it, idx) => (
                   <div key={idx} className="group flex flex-wrap items-center gap-x-3 gap-y-2 px-5 py-3 lg:grid lg:grid-cols-[1fr_auto_auto_auto_auto] lg:flex-nowrap">
@@ -1214,6 +1256,7 @@ export function WorkItemDetail({
                   </div>
                 ))}
               </div>
+              )
             )}
           </section>
 
@@ -1682,16 +1725,44 @@ export function WorkItemDetail({
         </DialogContent>
       </Dialog>
 
+      {/* One camera input serves the header buttons and the completion
+          dialog. capture=environment opens the back camera on phones. */}
+      <input
+        ref={jobPhotoRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        multiple
+        className="hidden"
+        onChange={onJobPhotoFiles}
+      />
+
       {/* Job complete → the money step, offered right there. */}
       <Dialog open={completeOpen} onOpenChange={setCompleteOpen}>
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Job complete</DialogTitle>
             <DialogDescription>
-              Send {workItem.customers?.name ?? 'the customer'} the invoice for {fmtMoney(total)}?
-              It goes out with the payment link.
+              Add photos of the finished work, then send{' '}
+              {workItem.customers?.name ?? 'the customer'} the invoice for {fmtMoney(total)} — it
+              goes out with the payment link.
             </DialogDescription>
           </DialogHeader>
+          <Button
+            variant="outline"
+            onClick={openJobPhotos}
+            disabled={jobPhotosBusy}
+            className="h-11 w-full gap-1.5"
+          >
+            {jobPhotosBusy ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Camera className="h-4 w-4" />
+            )}
+            {completePhotosAdded > 0
+              ? `${completePhotosAdded} photo${completePhotosAdded === 1 ? '' : 's'} added — add more`
+              : 'Take photos'}
+          </Button>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCompleteOpen(false)} className="h-11 lg:h-9">
               Later
