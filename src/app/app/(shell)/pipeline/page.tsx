@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/shared/status-badge'
 import { requireSession } from '@/lib/auth/session'
 import { canAssignWork, workItemScope } from '@/lib/auth/scope'
 
+import { NewLeadDialog } from './new-lead-dialog'
 import { PipelineFilter } from './pipeline-filter'
 import type { UserRole } from '@/lib/permissions'
 import { query } from '@/lib/db'
@@ -139,6 +140,8 @@ export default async function PipelinePage({
             {total} active {total === 1 ? 'item' : 'items'} across all stages.
           </p>
         </div>
+        <div className="flex items-center gap-2">
+        <NewLeadDialog />
         <PipelineFilter
           members={team.map((m) => ({
             id: m.id,
@@ -149,6 +152,7 @@ export default async function PipelinePage({
           assignee={assignee}
           initialTerm={term}
         />
+        </div>
       </div>
 
       {/* One thumb-tap to any stage. On a phone the stages stack vertically,
@@ -246,12 +250,19 @@ export default async function PipelinePage({
                       updatedAt={item.updated_at}
                     />
                   ))}
-                  <Link
-                    href="/app/quotes/new"
-                    className="flex min-h-11 items-center justify-center gap-1 rounded-lg border border-dashed border-border/80 py-2 text-xs text-muted-foreground hover:border-primary/60 hover:text-primary lg:min-h-0"
-                  >
-                    <Plus className="h-3 w-3" /> Add
-                  </Link>
+                  {col.key === 'leads' ? (
+                    // The Leads column's Add captures a lead — it used to open
+                    // the quote editor, so everything skipped straight to
+                    // Quotes and this column read as permanently empty.
+                    <NewLeadDialog trigger="column" />
+                  ) : (
+                    <Link
+                      href="/app/quotes/new"
+                      className="flex min-h-11 items-center justify-center gap-1 rounded-lg border border-dashed border-border/80 py-2 text-xs text-muted-foreground hover:border-primary/60 hover:text-primary lg:min-h-0"
+                    >
+                      <Plus className="h-3 w-3" /> Add
+                    </Link>
+                  )}
                 </div>
               </div>
             )

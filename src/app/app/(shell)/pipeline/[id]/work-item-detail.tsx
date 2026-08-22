@@ -237,6 +237,8 @@ export function WorkItemDetail({
   const [savingMeta, startMetaSave] = useTransition()
   const [payOpen, setPayOpen] = useState(false)
   const [invoiceSending, startInvoiceSend] = useTransition()
+  const [completeOpen, setCompleteOpen] = useState(false)
+  const [editingDetails, setEditingDetails] = useState(false)
   const [transitioning, startTransition_] = useTransition()
 
   const [explaining, startExplain] = useTransition()
@@ -458,6 +460,7 @@ export function WorkItemDetail({
         return
       }
       toast.success('Saved')
+      setEditingDetails(false)
       router.refresh()
     })
   }
@@ -482,6 +485,9 @@ export function WorkItemDetail({
       } else {
         toast.success(`Moved to ${to.replaceAll('_', ' ')}`)
       }
+      // The owner ask: completing a job should offer the invoice right there,
+      // not leave the next step to be discovered further down the page.
+      if (to === 'job_completed' && total > 0 && !invoice) setCompleteOpen(true)
       router.refresh()
     })
   }
@@ -659,11 +665,27 @@ export function WorkItemDetail({
             </Button>
           ) : (
             <>
+              {workItem.status === 'job_completed' && !invoice && total > 0 && (
+                <Button onClick={doSendInvoice} disabled={invoiceSending} className="gap-1.5 shadow-sm">
+                  {invoiceSending ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Send className="h-3.5 w-3.5" />
+                  )}
+                  Send invoice
+                </Button>
+              )}
+              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
+                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
+                  <Copy className="h-3.5 w-3.5" />
+                  Copy payment link
+                </Button>
+              )}
               {workItem.status === 'job_completed' && (
                 <Button
                   onClick={doRequestReview}
                   disabled={askingReview || reviewAsked}
-                  variant="outline"
+                  variant={invoice && invoiceAmountDue === 0 ? 'default' : 'outline'}
                   className="gap-1.5"
                 >
                   {askingReview ? (
@@ -786,29 +808,58 @@ export function WorkItemDetail({
           <section className="rounded-xl border border-border/70 bg-card shadow-sm">
             <header className="flex items-center justify-between border-b border-border/70 px-5 py-3.5">
               <h2 className="text-sm font-semibold">Details</h2>
-              <Button
-                onClick={saveMeta}
-                disabled={savingMeta}
-                size="sm"
-                variant="outline"
-                className="h-11 gap-1 lg:h-7"
-              >
-                {savingMeta ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
-                Save
-              </Button>
+              {editingDetails ? (
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    onClick={() => setEditingDetails(false)}
+                    disabled={savingMeta}
+                    size="sm"
+                    variant="ghost"
+                    className="h-11 lg:h-7"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={saveMeta}
+                    disabled={savingMeta}
+                    size="sm"
+                    variant="outline"
+                    className="h-11 gap-1 lg:h-7"
+                  >
+                    {savingMeta ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
+                    Save
+                  </Button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  aria-label="Edit details"
+                  title="Edit details"
+                  onClick={() => setEditingDetails(true)}
+                  className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              )}
             </header>
             <div className="space-y-4 p-5">
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
                   Job description
                 </label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  placeholder="What's the job?"
-                />
+                {editingDetails ? (
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={3}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    placeholder="What's the job?"
+                  />
+                ) : description.trim() ? (
+                  <p className="whitespace-pre-line text-sm leading-relaxed">{description}</p>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Nothing yet — tap the pen to add one.</p>
+                )}
               </div>
               {workItem.notes && (
                 <div>
@@ -887,6 +938,7 @@ export function WorkItemDetail({
                   <RefreshCw className="mr-1 inline h-3 w-3" />
                   Repeats
                 </label>
+                {editingDetails ? (
                 <div className="flex flex-wrap items-center gap-3">
                   <select
                     value={recur?.cadence ?? 'none'}
@@ -959,6 +1011,22 @@ export function WorkItemDetail({
                     </label>
                   )}
                 </div>
+                ) : (
+                  <p className="text-sm">
+                    {!recur
+                      ? 'Does not repeat'
+                      : recur.cadence === 'weekly'
+                        ? 'Every week'
+                        : recur.cadence === 'biweekly'
+                          ? 'Every 2 weeks'
+                          : recur.cadence === 'monthly'
+                            ? 'Every month'
+                            : `Every ${recur.every ?? 4} ${recur.unit ?? 'week'}${(recur.every ?? 4) === 1 ? '' : 's'}`}
+                    {recur?.auto_invoice && (
+                      <span className="text-muted-foreground"> · invoice emails automatically</span>
+                    )}
+                  </p>
+                )}
                 {workItem.recurrence?.next_at && (
                   <p className="mt-1.5 text-[11px] text-muted-foreground">
                     Next visit:{' '}
@@ -986,11 +1054,27 @@ export function WorkItemDetail({
                 <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
                   {items.length}
                 </span>
-                {workItem.status === 'job_completed' && (
+                {workItem.status === 'job_completed' && !invoice && total > 0 && (
+                <Button onClick={doSendInvoice} disabled={invoiceSending} className="gap-1.5 shadow-sm">
+                  {invoiceSending ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Send className="h-3.5 w-3.5" />
+                  )}
+                  Send invoice
+                </Button>
+              )}
+              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
+                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
+                  <Copy className="h-3.5 w-3.5" />
+                  Copy payment link
+                </Button>
+              )}
+              {workItem.status === 'job_completed' && (
                 <Button
                   onClick={doRequestReview}
                   disabled={askingReview || reviewAsked}
-                  variant="outline"
+                  variant={invoice && invoiceAmountDue === 0 ? 'default' : 'outline'}
                   className="gap-1.5"
                 >
                   {askingReview ? (
@@ -1475,6 +1559,7 @@ export function WorkItemDetail({
           {/* Invoice card */}
           {invoice && (
             <InvoiceCard
+              publicUrl={invoiceUrl}
               invoice={invoice}
               payments={payments}
               onRecordPayment={() => setPayOpen(true)}
@@ -1530,6 +1615,35 @@ export function WorkItemDetail({
             <Button onClick={bookEstimate} disabled={!estimateAt || bookingEstimate} className="gap-1.5">
               {bookingEstimate ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarIcon className="h-4 w-4" />}
               Book visit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Job complete → the money step, offered right there. */}
+      <Dialog open={completeOpen} onOpenChange={setCompleteOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Job complete</DialogTitle>
+            <DialogDescription>
+              Send {workItem.customers?.name ?? 'the customer'} the invoice for {fmtMoney(total)}?
+              It goes out with the payment link.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setCompleteOpen(false)} className="h-11 lg:h-9">
+              Later
+            </Button>
+            <Button
+              onClick={() => {
+                setCompleteOpen(false)
+                doSendInvoice()
+              }}
+              disabled={invoiceSending}
+              className="h-11 gap-1.5 lg:h-9"
+            >
+              {invoiceSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              Send invoice
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1738,12 +1852,16 @@ function InvoiceCard({
   invoice,
   payments,
   onRecordPayment,
+  publicUrl,
 }: {
   invoice: Invoice
   payments: Payment[]
   onRecordPayment: () => void
+  /** Computed by the parent behind the isClient snapshot — reading
+      window.origin during render here was a hydration mismatch that
+      regenerated the whole detail tree and ate the first click. */
+  publicUrl: string
 }) {
-  const publicUrl = typeof window === 'undefined' ? '' : `${window.location.origin}/i/${invoice.public_token}`
   const amountDue = Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
   const paid = invoice.status === 'paid'
 
