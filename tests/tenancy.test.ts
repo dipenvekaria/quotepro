@@ -105,6 +105,31 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'Allow-list management; guarded by requirePlatformAdmin().',
   },
   {
+    file: 'src/app/admin/actions.ts',
+    match: 'from companies where id = $1',
+    reason: 'Company management for /admin, behind requirePlatformAdmin(); cross-tenant by design.',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'update companies set trial_ends_at',
+    reason: 'Trial extension from /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'update companies set complimentary',
+    reason: 'Comp toggle from /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/app/admin/actions.ts',
+    match: 'update companies set admin_notes',
+    reason: 'Admin notes from /admin, behind requirePlatformAdmin().',
+  },
+  {
+    file: 'src/lib/admin/queries.ts',
+    match: 'from admin_audit',
+    reason: 'Per-company admin history for /admin, behind requirePlatformAdmin().',
+  },
+  {
     file: 'src/app/app/(shell)/integrations/actions.ts',
     match: 'update companies',
     reason: 'Keys off companies.id — the tenant key — from getSession().',

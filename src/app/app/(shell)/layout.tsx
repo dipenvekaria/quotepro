@@ -11,13 +11,16 @@ export default async function ShellLayout({ children }: { children: React.ReactN
     name: string
     logo_url: string | null
     subscription_status: string | null
-  }>(`select id, name, logo_url, subscription_status from companies where id = $1 limit 1`, [
+    complimentary: boolean
+  }>(`select id, name, logo_url, subscription_status, complimentary from companies where id = $1 limit 1`, [
     companyId,
   ])
   const company = companyRows[0] ?? null
-  const readOnly = ['canceled', 'past_due', 'unpaid', 'incomplete_expired'].includes(
-    company?.subscription_status ?? '',
-  )
+  const readOnly =
+    !company?.complimentary &&
+    ['canceled', 'past_due', 'unpaid', 'incomplete_expired'].includes(
+      company?.subscription_status ?? '',
+    )
 
   const [unreadRow] = await query<{ n: number }>(
     `select count(*)::int as n from notifications
