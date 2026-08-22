@@ -73,3 +73,8 @@ enable_confirmations = false
 
 [edge_runtime]
 enabled = false
+
+# Analytics is dead weight locally and its health check flakes on macOS,
+# taking storage down with it when it fails. Off on purpose.
+[analytics]
+enabled = false
