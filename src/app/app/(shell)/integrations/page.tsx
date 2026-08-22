@@ -4,10 +4,7 @@ import {
   CreditCard,
   PhoneIncoming,
   FileText,
-  MessageSquare,
-  PhoneCall,
   Wallet,
-  Zap,
   Sparkles,
 } from 'lucide-react'
 
@@ -161,27 +158,12 @@ export default async function IntegrationsPage({
         </IntegrationShell>
       </IntegrationCategory>
 
-      {/* The roadmap, honestly labelled. Each of these earned its place —
-          answering is the decided next feature, SMS is how homeowners actually
-          read quotes, calendar sync is where techs live, financing closes
-          five-figure jobs, Zapier is the long tail. Nothing else. */}
+      {/* The roadmap, honestly labelled — and short on purpose. Call
+          answering shipped (it is the live card above); SMS and Zapier were
+          cut by the owner: SMS is not coming soon and promising it sets a
+          clock, and Zapier serves almost nobody in this segment. Calendar
+          sync is where techs live; financing closes five-figure jobs. */}
       <IntegrationCategory title="On the roadmap" description="Coming — in the same price, like everything else.">
-        <IntegrationShell
-          logo={<PhoneCall className="h-5 w-5" />}
-          name="AI call answering"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Missed and after-hours calls answered, qualified, and dropped into your pipeline as ready-to-quote leads."
-        >
-          <RoadmapNote />
-        </IntegrationShell>
-        <IntegrationShell
-          logo={<MessageSquare className="h-5 w-5" />}
-          name="Text messaging"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Quotes and reminders by SMS — where homeowners actually read them."
-        >
-          <RoadmapNote />
-        </IntegrationShell>
         <IntegrationShell
           logo={<CalendarDays className="h-5 w-5" />}
           name="Google Calendar"
@@ -195,14 +177,6 @@ export default async function IntegrationsPage({
           name="Customer financing"
           badge={{ label: 'Coming soon', tone: 'neutral' }}
           tagline="Monthly-payment offers on big quotes — the difference between $8,900 and $89/mo."
-        >
-          <RoadmapNote />
-        </IntegrationShell>
-        <IntegrationShell
-          logo={<Zap className="h-5 w-5" />}
-          name="Zapier"
-          badge={{ label: 'Coming soon', tone: 'neutral' }}
-          tagline="Pipe leads in and events out to the rest of your stack."
         >
           <RoadmapNote />
         </IntegrationShell>
