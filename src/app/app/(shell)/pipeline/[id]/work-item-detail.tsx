@@ -292,6 +292,7 @@ export function WorkItemDetail({
   const [editingSummary, setEditingSummary] = useState(false)
   const [editingItems, setEditingItems] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
+  const [twoWeeksOpen, setTwoWeeksOpen] = useState(false)
   const jobPhotoRef = useRef<HTMLInputElement | null>(null)
   const [jobPhotosBusy, startJobPhotos] = useTransition()
   const [completePhotosAdded, setCompletePhotosAdded] = useState(0)
@@ -1362,7 +1363,7 @@ export function WorkItemDetail({
 
             {schedCtx && schedCtx.suggestions.length > 0 && (
               <div className="min-w-0 space-y-1.5">
-                <Label className="text-sm font-medium">Next available</Label>
+                <Label className="text-sm font-medium">Suggested times</Label>
                 <div className="grid min-w-0 gap-2">
                   {schedCtx.suggestions.map((s) => {
                     const start = new Date(s.startsAt)
@@ -1408,11 +1409,55 @@ export function WorkItemDetail({
               </p>
             )}
 
-            {/* The fortnight at a glance, so a contractor can see the shape of
-                their week rather than only the three offered slots. */}
+
+            <div className="space-y-1.5">
+              <Label htmlFor="schedule-at" className="text-sm font-medium">
+                Or pick exactly
+              </Label>
+              <Input
+                id="schedule-at"
+                type="datetime-local"
+                value={scheduleAt}
+                onChange={(e) => {
+                  setScheduleAt(e.target.value)
+                  runSlotCheck(e.target.value, workItem.assigned_to, 'job')
+                }}
+                className="h-11"
+              />
+              {workItem.assigned_to ? (
+                <SlotCheckPanel
+                  check={slotCheck}
+                  checking={checkingSlot}
+                  tz={tz}
+                  onUseSuggestion={(iso) => {
+                    setScheduleAt(isoToWall(iso, tz))
+                    runSlotCheck(isoToWall(iso, tz), workItem.assigned_to, 'job')
+                  }}
+                />
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Assign a teammate to check their day for conflicts and drive time.
+                </p>
+              )}
+            </div>
+            {/* The fortnight at a glance — folded by default. Open alongside
+                the phone's own date sheet it read as a second calendar
+                (owner screenshot), so one calendar shows at a time. */}
             {schedCtx && (
+              <button
+                type="button"
+                onClick={() => setTwoWeeksOpen((v) => !v)}
+                aria-expanded={twoWeeksOpen}
+                className="flex min-h-11 items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground lg:min-h-0"
+              >
+                <ChevronDown
+                  className={cn('h-3.5 w-3.5 transition-transform', twoWeeksOpen && 'rotate-180')}
+                />
+                Next two weeks at a glance
+              </button>
+            )}
+            {schedCtx && twoWeeksOpen && (
               <div className="min-w-0 space-y-1.5">
-                <Label className="text-sm font-medium">Next two weeks</Label>
                 {/* min-w-0 is load-bearing: grid children default to
                     min-width:auto, so without it the strip's intrinsic width
                     stretched the dialog past its max-width instead of
@@ -1450,37 +1495,6 @@ export function WorkItemDetail({
                 </div>
               </div>
             )}
-
-            <div className="space-y-1.5">
-              <Label htmlFor="schedule-at" className="text-sm font-medium">
-                Start
-              </Label>
-              <Input
-                id="schedule-at"
-                type="datetime-local"
-                value={scheduleAt}
-                onChange={(e) => {
-                  setScheduleAt(e.target.value)
-                  runSlotCheck(e.target.value, workItem.assigned_to, 'job')
-                }}
-                className="h-11"
-              />
-              {workItem.assigned_to ? (
-                <SlotCheckPanel
-                  check={slotCheck}
-                  checking={checkingSlot}
-                  tz={tz}
-                  onUseSuggestion={(iso) => {
-                    setScheduleAt(isoToWall(iso, tz))
-                    runSlotCheck(isoToWall(iso, tz), workItem.assigned_to, 'job')
-                  }}
-                />
-              ) : (
-                <p className="text-xs text-muted-foreground">
-                  Assign a teammate to check their day for conflicts and drive time.
-                </p>
-              )}
-            </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setScheduleOpen(false)}>
                 Cancel
