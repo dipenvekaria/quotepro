@@ -17,6 +17,7 @@ import {
   Loader2,
   Mail,
   MapPin,
+  Pencil,
   Phone,
   Plus,
   Send,
@@ -57,6 +58,7 @@ import {
   sendQuote,
   updateWorkItem,
   type SchedulingContext,
+  setCustomerSummary,
 } from './actions'
 import { saveLineItems } from '../../quotes/new/actions'
 import { DraftQuestions } from '../../quotes/new/draft-questions'
@@ -238,6 +240,20 @@ export function WorkItemDetail({
   const [transitioning, startTransition_] = useTransition()
 
   const [explaining, startExplain] = useTransition()
+  const [editingSummary, setEditingSummary] = useState(false)
+  const [summaryDraft, setSummaryDraft] = useState('')
+  const [savingSummary, startSummarySave] = useTransition()
+  function saveSummaryEdit() {
+    startSummarySave(async () => {
+      const res = await setCustomerSummary({ work_item_id: workItem.id, summary: summaryDraft })
+      if (!res.ok) {
+        toast.error(res.error)
+        return
+      }
+      setEditingSummary(false)
+      router.refresh()
+    })
+  }
   const [scheduleOpen, setScheduleOpen] = useState(false)
   const [scheduleAt, setScheduleAt] = useState('')
   const [estimateOpen, setEstimateOpen] = useState(false)
@@ -1299,13 +1315,55 @@ export function WorkItemDetail({
               <div className="flex items-center gap-1.5">
                 <Sparkles className="h-3.5 w-3.5 text-primary" />
                 <h2 className="text-sm font-semibold">Customer explanation</h2>
+                <div className="flex-1" />
+                {!editingSummary && (
+                  <button
+                    type="button"
+                    aria-label="Edit the customer explanation"
+                    title="Edit the customer explanation"
+                    onClick={() => {
+                      setSummaryDraft(workItem.customer_summary ?? '')
+                      setEditingSummary(true)
+                    }}
+                    className="grid h-11 w-11 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:h-7 lg:w-7"
+                  >
+                    <Pencil className="h-3.5 w-3.5" />
+                  </button>
+                )}
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
                 Shown to the customer above the prices.
               </p>
-              <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground">
-                {workItem.customer_summary}
-              </p>
+              {editingSummary ? (
+                <div className="mt-3 space-y-2">
+                  <textarea
+                    autoFocus
+                    value={summaryDraft}
+                    onChange={(e) => setSummaryDraft(e.target.value)}
+                    rows={5}
+                    disabled={savingSummary}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setEditingSummary(false)}
+                      disabled={savingSummary}
+                      className="h-11 lg:h-9"
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={saveSummaryEdit} disabled={savingSummary} className="h-11 gap-1.5 lg:h-9">
+                      {savingSummary && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-foreground">
+                  {workItem.customer_summary}
+                </p>
+              )}
             </div>
           )}
 
