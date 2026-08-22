@@ -69,7 +69,9 @@ export function QuotePhotos({
       // whole selection tells the contractor nothing extra.
       if (firstError && !firstError.ok) toast.error(firstError.error)
       if (added > 0) {
-        toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
+        toast.success(`${added} photo${added === 1 ? '' : 's'} added`, {
+          description: 'Tap the star on a photo to feature it in your portfolio.',
+        })
         router.refresh()
       }
     })
@@ -222,19 +224,19 @@ export function QuotePhotos({
                     aria-label={photo.in_showcase ? 'Remove from portfolio' : 'Add to portfolio'}
                     title={photo.in_showcase ? 'In your portfolio' : 'Add to portfolio'}
                     className={cn(
-                      'grid h-8 w-8 place-items-center rounded-md bg-background/90 shadow-sm',
+                      'grid h-9 w-9 place-items-center rounded-md bg-background/90 shadow-sm',
                       photo.in_showcase ? 'text-amber-500' : 'text-muted-foreground hover:text-amber-500',
                     )}
                   >
-                    <Star className={cn('h-3.5 w-3.5', photo.in_showcase && 'fill-current')} />
+                    <Star className={cn('h-4 w-4', photo.in_showcase && 'fill-current')} />
                   </button>
                   <button
                     onClick={() => remove(photo.id)}
                     disabled={uploading}
                     aria-label="Remove photo"
-                    className="grid h-8 w-8 place-items-center rounded-md bg-background/90 text-muted-foreground shadow-sm hover:text-destructive"
+                    className="grid h-9 w-9 place-items-center rounded-md bg-background/90 text-muted-foreground shadow-sm hover:text-destructive"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
                 <figcaption className="space-y-1.5 border-t border-border/70 bg-muted/40 px-2 py-1.5">

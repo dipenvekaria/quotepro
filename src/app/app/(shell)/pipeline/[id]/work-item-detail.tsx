@@ -335,7 +335,9 @@ export function WorkItemDetail({
       if (firstError && !firstError.ok) toast.error(firstError.error)
       if (added > 0) {
         setCompletePhotosAdded((n) => n + added)
-        toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
+        toast.success(`${added} photo${added === 1 ? '' : 's'} added`, {
+          description: 'Tap the star on a photo to feature it in your portfolio.',
+        })
         router.refresh()
       }
     })
