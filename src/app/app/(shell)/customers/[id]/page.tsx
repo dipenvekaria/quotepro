@@ -15,6 +15,7 @@ import {
 import { requireSession } from '@/lib/auth/session'
 import { query } from '@/lib/db'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { BackLink } from '@/components/shared/back-link'
 
 import { EditCustomer } from './edit-customer'
 
@@ -98,10 +99,7 @@ export default async function CustomerDetailPage({
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       {/* Breadcrumb */}
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
-        <Link href="/app/customers" className="inline-flex items-center gap-1 hover:text-foreground">
-          <ArrowLeft className="h-3 w-3" />
-          Customers
-        </Link>
+        <BackLink href="/app/customers">Customers</BackLink>
         <ChevronRight className="h-3 w-3" />
         <span className="text-foreground">{customer.name}</span>
       </div>

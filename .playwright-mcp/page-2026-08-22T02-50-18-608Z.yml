@@ -1,0 +1,64 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - banner [ref=f2e4]:
+        - generic [ref=f2e5]: Rivet
+      - main [ref=f2e12]:
+        - generic [ref=f2e13]:
+          - heading "Welcome back" [level=1] [ref=f2e14]
+          - paragraph [ref=f2e15]: Sign in to your workspace.
+        - generic [ref=f2e16]:
+          - generic [ref=f2e17]:
+            - generic [ref=f2e18]: Email
+            - textbox "Email" [ref=f2e19]:
+              - /placeholder: you@company.com
+          - generic [ref=f2e20]:
+            - generic [ref=f2e21]:
+              - generic [ref=f2e22]: Password
+              - link "Forgot?" [ref=f2e23] [cursor=pointer]:
+                - /url: /forgot-password
+            - textbox "Password" [ref=f2e24]:
+              - /placeholder: ••••••••
+          - button "Sign in" [ref=f2e25]
+          - generic [ref=f2e27]: or
+          - button "Continue with Google" [ref=f2e32]
+        - paragraph [ref=f2e33]:
+          - text: New here?
+          - button "Create an account" [ref=f2e34]
+      - contentinfo [ref=f2e35]:
+        - generic [ref=f2e36]: © 2026 Rivet
+    - complementary [ref=f2e37]:
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]: Quoting that wins more jobs
+        - generic [ref=f2e44]:
+          - generic [ref=f2e45]:
+            - heading "Win more jobs in seconds, not hours." [level=2] [ref=f2e46]
+            - paragraph [ref=f2e47]: Generate professional quotes, send them for signature, and get paid — all from one place. Trusted by field-service pros across the US.
+          - generic [ref=f2e48]:
+            - generic [ref=f2e49]:
+              - generic [ref=f2e50]:
+                - paragraph [ref=f2e51]: "Quote #Q-1042"
+                - paragraph [ref=f2e52]: Water Heater Replacement
+              - generic [ref=f2e53]: Accepted
+            - generic [ref=f2e54]:
+              - generic [ref=f2e55]:
+                - term [ref=f2e56]: 50-gal gas water heater
+                - definition [ref=f2e57]: $1,250.00
+              - generic [ref=f2e58]:
+                - term [ref=f2e59]: Standard labor · 3 hrs
+                - definition [ref=f2e60]: $375.00
+              - generic [ref=f2e61]:
+                - term [ref=f2e62]: Expansion tank
+                - definition [ref=f2e63]: $89.00
+              - generic [ref=f2e64]:
+                - term [ref=f2e65]: Total
+                - definition [ref=f2e66]: $1,850.55
+            - generic [ref=f2e67]: Generated in 2.4s · grounded in your price book
+        - generic [ref=f2e70]:
+          - generic [ref=f2e71]:
+            - generic [ref=f2e72]: Flat
+            - generic [ref=f2e73]: No per-seat billing
+          - generic [ref=f2e74]:
+            - generic [ref=f2e75]: Unlimited
+            - generic [ref=f2e76]: Users and AI quotes
+  - region "Notifications alt+T"

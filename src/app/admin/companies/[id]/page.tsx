@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { BackLink } from '@/components/shared/back-link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Building2 } from 'lucide-react'
 
@@ -19,12 +19,7 @@ export default async function AdminCompanyPage({ params }: { params: Promise<{ i
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
-      <Link
-        href="/admin"
-        className="inline-flex min-h-11 items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" /> Operations
-      </Link>
+      <BackLink href="/admin">Operations</BackLink>
 
       <header className="mt-2 flex items-center gap-3">
         <div className="grid h-10 w-10 place-items-center rounded-lg border border-border bg-muted">

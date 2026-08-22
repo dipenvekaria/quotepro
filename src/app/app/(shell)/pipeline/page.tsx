@@ -141,7 +141,7 @@ export default async function PipelinePage({
             {total} active {total === 1 ? 'item' : 'items'} across all stages.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-end gap-2">
         <NewLeadDialog />
         <PipelineFilter
           members={team.map((m) => ({
@@ -323,15 +323,19 @@ function PipelineCard({
           <span className="text-xs font-semibold tabular">{fmtMoney(total)}</span>
         )}
       </div>
+      {/* A lead with nothing typed yet is still a person, not "Untitled" —
+          the customer becomes the title and the subtitle names the stage. */}
       <div className="mt-2 line-clamp-2 text-sm font-medium leading-snug">
-        {jobName || description || 'Untitled'}
+        {jobName || description || customer}
       </div>
       <div className="mt-2.5 flex items-center justify-between">
         <div className="flex min-w-0 items-center gap-1.5">
           <div className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
             {initials}
           </div>
-          <span className="truncate text-xs text-muted-foreground">{customer}</span>
+          <span className="truncate text-xs text-muted-foreground">
+            {jobName || description ? customer : 'New lead'}
+          </span>
         </div>
         <span className="text-[11px] text-muted-foreground">{fmtRelative(updatedAt)}</span>
       </div>

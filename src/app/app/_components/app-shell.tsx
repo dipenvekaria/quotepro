@@ -271,7 +271,7 @@ function TopBar({
 
         <Link
           href="/app/quotes/new"
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2.5 text-[15px] font-medium text-primary-foreground shadow-sm transition-transform hover:opacity-90 active:scale-95 sm:px-3 lg:min-h-0 lg:py-1.5 lg:text-sm"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-primary px-3 py-2.5 text-sm font-medium text-primary-foreground shadow-sm transition-transform hover:opacity-90 active:scale-95 sm:px-3.5 sm:text-[15px] lg:min-h-0 lg:py-1.5 lg:text-sm"
         >
           <Plus className="h-4 w-4" />
           {/* The app's primary action was an unlabeled circle on phones. */}
