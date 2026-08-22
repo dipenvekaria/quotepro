@@ -14,10 +14,12 @@ export const READ_ONLY_ERROR =
   'Your subscription has ended, so the account is read-only. Renew it in Settings → Billing to keep working.'
 
 export async function companyWritable(companyId: string): Promise<boolean> {
-  const [row] = await query<{ subscription_status: string | null }>(
-    'select subscription_status from companies where id = $1 limit 1',
+  const [row] = await query<{ subscription_status: string | null; complimentary: boolean }>(
+    'select subscription_status, complimentary from companies where id = $1 limit 1',
     [companyId],
   )
+  // Complimentary access (granted from Field Genie) trumps any billing state.
+  if (row?.complimentary) return true
   return !LAPSED.has(row?.subscription_status ?? '')
 }
 

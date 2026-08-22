@@ -194,7 +194,11 @@ export default async function PlatformAdminPage() {
             <tbody className="divide-y divide-border/60">
               {companies.map((c) => (
                 <tr key={c.id}>
-                  <td className="py-2 pr-3 font-medium">{c.name}</td>
+                  <td className="py-2 pr-3 font-medium">
+                    <Link href={`/admin/companies/${c.id}`} className="underline-offset-4 hover:underline">
+                      {c.name}
+                    </Link>
+                  </td>
                   <td className="max-w-[200px] truncate py-2 pr-3 text-muted-foreground">{c.owner_email ?? '—'}</td>
                   <td className="py-2 pr-3 capitalize">{c.subscription_status === 'trialing' ? 'trial' : (c.plan ?? '—')}</td>
                   <td className="py-2 pr-3 tabular">{c.work_items}</td>

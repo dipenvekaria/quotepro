@@ -182,3 +182,68 @@ export async function platformAdmins(): Promise<AdminRow[]> {
     'select email, added_by, created_at from platform_admins order by created_at asc',
   )
 }
+
+
+export type AdminCompanyDetail = {
+  id: string
+  name: string
+  created_at: string
+  plan: string | null
+  subscription_status: string | null
+  trial_ends_at: string | null
+  complimentary: boolean
+  admin_notes: string | null
+  stripe_subscription_id: string | null
+  stripe_customer_id: string | null
+  work_items: number
+  quotes_sent: number
+  revenue: number
+  users: { email: string | null; role: string; name: string | null; last_sign_in: string | null }[]
+  recent_admin_actions: { actor_email: string; action: string; target: string; created_at: string }[]
+}
+
+/** Everything Field Genie needs to manage one company. */
+export async function adminCompanyDetail(id: string): Promise<AdminCompanyDetail | null> {
+  const [co] = await query<Omit<AdminCompanyDetail, 'users' | 'recent_admin_actions' | 'work_items' | 'quotes_sent' | 'revenue'> & {
+    work_items: number
+    quotes_sent: number
+    revenue: number
+  }>(
+    `select co.id, co.name, co.created_at, co.plan, co.subscription_status,
+            co.trial_ends_at, co.complimentary, co.admin_notes,
+            co.stripe_subscription_id, co.stripe_customer_id,
+            (select count(*)::int from work_items w where w.company_id = co.id) as work_items,
+            (select count(*)::int from work_items w where w.company_id = co.id
+              and w.status not in ('lead', 'quote_draft')) as quotes_sent,
+            coalesce((select sum(p.amount)::float from payments p
+              join invoices i on i.id = p.invoice_id where i.company_id = co.id), 0) as revenue
+       from companies co
+      where co.id = $1
+      limit 1`,
+    [id],
+  )
+  if (!co) return null
+
+  const users = await query<AdminCompanyDetail['users'][number]>(
+    `select au.email, u.role,
+            coalesce(u.profile->>'full_name',
+              nullif(trim(concat(u.profile->>'first_name', ' ', u.profile->>'last_name')), '')) as name,
+            au.last_sign_in_at as last_sign_in
+       from users u
+       join auth.users au on au.id = u.id
+      where u.company_id = $1 and u.is_active
+      order by u.created_at asc`,
+    [id],
+  )
+
+  const recent = await query<AdminCompanyDetail['recent_admin_actions'][number]>(
+    `select actor_email, action, target, created_at
+       from admin_audit
+      where target like 'company:' || $1 || '%'
+      order by created_at desc
+      limit 10`,
+    [id],
+  )
+
+  return { ...co, users, recent_admin_actions: recent }
+}
