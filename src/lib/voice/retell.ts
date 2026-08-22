@@ -96,18 +96,6 @@ export async function createCompanyAgent(companyName: string): Promise<RetellAge
 }
 
 /**
- * Point a number's inbound calls at a company's agent. Retell retired the
- * single-agent field (deprecation 2026-03-31); a weighted list of one is the
- * same thing said their way.
- */
-export async function bindNumber(phoneNumber: string, agentId: string): Promise<void> {
-  await retell(`/update-phone-number/${encodeURIComponent(phoneNumber)}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ inbound_agents: [{ agent_id: agentId, weight: 1 }] }),
-  })
-}
-
-/**
  * Buy a local number and bind it in one call — the contractor toggles the
  * service on and never learns what telephony is. ~$2/mo, billed to the
  * platform's Retell account.

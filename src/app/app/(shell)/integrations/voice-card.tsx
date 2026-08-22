@@ -2,13 +2,12 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronDown, Loader2, PhoneIncoming } from 'lucide-react'
+import { Loader2, PhoneIncoming } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { cn } from '@/lib/utils'
 
 import { enableVoice } from './actions'
 
@@ -34,8 +33,6 @@ export function VoiceCard({
   const router = useRouter()
   const derivedArea = companyPhone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3) ?? ''
   const [areaCode, setAreaCode] = useState(derivedArea.length === 3 ? derivedArea : '')
-  const [manualOpen, setManualOpen] = useState(false)
-  const [phone, setPhone] = useState('')
   const [busy, start] = useTransition()
 
   if (!configured) {
@@ -86,9 +83,7 @@ export function VoiceCard({
 
   function submit() {
     start(async () => {
-      const res = await enableVoice(
-        manualOpen && phone.trim() ? { phone_number: phone.trim() } : { area_code: areaCode || undefined },
-      )
+      const res = await enableVoice({ area_code: areaCode || undefined })
       if (!res.ok) {
         toast.error(res.error)
         return
@@ -125,32 +120,6 @@ export function VoiceCard({
           Turn on call answering
         </Button>
       </div>
-      <button
-        type="button"
-        onClick={() => setManualOpen((v) => !v)}
-        aria-expanded={manualOpen}
-        className="flex min-h-11 items-center gap-1 text-xs text-muted-foreground hover:text-foreground lg:min-h-0"
-      >
-        <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', manualOpen && 'rotate-180')} />
-        Already have a number in Retell?
-      </button>
-      {manualOpen && (
-        <div className="space-y-1.5">
-          <Label htmlFor="voice-number">Number to use</Label>
-          <Input
-            id="voice-number"
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+14155550123"
-            className="h-11 max-w-xs tabular"
-          />
-          <p className="text-xs text-muted-foreground">
-            Must already exist in the platform&apos;s Retell workspace. Leaving this blank buys a
-            fresh local number instead.
-          </p>
-        </div>
-      )}
     </div>
   )
 }
