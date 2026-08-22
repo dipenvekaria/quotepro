@@ -63,6 +63,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: '$1 is session.companyId; companies.id is the tenant key itself.',
   },
   {
+    file: 'src/app/app/(shell)/calls/page.tsx',
+    match: 'select voice_enabled, voice_number, settings from companies where id = $1',
+    reason: 'companies row fetched by the session company id itself — the id is the tenant key.',
+  },
+  {
     file: 'src/lib/billing/access.ts',
     match: 'from companies',
     reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
