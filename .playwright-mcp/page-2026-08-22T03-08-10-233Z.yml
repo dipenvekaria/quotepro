@@ -1,0 +1,113 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e3]:
+      - banner [ref=f8e4]:
+        - button "Open menu" [ref=f8e5]
+        - link "Acme" [ref=f8e7] [cursor=pointer]:
+          - /url: /app/dashboard
+        - generic [ref=f8e14]:
+          - button "Notifications" [ref=f8e16]
+          - link "New quote" [ref=f8e20] [cursor=pointer]:
+            - /url: /app/quotes/new
+          - button "AO" [ref=f8e24]
+      - main [ref=f8e27]:
+        - generic [ref=f8e28]:
+          - generic [ref=f8e29]:
+            - link "Pipeline" [ref=f8e30] [cursor=pointer]:
+              - /url: /app/pipeline
+            - generic [ref=f8e35]: 8e1ce4fb
+          - generic [ref=f8e36]:
+            - generic [ref=f8e37]:
+              - generic [ref=f8e38]: RW
+              - generic [ref=f8e39]:
+                - generic [ref=f8e40]:
+                  - heading "Rita Waters" [level=1] [ref=f8e41]
+                  - generic [ref=f8e42]: New Lead
+                - generic [ref=f8e45]: 415-555-0182
+            - generic [ref=f8e49]:
+              - button "Schedule estimate visit" [ref=f8e50]
+              - button "Convert to quote" [ref=f8e51]
+          - generic [ref=f8e52]:
+            - generic [ref=f8e53]:
+              - generic [ref=f8e54]:
+                - generic [ref=f8e55]:
+                  - heading "Details" [level=2] [ref=f8e56]
+                  - button "Edit details" [ref=f8e57]
+                - generic [ref=f8e61]:
+                  - generic [ref=f8e62]:
+                    - generic [ref=f8e63]: Job description
+                    - paragraph [ref=f8e64]: Nothing yet — tap the pen to add one.
+                  - generic [ref=f8e65]:
+                    - generic [ref=f8e66]: Scheduled start
+                    - generic [ref=f8e69]: Not scheduled
+                  - generic [ref=f8e71]:
+                    - generic [ref=f8e72]: Repeats
+                    - paragraph [ref=f8e78]: Does not repeat
+              - generic [ref=f8e79]:
+                - generic [ref=f8e80]:
+                  - generic [ref=f8e81]:
+                    - heading "Line items" [level=2] [ref=f8e82]
+                    - generic [ref=f8e83]: "0"
+                  - generic [ref=f8e84]:
+                    - button "Smart draft" [ref=f8e85]
+                    - button "Add row" [ref=f8e89]
+                    - button "Save items" [ref=f8e91]
+                - generic [ref=f8e92]:
+                  - paragraph [ref=f8e93]: No line items yet
+                  - paragraph [ref=f8e94]: Add rows to build up this quote.
+              - generic [ref=f8e96]:
+                - heading "Photos" [level=2] [ref=f8e101]
+                - generic [ref=f8e102]:
+                  - button "Add photos" [ref=f8e103]
+                  - button "Add photos to this quote" [ref=f8e107]
+              - region "Activity" [ref=f8e108]:
+                - heading "Activity" [level=2] [ref=f8e109]
+                - list [ref=f8e110]:
+                  - listitem [ref=f8e111]:
+                    - generic [ref=f8e116]:
+                      - text: lead created
+                      - generic [ref=f8e117]: — Lead captured — Rita Waters
+                      - generic [ref=f8e118]: Aug 21, 7:17 PM
+                - generic [ref=f8e119]:
+                  - textbox "Add an internal note — @ to notify a teammate" [ref=f8e121]
+                  - generic [ref=f8e122]:
+                    - generic [ref=f8e123]: Never shown to the customer
+                    - button "Add note" [disabled]
+            - complementary [ref=f8e124]:
+              - generic [ref=f8e125]:
+                - heading "Summary" [level=2] [ref=f8e126]
+                - generic [ref=f8e127]:
+                  - generic [ref=f8e128]:
+                    - term [ref=f8e129]: Subtotal
+                    - definition [ref=f8e130]: $0.00
+                  - generic [ref=f8e131]:
+                    - term [ref=f8e132]: Tax (8.5%)
+                    - definition [ref=f8e133]: $0.00
+                  - generic [ref=f8e134]:
+                    - term [ref=f8e135]: Total
+                    - definition [ref=f8e136]: $0.00
+              - generic [ref=f8e137]:
+                - heading "Team" [level=2] [ref=f8e138]
+                - generic [ref=f8e139]:
+                  - generic [ref=f8e140]:
+                    - term [ref=f8e141]: Created by
+                    - definition [ref=f8e142]: Unknown
+                  - generic [ref=f8e143]:
+                    - term [ref=f8e144]: Assigned to
+                    - combobox [ref=f8e145]:
+                      - option "Unassigned" [selected]
+                      - option "Alex Owner"
+                      - option "Sam Office"
+                      - option "Tam Tech"
+          - button "Schedule estimate visit" [ref=f8e147]
+    - navigation "Primary" [ref=f8e148]:
+      - link "Home" [ref=f8e149] [cursor=pointer]:
+        - /url: /app/dashboard
+      - link "Pipeline" [ref=f8e154] [cursor=pointer]:
+        - /url: /app/pipeline
+      - link "Calendar" [ref=f8e159] [cursor=pointer]:
+        - /url: /app/calendar
+      - link "Customers" [ref=f8e163] [cursor=pointer]:
+        - /url: /app/customers
+      - button "More" [ref=f8e170]
+  - region "Notifications alt+T"

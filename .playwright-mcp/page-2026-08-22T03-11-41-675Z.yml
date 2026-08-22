@@ -1,0 +1,125 @@
+- generic [active] [ref=f10e1]:
+  - generic [ref=f10e2]:
+    - complementary [ref=f10e3]:
+      - link "Rivet Acme HVAC & Plumbing" [ref=f10e5] [cursor=pointer]:
+        - /url: /app/dashboard
+        - generic [ref=f10e11]:
+          - generic [ref=f10e12]: Rivet
+          - generic [ref=f10e13]: Acme HVAC & Plumbing
+      - navigation [ref=f10e14]:
+        - link "Home" [ref=f10e15] [cursor=pointer]:
+          - /url: /app/dashboard
+        - link "Pipeline" [ref=f10e20] [cursor=pointer]:
+          - /url: /app/pipeline
+        - link "Calendar" [ref=f10e25] [cursor=pointer]:
+          - /url: /app/calendar
+        - link "Customers" [ref=f10e29] [cursor=pointer]:
+          - /url: /app/customers
+        - link "Price book" [ref=f10e36] [cursor=pointer]:
+          - /url: /app/catalog
+        - link "Portfolio" [ref=f10e42] [cursor=pointer]:
+          - /url: /app/portfolio
+        - link "Analytics" [ref=f10e48] [cursor=pointer]:
+          - /url: /app/analytics
+        - link "Integrations" [ref=f10e52] [cursor=pointer]:
+          - /url: /app/integrations
+      - button "Ask Bolt" [ref=f10e57]
+    - generic [ref=f10e61]:
+      - banner [ref=f10e62]:
+        - generic [ref=f10e63]:
+          - button "Notifications" [ref=f10e65]
+          - link "New quote" [ref=f10e69] [cursor=pointer]:
+            - /url: /app/quotes/new
+          - button "AO" [ref=f10e73]
+      - main [ref=f10e78]:
+        - generic [ref=f10e79]:
+          - generic [ref=f10e80]:
+            - link "Pipeline" [ref=f10e81] [cursor=pointer]:
+              - /url: /app/pipeline
+            - generic [ref=f10e86]: 8e1ce4fb
+          - generic [ref=f10e87]:
+            - generic [ref=f10e88]:
+              - generic [ref=f10e89]: RW
+              - generic [ref=f10e90]:
+                - generic [ref=f10e91]:
+                  - heading "Rita Waters" [level=1] [ref=f10e92]
+                  - generic [ref=f10e93]: New Lead
+                - generic [ref=f10e96]: 415-555-0182
+            - generic [ref=f10e100]:
+              - button "Schedule estimate visit" [ref=f10e101]
+              - button "Convert to quote" [ref=f10e102]
+          - generic [ref=f10e103]:
+            - generic [ref=f10e104]:
+              - generic [ref=f10e105]:
+                - generic [ref=f10e106]:
+                  - heading "Details" [level=2] [ref=f10e107]
+                  - button "Edit details" [ref=f10e108]
+                - generic [ref=f10e112]:
+                  - generic [ref=f10e113]:
+                    - generic [ref=f10e114]: Job description
+                    - paragraph [ref=f10e115]: Nothing yet — tap the pen to add one.
+                  - generic [ref=f10e116]:
+                    - generic [ref=f10e117]: Scheduled start
+                    - generic [ref=f10e120]: Not scheduled
+                  - generic [ref=f10e122]:
+                    - generic [ref=f10e123]: Repeats
+                    - paragraph [ref=f10e129]: Does not repeat
+              - generic [ref=f10e130]:
+                - generic [ref=f10e131]:
+                  - generic [ref=f10e132]:
+                    - heading "Line items" [level=2] [ref=f10e133]
+                    - generic [ref=f10e134]: "0"
+                  - generic [ref=f10e135]:
+                    - button "Smart draft" [ref=f10e136]
+                    - button "Add row" [ref=f10e140]
+                    - button "Save items" [ref=f10e142]
+                - generic [ref=f10e143]:
+                  - paragraph [ref=f10e144]: No line items yet
+                  - paragraph [ref=f10e145]: Add rows to build up this quote.
+              - generic [ref=f10e147]:
+                - generic [ref=f10e148]:
+                  - heading "Photos" [level=2] [ref=f10e152]
+                  - generic [ref=f10e153]: — the customer sees these on the quote
+                - generic [ref=f10e154]:
+                  - button "Add photos" [ref=f10e155]
+                  - button "Add photos to this quote" [ref=f10e159]
+              - region "Activity" [ref=f10e160]:
+                - heading "Activity" [level=2] [ref=f10e161]
+                - list [ref=f10e162]:
+                  - listitem [ref=f10e163]:
+                    - generic [ref=f10e168]:
+                      - text: lead created
+                      - generic [ref=f10e169]: — Lead captured — Rita Waters
+                      - generic [ref=f10e170]: Aug 21, 7:17 PM
+                - generic [ref=f10e171]:
+                  - textbox "Add an internal note — @ to notify a teammate" [ref=f10e173]
+                  - generic [ref=f10e174]:
+                    - generic [ref=f10e175]: Never shown to the customer
+                    - button "Add note" [disabled]
+            - complementary [ref=f10e176]:
+              - generic [ref=f10e177]:
+                - heading "Summary" [level=2] [ref=f10e178]
+                - generic [ref=f10e179]:
+                  - generic [ref=f10e180]:
+                    - term [ref=f10e181]: Subtotal
+                    - definition [ref=f10e182]: $0.00
+                  - generic [ref=f10e183]:
+                    - term [ref=f10e184]: Tax (8.5%)
+                    - definition [ref=f10e185]: $0.00
+                  - generic [ref=f10e186]:
+                    - term [ref=f10e187]: Total
+                    - definition [ref=f10e188]: $0.00
+              - generic [ref=f10e189]:
+                - heading "Team" [level=2] [ref=f10e190]
+                - generic [ref=f10e191]:
+                  - generic [ref=f10e192]:
+                    - term [ref=f10e193]: Created by
+                    - definition [ref=f10e194]: Unknown
+                  - generic [ref=f10e195]:
+                    - term [ref=f10e196]: Assigned to
+                    - combobox [ref=f10e197]:
+                      - option "Unassigned" [selected]
+                      - option "Alex Owner"
+                      - option "Sam Office"
+                      - option "Tam Tech"
+  - region "Notifications alt+T"
