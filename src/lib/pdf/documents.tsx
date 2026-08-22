@@ -7,7 +7,7 @@
  * @react-pdf/renderer depends on Node APIs that aren't available in Edge.
  */
 
-import { Document, Page, StyleSheet, Text, View, renderToBuffer } from '@react-pdf/renderer'
+import { Document, Image, Page, StyleSheet, Text, View, renderToBuffer } from '@react-pdf/renderer'
 import * as React from 'react'
 
 import { formatQuantity, unitSuffix } from '@/lib/format'
@@ -157,6 +157,20 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   notesText: { fontSize: 9, color: colors.ink, marginTop: 4, lineHeight: 1.4 },
+
+  qrRow: {
+    marginTop: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: colors.divider,
+    borderRadius: 6,
+  },
+  qrImage: { width: 64, height: 64 },
+  qrTitle: { fontSize: 10, fontFamily: 'Helvetica-Bold', color: colors.ink },
+  qrText: { fontSize: 8.5, color: colors.sub, marginTop: 3, lineHeight: 1.4 },
 
   footer: {
     position: 'absolute',
@@ -423,6 +437,8 @@ export type InvoicePdfProps = {
   customer: Customer
   publicUrl?: string
   notes?: string | null
+  /** Injected by renderInvoicePdf — encodes publicUrl. */
+  qrDataUrl?: string
 }
 
 function InvoicePdf(props: InvoicePdfProps): React.ReactElement {
@@ -553,6 +569,18 @@ function InvoicePdf(props: InvoicePdfProps): React.ReactElement {
           </View>
         ) : null}
 
+        {props.qrDataUrl ? (
+          <View style={styles.qrRow}>
+            <Image src={props.qrDataUrl} style={styles.qrImage} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.qrTitle}>Scan to pay</Text>
+              <Text style={styles.qrText}>
+                Point your phone camera at the code to open this invoice and pay online.
+              </Text>
+            </View>
+          </View>
+        ) : null}
+
         <View style={styles.footer}>
           <Text style={styles.footerText}>
             {props.publicUrl ? `Pay online: ${props.publicUrl}` : ''}
@@ -567,6 +595,12 @@ function InvoicePdf(props: InvoicePdfProps): React.ReactElement {
 }
 
 export async function renderInvoicePdf(props: InvoicePdfProps): Promise<Buffer> {
-  const buf = await renderToBuffer(InvoicePdf(props) as any)
+  // The QR is the whole "pay from paper" path: camera → /i/{token} → card.
+  let qrDataUrl: string | undefined
+  if (props.publicUrl && !props.isPaid) {
+    const QRCode = await import('qrcode')
+    qrDataUrl = await QRCode.toDataURL(props.publicUrl, { margin: 0, width: 240 })
+  }
+  const buf = await renderToBuffer(InvoicePdf({ ...props, qrDataUrl }) as any)
   return buf as Buffer
 }
