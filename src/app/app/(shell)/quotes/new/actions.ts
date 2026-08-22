@@ -329,6 +329,7 @@ const saveLineItemsSchema = z.object({
     }),
   ),
   tax_rate: z.number().min(0).max(30).optional(),
+  job_name: z.string().trim().min(1).max(120).optional(),
 })
 
 export type SaveLineItemsInput = z.infer<typeof saveLineItemsSchema>
@@ -351,6 +352,16 @@ export async function saveLineItems(input: SaveLineItemsInput) {
     [parsed.data.work_item_id, companyId],
   )
   if (!owns[0]) return { ok: false as const, error: 'Work item not found' }
+
+  // The AI's short name for the job — only ever fills a blank, never
+  // overwrites something a person typed.
+  if (parsed.data.job_name) {
+    await query(
+      `update work_items set job_name = $1
+        where id = $2 and company_id = $3 and (job_name is null or job_name = '')`,
+      [parsed.data.job_name, parsed.data.work_item_id, companyId],
+    )
+  }
 
   // An explicit rate wins; otherwise use the company's configured one. This
   // previously fell back to a hardcoded 8.5, which silently reset the rate for

@@ -163,9 +163,13 @@
   }
 
   html, body {
-    /* Prevent stray horizontal scroll from wide children on mobile. */
-    overflow-x: hidden;
-    max-width: 100vw;
+    /* clip, not hidden: iOS Safari still lets touch pan a `hidden` overflow
+       container, which read as the whole app sliding left-right (owner
+       report). clip forbids horizontal panning outright; inner
+       overflow-x-auto scrollers are their own containers and keep working. */
+    overflow-x: clip;
+    overscroll-behavior-x: none;
+    max-width: 100%;
   }
 
   body {

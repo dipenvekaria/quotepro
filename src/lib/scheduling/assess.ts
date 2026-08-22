@@ -138,7 +138,7 @@ async function loadDay(
  * Null when there is no address, no key, or Google cannot place it: silence,
  * never a guess.
  */
-async function officeGeo(companyId: string): Promise<(LatLng & { label: string }) | null> {
+export async function officeGeo(companyId: string): Promise<(LatLng & { label: string }) | null> {
   const [co] = await query<{
     address: string | null
     settings: { office_geo?: { lat: number; lng: number; for: string } } | null

@@ -153,6 +153,10 @@ export function QuoteEditor({
   const currentNames = new Set(namesSig.split('|'))
   const visibleRecs = recs.filter((r) => !currentNames.has(r.name.trim().toLowerCase()))
   const [generating, startAi] = useTransition()
+  const [aiJobName, setAiJobName] = useState<string | null>(null)
+  // Clarifying answers feed the next draft without polluting the visible
+  // description — the description is the contractor's words, not a Q&A log.
+  const [draftContext, setDraftContext] = useState('')
   const [saving, startSave] = useTransition()
 
   // Totals
@@ -197,11 +201,12 @@ export function QuoteEditor({
       toast.error('Add a description first.')
       return
     }
-    const prompt = aiPrompt.trim() || description
+    const rawPrompt = aiPrompt.trim() || description
+    const prompt = draftContext ? `${rawPrompt}\n${draftContext}`.trim() : rawPrompt
     // Persist what the contractor actually described. The job text lives in the
     // AI prompt box; without this it never reaches `description`, which then
     // saved as the literal "Quote" and fed the AI a non-job on the next pass.
-    if (!description.trim()) setDescription(prompt)
+    if (!description.trim()) setDescription(rawPrompt)
     // Chat behaviour: the ask goes up into the trail the moment Send is hit
     // and the box clears. Leaving the text sitting editable while the model
     // worked read as "did that even send?" — the bubble is the receipt. On a
@@ -266,6 +271,7 @@ export function QuoteEditor({
           // from the database, so they have to be there before it runs.
           await saveLineItems({
             work_item_id: editableId,
+            job_name: aiJobName ?? undefined,
             items: items.map((i, idx) => ({
               name: i.name,
               description: i.description || null,
@@ -349,6 +355,7 @@ export function QuoteEditor({
         })),
       )
       if (typeof data.tax_rate === 'number') setTaxRate(data.tax_rate)
+      if (data.job_name) setAiJobName(data.job_name)
       setThread((t) => [
         ...t,
         {
@@ -411,6 +418,7 @@ export function QuoteEditor({
 
       const saveRes = await saveLineItems({
         work_item_id: currentId,
+        job_name: aiJobName ?? undefined,
         items: outgoingItems.map((i, idx) => ({ ...i, sort_order: idx })),
         tax_rate: taxRate,
       })
@@ -546,13 +554,11 @@ export function QuoteEditor({
                 unmet={unmet}
                 disabled={generating}
                 onAnswer={(question, option) => {
-                  // Folded into the description so the next draft reads it and
-                  // the contractor can see and edit what was assumed.
-                  setDescription((d) => `${d.trim()}\n${question} ${option}`.trim())
+                  // The answer feeds the next draft; the description stays the
+                  // contractor's own words instead of becoming a Q&A log.
+                  setDraftContext((c) => `${c}\n${question} ${option}`.trim())
                   setQuestions((qs) => qs.filter((q) => q.question !== question))
-                  toast.success('Added to the job description', {
-                    description: 'Draft again to use it.',
-                  })
+                  toast.success('Got it — draft again to use it.')
                 }}
               />
               {draftMode?.startsWith('gemini') && (

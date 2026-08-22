@@ -17,6 +17,7 @@ import {
   Loader2,
   Mail,
   Camera,
+  ChevronDown,
   MapPin,
   Pencil,
   Phone,
@@ -52,6 +53,8 @@ import { generateQuoteItems } from '@/app/app/(shell)/quotes/new/actions'
 
 import type { QuotePhoto } from './photo-actions'
 import { QuotePhotos } from './quote-photos'
+import { compressPhoto } from '@/lib/photos/compress'
+
 import { uploadQuotePhoto } from './photo-actions'
 import {
   changeStatus,
@@ -59,6 +62,7 @@ import {
   getSchedulingContext,
   requestReview,
   checkSlot,
+  getTeamOptions,
   scheduleEstimate,
   sendQuote,
   updateWorkItem,
@@ -66,6 +70,7 @@ import {
   setCustomerSummary,
 } from './actions'
 import type { SlotAssessment } from '@/lib/scheduling/assess'
+import type { PersonAvailability } from '@/lib/scheduling/team-availability'
 import { zonedParts, zonedToUtc } from '@/lib/time'
 import { saveLineItems } from '../../quotes/new/actions'
 import { DraftQuestions } from '../../quotes/new/draft-questions'
@@ -240,6 +245,9 @@ export function WorkItemDetail({
       : null,
   )
   const [draftQuestions, setDraftQuestions] = useState<{ question: string; options: string[] }[]>([])
+  // Clarifying answers feed the redraft without turning the description into
+  // a Q&A log — the description stays the contractor's words.
+  const [draftContext, setDraftContext] = useState('')
   const [draftUnmet, setDraftUnmet] = useState<string[]>([])
 
   const [savingItems, startItemsSave] = useTransition()
@@ -287,6 +295,20 @@ export function WorkItemDetail({
   const [explaining, startExplain] = useTransition()
   const [editingSummary, setEditingSummary] = useState(false)
   const [editingItems, setEditingItems] = useState(false)
+  const [notesOpen, setNotesOpen] = useState(false)
+  const [twoWeeksOpen, setTwoWeeksOpen] = useState(false)
+  const [teamOptions, setTeamOptions] = useState<PersonAvailability[] | null>(null)
+  const [loadingTeam, setLoadingTeam] = useState(false)
+  const [pendingAssignee, setPendingAssignee] = useState<string | null>(null)
+  function loadTeamOptions(kind: 'job' | 'estimate') {
+    setTeamOptions(null)
+    setPendingAssignee(null)
+    setLoadingTeam(true)
+    getTeamOptions({ work_item_id: workItem.id, kind }).then((res) => {
+      setLoadingTeam(false)
+      if (res.ok) setTeamOptions(res.data.people)
+    })
+  }
   const jobPhotoRef = useRef<HTMLInputElement | null>(null)
   const [jobPhotosBusy, startJobPhotos] = useTransition()
   const [completePhotosAdded, setCompletePhotosAdded] = useState(0)
@@ -298,18 +320,19 @@ export function WorkItemDetail({
     e.target.value = ''
     if (files.length === 0) return
     startJobPhotos(async () => {
-      let added = 0
-      for (const file of files) {
-        const fd = new FormData()
-        fd.append('work_item_id', workItem.id)
-        fd.append('file', file)
-        const res = await uploadQuotePhoto(fd)
-        if (res.ok) added++
-        else {
-          toast.error(res.error)
-          break
-        }
-      }
+      // Shrink on the phone, then send everything at once — the truck should
+      // not have to wait on one bar of LTE.
+      const results = await Promise.all(
+        files.map(async (file) => {
+          const fd = new FormData()
+          fd.append('work_item_id', workItem.id)
+          fd.append('file', await compressPhoto(file))
+          return uploadQuotePhoto(fd)
+        }),
+      )
+      const added = results.filter((r) => r.ok).length
+      const firstError = results.find((r) => !r.ok)
+      if (firstError && !firstError.ok) toast.error(firstError.error)
       if (added > 0) {
         setCompletePhotosAdded((n) => n + added)
         toast.success(`${added} photo${added === 1 ? '' : 's'} added`)
@@ -471,6 +494,10 @@ export function WorkItemDetail({
       // book looked like a matching bug instead of a question.
       setDraftQuestions(res.data.questions ?? [])
       setDraftUnmet(res.data.unmet ?? [])
+      if (res.data.job_name && !workItem.job_name) {
+        // Fills a blank title only; a person's own name for the job stays.
+        void updateWorkItem({ id: workItem.id, job_name: res.data.job_name })
+      }
       if (drafted.length === 0) {
         if ((res.data.questions ?? []).length > 0) {
           toast.info('The draft needs an answer first — pick below.', {
@@ -576,6 +603,7 @@ export function WorkItemDetail({
         toast.success('Job scheduled', {
           description: `${new Date(scheduledAt).toLocaleString('en-US', {
             weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+            timeZone: tz,
           })} — it's on your calendar.`,
         })
       } else {
@@ -594,12 +622,14 @@ export function WorkItemDetail({
       setEstimateAt(defaultScheduleSlot(workItem.estimate_scheduled_start, tz))
       setEstimateRep(workItem.estimate_assigned_to ?? '')
       setEstimateOpen(true)
+      loadTeamOptions('estimate')
       return
     }
     if (to === 'job_scheduled') {
       setScheduleAt(defaultScheduleSlot(workItem.scheduled_start, tz))
       setSchedCtx(null)
       setScheduleOpen(true)
+      loadTeamOptions('job')
       // Loaded on open rather than with the page: most visits to a work item
       // are not scheduling it, and this is three queries.
       startLoadCtx(async () => {
@@ -659,11 +689,6 @@ export function WorkItemDetail({
   const invoiceAmountDue = invoice
     ? Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
     : 0
-  function copyPayLink() {
-    navigator.clipboard.writeText(invoiceUrl)
-    toast.success('Payment link copied — send it to your customer')
-  }
-
   const customerInitials = (workItem.customers?.name ?? '?')
     .split(' ')
     .slice(0, 2)
@@ -724,19 +749,20 @@ export function WorkItemDetail({
           </div>
         </div>
 
-        {/* Action rail */}
-        <div className="flex items-center gap-1.5">
-          {items.length > 0 && (
+        {/* Action rail — wraps on phones; three buttons overflowed the card
+            edge and cut "Send invoice" off (owner screenshot). */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {/* Drafting-phase only: the explanation is written BEFORE the
+              customer sees the quote. Once sent, the explanation card below
+              keeps its pen for edits — but the rail stops prompting, and a
+              bare sparkle was a mystery button on phones anyway. */}
+          {items.length > 0 &&
+            ['lead', 'estimate_scheduled', 'quote_draft'].includes(workItem.status) && (
             <Button
               variant="outline"
               onClick={writeCustomerSummary}
               disabled={explaining}
-              className="h-9 gap-1.5"
-              aria-label={
-                workItem.customer_summary
-                  ? 'Rewrite the plain-language explanation for the customer'
-                  : 'Write a plain-language explanation for the customer'
-              }
+              className="h-11 gap-1.5 lg:h-9"
               title="Write a plain-language explanation the customer sees on the quote"
             >
               {explaining ? (
@@ -744,9 +770,7 @@ export function WorkItemDetail({
               ) : (
                 <Sparkles className="h-3.5 w-3.5" />
               )}
-              <span className="hidden sm:inline">
-                {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
-              </span>
+              {workItem.customer_summary ? 'Rewrite explanation' : 'Explain for customer'}
             </Button>
           )}
           {isDraft && workItem.status === 'quote_draft' ? (
@@ -768,12 +792,6 @@ export function WorkItemDetail({
                     <Send className="h-3.5 w-3.5" />
                   )}
                   Send invoice
-                </Button>
-              )}
-              {workItem.status === 'job_completed' && invoice && invoiceAmountDue > 0 && (
-                <Button onClick={copyPayLink} className="gap-1.5 shadow-sm">
-                  <Copy className="h-3.5 w-3.5" />
-                  Copy payment link
                 </Button>
               )}
               {(workItem.status === 'job_in_progress' || workItem.status === 'job_completed') && (
@@ -877,14 +895,16 @@ export function WorkItemDetail({
                     </h2>
                     <p className="mt-0.5 text-sm text-muted-foreground">
                       Invoice {invoice.invoice_number} is with{' '}
-                      {workItem.customers?.name ?? 'your customer'}. Share the payment link, or
-                      record a payment taken another way.
+                      {workItem.customers?.name ?? 'your customer'}. Open the payment page to
+                      share it, or record a payment taken another way.
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
-                    <Button onClick={copyPayLink} className="h-11 gap-1.5">
-                      <Copy className="h-4 w-4" />
-                      Copy payment link
+                    <Button asChild className="h-11 gap-1.5">
+                      <a href={invoiceUrl} target="_blank" rel="noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                        Open payment link
+                      </a>
                     </Button>
                     <Button
                       onClick={() => setPayOpen(true)}
@@ -1027,6 +1047,30 @@ export function WorkItemDetail({
                   )}
                 </div>
               </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                  Assigned to
+                </label>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <AssignSelect
+                    workItemId={workItem.id}
+                    current={workItem.assigned_to}
+                    teammates={teammates}
+                  />
+                  <span className="text-[11px] text-muted-foreground">
+                    Created by {workItem.creator?.profile?.full_name ?? workItem.creator?.email ?? 'unknown'}
+                  </span>
+                </div>
+              </div>
+              {/* Attachments live with the rest of the record's facts. */}
+              <QuotePhotos
+                embedded
+                workItemId={workItem.id}
+                photos={photos}
+                lineItems={items
+                  .filter((i) => i.id && i.name)
+                  .map((i) => ({ id: i.id as string, name: i.name }))}
+              />
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
                   <RefreshCw className="mr-1 inline h-3 w-3" />
@@ -1202,13 +1246,12 @@ export function WorkItemDetail({
               unmet={draftUnmet}
               disabled={drafting}
               onAnswer={(question, option) => {
-                // Folded into the description (same as the quote editor) and
-                // redrafted immediately — the contractor already asked for a
-                // draft; the answer was the only thing missing.
-                const next = `${description.trim()}\n${question} ${option}`.trim()
-                setDescription(next)
+                // The answer rides the redraft as context; the description
+                // stays the contractor's own words.
+                const ctx = `${draftContext}\n${question} ${option}`.trim()
+                setDraftContext(ctx)
                 setDraftQuestions((qs) => qs.filter((q) => q.question !== question))
-                draftWithAi(next)
+                draftWithAi(`${description.trim()}\n${ctx}`.trim())
               }}
             />
             {items.length === 0 ? (
@@ -1297,29 +1340,7 @@ export function WorkItemDetail({
             )}
           </section>
 
-          {/* Activity */}
-          <QuotePhotos
-            workItemId={workItem.id}
-            photos={photos}
-            lineItems={items
-              .filter((i) => i.id && i.name)
-              .map((i) => ({ id: i.id as string, name: i.name }))}
-          />
 
-          {/* The real audit trail once events exist; quotes from before the
-              log was written fall back to the timestamp-derived summary so
-              their history does not vanish. */}
-          {timeline.length > 0 ? (
-            <ActivityTimeline
-              entries={timeline}
-              tz={tz}
-              workItemId={workItem.id}
-              people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
-              roster={teammates}
-            />
-          ) : (
-            <Activity workItem={workItem} />
-          )}
         </div>
 
         {/* Scheduling asks when, then does both halves at once — the status and
@@ -1352,59 +1373,69 @@ export function WorkItemDetail({
               <p className="text-sm text-muted-foreground">Checking your calendar…</p>
             )}
 
-            {schedCtx && schedCtx.suggestions.length > 0 && (
-              <div className="min-w-0 space-y-1.5">
-                <Label className="text-sm font-medium">Next available</Label>
-                <div className="grid min-w-0 gap-2">
-                  {schedCtx.suggestions.map((s) => {
-                    const start = new Date(s.startsAt)
-                    const end = new Date(s.endsAt)
-                    const iso = isoToWall(s.startsAt, tz)
-                    const chosen = scheduleAt === iso
-                    return (
-                      <button
-                        key={s.startsAt}
-                        type="button"
-                        onClick={() => {
-                          setScheduleAt(iso)
-                          runSlotCheck(iso, workItem.assigned_to, 'job')
-                        }}
-                        className={cn(
-                          'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
-                          chosen
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:bg-muted/60',
-                        )}
-                      >
-                        <span className="font-medium">
-                          {start.toLocaleDateString('en-US', {
-                            weekday: 'short', month: 'short', day: 'numeric',
-                          })}
-                        </span>
-                        <span className="text-muted-foreground tabular">
-                          {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                          {' – '}
-                          {end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
+            <TeamOptionsList
+              people={teamOptions}
+              loading={loadingTeam}
+              tz={tz}
+              chosenAt={scheduleAt}
+              chosenPerson={pendingAssignee}
+              onPick={(person, startsAt) => {
+                const wall = isoToWall(startsAt, tz)
+                setScheduleAt(wall)
+                setPendingAssignee(person)
+                runSlotCheck(wall, person, 'job')
+              }}
+            />
 
-            {schedCtx && schedCtx.suggestions.length === 0 && !loadingCtx && (
-              <p className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-                Nothing free in the next two weeks that fits this job. Pick a time below, or open
-                up more hours in Settings.
-              </p>
-            )}
 
-            {/* The fortnight at a glance, so a contractor can see the shape of
-                their week rather than only the three offered slots. */}
+            <div className="space-y-1.5">
+              <Label htmlFor="schedule-at" className="text-sm font-medium">
+                Or pick exactly
+              </Label>
+              <Input
+                id="schedule-at"
+                type="datetime-local"
+                value={scheduleAt}
+                onChange={(e) => {
+                  setScheduleAt(e.target.value)
+                  runSlotCheck(e.target.value, pendingAssignee ?? workItem.assigned_to, 'job')
+                }}
+                className="h-11"
+              />
+              {(pendingAssignee ?? workItem.assigned_to) ? (
+                <SlotCheckPanel
+                  check={slotCheck}
+                  checking={checkingSlot}
+                  tz={tz}
+                  onUseSuggestion={(iso) => {
+                    setScheduleAt(isoToWall(iso, tz))
+                    runSlotCheck(isoToWall(iso, tz), pendingAssignee ?? workItem.assigned_to, 'job')
+                  }}
+                />
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Pick a teammate above to check their day for conflicts and drive time.
+                </p>
+              )}
+            </div>
+            {/* The fortnight at a glance — folded by default. Open alongside
+                the phone's own date sheet it read as a second calendar
+                (owner screenshot), so one calendar shows at a time. */}
             {schedCtx && (
+              <button
+                type="button"
+                onClick={() => setTwoWeeksOpen((v) => !v)}
+                aria-expanded={twoWeeksOpen}
+                className="flex min-h-11 items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground lg:min-h-0"
+              >
+                <ChevronDown
+                  className={cn('h-3.5 w-3.5 transition-transform', twoWeeksOpen && 'rotate-180')}
+                />
+                Next two weeks at a glance
+              </button>
+            )}
+            {schedCtx && twoWeeksOpen && (
               <div className="min-w-0 space-y-1.5">
-                <Label className="text-sm font-medium">Next two weeks</Label>
                 {/* min-w-0 is load-bearing: grid children default to
                     min-width:auto, so without it the strip's intrinsic width
                     stretched the dialog past its max-width instead of
@@ -1442,44 +1473,20 @@ export function WorkItemDetail({
                 </div>
               </div>
             )}
-
-            <div className="space-y-1.5">
-              <Label htmlFor="schedule-at" className="text-sm font-medium">
-                Start
-              </Label>
-              <Input
-                id="schedule-at"
-                type="datetime-local"
-                value={scheduleAt}
-                onChange={(e) => {
-                  setScheduleAt(e.target.value)
-                  runSlotCheck(e.target.value, workItem.assigned_to, 'job')
-                }}
-                className="h-11"
-              />
-              {workItem.assigned_to ? (
-                <SlotCheckPanel
-                  check={slotCheck}
-                  checking={checkingSlot}
-                  tz={tz}
-                  onUseSuggestion={(iso) => {
-                    setScheduleAt(isoToWall(iso, tz))
-                    runSlotCheck(isoToWall(iso, tz), workItem.assigned_to, 'job')
-                  }}
-                />
-              ) : (
-                <p className="text-xs text-muted-foreground">
-                  Assign a teammate to check their day for conflicts and drive time.
-                </p>
-              )}
-            </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setScheduleOpen(false)}>
                 Cancel
               </Button>
               <Button
                 disabled={!scheduleAt || transitioning}
-                onClick={() => {
+                onClick={async () => {
+                  if (pendingAssignee && pendingAssignee !== workItem.assigned_to) {
+                    const res = await updateWorkItem({ id: workItem.id, assigned_to: pendingAssignee })
+                    if (!res.ok) {
+                      toast.error(res.error)
+                      return
+                    }
+                  }
                   setScheduleOpen(false)
                   transition('job_scheduled', wallToIso(scheduleAt, tz))
                 }}
@@ -1660,27 +1667,6 @@ export function WorkItemDetail({
             </div>
           )}
 
-          {/* Assignment */}
-          <div className="rounded-xl border border-border/70 bg-card p-5 shadow-sm">
-            <h2 className="text-sm font-semibold">Team</h2>
-            <div className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between text-muted-foreground">
-                <dt>Created by</dt>
-                <dd className="text-foreground">
-                  {workItem.creator?.profile?.full_name ?? workItem.creator?.email ?? 'Unknown'}
-                </dd>
-              </div>
-              <div className="flex items-center justify-between text-muted-foreground">
-                <dt>Assigned to</dt>
-                <AssignSelect
-                  workItemId={workItem.id}
-                  current={workItem.assigned_to}
-                  teammates={teammates}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Invoice card */}
           {invoice && (
             <InvoiceCard
@@ -1696,6 +1682,52 @@ export function WorkItemDetail({
           )}
         </aside>
       </div>
+
+      {/* Notes come last, full width, and closed until wanted — the record
+          reads Details → Line items → Summary → Notes without a scroll tax.
+          Collapsible over a step wizard on purpose: this page is revisited,
+          and steppers punish revisits. */}
+      <section className="mt-6 rounded-xl border border-border/70 bg-card shadow-sm">
+        <button
+          type="button"
+          onClick={() => setNotesOpen((v) => !v)}
+          aria-expanded={notesOpen}
+          className="flex min-h-11 w-full items-center justify-between gap-3 px-5 py-3.5 text-left"
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="text-sm font-semibold">Notes</span>
+            <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] tabular text-muted-foreground">
+              {timeline.length}
+            </span>
+          </span>
+          <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
+            {!notesOpen && timeline.length > 0 && (
+              <span className="hidden max-w-[18rem] truncate sm:inline">
+                {timeline[timeline.length - 1]?.description ?? ''}
+              </span>
+            )}
+            <ChevronDown
+              className={cn('h-4 w-4 shrink-0 transition-transform', notesOpen && 'rotate-180')}
+            />
+          </span>
+        </button>
+        {notesOpen && (
+          <div className="border-t border-border/70 p-5">
+            {timeline.length > 0 ? (
+              <ActivityTimeline
+                embedded
+                entries={timeline}
+                tz={tz}
+                workItemId={workItem.id}
+                people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
+                roster={teammates}
+              />
+            ) : (
+              <Activity workItem={workItem} />
+            )}
+          </div>
+        )}
+      </section>
 
       {/* Sent modal */}
       {sendOpen && sentToken && (
@@ -1716,8 +1748,21 @@ export function WorkItemDetail({
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
+            <TeamOptionsList
+              people={teamOptions}
+              loading={loadingTeam}
+              tz={tz}
+              chosenAt={estimateAt}
+              chosenPerson={estimateRep || null}
+              onPick={(person, startsAt) => {
+                const wall = isoToWall(startsAt, tz)
+                setEstimateAt(wall)
+                setEstimateRep(person)
+                runSlotCheck(wall, person, 'estimate')
+              }}
+            />
             <div>
-              <Label className="mb-1 block text-xs">When</Label>
+              <Label className="mb-1 block text-xs">Or pick exactly</Label>
               <Input
                 type="datetime-local"
                 value={estimateAt}
@@ -1904,11 +1949,6 @@ export function WorkItemDetail({
             {invoiceSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             Send invoice
           </Button>
-        ) : workItem.status === 'job_completed' && invoice && invoice.status !== 'paid' ? (
-          <Button onClick={copyPayLink} className="h-12 w-full gap-1.5 text-base">
-            <Copy className="h-4 w-4" />
-            Copy payment link
-          </Button>
         ) : workItem.status === 'job_completed' && !reviewAsked ? (
           <Button onClick={doRequestReview} disabled={askingReview} className="h-12 w-full gap-1.5 text-base">
             {askingReview ? <Loader2 className="h-4 w-4 animate-spin" /> : <Star className="h-4 w-4" />}
@@ -1983,6 +2023,91 @@ function Activity({ workItem }: { workItem: WorkItem }) {
 }
 
 // ---------------------------------------------------------------------------
+
+/**
+ * The person-first schedule: each teammate with their first workable windows,
+ * the typical drive, and whether they already have a stop near the site.
+ * Rendered in the company's timezone — the server-tz slot list this replaces
+ * put "3:00 AM" on the owner's phone.
+ */
+function TeamOptionsList({
+  people,
+  loading,
+  tz,
+  chosenAt,
+  chosenPerson,
+  onPick,
+}: {
+  people: PersonAvailability[] | null
+  loading: boolean
+  tz: string
+  chosenAt: string
+  chosenPerson: string | null
+  onPick: (personId: string, startsAt: string) => void
+}) {
+  if (loading) {
+    return <p className="text-sm text-muted-foreground">Checking everyone&apos;s week…</p>
+  }
+  if (!people || people.length === 0) return null
+  const fmtDay = (iso: string) =>
+    new Date(iso).toLocaleDateString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', timeZone: tz,
+    })
+  const fmtTime = (iso: string) =>
+    new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })
+  return (
+    <div className="min-w-0 space-y-1.5">
+      <Label className="text-sm font-medium">Who can take it</Label>
+      <div className="grid min-w-0 gap-2">
+        {people.map((person) => (
+          <div key={person.id} className="rounded-lg border border-border px-3 py-2.5">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-medium">{person.name}</span>
+              <span className="text-xs capitalize text-muted-foreground">{person.role}</span>
+            </div>
+            {person.options.length === 0 ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                No open window in the next two weeks.
+              </p>
+            ) : (
+              <div className="mt-2 space-y-1.5">
+                {person.options.map((o) => {
+                  const chosen =
+                    chosenPerson === person.id && chosenAt === isoToWall(o.startsAt, tz)
+                  return (
+                    <button
+                      key={o.startsAt}
+                      type="button"
+                      onClick={() => onPick(person.id, o.startsAt)}
+                      className={cn(
+                        'flex min-h-11 w-full flex-wrap items-center justify-between gap-x-3 gap-y-0.5 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
+                        chosen ? 'border-primary bg-primary/5' : 'border-border/70 hover:bg-muted/60',
+                      )}
+                    >
+                      <span className="font-medium">{fmtDay(o.startsAt)}</span>
+                      <span className="text-muted-foreground tabular">
+                        {fmtTime(o.startsAt)} – {fmtTime(o.endsAt)}
+                      </span>
+                      {o.nearby ? (
+                        <span className="w-full text-xs text-muted-foreground">
+                          Already in the area that day
+                        </span>
+                      ) : o.travelMinutes != null && o.fromLabel ? (
+                        <span className="w-full text-xs text-muted-foreground">
+                          ~{o.travelMinutes} min drive from {o.fromLabel}
+                        </span>
+                      ) : null}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function AssignSelect({
   workItemId,

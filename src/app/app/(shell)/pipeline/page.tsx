@@ -30,15 +30,28 @@ const COLUMNS: Column[] = [
   { key: 'closed',    label: 'Completed', statuses: ['job_completed'],                       dot: 'bg-emerald-500' },
 ]
 
+const SUB_LABELS: Record<string, string> = {
+  quote_draft: 'Drafts',
+  quote_sent: 'Sent',
+  quote_viewed: 'Viewed',
+  job_scheduled: 'Scheduled',
+  job_in_progress: 'In progress',
+}
+
 export default async function PipelinePage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; assignee?: string }>
+  searchParams: Promise<{ q?: string; assignee?: string; stage?: string; sub?: string }>
 }) {
   const { companyId, userId, role } = await requireSession()
   const params = await searchParams
   const term = (params.q ?? '').trim()
   const assignee = (params.assignee ?? '').trim()
+  // Stage focus: one stage at a time instead of a marathon scroll past 70
+  // drafts. `sub` narrows a bundled stage (Quotes → just Drafts).
+  const stage = COLUMNS.find((c) => c.key === params.stage)?.key ?? null
+  const activeColumn = COLUMNS.find((c) => c.key === stage) ?? null
+  const sub = activeColumn?.statuses.includes(params.sub ?? '') ? (params.sub as string) : null
 
   // A technician sees the jobs they were sent to; sales sees their own. Without
   // this the board showed everyone the whole company's book of business.
@@ -120,11 +133,23 @@ export default async function PipelinePage({
   )
 
   const grouped = COLUMNS.reduce<Record<string, typeof workItems>>((acc, col) => {
-    acc[col.key] = (workItems ?? []).filter((w) => col.statuses.includes(w.status as string))
+    const statuses = col.key === stage && sub ? [sub] : col.statuses
+    acc[col.key] = (workItems ?? []).filter((w) => statuses.includes(w.status as string))
     return acc
   }, {})
 
   const total = workItems?.length ?? 0
+  const visibleColumns = activeColumn ? [activeColumn] : COLUMNS
+
+  const chipHref = (nextStage: string | null, nextSub: string | null = null) => {
+    const sp = new URLSearchParams()
+    if (term) sp.set('q', term)
+    if (assignee) sp.set('assignee', assignee)
+    if (nextStage) sp.set('stage', nextStage)
+    if (nextSub) sp.set('sub', nextSub)
+    const qs = sp.toString()
+    return qs ? `/app/pipeline?${qs}` : '/app/pipeline'
+  }
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
@@ -159,27 +184,72 @@ export default async function PipelinePage({
       {/* One thumb-tap to any stage. On a phone the stages stack vertically,
           and at real volume (19 quotes and counting) reaching "Scheduled" was
           a marathon scroll. Sticky, with the true stage counts. */}
-      {total > 0 && (
+      {(total > 0 || stage) && (
         <nav
-          aria-label="Jump to stage"
+          aria-label="Filter by stage"
           className="sticky top-0 z-30 -mx-4 mt-4 border-b border-border/60 bg-background/95 px-4 py-2 backdrop-blur sm:hidden"
         >
+          {/* Filters, not anchor jumps: one stage on screen at a time. An
+              anchor still left 70 drafts between you and Scheduled. */}
           <div className="flex gap-1.5 overflow-x-auto">
+            <Link
+              href={chipHref(null)}
+              scroll={false}
+              className={cn(
+                'flex h-9 shrink-0 items-center rounded-full border px-3 text-xs font-medium',
+                stage === null ? 'border-primary bg-primary text-primary-foreground' : 'border-border/70 bg-card',
+              )}
+            >
+              All
+            </Link>
             {COLUMNS.map((col) => {
               const n = countFor(col.statuses)
+              const active = stage === col.key
               return (
-                <a
+                <Link
                   key={col.key}
-                  href={`#stage-${col.key}`}
-                  className="flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-border/70 bg-card px-3 text-xs font-medium"
+                  href={chipHref(active ? null : col.key)}
+                  scroll={false}
+                  className={cn(
+                    'flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs font-medium',
+                    active ? 'border-primary bg-primary text-primary-foreground' : 'border-border/70 bg-card',
+                  )}
                 >
                   <span className={cn('h-1.5 w-1.5 rounded-full', col.dot)} />
                   {col.label}
-                  <span className="tabular text-muted-foreground">{n}</span>
-                </a>
+                  <span className={cn('tabular', active ? 'text-primary-foreground/70' : 'text-muted-foreground')}>{n}</span>
+                </Link>
               )
             })}
           </div>
+          {activeColumn && activeColumn.statuses.length > 1 && (
+            <div className="mt-1.5 flex gap-1.5 overflow-x-auto">
+              <Link
+                href={chipHref(activeColumn.key)}
+                scroll={false}
+                className={cn(
+                  'flex h-8 shrink-0 items-center rounded-full border px-2.5 text-[11px] font-medium',
+                  sub === null ? 'border-foreground/50 bg-muted' : 'border-border/60 bg-card text-muted-foreground',
+                )}
+              >
+                All {countFor(activeColumn.statuses)}
+              </Link>
+              {activeColumn.statuses.map((st) => (
+                <Link
+                  key={st}
+                  href={chipHref(activeColumn.key, sub === st ? null : st)}
+                  scroll={false}
+                  className={cn(
+                    'flex h-8 shrink-0 items-center gap-1 rounded-full border px-2.5 text-[11px] font-medium capitalize',
+                    sub === st ? 'border-foreground/50 bg-muted' : 'border-border/60 bg-card text-muted-foreground',
+                  )}
+                >
+                  {SUB_LABELS[st] ?? st.replaceAll('_', ' ')}
+                  <span className="tabular">{countFor([st])}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </nav>
       )}
 
@@ -201,7 +271,14 @@ export default async function PipelinePage({
           />
         </div>
       ) : (
-        <div className="mt-6 flex flex-col gap-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-5">
+        <div
+          className={cn(
+            'mt-6 flex flex-col gap-5 sm:mt-6',
+            activeColumn
+              ? 'sm:mx-auto sm:w-full sm:max-w-2xl'
+              : 'sm:grid sm:grid-cols-2 sm:gap-4 lg:grid-cols-5',
+          )}
+        >
           {/*
             Vertical on a phone, board from sm. The horizontal carousel this
             replaces kept the desktop kanban shape, which costs more than it
@@ -213,7 +290,7 @@ export default async function PipelinePage({
             Standing in a driveway the question is "what do I do next", which is
             a list question.
           */}
-          {COLUMNS.map((col) => {
+          {visibleColumns.map((col) => {
             const items = grouped[col.key] ?? []
             const value = items.reduce((s, i) => s + Number(i.total ?? 0), 0)
             const trueCount = countFor(col.statuses)
@@ -238,6 +315,11 @@ export default async function PipelinePage({
                 </div>
 
                 <div className="space-y-2">
+                  {items.length === 0 && activeColumn && (
+                    <p className="rounded-lg border border-dashed border-border/70 px-3 py-4 text-center text-xs text-muted-foreground">
+                      Nothing in {sub ? (SUB_LABELS[sub] ?? 'this view').toLowerCase() : 'this stage'} right now.
+                    </p>
+                  )}
                   {items.map((item) => (
                     <PipelineCard
                       key={item.id}
@@ -301,43 +383,35 @@ function PipelineCard({
    */
   showStatus: boolean
 }) {
-  const initials = customer
-    .split(' ')
-    .slice(0, 2)
-    .map((s) => s[0])
-    .join('')
-    .toUpperCase()
-
+  // One glance a row: what · who · worth · when. The tall card cost a third
+  // of the screen per item; at 70 drafts, density is the feature.
   return (
     <Link
       href={`/app/pipeline/${id}`}
-      className="group block rounded-lg border border-border/70 bg-background p-3 shadow-sm transition-all hover:border-border hover:shadow-card"
+      className="group block rounded-lg border border-border/70 bg-background px-3 py-2.5 shadow-sm transition-all hover:border-border hover:shadow-card"
     >
-      <div className="flex items-start justify-between gap-2">
-        {showStatus ? (
-          <StatusBadge status={status as never} showIcon={false} className="text-[10px]" />
-        ) : (
-          <span />
-        )}
-        {total > 0 && (
-          <span className="text-xs font-semibold tabular">{fmtMoney(total)}</span>
-        )}
-      </div>
-      {/* A lead with nothing typed yet is still a person, not "Untitled" —
-          the customer becomes the title and the subtitle names the stage. */}
-      <div className="mt-2 line-clamp-2 text-sm font-medium leading-snug">
-        {jobName || description || customer}
-      </div>
-      <div className="mt-2.5 flex items-center justify-between">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <div className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
-            {initials}
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5">
+        <div className="min-w-0 flex-1 basis-44">
+          {/* A lead with nothing typed yet is still a person, not "Untitled" —
+              the customer becomes the title and the subtitle names the stage. */}
+          <div className="truncate text-sm font-medium leading-snug">
+            {jobName || description || customer}
           </div>
-          <span className="truncate text-xs text-muted-foreground">
-            {jobName || description ? customer : 'New lead'}
-          </span>
+          {/* Wraps instead of truncating: in a five-across desktop column a
+              one-line meta squeezed "Sarah Johnson" to "S…". */}
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs text-muted-foreground">
+            {showStatus && (
+              <StatusBadge status={status as never} showIcon={false} className="text-[10px]" />
+            )}
+            <span className="min-w-0 max-w-full truncate">
+              {jobName || description ? customer : 'New lead'}
+            </span>
+            <span className="shrink-0">{fmtRelative(updatedAt)}</span>
+          </div>
         </div>
-        <span className="text-[11px] text-muted-foreground">{fmtRelative(updatedAt)}</span>
+        {total > 0 && (
+          <span className="ml-auto shrink-0 text-xs font-semibold tabular">{fmtMoney(total)}</span>
+        )}
       </div>
     </Link>
   )

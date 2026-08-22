@@ -16,6 +16,7 @@ import type { UserRole } from '@/lib/permissions'
 import { nextOccurrence } from '@/lib/recurring'
 import { notify } from '@/lib/notifications'
 import { assessSlot, type SlotAssessment } from '@/lib/scheduling/assess'
+import { teamAvailability, type PersonAvailability } from '@/lib/scheduling/team-availability'
 import { companyTz } from '@/lib/time'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 import { readOnlyGuard } from '@/lib/billing/access'
@@ -31,12 +32,13 @@ import {
 // ---------------------------------------------------------------------------
 
 const updateSchema = z.object({
-  id: z.string().uuid(),
+  // z.guid(), not .uuid(): Zod v4's uuid is RFC-strict and rejects real rows.
+  id: z.guid(),
   description: z.string().max(2000).optional(),
   notes: z.string().max(4000).optional(),
   job_name: z.string().max(200).optional(),
   scheduled_start: z.string().datetime().nullable().optional(),
-  assigned_to: z.string().uuid().nullable().optional(),
+  assigned_to: z.guid().nullable().optional(),
   recurrence: z
     .object({
       cadence: z.enum(['weekly', 'biweekly', 'monthly', 'custom']),
@@ -680,6 +682,60 @@ export async function getSchedulingContext(workItemId: string): Promise<
   }
 
   return { ok: true, data: { estimatedHours: hours, suggestions, days } }
+}
+
+const teamOptionsSchema = z.object({
+  work_item_id: z.guid(),
+  kind: z.enum(['job', 'estimate']),
+})
+
+/**
+ * The person-first schedule: who can take this, and when. Jobs go to the
+ * people who do jobs; estimates to the people who sell. The owner appears in
+ * both lists because in a small shop the owner does everything.
+ */
+export async function getTeamOptions(input: unknown): Promise<
+  { ok: true; data: { people: PersonAvailability[]; durationHours: number } } | { ok: false; error: string }
+> {
+  const parsed = teamOptionsSchema.safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid input' }
+
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+  const allowed =
+    parsed.data.kind === 'estimate'
+      ? ['owner', 'office', 'sales'].includes(session.role)
+      : canAssignWork(session.role as UserRole)
+  if (!allowed) return { ok: false, error: 'Not allowed' }
+
+  const [item] = await query<{ estimated_hours: number | null; lat: number | null; lng: number | null }>(
+    `select w.estimated_hours, a.lat, a.lng
+       from work_items w
+       left join customer_addresses a on a.id = w.address_id
+      where w.id = $1 and w.company_id = $2 limit 1`,
+    [parsed.data.work_item_id, session.companyId],
+  )
+  if (!item) return { ok: false, error: 'Not found' }
+
+  const durationHours =
+    parsed.data.kind === 'estimate'
+      ? 1
+      : item.estimated_hours && item.estimated_hours > 0
+        ? Number(item.estimated_hours)
+        : NOMINAL_JOB_HOURS
+
+  const hours = await loadBusinessHours(session.companyId)
+  const people = await teamAvailability({
+    companyId: session.companyId,
+    workItemId: parsed.data.work_item_id,
+    tz: session.timezone,
+    hours,
+    roles: parsed.data.kind === 'estimate' ? ['sales', 'owner'] : ['technician', 'owner'],
+    durationHours,
+    siteLat: item.lat,
+    siteLng: item.lng,
+  })
+  return { ok: true, data: { people, durationHours } }
 }
 
 const checkSlotSchema = z.object({
