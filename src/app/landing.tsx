@@ -143,6 +143,7 @@ export function Landing() {
         </nav>
       </header>
 
+      <main>
       {/* Hero */}
       <section className="mx-auto flex max-w-6xl flex-col items-center px-4 pb-16 pt-12 text-center sm:px-6 sm:pt-20">
         <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
@@ -167,7 +168,10 @@ export function Landing() {
       </section>
 
       {/* The one-record story */}
-      <section className="border-y border-border/70 bg-muted/40">
+      <section className="border-y border-border/70 bg-muted/40" aria-labelledby="features-heading">
+        <h2 id="features-heading" className="sr-only">
+          What Rivet does
+        </h2>
         <div className="mx-auto grid max-w-6xl gap-4 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-3">
           <Feature icon={Sparkles} title="Quotes that write themselves">
             Describe the job in plain words and get real line items at your real prices.
@@ -226,7 +230,7 @@ export function Landing() {
             <div>
               <h2 className="text-base font-semibold">
                 AI call answering
-                <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground/70">
                   coming soon
                 </span>
               </h2>
@@ -320,6 +324,8 @@ export function Landing() {
 
       {/* Footer — a real one. Only links that resolve; no socials until they
           exist, no mailto until the domain sends mail. */}
+      </main>
+
       <footer className="border-t border-border/70">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
           <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr_1fr]">

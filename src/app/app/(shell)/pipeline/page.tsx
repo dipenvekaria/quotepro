@@ -44,73 +44,74 @@ export default async function PipelinePage({
   // this the board showed everyone the whole company's book of business.
   const scope = workItemScope({ companyId, userId, role: role as UserRole }, 1)
 
-  const workItems = await query<{
-    id: string
-    status: string
-    kind: string | null
-    job_name: string | null
-    description: string | null
-    total: number
-    customer_id: string | null
-    customer_name: string | null
-    created_at: string
-    updated_at: string
-  }>(
-    `select w.id, w.status, w.kind, w.job_name, w.description, w.total,
-            w.customer_id, c.name as customer_name, w.created_at, w.updated_at
-       from work_items w
-       left join customers c on c.id = w.customer_id
-      where w.company_id = $1
-        and (
-          w.status in ('lead','quote_draft','quote_sent','quote_viewed','quote_accepted','job_scheduled','job_in_progress')
-          or (w.status = 'job_completed' and w.updated_at >= now() - interval '21 days')
-        )${scope.sql}${
-          assignee ? ` and w.assigned_to = $${2 + scope.params.length}` : ''
-        }${
-          term
-            ? ` and (
-                c.name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
-                or w.job_name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
-                or w.description ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
-              )`
-            : ''
-        }
-      order by w.updated_at desc
-      limit 500`,
-    [
-      companyId,
-      ...scope.params,
-      ...(assignee ? [assignee] : []),
-      ...(term ? [term] : []),
-    ],
-  )
-
+  // Board rows, honest stage totals, and the assign picker ride one wave.
+  const [workItems, statusCounts, team] = await Promise.all([
+    query<{
+      id: string
+      status: string
+      kind: string | null
+      job_name: string | null
+      description: string | null
+      total: number
+      customer_id: string | null
+      customer_name: string | null
+      created_at: string
+      updated_at: string
+    }>(
+      `select w.id, w.status, w.kind, w.job_name, w.description, w.total,
+              w.customer_id, c.name as customer_name, w.created_at, w.updated_at
+         from work_items w
+         left join customers c on c.id = w.customer_id
+        where w.company_id = $1
+          and (
+            w.status in ('lead','quote_draft','quote_sent','quote_viewed','quote_accepted','job_scheduled','job_in_progress')
+            or (w.status = 'job_completed' and w.updated_at >= now() - interval '21 days')
+          )${scope.sql}${
+            assignee ? ` and w.assigned_to = $${2 + scope.params.length}` : ''
+          }${
+            term
+              ? ` and (
+                  c.name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+                  or w.job_name ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+                  or w.description ilike '%' || $${2 + scope.params.length + (assignee ? 1 : 0)} || '%'
+                )`
+              : ''
+          }
+        order by w.updated_at desc
+        limit 500`,
+      [
+        companyId,
+        ...scope.params,
+        ...(assignee ? [assignee] : []),
+        ...(term ? [term] : []),
+      ],
+    ),
+    query<{ status: string; n: number }>(
+      `select w.status, count(*)::int as n
+         from work_items w
+        where w.company_id = $1
+          and w.status not in ('archived','quote_rejected','quote_expired')${scope.sql}
+        group by w.status`,
+      [companyId, ...scope.params],
+    ),
+    // Only owners and office can hand work out, so only they get a person picker.
+    canAssignWork(role as UserRole)
+      ? query<{ id: string; email: string | null; profile: Record<string, unknown> | null }>(
+          `select u.id, au.email, u.profile
+             from users u join auth.users au on au.id = u.id
+            where u.company_id = $1 and u.is_active
+            order by au.email`,
+          [companyId],
+        )
+      : Promise.resolve([] as { id: string; email: string | null; profile: Record<string, unknown> | null }[]),
+  ])
   /*
     True stage totals, independent of the row window. A 100-jobs-a-week shop
     fills any fetch cap; the rows above stay bounded (completed shows 21 days)
     while these numbers stay honest, so the header never lies about volume.
   */
-  const statusCounts = await query<{ status: string; n: number }>(
-    `select w.status, count(*)::int as n
-       from work_items w
-      where w.company_id = $1
-        and w.status not in ('archived','quote_rejected','quote_expired')${scope.sql}
-      group by w.status`,
-    [companyId, ...scope.params],
-  )
   const countFor = (statuses: string[]) =>
     statusCounts.filter((r) => statuses.includes(r.status)).reduce((s, r) => s + r.n, 0)
-
-  // Only owners and office can hand work out, so only they get a person picker.
-  const team = canAssignWork(role as UserRole)
-    ? await query<{ id: string; email: string | null; profile: Record<string, unknown> | null }>(
-        `select u.id, au.email, u.profile
-           from users u join auth.users au on au.id = u.id
-          where u.company_id = $1 and u.is_active
-          order by au.email`,
-        [companyId],
-      )
-    : []
 
   const customerMap = new Map(
     workItems

@@ -581,10 +581,15 @@ export function WorkItemDetail({
 
   return (
     <div className="mx-auto max-w-[1600px] px-4 pb-28 pt-6 sm:px-6 sm:pb-6 lg:px-10 lg:py-8">
-      {/* Breadcrumb */}
+      {/* Breadcrumb. The back link is the only way out on a phone, so it gets
+          a thumb-size target — a 12px icon in the top corner was the polar
+          opposite of best-in-class mobile navigation. */}
       <div className="flex items-center gap-1 text-xs text-muted-foreground">
-        <Link href="/app/pipeline" className="inline-flex items-center gap-1 hover:text-foreground">
-          <ArrowLeft className="h-3 w-3" />
+        <Link
+          href="/app/pipeline"
+          className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 text-sm hover:bg-muted hover:text-foreground lg:min-h-0 lg:gap-1 lg:text-xs"
+        >
+          <ArrowLeft className="h-4 w-4 lg:h-3 lg:w-3" />
           Pipeline
         </Link>
         <ChevronRight className="h-3 w-3" />
