@@ -1467,15 +1467,31 @@ export function WorkItemDetail({
                     const day = new Date(`${d.date}T00:00:00`)
                     const closed = d.capacityHours === 0
                     const load = closed ? 0 : Math.min(d.bookedHours / d.capacityHours, 1)
+                    const chosen = scheduleAt.startsWith(d.date)
                     return (
-                      <div
+                      <button
                         key={d.date}
+                        type="button"
+                        disabled={closed}
+                        onClick={() => {
+                          // Tap a day → that day lands in the picker, keeping
+                          // whatever time is already chosen. The strip read as
+                          // tappable and did nothing (owner report).
+                          const time = scheduleAt.length >= 16 ? scheduleAt.slice(11, 16) : '09:00'
+                          const wall = `${d.date}T${time}`
+                          setScheduleAt(wall)
+                          runSlotCheck(wall, pendingAssignee ?? workItem.assigned_to, 'job')
+                        }}
                         title={
                           closed
                             ? 'Closed'
                             : `${d.bookedHours}h booked of ${d.capacityHours}h`
                         }
-                        className="min-w-[2.6rem] shrink-0 rounded-md border border-border/60 px-1 py-1.5 text-center"
+                        className={cn(
+                          'min-w-[2.6rem] shrink-0 rounded-md border px-1 py-1.5 text-center transition-colors',
+                          chosen ? 'border-primary bg-primary/5' : 'border-border/60 hover:bg-muted/60',
+                          closed && 'opacity-40',
+                        )}
                       >
                         <div className="text-[10px] uppercase text-muted-foreground">
                           {day.toLocaleDateString('en-US', { weekday: 'narrow' })}
@@ -1489,7 +1505,7 @@ export function WorkItemDetail({
                             />
                           )}
                         </div>
-                      </div>
+                      </button>
                     )
                   })}
                 </div>
