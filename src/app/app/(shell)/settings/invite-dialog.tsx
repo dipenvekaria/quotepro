@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Check, Copy, Loader2, UserPlus, X } from 'lucide-react'
 
@@ -13,13 +13,13 @@ import { inviteTeammate, revokeInvitation } from './team-actions'
 
 export function InviteTeammateDialog() {
   // Opens automatically when arriving from the dashboard setup checklist
-  // (/app/settings?invite=1). Derived at init rather than set from an effect —
-  // window is unavailable during SSR, hence the guard.
-  const [open, setOpen] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      new URLSearchParams(window.location.search).get('invite') !== null,
-  )
+  // (/app/settings?invite=1). Set from an effect on purpose: deriving it at
+  // init read window during render, so the server said closed while the
+  // client said open — a hydration mismatch that regenerated the whole tree.
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('invite') !== null) setOpen(true)
+  }, [])
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<string>('technician')
   const [busy, setBusy] = useState(false)

@@ -145,16 +145,72 @@ export default async function CalendarPage({
   // Drive times between one job and the next for the same person. Cache-first
   // and degrades to {} — no key, no coordinates or a Google outage means no
   // estimates shown, never a broken calendar.
-  const legs = await computeLegs(
-    rows.map((r) => ({
-      id: r.id,
-      scheduled_start: r.scheduled_start,
-      estimated_hours: r.estimated_hours,
-      assigned_to: r.assigned_to,
-      lat: r.lat,
-      lng: r.lng,
-    })),
-  ).catch(() => ({}))
+  const estRoleSql =
+    role === 'sales' ? ' and (w.estimate_assigned_to = $4 or w.created_by = $4)' : ''
+  const estRoleParams = role === 'sales' ? [userId] : []
+  // The drive-time lookup can hit Google; it overlaps the independent reads
+  // instead of gating them. Cache-first and degrades to {} — no key, no
+  // coordinates or an outage means no estimates shown, never a broken calendar.
+  const [legs, estimateRows, hours, workload] = await Promise.all([
+    computeLegs(
+      rows.map((r) => ({
+        id: r.id,
+        scheduled_start: r.scheduled_start,
+        estimated_hours: r.estimated_hours,
+        assigned_to: r.assigned_to,
+        lat: r.lat,
+        lng: r.lng,
+      })),
+    ).catch(() => ({})),
+    // Estimate/sales visits share the calendar. Owner/office see all; sales
+    // their own; technicians none.
+        role === 'technician'
+        ? Promise.resolve([] as {
+            id: string
+            status: string
+            estimate_scheduled_start: string
+            customer_name: string | null
+            address: string | null
+            city: string | null
+            state: string | null
+          }[])
+        : query<{
+            id: string
+            status: string
+            estimate_scheduled_start: string
+            customer_name: string | null
+            address: string | null
+            city: string | null
+            state: string | null
+          }>(
+            `select w.id, w.status, w.estimate_scheduled_start,
+                    c.name as customer_name, a.address, a.city, a.state
+               from work_items w
+               left join customers c on c.id = w.customer_id
+               left join customer_addresses a on a.id = w.address_id
+              where w.company_id = $1
+                and w.status = 'estimate_scheduled'
+                and w.estimate_scheduled_start is not null
+                and w.estimate_scheduled_start >= $2
+                and w.estimate_scheduled_start < $3${estRoleSql}
+              order by w.estimate_scheduled_start asc`,
+            [companyId, rangeStart.toISOString(), rangeEnd.toISOString(), ...estRoleParams],
+          ),
+    loadBusinessHours(companyId),
+    // Whole-team workload, unfiltered — visible only to people who assign.
+    canAssignWork(role as UserRole)
+      ? query<{ assigned_to: string | null; jobs: number; booked: number }>(
+          `select w.assigned_to, count(*)::int as jobs,
+                  coalesce(sum(w.estimated_hours), 0)::float as booked
+             from work_items w
+            where w.company_id = $1
+              and w.scheduled_start >= $2 and w.scheduled_start < $3
+              and w.status in ('job_scheduled', 'job_in_progress', 'job_completed')
+            group by w.assigned_to`,
+          [companyId, rangeStart.toISOString(), rangeEnd.toISOString()],
+        )
+      : Promise.resolve([] as { assigned_to: string | null; jobs: number; booked: number }[]),
+  ])
 
   const list: ScheduledJob[] = rows.map((r) => ({
     id: r.id,
@@ -172,34 +228,6 @@ export default async function CalendarPage({
   // date column (estimate_scheduled_start) and carry the estimate_scheduled
   // status, which the StatusBadge renders distinctly. Owner/office see all;
   // sales see their own; technicians do not deal with estimates.
-  const estRoleSql =
-    role === 'sales' ? ' and (w.estimate_assigned_to = $4 or w.created_by = $4)' : ''
-  const estRoleParams = role === 'sales' ? [userId] : []
-  const estimateRows =
-    role === 'technician'
-      ? []
-      : await query<{
-          id: string
-          status: string
-          estimate_scheduled_start: string
-          customer_name: string | null
-          address: string | null
-          city: string | null
-          state: string | null
-        }>(
-          `select w.id, w.status, w.estimate_scheduled_start,
-                  c.name as customer_name, a.address, a.city, a.state
-             from work_items w
-             left join customers c on c.id = w.customer_id
-             left join customer_addresses a on a.id = w.address_id
-            where w.company_id = $1
-              and w.status = 'estimate_scheduled'
-              and w.estimate_scheduled_start is not null
-              and w.estimate_scheduled_start >= $2
-              and w.estimate_scheduled_start < $3${estRoleSql}
-            order by w.estimate_scheduled_start asc`,
-          [companyId, rangeStart.toISOString(), rangeEnd.toISOString(), ...estRoleParams],
-        )
   for (const r of estimateRows) {
     list.push({
       id: r.id,
@@ -224,7 +252,6 @@ export default async function CalendarPage({
   // The grid shows the working day, not a wall of empty night. Widened by an
   // hour either side so a job booked slightly outside hours is still visible
   // rather than silently clipped.
-  const hours = await loadBusinessHours(companyId)
 
   /*
     Who is carrying this range. Aggregated separately from `rows` because rows
@@ -232,18 +259,6 @@ export default async function CalendarPage({
     the owner cannot see who is idle while looking at who is busy. Same range,
     same company; visible only to people who can assign work.
   */
-  const workload = canAssignWork(role as UserRole)
-    ? await query<{ assigned_to: string | null; jobs: number; booked: number }>(
-        `select w.assigned_to, count(*)::int as jobs,
-                coalesce(sum(w.estimated_hours), 0)::float as booked
-           from work_items w
-          where w.company_id = $1
-            and w.scheduled_start >= $2 and w.scheduled_start < $3
-            and w.status in ('job_scheduled', 'job_in_progress', 'job_completed')
-          group by w.assigned_to`,
-        [companyId, rangeStart.toISOString(), rangeEnd.toISOString()],
-      )
-    : []
   const workloadByUser = new Map(workload.map((w) => [w.assigned_to, w]))
   // The 100% line: the company's open hours across the visible range.
   const weeklyOpenHours = Object.values(hours).reduce((sum, h) => {

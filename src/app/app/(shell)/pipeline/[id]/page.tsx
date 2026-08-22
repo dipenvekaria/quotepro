@@ -139,73 +139,77 @@ export default async function WorkItemDetailPage({
     assignee: row.assignee_profile ? { profile: row.assignee_profile } : null,
   }
 
-  const photos = await listQuotePhotos(id)
-
-  const quoteItems = await query<{
-    id: string
-    name: string
-    description: string | null
-    quantity: number
-    unit_price: number
-    sort_order: number | null
-    is_upsell: boolean
-    is_discount: boolean
-  }>(
-    `select id, name, description, quantity, unit_price, unit, sort_order, is_upsell, is_discount
-       from quote_items qi
-      where work_item_id = $1${liveTierPredicate(1)}
-      order by sort_order asc`,
-    [id],
-  )
-
-  const teammates = await query<{
-    id: string
-    email: string | null
-    profile: { full_name?: string; first_name?: string; last_name?: string } | null
-  }>(
-    `select u.id, au.email, u.profile
-       from users u
-       join auth.users au on au.id = u.id
-      where u.company_id = $1 and u.is_active = true
-      order by u.created_at asc`,
-    [companyId],
-  )
-
-  const [invoice] = await query<{
-    id: string
-    invoice_number: string | null
-    status: string
-    total: number | null
-    amount_paid: number | null
-    sent_at: string | null
-    paid_at: string | null
-    due_date: string | null
-    public_token: string | null
-  }>(
-    `select id, invoice_number, status, total, amount_paid, sent_at, paid_at, due_date, public_token
-       from invoices
-      where work_item_id = $1
-      limit 1`,
-    [id],
-  )
-
-  const payments = invoice
-    ? await query<{
+  // One round-trip wave instead of six: everything after the work item is
+  // independent of everything else (payments needs the invoice, so the pair
+  // rides in one branch). Serial awaits were the page's whole wait.
+  const [photos, quoteItems, teammates, invoiceBundle, timeline] = await Promise.all([
+    listQuotePhotos(id),
+    query<{
+      id: string
+      name: string
+      description: string | null
+      quantity: number
+      unit_price: number
+      sort_order: number | null
+      is_upsell: boolean
+      is_discount: boolean
+    }>(
+      `select id, name, description, quantity, unit_price, unit, sort_order, is_upsell, is_discount
+         from quote_items qi
+        where work_item_id = $1${liveTierPredicate(1)}
+        order by sort_order asc`,
+      [id],
+    ),
+    query<{
+      id: string
+      email: string | null
+      profile: { full_name?: string; first_name?: string; last_name?: string } | null
+    }>(
+      `select u.id, au.email, u.profile
+         from users u
+         join auth.users au on au.id = u.id
+        where u.company_id = $1 and u.is_active = true
+        order by u.created_at asc`,
+      [companyId],
+    ),
+    (async () => {
+      const [invoice] = await query<{
         id: string
-        amount: number | null
-        method: string | null
-        reference_number: string | null
+        invoice_number: string | null
+        status: string
+        total: number | null
+        amount_paid: number | null
+        sent_at: string | null
         paid_at: string | null
+        due_date: string | null
+        public_token: string | null
       }>(
-        `select id, amount, method, reference_number, paid_at
-           from payments
-          where invoice_id = $1
-          order by paid_at desc`,
-        [invoice.id],
+        `select id, invoice_number, status, total, amount_paid, sent_at, paid_at, due_date, public_token
+           from invoices
+          where work_item_id = $1
+          limit 1`,
+        [id],
       )
-    : []
-
-  const timeline = await timelineForWorkItem(companyId, id)
+      const payments = invoice
+    ? await query<{
+          id: string
+          amount: number | null
+          method: string | null
+          reference_number: string | null
+          paid_at: string | null
+        }>(
+          `select id, amount, method, reference_number, paid_at
+             from payments
+            where invoice_id = $1
+            order by paid_at desc`,
+          [invoice.id],
+        )
+      : []
+      return { invoice, payments }
+    })(),
+    timelineForWorkItem(companyId, id),
+  ])
+  const { invoice, payments } = invoiceBundle
 
   return (
     <WorkItemDetail
