@@ -22,8 +22,7 @@ import { WaitlistForm } from './waitlist-form'
  *
  * Static server component on purpose: no client JS, nothing to hydrate,
  * loads instantly on a phone in a parking lot. Every claim on it is true of
- * the shipped product today; the one thing sold ahead (call answering) says
- * so on its face. Monochrome per the design identity — restraint reads as
+ * the shipped product today — including call answering, which is live. Monochrome per the design identity — restraint reads as
  * expensive, and every competitor's page is orange and busy.
  */
 
@@ -34,12 +33,19 @@ const SOLO_FEATURES = [
   'Automated review requests',
   'Recurring visits with auto-invoicing',
   'QuickBooks Online bookkeeping sync',
-  'AI call answering, 100 min/mo — coming soon',
+  'AI call answering, 100 min/mo included',
+]
+
+const CREW_FEATURES = [
+  'Everything in Team',
+  'Dispatch across multiple crews',
+  'Per-crew boards and workload',
+  'Priority support',
 ]
 
 const TEAM_FEATURES = [
   'Everything in Solo',
-  'AI call answering, 300 min/mo — coming soon',
+  'AI call answering, 300 min/mo included',
   'Calendar dispatch that knows job length',
   'Team workload at a glance',
   'Roles: owner, office, technician',
@@ -73,12 +79,14 @@ function PriceCard({
   blurb,
   features,
   highlight,
+  comingSoon,
 }: {
   name: string
   price: string
   blurb: string
   features: string[]
   highlight?: boolean
+  comingSoon?: boolean
 }) {
   return (
     <div
@@ -95,10 +103,15 @@ function PriceCard({
             For crews
           </span>
         )}
+        {comingSoon && (
+          <span className="rounded-full border border-border px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+            Coming soon
+          </span>
+        )}
       </div>
       <div className="mt-3 flex items-baseline gap-1">
         <span className="text-4xl font-semibold tabular tracking-tight">{price}</span>
-        <span className="text-sm text-muted-foreground">/month</span>
+        {!comingSoon && <span className="text-sm text-muted-foreground">/month</span>}
       </div>
       <p className="mt-2 text-sm text-muted-foreground">{blurb}</p>
       <ul className="mt-5 space-y-2.5">
@@ -112,9 +125,15 @@ function PriceCard({
         ))}
       </ul>
       <div className="flex-1" />
-      <Button asChild className="mt-6 h-11 w-full">
-        <Link href="#early-access">Get early access</Link>
-      </Button>
+      {comingSoon ? (
+        <p className="mt-6 flex h-11 w-full items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+          Announced at launch
+        </p>
+      ) : (
+        <Button asChild className="mt-6 h-11 w-full">
+          <Link href="#early-access">Get early access</Link>
+        </Button>
+      )}
     </div>
   )
 }
@@ -248,13 +267,13 @@ export function Landing() {
       <section id="pricing" className="border-t border-border/70 bg-muted/40">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Two sizes. Everything in both.
+            Two plans today. Everything in both.
           </h2>
           <p className="mt-3 max-w-2xl text-base text-muted-foreground">
             No add-ons, no plan gates, no per-feature upsells. The tools the big platforms
             sell as $99&ndash;$500 monthly extras are simply included.
           </p>
-          <div className="mt-8 grid max-w-3xl gap-5 sm:grid-cols-2">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <PriceCard
               name="Solo"
               price="$49"
@@ -267,6 +286,13 @@ export function Landing() {
               blurb="For shops with a crew. Everything, for everyone."
               features={TEAM_FEATURES}
               highlight
+            />
+            <PriceCard
+              name="Crew"
+              price="—"
+              blurb="For shops running several crews at once."
+              features={CREW_FEATURES}
+              comingSoon
             />
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
