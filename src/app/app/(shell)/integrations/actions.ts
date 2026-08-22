@@ -70,10 +70,11 @@ export async function enableVoice() {
       ])
     }
 
-    // First number in stock. Callers never see it — they dial the company's
-    // own published number, which forwards here — so area-code vanity only
-    // ever dead-ended signups when a code was sold out (it did).
-    number = await purchaseNumber(agentId, `${company.name} — Rivet answering`)
+    // Their own area code when Retell stocks it, any number when not — the
+    // contractor is never asked either way.
+    const digits = company.phone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3)
+    const preferred = digits && /^\d{3}$/.test(digits) ? Number(digits) : null
+    number = await purchaseNumber(agentId, `${company.name} — Rivet answering`, preferred)
 
     await query(
       `update companies set voice_enabled = true, voice_number = $2 where id = $1`,
