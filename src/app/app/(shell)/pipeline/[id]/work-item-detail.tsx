@@ -325,10 +325,14 @@ export function WorkItemDetail({
       // not have to wait on one bar of LTE.
       const results = await Promise.all(
         files.map(async (file) => {
-          const fd = new FormData()
-          fd.append('work_item_id', workItem.id)
-          fd.append('file', await compressPhoto(file))
-          return uploadQuotePhoto(fd)
+          try {
+            const fd = new FormData()
+            fd.append('work_item_id', workItem.id)
+            fd.append('file', await compressPhoto(file))
+            return await uploadQuotePhoto(fd)
+          } catch {
+            return { ok: false as const, error: 'Upload didn\u2019t reach the server \u2014 check your signal and try again.' }
+          }
         }),
       )
       const added = results.filter((r) => r.ok).length
