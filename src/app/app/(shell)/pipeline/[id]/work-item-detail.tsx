@@ -647,7 +647,7 @@ export function WorkItemDetail({
         <BackLink href="/app/pipeline">Pipeline</BackLink>
         <ChevronRight className="h-3 w-3" />
         <span className="text-foreground">
-          {workItem.quote_number ?? workItem.job_name ?? shortId(workItem.id)}
+          {workItem.quote_number ?? workItem.job_name ?? workItem.customers?.name ?? shortId(workItem.id)}
         </span>
       </div>
 
@@ -825,48 +825,37 @@ export function WorkItemDetail({
               standing next to the customer looking at this screen. No invoice
               yet → send it; sent but unpaid → the payment link is front and
               centre. */}
+          {/* Once an invoice exists this card carries real state — amount
+              outstanding, the invoice number, the payment actions. Before one
+              exists it was a third Send-invoice button on one screen. */}
           {workItem.status === 'job_completed' &&
             total > 0 &&
-            (!invoice || invoice.status !== 'paid') && (
+            invoice &&
+            invoice.status !== 'paid' && (
               <section className="rounded-xl border border-primary/40 bg-primary/5 shadow-sm">
                 <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
                     <h2 className="text-base font-semibold">
-                      {invoice
-                        ? `${fmtMoney(invoiceAmountDue)} outstanding`
-                        : 'Job complete — send the invoice'}
+                      {fmtMoney(invoiceAmountDue)} outstanding
                     </h2>
                     <p className="mt-0.5 text-sm text-muted-foreground">
-                      {invoice
-                        ? `Invoice ${invoice.invoice_number} is with ${workItem.customers?.name ?? 'your customer'}. Share the payment link, or record a payment taken another way.`
-                        : 'The customer can pay online from the invoice in a tap.'}
+                      Invoice {invoice.invoice_number} is with{' '}
+                      {workItem.customers?.name ?? 'your customer'}. Share the payment link, or
+                      record a payment taken another way.
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
-                    {!invoice ? (
-                      <Button onClick={doSendInvoice} disabled={invoiceSending} className="h-11 gap-1.5">
-                        {invoiceSending ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Send className="h-4 w-4" />
-                        )}
-                        Send invoice
-                      </Button>
-                    ) : (
-                      <>
-                        <Button onClick={copyPayLink} className="h-11 gap-1.5">
-                          <Copy className="h-4 w-4" />
-                          Copy payment link
-                        </Button>
-                        <Button
-                          onClick={() => setPayOpen(true)}
-                          variant="outline"
-                          className="h-11 gap-1.5"
-                        >
-                          Record payment
-                        </Button>
-                      </>
-                    )}
+                    <Button onClick={copyPayLink} className="h-11 gap-1.5">
+                      <Copy className="h-4 w-4" />
+                      Copy payment link
+                    </Button>
+                    <Button
+                      onClick={() => setPayOpen(true)}
+                      variant="outline"
+                      className="h-11 gap-1.5"
+                    >
+                      Record payment
+                    </Button>
                   </div>
                 </div>
               </section>
