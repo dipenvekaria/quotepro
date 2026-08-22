@@ -12,7 +12,7 @@ export async function notify(input: {
   companyId: string
   userIds: string[]
   actorId?: string | null
-  kind: 'mention' | 'assigned' | 'quote_accepted' | 'quote_viewed' | 'payment'
+  kind: 'mention' | 'assigned' | 'quote_accepted' | 'quote_viewed' | 'payment' | 'voice_lead'
   title: string
   body?: string | null
   href?: string | null

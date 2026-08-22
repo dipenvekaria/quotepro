@@ -86,6 +86,8 @@ const serverEnvSchema = z.object({
   RESEND_FROM_EMAIL: z.string().email().optional(),
   RESEND_FROM_NAME: z.string().optional(),
   TWILIO_ACCOUNT_SID: z.string().optional(),
+  RETELL_API_KEY: optionalSecret(10),
+  RETELL_SECRET_WEBHOOK_KEY: optionalSecret(10),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),

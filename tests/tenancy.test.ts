@@ -48,6 +48,21 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'Signed Stripe webhook; resolves the tenant for the notification from the invoice id in the verified event.',
   },
   {
+    file: 'src/app/api/retell/webhook/route.ts',
+    match: 'where voice_number = $1',
+    reason: 'Signed Retell webhook; the called number IS the tenant lookup — voice_number is unique.',
+  },
+  {
+    file: 'src/app/api/retell/webhook/route.ts',
+    match: 'update voice_calls set work_item_id',
+    reason: 'Keys off retell_call_id (globally unique), inserted with company_id one statement earlier in the same transaction.',
+  },
+  {
+    file: 'src/app/app/(shell)/integrations/actions.ts',
+    match: 'select name, retell_agent_id from companies where id = $1',
+    reason: '$1 is session.companyId; companies.id is the tenant key itself.',
+  },
+  {
     file: 'src/lib/billing/access.ts',
     match: 'from companies',
     reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
