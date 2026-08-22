@@ -32,13 +32,6 @@ export async function setPassCardFees(input: z.infer<typeof passCardFeesSchema>)
 
 
 const enableVoiceSchema = z.object({
-  // No number given → we buy a local one; a number means it already lives in
-  // the platform's Retell workspace (admin/manual path).
-  phone_number: z
-    .string()
-    .trim()
-    .regex(/^\+1\d{10}$/, 'Use the full number with country code, like +14155550123.')
-    .optional(),
   area_code: z
     .string()
     .trim()
@@ -64,7 +57,7 @@ export async function enableVoice(input: z.infer<typeof enableVoiceSchema>) {
     return { ok: false as const, error: 'Only the owner can set up call answering.' }
   }
 
-  const { voiceConfigured, createCompanyAgent, bindNumber, purchaseNumber } = await import('@/lib/voice/retell')
+  const { voiceConfigured, createCompanyAgent, purchaseNumber } = await import('@/lib/voice/retell')
   if (!voiceConfigured()) {
     return { ok: false as const, error: 'Call answering is not configured on the platform yet.' }
   }
@@ -88,16 +81,11 @@ export async function enableVoice(input: z.infer<typeof enableVoiceSchema>) {
       ])
     }
 
-    if (parsed.data.phone_number) {
-      await bindNumber(parsed.data.phone_number, agentId)
-      number = parsed.data.phone_number
-    } else {
-      // Their local presence: the requested area code, else the one their own
-      // business number carries.
-      const derived = parsed.data.area_code ?? company.phone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3)
-      const areaCode = derived && /^\d{3}$/.test(derived) ? Number(derived) : null
-      number = await purchaseNumber(areaCode, agentId, `${company.name} — Rivet answering`)
-    }
+    // Their local presence: the requested area code, else the one their own
+    // business number carries.
+    const derived = parsed.data.area_code ?? company.phone?.replace(/\D/g, '').replace(/^1/, '').slice(0, 3)
+    const areaCode = derived && /^\d{3}$/.test(derived) ? Number(derived) : null
+    number = await purchaseNumber(areaCode, agentId, `${company.name} — Rivet answering`)
 
     await query(
       `update companies set voice_enabled = true, voice_number = $2 where id = $1`,
