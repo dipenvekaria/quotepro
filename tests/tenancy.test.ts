@@ -52,6 +52,16 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     match: 'from companies',
     reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
   },
+  {
+    file: 'src/app/app/(shell)/dashboard/page.tsx',
+    match: 'from companies where id = $1',
+    reason: '$1 is companyId from requireSession(); companies.id is the tenant key itself.',
+  },
+  {
+    file: 'src/lib/getting-started.ts',
+    match: 'from companies where id = $1',
+    reason: '$1 is the companyId the caller passed from its session; companies.id is the tenant key.',
+  },
   // Platform-admin surface: cross-tenant by design, gated by the
   // platform_admins allow-list (requirePlatformAdmin) rather than company_id.
   {
@@ -473,7 +483,11 @@ function extractStatements(): Stmt[] {
     if (rel.endsWith('src/lib/db/index.ts')) continue // the helpers themselves
     const text = readFileSync(file, 'utf8')
     // `await query(...)` / `await q(...)`, capturing the SQL template literal
-    const re = /await\s+(?:query|q)\s*(?:<[^>]*>)?\s*\(\s*(`(?:[^`\\]|\\.)*`|'(?:[^'\\]|\\.)*')/g
+    // Bare `query(` (no await) counts too: Promise.all waves hold unawaited
+    // calls, and a scanner that only sees `await query(` goes blind to them.
+    // No whitespace before the paren: real calls are `query(`/`query<T>(`,
+    // while prose in comments writes "the repair query (`...`)".
+    const re = /(?:await\s+)?\b(?:query|q)(?:<[^>]*>)?\(\s*(`(?:[^`\\]|\\.)*`|'(?:[^'\\]|\\.)*')/g
     for (const m of text.matchAll(re)) {
       out.push({
         file: rel,

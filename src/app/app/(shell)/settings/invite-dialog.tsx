@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { Check, Copy, Loader2, UserPlus, X } from 'lucide-react'
 
@@ -13,13 +14,11 @@ import { inviteTeammate, revokeInvitation } from './team-actions'
 
 export function InviteTeammateDialog() {
   // Opens automatically when arriving from the dashboard setup checklist
-  // (/app/settings?invite=1). Set from an effect on purpose: deriving it at
-  // init read window during render, so the server said closed while the
-  // client said open — a hydration mismatch that regenerated the whole tree.
-  const [open, setOpen] = useState(false)
-  useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('invite') !== null) setOpen(true)
-  }, [])
+  // (/app/settings?invite=1). useSearchParams is the SSR-aware read — the
+  // server and client agree, unlike the old window.location init that
+  // hydration-mismatched the whole tree.
+  const params = useSearchParams()
+  const [open, setOpen] = useState(params.get('invite') !== null)
   const [email, setEmail] = useState('')
   const [role, setRole] = useState<string>('technician')
   const [busy, setBusy] = useState(false)
