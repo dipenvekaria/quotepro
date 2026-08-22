@@ -60,6 +60,7 @@ import {
   getSchedulingContext,
   requestReview,
   checkSlot,
+  getTeamOptions,
   scheduleEstimate,
   sendQuote,
   updateWorkItem,
@@ -67,6 +68,7 @@ import {
   setCustomerSummary,
 } from './actions'
 import type { SlotAssessment } from '@/lib/scheduling/assess'
+import type { PersonAvailability } from '@/lib/scheduling/team-availability'
 import { zonedParts, zonedToUtc } from '@/lib/time'
 import { saveLineItems } from '../../quotes/new/actions'
 import { DraftQuestions } from '../../quotes/new/draft-questions'
@@ -293,6 +295,18 @@ export function WorkItemDetail({
   const [editingItems, setEditingItems] = useState(false)
   const [notesOpen, setNotesOpen] = useState(false)
   const [twoWeeksOpen, setTwoWeeksOpen] = useState(false)
+  const [teamOptions, setTeamOptions] = useState<PersonAvailability[] | null>(null)
+  const [loadingTeam, setLoadingTeam] = useState(false)
+  const [pendingAssignee, setPendingAssignee] = useState<string | null>(null)
+  function loadTeamOptions(kind: 'job' | 'estimate') {
+    setTeamOptions(null)
+    setPendingAssignee(null)
+    setLoadingTeam(true)
+    getTeamOptions({ work_item_id: workItem.id, kind }).then((res) => {
+      setLoadingTeam(false)
+      if (res.ok) setTeamOptions(res.data.people)
+    })
+  }
   const jobPhotoRef = useRef<HTMLInputElement | null>(null)
   const [jobPhotosBusy, startJobPhotos] = useTransition()
   const [completePhotosAdded, setCompletePhotosAdded] = useState(0)
@@ -586,6 +600,7 @@ export function WorkItemDetail({
         toast.success('Job scheduled', {
           description: `${new Date(scheduledAt).toLocaleString('en-US', {
             weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit',
+            timeZone: tz,
           })} — it's on your calendar.`,
         })
       } else {
@@ -604,12 +619,14 @@ export function WorkItemDetail({
       setEstimateAt(defaultScheduleSlot(workItem.estimate_scheduled_start, tz))
       setEstimateRep(workItem.estimate_assigned_to ?? '')
       setEstimateOpen(true)
+      loadTeamOptions('estimate')
       return
     }
     if (to === 'job_scheduled') {
       setScheduleAt(defaultScheduleSlot(workItem.scheduled_start, tz))
       setSchedCtx(null)
       setScheduleOpen(true)
+      loadTeamOptions('job')
       // Loaded on open rather than with the page: most visits to a work item
       // are not scheduling it, and this is three queries.
       startLoadCtx(async () => {
@@ -734,8 +751,9 @@ export function WorkItemDetail({
           </div>
         </div>
 
-        {/* Action rail */}
-        <div className="flex items-center gap-1.5">
+        {/* Action rail — wraps on phones; three buttons overflowed the card
+            edge and cut "Send invoice" off (owner screenshot). */}
+        <div className="flex flex-wrap items-center gap-1.5">
           {/* Drafting-phase only: the explanation is written BEFORE the
               customer sees the quote. Once sent, the explanation card below
               keeps its pen for edits — but the rail stops prompting, and a
@@ -1361,53 +1379,19 @@ export function WorkItemDetail({
               <p className="text-sm text-muted-foreground">Checking your calendar…</p>
             )}
 
-            {schedCtx && schedCtx.suggestions.length > 0 && (
-              <div className="min-w-0 space-y-1.5">
-                <Label className="text-sm font-medium">Suggested times</Label>
-                <div className="grid min-w-0 gap-2">
-                  {schedCtx.suggestions.map((s) => {
-                    const start = new Date(s.startsAt)
-                    const end = new Date(s.endsAt)
-                    const iso = isoToWall(s.startsAt, tz)
-                    const chosen = scheduleAt === iso
-                    return (
-                      <button
-                        key={s.startsAt}
-                        type="button"
-                        onClick={() => {
-                          setScheduleAt(iso)
-                          runSlotCheck(iso, workItem.assigned_to, 'job')
-                        }}
-                        className={cn(
-                          'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
-                          chosen
-                            ? 'border-primary bg-primary/5'
-                            : 'border-border hover:bg-muted/60',
-                        )}
-                      >
-                        <span className="font-medium">
-                          {start.toLocaleDateString('en-US', {
-                            weekday: 'short', month: 'short', day: 'numeric',
-                          })}
-                        </span>
-                        <span className="text-muted-foreground tabular">
-                          {start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                          {' – '}
-                          {end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {schedCtx && schedCtx.suggestions.length === 0 && !loadingCtx && (
-              <p className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-                Nothing free in the next two weeks that fits this job. Pick a time below, or open
-                up more hours in Settings.
-              </p>
-            )}
+            <TeamOptionsList
+              people={teamOptions}
+              loading={loadingTeam}
+              tz={tz}
+              chosenAt={scheduleAt}
+              chosenPerson={pendingAssignee}
+              onPick={(person, startsAt) => {
+                const wall = isoToWall(startsAt, tz)
+                setScheduleAt(wall)
+                setPendingAssignee(person)
+                runSlotCheck(wall, person, 'job')
+              }}
+            />
 
 
             <div className="space-y-1.5">
@@ -1420,23 +1404,23 @@ export function WorkItemDetail({
                 value={scheduleAt}
                 onChange={(e) => {
                   setScheduleAt(e.target.value)
-                  runSlotCheck(e.target.value, workItem.assigned_to, 'job')
+                  runSlotCheck(e.target.value, pendingAssignee ?? workItem.assigned_to, 'job')
                 }}
                 className="h-11"
               />
-              {workItem.assigned_to ? (
+              {(pendingAssignee ?? workItem.assigned_to) ? (
                 <SlotCheckPanel
                   check={slotCheck}
                   checking={checkingSlot}
                   tz={tz}
                   onUseSuggestion={(iso) => {
                     setScheduleAt(isoToWall(iso, tz))
-                    runSlotCheck(isoToWall(iso, tz), workItem.assigned_to, 'job')
+                    runSlotCheck(isoToWall(iso, tz), pendingAssignee ?? workItem.assigned_to, 'job')
                   }}
                 />
               ) : (
                 <p className="text-xs text-muted-foreground">
-                  Assign a teammate to check their day for conflicts and drive time.
+                  Pick a teammate above to check their day for conflicts and drive time.
                 </p>
               )}
             </div>
@@ -1501,7 +1485,14 @@ export function WorkItemDetail({
               </Button>
               <Button
                 disabled={!scheduleAt || transitioning}
-                onClick={() => {
+                onClick={async () => {
+                  if (pendingAssignee && pendingAssignee !== workItem.assigned_to) {
+                    const res = await updateWorkItem({ id: workItem.id, assigned_to: pendingAssignee })
+                    if (!res.ok) {
+                      toast.error(res.error)
+                      return
+                    }
+                  }
                   setScheduleOpen(false)
                   transition('job_scheduled', wallToIso(scheduleAt, tz))
                 }}
@@ -1763,8 +1754,21 @@ export function WorkItemDetail({
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
+            <TeamOptionsList
+              people={teamOptions}
+              loading={loadingTeam}
+              tz={tz}
+              chosenAt={estimateAt}
+              chosenPerson={estimateRep || null}
+              onPick={(person, startsAt) => {
+                const wall = isoToWall(startsAt, tz)
+                setEstimateAt(wall)
+                setEstimateRep(person)
+                runSlotCheck(wall, person, 'estimate')
+              }}
+            />
             <div>
-              <Label className="mb-1 block text-xs">When</Label>
+              <Label className="mb-1 block text-xs">Or pick exactly</Label>
               <Input
                 type="datetime-local"
                 value={estimateAt}
@@ -2030,6 +2034,91 @@ function Activity({ workItem }: { workItem: WorkItem }) {
 }
 
 // ---------------------------------------------------------------------------
+
+/**
+ * The person-first schedule: each teammate with their first workable windows,
+ * the typical drive, and whether they already have a stop near the site.
+ * Rendered in the company's timezone — the server-tz slot list this replaces
+ * put "3:00 AM" on the owner's phone.
+ */
+function TeamOptionsList({
+  people,
+  loading,
+  tz,
+  chosenAt,
+  chosenPerson,
+  onPick,
+}: {
+  people: PersonAvailability[] | null
+  loading: boolean
+  tz: string
+  chosenAt: string
+  chosenPerson: string | null
+  onPick: (personId: string, startsAt: string) => void
+}) {
+  if (loading) {
+    return <p className="text-sm text-muted-foreground">Checking everyone&apos;s week…</p>
+  }
+  if (!people || people.length === 0) return null
+  const fmtDay = (iso: string) =>
+    new Date(iso).toLocaleDateString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', timeZone: tz,
+    })
+  const fmtTime = (iso: string) =>
+    new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })
+  return (
+    <div className="min-w-0 space-y-1.5">
+      <Label className="text-sm font-medium">Who can take it</Label>
+      <div className="grid min-w-0 gap-2">
+        {people.map((person) => (
+          <div key={person.id} className="rounded-lg border border-border px-3 py-2.5">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-medium">{person.name}</span>
+              <span className="text-xs capitalize text-muted-foreground">{person.role}</span>
+            </div>
+            {person.options.length === 0 ? (
+              <p className="mt-1 text-xs text-muted-foreground">
+                No open window in the next two weeks.
+              </p>
+            ) : (
+              <div className="mt-2 space-y-1.5">
+                {person.options.map((o) => {
+                  const chosen =
+                    chosenPerson === person.id && chosenAt === isoToWall(o.startsAt, tz)
+                  return (
+                    <button
+                      key={o.startsAt}
+                      type="button"
+                      onClick={() => onPick(person.id, o.startsAt)}
+                      className={cn(
+                        'flex min-h-11 w-full flex-wrap items-center justify-between gap-x-3 gap-y-0.5 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
+                        chosen ? 'border-primary bg-primary/5' : 'border-border/70 hover:bg-muted/60',
+                      )}
+                    >
+                      <span className="font-medium">{fmtDay(o.startsAt)}</span>
+                      <span className="text-muted-foreground tabular">
+                        {fmtTime(o.startsAt)} – {fmtTime(o.endsAt)}
+                      </span>
+                      {o.nearby ? (
+                        <span className="w-full text-xs text-muted-foreground">
+                          Already in the area that day
+                        </span>
+                      ) : o.travelMinutes != null && o.fromLabel ? (
+                        <span className="w-full text-xs text-muted-foreground">
+                          ~{o.travelMinutes} min drive from {o.fromLabel}
+                        </span>
+                      ) : null}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function AssignSelect({
   workItemId,
