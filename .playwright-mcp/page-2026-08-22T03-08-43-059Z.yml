@@ -1,0 +1,164 @@
+- generic:
+  - generic:
+    - complementary:
+      - generic:
+        - link:
+          - /url: /app/dashboard
+          - generic:
+            - generic: Rivet
+            - generic: Acme HVAC & Plumbing
+      - navigation:
+        - link:
+          - /url: /app/dashboard
+          - generic: Home
+        - link:
+          - /url: /app/pipeline
+          - generic: Pipeline
+        - link:
+          - /url: /app/calendar
+          - generic: Calendar
+        - link:
+          - /url: /app/customers
+          - generic: Customers
+        - link:
+          - /url: /app/catalog
+          - generic: Price book
+        - link:
+          - /url: /app/portfolio
+          - generic: Portfolio
+        - link:
+          - /url: /app/analytics
+          - generic: Analytics
+        - link:
+          - /url: /app/integrations
+          - generic: Integrations
+      - generic:
+        - button:
+          - generic: Ask Bolt
+    - generic:
+      - banner:
+        - generic:
+          - generic:
+            - button
+          - link:
+            - /url: /app/quotes/new
+            - generic: New quote
+          - generic:
+            - button:
+              - generic: AO
+      - main:
+        - generic:
+          - generic:
+            - link:
+              - /url: /app/pipeline
+              - text: Pipeline
+            - generic: 8e1ce4fb
+          - generic:
+            - generic:
+              - generic: RW
+              - generic:
+                - generic:
+                  - heading [level=1]: Rita Waters
+                  - generic: New Lead
+                - generic: 415-555-0182
+            - generic:
+              - button: Schedule estimate visit
+              - button: Convert to quote
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=2]: Details
+                  - button
+                - generic:
+                  - generic:
+                    - generic: Job description
+                    - paragraph: Nothing yet — tap the pen to add one.
+                  - generic:
+                    - generic: Scheduled start
+                    - generic: Not scheduled
+                  - generic:
+                    - generic: Repeats
+                    - paragraph: Does not repeat
+              - generic:
+                - generic:
+                  - generic:
+                    - heading [level=2]: Line items
+                    - generic: "0"
+                  - generic:
+                    - button: Smart draft
+                    - button: Add row
+                    - button: Save items
+                - generic:
+                  - paragraph: No line items yet
+                  - paragraph: Add rows to build up this quote.
+              - generic:
+                - generic:
+                  - generic:
+                    - heading [level=2]: Photos
+                    - generic: — the customer sees these on the quote
+                  - generic:
+                    - button: Add photos
+                    - button
+              - region:
+                - heading [level=2]: Activity
+                - list:
+                  - listitem:
+                    - generic:
+                      - text: lead created
+                      - generic: — Lead captured — Rita Waters
+                      - generic: Aug 21, 7:17 PM
+                - generic:
+                  - generic:
+                    - textbox:
+                      - /placeholder: Add an internal note — @ to notify a teammate
+                  - generic:
+                    - generic: Never shown to the customer
+                    - button [disabled]: Add note
+            - complementary:
+              - generic:
+                - heading [level=2]: Summary
+                - generic:
+                  - generic:
+                    - term: Subtotal
+                    - definition: $0.00
+                  - generic:
+                    - term: Tax (8.5%)
+                    - definition: $0.00
+                  - generic:
+                    - term: Total
+                    - definition: $0.00
+              - generic:
+                - heading [level=2]: Team
+                - generic:
+                  - generic:
+                    - term: Created by
+                    - definition: Unknown
+                  - generic:
+                    - term: Assigned to
+                    - combobox
+  - region "Notifications alt+T"
+  - alert
+  - dialog [ref=f8e178]:
+    - generic [ref=f8e179]:
+      - heading "Schedule estimate visit" [level=2] [ref=f8e180]
+      - paragraph [ref=f8e181]: Book a sales visit to quote the job on site. It lands on the calendar as an estimate, separate from the work itself.
+    - generic [ref=f8e182]:
+      - generic [ref=f8e183]:
+        - generic [ref=f8e184]: When
+        - textbox [active] [ref=f8e185]: 2026-08-21T10:30
+      - generic [ref=f8e186]:
+        - generic [ref=f8e187]: Who visits (optional)
+        - combobox [ref=f8e188]:
+          - option "Unassigned"
+          - option "Alex Owner"
+          - option "Sam Office"
+          - option "Tam Tech" [selected]
+      - generic [ref=f8e194]:
+        - paragraph [ref=f8e195]: No conflicts.
+        - list [ref=f8e196]:
+          - listitem [ref=f8e197]: 10:42 AM–11:42 AM · James Martinez
+    - generic [ref=f8e189]:
+      - button "Cancel" [ref=f8e190]
+      - button "Book visit" [ref=f8e191]
+    - button "Close" [ref=f8e192]

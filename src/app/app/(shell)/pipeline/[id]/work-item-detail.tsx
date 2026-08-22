@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useMemo, useState, useSyncExternalStore, useTransition } from 'react'
+import { useMemo, useRef, useState, useSyncExternalStore, useTransition } from 'react'
 import {
   Sparkles,
   ArrowLeft,
@@ -54,12 +54,15 @@ import {
   generateCustomerSummary,
   getSchedulingContext,
   requestReview,
+  checkSlot,
   scheduleEstimate,
   sendQuote,
   updateWorkItem,
   type SchedulingContext,
   setCustomerSummary,
 } from './actions'
+import type { SlotAssessment } from '@/lib/scheduling/assess'
+import { zonedParts, zonedToUtc } from '@/lib/time'
 import { saveLineItems } from '../../quotes/new/actions'
 import { DraftQuestions } from '../../quotes/new/draft-questions'
 import { convertToInvoice, recordPayment, sendInvoice } from '@/features/invoices/actions'
@@ -182,12 +185,11 @@ const STATUS_ACTIONS: Record<string, { label: string; to: string; primary?: bool
  * a job they just won almost never means "right now", and an empty picker is a
  * decision we are making them make for no reason.
  */
-function defaultScheduleSlot(existing: string | null): string {
-  if (existing) return isoToLocal(existing)
-  const d = new Date()
-  d.setDate(d.getDate() + 1)
-  d.setHours(9, 0, 0, 0)
-  return isoToLocal(d.toISOString())
+function defaultScheduleSlot(existing: string | null, tz: string): string {
+  if (existing) return isoToWall(existing, tz)
+  const today = zonedParts(new Date(), tz)
+  const tomorrow9 = zonedToUtc(tz, { ...today, h: 9, min: 0 })
+  return isoToWall(new Date(tomorrow9.getTime() + 24 * 3_600_000).toISOString(), tz)
 }
 
 export function WorkItemDetail({
@@ -263,13 +265,34 @@ export function WorkItemDetail({
   const [estimateRep, setEstimateRep] = useState('')
   const [bookingEstimate, startBookEstimate] = useTransition()
   const [schedCtx, setSchedCtx] = useState<SchedulingContext | null>(null)
+  const [slotCheck, setSlotCheck] = useState<SlotAssessment | null>(null)
+  const [checkingSlot, setCheckingSlot] = useState(false)
+  const slotSeq = useRef(0)
+  function runSlotCheck(at: string, assignee: string | null | undefined, kind: 'job' | 'estimate') {
+    setSlotCheck(null)
+    if (!at || !assignee) return
+    const seq = ++slotSeq.current
+    setCheckingSlot(true)
+    const t = setTimeout(async () => {
+      const res = await checkSlot({
+        work_item_id: workItem.id,
+        assignee_id: assignee,
+        starts_at: wallToIso(at, tz),
+        kind,
+      })
+      if (seq !== slotSeq.current) return
+      setCheckingSlot(false)
+      if (res.ok) setSlotCheck(res.data)
+    }, 350)
+    return () => clearTimeout(t)
+  }
   const [loadingCtx, startLoadCtx] = useTransition()
 
   function bookEstimate() {
     startBookEstimate(async () => {
       const res = await scheduleEstimate({
         id: workItem.id,
-        estimate_scheduled_start: new Date(estimateAt).toISOString(),
+        estimate_scheduled_start: wallToIso(estimateAt, tz),
         sales_rep_id: estimateRep || null,
       })
       if (!res.ok) {
@@ -495,13 +518,13 @@ export function WorkItemDetail({
   /** Scheduling needs a date, so it opens a picker instead of firing straight away. */
   function onNextStep(to: string) {
     if (to === 'estimate_scheduled') {
-      setEstimateAt(defaultScheduleSlot(workItem.estimate_scheduled_start))
+      setEstimateAt(defaultScheduleSlot(workItem.estimate_scheduled_start, tz))
       setEstimateRep(workItem.estimate_assigned_to ?? '')
       setEstimateOpen(true)
       return
     }
     if (to === 'job_scheduled') {
-      setScheduleAt(defaultScheduleSlot(workItem.scheduled_start))
+      setScheduleAt(defaultScheduleSlot(workItem.scheduled_start, tz))
       setSchedCtx(null)
       setScheduleOpen(true)
       // Loaded on open rather than with the page: most visits to a work item
@@ -1260,13 +1283,16 @@ export function WorkItemDetail({
                   {schedCtx.suggestions.map((s) => {
                     const start = new Date(s.startsAt)
                     const end = new Date(s.endsAt)
-                    const iso = isoToLocal(s.startsAt)
+                    const iso = isoToWall(s.startsAt, tz)
                     const chosen = scheduleAt === iso
                     return (
                       <button
                         key={s.startsAt}
                         type="button"
-                        onClick={() => setScheduleAt(iso)}
+                        onClick={() => {
+                          setScheduleAt(iso)
+                          runSlotCheck(iso, workItem.assigned_to, 'job')
+                        }}
                         className={cn(
                           'flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors',
                           chosen
@@ -1349,9 +1375,27 @@ export function WorkItemDetail({
                 id="schedule-at"
                 type="datetime-local"
                 value={scheduleAt}
-                onChange={(e) => setScheduleAt(e.target.value)}
+                onChange={(e) => {
+                  setScheduleAt(e.target.value)
+                  runSlotCheck(e.target.value, workItem.assigned_to, 'job')
+                }}
                 className="h-11"
               />
+              {workItem.assigned_to ? (
+                <SlotCheckPanel
+                  check={slotCheck}
+                  checking={checkingSlot}
+                  tz={tz}
+                  onUseSuggestion={(iso) => {
+                    setScheduleAt(isoToWall(iso, tz))
+                    runSlotCheck(isoToWall(iso, tz), workItem.assigned_to, 'job')
+                  }}
+                />
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Assign a teammate to check their day for conflicts and drive time.
+                </p>
+              )}
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setScheduleOpen(false)}>
@@ -1361,7 +1405,7 @@ export function WorkItemDetail({
                 disabled={!scheduleAt || transitioning}
                 onClick={() => {
                   setScheduleOpen(false)
-                  transition('job_scheduled', new Date(scheduleAt).toISOString())
+                  transition('job_scheduled', wallToIso(scheduleAt, tz))
                 }}
               >
                 Schedule job
@@ -1597,7 +1641,10 @@ export function WorkItemDetail({
               <Input
                 type="datetime-local"
                 value={estimateAt}
-                onChange={(e) => setEstimateAt(e.target.value)}
+                onChange={(e) => {
+                  setEstimateAt(e.target.value)
+                  runSlotCheck(e.target.value, estimateRep || null, 'estimate')
+                }}
                 className="h-11"
               />
             </div>
@@ -1605,7 +1652,10 @@ export function WorkItemDetail({
               <Label className="mb-1 block text-xs">Who visits (optional)</Label>
               <select
                 value={estimateRep}
-                onChange={(e) => setEstimateRep(e.target.value)}
+                onChange={(e) => {
+                  setEstimateRep(e.target.value)
+                  runSlotCheck(estimateAt, e.target.value || null, 'estimate')
+                }}
                 className="h-11 w-full rounded-md border border-input bg-background px-3 text-sm shadow-sm"
               >
                 <option value="">Unassigned</option>
@@ -1614,6 +1664,17 @@ export function WorkItemDetail({
                 ))}
               </select>
             </div>
+            {estimateRep && (
+              <SlotCheckPanel
+                check={slotCheck}
+                checking={checkingSlot}
+                tz={tz}
+                onUseSuggestion={(iso) => {
+                  setEstimateAt(isoToWall(iso, tz))
+                  runSlotCheck(isoToWall(iso, tz), estimateRep, 'estimate')
+                }}
+              />
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEstimateOpen(false)}>Cancel</Button>
@@ -2078,10 +2139,24 @@ function RecordPaymentModal({
 
 // ---------------------------------------------------------------------------
 
-function isoToLocal(iso: string): string {
-  const d = new Date(iso)
-  const off = d.getTimezoneOffset() * 60_000
-  return new Date(d.getTime() - off).toISOString().slice(0, 16)
+/** An instant, shown as the company's wall clock (datetime-local format). */
+function isoToWall(iso: string, tz: string): string {
+  const p = zonedParts(new Date(iso), tz)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${p.y}-${pad(p.m)}-${pad(p.d)}T${pad(p.h)}:${pad(p.min)}`
+}
+
+/**
+ * The company's wall clock, as an instant. The dialogs speak company time on
+ * purpose: the browser's own zone booked "10:30" as whatever 10:30 meant on
+ * the viewer's device, which silently shifted every schedule made while
+ * travelling — and disagreed with the very conflict panel next to it.
+ */
+function wallToIso(wall: string, tz: string): string {
+  const [d, t] = wall.split('T')
+  const [y, m, day] = d.split('-').map(Number)
+  const [h, min] = t.split(':').map(Number)
+  return zonedToUtc(tz, { y, m, d: day, h, min }).toISOString()
 }
 
 function fmtMoney(n: number): string {
@@ -2090,4 +2165,75 @@ function fmtMoney(n: number): string {
 
 function shortId(id: string): string {
   return id.slice(0, 8)
+}
+
+
+/** The Teams glance: the person's day, double-bookings, and the drive. */
+function SlotCheckPanel({
+  check,
+  checking,
+  tz,
+  onUseSuggestion,
+}: {
+  check: SlotAssessment | null
+  checking: boolean
+  tz: string
+  onUseSuggestion: (iso: string) => void
+}) {
+  const fmtT = (iso: string) =>
+    new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })
+  if (checking) {
+    return (
+      <p className="flex items-center gap-2 text-xs text-muted-foreground">
+        <Loader2 className="h-3 w-3 animate-spin" /> Checking their day…
+      </p>
+    )
+  }
+  if (!check) return null
+  const bad = check.conflicts.length > 0
+  const tight = check.travel && !check.travel.feasible
+  return (
+    <div className="space-y-2 rounded-lg border border-border/70 bg-muted/40 p-3 text-xs">
+      {bad ? (
+        <p className="font-medium text-destructive">
+          Double-booked: {check.conflicts.map((c) => `${c.title} ${fmtT(c.startsAt)}–${fmtT(c.endsAt)}`).join(', ')}
+        </p>
+      ) : tight && check.travel ? (
+        <p className="font-medium text-amber-700 dark:text-amber-400">
+          Tight drive — ~{check.travel.minutes} min from {check.travel.fromLabel}; they arrive about{' '}
+          {fmtT(check.travel.arriveBy)}.
+        </p>
+      ) : (
+        <p className="text-muted-foreground">
+          No conflicts
+          {check.travel
+            ? ` · ~${check.travel.minutes} min typical drive from ${check.travel.fromLabel}`
+            : ''}
+          .
+        </p>
+      )}
+      {check.suggestion && (
+        <button
+          type="button"
+          onClick={() => onUseSuggestion(check.suggestion!)}
+          className="inline-flex min-h-11 items-center rounded-md border border-border bg-background px-2.5 font-medium hover:bg-muted lg:min-h-8"
+        >
+          Use {fmtT(check.suggestion)}
+        </button>
+      )}
+      {check.day.length > 0 && (
+        <ul className="space-y-0.5 border-t border-border/60 pt-2 text-muted-foreground">
+          {check.day.map((e) => (
+            <li key={e.id} className="tabular">
+              {fmtT(e.startsAt)}–{fmtT(e.endsAt)} · {e.title}
+              {e.kind === 'estimate' ? ' (estimate)' : ''}
+            </li>
+          ))}
+        </ul>
+      )}
+      {check.day.length === 0 && !bad && (
+        <p className="text-muted-foreground">Their day is clear.</p>
+      )}
+    </div>
+  )
 }

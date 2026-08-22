@@ -15,6 +15,7 @@ import { canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { nextOccurrence } from '@/lib/recurring'
 import { notify } from '@/lib/notifications'
+import { assessSlot, type SlotAssessment } from '@/lib/scheduling/assess'
 import { companyTz } from '@/lib/time'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 import { readOnlyGuard } from '@/lib/billing/access'
@@ -679,6 +680,54 @@ export async function getSchedulingContext(workItemId: string): Promise<
   }
 
   return { ok: true, data: { estimatedHours: hours, suggestions, days } }
+}
+
+const checkSlotSchema = z.object({
+  work_item_id: z.guid(),
+  assignee_id: z.guid(),
+  starts_at: z.string().datetime({ offset: true }).or(z.string().datetime()),
+  kind: z.enum(['job', 'estimate']),
+})
+
+/**
+ * Teams-style slot check: the chosen person's real day, double-bookings, and
+ * whether the typical drive from their previous stop (or the office) actually
+ * gets them there. Called by the scheduling dialogs as the inputs change.
+ */
+export async function checkSlot(input: unknown): Promise<
+  { ok: true; data: SlotAssessment } | { ok: false; error: string }
+> {
+  const parsed = checkSlotSchema.safeParse(input)
+  if (!parsed.success) return { ok: false, error: 'Invalid input' }
+
+  const session = await getSession()
+  if (!session) return { ok: false, error: 'Not authenticated' }
+
+  const [item] = await query<{
+    estimated_hours: number | null
+    lat: number | null
+    lng: number | null
+  }>(
+    `select w.estimated_hours, a.lat, a.lng
+       from work_items w
+       left join customer_addresses a on a.id = w.address_id
+      where w.id = $1 and w.company_id = $2
+      limit 1`,
+    [parsed.data.work_item_id, session.companyId],
+  )
+  if (!item) return { ok: false, error: 'Not found' }
+
+  const data = await assessSlot({
+    companyId: session.companyId,
+    workItemId: parsed.data.work_item_id,
+    assigneeId: parsed.data.assignee_id,
+    startsAt: new Date(parsed.data.starts_at),
+    hours: parsed.data.kind === 'estimate' ? 1 : item.estimated_hours,
+    tz: session.timezone,
+    siteLat: item.lat,
+    siteLng: item.lng,
+  })
+  return { ok: true, data }
 }
 
 // ---------------------------------------------------------------------------

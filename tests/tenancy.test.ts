@@ -53,6 +53,16 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'Keys off companies.id — the tenant key — passed from the caller session.',
   },
   {
+    file: 'src/lib/scheduling/assess.ts',
+    match: 'select address, settings from companies where id = $1',
+    reason: 'companyId comes from the session in the calling action; companies.id is the tenant key itself.',
+  },
+  {
+    file: 'src/lib/scheduling/assess.ts',
+    match: "jsonb_build_object('office_geo'",
+    reason: 'Caches the office geocode on the caller\'s own company row — where id = $1 is the session companyId.',
+  },
+  {
     file: 'src/app/app/(shell)/dashboard/page.tsx',
     match: 'from companies where id = $1',
     reason: '$1 is companyId from requireSession(); companies.id is the tenant key itself.',
