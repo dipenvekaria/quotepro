@@ -6,7 +6,9 @@ import { usePathname } from 'next/navigation'
 import { NotificationsBell } from './notifications-bell'
 import { useEffect, useState, type ReactNode } from 'react'
 import { useFormStatus } from 'react-dom'
-import { BarChart3, Calendar, ChevronDown, Home, Image as ImageIcon, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, Zap, type LucideIcon } from 'lucide-react'
+import { BarChart3, Calendar, ChevronDown, Home, Image as ImageIcon, Inbox, Loader2, LogOut, Menu, Package, Plug, Plus, Settings, Users, X, type LucideIcon } from 'lucide-react'
+
+import { BoltMark } from '@/components/shared/bolt-mark'
 
 import { Button } from '@/components/ui/button'
 import { BRAND_NAME, BrandMark } from '@/components/brand/logo'
@@ -210,7 +212,7 @@ function Sidebar({
           here bought nothing. The slot goes to Bolt instead. */}
       <div className="mt-auto pt-4">
         <button type="button" onClick={onAskBolt} className={cn(NAV_ITEM, NAV_ITEM_IDLE, 'w-full')}>
-          <Zap className="h-4 w-4 shrink-0" aria-hidden />
+          <BoltMark className="-ml-0.5" />
           <span className="flex-1 truncate text-left">Ask Bolt</span>
         </button>
       </div>

@@ -1,7 +1,9 @@
 'use client'
 
 import { useRef, useState, useTransition } from 'react'
-import { ArrowUp, Loader2, Zap } from 'lucide-react'
+import { ArrowUp, Loader2 } from 'lucide-react'
+
+import { BoltMark } from '@/components/shared/bolt-mark'
 
 import { cn } from '@/lib/utils'
 
@@ -102,9 +104,7 @@ export function BoltChat() {
   return (
     <section className="rounded-xl border border-border/70 bg-card shadow-sm">
       <header className="flex items-center gap-2.5 border-b border-border/70 px-5 py-3.5">
-        <div className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-          <Zap className="h-4 w-4" />
-        </div>
+        <BoltMark size="md" />
         <div>
           <h2 className="text-sm font-semibold">Ask Bolt</h2>
           <p className="text-xs text-muted-foreground">
