@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Copy,
   ExternalLink,
+  QrCode,
   Loader2,
   Mail,
   Camera,
@@ -688,6 +689,27 @@ export function WorkItemDetail({
   }
 
   const invoiceUrl = isClient && invoice ? `${window.location.origin}/i/${invoice.public_token}` : ''
+  // The customer pays, not the contractor: the button's job is showing the
+  // payment page to the person standing there, so it renders a QR their
+  // camera opens. Share covers the customer who already left.
+  const [qrOpen, setQrOpen] = useState(false)
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null)
+  function openPayQr() {
+    setQrOpen(true)
+    if (!qrDataUrl && invoiceUrl) {
+      import('qrcode').then((QRCode) =>
+        QRCode.toDataURL(invoiceUrl, { margin: 1, width: 640 }).then(setQrDataUrl),
+      )
+    }
+  }
+  async function shareInvoiceLink() {
+    if (navigator.share) {
+      await navigator.share({ title: 'Invoice', url: invoiceUrl }).catch(() => {})
+      return
+    }
+    await navigator.clipboard.writeText(invoiceUrl)
+    toast.success('Payment link copied')
+  }
   const invoiceAmountDue = invoice
     ? Math.max(0, Number(invoice.total) - Number(invoice.amount_paid ?? 0))
     : 0
@@ -897,16 +919,14 @@ export function WorkItemDetail({
                     </h2>
                     <p className="mt-0.5 text-sm text-muted-foreground">
                       Invoice {invoice.invoice_number} is with{' '}
-                      {workItem.customers?.name ?? 'your customer'}. Open the payment page to
-                      share it, or record a payment taken another way.
+                      {workItem.customers?.name ?? 'your customer'}. Show them the QR to pay
+                      here, or record a payment taken another way.
                     </p>
                   </div>
                   <div className="flex shrink-0 flex-wrap gap-2">
-                    <Button asChild className="h-11 gap-1.5">
-                      <a href={invoiceUrl} target="_blank" rel="noreferrer">
-                        <ExternalLink className="h-4 w-4" />
-                        Open payment link
-                      </a>
+                    <Button onClick={openPayQr} className="h-11 gap-1.5">
+                      <QrCode className="h-4 w-4" />
+                      Show QR to pay
                     </Button>
                     <Button
                       onClick={() => setPayOpen(true)}
@@ -1824,6 +1844,39 @@ export function WorkItemDetail({
         className="hidden"
         onChange={onJobPhotoFiles}
       />
+
+      {/* The QR is the driveway payment: the customer scans the screen and
+          pays on their own phone. */}
+      <Dialog open={qrOpen} onOpenChange={setQrOpen}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Scan to pay</DialogTitle>
+            <DialogDescription>
+              {workItem.customers?.name ?? 'Your customer'} points their phone camera here to
+              open invoice {invoice?.invoice_number} and pay.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center gap-3 py-2">
+            {qrDataUrl ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={qrDataUrl}
+                alt={`QR code for invoice ${invoice?.invoice_number ?? ''}`}
+                className="aspect-square w-full max-w-[280px] rounded-xl border border-border bg-white p-3"
+              />
+            ) : (
+              <div className="aspect-square w-full max-w-[280px] animate-pulse rounded-xl bg-muted" />
+            )}
+            <p className="text-2xl font-semibold tabular">{fmtMoney(invoiceAmountDue)}</p>
+          </div>
+          <DialogFooter className="sm:justify-center">
+            <Button variant="outline" onClick={shareInvoiceLink} className="h-11 gap-1.5">
+              <Send className="h-4 w-4" />
+              Share link instead
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Refund — irreversible for card money, so it confirms with the
           amount and says where the money comes from and how long it takes. */}
