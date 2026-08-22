@@ -14,6 +14,7 @@ import { liveTierPredicate } from '@/lib/quotes/items'
 import { canAssignWork } from '@/lib/auth/scope'
 import type { UserRole } from '@/lib/permissions'
 import { nextOccurrence } from '@/lib/recurring'
+import { notify } from '@/lib/notifications'
 import { companyTz } from '@/lib/time'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 import { readOnlyGuard } from '@/lib/billing/access'
@@ -119,6 +120,17 @@ export async function updateWorkItem(input: UpdateWorkItemInput) {
   }
   if (!rows[0]) return { ok: false as const, error: 'Not found or no permission' }
 
+  if (d.assigned_to) {
+    await notify({
+      companyId: session.companyId,
+      userIds: [d.assigned_to],
+      actorId: session.userId,
+      kind: 'assigned',
+      title: 'A job was assigned to you',
+      href: `/app/pipeline/${parsed.data.id}`,
+    })
+  }
+
   revalidatePath('/app/pipeline')
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
   return { ok: true as const }
@@ -209,6 +221,17 @@ export async function scheduleEstimate(input: z.infer<typeof estimateSchema>) {
     action: 'estimate_scheduled',
     description: 'Sales/estimate visit booked',
   })
+  if (parsed.data.sales_rep_id) {
+    await notify({
+      companyId: session.companyId,
+      userIds: [parsed.data.sales_rep_id],
+      actorId: session.userId,
+      kind: 'assigned',
+      title: 'An estimate visit was assigned to you',
+      href: `/app/pipeline/${parsed.data.id}`,
+    })
+  }
+
   revalidatePath(`/app/pipeline/${parsed.data.id}`)
   revalidatePath('/app/calendar')
   return { ok: true as const }
@@ -708,6 +731,7 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
   // @mentions: match against the team's first names, last names, and email
   // local parts, case-insensitively. Unmatched tags are just text.
   const mentioned: string[] = []
+  const mentionedIds: string[] = []
   const tags = [...parsed.data.body.matchAll(/@([\w.-]+)/g)].map((m) => m[1].toLowerCase())
   if (tags.length > 0) {
     const team = await query<{
@@ -757,7 +781,17 @@ export async function addWorkItemNote(input: { id: string; body: string }) {
       // The note is already saved; a failed or unconfigured email downgrades
       // the feature, not the record. Report only who was actually notified.
       if (res.ok && !res.skipped) mentioned.push(u.profile?.first_name ?? u.email)
+      mentionedIds.push(u.id)
     }
+    await notify({
+      companyId: session.companyId,
+      userIds: mentionedIds,
+      actorId: session.userId,
+      kind: 'mention',
+      title: `${authorName} mentioned you`,
+      body: parsed.data.body.length > 140 ? `${parsed.data.body.slice(0, 137)}…` : parsed.data.body,
+      href: `/app/pipeline/${item.id}`,
+    })
   }
 
   revalidatePath(`/app/pipeline/${parsed.data.id}`)

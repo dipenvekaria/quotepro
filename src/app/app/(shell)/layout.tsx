@@ -19,12 +19,19 @@ export default async function ShellLayout({ children }: { children: React.ReactN
     company?.subscription_status ?? '',
   )
 
+  const [unreadRow] = await query<{ n: number }>(
+    `select count(*)::int as n from notifications
+      where user_id = $1 and company_id = $2 and read_at is null`,
+    [userId, companyId],
+  )
+
   return (
     <AppShell
       user={{ id: userId, email }}
       profile={profile ?? {}}
       company={company}
       readOnly={readOnly}
+      unreadNotifications={unreadRow?.n ?? 0}
     >
       {children}
     </AppShell>

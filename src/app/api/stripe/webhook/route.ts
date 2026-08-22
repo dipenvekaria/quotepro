@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 
-import { withTransaction } from '@/lib/db'
+import { query, withTransaction } from '@/lib/db'
+import { notify, officeUserIds } from '@/lib/notifications'
 import { syncSubscription } from '@/lib/stripe/billing'
 import { getStripe, getWebhookSecret } from '@/lib/stripe/client'
 import { sbAdmin } from '@/lib/supabase/untyped'
@@ -128,6 +129,7 @@ export async function creditPaymentByInvoiceId(input: {
   method: 'card' | 'bank_transfer' | 'stripe'
   reference: string
 }) {
+  let credited = false
   await withTransaction(async (q) => {
     const inserted = await q<{ id: string }>(
       `insert into payments (invoice_id, amount, method, reference_number, notes)
@@ -150,7 +152,30 @@ export async function creditPaymentByInvoiceId(input: {
         where id = $1`,
       [input.invoiceId, input.amount],
     )
+    credited = true
   })
+
+  if (credited) {
+    const [inv] = await query<{
+      company_id: string
+      work_item_id: string | null
+      invoice_number: string | null
+    }>(
+      `select i.company_id, i.work_item_id, i.invoice_number
+         from invoices i where i.id = $1 limit 1`,
+      [input.invoiceId],
+    )
+    if (inv) {
+      await notify({
+        companyId: inv.company_id,
+        userIds: await officeUserIds(inv.company_id),
+        kind: 'payment',
+        title: 'Payment received',
+        body: `$${input.amount.toLocaleString('en-US', { minimumFractionDigits: 2 })} on ${inv.invoice_number ?? 'an invoice'}.`,
+        href: inv.work_item_id ? `/app/pipeline/${inv.work_item_id}` : null,
+      })
+    }
+  }
 }
 
 function methodFromPaymentMethod(

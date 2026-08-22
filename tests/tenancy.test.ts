@@ -43,6 +43,11 @@ const EXEMPT: Array<{ file: string; match: string; reason: string }> = [
     reason: 'Signed Stripe webhook; keyed to the invoice id from the verified event.',
   },
   {
+    file: 'src/app/api/stripe/webhook/route.ts',
+    match: 'select i.company_id, i.work_item_id',
+    reason: 'Signed Stripe webhook; resolves the tenant for the notification from the invoice id in the verified event.',
+  },
+  {
     file: 'src/lib/billing/access.ts',
     match: 'from companies',
     reason: 'Keys off companies.id — the tenant key — passed from the caller session.',

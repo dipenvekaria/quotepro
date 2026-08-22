@@ -5,6 +5,7 @@ import { headers } from 'next/headers'
 import { z } from 'zod'
 
 import { logActivity } from '@/lib/activity'
+import { notify, officeUserIds } from '@/lib/notifications'
 import { sbAdmin } from '@/lib/supabase/untyped'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 
@@ -78,6 +79,15 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     action: 'quote_accepted',
     description: `Accepted by ${parsed.data.signer_name}`,
     changes: { signed_by: parsed.data.signer_name },
+  })
+
+  await notify({
+    companyId: item.company_id as string,
+    userIds: await officeUserIds(item.company_id as string),
+    kind: 'quote_accepted',
+    title: 'Quote accepted',
+    body: `${parsed.data.signer_name} accepted the quote.`,
+    href: `/app/pipeline/${item.id}`,
   })
 
   revalidatePath(`/q/${parsed.data.token}`)
@@ -166,6 +176,15 @@ export async function markQuoteViewed(token: string) {
       entityId: item.id as string,
       action: 'quote_viewed',
       description: 'Customer opened the quote',
+    })
+
+    await notify({
+      companyId: item.company_id as string,
+      userIds: await officeUserIds(item.company_id as string),
+      kind: 'quote_viewed',
+      title: 'Quote viewed',
+      body: 'The customer opened the quote.',
+      href: `/app/pipeline/${item.id}`,
     })
   }
 

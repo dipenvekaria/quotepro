@@ -126,7 +126,7 @@ type WorkItem = {
 
 const emptySubscribe = () => () => {}
 
-type Teammate = { id: string; name: string }
+type Teammate = { id: string; name: string; handle?: string }
 
 export type Invoice = {
   id: string
@@ -1127,6 +1127,7 @@ export function WorkItemDetail({
               tz={tz}
               workItemId={workItem.id}
               people={Object.fromEntries(teammates.map((t) => [t.id, t.name]))}
+              roster={teammates}
             />
           ) : (
             <Activity workItem={workItem} />
