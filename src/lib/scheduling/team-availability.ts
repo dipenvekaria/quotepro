@@ -134,8 +134,10 @@ export async function teamAvailability(input: {
   const people = await query<{ id: string; name: string | null; role: string }>(
     `select u.id, u.role,
             coalesce(u.profile->>'full_name',
-              nullif(trim(concat(u.profile->>'first_name', ' ', u.profile->>'last_name')), '')) as name
+              nullif(trim(concat(u.profile->>'first_name', ' ', u.profile->>'last_name')), ''),
+              split_part(au.email, '@', 1)) as name
        from users u
+       join auth.users au on au.id = u.id
       where u.company_id = $1 and u.is_active and u.role::text = any($2::text[])
       order by u.created_at asc`,
     [input.companyId, input.roles],
