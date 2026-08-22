@@ -38,11 +38,12 @@ export default async function IntegrationsPage({
     stripe_charges_enabled: boolean | null
     stripe_details_submitted: boolean | null
     voice_enabled: boolean
+    phone: string | null
     voice_number: string | null
     pass_card_fees: boolean | null
   }>(
     `select stripe_account_id, stripe_charges_enabled, stripe_details_submitted, pass_card_fees,
-            voice_enabled, voice_number
+            voice_enabled, voice_number, phone
        from companies where id = $1 limit 1`,
     [companyId],
   )
@@ -154,6 +155,7 @@ export default async function IntegrationsPage({
             configured={Boolean(envServer().RETELL_API_KEY)}
             enabled={company.voice_enabled}
             number={company.voice_number}
+            companyPhone={company.phone}
             canEdit={canEdit}
           />
         </IntegrationShell>
