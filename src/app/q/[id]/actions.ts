@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { logActivity } from '@/lib/activity'
 import { notify, officeUserIds } from '@/lib/notifications'
+import { platformNotice } from '@/lib/platform-notice'
 import { sbAdmin } from '@/lib/supabase/untyped'
 import { LIMITS, checkRateLimit, rateLimited } from '@/lib/rate-limit'
 
@@ -46,7 +47,7 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
   const h = await headers()
   const { data: co } = await admin
     .from('companies')
-    .select('settings')
+    .select('settings, name')
     .eq('id', item.company_id as string)
     .maybeSingle()
   const termsText =
@@ -60,6 +61,7 @@ export async function acceptQuote(input: z.infer<typeof acceptSchema>) {
     // The exact terms as of this acceptance. The contractor can edit their
     // terms tomorrow; this record still proves what was agreed today.
     terms_text: termsText ? termsText.slice(0, 20000) : null,
+    platform_notice: platformNotice((co as { name?: string } | null)?.name ?? 'The business'),
   }
   const now = new Date().toISOString()
 
